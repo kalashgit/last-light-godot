@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "lab_candidate",
+  "projection": "80x40_2to1",
+  "trait_budget": 4,
+  "max_traits": 5,
+  "max_skill_level": 10,
+  "xp_curve": {"base": 100, "exponent": 1.4},
+  "skill_groups": {
+    "combat": ["axe", "short_blunt", "long_blunt", "short_blade", "long_blade", "spear", "aiming", "reloading"],
+    "physical": ["fitness", "strength", "sprinting", "lightfooted", "nimble", "sneaking"],
+    "technical": ["carpentry", "metalworking", "electrical", "mechanics", "maintenance"],
+    "survival": ["cooking", "farming", "fishing", "trapping", "foraging", "first_aid", "tailoring"],
+    "advanced_later": ["masonry", "carving", "knapping", "animal_care"]
+  },
+  "professions": [
+    {"id":"unassigned","name":"Unassigned","starting_skills":{},"starting_items":["water_bottle"]},
+    {"id":"cook","name":"Cook","starting_skills":{"cooking":2,"short_blade":1},"starting_items":["canned_food"]},
+    {"id":"first_responder","name":"First Responder","starting_skills":{"first_aid":2,"fitness":1},"starting_items":["bandage"]},
+    {"id":"technician","name":"Technician","starting_skills":{"electrical":2,"maintenance":1},"starting_items":["battery"]},
+    {"id":"builder","name":"Builder","starting_skills":{"carpentry":2,"strength":1},"starting_items":["water_bottle"]},
+    {"id":"ranger","name":"Ranger","starting_skills":{"foraging":2,"sneaking":1},"starting_items":["canned_food"]},
+    {"id":"security_officer","name":"Security Officer","starting_skills":{"sprinting":1,"short_blunt":2},"starting_items":["bandage"]}
+  ],
+  "traits": [
+    {"id":"studious","name":"Studious","points":-3,"modifiers":{"xp_mult":1.12}},
+    {"id":"trail_runner","name":"Trail Runner","points":-3,"modifiers":{"sprint_drain_mult":0.85}},
+    {"id":"organizer","name":"Organizer","points":-2,"modifiers":{"carry_capacity_mult":1.10}},
+    {"id":"steady_nerves","name":"Steady Nerves","points":-3,"exclusive_group":"panic_response","modifiers":{"panic_gain_mult":0.75}},
+    {"id":"good_hearing","name":"Good Hearing","points":-2,"exclusive_group":"hearing","modifiers":{"hearing_range_mult":1.15}},
+    {"id":"quick_recovery","name":"Quick Recovery","points":-2,"exclusive_group":"recovery","modifiers":{"healing_rate_mult":1.15}},
+    {"id":"poor_sleeper","name":"Poor Sleeper","points":3,"modifiers":{"sleep_recovery_mult":0.80}},
+    {"id":"heavy_breather","name":"Heavy Breather","points":2,"modifiers":{"sprint_drain_mult":1.18}},
+    {"id":"fragile","name":"Fragile","points":3,"exclusive_group":"recovery","modifiers":{"healing_rate_mult":0.83}},
+    {"id":"restless","name":"Restless","points":2,"modifiers":{"boredom_gain_mult":1.20}},
+    {"id":"easily_startled","name":"Easily Startled","points":3,"exclusive_group":"panic_response","modifiers":{"panic_gain_mult":1.25}},
+    {"id":"hard_of_hearing","name":"Hard of Hearing","points":3,"exclusive_group":"hearing","modifiers":{"hearing_range_mult":0.78}}
+  ],
+  "hobbies": [
+    {"id":"none","name":"None","starting_skills":{}},
+    {"id":"weekend_hiker","name":"Weekend Hiker","starting_skills":{"foraging":1}},
+    {"id":"home_cook","name":"Home Cook","starting_skills":{"cooking":1}},
+    {"id":"repair_hobbyist","name":"Repair Hobbyist","starting_skills":{"maintenance":1}},
+    {"id":"club_runner","name":"Club Runner","starting_skills":{"sprinting":1}}
+  ],
+  "appearance": {
+    "body_presets": ["a", "b", "c"],
+    "hair_presets": ["short", "medium", "long", "shaved"],
+    "outfit_palettes": ["workwear", "civilian", "outdoors", "response"],
+    "gameplay_effects": false
+  },
+  "xp_events": {
+    "sprint_distance": {"skill":"sprinting","xp":0.7,"cooldown_seconds":4},
+    "treat_wound": {"skill":"first_aid","xp":12,"once_per_target":true},
+    "prepare_food": {"skill":"cooking","xp":8,"once_per_target":true},
+    "repair_object": {"skill":"maintenance","xp":10,"once_per_target":true}
+  }
+}
