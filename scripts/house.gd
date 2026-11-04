@@ -31,9 +31,13 @@ var autosave_time := 0.0
 var stick_center := Vector2.ZERO
 var stick_radius := 62.0
 var attack_cooldown := 0.0
+var asset_showcase: Array[Dictionary] = []
+var asset_textures: Dictionary = {}
+var asset_preview_visible := true
 
 func _ready() -> void:
  _make_house()
+ _load_asset_showcase()
  _layout_controls()
  _load_game()
  get_viewport().size_changed.connect(_on_viewport_resized)
@@ -334,6 +338,8 @@ func _draw_ui() -> void:
   draw_rect(Rect2(size * .5 - Vector2(120, 36), Vector2(240, 72)), Color("17231d"))
   _text("RESTART", size * .5 + Vector2(-46, 6), 20)
  _text("GOD ON" if god_mode else "GOD OFF", Vector2(size.x - 112, 35), 14)
+ draw_rect(Rect2(Vector2(size.x - 260, 12), Vector2(122, 34)), Color("3e594a"))
+ _text("ART: ON" if asset_preview_visible else "ART: OFF", Vector2(size.x - 250, 35), 14)
 
 func _alive_zombies() -> int:
  var alive := 0
@@ -351,6 +357,7 @@ func _draw() -> void:
    var col := Color("425d47") if (x + y) % 2 == 0 else Color("3c5542")
    _quad(_screen(cell), _screen(cell + Vector2(1, 0)), _screen(cell + Vector2(1, 1)), _screen(cell + Vector2(0, 1)), col)
  _draw_house()
+ _draw_asset_showcase()
  for i in range(infected.size()):
   if zombie_health[i] > 0:
    _draw_character(infected[i], false, elapsed * 4 + i, zombies_hit_time[i] > 0)
@@ -367,6 +374,11 @@ func _tap(point: Vector2) -> void:
   _set_paused(not paused)
   return
  if paused:
+  return
+ if point.y < 48 and point.x >= size.x - 260 and point.x < size.x - 138:
+  asset_preview_visible = not asset_preview_visible
+  _announce("Asset preview ON" if asset_preview_visible else "Asset preview OFF")
+  queue_redraw()
   return
  if point.y < 48 and point.x > size.x - 140:
   god_mode = not god_mode
@@ -580,3 +592,75 @@ func _load_game(path: String = SAVE_PATH) -> Error:
   zombie_health[i] = int(enemies[i].health)
  _clear_pointers()
  return OK
+
+# Visual-only in-world sample from the generated factory. No save data,
+# collision, loot, crafting, combat, or production art is changed.
+const SHOWCASE_IDS := [
+ "ll_furniture_dining_chair", "ll_furniture_kitchen_table",
+ "ll_furniture_coffee_table", "ll_furniture_office_chair",
+ "ll_household_paperback_book", "ll_household_storage_box",
+ "ll_household_laundry_basket", "ll_household_board_game",
+ "ll_food_bean_tin", "ll_food_water_bottle",
+ "ll_food_milk_carton", "ll_food_cooking_oil",
+ "ll_medical_first_aid_case", "ll_medical_sterile_bandage",
+ "ll_medical_antiseptic", "ll_medical_saline_bottle",
+ "ll_tools_claw_hammer", "ll_tools_hatchet",
+ "ll_tools_shovel", "ll_tools_crowbar",
+ "ll_crafting_pine_plank", "ll_crafting_copper_pipe",
+ "ll_crafting_firewood", "ll_crafting_plywood_sheet"
+]
+
+func _load_asset_showcase() -> void:
+ asset_showcase.clear()
+ asset_textures.clear()
+ var manifest_path := "res://assets/generated/factory/manifest.json"
+ if not FileAccess.file_exists(manifest_path):
+  push_warning("Asset preview not available: factory manifest is missing")
+  return
+ var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
+ if not parsed is Dictionary or not parsed.has("objects"):
+  push_warning("Asset preview not available: invalid manifest")
+  return
+ var by_id: Dictionary = {}
+ for obj in parsed["objects"]:
+  if obj is Dictionary:
+   by_id[obj.get("id", "")] = obj
+ for i in range(SHOWCASE_IDS.size()):
+  var id: String = SHOWCASE_IDS[i]
+  if not by_id.has(id):
+   push_warning("Missing sample asset: " + id)
+   continue
+  var obj: Dictionary = by_id[id]
+  for f in obj.get("frames", []):
+   if f.get("mode", "") != "ground":
+    continue
+   var tex_path: String = "res://assets/generated/factory/" + String(f.get("file", ""))
+   var texture: Texture2D = load(tex_path) as Texture2D
+   if texture == null:
+    push_warning("Missing ground sprite: " + tex_path)
+    break
+   asset_textures[id] = texture
+   # Display outdoors, directly in front of the existing playable house.
+   # Each sprite stays visual-only; players can walk through the samples.
+   asset_showcase.append({
+    "id": id, "name": String(obj.get("name", id)),
+    "position": Vector2(1.2 + float(i % 6) * 1.35, 10.8 + float(i / 6) * 1.4),
+    "anchor": Vector2(float(f["anchor_px"][0]), float(f["anchor_px"][1]))
+   })
+   break
+
+func _draw_asset_showcase() -> void:
+ if not asset_preview_visible or asset_showcase.is_empty():
+  return
+ _text("ASSET TEST YARD - VISUAL ONLY", _screen(Vector2(1.0, 10.1), 6), 14, Color("e7d9af"))
+ for obj in asset_showcase:
+  var p: Vector2 = obj["position"]
+  var id: String = obj["id"]
+  if not asset_textures.has(id):
+   continue
+  var tex: Texture2D = asset_textures[id]
+  var center := _screen(p)
+  # Ground sprites are cropped, with an explicit bottom/foot anchor.
+  # 1.0 source px per screen px keeps the original 80x40 iso calibration.
+  draw_texture(tex, center - (obj["anchor"] as Vector2))
+  _text(String(obj["name"]), center + Vector2(-32, 18), 10, Color("f2e1b8"))
