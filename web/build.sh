@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+GODOT_RELEASE="4.3-stable"
+GODOT_BIN="Godot_v4.3-stable_linux.x86_64"
+ROOT="$(pwd)"
+TOOLS_DIR="$(mktemp -d)"
+trap 'rm -rf "$TOOLS_DIR"' EXIT
+echo "Installing official Godot editor..."
+curl -fsSL --retry 3 "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/${GODOT_BIN}.zip" -o "$TOOLS_DIR/godot.zip"
+unzip -q "$TOOLS_DIR/godot.zip" -d "$TOOLS_DIR"
+chmod +x "$TOOLS_DIR/$GODOT_BIN"
+echo "Installing Godot Web export templates..."
+curl -fsSL --retry 3 "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v4.3-stable_export_templates.tpz" -o "$TOOLS_DIR/templates.tpz"
+TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.3.stable"
+mkdir -p "$TEMPLATE_DIR"
+unzip -jo "$TOOLS_DIR/templates.tpz" "templates/web_nothreads_release.zip" "templates/web_nothreads_debug.zip" -d "$TEMPLATE_DIR"
+echo "Importing resources..."
+"$TOOLS_DIR/$GODOT_BIN" --headless --path "$ROOT" --editor --import --quit
+mkdir -p "$ROOT/public"
+echo "Exporting actual Godot game..."
+"$TOOLS_DIR/$GODOT_BIN" --headless --path "$ROOT" --export-release Web "$ROOT/public/index.html"
+test -s "$ROOT/public/index.html"
+test -s "$ROOT/public/index.wasm"
+test -s "$ROOT/public/index.pck"
+echo "LAST LIGHT web export generated"
