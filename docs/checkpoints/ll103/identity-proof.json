@@ -1,0 +1,22 @@
+{
+  "after": {
+    "condition": 1.0,
+    "count": 1,
+    "definition_id": "item.medical.bandage_clean",
+    "flags": {
+
+    },
+    "instance_id": "demo-00"
+  },
+  "before": {
+    "condition": 1.0,
+    "count": 1,
+    "definition_id": "item.medical.bandage_clean",
+    "flags": {
+
+    },
+    "instance_id": "demo-00"
+  },
+  "visual_after": "res://assets/placeholders/content/medical_alt.svg",
+  "visual_before": "res://assets/placeholders/content/medical.svg"
+}

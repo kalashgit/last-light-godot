@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "sections": {
+    "items": "item.",
+    "props": "prop.",
+    "buildings": "building.",
+    "vehicles": "vehicle.",
+    "enemies": "entity.",
+    "loot_profiles": "loot."
+  },
+  "capabilities": {
+    "searchable": [
+      "search"
+    ],
+    "openable": [
+      "open",
+      "close"
+    ],
+    "consumable": [
+      "use"
+    ],
+    "equippable": [
+      "equip",
+      "unequip"
+    ],
+    "placeable": [
+      "place"
+    ],
+    "repairable": [
+      "repair"
+    ],
+    "power_consumer": [
+      "switch_on",
+      "switch_off"
+    ],
+    "power_source": [
+      "start",
+      "stop"
+    ],
+    "sound_source": [
+      "activate",
+      "silence"
+    ],
+    "light_source": [
+      "light_on",
+      "light_off"
+    ],
+    "vehicle_storage": [
+      "search"
+    ]
+  }
+}
