@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 PARTS = ("items", "props", "buildings", "vehicles", "enemies", "loot_profiles")
-ID_RE = re.compile(r"^(item|prop|building|vehicle|entity|loot)\\.[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)+$")
+ID_RE = re.compile(r"^(item|prop|building|vehicle|entity|loot)[.][a-z][a-z0-9_]*(?:[.][a-z][a-z0-9_]*)+$")
 PREFIX = {"items":"item.","props":"prop.","buildings":"building.","vehicles":"vehicle.","enemies":"entity.","loot_profiles":"loot."}
 
 def validate(data):
