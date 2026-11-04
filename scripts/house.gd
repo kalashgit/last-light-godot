@@ -8,6 +8,19 @@ const PLAYER_RADIUS := 0.19
 const HOME := Rect2(0.0, 0.0, 9.0, 8.0)
 const HouseArt := preload("res://scripts/house_art.gd")
 var art := HouseArt.new()
+const MobileHUD := preload("res://scripts/mobile_hud.gd")
+var hud := MobileHUD.new()
+var control_rects: Dictionary = {}
+var stamina := 100.0
+var hunger := 0.0
+var thirst := 0.0
+var inventory_open := false
+var inventory_page := 0
+var sprint_held := false
+var keyboard_sprint := false
+var sprinting := false
+var sneaking := false
+var joystick_dead_zone := .14
 var player := Vector2(4.9, 9.35)
 var health := 100.0
 var god_mode := false
@@ -310,35 +323,7 @@ func _draw_house() -> void:
   _text("OPEN" if front.open else "DOOR", _screen(center, 80), 14)
 
 func _draw_ui() -> void:
- var size := get_viewport_rect().size
- var dark := Color("0b1c19")
- draw_rect(Rect2(Vector2.ZERO, Vector2(size.x, 139)), dark)
- _text("L A S T   L I G H T", Vector2(18, 30), 22, Color("f0e0b6"))
- _text("V0.4 / FOUNDATION CANDIDATE", Vector2(18, 51), 12, Color("b1c6b8"))
- _text("HP %d   SUPPLIES %d   ZOMBIES %d" % [int(health), supplies, _alive_zombies()], Vector2(18, 80), 15)
- _text("GOD MODE ON" if god_mode else "GOD MODE OFF", Vector2(18, 105), 14, Color("f4d69a") if god_mode else Color("b5bdb0"))
- if message_time > 0:
-  _text(message, Vector2(18, 131), 13)
- _layout_controls()
- draw_circle(stick_center, stick_radius, Color(.12, .24, .21, .85))
- draw_arc(stick_center, stick_radius, 0, TAU, 32, Color("9daf9c"), 2)
- draw_circle(stick_center + joystick_vector * 36, 30, Color("cab782"))
- _text("MOVE", stick_center + Vector2(-22, 77), 12)
- var interact_center := Vector2(size.x - 92, size.y - 111)
- var attack_center := Vector2(size.x - 205, size.y - 92)
- draw_circle(interact_center, 53, Color("d6bd88"))
- draw_circle(attack_center, 43, Color("b98273"))
- _text("INTERACT", interact_center - Vector2(40, 0), 14, Color("17231d"))
- _text("ATTACK", attack_center - Vector2(31, 0), 14, Color("17231d"))
- draw_rect(Rect2(Vector2(size.x - 128, 12), Vector2(111, 34)), Color("33483b"))
- draw_rect(Rect2(Vector2(size.x - 128, 54), Vector2(111, 38)), Color("33483b"))
- _text("RESUME" if paused else "PAUSE", Vector2(size.x - 112, 79), 14)
- if health <= 0:
-  draw_rect(Rect2(size * .5 - Vector2(120, 36), Vector2(240, 72)), Color("17231d"))
-  _text("RESTART", size * .5 + Vector2(-46, 6), 20)
- _text("GOD ON" if god_mode else "GOD OFF", Vector2(size.x - 112, 35), 14)
- draw_rect(Rect2(Vector2(size.x - 260, 12), Vector2(122, 34)), Color("3e594a"))
- _text("HOUSE / V0.5", Vector2(size.x - 250, 35), 14)
+ hud.draw(self)
 
 func _alive_zombies() -> int:
  var alive := 0
@@ -352,51 +337,35 @@ func _draw() -> void:
  _draw_ui()
 
 func _tap(point: Vector2) -> void:
- var size := get_viewport_rect().size
+ _layout_controls()
  if health <= 0:
-  if Rect2(size * .5 - Vector2(120, 36), Vector2(240, 72)).has_point(point):
-   _restart_game()
+  if control_rects.dead_restart.has_point(point): _restart_game()
   return
- if Rect2(Vector2(size.x - 128, 54), Vector2(111, 38)).has_point(point):
+ if control_rects.inventory.has_point(point):
+  _set_inventory(not inventory_open)
+  return
+ if inventory_open:
+  _inventory_tap(point)
+  return
+ if control_rects.pause.has_point(point):
   _set_paused(not paused)
   return
  if paused:
+  if control_rects.resume.has_point(point): _set_paused(false)
   return
- if point.y < 48 and point.x >= size.x - 260 and point.x < size.x - 138:
-  asset_preview_visible = not asset_preview_visible
-  _announce("Asset preview ON" if asset_preview_visible else "Asset preview OFF")
-  queue_redraw()
-  return
- if point.y < 48 and point.x > size.x - 140:
-  god_mode = not god_mode
-  health = 100 if god_mode else health
-  _announce("GOD MODE ON" if god_mode else "GOD MODE OFF")
-  return
- if point.distance_to(Vector2(size.x - 92, size.y - 111)) < 58:
-  _interact()
-  return
- if point.distance_to(Vector2(size.x - 205, size.y - 92)) < 48:
-  _attack()
-  return
- for i in range(doors.size()):
-  var d := doors[i]
-  var c: Vector2 = (d.a + d.b) / 2
-  if point.distance_to(_screen(c, 49)) < 28 and player.distance_to(c) < 1.85:
-   _toggle_door(i)
+ for action in ["attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
+  if control_rects[action].has_point(point):
+   _activate_action(action)
    return
- for item in items:
-  if point.distance_to(_screen(item.pos + item.size / 2, 23)) < 38:
-   _interact()
-   return
+ _select_world_target(point)
 
 func _update_stick(point: Vector2) -> void:
- joystick_vector = (point - stick_center).limit_length(stick_radius) / stick_radius
- if joystick_vector.length() < .14:
-  joystick_vector = Vector2.ZERO
+ var raw := (point-stick_center).limit_length(stick_radius)/stick_radius
+ var magnitude := raw.length()
+ joystick_vector=Vector2.ZERO if magnitude<=joystick_dead_zone else raw.normalized()*((magnitude-joystick_dead_zone)/(1.0-joystick_dead_zone))
 
 func _layout_controls() -> void:
- var size := get_viewport_rect().size
- stick_center = Vector2(100, size.y - 108)
+ control_rects = hud.layout(self)
 
 func _on_viewport_resized() -> void:
  _clear_pointers()
@@ -405,6 +374,9 @@ func _on_viewport_resized() -> void:
 func _clear_pointers() -> void:
  joystick_touch = -1
  joystick_vector = Vector2.ZERO
+ sprint_held = false
+ keyboard_sprint = false
+ sprinting = false
  panel_touches.clear()
 
 func _notification(what: int) -> void:
@@ -418,55 +390,72 @@ func _screen_direction_to_world(direction: Vector2) -> Vector2:
  return Vector2(direction.x / TX + direction.y / TY, direction.y / TY - direction.x / TX).normalized()
 
 func _pointer_down(pointer: int, point: Vector2) -> void:
- # Capture exactly one owner; later fingers cannot steal a moving stick.
- if panel_touches.has(pointer) or joystick_touch == pointer:
+ if panel_touches.has(pointer) or joystick_touch == pointer: return
+ _layout_controls()
+ if health <= 0 or paused or inventory_open:
+  panel_touches[pointer] = "modal"
+  _tap(point)
   return
- if health > 0 and not paused and point.distance_to(stick_center) < stick_radius + 42:
+ for action in ["inventory","pause","attack","interact","shove","sprint","sneak","quick0","quick1","quick2","quick3"]:
+  if control_rects[action].has_point(point):
+   panel_touches[pointer] = action
+   if action=="sprint": sprint_held=true
+   else: _tap(point)
+   return
+ if control_rects.joystick_rect.has_point(point):
   if joystick_touch == -1:
-   joystick_touch = pointer
+   joystick_touch=pointer
    _update_stick(point)
   return
- panel_touches[pointer] = true
- _tap(point)
+ panel_touches[pointer]="world"
+ _select_world_target(point)
 
 func _pointer_up(pointer: int) -> void:
+ var was_sprint: bool = panel_touches.get(pointer, "")=="sprint"
  panel_touches.erase(pointer)
- if joystick_touch == pointer:
-  joystick_touch = -1
-  joystick_vector = Vector2.ZERO
+ if was_sprint:
+  sprint_held=panel_touches.values().has("sprint")
+  if not sprint_held: sprinting=false
+ if joystick_touch==pointer:
+  joystick_touch=-1
+  joystick_vector=Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
  if event is InputEventScreenTouch:
-  if event.pressed and not event.canceled:
-   _pointer_down(event.index, event.position)
-  else:
-   _pointer_up(event.index)
+  if event.pressed and not event.canceled: _pointer_down(event.index,event.position)
+  else: _pointer_up(event.index)
  elif event is InputEventScreenDrag:
-  if event.index == joystick_touch:
+  if not get_viewport_rect().has_point(event.position):
+   _pointer_up(event.index)
+  elif event.index==joystick_touch:
    _update_stick(event.position)
- elif event is InputEventMouseButton:
-  # Godot may synthesize mouse events from touches. Never process those twice.
-  if event.device == InputEvent.DEVICE_ID_EMULATION:
-   return
-  if event.button_index == MOUSE_BUTTON_LEFT:
-   if event.pressed:
-    _pointer_down(MOUSE_POINTER, event.position)
-   else:
-    _pointer_up(MOUSE_POINTER)
- elif event is InputEventMouseMotion:
-  if event.device != InputEvent.DEVICE_ID_EMULATION and joystick_touch == MOUSE_POINTER:
-   _update_stick(event.position)
- elif event is InputEventKey and event.pressed and not event.echo:
-  if event.keycode == KEY_ESCAPE or event.keycode == KEY_P:
-   _set_paused(not paused)
-  elif event.keycode == KEY_R and health <= 0:
-   _restart_game()
-  elif event.keycode == KEY_E:
-   _interact()
-  elif event.keycode == KEY_SPACE:
-   _attack()
-  elif event.keycode == KEY_G:
-   god_mode = not god_mode
+  elif panel_touches.get(event.index, "")=="sprint" and not control_rects.sprint.has_point(event.position):
+   _pointer_up(event.index)
+ elif event is InputEventMouseButton and event.device!=InputEvent.DEVICE_ID_EMULATION and event.button_index==MOUSE_BUTTON_LEFT:
+  if event.pressed: _pointer_down(MOUSE_POINTER,event.position)
+  else: _pointer_up(MOUSE_POINTER)
+ elif event is InputEventMouseMotion and event.device!=InputEvent.DEVICE_ID_EMULATION and joystick_touch==MOUSE_POINTER:
+  if get_viewport_rect().has_point(event.position): _update_stick(event.position)
+  else: _pointer_up(MOUSE_POINTER)
+ elif event is InputEventKey:
+  if event.keycode==KEY_SHIFT:
+   keyboard_sprint=event.pressed and not paused
+  if not event.pressed or event.echo: return
+  if event.keycode in [KEY_ESCAPE,KEY_P]:
+   if inventory_open: _set_inventory(false)
+   else: _set_paused(not paused)
+  elif event.keycode==KEY_I and health>0: _set_inventory(not inventory_open)
+  elif event.keycode==KEY_R and health<=0: _restart_game()
+  elif not paused and health>0:
+   match event.keycode:
+    KEY_E: _interact()
+    KEY_SPACE: _attack()
+    KEY_Q: _activate_action("shove")
+    KEY_C: _activate_action("sneak")
+    KEY_1: _activate_action("quick0")
+    KEY_2: _activate_action("quick1")
+    KEY_3: _activate_action("quick2")
+    KEY_4: _activate_action("quick3")
 
 func _line_blocked(a: Vector2, b: Vector2) -> bool:
  for wall in walls:
@@ -580,3 +569,32 @@ func _load_game(path: String = SAVE_PATH) -> Error:
  _clear_pointers()
  return OK
 
+
+func _set_inventory(value: bool) -> void:
+ inventory_open=value
+ inventory_page=0
+ _set_paused(value)
+
+func _context_prompt() -> String:
+ var index := _nearest_door()
+ if index>=0: return "Close Door" if doors[index].open else "Open Door"
+ return "Explore the house"
+
+func _inventory_rows() -> Array:
+ return []
+
+func _quick_slots() -> Array:
+ return ["Hands","—","—","—"]
+
+func _inventory_tap(_point: Vector2) -> void:
+ pass
+
+func _select_world_target(_point: Vector2) -> void:
+ pass
+
+func _activate_action(action: String) -> void:
+ match action:
+  "attack": _attack()
+  "interact": _interact()
+  "sneak": sneaking=not sneaking
+  _: _announce("Action not yet available in HUD checkpoint")
