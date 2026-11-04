@@ -2,12 +2,12 @@ config_version=5
 
 [application]
 config/name="LAST LIGHT — Isometric Survival"
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/building_lab.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
 window/size/viewport_width=720
-window/size/viewport_height=1152
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
