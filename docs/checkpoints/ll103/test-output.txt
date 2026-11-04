@@ -1,0 +1,60 @@
+CATALOG PASS: items=24, props=12, buildings=5, vehicles=4, enemies=2, loot_profiles=4; definitions validated, gameplay integration pending
+test_bad_id_rejected (test_catalog_contracts.TestCatalog.test_bad_id_rejected) ... ok
+test_duplicate_id_rejected (test_catalog_contracts.TestCatalog.test_duplicate_id_rejected) ... ok
+test_missing_loot_reference_rejected (test_catalog_contracts.TestCatalog.test_missing_loot_reference_rejected) ... ok
+test_missing_prop_reference_rejected (test_catalog_contracts.TestCatalog.test_missing_prop_reference_rejected) ... ok
+test_negative_item_weight_rejected (test_catalog_contracts.TestCatalog.test_negative_item_weight_rejected) ... ok
+test_unknown_capability_rejected (test_catalog_contracts.TestCatalog.test_unknown_capability_rejected) ... ok
+test_valid_proposed_catalog (test_catalog_contracts.TestCatalog.test_valid_proposed_catalog) ... ok
+test_duplicate_definition_id_rejected (test_catalog_design.CatalogContractTests.test_duplicate_definition_id_rejected) ... ok
+test_missing_building_prop_rejected (test_catalog_design.CatalogContractTests.test_missing_building_prop_rejected) ... ok
+test_missing_loot_target_rejected (test_catalog_design.CatalogContractTests.test_missing_loot_target_rejected) ... ok
+test_negative_item_weight_rejected (test_catalog_design.CatalogContractTests.test_negative_item_weight_rejected) ... ok
+test_starter_catalog_valid (test_catalog_design.CatalogContractTests.test_starter_catalog_valid) ... ok
+test_unknown_capability_rejected (test_catalog_design.CatalogContractTests.test_unknown_capability_rejected) ... ok
+test_cli_reports_bad_json_without_traceback (test_content_system.ContentSystemTests.test_cli_reports_bad_json_without_traceback) ... ok
+test_demo_has_twenty_resolved_unique_item_props (test_content_system.ContentSystemTests.test_demo_has_twenty_resolved_unique_item_props) ... ok
+test_non_finite_weight (test_content_system.ContentSystemTests.test_non_finite_weight) ... ok
+test_shared_matrix (test_content_system.ContentSystemTests.test_shared_matrix) ... ok
+test_visual_swap_does_not_mutate_logical_record (test_content_system.ContentSystemTests.test_visual_swap_does_not_mutate_logical_record) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.063s
+
+OK
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (2 steps)
+[   0% ] update_scripts_classes | 
+[  33% ] update_scripts_classes | 
+[ DONE ] update_scripts_classes
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+CONTENT PASS: 145 checks, 41 shared fixtures, 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+
+GRAPHICAL CAPTURE
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE PASS: 20-object catalog and visual swap; identity/state unchanged

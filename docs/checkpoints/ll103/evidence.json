@@ -1,0 +1,28 @@
+{
+  "task": "LL-103",
+  "branch": "codex/ll-103-content-system",
+  "base_commit": "a4e223e201f81b1bd3b3caea118802a3f504872b",
+  "pr1_head_inspected": "01b8fe0abcfc13cb6e6756f4d0143229bae761ae",
+  "pr2_head_inspected": "a4e223e201f81b1bd3b3caea118802a3f504872b",
+  "godot": "4.6.3.stable.official.7d41c59c4",
+  "python": "Python 3.12.14",
+  "python_tests": 18,
+  "shared_cases": 41,
+  "valid_shared_cases": 4,
+  "invalid_shared_cases": 37,
+  "godot_checks": 145,
+  "definitions": 51,
+  "demo_objects": 20,
+  "placeholder_assets": 13,
+  "protected_file_sha256": {
+    "project.godot": "91e056db03440e7adb105e04b8f35b4faa399ce5a18b916a63bf3a48982f9e65",
+    "main.tscn": "166ee3ed0d8fe32b676a1deb290bc1d60dc4e9718fe78633be524267afe8e950",
+    "scripts/house.gd": "0b25b571fe23ad63f11e0f7209597a87499a663a78bd11eef7722020ae14a4ea",
+    "scripts/house_3d.gd": "6ab27709258a34ef945858769960222d399f604c36e0cfd6d78b0fc8a7159101",
+    "scripts/asset_lab.gd": "f6419b583bf7231c37451d43be2882711b43e4d1ad314014439f63bd056dab8c",
+    "data/catalog/starter_v1.json": "4df8121fd793f9e92345d5eb30b6d3f229333b9195b505911869cb705096b19c"
+  },
+  "iphone_tested": false,
+  "merged": false,
+  "deployed": false
+}

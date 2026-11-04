@@ -1,0 +1,26 @@
+name: LL-103 Godot content system
+on:
+  push:
+    branches: ['codex/ll-103-content-system']
+  pull_request:
+    paths:
+      - 'src/content/**'
+      - 'scenes/content_demo.tscn'
+      - 'data/catalog/**'
+      - 'assets/placeholders/content/**'
+      - 'tools/validate_catalog.py'
+      - 'tests/**'
+      - '.github/workflows/ll103-content.yml'
+permissions:
+  contents: read
+jobs:
+  content:
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install validator and log-check dependencies
+        run: apt-get update -qq && apt-get install -y python3 ripgrep
+      - name: Python contracts, Godot import, content checks and scene smoke
+        run: bash tests/run_content.sh

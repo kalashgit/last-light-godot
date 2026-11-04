@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "definition_ids": [
+    "item.medical.bandage_clean",
+    "item.medical.first_aid_kit",
+    "item.food.canned_beans",
+    "item.food.bread",
+    "item.drink.water_bottle",
+    "item.material.wood_plank",
+    "item.material.nails",
+    "item.tool.hammer",
+    "item.tool.axe",
+    "item.utility.flashlight",
+    "item.utility.radio",
+    "item.carry.backpack",
+    "prop.kitchen.fridge_basic",
+    "prop.kitchen.counter",
+    "prop.living.sofa",
+    "prop.bedroom.bed",
+    "prop.bathroom.medicine_cabinet",
+    "prop.storage.wooden_crate",
+    "prop.utility.generator",
+    "prop.exterior.streetlight"
+  ]
+}

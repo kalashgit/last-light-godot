@@ -1,0 +1,453 @@
+[
+  {
+    "name": "valid copy",
+    "target": "catalog",
+    "path": [
+      "description"
+    ],
+    "value": "LL-103 fixture",
+    "valid": true
+  },
+  {
+    "name": "visual replacement",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "visual",
+      "icon"
+    ],
+    "value": "asset.placeholder.medical_alt",
+    "valid": true
+  },
+  {
+    "name": "rename display name",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "name"
+    ],
+    "value": "Sterile cloth wrap",
+    "valid": true
+  },
+  {
+    "name": "zero weight",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "weight_kg"
+    ],
+    "value": 0,
+    "valid": true
+  },
+  {
+    "name": "root array",
+    "target": "catalog",
+    "path": [],
+    "value": [],
+    "valid": false
+  },
+  {
+    "name": "bad schema",
+    "target": "catalog",
+    "path": [
+      "schema"
+    ],
+    "value": true,
+    "valid": false
+  },
+  {
+    "name": "unsupported schema",
+    "target": "catalog",
+    "path": [
+      "schema"
+    ],
+    "value": 2,
+    "valid": false
+  },
+  {
+    "name": "missing section",
+    "target": "catalog",
+    "path": [
+      "items"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "section object",
+    "target": "catalog",
+    "path": [
+      "props"
+    ],
+    "value": {},
+    "valid": false
+  },
+  {
+    "name": "null record",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "nested record",
+    "target": "catalog",
+    "path": [
+      "loot_profiles",
+      0
+    ],
+    "value": [],
+    "valid": false
+  },
+  {
+    "name": "invalid id",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "id"
+    ],
+    "value": "item/Bad",
+    "valid": false
+  },
+  {
+    "name": "wrong namespace",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "id"
+    ],
+    "value": "prop.medical.bandage_clean",
+    "valid": false
+  },
+  {
+    "name": "duplicate id",
+    "target": "catalog",
+    "path": [
+      "items",
+      1,
+      "id"
+    ],
+    "value": "item.medical.bandage_clean",
+    "valid": false
+  },
+  {
+    "name": "missing name",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "name"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "blank name",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "name"
+    ],
+    "value": " ",
+    "valid": false
+  },
+  {
+    "name": "unknown capability",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "capabilities"
+    ],
+    "value": [
+      "teleport"
+    ],
+    "valid": false
+  },
+  {
+    "name": "capability object",
+    "target": "catalog",
+    "path": [
+      "props",
+      0,
+      "capabilities"
+    ],
+    "value": {},
+    "valid": false
+  },
+  {
+    "name": "duplicate capability",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "capabilities"
+    ],
+    "value": [
+      "consumable",
+      "consumable"
+    ],
+    "valid": false
+  },
+  {
+    "name": "unknown vocabulary",
+    "target": "catalog",
+    "path": [
+      "capability_vocabulary"
+    ],
+    "value": [
+      "teleport"
+    ],
+    "valid": false
+  },
+  {
+    "name": "null vocabulary",
+    "target": "catalog",
+    "path": [
+      "capability_vocabulary"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "negative weight",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "weight_kg"
+    ],
+    "value": -1,
+    "valid": false
+  },
+  {
+    "name": "boolean weight",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "weight_kg"
+    ],
+    "value": true,
+    "valid": false
+  },
+  {
+    "name": "fractional stack",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "stack_max"
+    ],
+    "value": 1.5,
+    "valid": false
+  },
+  {
+    "name": "boolean stack",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "stack_max"
+    ],
+    "value": false,
+    "valid": false
+  },
+  {
+    "name": "empty stack",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "stack_max"
+    ],
+    "value": 0,
+    "valid": false
+  },
+  {
+    "name": "missing visual ref",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "visual",
+      "icon"
+    ],
+    "value": "asset.missing.none",
+    "valid": false
+  },
+  {
+    "name": "visual ref object",
+    "target": "catalog",
+    "path": [
+      "items",
+      0,
+      "visual",
+      "icon"
+    ],
+    "value": {},
+    "valid": false
+  },
+  {
+    "name": "null visual",
+    "target": "catalog",
+    "path": [
+      "props",
+      0,
+      "visual"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "missing loot profile",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0,
+      "loot_profile"
+    ],
+    "value": "loot.missing",
+    "valid": false
+  },
+  {
+    "name": "wrong loot reference kind",
+    "target": "catalog",
+    "path": [
+      "loot_profiles",
+      0,
+      "entries"
+    ],
+    "value": [
+      "prop.kitchen.counter"
+    ],
+    "valid": false
+  },
+  {
+    "name": "missing loot item",
+    "target": "catalog",
+    "path": [
+      "loot_profiles",
+      0,
+      "entries"
+    ],
+    "value": [
+      "item.fake.missing"
+    ],
+    "valid": false
+  },
+  {
+    "name": "missing prop",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0,
+      "starter_props"
+    ],
+    "value": [
+      "prop.fake.missing"
+    ],
+    "valid": false
+  },
+  {
+    "name": "null reference array",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0,
+      "starter_props"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "empty rooms",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0,
+      "rooms"
+    ],
+    "value": [],
+    "valid": false
+  },
+  {
+    "name": "room wrong shape",
+    "target": "catalog",
+    "path": [
+      "buildings",
+      0,
+      "rooms"
+    ],
+    "value": [
+      {}
+    ],
+    "valid": false
+  },
+  {
+    "name": "missing asset file",
+    "target": "visuals",
+    "path": [
+      "assets",
+      "asset.placeholder.medical",
+      "path"
+    ],
+    "value": "res://assets/missing.svg",
+    "valid": false
+  },
+  {
+    "name": "asset wrong shape",
+    "target": "visuals",
+    "path": [
+      "assets",
+      "asset.placeholder.medical"
+    ],
+    "value": [],
+    "valid": false
+  },
+  {
+    "name": "asset path traversal",
+    "target": "visuals",
+    "path": [
+      "assets",
+      "asset.placeholder.medical",
+      "path"
+    ],
+    "value": "res://../secret",
+    "valid": false
+  },
+  {
+    "name": "missing asset provenance",
+    "target": "visuals",
+    "path": [
+      "assets",
+      "asset.placeholder.medical",
+      "license"
+    ],
+    "value": null,
+    "valid": false
+  },
+  {
+    "name": "bad anchor",
+    "target": "visuals",
+    "path": [
+      "assets",
+      "asset.placeholder.medical",
+      "anchor_px"
+    ],
+    "value": [
+      true,
+      1
+    ],
+    "valid": false
+  }
+]

@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "assets": {
+    "asset.placeholder.carry": {
+      "path": "res://assets/placeholders/content/carry.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.clothing": {
+      "path": "res://assets/placeholders/content/clothing.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.drink": {
+      "path": "res://assets/placeholders/content/drink.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.food": {
+      "path": "res://assets/placeholders/content/food.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.material": {
+      "path": "res://assets/placeholders/content/material.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.medical": {
+      "path": "res://assets/placeholders/content/medical.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.tool": {
+      "path": "res://assets/placeholders/content/tool.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.utility": {
+      "path": "res://assets/placeholders/content/utility.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.vehicle": {
+      "path": "res://assets/placeholders/content/vehicle.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.weapon": {
+      "path": "res://assets/placeholders/content/weapon.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.world_prop": {
+      "path": "res://assets/placeholders/content/world_prop.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.zombie": {
+      "path": "res://assets/placeholders/content/zombie.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    },
+    "asset.placeholder.medical_alt": {
+      "path": "res://assets/placeholders/content/medical_alt.svg",
+      "anchor_px": [
+        48,
+        68
+      ],
+      "size_px": [
+        96,
+        96
+      ],
+      "status": "placeholder",
+      "source": "Original LL-103 SVG geometry",
+      "license": "CC0-1.0"
+    }
+  }
+}
