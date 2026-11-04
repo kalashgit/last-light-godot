@@ -1,0 +1,32 @@
+name: LAST LIGHT content contracts
+on:
+  pull_request:
+    paths:
+      - "data/catalog/**"
+      - "tools/validate_catalog.py"
+      - "tests/test_catalog_contracts.py"
+      - ".github/workflows/catalog.yml"
+  push:
+    branches:
+      - "design/scale-blueprint-v1"
+    paths:
+      - "data/catalog/**"
+      - "tools/validate_catalog.py"
+      - "tests/test_catalog_contracts.py"
+      - ".github/workflows/catalog.yml"
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Python syntax
+        run: python -m py_compile tools/validate_catalog.py tests/test_catalog_contracts.py
+      - name: Validate starter definitions
+        run: python tools/validate_catalog.py
+      - name: Test valid and invalid catalogs
+        run: python -m unittest discover -s tests -p 'test_catalog_contracts.py' -v
