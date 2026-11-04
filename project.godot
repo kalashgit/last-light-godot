@@ -1,8 +1,8 @@
 config_version=5
 
 [application]
-config/name="LAST LIGHT — House Vertical Slice V3.6"
-run/main_scene="res://main.tscn"
+config/name="LAST LIGHT — 3D House V3.7"
+run/main_scene="res://house_3d.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
