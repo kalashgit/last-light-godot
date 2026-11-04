@@ -39,3 +39,13 @@ The smoke cube is synthetic test geometry only, rendered outside the repository.
 - `python tools/validate_sprites.py /tmp/last-light-render-smoke`: PASS, one RGBA frame, dimensions, transparent padding, anchor and provenance.
 - `python -m py_compile tools/render_isometric.py tools/validate_sprites.py`: exit 0.
 - Inspected rendered PNG: visible three faces, 2:1 ground projection, upper-left lighting. Calibration geometry only.
+
+## Procedural Factory V1 extension
+
+The calibrated scene setup is now exposed as `configure_scene()` for reuse. The
+original conversion CLI remains supported and its cube regression was executed.
+`tools/asset_factory/` adds original parametric geometry, the stable 300-object
+registry, batch renders, cropped runtime exports, contact sheets and validation.
+See `docs/asset-factory/README.md` and `docs/checkpoints/ASSET_FACTORY_V1.md` for
+commands, executed counts and limitations. Factory/gallery work does not advance
+the unverified iPhone gameplay milestones or replace main.tscn.
