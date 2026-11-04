@@ -1,0 +1,9 @@
+name: Godot foundation
+on: [push, pull_request]
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/run.sh
