@@ -1,0 +1,613 @@
+{
+  "schema": 1,
+  "status": "design_only_not_playable",
+  "description": "Starter definition catalog for future Godot integration. IDs are stable proposals; no assets or gameplay logic imported yet.",
+  "capability_vocabulary": [
+    "searchable",
+    "openable",
+    "consumable",
+    "equippable",
+    "placeable",
+    "repairable",
+    "power_consumer",
+    "power_source",
+    "sound_source",
+    "light_source",
+    "vehicle_storage"
+  ],
+  "items": [
+    {
+      "id": "item.medical.bandage_clean",
+      "name": "Clean Bandage",
+      "category": "medical",
+      "weight_kg": 0.08,
+      "stack_max": 10,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.medical",
+        "ground": "asset.placeholder.medical"
+      }
+    },
+    {
+      "id": "item.medical.first_aid_kit",
+      "name": "First Aid Kit",
+      "category": "medical",
+      "weight_kg": 0.9,
+      "stack_max": 1,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.medical",
+        "ground": "asset.placeholder.medical"
+      }
+    },
+    {
+      "id": "item.medical.antiseptic",
+      "name": "Antiseptic",
+      "category": "medical",
+      "weight_kg": 0.25,
+      "stack_max": 5,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.medical",
+        "ground": "asset.placeholder.medical"
+      }
+    },
+    {
+      "id": "item.food.canned_beans",
+      "name": "Canned Beans",
+      "category": "food",
+      "weight_kg": 0.42,
+      "stack_max": 8,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.food",
+        "ground": "asset.placeholder.food"
+      }
+    },
+    {
+      "id": "item.food.canned_tuna",
+      "name": "Canned Tuna",
+      "category": "food",
+      "weight_kg": 0.25,
+      "stack_max": 8,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.food",
+        "ground": "asset.placeholder.food"
+      }
+    },
+    {
+      "id": "item.food.bread",
+      "name": "Bread",
+      "category": "food",
+      "weight_kg": 0.45,
+      "stack_max": 4,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.food",
+        "ground": "asset.placeholder.food"
+      }
+    },
+    {
+      "id": "item.drink.water_bottle",
+      "name": "Water Bottle",
+      "category": "drink",
+      "weight_kg": 0.55,
+      "stack_max": 8,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.drink",
+        "ground": "asset.placeholder.drink"
+      }
+    },
+    {
+      "id": "item.drink.soda_can",
+      "name": "Soda Can",
+      "category": "drink",
+      "weight_kg": 0.38,
+      "stack_max": 8,
+      "capabilities": [
+        "consumable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.drink",
+        "ground": "asset.placeholder.drink"
+      }
+    },
+    {
+      "id": "item.material.wood_plank",
+      "name": "Wood Plank",
+      "category": "material",
+      "weight_kg": 2.5,
+      "stack_max": 8,
+      "capabilities": [],
+      "visual": {
+        "icon": "asset.placeholder.material",
+        "ground": "asset.placeholder.material"
+      }
+    },
+    {
+      "id": "item.material.nails",
+      "name": "Box of Nails",
+      "category": "material",
+      "weight_kg": 0.3,
+      "stack_max": 10,
+      "capabilities": [],
+      "visual": {
+        "icon": "asset.placeholder.material",
+        "ground": "asset.placeholder.material"
+      }
+    },
+    {
+      "id": "item.material.scrap_metal",
+      "name": "Scrap Metal",
+      "category": "material",
+      "weight_kg": 0.7,
+      "stack_max": 12,
+      "capabilities": [],
+      "visual": {
+        "icon": "asset.placeholder.material",
+        "ground": "asset.placeholder.material"
+      }
+    },
+    {
+      "id": "item.material.duct_tape",
+      "name": "Duct Tape",
+      "category": "material",
+      "weight_kg": 0.2,
+      "stack_max": 5,
+      "capabilities": [],
+      "visual": {
+        "icon": "asset.placeholder.material",
+        "ground": "asset.placeholder.material"
+      }
+    },
+    {
+      "id": "item.tool.hammer",
+      "name": "Hammer",
+      "category": "tool",
+      "weight_kg": 0.8,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable",
+        "repairable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.tool",
+        "ground": "asset.placeholder.tool"
+      }
+    },
+    {
+      "id": "item.tool.screwdriver",
+      "name": "Screwdriver",
+      "category": "tool",
+      "weight_kg": 0.22,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.tool",
+        "ground": "asset.placeholder.tool"
+      }
+    },
+    {
+      "id": "item.tool.crowbar",
+      "name": "Crowbar",
+      "category": "tool",
+      "weight_kg": 1.7,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.tool",
+        "ground": "asset.placeholder.tool"
+      }
+    },
+    {
+      "id": "item.tool.axe",
+      "name": "Axe",
+      "category": "tool",
+      "weight_kg": 2.6,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable",
+        "repairable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.tool",
+        "ground": "asset.placeholder.tool"
+      }
+    },
+    {
+      "id": "item.utility.flashlight",
+      "name": "Flashlight",
+      "category": "utility",
+      "weight_kg": 0.34,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable",
+        "light_source"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.utility",
+        "ground": "asset.placeholder.utility"
+      }
+    },
+    {
+      "id": "item.utility.radio",
+      "name": "Portable Radio",
+      "category": "utility",
+      "weight_kg": 0.7,
+      "stack_max": 1,
+      "capabilities": [
+        "sound_source"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.utility",
+        "ground": "asset.placeholder.utility"
+      }
+    },
+    {
+      "id": "item.utility.battery",
+      "name": "Battery",
+      "category": "utility",
+      "weight_kg": 0.08,
+      "stack_max": 10,
+      "capabilities": [],
+      "visual": {
+        "icon": "asset.placeholder.utility",
+        "ground": "asset.placeholder.utility"
+      }
+    },
+    {
+      "id": "item.utility.gas_can",
+      "name": "Gas Can",
+      "category": "utility",
+      "weight_kg": 1.5,
+      "stack_max": 1,
+      "capabilities": [
+        "placeable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.utility",
+        "ground": "asset.placeholder.utility"
+      }
+    },
+    {
+      "id": "item.carry.backpack",
+      "name": "Backpack",
+      "category": "carry",
+      "weight_kg": 0.9,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.carry",
+        "ground": "asset.placeholder.carry"
+      }
+    },
+    {
+      "id": "item.clothing.jacket",
+      "name": "Jacket",
+      "category": "clothing",
+      "weight_kg": 1.1,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.clothing",
+        "ground": "asset.placeholder.clothing"
+      }
+    },
+    {
+      "id": "item.melee.baseball_bat",
+      "name": "Baseball Bat",
+      "category": "weapon",
+      "weight_kg": 1.1,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.weapon",
+        "ground": "asset.placeholder.weapon"
+      }
+    },
+    {
+      "id": "item.melee.kitchen_knife",
+      "name": "Kitchen Knife",
+      "category": "weapon",
+      "weight_kg": 0.25,
+      "stack_max": 1,
+      "capabilities": [
+        "equippable"
+      ],
+      "visual": {
+        "icon": "asset.placeholder.weapon",
+        "ground": "asset.placeholder.weapon"
+      }
+    }
+  ],
+  "props": [
+    {
+      "id": "prop.kitchen.fridge_basic",
+      "name": "Refrigerator",
+      "capabilities": [
+        "searchable",
+        "openable",
+        "power_consumer"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.kitchen.counter",
+      "name": "Kitchen Counter",
+      "capabilities": [
+        "searchable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.kitchen.stove",
+      "name": "Stove",
+      "capabilities": [
+        "power_consumer"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.living.sofa",
+      "name": "Sofa",
+      "capabilities": [
+        "placeable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.living.bookshelf",
+      "name": "Bookshelf",
+      "capabilities": [
+        "searchable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.bedroom.bed",
+      "name": "Bed",
+      "capabilities": [
+        "placeable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.bathroom.medicine_cabinet",
+      "name": "Medicine Cabinet",
+      "capabilities": [
+        "searchable",
+        "openable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.bathroom.sink",
+      "name": "Sink",
+      "capabilities": [],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.storage.wooden_crate",
+      "name": "Wooden Crate",
+      "capabilities": [
+        "searchable",
+        "placeable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.utility.generator",
+      "name": "Portable Generator",
+      "capabilities": [
+        "power_source",
+        "sound_source",
+        "repairable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.exterior.fence",
+      "name": "Fence",
+      "capabilities": [
+        "placeable"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    },
+    {
+      "id": "prop.exterior.streetlight",
+      "name": "Streetlight",
+      "capabilities": [
+        "light_source"
+      ],
+      "visual": "asset.placeholder.world_prop"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "building.residential.house_small_01",
+      "name": "Small Suburban House",
+      "rooms": [
+        "living",
+        "kitchen",
+        "bedroom",
+        "bathroom"
+      ],
+      "loot_profile": "loot.residential",
+      "starter_props": [
+        "prop.kitchen.fridge_basic",
+        "prop.kitchen.counter",
+        "prop.living.sofa",
+        "prop.bedroom.bed",
+        "prop.bathroom.medicine_cabinet"
+      ]
+    },
+    {
+      "id": "building.residential.house_medium_01",
+      "name": "Medium House",
+      "rooms": [
+        "hall",
+        "living",
+        "kitchen",
+        "bedroom",
+        "bathroom",
+        "storage"
+      ],
+      "loot_profile": "loot.residential",
+      "starter_props": [
+        "prop.kitchen.fridge_basic",
+        "prop.living.bookshelf",
+        "prop.bedroom.bed"
+      ]
+    },
+    {
+      "id": "building.residential.garage_01",
+      "name": "Garage",
+      "rooms": [
+        "workshop",
+        "storage"
+      ],
+      "loot_profile": "loot.workshop",
+      "starter_props": [
+        "prop.storage.wooden_crate"
+      ]
+    },
+    {
+      "id": "building.retail.convenience_store_01",
+      "name": "Convenience Store",
+      "rooms": [
+        "shop",
+        "storage"
+      ],
+      "loot_profile": "loot.retail",
+      "starter_props": [
+        "prop.storage.wooden_crate"
+      ]
+    },
+    {
+      "id": "building.civic.clinic_01",
+      "name": "Clinic",
+      "rooms": [
+        "reception",
+        "exam",
+        "storage"
+      ],
+      "loot_profile": "loot.medical",
+      "starter_props": [
+        "prop.bathroom.medicine_cabinet"
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "vehicle.civilian.sedan",
+      "name": "Sedan",
+      "initial_role": "static_parked_prop",
+      "capabilities": [
+        "vehicle_storage"
+      ],
+      "visual": "asset.placeholder.vehicle"
+    },
+    {
+      "id": "vehicle.civilian.pickup",
+      "name": "Pickup Truck",
+      "initial_role": "static_parked_prop",
+      "capabilities": [
+        "vehicle_storage"
+      ],
+      "visual": "asset.placeholder.vehicle"
+    },
+    {
+      "id": "vehicle.service.ambulance",
+      "name": "Ambulance",
+      "initial_role": "static_parked_prop",
+      "capabilities": [
+        "vehicle_storage"
+      ],
+      "visual": "asset.placeholder.vehicle"
+    },
+    {
+      "id": "vehicle.delivery.van",
+      "name": "Delivery Van",
+      "initial_role": "static_parked_prop",
+      "capabilities": [
+        "vehicle_storage"
+      ],
+      "visual": "asset.placeholder.vehicle"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "entity.zombie.walker",
+      "name": "Walker",
+      "behavior": "basic_pursuit",
+      "visual": "asset.placeholder.zombie"
+    },
+    {
+      "id": "entity.zombie.crawler",
+      "name": "Crawler",
+      "behavior": "slow_pursuit_proposed",
+      "visual": "asset.placeholder.zombie"
+    }
+  ],
+  "loot_profiles": [
+    {
+      "id": "loot.residential",
+      "entries": [
+        "item.food.canned_beans",
+        "item.food.bread",
+        "item.drink.water_bottle",
+        "item.medical.bandage_clean"
+      ]
+    },
+    {
+      "id": "loot.workshop",
+      "entries": [
+        "item.tool.hammer",
+        "item.material.nails",
+        "item.material.duct_tape"
+      ]
+    },
+    {
+      "id": "loot.retail",
+      "entries": [
+        "item.food.canned_tuna",
+        "item.drink.soda_can",
+        "item.utility.battery"
+      ]
+    },
+    {
+      "id": "loot.medical",
+      "entries": [
+        "item.medical.first_aid_kit",
+        "item.medical.antiseptic",
+        "item.medical.bandage_clean"
+      ]
+    }
+  ]
+}
