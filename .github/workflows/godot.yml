@@ -7,3 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash tests/run.sh
+  factory-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install 'Pillow>=10,<15'
+      - run: python tools/asset_factory/validate.py assets/generated/factory
+      - run: python tests/factory_validation.py

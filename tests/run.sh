@@ -17,3 +17,4 @@ run_checked() {
 run_checked --headless --path . --editor --import
 run_checked --headless --path . --script tests/foundation.gd
 run_checked --headless --path . --quit-after 120
+run_checked --headless --path . --script tests/asset_gallery.gd

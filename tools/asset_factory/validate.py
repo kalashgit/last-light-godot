@@ -49,4 +49,5 @@ for obj in objects:
   assert saturated/max(1,len(rgb))<.01,('palette outlier',path)
 all_png={str(p.relative_to(args.folder)) for p in (args.folder/'sprites').rglob('*.png')}
 assert seen==all_png,('unreferenced/missing sprites',len(seen^all_png))
+assert len(hashes)==len(objects), 'Duplicate inventory icon pixels: differentiate actual recipes'
 print(json.dumps(dict(status='PASS',objects=len(objects),families=len({o['family'] for o in objects}),categories=dict(collections.Counter(o['category'] for o in objects)),frames=dict(modes),distinct_icon_pixels=len(hashes),png_bytes=sum((args.folder/p).stat().st_size for p in seen),decoded_rgba_bytes=pixels*4),indent=2))
