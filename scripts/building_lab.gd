@@ -277,6 +277,8 @@ func _draw() -> void:
  for y in range(-8,40):
   for x in range(-8,52):
    var tile := Vector2(x,y)
+   if _screen(tile).distance_to(v*0.5)>maxf(v.x,v.y)*1.1:
+    continue
    _draw_tile(tile,Color("3A5441") if (x+y)%2==0 else Color("3D5845"))
  # Simple roads between the buildings; world positions are decorative only.
  for x in range(-2,48):
@@ -291,7 +293,7 @@ func _draw() -> void:
   if not _is_prop_indoor(prop):
    _draw_prop(prop)
  var actor := _screen(player)
- draw_ellipse(actor+Vector2(0,2),Vector2(9,4),Color(0,0,0,0.48))
+ draw_colored_polygon(PackedVector2Array([actor+Vector2(-9,2),actor+Vector2(0,-2),actor+Vector2(9,2),actor+Vector2(0,6)]),Color(0,0,0,0.48))
  draw_rect(Rect2(actor+Vector2(-6,-26),Vector2(12,20)),Color("478FAA"))
  draw_circle(actor+Vector2(0,-30),6,Color("DFBE9F"))
  _label("YOU",actor+Vector2(-14,-43),12,Color("F0DF9A"))
