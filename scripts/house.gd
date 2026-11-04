@@ -23,14 +23,20 @@ var message := "Find the front door and press INTERACT"
 var message_time := 5.0
 var joystick_touch := -1
 var joystick_vector := Vector2.ZERO
-var movement_keys := Vector2.ZERO
 var panel_touches := {}
+const MOUSE_POINTER := -2
+const SAVE_PATH := "user://last_light_v04.json"
+var paused := false
+var autosave_time := 0.0
 var stick_center := Vector2.ZERO
 var stick_radius := 62.0
 var attack_cooldown := 0.0
 
 func _ready() -> void:
  _make_house()
+ _layout_controls()
+ _load_game()
+ get_viewport().size_changed.connect(_on_viewport_resized)
  set_process(true)
  queue_redraw()
 
@@ -112,6 +118,8 @@ func _announce(text: String) -> void:
  message_time = 2.8
 
 func _interact() -> void:
+ if health <= 0 or paused:
+  return
  var i := _nearest_door()
  if i >= 0:
   _toggle_door(i)
@@ -135,18 +143,23 @@ func _toggle_door(i: int) -> void:
  if door.open and _segment_distance(player, door.a, door.b) < .31:
   _announce("Step out of the doorway to close it")
   return
+ if door.open:
+  for enemy_index in range(infected.size()):
+   if zombie_health[enemy_index] > 0 and _segment_distance(infected[enemy_index], door.a, door.b) < .31:
+    _announce("The doorway is occupied")
+    return
  door.open = not door.open
  _announce(door.label + (" door OPEN" if door.open else " door CLOSED"))
 
 func _attack() -> void:
- if attack_cooldown > 0:
+ if health <= 0 or paused or attack_cooldown > 0:
   return
  attack_cooldown = .45
  var hit := false
  for i in range(infected.size()):
   if zombie_health[i] <= 0:
    continue
-  if infected[i].distance_to(player) < 1.25:
+  if infected[i].distance_to(player) < 1.25 and not _line_blocked(player, infected[i]):
    zombie_health[i] -= 1
    zombies_hit_time[i] = .22
    hit = true
@@ -156,15 +169,22 @@ func _attack() -> void:
   _announce("Nothing in melee reach")
 
 func _process(delta: float) -> void:
+ if paused or health <= 0:
+  queue_redraw()
+  return
  var dt: float = minf(delta, .05)
+ autosave_time += dt
+ if autosave_time >= 15.0:
+  autosave_time = 0.0
+  _save_game()
  elapsed += dt
  message_time = maxf(0, message_time - dt)
  attack_cooldown = maxf(0, attack_cooldown - dt)
  var key_direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
- var input_direction := joystick_vector if joystick_touch >= 0 else key_direction
+ var input_direction := joystick_vector if joystick_touch != -1 else key_direction
  if input_direction.length() > .12:
   # Screen-space analog movement converted to isometric grid axes.
-  var world_direction := Vector2(input_direction.x + input_direction.y, input_direction.y - input_direction.x).normalized()
+  var world_direction := _screen_direction_to_world(input_direction)
   facing = world_direction
   player = _try_move(player, world_direction * 2.2 * dt * minf(1, input_direction.length()), PLAYER_RADIUS)
   motion_phase += dt * 11
@@ -180,14 +200,16 @@ func _process(delta: float) -> void:
   if infected[i].distance_to(old) < .008:
    for door in doors:
     if not door.open and _segment_distance(infected[i], door.a, door.b) < .55:
-     door.health -= dt * 12
+     door.health = maxf(0, door.health - dt * 12)
      if door.health <= 0:
       door.open = true
       _announce("BREACH! An infected broke a door")
-  if infected[i].distance_to(player) < .62 and not god_mode:
+  if infected[i].distance_to(player) < .62 and not god_mode and not _line_blocked(infected[i], player):
    health = maxf(0, health - dt * 9)
  if health <= 0:
-  _announce("You did not survive — toggle GOD for testing")
+  _clear_pointers()
+  _announce("You did not survive — tap RESTART")
+  _save_game()
  queue_redraw()
 
 func _iso(p: Vector2, height: float = 0) -> Vector2:
@@ -289,12 +311,12 @@ func _draw_ui() -> void:
  var dark := Color("0b1c19")
  draw_rect(Rect2(Vector2.ZERO, Vector2(size.x, 139)), dark)
  _text("L A S T   L I G H T", Vector2(18, 30), 22, Color("f0e0b6"))
- _text("V3.6 / HOUSE VERTICAL SLICE", Vector2(18, 51), 12, Color("b1c6b8"))
+ _text("V0.4 / FOUNDATION CANDIDATE", Vector2(18, 51), 12, Color("b1c6b8"))
  _text("HP %d   SUPPLIES %d   ZOMBIES %d" % [int(health), supplies, _alive_zombies()], Vector2(18, 80), 15)
  _text("GOD MODE ON" if god_mode else "GOD MODE OFF", Vector2(18, 105), 14, Color("f4d69a") if god_mode else Color("b5bdb0"))
  if message_time > 0:
   _text(message, Vector2(18, 131), 13)
- stick_center = Vector2(100, size.y - 108)
+ _layout_controls()
  draw_circle(stick_center, stick_radius, Color(.12, .24, .21, .85))
  draw_arc(stick_center, stick_radius, 0, TAU, 32, Color("9daf9c"), 2)
  draw_circle(stick_center + joystick_vector * 36, 30, Color("cab782"))
@@ -306,6 +328,11 @@ func _draw_ui() -> void:
  _text("INTERACT", interact_center - Vector2(40, 0), 14, Color("17231d"))
  _text("ATTACK", attack_center - Vector2(31, 0), 14, Color("17231d"))
  draw_rect(Rect2(Vector2(size.x - 128, 12), Vector2(111, 34)), Color("33483b"))
+ draw_rect(Rect2(Vector2(size.x - 128, 54), Vector2(111, 38)), Color("33483b"))
+ _text("RESUME" if paused else "PAUSE", Vector2(size.x - 112, 79), 14)
+ if health <= 0:
+  draw_rect(Rect2(size * .5 - Vector2(120, 36), Vector2(240, 72)), Color("17231d"))
+  _text("RESTART", size * .5 + Vector2(-46, 6), 20)
  _text("GOD ON" if god_mode else "GOD OFF", Vector2(size.x - 112, 35), 14)
 
 func _alive_zombies() -> int:
@@ -332,6 +359,15 @@ func _draw() -> void:
 
 func _tap(point: Vector2) -> void:
  var size := get_viewport_rect().size
+ if health <= 0:
+  if Rect2(size * .5 - Vector2(120, 36), Vector2(240, 72)).has_point(point):
+   _restart_game()
+  return
+ if Rect2(Vector2(size.x - 128, 54), Vector2(111, 38)).has_point(point):
+  _set_paused(not paused)
+  return
+ if paused:
+  return
  if point.y < 48 and point.x > size.x - 140:
   god_mode = not god_mode
   health = 100 if god_mode else health
@@ -359,34 +395,188 @@ func _update_stick(point: Vector2) -> void:
  if joystick_vector.length() < .14:
   joystick_vector = Vector2.ZERO
 
-func _input(event: InputEvent) -> void:
- if event is InputEventScreenTouch:
-  if event.pressed:
-   if event.position.distance_to(stick_center) < stick_radius + 42 and joystick_touch < 0:
-    joystick_touch = event.index
-    _update_stick(event.position)
-   else:
-    _tap(event.position)
-  elif joystick_touch == event.index:
-   joystick_touch = -1
-   joystick_vector = Vector2.ZERO
- elif event is InputEventScreenDrag and event.index == joystick_touch:
-  _update_stick(event.position)
- elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-  if event.position.distance_to(stick_center) < stick_radius + 42:
-   joystick_touch = 999
-   _update_stick(event.position)
-  else:
-   _tap(event.position)
- elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and joystick_touch == 999:
+func _layout_controls() -> void:
+ var size := get_viewport_rect().size
+ stick_center = Vector2(100, size.y - 108)
+
+func _on_viewport_resized() -> void:
+ _clear_pointers()
+ _layout_controls()
+
+func _clear_pointers() -> void:
+ joystick_touch = -1
+ joystick_vector = Vector2.ZERO
+ panel_touches.clear()
+
+func _notification(what: int) -> void:
+ if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
+  _set_paused(true)
+ elif what == NOTIFICATION_WM_CLOSE_REQUEST:
+  _save_game()
+
+func _screen_direction_to_world(direction: Vector2) -> Vector2:
+ # Inverse of _iso: screen axes have unequal scale in a 2:1 projection.
+ return Vector2(direction.x / TX + direction.y / TY, direction.y / TY - direction.x / TX).normalized()
+
+func _pointer_down(pointer: int, point: Vector2) -> void:
+ # Capture exactly one owner; later fingers cannot steal a moving stick.
+ if panel_touches.has(pointer) or joystick_touch == pointer:
+  return
+ if health > 0 and not paused and point.distance_to(stick_center) < stick_radius + 42:
+  if joystick_touch == -1:
+   joystick_touch = pointer
+   _update_stick(point)
+  return
+ panel_touches[pointer] = true
+ _tap(point)
+
+func _pointer_up(pointer: int) -> void:
+ panel_touches.erase(pointer)
+ if joystick_touch == pointer:
   joystick_touch = -1
   joystick_vector = Vector2.ZERO
- elif event is InputEventMouseMotion and joystick_touch == 999:
-  _update_stick(event.position)
+
+func _input(event: InputEvent) -> void:
+ if event is InputEventScreenTouch:
+  if event.pressed and not event.canceled:
+   _pointer_down(event.index, event.position)
+  else:
+   _pointer_up(event.index)
+ elif event is InputEventScreenDrag:
+  if event.index == joystick_touch:
+   _update_stick(event.position)
+ elif event is InputEventMouseButton:
+  # Godot may synthesize mouse events from touches. Never process those twice.
+  if event.device == InputEvent.DEVICE_ID_EMULATION:
+   return
+  if event.button_index == MOUSE_BUTTON_LEFT:
+   if event.pressed:
+    _pointer_down(MOUSE_POINTER, event.position)
+   else:
+    _pointer_up(MOUSE_POINTER)
+ elif event is InputEventMouseMotion:
+  if event.device != InputEvent.DEVICE_ID_EMULATION and joystick_touch == MOUSE_POINTER:
+   _update_stick(event.position)
  elif event is InputEventKey and event.pressed and not event.echo:
-  if event.keycode == KEY_E:
+  if event.keycode == KEY_ESCAPE or event.keycode == KEY_P:
+   _set_paused(not paused)
+  elif event.keycode == KEY_R and health <= 0:
+   _restart_game()
+  elif event.keycode == KEY_E:
    _interact()
   elif event.keycode == KEY_SPACE:
    _attack()
   elif event.keycode == KEY_G:
    god_mode = not god_mode
+
+func _line_blocked(a: Vector2, b: Vector2) -> bool:
+ for wall in walls:
+  if Geometry2D.segment_intersects_segment(a, b, wall.a, wall.b) != null:
+   return true
+ for door in doors:
+  if not door.open and Geometry2D.segment_intersects_segment(a, b, door.a, door.b) != null:
+   return true
+ return false
+
+func _set_paused(value: bool) -> void:
+ paused = value
+ _clear_pointers()
+ if paused:
+  _save_game()
+ queue_redraw()
+
+func _restart_game() -> void:
+ _make_house()
+ player = Vector2(4.9, 9.35)
+ health = 100.0
+ supplies = 0
+ god_mode = false
+ infected = [Vector2(-1.9, 7.9), Vector2(11.6, 7.2)]
+ zombie_health = [3, 3]
+ zombies_hit_time = [0.0, 0.0]
+ elapsed = 0.0
+ motion_phase = 0.0
+ attack_cooldown = 0.0
+ autosave_time = 0.0
+ paused = false
+ _clear_pointers()
+ _announce("Find the front door and press INTERACT")
+ _save_game()
+
+func _save_game(path: String = SAVE_PATH) -> Error:
+ var door_states: Array = []
+ for door in doors:
+  door_states.append({"open": door.open, "health": door.health})
+ var searched: Array = []
+ for item in items:
+  searched.append(item.searched)
+ var enemies: Array = []
+ for i in range(infected.size()):
+  enemies.append({"x": infected[i].x, "y": infected[i].y, "health": zombie_health[i]})
+ var data := {"version": 1, "player": [player.x, player.y], "health": health,
+  "supplies": supplies, "doors": door_states, "searched": searched, "enemies": enemies}
+ # Write and flush a temporary file before replacing the last known save.
+ var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
+ if file == null:
+  return FileAccess.get_open_error()
+ file.store_string(JSON.stringify(data))
+ file.flush()
+ var write_error := file.get_error()
+ file.close()
+ if write_error != OK:
+  return write_error
+ return DirAccess.rename_absolute(path + ".tmp", path)
+
+func _valid_number(value: Variant, low: float, high: float) -> bool:
+ return (value is float or value is int) and is_finite(float(value)) and float(value) >= low and float(value) <= high
+
+func _load_game(path: String = SAVE_PATH) -> Error:
+ if not FileAccess.file_exists(path):
+  return ERR_FILE_NOT_FOUND
+ var file := FileAccess.open(path, FileAccess.READ)
+ if file == null:
+  return FileAccess.get_open_error()
+ if file.get_length() > 65536:
+  return ERR_INVALID_DATA
+ var data: Variant = JSON.parse_string(file.get_as_text())
+ if not data is Dictionary or data.get("version") != 1:
+  return ERR_INVALID_DATA
+ var pos: Variant = data.get("player")
+ if not pos is Array or pos.size() != 2:
+  return ERR_INVALID_DATA
+ if not _valid_number(pos[0], -100, 100) or not _valid_number(pos[1], -100, 100):
+  return ERR_INVALID_DATA
+ if not _valid_number(data.get("health"), 0, 100) or not _valid_number(data.get("supplies"), 0, items.size()):
+  return ERR_INVALID_DATA
+ var door_states: Variant = data.get("doors")
+ var searched: Variant = data.get("searched")
+ var enemies: Variant = data.get("enemies")
+ if not door_states is Array or door_states.size() != doors.size():
+  return ERR_INVALID_DATA
+ if not searched is Array or searched.size() != items.size():
+  return ERR_INVALID_DATA
+ if not enemies is Array or enemies.size() != infected.size():
+  return ERR_INVALID_DATA
+ for state in door_states:
+  if not state is Dictionary or not state.get("open") is bool or not _valid_number(state.get("health"), 0, 45):
+   return ERR_INVALID_DATA
+ for state in searched:
+  if not state is bool:
+   return ERR_INVALID_DATA
+ for enemy in enemies:
+  if not enemy is Dictionary or not _valid_number(enemy.get("x"), -100, 100) or not _valid_number(enemy.get("y"), -100, 100) or not _valid_number(enemy.get("health"), 0, 3):
+   return ERR_INVALID_DATA
+ # No mutation before the entire schema has passed validation.
+ player = Vector2(pos[0], pos[1])
+ health = data.health
+ supplies = int(data.supplies)
+ for i in range(doors.size()):
+  doors[i].open = door_states[i].open
+  doors[i].health = door_states[i].health
+ for i in range(items.size()):
+  items[i].searched = searched[i]
+ for i in range(infected.size()):
+  infected[i] = Vector2(enemies[i].x, enemies[i].y)
+  zombie_health[i] = int(enemies[i].health)
+ _clear_pointers()
+ return OK

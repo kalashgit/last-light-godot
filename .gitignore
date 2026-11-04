@@ -1,0 +1,5 @@
+.godot/
+*.tmp
+__pycache__/
+# Factory uses uniform default PNG import settings; regenerate sidecars on import.
+assets/generated/factory/sprites/**/*.png.import
