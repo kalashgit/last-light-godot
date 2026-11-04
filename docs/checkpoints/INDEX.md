@@ -10,3 +10,13 @@
 | V0.8 | — | — | Not advanced |
 
 The next action is the actual iPhone/Xogot checklist in V04.md. No merge or deployment authorized or performed. No actual phone test or phone frame-rate measurement was possible in this environment.
+
+## Procedural Asset Factory V1 (separately authorized)
+
+| Checkpoint | Exact commit | Evidence |
+|---|---|---|
+| Generator / 20-object review | 77016d50f01fae3459ddc8904e89e177f3838e12 | docs/asset-factory/representatives/ |
+| Book-cover and material fixes | 989a71d42e610deea4e8bbf1f25176321fc1c836 | Revised original recipes |
+| 300-object export / Godot gallery | 8be305578beaa611f4ff42301cad810f439dfb54 | ASSET_FACTORY_V1.md; docs/asset-factory/evidence.json and test-output.txt |
+
+Factory outputs are generated candidates; owner approval and iPhone verification remain pending. main.tscn, project.godot and house.gd unchanged by this assignment. No merge or deployment.
