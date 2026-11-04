@@ -1,0 +1,445 @@
+{
+  "schema": "last-light.house-layout.v1",
+  "projection_tile_px": [
+    80,
+    40
+  ],
+  "source": "Original LAST LIGHT room composition. Sprites: original CC0 asset factory; manifest dimensions and cropped anchors retained.",
+  "furniture": [
+    {
+      "id": "house.kitchen.counter",
+      "asset_id": "ll_furniture_kitchen_counter",
+      "name": "KITCHEN COUNTER",
+      "pos": [
+        1.2,
+        1.0
+      ],
+      "size": [
+        1.5,
+        0.7
+      ],
+      "tint": "777164",
+      "container": true
+    },
+    {
+      "id": "house.bedroom.bed",
+      "asset_id": "ll_furniture_single_bed",
+      "name": "BED",
+      "pos": [
+        6.5,
+        1.0
+      ],
+      "size": [
+        1.25,
+        0.9
+      ],
+      "tint": "566a75",
+      "container": true,
+      "render": "fitted_bed"
+    },
+    {
+      "id": "house.living.sofa",
+      "asset_id": "ll_furniture_two_seat_sofa",
+      "name": "SOFA",
+      "pos": [
+        1.1,
+        6.5
+      ],
+      "size": [
+        1.6,
+        0.75
+      ],
+      "tint": "796557",
+      "container": true
+    },
+    {
+      "id": "house.bathroom.medicine",
+      "asset_id": "ll_furniture_medicine_cabinet",
+      "name": "MEDICINE CABINET",
+      "pos": [
+        7.25,
+        6.6
+      ],
+      "size": [
+        0.75,
+        0.75
+      ],
+      "tint": "b3b7a5",
+      "container": true
+    },
+    {
+      "id": "house.kitchen.fridge",
+      "asset_id": "ll_furniture_refrigerator",
+      "name": "REFRIGERATOR",
+      "pos": [
+        0.35,
+        0.35
+      ],
+      "size": [
+        0.7,
+        0.65
+      ],
+      "tint": "a9ac9d",
+      "container": false
+    },
+    {
+      "id": "house.kitchen.table",
+      "asset_id": "ll_furniture_kitchen_table",
+      "name": "KITCHEN TABLE",
+      "pos": [
+        2.8,
+        2.55
+      ],
+      "size": [
+        1.1,
+        0.7
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.kitchen.chair",
+      "asset_id": "ll_furniture_dining_chair",
+      "name": "DINING CHAIR",
+      "pos": [
+        0.8,
+        2.6
+      ],
+      "size": [
+        0.46,
+        0.48
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.kitchen.stove",
+      "asset_id": "ll_furniture_cooking_stove",
+      "name": "COOKING STOVE",
+      "pos": [
+        3.1,
+        0.4
+      ],
+      "size": [
+        0.69,
+        0.58
+      ],
+      "tint": "686a62",
+      "container": false
+    },
+    {
+      "id": "house.bedroom.nightstand",
+      "asset_id": "ll_furniture_nightstand",
+      "name": "BEDSIDE CABINET",
+      "pos": [
+        5.1,
+        0.45
+      ],
+      "size": [
+        0.65,
+        0.46
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.bedroom.wardrobe",
+      "asset_id": "ll_furniture_wardrobe",
+      "name": "WARDROBE",
+      "pos": [
+        7.85,
+        2.65
+      ],
+      "size": [
+        0.9,
+        0.62
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.bedroom.chest",
+      "asset_id": "ll_furniture_storage_chest",
+      "name": "STORAGE CHEST",
+      "pos": [
+        5.15,
+        3.05
+      ],
+      "size": [
+        0.94,
+        0.5
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.living.bookcase",
+      "asset_id": "ll_furniture_bookcase",
+      "name": "BOOKCASE",
+      "pos": [
+        0.35,
+        4.5
+      ],
+      "size": [
+        0.94,
+        0.32
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.living.coffee_table",
+      "asset_id": "ll_furniture_coffee_table",
+      "name": "COFFEE TABLE",
+      "pos": [
+        2.8,
+        5.6
+      ],
+      "size": [
+        0.9,
+        0.59
+      ],
+      "tint": "81705a",
+      "container": false
+    },
+    {
+      "id": "house.bathroom.sink",
+      "asset_id": "ll_furniture_sink_cabinet",
+      "name": "BATHROOM SINK",
+      "pos": [
+        5.1,
+        4.45
+      ],
+      "size": [
+        0.88,
+        0.62
+      ],
+      "tint": "a9ac9d",
+      "container": false
+    },
+    {
+      "id": "house.bathroom.toilet",
+      "asset_id": "ll_furniture_toilet",
+      "name": "TOILET",
+      "pos": [
+        8.15,
+        4.5
+      ],
+      "size": [
+        0.4,
+        0.65
+      ],
+      "tint": "b3b7a5",
+      "container": false
+    },
+    {
+      "id": "house.bathroom.tub",
+      "asset_id": "ll_furniture_bathtub",
+      "name": "BATHTUB",
+      "pos": [
+        8.1,
+        5.65
+      ],
+      "size": [
+        0.65,
+        1.65
+      ],
+      "tint": "b3b7a5",
+      "container": false
+    }
+  ],
+  "decorations": [
+    {
+      "asset_id": "ll_food_bean_tin",
+      "pos": [
+        1.48,
+        1.3
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_food_water_bottle",
+      "pos": [
+        2.15,
+        1.3
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_household_cutting_board",
+      "pos": [
+        2.42,
+        1.32
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_household_ceramic_mug",
+      "pos": [
+        3.12,
+        2.85
+      ],
+      "height": 29
+    },
+    {
+      "asset_id": "ll_household_paperback_book",
+      "pos": [
+        3.48,
+        2.85
+      ],
+      "height": 29
+    },
+    {
+      "asset_id": "ll_household_cooking_pot",
+      "pos": [
+        3.4,
+        0.7
+      ],
+      "height": 45
+    },
+    {
+      "asset_id": "ll_household_alarm_clock",
+      "pos": [
+        5.4,
+        0.68
+      ],
+      "height": 40
+    },
+    {
+      "asset_id": "ll_household_backpack",
+      "pos": [
+        6.6,
+        3.25
+      ]
+    },
+    {
+      "asset_id": "ll_household_folded_blanket",
+      "pos": [
+        5.6,
+        3.3
+      ],
+      "height": 25
+    },
+    {
+      "asset_id": "ll_household_laundry_basket",
+      "pos": [
+        8.25,
+        1.15
+      ]
+    },
+    {
+      "asset_id": "ll_household_portable_radio",
+      "pos": [
+        3.05,
+        5.85
+      ],
+      "height": 29
+    },
+    {
+      "asset_id": "ll_household_magazine",
+      "pos": [
+        3.45,
+        5.85
+      ],
+      "height": 29
+    },
+    {
+      "asset_id": "ll_household_hardback_book",
+      "pos": [
+        0.75,
+        4.66
+      ],
+      "height": 32
+    },
+    {
+      "asset_id": "ll_household_candle",
+      "pos": [
+        0.95,
+        4.66
+      ],
+      "height": 77
+    },
+    {
+      "asset_id": "ll_household_storage_box",
+      "pos": [
+        0.6,
+        7.25
+      ]
+    },
+    {
+      "asset_id": "ll_medical_antiseptic",
+      "pos": [
+        7.45,
+        6.9
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_medical_sterile_bandage",
+      "pos": [
+        7.75,
+        6.9
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_household_bar_soap",
+      "pos": [
+        5.4,
+        4.7
+      ],
+      "height": 42
+    },
+    {
+      "asset_id": "ll_household_folded_towel",
+      "pos": [
+        8.35,
+        6.9
+      ],
+      "height": 22
+    },
+    {
+      "asset_id": "ll_household_toilet_roll",
+      "pos": [
+        8.45,
+        4.8
+      ],
+      "height": 35
+    },
+    {
+      "asset_id": "ll_crafting_pine_plank",
+      "pos": [
+        1.2,
+        9.35
+      ]
+    },
+    {
+      "asset_id": "ll_crafting_firewood",
+      "pos": [
+        1.45,
+        9.8
+      ]
+    },
+    {
+      "asset_id": "ll_tools_shovel",
+      "pos": [
+        2.25,
+        9.55
+      ]
+    },
+    {
+      "asset_id": "ll_household_bucket",
+      "pos": [
+        8.4,
+        8.9
+      ]
+    },
+    {
+      "asset_id": "ll_household_fuel_can",
+      "pos": [
+        8.65,
+        9.4
+      ]
+    }
+  ]
+}

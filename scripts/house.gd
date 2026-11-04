@@ -6,6 +6,8 @@ const TY := 20.0
 const WALL_HEIGHT := 63.0
 const PLAYER_RADIUS := 0.19
 const HOME := Rect2(0.0, 0.0, 9.0, 8.0)
+const HouseArt := preload("res://scripts/house_art.gd")
+var art := HouseArt.new()
 var player := Vector2(4.9, 9.35)
 var health := 100.0
 var god_mode := false
@@ -36,8 +38,8 @@ var asset_textures: Dictionary = {}
 var asset_preview_visible := true
 
 func _ready() -> void:
+ art.setup(self)
  _make_house()
- _load_asset_showcase()
  _layout_controls()
  _load_game()
  get_viewport().size_changed.connect(_on_viewport_resized)
@@ -70,12 +72,7 @@ func _make_house() -> void:
  _wall_with_door(Vector2(4.5, 4), Vector2(4.5, 8), Vector2(4.5, 6), 1.6, "BEDROOM")
  _wall_with_door(Vector2(0, 4), Vector2(4.5, 4), Vector2(2.1, 4), 1.6, "LIVING")
  _wall_with_door(Vector2(4.5, 4), Vector2(9, 4), Vector2(6.9, 4), 1.6, "BATHROOM")
- items = [
-  {"pos": Vector2(1.2, 1.0), "size": Vector2(1.5, .7), "name": "KITCHEN COUNTER", "searched": false, "tint": Color("777164")},
-  {"pos": Vector2(6.5, 1.0), "size": Vector2(1.25, .9), "name": "BED", "searched": false, "tint": Color("566a75")},
-  {"pos": Vector2(1.1, 6.5), "size": Vector2(1.6, .75), "name": "SOFA", "searched": false, "tint": Color("796557")},
-  {"pos": Vector2(7.25, 6.6), "size": Vector2(.75, .75), "name": "MEDICINE CABINET", "searched": false, "tint": Color("b3b7a5")}
- ]
+ items = art.furniture()
 
 func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  var line := b - a
@@ -129,6 +126,8 @@ func _interact() -> void:
   _toggle_door(i)
   return
  for item in items:
+  if not item.get("container",true):
+   continue
   var center: Vector2 = item.pos + item.size / 2.0
   if player.distance_to(center) < 1.9:
    if item.searched:
@@ -221,7 +220,7 @@ func _iso(p: Vector2, height: float = 0) -> Vector2:
 
 func _screen(p: Vector2, height: float = 0) -> Vector2:
  var size := get_viewport_rect().size
- return _iso(p, height) - _iso(player) + size * Vector2(.50, .53)
+ return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
 
 func _poly(points: PackedVector2Array, color: Color) -> void:
  draw_colored_polygon(points, color)
@@ -339,7 +338,7 @@ func _draw_ui() -> void:
   _text("RESTART", size * .5 + Vector2(-46, 6), 20)
  _text("GOD ON" if god_mode else "GOD OFF", Vector2(size.x - 112, 35), 14)
  draw_rect(Rect2(Vector2(size.x - 260, 12), Vector2(122, 34)), Color("3e594a"))
- _text("ART: ON" if asset_preview_visible else "ART: OFF", Vector2(size.x - 250, 35), 14)
+ _text("HOUSE / V0.5", Vector2(size.x - 250, 35), 14)
 
 func _alive_zombies() -> int:
  var alive := 0
@@ -349,19 +348,7 @@ func _alive_zombies() -> int:
  return alive
 
 func _draw() -> void:
- var v := get_viewport_rect().size
- draw_rect(Rect2(Vector2.ZERO, v), Color("101e19"))
- for y in range(-6, 17):
-  for x in range(-7, 18):
-   var cell := Vector2(x, y)
-   var col := Color("425d47") if (x + y) % 2 == 0 else Color("3c5542")
-   _quad(_screen(cell), _screen(cell + Vector2(1, 0)), _screen(cell + Vector2(1, 1)), _screen(cell + Vector2(0, 1)), col)
- _draw_house()
- _draw_asset_showcase()
- for i in range(infected.size()):
-  if zombie_health[i] > 0:
-   _draw_character(infected[i], false, elapsed * 4 + i, zombies_hit_time[i] > 0)
- _draw_character(player, true, motion_phase)
+ art.draw_world(self)
  _draw_ui()
 
 func _tap(point: Vector2) -> void:
@@ -520,7 +507,7 @@ func _save_game(path: String = SAVE_PATH) -> Error:
  for door in doors:
   door_states.append({"open": door.open, "health": door.health})
  var searched: Array = []
- for item in items:
+ for item in items.slice(0,4):
   searched.append(item.searched)
  var enemies: Array = []
  for i in range(infected.size()):
@@ -565,7 +552,7 @@ func _load_game(path: String = SAVE_PATH) -> Error:
  var enemies: Variant = data.get("enemies")
  if not door_states is Array or door_states.size() != doors.size():
   return ERR_INVALID_DATA
- if not searched is Array or searched.size() != items.size():
+ if not searched is Array or searched.size() != 4:
   return ERR_INVALID_DATA
  if not enemies is Array or enemies.size() != infected.size():
   return ERR_INVALID_DATA
@@ -585,7 +572,7 @@ func _load_game(path: String = SAVE_PATH) -> Error:
  for i in range(doors.size()):
   doors[i].open = door_states[i].open
   doors[i].health = door_states[i].health
- for i in range(items.size()):
+ for i in range(4):
   items[i].searched = searched[i]
  for i in range(infected.size()):
   infected[i] = Vector2(enemies[i].x, enemies[i].y)
@@ -593,74 +580,3 @@ func _load_game(path: String = SAVE_PATH) -> Error:
  _clear_pointers()
  return OK
 
-# Visual-only in-world sample from the generated factory. No save data,
-# collision, loot, crafting, combat, or production art is changed.
-const SHOWCASE_IDS := [
- "ll_furniture_dining_chair", "ll_furniture_kitchen_table",
- "ll_furniture_coffee_table", "ll_furniture_office_chair",
- "ll_household_paperback_book", "ll_household_storage_box",
- "ll_household_laundry_basket", "ll_household_board_game",
- "ll_food_bean_tin", "ll_food_water_bottle",
- "ll_food_milk_carton", "ll_food_cooking_oil",
- "ll_medical_first_aid_case", "ll_medical_sterile_bandage",
- "ll_medical_antiseptic", "ll_medical_saline_bottle",
- "ll_tools_claw_hammer", "ll_tools_hatchet",
- "ll_tools_shovel", "ll_tools_crowbar",
- "ll_crafting_pine_plank", "ll_crafting_copper_pipe",
- "ll_crafting_firewood", "ll_crafting_plywood_sheet"
-]
-
-func _load_asset_showcase() -> void:
- asset_showcase.clear()
- asset_textures.clear()
- var manifest_path := "res://assets/generated/factory/manifest.json"
- if not FileAccess.file_exists(manifest_path):
-  push_warning("Asset preview not available: factory manifest is missing")
-  return
- var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
- if not parsed is Dictionary or not parsed.has("objects"):
-  push_warning("Asset preview not available: invalid manifest")
-  return
- var by_id: Dictionary = {}
- for obj in parsed["objects"]:
-  if obj is Dictionary:
-   by_id[obj.get("id", "")] = obj
- for i in range(SHOWCASE_IDS.size()):
-  var id: String = SHOWCASE_IDS[i]
-  if not by_id.has(id):
-   push_warning("Missing sample asset: " + id)
-   continue
-  var obj: Dictionary = by_id[id]
-  for f in obj.get("frames", []):
-   if f.get("mode", "") != "ground":
-    continue
-   var tex_path: String = "res://assets/generated/factory/" + String(f.get("file", ""))
-   var texture: Texture2D = load(tex_path) as Texture2D
-   if texture == null:
-    push_warning("Missing ground sprite: " + tex_path)
-    break
-   asset_textures[id] = texture
-   # Display outdoors, directly in front of the existing playable house.
-   # Each sprite stays visual-only; players can walk through the samples.
-   asset_showcase.append({
-    "id": id, "name": String(obj.get("name", id)),
-    "position": Vector2(1.2 + float(i % 6) * 1.35, 10.8 + float(i / 6) * 1.4),
-    "anchor": Vector2(float(f["anchor_px"][0]), float(f["anchor_px"][1]))
-   })
-   break
-
-func _draw_asset_showcase() -> void:
- if not asset_preview_visible or asset_showcase.is_empty():
-  return
- _text("ASSET TEST YARD - VISUAL ONLY", _screen(Vector2(1.0, 10.1), 6), 14, Color("e7d9af"))
- for obj in asset_showcase:
-  var p: Vector2 = obj["position"]
-  var id: String = obj["id"]
-  if not asset_textures.has(id):
-   continue
-  var tex: Texture2D = asset_textures[id]
-  var center := _screen(p)
-  # Ground sprites are cropped, with an explicit bottom/foot anchor.
-  # 1.0 source px per screen px keeps the original 80x40 iso calibration.
-  draw_texture(tex, center - (obj["anchor"] as Vector2))
-  _text(String(obj["name"]), center + Vector2(-32, 18), 10, Color("f2e1b8"))
