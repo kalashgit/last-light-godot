@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "namespace": "ll",
+  "status": "design_candidate",
+  "projection": {
+    "tile_px": [
+      80,
+      40
+    ],
+    "pixels_per_unit": [
+      40,
+      20
+    ],
+    "orientation": "isometric_2_to_1",
+    "world_cell_m": 1
+  },
+  "material_families": [
+    {
+      "id": "timber",
+      "variants": [
+        "oak_planks",
+        "pine_planks",
+        "laminate_worn"
+      ],
+      "defaults": {
+        "acoustic": "soft",
+        "flammable": true
+      }
+    },
+    {
+      "id": "tile",
+      "variants": [
+        "ceramic_white",
+        "ceramic_checker",
+        "vinyl_gray"
+      ],
+      "defaults": {
+        "acoustic": "hard",
+        "flammable": false
+      }
+    },
+    {
+      "id": "concrete",
+      "variants": [
+        "smooth",
+        "stained",
+        "cracked",
+        "reinforced"
+      ],
+      "defaults": {
+        "acoustic": "hard",
+        "flammable": false
+      }
+    },
+    {
+      "id": "plaster",
+      "variants": [
+        "cream_painted",
+        "sage_painted",
+        "worn"
+      ],
+      "defaults": {
+        "acoustic": "hard",
+        "flammable": false
+      }
+    },
+    {
+      "id": "brick",
+      "variants": [
+        "red",
+        "painted_white",
+        "aged"
+      ],
+      "defaults": {
+        "acoustic": "hard",
+        "flammable": false
+      }
+    },
+    {
+      "id": "metal",
+      "variants": [
+        "corrugated_galvanized",
+        "painted_steel",
+        "rusted"
+      ],
+      "defaults": {
+        "acoustic": "metallic",
+        "flammable": false
+      }
+    },
+    {
+      "id": "glass",
+      "variants": [
+        "clear",
+        "frosted",
+        "cracked"
+      ],
+      "defaults": {
+        "acoustic": "brittle",
+        "flammable": false
+      }
+    },
+    {
+      "id": "roofing",
+      "variants": [
+        "asphalt_shingle",
+        "clay_tile",
+        "standing_seam_metal",
+        "flat_membrane"
+      ],
+      "defaults": {
+        "acoustic": "hard",
+        "flammable": false
+      }
+    },
+    {
+      "id": "terrain",
+      "variants": [
+        "asphalt",
+        "gravel",
+        "grass",
+        "packed_dirt",
+        "sidewalk"
+      ],
+      "defaults": {
+        "acoustic": "varies",
+        "flammable": false
+      }
+    },
+    {
+      "id": "mesh",
+      "variants": [
+        "chain_link",
+        "wire_fence"
+      ],
+      "defaults": {
+        "acoustic": "metallic",
+        "flammable": false
+      }
+    }
+  ],
+  "component_categories": [
+    {
+      "id": "floor",
+      "parts": [
+        "center",
+        "edge_n",
+        "edge_e",
+        "edge_s",
+        "edge_w",
+        "inside_corner",
+        "outside_corner",
+        "transition",
+        "damaged"
+      ],
+      "layer": "ground",
+      "default_solid": false
+    },
+    {
+      "id": "wall",
+      "parts": [
+        "straight_a",
+        "straight_b",
+        "inside_corner",
+        "outside_corner",
+        "end_cap",
+        "t_junction",
+        "door_opening",
+        "window_opening",
+        "damaged"
+      ],
+      "layer": "structure",
+      "default_solid": true
+    },
+    {
+      "id": "roof",
+      "parts": [
+        "slope_a",
+        "slope_b",
+        "ridge",
+        "hip",
+        "valley",
+        "eave",
+        "edge",
+        "flat",
+        "hole"
+      ],
+      "layer": "roof",
+      "default_solid": false
+    },
+    {
+      "id": "door",
+      "parts": [
+        "interior_single",
+        "exterior_single",
+        "double",
+        "glass",
+        "rolling",
+        "secure"
+      ],
+      "layer": "interactive_structure",
+      "default_solid": true
+    },
+    {
+      "id": "window",
+      "parts": [
+        "single",
+        "double",
+        "shopfront",
+        "high_industrial",
+        "shuttered",
+        "broken"
+      ],
+      "layer": "structure",
+      "default_solid": true
+    },
+    {
+      "id": "trim",
+      "parts": [
+        "baseboard",
+        "crown",
+        "threshold",
+        "sill",
+        "gutter",
+        "downpipe",
+        "flashing"
+      ],
+      "layer": "overlay",
+      "default_solid": false
+    },
+    {
+      "id": "fence",
+      "parts": [
+        "straight",
+        "corner",
+        "gate",
+        "end",
+        "post"
+      ],
+      "layer": "structure",
+      "default_solid": true
+    },
+    {
+      "id": "decals",
+      "parts": [
+        "dirt",
+        "grime",
+        "water_damage",
+        "crack",
+        "moss",
+        "rust",
+        "blood",
+        "footprints"
+      ],
+      "layer": "overlay",
+      "default_solid": false
+    }
+  ],
+  "required_asset_fields": [
+    "id",
+    "category",
+    "material_id",
+    "variant",
+    "piece",
+    "orientation",
+    "asset_path",
+    "anchor_px",
+    "footprint_cells",
+    "height_px",
+    "layer",
+    "collision",
+    "occlusion",
+    "status",
+    "source",
+    "license"
+  ],
+  "example_asset": {
+    "id": "ll_wall_brick_painted_white_straight_a_01",
+    "category": "wall",
+    "material_id": "brick",
+    "variant": "painted_white",
+    "piece": "straight_a",
+    "orientation": "a",
+    "asset_path": null,
+    "anchor_px": [
+      40,
+      80
+    ],
+    "footprint_cells": [
+      1,
+      1
+    ],
+    "height_px": 64,
+    "layer": "structure",
+    "collision": {
+      "solid": true,
+      "passable_when_open": false
+    },
+    "occlusion": "interior_cutaway",
+    "status": "planned_unrendered",
+    "source": "LAST LIGHT original planned",
+    "license": "original"
+  },
+  "building_templates": [
+    {
+      "id": "ll_house_01",
+      "name": "Residential House",
+      "palette": {
+        "floor": [
+          "timber/oak_planks",
+          "tile/ceramic_white",
+          "tile/vinyl_gray"
+        ],
+        "wall": [
+          "plaster/cream_painted",
+          "brick/red"
+        ],
+        "roof": [
+          "roofing/asphalt_shingle"
+        ]
+      },
+      "special": [
+        "interior_partitions",
+        "residential_windows",
+        "front_entry"
+      ]
+    },
+    {
+      "id": "ll_gas_station_01",
+      "name": "Gas Station",
+      "palette": {
+        "floor": [
+          "concrete/stained",
+          "tile/vinyl_gray"
+        ],
+        "wall": [
+          "concrete/smooth",
+          "glass/clear",
+          "metal/painted_steel"
+        ],
+        "roof": [
+          "roofing/flat_membrane"
+        ]
+      },
+      "special": [
+        "shopfront",
+        "canopy",
+        "pump_islands"
+      ]
+    },
+    {
+      "id": "ll_garage_01",
+      "name": "Garage",
+      "palette": {
+        "floor": [
+          "concrete/stained"
+        ],
+        "wall": [
+          "concrete/smooth",
+          "brick/painted_white",
+          "metal/corrugated_galvanized"
+        ],
+        "roof": [
+          "roofing/standing_seam_metal"
+        ]
+      },
+      "special": [
+        "rolling_door",
+        "workbench",
+        "vehicle_bay"
+      ]
+    },
+    {
+      "id": "ll_shop_01",
+      "name": "Small Shop",
+      "palette": {
+        "floor": [
+          "tile/vinyl_gray",
+          "tile/ceramic_checker"
+        ],
+        "wall": [
+          "plaster/cream_painted",
+          "glass/clear"
+        ],
+        "roof": [
+          "roofing/flat_membrane"
+        ]
+      },
+      "special": [
+        "shopfront",
+        "shelves",
+        "storage_room"
+      ]
+    },
+    {
+      "id": "ll_outpost_01",
+      "name": "Military Outpost",
+      "palette": {
+        "floor": [
+          "concrete/reinforced",
+          "terrain/gravel"
+        ],
+        "wall": [
+          "concrete/reinforced",
+          "metal/painted_steel"
+        ],
+        "roof": [
+          "roofing/standing_seam_metal"
+        ]
+      },
+      "special": [
+        "chain_link_fence",
+        "gate",
+        "guard_post",
+        "barracks"
+      ]
+    }
+  ],
+  "render_layers": [
+    "ground",
+    "ground_decal",
+    "structure",
+    "interactive_structure",
+    "furniture",
+    "prop",
+    "character",
+    "foreground",
+    "roof",
+    "ui"
+  ],
+  "implementation_policy": {
+    "existing_object_manifest": "assets/generated/factory/manifest.json",
+    "do_not_modify_existing_manifest": true,
+    "create_only_original_assets": true,
+    "preview_before_merge": true,
+    "godot_min": "4.3",
+    "new_assets_require_approval": true
+  }
+}
