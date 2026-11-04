@@ -64,7 +64,8 @@ func _add_structure(name: String, origin: Vector2, footprint: Vector2, material:
   var ax:=x+i
   if ax>=gap_start and ax<gap_end:
    continue
-  _wall(Vector2(ax,y+h),Vector2(ax+1,y+h),material,true)
+  var shopfront := (name=="SMALL SHOP" or name=="GAS STATION") and (i==1 or i==int(w)-2)
+  _wall(Vector2(ax,y+h),Vector2(ax+1,y+h),material,true,shopfront)
  _door(Vector2(gap_start,y+h),Vector2(gap_end,y+h),name,name.begins_with("GARAGE"))
 
 func _wall(a: Vector2,b: Vector2,mat: String,exterior: bool,window: bool=false) -> void:
@@ -134,9 +135,12 @@ func _process(delta: float) -> void:
  if direction.length()>.14:
   var motion:=Vector2(direction.x/TX+direction.y/TY,direction.y/TY-direction.x/TX).normalized()
   last_face=motion
-  _walk(motion*MOVE_SPEED*minf(delta,.05)*minf(direction.length(),1))
+  _walk(motion*_movement_speed()*minf(delta,.05)*minf(direction.length(),1))
  info_timer=maxf(0.0,info_timer-delta)
  queue_redraw()
+
+func _movement_speed() -> float:
+ return MOVE_SPEED
 
 func _draw_ground() -> void:
  var sz:=get_viewport_rect().size
@@ -149,6 +153,11 @@ func _draw_ground() -> void:
    var corners:=[_screen(p),_screen(p+Vector2(1,0)),_screen(p+Vector2(1,1)),_screen(p+Vector2(0,1))]
    MaterialArt.floor_tile(self,corners[0],corners[1],corners[2],corners[3],"concrete_stained" if y>=9 and y<=11 else "wood_oak" if (x+y)%7==0 else "concrete_stained",x,y)
 
+func _floor_material(b: Dictionary, x: int, y: int) -> String:
+ if b.name=="RESIDENTIAL HOUSE":
+  return "tile_ceramic" if x<4 and y<4 else "wood_oak"
+ return "concrete_stained"
+
 func _draw_building(b: Dictionary) -> void:
  var box: Rect2=b.bounds
  var inside:=_is_inside(box)
@@ -156,22 +165,13 @@ func _draw_building(b: Dictionary) -> void:
  for y in range(int(box.position.y),int(box.end.y)):
   for x in range(int(box.position.x),int(box.end.x)):
    var p:=Vector2(x,y)
-   var floor_id:="concrete_stained"
-   if b.name=="RESIDENTIAL HOUSE":
-    floor_id="tile_ceramic" if x<4 and y<4 else "wood_oak"
+   var floor_id:=_floor_material(b,x,y)
    var v:=[_screen(p),_screen(p+Vector2(1,0)),_screen(p+Vector2(1,1)),_screen(p+Vector2(0,1))]
    MaterialArt.floor_tile(self,v[0],v[1],v[2],v[3],floor_id,x,y)
    if b.name=="RESIDENTIAL HOUSE" and x==4 and y<4:
     MaterialArt.transition(self,v[0],v[1],v[2],v[3])
- # Subtle furniture footprints intentionally avoid generated furniture conflicts.
  if inside:
-  if b.name=="RESIDENTIAL HOUSE":
-   _furniture(Vector2(1.6,1.5),Vector2(1.6,.7),"COUNTER",Color("877e71"))
-   _furniture(Vector2(6.3,2.0),Vector2(1.5,1),"BED",Color("657c8a"))
-   _furniture(Vector2(1.2,6.3),Vector2(2.0,.7),"SOFA",Color("937766"))
-  else:
-   _furniture(Vector2(15.4,1.5),Vector2(2.4,.7),"BENCH",Color("8f8c7c"))
-   _furniture(Vector2(20,4.5),Vector2(1.3,.8),"STORAGE",Color("9a937f"))
+  _draw_default_furniture(b)
  # Structural walls belong to their owning house, not to visual materials.
  for s in segments:
   var a: Vector2=s.a
@@ -204,6 +204,16 @@ func _draw_building(b: Dictionary) -> void:
  if inside:
   _text("INSIDE: "+String(b.name),_screen(box.position+box.size*Vector2(.23,.12),74),12)
 
+func _draw_default_furniture(b: Dictionary) -> void:
+ # Material Kit V1's historical shape previews; V2 replaces these with recipes.
+ if b.name=="RESIDENTIAL HOUSE":
+  _furniture(Vector2(1.6,1.5),Vector2(1.6,.7),"COUNTER",Color("877e71"))
+  _furniture(Vector2(6.3,2.0),Vector2(1.5,1),"BED",Color("657c8a"))
+  _furniture(Vector2(1.2,6.3),Vector2(2.0,.7),"SOFA",Color("937766"))
+ else:
+  _furniture(Vector2(15.4,1.5),Vector2(2.4,.7),"BENCH",Color("8f8c7c"))
+  _furniture(Vector2(20,4.5),Vector2(1.3,.8),"STORAGE",Color("9a937f"))
+
 func _furniture(p: Vector2,dim: Vector2,name: String,tint: Color) -> void:
  var a:=_screen(p)
  var b:=_screen(p+Vector2(dim.x,0))
@@ -225,11 +235,17 @@ func _draw_player() -> void:
  draw_circle(p+Vector2(0,-31),6,Color("cbb599"))
  _text("YOU",p+Vector2(-12,-46),11,Color("f2df9f"))
 
+func _hud_title() -> String:
+ return "LAST LIGHT / MATERIAL KIT V1"
+
+func _hud_subtitle() -> String:
+ return "WOOD  /  CERAMIC  /  CONCRETE  •  PLASTER  /  BLOCK  •  SHINGLE"
+
 func _draw_hud() -> void:
  var size:=get_viewport_rect().size
  draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,100)),Color("101c19",.92))
- _text("LAST LIGHT / MATERIAL KIT V1",Vector2(12,26),19)
- _text("WOOD  /  CERAMIC  /  CONCRETE  •  PLASTER  /  BLOCK  •  SHINGLE",Vector2(12,46),11,Color("bac7b7"))
+ _text(_hud_title(),Vector2(12,26),19)
+ _text(_hud_subtitle(),Vector2(12,46),11,Color("bac7b7"))
  if info_timer>0:
   _text(info,Vector2(12,76),12)
  draw_circle(stick_center,57,Color("2b493b",.85))
