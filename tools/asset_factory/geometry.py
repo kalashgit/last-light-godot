@@ -222,7 +222,12 @@ def build(spec):
    box(0,0,h*.94,w*.45,d*.3,.025,wood)
   else:
    box(0,0,h*.96,w*.55,d*.4,.03,steel); cyl(w*.32,0,h*.93,w*.2,w*.2,.04,steel)
- elif family in {'plank','brick','sheet','book','box','carton','packet','bag','bundle','case'}:
+ elif family=='book':
+  # Separate page block and covers: coplanar stacked surfaces self-shadow black.
+  box(0,0,h*.5,w*.94,d*.96,h*.78,ivory)
+  for z in [.05,.95]: box(0,0,h*z,w,d,h*.1,main)
+  box(-w*.475,0,h*.5,w*.05,d,h*.9,main)
+ elif family in {'plank','brick','sheet','box','carton','packet','bag','bundle','case'}:
   if family=='bundle':
    for x in [-w*.3,0,w*.3]: box(x,0,h*.5,w*.28,d,h,main)
    for y in [-d*.25,d*.25]: box(0,y,h*1.015,w,d*.04,.008,dark)
@@ -232,9 +237,6 @@ def build(spec):
     box(0,0,h*.9,w,d,h*.08,main)
     for x in [-w*.3,w*.3]: box(x,-d*.53,h*.7,w*.08,.012,h*.2,steel)
     box(0,0,h*1.03,w*.3,d*.25,.012,steel)
-   if family=='book':
-    box(0,0,h*.54,w*.96,d*.95,h*.65,ivory)
-    for z in [.04,.97]: box(0,0,h*z,w,d,h*.06,main)
    if family in {'box','carton','case'}:
     box(0,0,h*1.01,w*.06,d,.004,ivory)
    if family=='carton':

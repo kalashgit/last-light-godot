@@ -43,6 +43,8 @@ def registry():
    if family in ['mug','plate','bowl','toilet','bath','sink']: material='ivory'
    if family in ['brick']: material='clay'
    if family in ['fridge','stove','washer','microwave']: material='ivory'
+   if name in {'Plywood sheet','Hardboard panel'}: material='wood'
+   if name=='Leather patch': material='fabric'
    if name=='Rubber sheet': material='dark'
    if name=='Sandpaper': material='paper'
    if name=='Plastic sheet': material='sage'

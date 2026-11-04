@@ -5787,7 +5787,7 @@
         0.432,
         0.0189
       ],
-      "material": "steel",
+      "material": "wood",
       "color_variant": 2,
       "wear": "damaged",
       "label": "PLYWOOD SHEET",
@@ -5825,7 +5825,7 @@
         0.468,
         0.0173
       ],
-      "material": "steel",
+      "material": "wood",
       "color_variant": 0,
       "wear": "used",
       "label": "HARDBOARD PANEL",
@@ -6889,7 +6889,7 @@
         0.4815,
         0.0162
       ],
-      "material": "steel",
+      "material": "fabric",
       "color_variant": 1,
       "wear": "worn",
       "label": "LEATHER PATCH",
