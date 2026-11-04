@@ -174,8 +174,8 @@ func _process(delta: float) -> void:
   zombies_hit_time[i] = maxf(0, zombies_hit_time[i] - dt)
   if infected[i].distance_to(player) > 6.8:
    continue
-  var chase := (player - infected[i]).normalized()
-  var old: Vector2 = infected[i]
+  var chase: Vector2 = (player - (infected[i] as Vector2)).normalized()
+  var old: Vector2 = infected[i] as Vector2
   infected[i] = _try_move(old, chase * .72 * dt, .17)
   if infected[i].distance_to(old) < .008:
    for door in doors:
@@ -224,8 +224,8 @@ func _draw_object(item: Dictionary) -> void:
   _text("+", _screen(a + item.size / 2, 33), 17, Color("edd18d"))
 
 func _draw_character(location: Vector2, is_player: bool, phase: float, hurt: bool = false) -> void:
- var p := _screen(location)
- var color := Color("447f9b") if is_player else Color("85514d")
+ var p: Vector2 = _screen(location)
+ var color: Color = Color("447f9b") if is_player else Color("85514d")
  if hurt:
   color = Color("d98972")
  draw_ellipse_approx(p + Vector2(0, 2), Vector2(12, 5), Color(0, 0, 0, .45))
