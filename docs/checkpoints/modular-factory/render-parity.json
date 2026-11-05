@@ -1,0 +1,16 @@
+{
+  "roofs-on": {
+    "size_px": [
+      1920,
+      1080
+    ],
+    "pixel_identical": true
+  },
+  "roofs-off": {
+    "size_px": [
+      1920,
+      1080
+    ],
+    "pixel_identical": true
+  }
+}

@@ -5,29 +5,7 @@ extends RefCounted
 ## One original compressed bitmap grain tile supplements the asphalt color geometry.
 const ASPHALT_GRAIN := preload("res://assets/materials/asphalt_grain_v1.png")
 const WALL_KIT_ATLAS := preload("res://assets/materials/wall_kit_atlas_v1.png")
-# One original mobile-sized atlas serves all five archetypes. Quadrants are
-# discrete material IDs; UVs are clamped inside each 256x256 swatch.
-const WALL_ATLAS_REGIONS := {
- "plaster_cream": Rect2(0,0,256,256),
- "brick_aged": Rect2(256,0,256,256),
- "concrete_block": Rect2(0,256,256,256),
- "metal_panel": Rect2(256,256,256,256)
-}
-const FLOOR_COLORS := {
- "wood_oak": Color("8a7051"),
- "tile_ceramic": Color("b8b8ab"),
- "concrete_stained": Color("777c76"),
- "vinyl_check": Color("a7a99d"),
- "asphalt_worn": Color("494e4e"),
- "grass_sparse": Color("4c6650"),
- "paver_gray": Color("99978b")
-}
-const WALL_COLORS := {
- "plaster_cream": Color("c5b99d"),
- "concrete_block": Color("898f89"),
- "brick_aged": Color("9b6c5c"),
- "metal_panel": Color("778385")
-}
+const Materials := preload("res://scripts/material_registry.gd")
 
 static func _poly(c: CanvasItem, points: Array, color: Color) -> void:
  c.draw_colored_polygon(PackedVector2Array(points), color)
@@ -40,7 +18,7 @@ static func _surface(c: CanvasItem, a: Vector2, b: Vector2, d: Vector2, e: Vecto
  c.draw_line(a,b,color.lightened(.10),1)
 
 static func floor_tile(c: CanvasItem, a: Vector2, b: Vector2, d: Vector2, e: Vector2, material: String, x: int, y: int) -> void:
- var base: Color = FLOOR_COLORS.get(material, Color("777c70"))
+ var base: Color = Materials.color(material,"floor")
  var tint := base.lightened(.048) if (x+y)%2==0 else base.darkened(.035)
  _surface(c,a,b,d,e,tint)
  if material=="asphalt_worn":
@@ -96,10 +74,10 @@ static func floor_tile(c: CanvasItem, a: Vector2, b: Vector2, d: Vector2, e: Vec
 static func wall_segment(c: CanvasItem, a: Vector2, b: Vector2, height: float, material: String, weather: int=0) -> void:
  var top_a := a-Vector2(0,height)
  var top_b := b-Vector2(0,height)
- var base: Color = WALL_COLORS.get(material,Color("9b9b8c"))
+ var base: Color = Materials.color(material,"wall")
  _poly(c,[a,b,top_b,top_a],base.darkened(.05 if weather==0 else .11))
- if WALL_ATLAS_REGIONS.has(material):
-  var region: Rect2=WALL_ATLAS_REGIONS[material]
+ var region: Rect2=Materials.atlas_region(material)
+ if region.has_area():
   var min_uv:=region.position+Vector2(1,1)
   var max_uv:=region.end-Vector2(1,1)
   # Blend texture over existing wall colors: grout and silhouette remain clear.
@@ -187,9 +165,9 @@ static func window(c: CanvasItem, a: Vector2, b: Vector2, height: float, materia
   c.draw_line(lower_left+Vector2(0,5),lower_right+Vector2(0,5),Color("869895"),3)
 
 static func roof(c: CanvasItem, a: Vector2, b: Vector2, d: Vector2, e: Vector2, material: String="shingle_asphalt") -> void:
- var color:=Color("58666c") if material=="shingle_asphalt" else Color("697e80")
+ var color:=Materials.color(material,"roof")
  if material=="flat_membrane":
-  _poly(c,[a,b,d,e],Color("616968"))
+  _poly(c,[a,b,d,e],color)
   for i in range(1,6):
    var t:=float(i)/6
    c.draw_line(a.lerp(e,t),b.lerp(d,t),Color("464e4d"),1)
