@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "player": [
+    3,
+    5
+  ],
+  "health": 73,
+  "supplies": 2,
+  "doors": [
+    {
+      "open": true,
+      "health": 45
+    },
+    {
+      "open": false,
+      "health": 45
+    },
+    {
+      "open": false,
+      "health": 45
+    },
+    {
+      "open": false,
+      "health": 45
+    },
+    {
+      "open": false,
+      "health": 45
+    }
+  ],
+  "searched": [
+    true,
+    false,
+    true,
+    false
+  ],
+  "enemies": [
+    {
+      "x": -1.9,
+      "y": 7.9,
+      "health": 0
+    },
+    {
+      "x": 11.6,
+      "y": 7.2,
+      "health": 3
+    }
+  ]
+}

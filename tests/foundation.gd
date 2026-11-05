@@ -32,7 +32,7 @@ func run() -> void:
   check(projected.normalized().dot(direction) > .999, "Movement follows screen direction")
  touch(game, 0, game.stick_center + Vector2(40,0), true)
  check(game.joystick_touch == 0 and game.joystick_vector.x > 0, "Joystick captures finger")
- touch(game, 1, Vector2(game.get_viewport_rect().size.x - 205, game.get_viewport_rect().size.y - 92), true)
+ touch(game, 1, game.control_rects.attack.get_center(), true)
  check(game.joystick_touch == 0 and game.attack_cooldown > 0, "Attack works while movement finger remains captured")
  var mouse := InputEventMouseButton.new()
  mouse.button_index = MOUSE_BUTTON_LEFT
@@ -51,6 +51,7 @@ func run() -> void:
  game._attack()
  check(game.zombie_health[0] == 3, "Wall blocks melee")
  game.player = Vector2(2, 4.7)
+ game.facing = Vector2(0,-1)
  game.attack_cooldown = 0
  game._attack()
  check(game.zombie_health[0] == 2, "Reachable zombie takes melee damage")

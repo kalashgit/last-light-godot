@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "objects": 300,
+  "families": 78,
+  "categories": {
+    "food": 50,
+    "medical": 50,
+    "tools": 50,
+    "crafting": 50,
+    "household": 50,
+    "furniture": 50
+  },
+  "frames": {
+    "ground": 300,
+    "icon": 300,
+    "held": 432
+  },
+  "distinct_icon_pixels": 300,
+  "png_bytes": 4112374,
+  "decoded_rgba_bytes": 21537928
+}
