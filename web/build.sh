@@ -47,4 +47,19 @@ echo "Exporting playable five-building Web build"
 test -s "$ROOT/public/index.html"
 test -s "$ROOT/public/index.wasm"
 test -s "$ROOT/public/index.pck"
+# A selected-scene export can silently omit GDScript preload/inheritance chains.
+# The HTML shell still loads, but the actual game never renders. Validate the
+# exported pack's directory entries before publishing another broken preview.
+for required in \
+  'scripts/five_building_material_lab.gdc' \
+  'scripts/material_kit_lab.gdc' \
+  'scripts/building_material_renderer.gdc' \
+  'scripts/lab_survival_state.gdc' \
+  'assets/buildings/five_building_lab_v2.json' \
+  'assets/items/lab_items_v1.json'; do
+  if ! LC_ALL=C grep -aFq "$required" "$ROOT/public/index.pck"; then
+    echo "Export failed: missing required laboratory dependency $required" >&2
+    exit 1
+  fi
+done
 echo "LAST LIGHT isolated laboratory Web export complete"
