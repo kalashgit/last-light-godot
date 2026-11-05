@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "five_building_lab_candidate",
+  "namespace": "ll.lab",
+  "notes": "Original everyday item definitions; no PZwiki text, icons or game assets copied.",
+  "items": [
+    {"id":"canned_food","name":"Canned food","category":"food","tags":["food","preserved"],"weight_kg":0.35,"stack_max":12,"use":{"hunger":32}},
+    {"id":"water_bottle","name":"Water bottle","category":"drink","tags":["drink","fluid_container"],"weight_kg":0.55,"stack_max":8,"use":{"thirst":42}},
+    {"id":"bandage","name":"Bandage","category":"medical","tags":["medical","wound_care"],"weight_kg":0.06,"stack_max":12,"use":{"health":20}},
+    {"id":"battery","name":"Battery","category":"electronics","tags":["power","crafting_component"],"weight_kg":0.18,"stack_max":8,"use":{}},
+    {"id":"energy_bar","name":"Energy bar","category":"food","tags":["food","quick_snack"],"weight_kg":0.08,"stack_max":12,"use":{"hunger":14}},
+    {"id":"crackers","name":"Crackers","category":"food","tags":["food","dry"],"weight_kg":0.20,"stack_max":12,"use":{"hunger":18}},
+    {"id":"juice_box","name":"Juice carton","category":"drink","tags":["drink","packaged"],"weight_kg":0.25,"stack_max":12,"use":{"thirst":22,"hunger":3}},
+    {"id":"first_aid_kit","name":"First aid kit","category":"medical","tags":["medical","container"],"weight_kg":0.85,"stack_max":2,"use":{"health":36}},
+    {"id":"antiseptic","name":"Antiseptic","category":"medical","tags":["medical","wound_care"],"weight_kg":0.22,"stack_max":6,"use":{}},
+    {"id":"nails_box","name":"Box of nails","category":"materials","tags":["construction","fastener"],"weight_kg":0.45,"stack_max":10,"use":{}},
+    {"id":"plank","name":"Timber plank","category":"materials","tags":["construction","barricade"],"weight_kg":1.50,"stack_max":10,"use":{}},
+    {"id":"duct_tape","name":"Duct tape","category":"materials","tags":["repair","adhesive"],"weight_kg":0.18,"stack_max":8,"use":{}},
+    {"id":"screwdriver","name":"Screwdriver","category":"tools","tags":["tool","maintenance"],"weight_kg":0.18,"stack_max":2,"use":{}},
+    {"id":"wrench","name":"Wrench","category":"tools","tags":["tool","mechanics"],"weight_kg":0.55,"stack_max":2,"use":{}},
+    {"id":"hammer","name":"Hammer","category":"tools","tags":["tool","construction"],"weight_kg":0.70,"stack_max":2,"use":{}},
+    {"id":"flashlight","name":"Flashlight","category":"electronics","tags":["light","portable","battery_device"],"weight_kg":0.32,"stack_max":2,"use":{}},
+    {"id":"spare_fuse","name":"Spare fuse","category":"electronics","tags":["electrical","repair"],"weight_kg":0.05,"stack_max":12,"use":{}},
+    {"id":"fuel_can","name":"Fuel can","category":"fuel","tags":["fuel","container"],"weight_kg":2.00,"stack_max":2,"use":{}},
+    {"id":"scrap_metal","name":"Scrap metal","category":"materials","tags":["metalworking","salvage"],"weight_kg":0.80,"stack_max":12,"use":{}},
+    {"id":"backpack_small","name":"Small backpack","category":"gear","tags":["bag","container","equippable"],"weight_kg":0.65,"stack_max":1,"use":{}}
+  ]
+}

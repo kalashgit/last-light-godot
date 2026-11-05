@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "assets/characters/character_system_v1.json").read_text())
-LAB_ITEMS = {"water_bottle", "canned_food", "bandage", "battery"}
+LAB_ITEMS = {item["id"] for item in json.loads((ROOT / "assets/items/lab_items_v1.json").read_text())["items"]}
 
 
 def create(profession, hobby, trait_ids):

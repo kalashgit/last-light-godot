@@ -212,7 +212,7 @@ func _interact() -> void:
   gameplay.examined[object_id]=true
   if item_id!="":
    selected_item=item_id
-   _notice("Found "+String(LabSurvival.ITEM_NAMES[item_id])+" in "+label)
+   _notice("Found "+gameplay.item_name(item_id)+" in "+label)
   else:
    _notice(label+" was empty")
   _save_progress(false)
@@ -418,7 +418,7 @@ func _draw_hud() -> void:
  _text("SAVE",Vector2(size.x-211,35),13)
  var items: Array[String] = gameplay.get_items()
  if selected_item!="":
-  _text("EQUIPPED: "+String(LabSurvival.ITEM_NAMES.get(selected_item,selected_item)),Vector2(175,size.y-22),11,Color("f1e2c0"))
+  _text("SELECTED: "+gameplay.item_name(selected_item),Vector2(175,size.y-22),11,Color("f1e2c0"))
  if inventory_open:
   var panel := Rect2(Vector2(size.x*.5-160,113),Vector2(320,35+items.size()*27))
   draw_rect(panel,Color("1b302b",.96))
@@ -426,7 +426,7 @@ func _draw_hud() -> void:
   _text("BACKPACK / TAP ITEM TO SELECT",panel.position+Vector2(12,22),12)
   for i in range(items.size()):
    var item_id:=items[i]
-   var line:=String(LabSurvival.ITEM_NAMES[item_id])+"  ×"+str(gameplay.inventory[item_id])
+   var line:=gameplay.item_name(item_id)+"  ×"+str(gameplay.inventory[item_id])
    _text(line,panel.position+Vector2(16,47+i*27),12,Color("f1dc99") if item_id==selected_item else Color("e2e6d8"))
   if items.is_empty():
    _text("Empty. Search a container.",panel.position+Vector2(16,47),12)

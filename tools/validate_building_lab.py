@@ -15,7 +15,7 @@ PATH = ROOT / "assets/buildings/five_building_lab_v2.json"
 FLOORS = {"wood_oak", "tile_ceramic", "concrete_stained", "vinyl_check", "asphalt_worn", "grass_sparse", "paver_gray"}
 WALLS = {"plaster_cream", "concrete_block", "brick_aged", "metal_panel"}
 ROOFS = {"shingle_asphalt", "standing_seam_metal", "flat_membrane"}
-LOOT = {"canned_food", "water_bottle", "bandage", "battery"}
+LOOT = {item["id"] for item in json.loads((ROOT / "assets/items/lab_items_v1.json").read_text())["items"]}
 
 
 def box_intersects(a: tuple[float, ...], b: tuple[float, ...]) -> bool:

@@ -30,7 +30,7 @@
       "fixtures":[
         {"id":"workbench","pos":[1.1,0.7],"size":[2.6,0.55],"label":"WORKBENCH","kind":"counter","color":"8d8776","solid":true},
         {"id":"parts_shelf","pos":[6.5,1.0],"size":[1.1,0.7],"label":"PARTS","kind":"shelf","loot":"battery","color":"727a78","solid":true},
-        {"id":"crate_stack","pos":[6,5.2],"size":[1.7,0.8],"label":"CRATES","kind":"crate","loot":"bandage","color":"88745c","solid":true}
+        {"id":"crate_stack","pos":[6,5.2],"size":[1.7,0.8],"label":"CRATES","kind":"crate","loot":"duct_tape","color":"88745c","solid":true}
       ]
     },
     {
@@ -45,8 +45,8 @@
       "fixtures":[
         {"id":"cashier","pos":[0.8,0.7],"size":[2.0,0.6],"label":"CASHIER","kind":"counter","color":"8e7560","solid":true},
         {"id":"aisle_shelf_a","pos":[3.2,1.6],"size":[0.7,2.1],"label":"SHELF A","kind":"shelf","loot":"water_bottle","color":"817a67","solid":true},
-        {"id":"aisle_shelf_b","pos":[5.4,1.6],"size":[0.7,2.1],"label":"SHELF B","kind":"shelf","loot":"canned_food","color":"817a67","solid":true},
-        {"id":"stock_crates","pos":[1.3,5.2],"size":[1.8,0.9],"label":"STOCK","kind":"crate","loot":"water_bottle","color":"87735b","solid":true}
+        {"id":"aisle_shelf_b","pos":[5.4,1.6],"size":[0.7,2.1],"label":"SHELF B","kind":"shelf","loot":"energy_bar","color":"817a67","solid":true},
+        {"id":"stock_crates","pos":[1.3,5.2],"size":[1.8,0.9],"label":"STOCK","kind":"crate","loot":"crackers","color":"87735b","solid":true}
       ]
     },
     {
@@ -60,8 +60,8 @@
       ],
       "fixtures":[
         {"id":"sales_counter","pos":[1.0,0.8],"size":[2.3,0.65],"label":"COUNTER","kind":"counter","color":"918066","solid":true},
-        {"id":"supply_shelf","pos":[5.2,1.0],"size":[0.8,2],"label":"SUPPLIES","kind":"shelf","loot":"water_bottle","color":"72786e","solid":true},
-        {"id":"oil_crates","pos":[7,5.2],"size":[1.7,0.8],"label":"OIL STOCK","kind":"crate","loot":"battery","color":"7e7563","solid":true}
+        {"id":"supply_shelf","pos":[5.2,1.0],"size":[0.8,2],"label":"SUPPLIES","kind":"shelf","loot":"juice_box","color":"72786e","solid":true},
+        {"id":"oil_crates","pos":[7,5.2],"size":[1.7,0.8],"label":"OIL STOCK","kind":"crate","loot":"fuel_can","color":"7e7563","solid":true}
       ]
     },
     {
@@ -76,7 +76,7 @@
       "fixtures":[
         {"id":"bunk_a","pos":[1.1,1.0],"size":[2.0,0.9],"label":"BUNK A","kind":"bed","color":"6c796c","solid":true},
         {"id":"bunk_b","pos":[5,1.0],"size":[2.0,0.9],"label":"BUNK B","kind":"bed","color":"6c796c","solid":true},
-        {"id":"supply_crates","pos":[7.3,6.4],"size":[1.8,0.9],"label":"CRATES","kind":"crate","loot":"bandage","color":"827763","solid":true}
+        {"id":"supply_crates","pos":[7.3,6.4],"size":[1.8,0.9],"label":"CRATES","kind":"crate","loot":"first_aid_kit","color":"827763","solid":true}
       ]
     }
   ],
