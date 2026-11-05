@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "asset": "kit_contact_sheet_v1.png",
+  "source": "original_procedural_Pillow_shapes_no_external_assets",
+  "status": "contact_sheet_requires_visual_approval_not_runtime_art",
+  "projection": "80x40_2to1",
+  "kit_ids": [
+    "suburban",
+    "multiunit",
+    "retail",
+    "service",
+    "civic",
+    "industrial",
+    "rural",
+    "fortified"
+  ],
+  "size_px": [
+    1392,
+    634
+  ],
+  "sha256": "e551872d6b38e3221d174dc8c5d22dfb40e1a70310083ecff0d84e0a71b30d72",
+  "generator": "tools/generate_building_kit_previews.py"
+}
