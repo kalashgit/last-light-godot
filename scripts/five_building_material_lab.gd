@@ -372,10 +372,105 @@ func _is_blocked(p: Vector2) -> bool:
 func _draw_building(b: Dictionary) -> void:
  super._draw_building(b)
  if not _is_inside(b.bounds):
+  _draw_facade_style(b)
+  if show_roofs:
+   _draw_roof_style(b)
   return
  for fixture in fixtures:
   if (b.bounds as Rect2).has_point(fixture.position):
    _draw_fixture(fixture)
+
+func _style(b: Dictionary) -> Dictionary:
+ return recipes.get(String(b.name),{}).get("visual_style",{})
+
+func _draw_facade_style(b: Dictionary) -> void:
+ var style:=_style(b)
+ if style.is_empty():
+  return
+ var bounds: Rect2=b.bounds
+ var y:=bounds.end.y
+ var left:=bounds.position.x
+ var right:=bounds.end.x
+ var center:=(left+right)*.5
+ var accent:=Color(String(style.get("accent","647875")))
+ var trim:=Color(String(style.get("trim","c5c7b5")))
+ var profile:=String(style.get("profile",""))
+ # A foundation, fascia, and corner language shared by every kit; only
+ # appearance changes, never the structural collision or door segments.
+ draw_line(_screen(Vector2(left,y),7),_screen(Vector2(right,y),7),accent.darkened(.38),3)
+ draw_line(_screen(Vector2(left,y),58),_screen(Vector2(right,y),58),trim.darkened(.12),2)
+ for x in [left,right]:
+  draw_line(_screen(Vector2(x,y),4),_screen(Vector2(x,y),58),trim,2)
+ if profile=="home":
+  # Timber porch header and compact step identify the residence at roof-off.
+  draw_line(_screen(Vector2(center-1.4,y),48),_screen(Vector2(center+1.4,y),48),accent,5)
+  for x in [center-1.4,center+1.4]:
+   draw_line(_screen(Vector2(x,y),0),_screen(Vector2(x,y),48),accent.lightened(.12),2)
+  var step_a:=_screen(Vector2(center-1.3,y+.35))
+  var step_b:=_screen(Vector2(center+1.3,y+.35))
+  draw_line(step_a,step_b,Color("9a9481"),6)
+ elif profile=="workshop":
+  # Framed industrial bay, hazard threshold and workshop sign.
+  for x in [center-1.2,center+1.2]:
+   draw_line(_screen(Vector2(x,y),5),_screen(Vector2(x,y),55),accent,3)
+  draw_line(_screen(Vector2(center-1.2,y),12),_screen(Vector2(center+1.2,y),12),Color("bb9e60"),3)
+ elif profile=="market":
+  # Deep shop awning distinct from the raised house roof.
+  var awning_left:=_screen(Vector2(left+1.0,y),51)
+  var awning_right:=_screen(Vector2(right-1.0,y),51)
+  draw_line(awning_left,awning_right,accent,8)
+  draw_line(awning_left+Vector2(0,5),awning_right+Vector2(0,5),trim,2)
+ elif profile=="fuel":
+  draw_line(_screen(Vector2(left,y),43),_screen(Vector2(right,y),43),accent,8)
+  draw_line(_screen(Vector2(left,y),36),_screen(Vector2(right,y),36),trim,2)
+ elif profile=="outpost":
+  draw_line(_screen(Vector2(left,y),17),_screen(Vector2(right,y),17),Color("b09b64"),4)
+  for i in range(7):
+   var x:=lerpf(left+1,right-1,float(i)/6)
+   var p:=_screen(Vector2(x,y),17)
+   draw_line(p+Vector2(-3,-3),p+Vector2(3,3),Color("39443e"),1.3)
+ var sign:=String(style.get("sign",""))
+ if not sign.is_empty():
+  var a:=_screen(Vector2(center-2.15,y),59)
+  var c:=_screen(Vector2(center+2.15,y),59)
+  var btm_c:=_screen(Vector2(center+2.15,y),43)
+  var btm_a:=_screen(Vector2(center-2.15,y),43)
+  draw_colored_polygon(PackedVector2Array([a,c,btm_c,btm_a]),accent.darkened(.19))
+  draw_line(a,c,trim,2)
+  _text(sign,_screen(Vector2(center-1.95,y),49),11,Color("efe6c7"))
+
+func _draw_roof_style(b: Dictionary) -> void:
+ var style:=_style(b)
+ var profile:=String(style.get("profile",""))
+ var box: Rect2=b.bounds
+ var mid:=box.position+box.size*.5
+ var accent:=Color(String(style.get("accent","66756a")))
+ match profile:
+  "home":
+   # Short brick chimney emerging above the shingled roof.
+   var p:=_screen(box.position+Vector2(2,2),103)
+   draw_rect(Rect2(p-Vector2(8,12),Vector2(16,24)),Color("84675c"))
+   draw_line(p-Vector2(10,12),p+Vector2(10,-12),Color("b39b87"),4)
+  "workshop":
+   # Raised metal seams are inherited; roof vents give service identity.
+   for dx in [-1.8,1.8]:
+    var p:=_screen(mid+Vector2(dx,0),81)
+    draw_rect(Rect2(p-Vector2(14,5),Vector2(28,10)),accent.darkened(.22))
+    draw_line(p-Vector2(10,2),p+Vector2(10,-2),Color("a3b3b1"),2)
+  "market":
+   var p:=_screen(mid+Vector2(1,-1),69)
+   draw_rect(Rect2(p-Vector2(18,11),Vector2(36,22)),Color("48514d"))
+   for x in [-9.0,0.0,9.0]:
+    draw_line(p+Vector2(x,-6),p+Vector2(x,7),Color("8d9991"),1.2)
+  "fuel":
+   var p:=_screen(mid,69)
+   draw_line(p-Vector2(32,8),p+Vector2(32,8),accent.lightened(.25),4)
+   draw_circle(p,5,Color("b4b9a4"))
+  "outpost":
+   var p:=_screen(mid+Vector2(-1,-1),84)
+   draw_line(p,p-Vector2(0,43),Color("a5b2ab"),2)
+   draw_line(p-Vector2(14,36),p+Vector2(14,-36),Color("9daaa1"),2)
+   draw_circle(p-Vector2(0,43),3,Color("c4b074"))
 
 func _draw_default_furniture(_building: Dictionary) -> void:
  pass
@@ -415,6 +510,7 @@ func _draw_foreground_occlusion() -> void:
   if _roof_occludes_player(building):
    var roof_height:=68.0
    Art.roof(self,_screen(box.position,roof_height),_screen(Vector2(box.end.x,box.position.y),roof_height),_screen(box.end,roof_height),_screen(Vector2(box.position.x,box.end.y),roof_height),String(building.roof))
+   _draw_roof_style(building)
   elif not show_roofs and not _is_inside(box):
    # Transparent-roof mode still needs the nearest external wall to mask
    # survivors standing behind it; the walkable interior remains unchanged.
@@ -445,6 +541,9 @@ func _draw() -> void:
   draw_line(_screen(world_p),_screen(world_p,59),Color("8b9591"),4)
  if not _under_canopy():
   Art.roof(self,_screen(canopy_start,59),_screen(Vector2(canopy_end.x,canopy_start.y),59),_screen(canopy_end,59),_screen(Vector2(canopy_start.x,canopy_end.y),59),"flat_membrane")
+  var fuel_accent:=Color(String(recipes.get("GAS STATION",{}).get("visual_style",{}).get("accent","527e7b")))
+  draw_line(_screen(Vector2(canopy_start.x,canopy_end.y),58),_screen(canopy_end,58),fuel_accent,5)
+  draw_line(_screen(Vector2(canopy_end.x,canopy_start.y),58),_screen(canopy_end,58),Color("d2b57b"),3)
  for fixture in exterior_props:
   _draw_fixture(fixture)
  for b in structures:
@@ -461,7 +560,7 @@ func _draw() -> void:
  _draw_hud()
 
 func _hud_title() -> String:
- return "LAST LIGHT / FIVE-BUILDING LAB V5"
+ return "LAST LIGHT / FIVE-BUILDING LAB V6"
 
 func _hud_subtitle() -> String:
  return "5 STRUCTURES  •  MODULAR MATERIALS  •  INTERACTIVE DOORS"
@@ -483,7 +582,7 @@ func _draw_hud() -> void:
  var columns:=2 if compact else 4
  var header_height:=142.0 if compact else 106.0
  draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,header_height)),Color("11221e",.95))
- _text("LAST LIGHT / LAB V5" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
+ _text("LAST LIGHT / LAB V6" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
  var bar_width:=minf(99.0,maxf(52.0,(size.x-247.0-9.0*float(columns-1))/float(columns)))
  var labels: Array[String]=["HP","STAMINA","HUNGER","THIRST"]
  var values: Array[float]=[gameplay.health,gameplay.stamina,gameplay.hunger,gameplay.thirst]

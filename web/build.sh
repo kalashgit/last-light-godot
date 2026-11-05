@@ -55,6 +55,7 @@ for required in \
   'scripts/material_kit_lab.gdc' \
   'scripts/building_material_renderer.gdc' \
   'scripts/lab_survival_state.gdc' \
+  'assets/materials/wall_kit_atlas_v1.png' \
   'assets/buildings/five_building_lab_v2.json' \
   'assets/items/lab_items_v1.json'; do
   if ! LC_ALL=C grep -aFq "$required" "$ROOT/public/index.pck"; then
