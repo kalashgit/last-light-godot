@@ -51,6 +51,7 @@ func run() -> void:
  game._attack()
  check(game.zombie_health[0] == 3, "Wall blocks melee")
  game.player = Vector2(2, 4.7)
+ game.facing = Vector2(0,-1)
  game.attack_cooldown = 0
  game._attack()
  check(game.zombie_health[0] == 2, "Reachable zombie takes melee damage")

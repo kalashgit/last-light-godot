@@ -21,6 +21,15 @@ var keyboard_sprint := false
 var sprinting := false
 var sneaking := false
 var joystick_dead_zone := .14
+var selected_target: Dictionary = {}
+var drops: Array[Dictionary] = []
+var shove_cooldown := 0.0
+var recovery_delay := 0.0
+const WALK_SPEED := 2.2
+const SPRINT_SPEED := 3.6
+const SNEAK_SPEED := .95
+const STAMINA_DRAIN := 18.0
+const STAMINA_REGEN := 12.0
 var player := Vector2(4.9, 9.35)
 var health := 100.0
 var god_mode := false
@@ -92,17 +101,17 @@ func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  var t: float = clampf((p - a).dot(line) / maxf(line.length_squared(), .00001), 0, 1)
  return p.distance_to(a + line * t)
 
-func _blocked(p: Vector2, radius: float = PLAYER_RADIUS) -> bool:
+func _blocked_static(p: Vector2, radius: float = PLAYER_RADIUS) -> bool:
  for wall in walls:
-  if _segment_distance(p, wall.a, wall.b) < radius + .09:
-   return true
- for door in doors:
-  if not door.open and _segment_distance(p, door.a, door.b) < radius + .09:
-   return true
+  if _segment_distance(p,wall.a,wall.b)<radius+.09: return true
  for item in items:
-  var r := Rect2(item.pos, item.size).grow(radius)
-  if r.has_point(p):
-   return true
+  if item.get("solid",true) and Rect2(item.pos,item.size).grow(radius).has_point(p): return true
+ return false
+
+func _blocked(p: Vector2, radius: float = PLAYER_RADIUS) -> bool:
+ if _blocked_static(p,radius): return true
+ for door in doors:
+  if not door.open and _segment_distance(p,door.a,door.b)<radius+.09: return true
  return false
 
 func _try_move(current: Vector2, delta_pos: Vector2, radius: float) -> Vector2:
@@ -132,25 +141,17 @@ func _announce(text: String) -> void:
  message_time = 2.8
 
 func _interact() -> void:
- if health <= 0 or paused:
+ if health<=0 or paused: return
+ var target := _resolve_target()
+ if target.is_empty():
+  _announce("Move closer to a door or container")
   return
- var i := _nearest_door()
- if i >= 0:
-  _toggle_door(i)
-  return
- for item in items:
-  if not item.get("container",true):
-   continue
-  var center: Vector2 = item.pos + item.size / 2.0
-  if player.distance_to(center) < 1.9:
-   if item.searched:
-    _announce("Already searched " + item.name)
-   else:
-    item.searched = true
-    supplies += 1
-    _announce("Found supplies in " + item.name)
-   return
- _announce("Move closer to a door or cabinet")
+ if target.kind=="door": _toggle_door(target.index)
+ elif target.kind=="container":
+  var item: Dictionary=items[target.index]
+  item.searched=true
+  supplies+=1
+  _announce("Found supplies in "+item.name)
 
 func _toggle_door(i: int) -> void:
  if i < 0 or i >= doors.size():
@@ -167,66 +168,101 @@ func _toggle_door(i: int) -> void:
  door.open = not door.open
  _announce(door.label + (" door OPEN" if door.open else " door CLOSED"))
 
+func _weapon_stats() -> Dictionary:
+ return {"damage":1,"reach":1.25,"stamina":8.0}
+
 func _attack() -> void:
- if health <= 0 or paused or attack_cooldown > 0:
+ if health<=0 or paused or attack_cooldown>0: return
+ var stats:=_weapon_stats()
+ if stamina<float(stats.stamina):
+  _announce("Too exhausted to strike")
   return
- attack_cooldown = .45
- var hit := false
+ stamina-=float(stats.stamina)
+ recovery_delay=.85
+ attack_cooldown=.5
+ var hit:=false
  for i in range(infected.size()):
-  if zombie_health[i] <= 0:
-   continue
-  if infected[i].distance_to(player) < 1.25 and not _line_blocked(player, infected[i]):
-   zombie_health[i] -= 1
-   zombies_hit_time[i] = .22
-   hit = true
- if hit:
-  _announce("Zombie struck")
- else:
-  _announce("Nothing in melee reach")
+  var offset: Vector2=infected[i]-player
+  if zombie_health[i]>0 and offset.length()<float(stats.reach) and facing.dot(offset.normalized())>=.25 and not _line_blocked(player,infected[i]):
+   zombie_health[i]=maxi(0,int(zombie_health[i])-int(stats.damage))
+   zombies_hit_time[i]=.32
+   infected[i]=_try_move(infected[i],offset.normalized()*.12,.17)
+   hit=true
+ _announce("Strike landed" if hit else "Miss — face the infected and move closer")
+
+func _shove() -> void:
+ if health<=0 or paused or shove_cooldown>0: return
+ if stamina<12:
+  _announce("Too exhausted to shove")
+  return
+ stamina-=12
+ recovery_delay=.85
+ shove_cooldown=.8
+ var hit:=false
+ for i in range(infected.size()):
+  var offset: Vector2=infected[i]-player
+  if zombie_health[i]>0 and offset.length()<1.15 and facing.dot(offset.normalized())>=.15 and not _line_blocked(player,infected[i]):
+   infected[i]=_try_move(infected[i],offset.normalized()*.65,.17)
+   zombies_hit_time[i]=.7
+   hit=true
+ _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
- if paused or health <= 0:
+ if paused or inventory_open or health<=0:
   queue_redraw()
   return
- var dt: float = minf(delta, .05)
- autosave_time += dt
- if autosave_time >= 15.0:
-  autosave_time = 0.0
-  _save_game()
- elapsed += dt
- message_time = maxf(0, message_time - dt)
- attack_cooldown = maxf(0, attack_cooldown - dt)
- var key_direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
- var input_direction := joystick_vector if joystick_touch != -1 else key_direction
- if input_direction.length() > .12:
-  # Screen-space analog movement converted to isometric grid axes.
-  var world_direction := _screen_direction_to_world(input_direction)
-  facing = world_direction
-  player = _try_move(player, world_direction * 2.2 * dt * minf(1, input_direction.length()), PLAYER_RADIUS)
-  motion_phase += dt * 11
- for i in range(infected.size()):
-  if zombie_health[i] <= 0:
-   continue
-  zombies_hit_time[i] = maxf(0, zombies_hit_time[i] - dt)
-  if infected[i].distance_to(player) > 6.8:
-   continue
-  var chase: Vector2 = (player - (infected[i] as Vector2)).normalized()
-  var old: Vector2 = infected[i] as Vector2
-  infected[i] = _try_move(old, chase * .72 * dt, .17)
-  if infected[i].distance_to(old) < .008:
-   for door in doors:
-    if not door.open and _segment_distance(infected[i], door.a, door.b) < .55:
-     door.health = maxf(0, door.health - dt * 12)
-     if door.health <= 0:
-      door.open = true
-      _announce("BREACH! An infected broke a door")
-  if infected[i].distance_to(player) < .62 and not god_mode and not _line_blocked(infected[i], player):
-   health = maxf(0, health - dt * 9)
- if health <= 0:
-  _clear_pointers()
-  _announce("You did not survive — tap RESTART")
-  _save_game()
+ var total:=clampf(delta,0,.25)
+ var steps:=maxi(1,ceili(total/(1.0/60.0)))
+ for step in range(steps):
+  _step(total/steps)
+  if health<=0: break
  queue_redraw()
+
+func _step(dt: float) -> void:
+ autosave_time+=dt
+ if autosave_time>=15:
+  autosave_time=0
+  _save_game()
+ elapsed+=dt
+ message_time=maxf(0,message_time-dt)
+ attack_cooldown=maxf(0,attack_cooldown-dt)
+ shove_cooldown=maxf(0,shove_cooldown-dt)
+ recovery_delay=maxf(0,recovery_delay-dt)
+ var keyboard:=Input.get_vector("ui_left","ui_right","ui_up","ui_down")
+ if keyboard==Vector2.ZERO:
+  keyboard=Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).limit_length(1)
+ var direction:=joystick_vector if joystick_touch!=-1 else keyboard
+ sprinting=(sprint_held or keyboard_sprint) and not sneaking and direction.length()>.01 and stamina>0
+ var speed:=SPRINT_SPEED if sprinting else SNEAK_SPEED if sneaking else WALK_SPEED
+ if sprinting:
+  stamina=maxf(0,stamina-STAMINA_DRAIN*dt)
+  recovery_delay=.5
+ elif recovery_delay<=0:
+  stamina=minf(100,stamina+STAMINA_REGEN*dt)
+ if direction.length()>.01:
+  facing=_screen_direction_to_world(direction)
+  player=_try_move(player,facing*speed*dt*minf(1,direction.length()),PLAYER_RADIUS)
+  motion_phase+=dt*(15 if sprinting else 7 if sneaking else 10)
+ for i in range(infected.size()):
+  if zombie_health[i]<=0: continue
+  zombies_hit_time[i]=maxf(0,zombies_hit_time[i]-dt)
+  if zombies_hit_time[i]>0 or infected[i].distance_to(player)>6.8: continue
+  var chase: Vector2=(player-infected[i]).normalized()
+  var old: Vector2=infected[i]
+  infected[i]=_try_move(old,chase*.72*dt,.17)
+  if infected[i].distance_to(old)<.008:
+   for door in doors:
+    if not door.open and _segment_distance(infected[i],door.a,door.b)<.55:
+     door.health=maxf(0,door.health-dt*12)
+     if door.health<=0:
+      door.open=true
+      _announce("BREACH! An infected broke a door")
+  if infected[i].distance_to(player)<.62 and not god_mode and not _line_blocked(infected[i],player):
+   health=maxf(0,health-dt*9)
+ if health<=0:
+  _clear_pointers()
+  _announce("You did not survive — begin again")
+  _save_game()
 
 func _iso(p: Vector2, height: float = 0) -> Vector2:
  return Vector2((p.x - p.y) * TX, (p.x + p.y) * TY - height)
@@ -262,15 +298,33 @@ func _draw_object(item: Dictionary) -> void:
   _text("+", _screen(a + item.size / 2, 33), 17, Color("edd18d"))
 
 func _draw_character(location: Vector2, is_player: bool, phase: float, hurt: bool = false) -> void:
- var p: Vector2 = _screen(location)
- var color: Color = Color("447f9b") if is_player else Color("85514d")
- if hurt:
-  color = Color("d98972")
- draw_ellipse_approx(p + Vector2(0, 2), Vector2(12, 5), Color(0, 0, 0, .45))
- var bob := sin(phase) * 2.5
- draw_rect(Rect2(p + Vector2(-6, -29 + bob), Vector2(12, 22)), color)
- draw_circle(p + Vector2(0, -33 + bob), 6, Color("d3b69a") if is_player else Color("9eae96"))
- _text("YOU" if is_player else "!", p + Vector2(-14, -48 + bob), 14, Color("f5d98b") if is_player else Color("fa9a86"))
+ var p:=_screen(location)
+ var forward: Vector2=_iso(facing if is_player else (player-location).normalized()).normalized()
+ var side:=Vector2(-forward.y,forward.x)
+ var cloth:=Color("687b70") if is_player else Color("756e57")
+ if hurt: cloth=Color("caa18d")
+ var skin:=Color("b9ac90") if is_player else Color("89947b")
+ var walk:=sin(phase)*3
+ var crouch:=9.0 if is_player and sneaking else 0.0
+ draw_ellipse_approx(p+Vector2(3,2),Vector2(16,6),Color(0,0,0,.3))
+ for sign in [-1,1]:
+  var foot: Vector2=p+side*sign*5+forward*walk*sign
+  draw_line(p+Vector2(sign*4,-30+crouch),foot,Color("333f3a"),7,true)
+  draw_line(foot,foot+forward*5,Color("252e2a"),5,true)
+ var hip:=p+Vector2(0,-31+crouch)
+ var shoulder:=p+Vector2(0,-52+crouch)
+ draw_line(hip,shoulder,cloth,17,true)
+ draw_line(hip+Vector2(-7,0),hip+Vector2(7,0),Color("4b5140"),3,true)
+ for sign in [-1,1]:
+  var hand: Vector2=shoulder+side*sign*10+Vector2(0,18)+forward*(3 if sign>0 else -3)
+  if is_player and attack_cooldown>.25: hand+=forward*15
+  draw_line(shoulder+side*sign*7,hand,cloth.darkened(.12),6,true)
+  draw_circle(hand,3,skin)
+ draw_circle(p+Vector2(0,-62+crouch),8,skin)
+ draw_arc(p+Vector2(0,-64+crouch),7,PI,TAU,12,Color("514f3e"),4,true)
+ draw_circle(p+Vector2(0,-62+crouch)+forward*6,2,skin.lightened(.12))
+ if is_player:
+  draw_arc(p+Vector2(0,1),19,forward.angle()-.45,forward.angle()+.45,12,Color("b4c6ab"),2,true)
 
 func draw_ellipse_approx(center: Vector2, radii: Vector2, color: Color) -> void:
  var vertices := PackedVector2Array()
@@ -457,13 +511,18 @@ func _input(event: InputEvent) -> void:
     KEY_3: _activate_action("quick2")
     KEY_4: _activate_action("quick3")
 
-func _line_blocked(a: Vector2, b: Vector2) -> bool:
+func _line_blocked(a: Vector2, b: Vector2, furniture: bool = true) -> bool:
  for wall in walls:
-  if Geometry2D.segment_intersects_segment(a, b, wall.a, wall.b) != null:
-   return true
+  if Geometry2D.segment_intersects_segment(a,b,wall.a,wall.b)!=null: return true
  for door in doors:
-  if not door.open and Geometry2D.segment_intersects_segment(a, b, door.a, door.b) != null:
-   return true
+  if not door.open and Geometry2D.segment_intersects_segment(a,b,door.a,door.b)!=null: return true
+ if furniture:
+  for item in items:
+   var r:=Rect2(item.pos,item.size)
+   if r.has_point(a) or r.has_point(b): return true
+   var corners: Array[Vector2]=[r.position,Vector2(r.end.x,r.position.y),r.end,Vector2(r.position.x,r.end.y)]
+   for i in range(4):
+    if Geometry2D.segment_intersects_segment(a,b,corners[i],corners[(i+1)%4])!=null: return true
  return false
 
 func _set_paused(value: bool) -> void:
@@ -475,6 +534,11 @@ func _set_paused(value: bool) -> void:
 
 func _restart_game() -> void:
  _make_house()
+ stamina=100; hunger=0; thirst=0
+ inventory_open=false; sneaking=false
+ selected_target={}; drops.clear()
+ shove_cooldown=0; recovery_delay=0
+ facing=Vector2(0,1)
  player = Vector2(4.9, 9.35)
  health = 100.0
  supplies = 0
@@ -575,10 +639,56 @@ func _set_inventory(value: bool) -> void:
  inventory_page=0
  _set_paused(value)
 
+func _target_valid(target: Dictionary) -> bool:
+ if target.is_empty() or not target.has("kind") or not target.get("index") is int: return false
+ var index: int=target.index
+ var point := Vector2.ZERO
+ if target.kind=="door":
+  if index<0 or index>=doors.size(): return false
+  var door: Dictionary=doors[index]
+  point=(door.a+door.b)*.5
+  if _segment_distance(player,door.a,door.b)>1.5: return false
+  point=point.move_toward(player,.32)
+ elif target.kind=="container":
+  if index<0 or index>=items.size() or not items[index].get("container",false) or items[index].searched: return false
+  var rect := Rect2(items[index].pos,items[index].size)
+  point=player.clamp(rect.position,rect.end)
+  if player.distance_to(point)>1.6: return false
+  point=point.move_toward(player,.05)
+ elif target.kind=="drop":
+  if index<0 or index>=drops.size(): return false
+  point=drops[index].pos
+  if player.distance_to(point)>1.5: return false
+ else: return false
+ return not _line_blocked(player,point,false)
+
+func _target_point(target: Dictionary) -> Vector2:
+ if target.kind=="door": return (doors[target.index].a+doors[target.index].b)*.5
+ if target.kind=="container": return items[target.index].pos+items[target.index].size*.5
+ return drops[target.index].pos
+
+func _resolve_target() -> Dictionary:
+ if _target_valid(selected_target): return selected_target.duplicate()
+ selected_target={}
+ var best: Dictionary={}
+ var distance:=INF
+ for kind in ["door","container","drop"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+  for index in range(count):
+   var target: Dictionary={"kind":kind,"index":index}
+   if not _target_valid(target): continue
+   var score: float=player.distance_to(_target_point(target))
+   if score<distance:
+    distance=score
+    best=target
+ return best
+
 func _context_prompt() -> String:
- var index := _nearest_door()
- if index>=0: return "Close Door" if doors[index].open else "Open Door"
- return "Explore the house"
+ var target:=_resolve_target()
+ if target.is_empty(): return "No usable target nearby"
+ if target.kind=="door": return "Close Door" if doors[target.index].open else "Open Door"
+ if target.kind=="drop": return "Pick Up Item"
+ return "Search "+String(items[target.index].name).capitalize()
 
 func _inventory_rows() -> Array:
  return []
@@ -589,12 +699,26 @@ func _quick_slots() -> Array:
 func _inventory_tap(_point: Vector2) -> void:
  pass
 
-func _select_world_target(_point: Vector2) -> void:
- pass
+func _select_world_target(point: Vector2) -> void:
+ var best: Dictionary={}
+ var distance:=60.0
+ for kind in ["door","container","drop"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+  for index in range(count):
+   var target: Dictionary={"kind":kind,"index":index}
+   if not _target_valid(target): continue
+   var screen:=_screen(_target_point(target),30 if kind!="drop" else 0)
+   var score:=point.distance_to(screen)
+   if score<distance:
+    distance=score
+    best=target
+ selected_target=best
+ if not best.is_empty(): _announce(_context_prompt())
 
 func _activate_action(action: String) -> void:
  match action:
   "attack": _attack()
   "interact": _interact()
+  "shove": _shove()
   "sneak": sneaking=not sneaking
-  _: _announce("Action not yet available in HUD checkpoint")
+  _: _announce("No item assigned to this slot")
