@@ -2,6 +2,8 @@ extends RefCounted
 ## Reusable, original procedural construction material renderer.
 ## No imported Project Zomboid artwork or proprietary textures.
 ## CanvasItem.draw_* can be used by any 2D scene; caller owns camera/projection.
+## One original compressed bitmap grain tile supplements the asphalt color geometry.
+const ASPHALT_GRAIN := preload("res://assets/materials/asphalt_grain_v1.png")
 const FLOOR_COLORS := {
  "wood_oak": Color("8a7051"),
  "tile_ceramic": Color("b8b8ab"),
@@ -32,6 +34,11 @@ static func floor_tile(c: CanvasItem, a: Vector2, b: Vector2, d: Vector2, e: Vec
  var base: Color = FLOOR_COLORS.get(material, Color("777c70"))
  var tint := base.lightened(.048) if (x+y)%2==0 else base.darkened(.035)
  _surface(c,a,b,d,e,tint)
+ if material=="asphalt_worn":
+  # UV mapped to the four 2:1 diamond corners; no new scene instances per tile.
+  # Low-opacity texture keeps markings and interaction cues readable on phones.
+  var uv_limit := float(ASPHALT_GRAIN.get_width())
+  c.draw_polygon(PackedVector2Array([a,b,d,e]),PackedColorArray([Color(1,1,1,.49)]),PackedVector2Array([Vector2.ZERO,Vector2(uv_limit,0),Vector2(uv_limit,uv_limit),Vector2(0,uv_limit)]),ASPHALT_GRAIN)
  match material:
   "wood_oak":
    # Grain follows a single world-aligned direction; planks are deterministic.

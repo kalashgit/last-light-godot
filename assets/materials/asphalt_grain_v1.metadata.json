@@ -1,0 +1,14 @@
+{
+  "id": "ll_material_asphalt_grain_v1",
+  "file": "asphalt_grain_v1.png",
+  "status": "generated_candidate_not_artist_approved",
+  "origin": "Original AI-generated material swatch; no external game asset copied",
+  "tool": "OpenAI built-in image generation",
+  "date": "2026-11-05",
+  "source_dimensions": [1254, 1254],
+  "shipping_dimensions": [128, 128],
+  "processing": "Lanczos downsample and PNG 128-color quantization for mobile texture-memory budget",
+  "prompt": "Original square edge-to-edge top-down orthographic weathered dark asphalt: fine crushed aggregate, subtle pits and old repairs, tiny pale flecks and subdued moss; grounded realistic-painterly 2D material, uniform lighting, tileable, no shadows, markings, objects, labels or borders.",
+  "usage": "Optional translucent polygon overlay on asphalt_worn 80x40 iso tiles",
+  "license_note": "AI-generated original candidate, subject to owner art review. Not a PZ texture or third-party download."
+}

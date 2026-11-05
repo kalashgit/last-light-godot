@@ -15,6 +15,8 @@ The next action is the actual iPhone/Xogot checklist in V04.md. No merge or depl
 
 `FIVE_BUILDING_MATERIAL_LAB_V2.md` covers the five-building material, fixture, survival and touch-HUD candidate. `FIVE_BUILDING_VISUAL_DETAIL_V3.md` records the subsequent original prop silhouettes, material/roof detail and six data-driven ground marks, with actual Godot 4.3 headless test results. Neither changes the default main scene or satisfies the pending iPhone review gate.
 
+`FIVE_BUILDING_RENDERING_V4.md` records the next isolated rendering pass: first original asphalt texture candidate, conservative roof/canopy occlusion, selectable ambient grade, directional survivor art and responsive vital bars. It also records the required GUI/iPhone release gates. This work remains on a separate stacked feature branch.
+
 ## Procedural Asset Factory V1 (separately authorized)
 
 | Checkpoint | Exact commit | Evidence |
