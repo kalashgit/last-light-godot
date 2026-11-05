@@ -18,14 +18,24 @@ var sprint_mode := false
 var ambient_mode := 0
 var walk_cycle := 0.0
 var walking := false
+var previous_web_fps_limit := 0
 
 func _ready() -> void:
  super._ready()
+ # A stable 30 Hz render budget keeps procedural geometry affordable on phones.
+ # This lab-only setting is restored when leaving the scene.
+ if OS.has_feature("web"):
+  previous_web_fps_limit=Engine.max_fps
+  Engine.max_fps=30
  var restored: Vector2 = gameplay.load(doorways)
  if restored.x!=INF and restored.y!=INF and restored.x>=-4 and restored.x<=45 and restored.y>=-4 and restored.y<=33 and not _is_blocked(restored):
   player=restored
   _notice("Laboratory save restored")
  queue_redraw()
+
+func _exit_tree() -> void:
+ if OS.has_feature("web"):
+  Engine.max_fps=previous_web_fps_limit
 
 func _vec(value: Array) -> Vector2:
  return Vector2(float(value[0]),float(value[1]))
@@ -261,7 +271,50 @@ func _cycle_ambient() -> void:
  ambient_mode=posmod(ambient_mode+1,AmbientArt.MODES.size())
  _notice("Lighting preview: "+AmbientArt.name_for(ambient_mode))
 
+func _toggle_inventory() -> void:
+ inventory_open=not inventory_open
+ stick_touch=-1
+ stick=Vector2.ZERO
+ queue_redraw()
+
+func _inventory_panel() -> Rect2:
+ var size:=get_viewport_rect().size
+ var width:=minf(508.0,size.x-24.0)
+ var height:=minf(432.0,size.y-24.0)
+ return Rect2(Vector2((size.x-width)*.5,(size.y-height)*.48),Vector2(width,height))
+
+func _inventory_row(index: int) -> Rect2:
+ var panel:=_inventory_panel()
+ return Rect2(panel.position+Vector2(16,86+index*43),Vector2(panel.size.x-32,39))
+
+func _inventory_close() -> Rect2:
+ var panel:=_inventory_panel()
+ return Rect2(panel.position+Vector2(panel.size.x-50,12),Vector2(36,36))
+
+func _inventory_use() -> Rect2:
+ var panel:=_inventory_panel()
+ return Rect2(panel.position+Vector2(panel.size.x-176,panel.size.y-56),Vector2(160,42))
+
+func _inventory_touch(pos: Vector2) -> void:
+ var panel:=_inventory_panel()
+ if _inventory_close().has_point(pos) or not panel.has_point(pos):
+  _toggle_inventory()
+  return
+ if _inventory_use().has_point(pos):
+  _use_selected()
+  queue_redraw()
+  return
+ var items: Array[String]=gameplay.get_items()
+ for i in range(items.size()):
+  if _inventory_row(i).has_point(pos):
+   selected_item=items[i]
+   queue_redraw()
+   return
+
 func _on_touch(id: int,pos: Vector2) -> void:
+ if inventory_open:
+  _inventory_touch(pos)
+  return
  var size := get_viewport_rect().size
  if Rect2(Vector2(size.x-231,12),Vector2(111,34)).has_point(pos):
   _save_progress()
@@ -271,7 +324,7 @@ func _on_touch(id: int,pos: Vector2) -> void:
   return
  if not paused:
   if pos.distance_to(Vector2(size.x-176,size.y-80))<38:
-   inventory_open=not inventory_open
+   _toggle_inventory()
    return
   if pos.distance_to(Vector2(size.x-175,size.y-170))<37:
    sprint_mode=not sprint_mode
@@ -280,21 +333,13 @@ func _on_touch(id: int,pos: Vector2) -> void:
   if pos.distance_to(Vector2(size.x-80,size.y-207))<38:
    _use_selected()
    return
-  if inventory_open:
-   var list: Array[String] = gameplay.get_items()
-   var panel := Rect2(Vector2(size.x*.5-160,113),Vector2(320,35+list.size()*27))
-   if panel.has_point(pos):
-    var index := int((pos.y-panel.position.y-28)/27.0)
-    if index>=0 and index<list.size():
-     selected_item=list[index]
-    return
  super._on_touch(id,pos)
 
 func _input(event: InputEvent) -> void:
  if event is InputEventKey and not event.echo and event.pressed:
   match event.keycode:
    KEY_I:
-    inventory_open=not inventory_open
+    _toggle_inventory()
     return
    KEY_F:
     _use_selected()
@@ -416,7 +461,7 @@ func _draw() -> void:
  _draw_hud()
 
 func _hud_title() -> String:
- return "LAST LIGHT / FIVE-BUILDING LAB V4"
+ return "LAST LIGHT / FIVE-BUILDING LAB V5"
 
 func _hud_subtitle() -> String:
  return "5 STRUCTURES  •  MODULAR MATERIALS  •  INTERACTIVE DOORS"
@@ -438,7 +483,7 @@ func _draw_hud() -> void:
  var columns:=2 if compact else 4
  var header_height:=142.0 if compact else 106.0
  draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,header_height)),Color("11221e",.95))
- _text("LAST LIGHT / LAB V4" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
+ _text("LAST LIGHT / LAB V5" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
  var bar_width:=minf(99.0,maxf(52.0,(size.x-247.0-9.0*float(columns-1))/float(columns)))
  var labels: Array[String]=["HP","STAMINA","HUNGER","THIRST"]
  var values: Array[float]=[gameplay.health,gameplay.stamina,gameplay.hunger,gameplay.thirst]
@@ -463,17 +508,41 @@ func _draw_hud() -> void:
  _text("SAVE",Vector2(size.x-211,35),13)
  draw_rect(Rect2(Vector2(size.x-231,54),Vector2(111,34)),Color("4d6559"))
  _text(AmbientArt.name_for(ambient_mode),Vector2(size.x-208,77),12)
- var items: Array[String] = gameplay.get_items()
  if selected_item!="":
   _text("SELECTED: "+gameplay.item_name(selected_item),Vector2(175,size.y-22),11,Color("f1e2c0"))
  if inventory_open:
-  var panel := Rect2(Vector2(size.x*.5-160,113),Vector2(320,35+items.size()*27))
-  draw_rect(panel,Color("1b302b",.96))
-  draw_rect(Rect2(panel.position,panel.size),Color("b3c6aa",.55),false,1)
-  _text("BACKPACK / TAP ITEM TO SELECT",panel.position+Vector2(12,22),12)
-  for i in range(items.size()):
-   var item_id:=items[i]
-   var line:=gameplay.item_name(item_id)+"  ×"+str(gameplay.inventory[item_id])
-   _text(line,panel.position+Vector2(16,47+i*27),12,Color("f1dc99") if item_id==selected_item else Color("e2e6d8"))
-  if items.is_empty():
-   _text("Empty. Search a container.",panel.position+Vector2(16,47),12)
+  _draw_inventory()
+
+func _draw_inventory() -> void:
+ var size:=get_viewport_rect().size
+ var panel:=_inventory_panel()
+ var items: Array[String]=gameplay.get_items()
+ draw_rect(Rect2(Vector2.ZERO,size),Color(0.035,0.07,0.06,.64))
+ draw_rect(panel.grow(4),Color("0c1915",.95))
+ draw_rect(panel,Color("20382f"))
+ draw_rect(panel,Color("a9bda9",.8),false,2)
+ _text("BACKPACK",panel.position+Vector2(18,35),23,Color("f2e8cb"))
+ _text("%d / %d SLOTS   •   TAP AN ITEM TO SELECT" % [items.size(),LabSurvival.CAPACITY],panel.position+Vector2(19,65),12,Color("c8d5c5"))
+ var close_rect:=_inventory_close()
+ draw_rect(close_rect,Color("496253"))
+ _text("X",close_rect.position+Vector2(12,24),18,Color("f7e8d2"))
+ for i in range(LabSurvival.CAPACITY):
+  var row:=_inventory_row(i)
+  var populated:=i<items.size()
+  var item_id:=items[i] if populated else ""
+  var active:=populated and item_id==selected_item
+  draw_rect(row,Color("5d7054") if active else Color("304a3e") if i%2==0 else Color("2b4238"))
+  if active:
+   draw_rect(row,Color("e4d19b"),false,2)
+  _text("%02d" % [i+1],row.position+Vector2(12,25),13,Color("a8bdad"))
+  if populated:
+   _text(gameplay.item_name(item_id),row.position+Vector2(47,25),15,Color("f5e5c4"))
+   _text("×%d" % int(gameplay.inventory[item_id]),row.position+Vector2(row.size.x-46,25),14,Color("f5e5c4"))
+  else:
+   _text("EMPTY SLOT",row.position+Vector2(47,25),13,Color("829c8c"))
+ if items.is_empty():
+  _text("Search cabinets, shelves, and crates to find supplies.",panel.position+Vector2(18,panel.size.y-68),12,Color("e6d9ad"))
+ var use_rect:=_inventory_use()
+ draw_rect(use_rect,Color("b7ad81") if selected_item!="" and gameplay.inventory.has(selected_item) else Color("5a6b60"))
+ _text("USE SELECTED" if selected_item!="" and gameplay.inventory.has(selected_item) else "NO ITEM SELECTED",use_rect.position+Vector2(12,27),12,Color("172720"))
+ _text("TAP OUTSIDE TO CLOSE",panel.position+Vector2(18,panel.size.y-27),11,Color("c4d0c0"))

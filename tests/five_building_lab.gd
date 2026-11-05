@@ -34,6 +34,14 @@ func run() -> void:
  for kind in ["counter","bed","sofa","shelf","crate","storage","pump"]:
   check(kinds.has(kind),"distinct art archetype "+kind)
 
+ var viewport_size: Vector2=lab.get_viewport_rect().size
+ lab._on_touch(9,Vector2(viewport_size.x-176,viewport_size.y-80))
+ check(lab.inventory_open,"PACK touch opens the backpack")
+ check(lab._inventory_panel().size.y>=400,"empty backpack is a full-size panel instead of a thin strip")
+ check(lab._inventory_panel().encloses(lab._inventory_row(5)),"all six empty slots fit inside the panel")
+ lab._on_touch(9,lab._inventory_close().get_center())
+ check(not lab.inventory_open,"backpack close button works")
+
  var entrance: Dictionary=lab.doorways[0]
  lab.player=entrance.a.lerp(entrance.b,.5)+Vector2(0,-.72)
  lab._interact()
@@ -44,9 +52,16 @@ func run() -> void:
  check(int(lab.gameplay.inventory.get("canned_food",0))==1,"counter search gives existing loot")
  check(bool(lab.gameplay.examined.get("RESIDENTIAL HOUSE/kitchen_counter",false)),"search ownership persists by stable ID")
  lab.gameplay.hunger=40.0
- lab._use_selected()
- check(lab.gameplay.hunger>40.0,"food still changes hunger")
+ lab.selected_item=""
+ lab._on_touch(9,Vector2(viewport_size.x-176,viewport_size.y-80))
+ lab._on_touch(9,lab._inventory_row(0).get_center())
+ check(lab.selected_item=="canned_food","tapping a backpack slot selects the item")
+ lab._on_touch(9,lab._inventory_use().get_center())
+ check(lab.gameplay.hunger>40.0,"USE SELECTED consumes food and changes hunger")
  check(not lab.gameplay.inventory.has("canned_food"),"use consumes existing item")
+ check(lab.inventory_open,"using an item keeps the backpack open")
+ lab._on_touch(9,Vector2(10,viewport_size.y*.5))
+ check(not lab.inventory_open,"tapping outside closes the backpack")
 
  lab.player=Vector2(1.8,5.3)
  lab._interact()

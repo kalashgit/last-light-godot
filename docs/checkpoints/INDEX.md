@@ -17,6 +17,8 @@ The next action is the actual iPhone/Xogot checklist in V04.md. No merge or depl
 
 `FIVE_BUILDING_RENDERING_V4.md` records the next isolated rendering pass: first original asphalt texture candidate, conservative roof/canopy occlusion, selectable ambient grade, directional survivor art and responsive vital bars. It also records the required GUI/iPhone release gates. This work remains on a separate stacked feature branch.
 
+`FIVE_BUILDING_MOBILE_V5.md` addresses the founder's first real V4 iPhone screenshots: a six-slot usable backpack overlay, explicit close/use controls, touch interception, web-only frame budget and lean scene-specific preview exports. It does not assert completed iPhone performance QA or advance the production milestone.
+
 ## Procedural Asset Factory V1 (separately authorized)
 
 | Checkpoint | Exact commit | Evidence |
