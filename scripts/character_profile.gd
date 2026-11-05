@@ -34,18 +34,18 @@ func create(profession_id: String, hobby_id: String, selected_traits: Array, app
   if not (raw_id is String):
    return false
   var trait_id: String = raw_id
-  var trait := _find_entry("traits", trait_id)
-  if trait.is_empty() or trait_id in trait_ids:
+  var trait_data := _find_entry("traits", trait_id)
+  if trait_data.is_empty() or trait_id in trait_ids:
    return false
-  var exclusive: String = trait.get("exclusive_group", "")
+  var exclusive: String = trait_data.get("exclusive_group", "")
   if not exclusive.is_empty() and groups.has(exclusive):
    return false
   if not exclusive.is_empty():
    groups[exclusive] = true
   trait_ids.append(trait_id)
-  remaining += int(trait.get("points", 0))
-  for key in trait.get("modifiers", {}):
-   modifiers[key] = float(modifiers.get(key, 1.0)) * float(trait["modifiers"][key])
+  remaining += int(trait_data.get("points", 0))
+  for key in trait_data.get("modifiers", {}):
+   modifiers[key] = float(modifiers.get(key, 1.0)) * float(trait_data["modifiers"][key])
  if remaining < 0:
   return false
  var levels: Dictionary = {}
