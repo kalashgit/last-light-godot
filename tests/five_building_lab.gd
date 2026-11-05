@@ -2,6 +2,7 @@ extends SceneTree
 ## Headless integration smoke for the opt-in five-building graphics laboratory.
 ## Run with an isolated XDG_DATA_HOME to protect any real user:// save.
 const LabState := preload("res://scripts/lab_survival_state.gd")
+const AmbientArt := preload("res://scripts/lab_ambient_renderer.gd")
 var failures := 0
 
 func check(condition: bool, message: String) -> void:
@@ -25,6 +26,8 @@ func run() -> void:
  check(lab.fixtures.size()==17 and lab.exterior_props.size()==3,"all twenty fixture IDs instantiate")
  check(lab.fences.size()==5,"outpost fence segments survive")
  check(lab.ground_marks.size()==6,"six data-driven surface marks load")
+ var material_texture: Texture2D=load("res://assets/materials/asphalt_grain_v1.png")
+ check(material_texture!=null and material_texture.get_width()==128,"optimized original asphalt texture imports")
  var kinds: Dictionary={}
  for fixture in lab.fixtures+lab.exterior_props:
   kinds[String(fixture.kind)]=true
@@ -55,6 +58,23 @@ func run() -> void:
  check(restored_pos.distance_to(lab.player)<.01,"position survives laboratory save")
  check(bool(restored.examined.get("RESIDENTIAL HOUSE/kitchen_counter",false)),"examined cabinet survives save")
  check(restored.hunger>40.0,"hunger effect survives save")
+ lab.player=Vector2(4.5,10.0)
+ check(not lab._roof_occludes_player(lab.structures[0]),"a player south of a house remains visible in front of its roof")
+ lab.player=Vector2(4.5,-1.0)
+ check(lab._roof_occludes_player(lab.structures[0]),"a player north of a house is correctly behind its roof")
+ lab.player=Vector2(3.0,3.0)
+ check(not lab._roof_occludes_player(lab.structures[0]),"indoor cutaway stays visible")
+ lab.player=Vector2(18.0,26.0)
+ check(lab._under_canopy(),"forecourt canopy cuts away over the player")
+ lab._on_touch(1,lab.stick_center+Vector2(25,0))
+ check(lab.stick_touch==1,"left movement stick captures first touch")
+ var before_mode: int=lab.ambient_mode
+ lab._on_touch(3,Vector2(lab.get_viewport_rect().size.x-180,71))
+ check(lab.ambient_mode==posmod(before_mode+1,AmbientArt.MODES.size()),"mobile TIME control cycles ambient grading")
+ check(lab.stick_touch==1,"TIME action does not steal movement finger")
+ lab.stick_touch=-1
+ lab.stick=Vector2.ZERO
+ check(AmbientArt.overlay_for(2).a>AmbientArt.overlay_for(0).a,"night grade is darker than daytime")
  var path:=ProjectSettings.globalize_path(LabState.SAVE_PATH)
  if FileAccess.file_exists(LabState.SAVE_PATH):
   DirAccess.remove_absolute(path)

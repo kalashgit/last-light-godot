@@ -2,6 +2,8 @@ extends "res://scripts/material_kit_lab.gd"
 ## Isolated five-building district driven by reusable construction recipes.
 const Art := preload("res://scripts/building_material_renderer.gd")
 const PropArt := preload("res://scripts/lab_prop_renderer.gd")
+const AmbientArt := preload("res://scripts/lab_ambient_renderer.gd")
+const SurvivorArt := preload("res://scripts/lab_survivor_renderer.gd")
 const LabSurvival := preload("res://scripts/lab_survival_state.gd")
 const RECIPES := "res://assets/buildings/five_building_lab_v2.json"
 var recipes: Dictionary = {}
@@ -13,6 +15,9 @@ var gameplay = LabSurvival.new()
 var selected_item := ""
 var inventory_open := false
 var sprint_mode := false
+var ambient_mode := 0
+var walk_cycle := 0.0
+var walking := false
 
 func _ready() -> void:
  super._ready()
@@ -234,6 +239,9 @@ func _process(delta: float) -> void:
   return
  var direction := stick if stick_touch!=-1 else Input.get_vector("ui_left","ui_right","ui_up","ui_down")
  gameplay.tick(minf(delta,.1),direction.length()>.14,sprint_mode)
+ walking=direction.length()>.14
+ if walking:
+  walk_cycle=fmod(walk_cycle+delta*(15.0 if sprint_mode else 10.0),TAU)
 
 func _save_progress(show_message: bool=true) -> void:
  var success: bool = gameplay.save(player,doorways)
@@ -249,10 +257,17 @@ func _use_selected() -> void:
   selected_item=""
  _save_progress(false)
 
+func _cycle_ambient() -> void:
+ ambient_mode=posmod(ambient_mode+1,AmbientArt.MODES.size())
+ _notice("Lighting preview: "+AmbientArt.name_for(ambient_mode))
+
 func _on_touch(id: int,pos: Vector2) -> void:
  var size := get_viewport_rect().size
  if Rect2(Vector2(size.x-231,12),Vector2(111,34)).has_point(pos):
   _save_progress()
+  return
+ if Rect2(Vector2(size.x-231,54),Vector2(111,34)).has_point(pos):
+  _cycle_ambient()
   return
  if not paused:
   if pos.distance_to(Vector2(size.x-176,size.y-80))<38:
@@ -289,6 +304,9 @@ func _input(event: InputEvent) -> void:
     return
    KEY_SHIFT:
     sprint_mode=not sprint_mode
+    return
+   KEY_L:
+    _cycle_ambient()
     return
  super._input(event)
 
@@ -336,6 +354,43 @@ func _draw_fixture(fixture: Dictionary) -> void:
  if nearby:
   _text("INTERACT / "+name,_screen(p+dim*.5,height+29),11,Color("f2e7cf"))
 
+func _draw_player() -> void:
+ SurvivorArt.draw_survivor(self,_screen(player),last_face,walking,walk_cycle)
+ _text("YOU",_screen(player)+Vector2(-11,-50),11,Color("f0df9f"))
+
+func _roof_occludes_player(b: Dictionary) -> bool:
+ var box: Rect2=b.bounds
+ # In a 2:1 isometric view, south/east (+x/+y) are the visible foreground.
+ # Outside the footprint on the north/west sides, the roof must be above the survivor.
+ return show_roofs and not _is_inside(box) and player.x<box.end.x and player.y<box.end.y
+
+func _draw_foreground_occlusion() -> void:
+ for building in structures:
+  var box: Rect2=building.bounds
+  if _roof_occludes_player(building):
+   var roof_height:=68.0
+   Art.roof(self,_screen(box.position,roof_height),_screen(Vector2(box.end.x,box.position.y),roof_height),_screen(box.end,roof_height),_screen(Vector2(box.position.x,box.end.y),roof_height),String(building.roof))
+  elif not show_roofs and not _is_inside(box):
+   # Transparent-roof mode still needs the nearest external wall to mask
+   # survivors standing behind it; the walkable interior remains unchanged.
+   for wall in segments:
+    if not bool(wall.exterior):
+     continue
+    var a: Vector2=wall.a
+    var b: Vector2=wall.b
+    if not box.grow(.05).has_point(a.lerp(b,.5)):
+     continue
+    var south:=is_equal_approx(a.y,box.end.y) and is_equal_approx(b.y,box.end.y)
+    var east:=is_equal_approx(a.x,box.end.x) and is_equal_approx(b.x,box.end.x)
+    if (south or east) and player.x<box.end.x and player.y<box.end.y:
+     if bool(wall.window):
+      Art.window(self,_screen(a),_screen(b),60.0,String(wall.material))
+     else:
+      Art.wall_segment(self,_screen(a),_screen(b),60.0,String(wall.material))
+
+func _under_canopy() -> bool:
+ return Rect2(Vector2(15.5,24.5),Vector2(8,4)).has_point(player)
+
 func _draw() -> void:
  _draw_ground()
  # Forecourt canopy is a distinct architectural assembly, not a sixth building.
@@ -343,7 +398,8 @@ func _draw() -> void:
  var canopy_end:=Vector2(23.5,28.5)
  for world_p in [Vector2(15.5,24.5),Vector2(23.5,24.5),Vector2(15.5,28.5),Vector2(23.5,28.5)]:
   draw_line(_screen(world_p),_screen(world_p,59),Color("8b9591"),4)
- Art.roof(self,_screen(canopy_start,59),_screen(Vector2(canopy_end.x,canopy_start.y),59),_screen(canopy_end,59),_screen(Vector2(canopy_start.x,canopy_end.y),59),"flat_membrane")
+ if not _under_canopy():
+  Art.roof(self,_screen(canopy_start,59),_screen(Vector2(canopy_end.x,canopy_start.y),59),_screen(canopy_end,59),_screen(Vector2(canopy_start.x,canopy_end.y),59),"flat_membrane")
  for fixture in exterior_props:
   _draw_fixture(fixture)
  for b in structures:
@@ -355,19 +411,21 @@ func _draw() -> void:
    Art.door(self,_screen(gate.a),_screen(gate.b),gate.open,true)
    _text("GATE OPEN" if gate.open else "GATE / INTERACT",_screen((gate.a+gate.b)*.5,55),11)
  _draw_player()
+ _draw_foreground_occlusion()
+ AmbientArt.draw_world(self,get_viewport_rect().size,ambient_mode)
  _draw_hud()
 
 func _hud_title() -> String:
- return "LAST LIGHT / FIVE-BUILDING LAB V2"
+ return "LAST LIGHT / FIVE-BUILDING LAB V4"
 
 func _hud_subtitle() -> String:
  return "5 STRUCTURES  •  MODULAR MATERIALS  •  INTERACTIVE DOORS"
 
-func _hud_bar(label: String,x: float,value: float,color: Color) -> void:
- _text(label,Vector2(x,45),10,Color("c1d0c2"))
- draw_rect(Rect2(Vector2(x,52),Vector2(99,8)),Color("35423d"))
- draw_rect(Rect2(Vector2(x,52),Vector2(99*clampf(value/100,0,1),8)),color)
- _text("%d" % int(value),Vector2(x+77,45),10,Color("e7e4d7"))
+func _hud_bar(label: String,x: float,y: float,width: float,value: float,color: Color) -> void:
+ _text(label,Vector2(x,y-7),10,Color("c1d0c2"))
+ draw_rect(Rect2(Vector2(x,y),Vector2(width,8)),Color("35423d"))
+ draw_rect(Rect2(Vector2(x,y),Vector2(width*clampf(value/100,0,1),8)),color)
+ _text("%d" % int(value),Vector2(x+width-22,y-7),10,Color("e7e4d7"))
 
 func _hud_button(center: Vector2,radius: float,label: String,fill: Color) -> void:
  draw_circle(center,radius,fill)
@@ -376,14 +434,19 @@ func _hud_button(center: Vector2,radius: float,label: String,fill: Color) -> voi
 
 func _draw_hud() -> void:
  var size := get_viewport_rect().size
- draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,106)),Color("11221e",.95))
- _text(_hud_title(),Vector2(12,22),17,Color("e9e9dc"))
- _hud_bar("HP",12,gameplay.health,Color("c98177"))
- _hud_bar("STAMINA",121,gameplay.stamina,Color("a9b980"))
- _hud_bar("HUNGER",230,gameplay.hunger,Color("c6ae79"))
- _hud_bar("THIRST",339,gameplay.thirst,Color("7aafb9"))
+ var compact:=size.x<620.0
+ var columns:=2 if compact else 4
+ var header_height:=142.0 if compact else 106.0
+ draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,header_height)),Color("11221e",.95))
+ _text("LAST LIGHT / LAB V4" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
+ var bar_width:=minf(99.0,maxf(52.0,(size.x-247.0-9.0*float(columns-1))/float(columns)))
+ var labels: Array[String]=["HP","STAMINA","HUNGER","THIRST"]
+ var values: Array[float]=[gameplay.health,gameplay.stamina,gameplay.hunger,gameplay.thirst]
+ var colors: Array[Color]=[Color("c98177"),Color("a9b980"),Color("c6ae79"),Color("7aafb9")]
+ for i in range(4):
+  _hud_bar(labels[i],12.0+float(i%columns)*(bar_width+9.0),52.0+float(int(i/columns))*35.0,bar_width,values[i],colors[i])
  if info_timer>0:
-  _text(info,Vector2(12,90),12,Color("e9dbba"))
+  _text(info,Vector2(12,header_height-15),12,Color("e9dbba"))
  # Left virtual stick. Movement finger remains captured independently.
  draw_circle(stick_center,57,Color("294a40",.86))
  draw_arc(stick_center,57,0,TAU,32,Color("b4c7b3"),2)
@@ -398,6 +461,8 @@ func _draw_hud() -> void:
  _text("ROOF ON" if show_roofs else "ROOF OFF",Vector2(size.x-104,77),11)
  draw_rect(Rect2(Vector2(size.x-231,12),Vector2(111,34)),Color("4d6559"))
  _text("SAVE",Vector2(size.x-211,35),13)
+ draw_rect(Rect2(Vector2(size.x-231,54),Vector2(111,34)),Color("4d6559"))
+ _text(AmbientArt.name_for(ambient_mode),Vector2(size.x-208,77),12)
  var items: Array[String] = gameplay.get_items()
  if selected_item!="":
   _text("SELECTED: "+gameplay.item_name(selected_item),Vector2(175,size.y-22),11,Color("f1e2c0"))
