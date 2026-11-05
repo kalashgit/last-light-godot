@@ -1,5 +1,5 @@
 extends Node2D
-## LAST LIGHT V3.6 — single-house vertical slice. Art is original, procedural placeholder geometry.
+## LAST LIGHT house survival candidate — original fixed-isometric 2D, schema-1 compatible.
 ## Gameplay, interaction targets and visual mesh share the same door/wall positions.
 const TX := 40.0
 const TY := 20.0
@@ -21,17 +21,26 @@ var keyboard_sprint := false
 var sprinting := false
 var sneaking := false
 var joystick_dead_zone := .14
+var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
 const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
+const HouseNavigation := preload("res://scripts/house_navigation.gd")
+var navigation := HouseNavigation.new()
+var save_blocked := false
+var recovery_available := false
+var exhausted := false
+var last_save_error: Error = OK
+const SAVE_VERSION := 2
 const HUNGER_RATE := .025
 const THIRST_RATE := .045
 const CONTAINER_LOOT := {
  "house.kitchen.counter": {"ll_food_bean_tin":2,"ll_food_water_bottle":2},
  "house.bedroom.bed": {"ll_medical_sterile_bandage":1,"ll_household_flashlight":1},
  "house.living.sofa": {"ll_tools_claw_hammer":1,"ll_food_bean_tin":1},
- "house.bathroom.medicine": {"ll_medical_sterile_bandage":3,"ll_medical_first_aid_case":1}
+ "house.bathroom.medicine": {"ll_medical_sterile_bandage":3,"ll_medical_first_aid_case":1},
+ "house.bedroom.chest": {"ll_tools_hatchet":1,"ll_crafting_pine_plank":2}
 }
 var shove_cooldown := 0.0
 var recovery_delay := 0.0
@@ -59,21 +68,31 @@ var joystick_touch := -1
 var joystick_vector := Vector2.ZERO
 var panel_touches := {}
 const MOUSE_POINTER := -2
-const SAVE_PATH := "user://last_light_v04.json"
+const SAVE_PATH := "user://last_light_survival_v2.json"
+const LEGACY_SAVE_PATH := "user://last_light_v04.json"
 var paused := false
 var autosave_time := 0.0
 var stick_center := Vector2.ZERO
 var stick_radius := 62.0
 var attack_cooldown := 0.0
-var asset_showcase: Array[Dictionary] = []
-var asset_textures: Dictionary = {}
-var asset_preview_visible := true
 
 func _ready() -> void:
  art.setup(self)
+ _load_controls()
  _make_house()
  _layout_controls()
- _load_game()
+ var load_status:=_load_game()
+ if load_status==ERR_FILE_NOT_FOUND and FileAccess.file_exists(LEGACY_SAVE_PATH):
+  load_status=_load_game(LEGACY_SAVE_PATH)
+  if load_status==OK and not FileAccess.file_exists(SAVE_PATH+".schema1.bak"):
+   if DirAccess.copy_absolute(LEGACY_SAVE_PATH,SAVE_PATH+".schema1.bak")!=OK:
+    _announce("Legacy file retained; could not create extra migration backup")
+ if load_status not in [OK,ERR_FILE_NOT_FOUND]:
+  var backup_status:=_load_game(SAVE_PATH+".bak")
+  save_blocked=true
+  recovery_available=backup_status==OK
+  _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
+  paused=true
  get_viewport().size_changed.connect(_on_viewport_resized)
  set_process(true)
  queue_redraw()
@@ -105,6 +124,7 @@ func _make_house() -> void:
  _wall_with_door(Vector2(0, 4), Vector2(4.5, 4), Vector2(2.1, 4), 1.6, "LIVING")
  _wall_with_door(Vector2(4.5, 4), Vector2(9, 4), Vector2(6.9, 4), 1.6, "BATHROOM")
  items = art.furniture()
+ navigation.rebuild(self)
 
 func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  var line := b - a
@@ -112,6 +132,7 @@ func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  return p.distance_to(a + line * t)
 
 func _blocked_static(p: Vector2, radius: float = PLAYER_RADIUS) -> bool:
+ if not Rect2(-7,-7,24,24).grow(-radius).has_point(p): return true
  for wall in walls:
   if _segment_distance(p,wall.a,wall.b)<radius+.09: return true
  for item in items:
@@ -181,6 +202,7 @@ func _interact() -> void:
  _save_game()
 
 func _toggle_door(i: int) -> void:
+ if paused or health<=0: return
  if i < 0 or i >= doors.size():
   return
  var door := doors[i]
@@ -262,7 +284,9 @@ func _step(dt: float) -> void:
  if keyboard==Vector2.ZERO:
   keyboard=Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).limit_length(1)
  var direction:=joystick_vector if joystick_touch!=-1 else keyboard
- sprinting=(sprint_held or keyboard_sprint) and not sneaking and direction.length()>.01 and stamina>0
+ if stamina<=.01: exhausted=true
+ if stamina>=20: exhausted=false
+ sprinting=not exhausted and (sprint_held or keyboard_sprint) and not sneaking and direction.length()>.01 and stamina>0
  var speed:=SPRINT_SPEED if sprinting else SNEAK_SPEED if sneaking else WALK_SPEED
  if sprinting:
   stamina=maxf(0,stamina-STAMINA_DRAIN*dt)
@@ -277,7 +301,7 @@ func _step(dt: float) -> void:
   if zombie_health[i]<=0: continue
   zombies_hit_time[i]=maxf(0,zombies_hit_time[i]-dt)
   if zombies_hit_time[i]>0 or infected[i].distance_to(player)>6.8: continue
-  var chase: Vector2=(player-infected[i]).normalized()
+  var chase: Vector2=navigation.direction(i,infected[i],player,dt)
   var old: Vector2=infected[i]
   infected[i]=_try_move(old,chase*.72*dt,.17)
   if infected[i].distance_to(old)<.008:
@@ -310,23 +334,6 @@ func _quad(a: Vector2, b: Vector2, c: Vector2, d: Vector2, color: Color) -> void
 func _text(label: String, point: Vector2, size: int = 16, color: Color = Color("eadcb8")) -> void:
  draw_string(ThemeDB.fallback_font, point, label, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
 
-func _draw_wall(a: Vector2, b: Vector2, height: float, tint: Color) -> void:
- var A := _screen(a)
- var B := _screen(b)
- _quad(A, B, _screen(b, height), _screen(a, height), tint)
- draw_line(_screen(a, height), _screen(b, height), Color("344b42"), 2)
-
-func _draw_object(item: Dictionary) -> void:
- var a: Vector2 = item.pos
- var b: Vector2 = a + item.size
- var h := 21.0
- var tint: Color = item.tint
- _quad(_screen(Vector2(b.x, a.y)), _screen(b), _screen(b, h), _screen(Vector2(b.x, a.y), h), tint.darkened(.26))
- _quad(_screen(Vector2(a.x, b.y)), _screen(b), _screen(b, h), _screen(Vector2(a.x, b.y), h), tint.darkened(.4))
- _quad(_screen(a, h), _screen(Vector2(b.x, a.y), h), _screen(b, h), _screen(Vector2(a.x, b.y), h), tint)
- if not item.searched:
-  _text("+", _screen(a + item.size / 2, 33), 17, Color("edd18d"))
-
 func _draw_character(location: Vector2, is_player: bool, phase: float, hurt: bool = false) -> void:
  var p:=_screen(location)
  var forward: Vector2=_iso(facing if is_player else (player-location).normalized()).normalized()
@@ -355,6 +362,12 @@ func _draw_character(location: Vector2, is_player: bool, phase: float, hurt: boo
  draw_circle(p+Vector2(0,-62+crouch)+forward*6,2,skin.lightened(.12))
  if is_player:
   draw_arc(p+Vector2(0,1),19,forward.angle()-.45,forward.angle()+.45,12,Color("b4c6ab"),2,true)
+  if not survival.equipped.is_empty():
+   var direction:=posmod(roundi(facing.angle()/TAU*8),8)
+   var held:=_held_frame(survival.equipped,direction)
+   if not held.is_empty():
+    var grip:=shoulder+side*10+Vector2(0,18)+forward*(18 if attack_cooldown>.25 else 3)
+    draw_texture(held.texture,grip-held.anchor)
 
 func draw_ellipse_approx(center: Vector2, radii: Vector2, color: Color) -> void:
  var vertices := PackedVector2Array()
@@ -362,49 +375,6 @@ func draw_ellipse_approx(center: Vector2, radii: Vector2, color: Color) -> void:
   var a := float(i) / 16 * TAU
   vertices.append(center + Vector2(cos(a) * radii.x, sin(a) * radii.y))
  _poly(vertices, color)
-
-func _draw_house() -> void:
- var inside := HOME.has_point(player)
- for y in range(8):
-  for x in range(9):
-   var tile := Vector2(x, y)
-   var tint := Color("7b7264") if x < 4 else Color("8b8273")
-   if y >= 4:
-    tint = Color("6d766b") if x < 4 else Color("6a7e80")
-   _quad(_screen(tile), _screen(tile + Vector2(1, 0)), _screen(tile + Vector2(1, 1)), _screen(tile + Vector2(0, 1)), tint)
- if inside:
-  for item in items:
-   _draw_object(item)
-  for wall in walls:
-   var a: Vector2 = wall.a
-   var b: Vector2 = wall.b
-   # Remove only camera-facing exterior walls; far walls stay solid.
-   if wall.exterior and (absf(a.y - 8) < .001 and absf(b.y - 8) < .001 or absf(a.x - 9) < .001 and absf(b.x - 9) < .001):
-    continue
-   _draw_wall(a, b, WALL_HEIGHT if wall.exterior else 45, Color("5d7168") if wall.exterior else Color("56645a"))
-  for door in doors:
-   var c: Vector2 = (door.a + door.b) / 2
-   if not door.open:
-    _draw_wall(door.a, door.b, 38, Color("875d43"))
-   else:
-    draw_circle(_screen(c), 6, Color("b0deb2"))
-   _text("OPEN" if door.open else "DOOR", _screen(c, 49), 12, Color("bce2c1") if door.open else Color("ebcea0"))
- else:
-  # Full opaque roof and walls. Geometry remains unchanged for collision.
-  for wall in walls:
-   _draw_wall(wall.a, wall.b, WALL_HEIGHT, Color("6c8077") if wall.exterior else Color("697970"))
-  var a := _screen(Vector2(0, 0), 70)
-  var b := _screen(Vector2(9, 0), 70)
-  var c := _screen(Vector2(9, 8), 70)
-  var d := _screen(Vector2(0, 8), 70)
-  var ridge_a := _screen(Vector2(4.5, 0), 110)
-  var ridge_b := _screen(Vector2(4.5, 8), 110)
-  _quad(a, ridge_a, ridge_b, d, Color("586669"))
-  _quad(ridge_a, b, c, ridge_b, Color("394c51"))
-  _text("LAST LIGHT / SAFEHOUSE", _screen(Vector2(3.0, 3), 132), 13)
-  var front: Dictionary = doors[0]
-  var center: Vector2 = (front.a + front.b) / 2
-  _text("OPEN" if front.open else "DOOR", _screen(center, 80), 14)
 
 func _draw_ui() -> void:
  hud.draw(self)
@@ -426,6 +396,7 @@ func _tap(point: Vector2) -> void:
   if control_rects.dead_restart.has_point(point): _restart_game()
   return
  if control_rects.inventory.has_point(point):
+  if save_blocked: return
   _set_inventory(not inventory_open)
   return
  if inventory_open:
@@ -435,7 +406,15 @@ func _tap(point: Vector2) -> void:
   _set_paused(not paused)
   return
  if paused:
-  if control_rects.resume.has_point(point): _set_paused(false)
+  if control_rects.resume.has_point(point):
+   if save_blocked:
+    if recovery_available: _recover_backup()
+    else: _restart_game()
+   else: _set_paused(false)
+  elif save_blocked and control_rects.recovery_reset.has_point(point): _restart_game()
+  elif not save_blocked:
+   if control_rects.deadzone_down.has_point(point): _set_dead_zone(joystick_dead_zone-.02)
+   elif control_rects.deadzone_up.has_point(point): _set_dead_zone(joystick_dead_zone+.02)
   return
  for action in ["attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
   if control_rects[action].has_point(point):
@@ -556,6 +535,7 @@ func _line_blocked(a: Vector2, b: Vector2, furniture: bool = true) -> bool:
  return false
 
 func _set_paused(value: bool) -> void:
+ if save_blocked and not value: return
  paused = value
  _clear_pointers()
  if paused:
@@ -563,6 +543,14 @@ func _set_paused(value: bool) -> void:
  queue_redraw()
 
 func _restart_game() -> void:
+ if save_blocked and FileAccess.file_exists(SAVE_PATH):
+  if DirAccess.copy_absolute(SAVE_PATH,SAVE_PATH+".rejected.bak")!=OK:
+   _announce("Could not preserve old save; restart cancelled")
+   return
+  if DirAccess.remove_absolute(SAVE_PATH)!=OK: return
+ save_blocked=false
+ recovery_available=false
+ exhausted=false
  _make_house()
  survival.restore({"inventory":{},"equipped":""})
  stamina=100; hunger=0; thirst=0
@@ -570,6 +558,7 @@ func _restart_game() -> void:
  selected_target={}; drops.clear()
  shove_cooldown=0; recovery_delay=0
  facing=Vector2(0,1)
+ inventory_page=0
  player = Vector2(4.9, 9.35)
  health = 100.0
  supplies = 0
@@ -587,85 +576,139 @@ func _restart_game() -> void:
  _save_game()
 
 func _save_game(path: String = SAVE_PATH) -> Error:
- var door_states: Array = []
- for door in doors:
-  door_states.append({"open": door.open, "health": door.health})
- var searched: Array = []
- for item in items.slice(0,4):
-  searched.append(item.searched)
- var enemies: Array = []
- for i in range(infected.size()):
-  enemies.append({"x": infected[i].x, "y": infected[i].y, "health": zombie_health[i]})
- var data := {"version": 1, "player": [player.x, player.y], "health": health,
-  "supplies": supplies, "doors": door_states, "searched": searched, "enemies": enemies}
- # Write and flush a temporary file before replacing the last known save.
- var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
- if file == null:
-  return FileAccess.get_open_error()
+ if save_blocked and path==SAVE_PATH:
+  last_save_error=ERR_INVALID_DATA
+  return last_save_error
+ var door_states: Array=[]
+ for door in doors: door_states.append({"open":door.open,"health":door.health})
+ var searched: Array=[]
+ var containers: Dictionary={}
+ for i in range(items.size()):
+  if i<4: searched.append(items[i].searched)
+  if items[i].get("container",false): containers[items[i].id]=items[i].searched
+ var enemies: Array=[]
+ for i in range(infected.size()): enemies.append({"x":infected[i].x,"y":infected[i].y,"health":zombie_health[i]})
+ var ground: Array=[]
+ for drop in drops: ground.append({"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y})
+ var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground}
+ # Never overwrite unknown/corrupt prior data, including a future schema.
+ if FileAccess.file_exists(path):
+  if _load_game(path,true)!=OK:
+   _announce("Save protected — current file retained")
+   last_save_error=ERR_INVALID_DATA
+   return last_save_error
+  var old: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
+  var archived: String=path+".schema1.bak" if old.version==1 else path+".bak"
+  if old.version!=1 or not FileAccess.file_exists(archived):
+   var backup_error:=DirAccess.copy_absolute(path,archived)
+   if backup_error!=OK:
+    last_save_error=backup_error
+    return backup_error
+ var file:=FileAccess.open(path+".tmp",FileAccess.WRITE)
+ if file==null:
+  last_save_error=FileAccess.get_open_error()
+  return last_save_error
  file.store_string(JSON.stringify(data))
  file.flush()
- var write_error := file.get_error()
+ var error:=file.get_error()
  file.close()
- if write_error != OK:
-  return write_error
- return DirAccess.rename_absolute(path + ".tmp", path)
+ if error==OK: error=DirAccess.rename_absolute(path+".tmp",path)
+ last_save_error=error
+ if error!=OK: _announce("Could not save progress; prior save retained")
+ return error
 
 func _valid_number(value: Variant, low: float, high: float) -> bool:
  return (value is float or value is int) and is_finite(float(value)) and float(value) >= low and float(value) <= high
 
-func _load_game(path: String = SAVE_PATH) -> Error:
- if not FileAccess.file_exists(path):
-  return ERR_FILE_NOT_FOUND
- var file := FileAccess.open(path, FileAccess.READ)
- if file == null:
-  return FileAccess.get_open_error()
- if file.get_length() > 65536:
-  return ERR_INVALID_DATA
- var data: Variant = JSON.parse_string(file.get_as_text())
- if not data is Dictionary or data.get("version") != 1:
-  return ERR_INVALID_DATA
- var pos: Variant = data.get("player")
- if not pos is Array or pos.size() != 2:
-  return ERR_INVALID_DATA
- if not _valid_number(pos[0], -100, 100) or not _valid_number(pos[1], -100, 100):
-  return ERR_INVALID_DATA
- if not _valid_number(data.get("health"), 0, 100) or not _valid_number(data.get("supplies"), 0, items.size()):
-  return ERR_INVALID_DATA
- var door_states: Variant = data.get("doors")
- var searched: Variant = data.get("searched")
- var enemies: Variant = data.get("enemies")
- if not door_states is Array or door_states.size() != doors.size():
-  return ERR_INVALID_DATA
- if not searched is Array or searched.size() != 4:
-  return ERR_INVALID_DATA
- if not enemies is Array or enemies.size() != infected.size():
-  return ERR_INVALID_DATA
+func _integer(value: Variant, low: int, high: int) -> bool:
+ return _valid_number(value,low,high) and floorf(float(value))==float(value)
+
+func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
+ if not FileAccess.file_exists(path): return ERR_FILE_NOT_FOUND
+ var file:=FileAccess.open(path,FileAccess.READ)
+ if file==null: return FileAccess.get_open_error()
+ if file.get_length()>262144: return ERR_INVALID_DATA
+ var parser:=JSON.new()
+ if parser.parse(file.get_as_text())!=OK: return ERR_INVALID_DATA
+ var data: Variant=parser.data
+ if not data is Dictionary or not _integer(data.get("version"),1,2): return ERR_INVALID_DATA
+ var position: Variant=data.get("player")
+ if not position is Array or position.size()!=2 or not _valid_number(position[0],-100,100) or not _valid_number(position[1],-100,100): return ERR_INVALID_DATA
+ if not _valid_number(data.get("health"),0,100) or not _integer(data.get("supplies"),0,100000): return ERR_INVALID_DATA
+ var door_states: Variant=data.get("doors")
+ var searched: Variant=data.get("searched")
+ var enemies: Variant=data.get("enemies")
+ if not door_states is Array or door_states.size()!=doors.size() or not searched is Array or searched.size()!=4 or not enemies is Array or enemies.size()!=infected.size(): return ERR_INVALID_DATA
  for state in door_states:
-  if not state is Dictionary or not state.get("open") is bool or not _valid_number(state.get("health"), 0, 45):
-   return ERR_INVALID_DATA
- for state in searched:
-  if not state is bool:
-   return ERR_INVALID_DATA
+  if not state is Dictionary or not state.get("open") is bool or not _valid_number(state.get("health"),0,45): return ERR_INVALID_DATA
+ for flag in searched:
+  if not flag is bool: return ERR_INVALID_DATA
  for enemy in enemies:
-  if not enemy is Dictionary or not _valid_number(enemy.get("x"), -100, 100) or not _valid_number(enemy.get("y"), -100, 100) or not _valid_number(enemy.get("health"), 0, 3):
-   return ERR_INVALID_DATA
- # No mutation before the entire schema has passed validation.
- player = Vector2(pos[0], pos[1])
- health = data.health
- supplies = int(data.supplies)
+  if not enemy is Dictionary or not _valid_number(enemy.get("x"),-100,100) or not _valid_number(enemy.get("y"),-100,100) or not _integer(enemy.get("health"),0,3): return ERR_INVALID_DATA
+ var inventory_state: Dictionary={"inventory":{},"equipped":""}
+ if data.version==1:
+  if not _integer(data.supplies,0,4): return ERR_INVALID_DATA
+  if data.supplies>0:
+   var count:=int(data.supplies)
+   inventory_state={"inventory":{"ll_food_bean_tin":count,"ll_food_water_bottle":count,"ll_medical_sterile_bandage":count},"equipped":""}
+  if not survival.validate(inventory_state): return ERR_INVALID_DATA
+ var ground: Array[Dictionary]=[]
+ var flags: Dictionary={}
+ if data.version==2:
+  for key in ["stamina","hunger","thirst"]:
+   if not _valid_number(data.get(key),0,100): return ERR_INVALID_DATA
+  if not survival.validate(data.get("survival")): return ERR_INVALID_DATA
+  inventory_state=data.survival
+  var containers: Variant=data.get("containers")
+  var expected: Array=[]
+  for item in items:
+   if item.get("container",false): expected.append(item.id)
+  if not containers is Dictionary or containers.size()!=expected.size(): return ERR_INVALID_DATA
+  for id in expected:
+   if not containers.get(id) is bool: return ERR_INVALID_DATA
+  flags=containers
+  for i in range(4):
+   if flags[items[i].id]!=searched[i]: return ERR_INVALID_DATA
+  var raw_drops: Variant=data.get("drops")
+  if not raw_drops is Array or raw_drops.size()>128: return ERR_INVALID_DATA
+  for drop in raw_drops:
+   if not drop is Dictionary or not drop.get("id") is String or not survival.definitions.has(drop.id): return ERR_INVALID_DATA
+   if not _integer(drop.get("count"),1,int(survival.definitions[drop.id].stack_max)) or not _valid_number(drop.get("x"),-100,100) or not _valid_number(drop.get("y"),-100,100): return ERR_INVALID_DATA
+   ground.append({"id":drop.id,"count":int(drop.count),"pos":Vector2(drop.x,drop.y)})
+ if validate_only: return OK
+ # Apply only after every legacy and extended value has passed validation.
+ survival.restore(inventory_state)
+ player=Vector2(position[0],position[1])
+ if _blocked_static(player):
+  player=_clear_saved_position(player)
+  _announce("Saved location obstructed — moved to nearby clear ground")
+ health=float(data.health)
+ supplies=int(data.supplies)
+ stamina=float(data.stamina) if data.version==2 else 100.0
+ hunger=float(data.hunger) if data.version==2 else 0.0
+ thirst=float(data.thirst) if data.version==2 else 0.0
  for i in range(doors.size()):
-  doors[i].open = door_states[i].open
-  doors[i].health = door_states[i].health
- for i in range(4):
-  items[i].searched = searched[i]
+  doors[i].open=door_states[i].open
+  doors[i].health=float(door_states[i].health)
+ for i in range(items.size()):
+  items[i].searched=searched[i] if i<4 else not items[i].get("container",false)
+  if flags.has(items[i].id): items[i].searched=flags[items[i].id]
  for i in range(infected.size()):
-  infected[i] = Vector2(enemies[i].x, enemies[i].y)
-  zombie_health[i] = int(enemies[i].health)
+  infected[i]=Vector2(enemies[i].x,enemies[i].y)
+  zombie_health[i]=int(enemies[i].health)
+  if zombie_health[i]>0 and _blocked_static(infected[i],.17): infected[i]=_clear_saved_position(infected[i])
+  zombies_hit_time[i]=0.0
+ drops=ground
+ for drop in drops: art._cache(survival.definitions[drop.id].art_id)
+ selected_target={}
+ attack_cooldown=0; shove_cooldown=0; recovery_delay=0
+ navigation.paths.clear(); navigation.timers.clear()
  _clear_pointers()
+ if data.version==1: _announce("Legacy progress loaded; caches supplied food, water and bandages")
  return OK
 
-
 func _set_inventory(value: bool) -> void:
+ if save_blocked: return
  inventory_open=value
  inventory_page=0
  _set_paused(value)
@@ -708,7 +751,7 @@ func _resolve_target() -> Dictionary:
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
-   var score: float=player.distance_to(_target_point(target))
+   var score: float=_interaction_distance(target)
    if score<distance:
     distance=score
     best=target
@@ -724,7 +767,11 @@ func _context_prompt() -> String:
 func _inventory_rows() -> Array:
  var rows:=survival.rows()
  inventory_page=clampi(inventory_page,0,maxi(0,ceili(rows.size()/6.0)-1))
- return rows.slice(inventory_page*6,inventory_page*6+6)
+ var page: Array=rows.slice(inventory_page*6,inventory_page*6+6)
+ for row in page:
+  var definition: Dictionary=survival.definitions[row.id]
+  row.detail="%s · %.2f kg%s" % [definition.category,float(definition.weight_kg)*int(row.count)," · equipped" if survival.equipped==row.id else ""]
+ return page
 
 func _first_item(kind: String) -> String:
  var ids: Array=survival.inventory.keys()
@@ -768,7 +815,7 @@ func _use_item(id: String) -> bool:
   if kind=="food": hunger=maxf(0,hunger-effect.amount)
   elif kind=="drink": thirst=maxf(0,thirst-effect.amount)
   else: health=minf(100,health+effect.amount)
-  _announce(survival.action(id) if survival.inventory.has(id) else "Used "+survival.name_for(id))
+  _announce(("Ate " if kind=="food" else "Drank " if kind=="drink" else "Applied ")+survival.name_for(id))
  else:
   _announce(survival.name_for(id)+" — carry or drop")
   return true
@@ -835,3 +882,53 @@ func _activate_action(action: String) -> void:
    var id:=_first_item("drink") if thirst>0 else _first_item("food")
    if not id.is_empty(): _use_item(id)
   "quick2": pass
+
+func _clear_saved_position(position: Vector2) -> Vector2:
+ var center:=position.clamp(Vector2(-6.5,-6.5),Vector2(16.5,16.5))
+ for radius in range(15):
+  for y in range(-radius,radius+1):
+   for x in range(-radius,radius+1):
+    var candidate:=center+Vector2(x,y)*.25
+    if not _blocked(candidate): return candidate
+ return Vector2(4.9,9.35)
+
+func _recover_backup() -> bool:
+ if not recovery_available or _load_game(SAVE_PATH+".bak",true)!=OK: return false
+ if FileAccess.file_exists(SAVE_PATH) and DirAccess.copy_absolute(SAVE_PATH,SAVE_PATH+".rejected.bak")!=OK: return false
+ if DirAccess.copy_absolute(SAVE_PATH+".bak",SAVE_PATH)!=OK: return false
+ if _load_game()!=OK: return false
+ save_blocked=false
+ recovery_available=false
+ _set_paused(false)
+ _announce("Backup restored; original retained as rejected backup")
+ return true
+
+func _held_frame(id: String, direction: int) -> Dictionary:
+ var key:=id+"/%d"%direction
+ if not held_sprites.has(key):
+  for frame in art.catalog[id].frames:
+   if frame.mode=="held" and int(frame.angle_degrees)==direction*45:
+    held_sprites[key]={"texture":load("res://assets/generated/factory/"+frame.file),"anchor":Vector2(frame.anchor_px[0],frame.anchor_px[1])}
+    break
+ return held_sprites.get(key,{})
+
+func _load_controls() -> void:
+ var config:=ConfigFile.new()
+ if config.load("user://last_light_controls.cfg")==OK:
+  var value: Variant=config.get_value("touch","dead_zone",.14)
+  if _valid_number(value,.05,.35): joystick_dead_zone=float(value)
+
+func _set_dead_zone(value: float) -> void:
+ joystick_dead_zone=clampf(value,.05,.35)
+ _clear_pointers()
+ var config:=ConfigFile.new()
+ config.set_value("touch","dead_zone",joystick_dead_zone)
+ if config.save("user://last_light_controls.cfg")!=OK: _announce("Could not save control setting")
+ queue_redraw()
+
+func _interaction_distance(target: Dictionary) -> float:
+ if target.kind=="door": return _segment_distance(player,doors[target.index].a,doors[target.index].b)
+ if target.kind=="container":
+  var r:=Rect2(items[target.index].pos,items[target.index].size)
+  return player.distance_to(player.clamp(r.position,r.end))
+ return player.distance_to(drops[target.index].pos)

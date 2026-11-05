@@ -1,0 +1,570 @@
+{
+  "schema": 1,
+  "source_manifest": "assets/generated/factory/manifest.json",
+  "factory_ground_sprites_rendered": 40,
+  "solid_furnishings": 16,
+  "decorations": 25,
+  "original_replacement": "fitted bed at original collider; procedural floor/wall/window/roof/yard geometry in scripts/house_art.gd",
+  "assets": [
+    {
+      "id": "ll_crafting_firewood",
+      "ground": "sprites/ll_crafting_firewood/ground.png",
+      "anchor_px": [
+        16,
+        16
+      ],
+      "dimensions_m": [
+        0.55,
+        0.2288,
+        0.1536
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_crafting_pine_plank",
+      "ground": "sprites/ll_crafting_pine_plank/ground.png",
+      "anchor_px": [
+        22,
+        13
+      ],
+      "dimensions_m": [
+        0.85,
+        0.16,
+        0.035
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_food_bean_tin",
+      "ground": "sprites/ll_food_bean_tin/ground.png",
+      "anchor_px": [
+        5,
+        10
+      ],
+      "dimensions_m": [
+        0.09,
+        0.09,
+        0.13
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_food_water_bottle",
+      "ground": "sprites/ll_food_water_bottle/ground.png",
+      "anchor_px": [
+        5,
+        16
+      ],
+      "dimensions_m": [
+        0.085,
+        0.085,
+        0.27
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_bathtub",
+      "ground": "sprites/ll_furniture_bathtub/ground.png",
+      "anchor_px": [
+        52,
+        50
+      ],
+      "dimensions_m": [
+        0.7125,
+        1.7655,
+        0.495
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_bookcase",
+      "ground": "sprites/ll_furniture_bookcase/ground.png",
+      "anchor_px": [
+        27,
+        92
+      ],
+      "dimensions_m": [
+        0.935,
+        0.312,
+        1.584
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_coffee_table",
+      "ground": "sprites/ll_furniture_coffee_table/ground.png",
+      "anchor_px": [
+        39,
+        57
+      ],
+      "dimensions_m": [
+        1.125,
+        0.736,
+        0.81
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_cooking_stove",
+      "ground": "sprites/ll_furniture_cooking_stove/ground.png",
+      "anchor_px": [
+        27,
+        60
+      ],
+      "dimensions_m": [
+        0.689,
+        0.576,
+        0.945
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_dining_chair",
+      "ground": "sprites/ll_furniture_dining_chair/ground.png",
+      "anchor_px": [
+        20,
+        54
+      ],
+      "dimensions_m": [
+        0.46,
+        0.48,
+        0.88
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_kitchen_counter",
+      "ground": "sprites/ll_furniture_kitchen_counter/ground.png",
+      "anchor_px": [
+        36,
+        58
+      ],
+      "dimensions_m": [
+        1.045,
+        0.642,
+        0.81
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_kitchen_table",
+      "ground": "sprites/ll_furniture_kitchen_table/ground.png",
+      "anchor_px": [
+        46,
+        57
+      ],
+      "dimensions_m": [
+        1.375,
+        0.832,
+        0.72
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_medicine_cabinet",
+      "ground": "sprites/ll_furniture_medicine_cabinet/ground.png",
+      "anchor_px": [
+        26,
+        55
+      ],
+      "dimensions_m": [
+        0.75,
+        0.44,
+        0.85
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_nightstand",
+      "ground": "sprites/ll_furniture_nightstand/ground.png",
+      "anchor_px": [
+        28,
+        54
+      ],
+      "dimensions_m": [
+        0.825,
+        0.4576,
+        0.816
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_refrigerator",
+      "ground": "sprites/ll_furniture_refrigerator/ground.png",
+      "anchor_px": [
+        29,
+        98
+      ],
+      "dimensions_m": [
+        0.7,
+        0.65,
+        1.7
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_sink_cabinet",
+      "ground": "sprites/ll_furniture_sink_cabinet/ground.png",
+      "anchor_px": [
+        32,
+        59
+      ],
+      "dimensions_m": [
+        0.88,
+        0.624,
+        0.864
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_storage_chest",
+      "ground": "sprites/ll_furniture_storage_chest/ground.png",
+      "anchor_px": [
+        31,
+        42
+      ],
+      "dimensions_m": [
+        0.935,
+        0.4992,
+        0.528
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_toilet",
+      "ground": "sprites/ll_furniture_toilet/ground.png",
+      "anchor_px": [
+        17,
+        49
+      ],
+      "dimensions_m": [
+        0.4,
+        0.65,
+        0.8
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_two_seat_sofa",
+      "ground": "sprites/ll_furniture_two_seat_sofa/ground.png",
+      "anchor_px": [
+        54,
+        67
+      ],
+      "dimensions_m": [
+        1.75,
+        0.82,
+        0.82
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_furniture_wardrobe",
+      "ground": "sprites/ll_furniture_wardrobe/ground.png",
+      "anchor_px": [
+        33,
+        99
+      ],
+      "dimensions_m": [
+        0.9025,
+        0.6206,
+        1.665
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_alarm_clock",
+      "ground": "sprites/ll_household_alarm_clock/ground.png",
+      "anchor_px": [
+        6,
+        11
+      ],
+      "dimensions_m": [
+        0.16,
+        0.06,
+        0.16
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_backpack",
+      "ground": "sprites/ll_household_backpack/ground.png",
+      "anchor_px": [
+        12,
+        25
+      ],
+      "dimensions_m": [
+        0.352,
+        0.1872,
+        0.432
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_bar_soap",
+      "ground": "sprites/ll_household_bar_soap/ground.png",
+      "anchor_px": [
+        7,
+        6
+      ],
+      "dimensions_m": [
+        0.18,
+        0.12,
+        0.035
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_bucket",
+      "ground": "sprites/ll_household_bucket/ground.png",
+      "anchor_px": [
+        11,
+        22
+      ],
+      "dimensions_m": [
+        0.33,
+        0.312,
+        0.3072
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_candle",
+      "ground": "sprites/ll_household_candle/ground.png",
+      "anchor_px": [
+        4,
+        10
+      ],
+      "dimensions_m": [
+        0.0617,
+        0.0696,
+        0.144
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_ceramic_mug",
+      "ground": "sprites/ll_household_ceramic_mug/ground.png",
+      "anchor_px": [
+        4,
+        8
+      ],
+      "dimensions_m": [
+        0.081,
+        0.1104,
+        0.108
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_cooking_pot",
+      "ground": "sprites/ll_household_cooking_pot/ground.png",
+      "anchor_px": [
+        10,
+        15
+      ],
+      "dimensions_m": [
+        0.28,
+        0.28,
+        0.18
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_cutting_board",
+      "ground": "sprites/ll_household_cutting_board/ground.png",
+      "anchor_px": [
+        20,
+        13
+      ],
+      "dimensions_m": [
+        0.765,
+        0.1472,
+        0.0378
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_folded_blanket",
+      "ground": "sprites/ll_household_folded_blanket/ground.png",
+      "anchor_px": [
+        15,
+        12
+      ],
+      "dimensions_m": [
+        0.4,
+        0.3,
+        0.08
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_folded_towel",
+      "ground": "sprites/ll_household_folded_towel/ground.png",
+      "anchor_px": [
+        16,
+        12
+      ],
+      "dimensions_m": [
+        0.44,
+        0.312,
+        0.0768
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_fuel_can",
+      "ground": "sprites/ll_household_fuel_can/ground.png",
+      "anchor_px": [
+        11,
+        26
+      ],
+      "dimensions_m": [
+        0.27,
+        0.1472,
+        0.4536
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_hardback_book",
+      "ground": "sprites/ll_household_hardback_book/ground.png",
+      "anchor_px": [
+        9,
+        7
+      ],
+      "dimensions_m": [
+        0.152,
+        0.2354,
+        0.0315
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_laundry_basket",
+      "ground": "sprites/ll_household_laundry_basket/ground.png",
+      "anchor_px": [
+        11,
+        22
+      ],
+      "dimensions_m": [
+        0.3325,
+        0.321,
+        0.315
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_magazine",
+      "ground": "sprites/ll_household_magazine/ground.png",
+      "anchor_px": [
+        9,
+        7
+      ],
+      "dimensions_m": [
+        0.1696,
+        0.2112,
+        0.0368
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_paperback_book",
+      "ground": "sprites/ll_household_paperback_book/ground.png",
+      "anchor_px": [
+        9,
+        7
+      ],
+      "dimensions_m": [
+        0.16,
+        0.22,
+        0.035
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_portable_radio",
+      "ground": "sprites/ll_household_portable_radio/ground.png",
+      "anchor_px": [
+        8,
+        12
+      ],
+      "dimensions_m": [
+        0.225,
+        0.0736,
+        0.1728
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_storage_box",
+      "ground": "sprites/ll_household_storage_box/ground.png",
+      "anchor_px": [
+        7,
+        18
+      ],
+      "dimensions_m": [
+        0.171,
+        0.0828,
+        0.2808
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_household_toilet_roll",
+      "ground": "sprites/ll_household_toilet_roll/ground.png",
+      "anchor_px": [
+        5,
+        8
+      ],
+      "dimensions_m": [
+        0.114,
+        0.1284,
+        0.09
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_medical_antiseptic",
+      "ground": "sprites/ll_medical_antiseptic/ground.png",
+      "anchor_px": [
+        5,
+        14
+      ],
+      "dimensions_m": [
+        0.0808,
+        0.091,
+        0.243
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_medical_sterile_bandage",
+      "ground": "sprites/ll_medical_sterile_bandage/ground.png",
+      "anchor_px": [
+        5,
+        8
+      ],
+      "dimensions_m": [
+        0.12,
+        0.12,
+        0.1
+      ],
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "ll_tools_shovel",
+      "ground": "sprites/ll_tools_shovel/ground.png",
+      "anchor_px": [
+        24,
+        14
+      ],
+      "dimensions_m": [
+        0.216,
+        1.012,
+        0.0648
+      ],
+      "license": "CC0-1.0"
+    }
+  ]
+}

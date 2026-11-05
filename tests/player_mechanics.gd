@@ -13,7 +13,7 @@ func run()->void:
  var distances:Array=[]
  for fps in [30,60,120]:
   game._restart_game()
-  game.player=Vector2(-5,-5)
+  game.player=Vector2(-4,2)
   game.zombie_health=[0,0]
   game.joystick_touch=1
   game.joystick_vector=Vector2.RIGHT

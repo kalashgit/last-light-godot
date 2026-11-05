@@ -3,6 +3,8 @@ extends RefCounted
 ## Layout coordinates remain gameplay metres; factory PNG anchors remain calibrated.
 const HOME := Rect2(0, 0, 9, 8)
 const FACTORY := "res://assets/generated/factory/"
+const TerrainMesh := preload("res://scripts/terrain_mesh.gd")
+var terrain: ArrayMesh
 var layout: Dictionary = {}
 var catalog: Dictionary = {}
 var sprites: Dictionary = {}
@@ -10,6 +12,10 @@ var placed: Array[Dictionary] = []
 var decorations: Array[Dictionary] = []
 
 func setup(_game) -> void:
+ var builder:=TerrainMesh.new()
+ _ground(builder)
+ _floors(builder)
+ terrain=builder.finish()
  layout = JSON.parse_string(FileAccess.get_file_as_string("res://data/house_layout.json"))
  var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FACTORY + "manifest.json"))
  assert(int(manifest.tile_px[0]) == 80 and int(manifest.tile_px[1]) == 40, "House projection must remain 80x40")
@@ -261,8 +267,8 @@ func _roof(g) -> void:
 
 func draw_world(g) -> void:
  var inside := HOME.has_point(g.player)
- _ground(g)
- _floors(g)
+ g.draw_rect(g.get_viewport_rect(),Color("28362d"))
+ g.draw_mesh(terrain,null,Transform2D(0,g._screen(Vector2.ZERO)))
  var commands: Array[Dictionary] = []
  for wall in g.walls:
   var a: Vector2 = wall.a

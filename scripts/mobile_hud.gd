@@ -62,6 +62,9 @@ func layout(game) -> Dictionary:
   "inv_prev": Rect2(Vector2(modal.position.x + 20, modal.end.y - 64), Vector2(78, 48)),
   "inv_next": Rect2(Vector2(modal.end.x - 98, modal.end.y - 64), Vector2(78, 48)),
   "resume": Rect2(safe.get_center() + Vector2(-120, 18), Vector2(240, 56)),
+  "deadzone_down": Rect2(safe.get_center()+Vector2(-120,84),Vector2(76,48)),
+  "deadzone_up": Rect2(safe.get_center()+Vector2(44,84),Vector2(76,48)),
+  "recovery_reset": Rect2(safe.get_center() + Vector2(-120,84),Vector2(240,56)),
   "dead_restart": Rect2(safe.get_center() + Vector2(-120, 24), Vector2(240, 56))
  }
  controls["deadrespawn"] = controls.dead_restart
@@ -106,7 +109,7 @@ func _button(game, rect: Rect2, label: String, active: bool = false, primary: bo
  var fill := Color("a28e65") if primary else (Color("526a50") if active else CONTROL)
  var border := ACCENT if active or primary else LINE
  _panel(game, rect, fill, border, 12 if not primary else 24)
- _center_text(game, label, rect, 15, Color("121c17") if primary else INK)
+ _center_text(game, label, rect, 12 if rect.size.x<=56 else 15, Color("121c17") if primary else INK)
 
 func _status(game, rect: Rect2, label: String, amount: float, tint: Color) -> void:
  var value := clampf(amount, 0, 100)
@@ -168,16 +171,16 @@ func _draw_play_controls(game, controls: Dictionary) -> void:
  _button(game, controls.sprint, "SPRINT", game.sprinting)
  _button(game, controls.sneak, "SNEAK", game.sneaking)
  var slots: Array = game._quick_slots()
- var hints := ["WEAPON", "MEDICAL", "UTILITY", "SUPPLY"]
+ var hints := ["TOOL", "MED", "UTIL", "FOOD"]
  for i in range(4):
   var rect: Rect2 = controls["quick%d" % i]
   var title := str(slots[i]) if i < slots.size() else ""
   var enabled := not title.is_empty() and title != "—"
   _panel(game, rect, CONTROL, LINE if not enabled else Color(0.64, 0.63, 0.47, 0.8), 8)
   game._text(str(i + 1), rect.position + Vector2(5, 15), 14, ACCENT if enabled else MUTED)
-  _center_text(game, title if enabled else "—", Rect2(rect.position + Vector2(0, 10), rect.size - Vector2(0, 10)), 14, INK if enabled else MUTED)
+  _center_text(game, title if enabled else "—", Rect2(rect.position + Vector2(0, 10), rect.size - Vector2(0, 10)), 11, INK if enabled else MUTED)
   # Slot roles are visible above the bar; disabled slots advertise no action.
-  _center_text(game, hints[i], Rect2(rect.position - Vector2(5, 22), Vector2(rect.size.x + 10, 18)), 14, MUTED)
+  _center_text(game, hints[i], Rect2(rect.position - Vector2(5, 22), Vector2(rect.size.x + 10, 18)), 11, MUTED)
 
 func _scrim(game) -> void:
  game.draw_rect(game.get_viewport_rect(), Color(0.015, 0.025, 0.022, 0.76))
@@ -187,7 +190,7 @@ func _draw_inventory(game, controls: Dictionary) -> void:
  var panel: Rect2 = controls.inventory_panel
  _panel(game, panel, Color("111d18"), LINE, 14)
  game._text("INVENTORY", panel.position + Vector2(22, 32), 22, INK)
- game._text("Tap an item action. The world is paused.", panel.position + Vector2(22, 57), 14, MUTED)
+ game._text("%.1f / 20 kg · Caches searched %d · world paused" % [game.survival.total_weight(),game.supplies], panel.position + Vector2(22, 57), 14, MUTED)
  var rows: Array = game._inventory_rows()
  var row_height := minf(56, (panel.size.y - 164) / 6.0)
  for i in range(mini(6, rows.size())):
@@ -198,13 +201,15 @@ func _draw_inventory(game, controls: Dictionary) -> void:
   var name_width := maxf(60, panel.size.x - 222)
   var name := "%s ×%d" % [str(row.get("name", "Unknown item")), int(row.get("count", 1))]
   game._text(_fit(name, name_width, 16), row_rect.position + Vector2(8, 23), 16, INK)
-  game._text(_fit(str(row.get("id", "")), name_width, 14), row_rect.position + Vector2(8, 43), 14, MUTED)
+  game._text(_fit(str(row.get("detail", "")), name_width, 14), row_rect.position + Vector2(8, 43), 14, MUTED)
   var action := str(row.get("action", ""))
   if not action.is_empty():
    _button(game, controls["modal_use_%d" % i], action.to_upper())
   _button(game, controls["modal_drop_%d" % i], "DROP")
  if rows.is_empty():
   _center_text(game, "No supplies yet. Search the house.", Rect2(panel.position + Vector2(20, 120), Vector2(panel.size.x - 40, 60)), 18, MUTED)
+ if game.message_time>0:
+  game._text(_fit(str(game.message),panel.size.x-44,13),panel.position+Vector2(22,panel.size.y-76),13,ACCENT)
  _button(game, controls.inv_prev, "PREV")
  _button(game, controls.inv_next, "NEXT")
  _center_text(game, "PAGE %d" % (int(game.inventory_page) + 1), Rect2(Vector2(panel.get_center().x - 70, panel.end.y - 64), Vector2(140, 48)), 14, MUTED)
@@ -214,8 +219,17 @@ func _draw_inventory(game, controls: Dictionary) -> void:
 func _draw_pause(game, controls: Dictionary, dead: bool) -> void:
  _scrim(game)
  var safe: Rect2 = controls.safeRect
- var panel := Rect2(safe.get_center() - Vector2(180, 104), Vector2(360, 208))
+ var panel := Rect2(safe.get_center() - Vector2(180, 104), Vector2(360, 288 if not dead else 208))
  _panel(game, panel, Color("111d18"), LINE, 14)
  _center_text(game, "LAST LIGHT" if not dead else "YOUR LAST LIGHT", Rect2(panel.position + Vector2(12, 20), Vector2(panel.size.x - 24, 36)), 24, INK)
- _center_text(game, "Paused · progress preserved" if not dead else "The house remembers. Begin again.", Rect2(panel.position + Vector2(12, 64), Vector2(panel.size.x - 24, 26)), 14, MUTED)
- _button(game, controls.dead_restart if dead else controls.resume, "NEW SURVIVOR" if dead else "RESUME", false, true)
+ _center_text(game, ("Original save retained; saving blocked" if game.save_blocked else "Save failed · previous files retained" if game.last_save_error!=OK else "Paused · progress preserved") if not dead else "The house remembers. Begin again.", Rect2(panel.position + Vector2(12, 64), Vector2(panel.size.x - 24, 26)), 14, MUTED)
+ if game.save_blocked and not dead:
+  _button(game,controls.resume,"RESTORE BACKUP" if game.recovery_available else "NEW SURVIVOR",false,true)
+  if game.recovery_available: _button(game,controls.recovery_reset,"START FRESH · KEEP COPY")
+ else:
+  _button(game, controls.dead_restart if dead else controls.resume, "NEW SURVIVOR" if dead else "RESUME", false, true)
+  if not dead:
+   _button(game,controls.deadzone_down,"−")
+   _button(game,controls.deadzone_up,"+")
+   _center_text(game,"%d%%"%roundi(game.joystick_dead_zone*100),Rect2(safe.get_center()+Vector2(-42,84),Vector2(84,48)),14,INK)
+   _center_text(game,"STICK DEAD ZONE",Rect2(safe.get_center()+Vector2(-120,136),Vector2(240,24)),12,MUTED)

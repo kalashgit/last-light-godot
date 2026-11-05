@@ -18,3 +18,12 @@ run_checked --headless --path . --editor --import
 run_checked --headless --path . --script tests/foundation.gd
 run_checked --headless --path . --quit-after 120
 run_checked --headless --path . --script tests/asset_gallery.gd
+
+run_checked --headless --path . --script tests/player_mechanics.gd
+run_checked --headless --path . --script tests/survival_model.gd
+run_checked --headless --path . --script tests/house_survival.gd
+run_checked --headless --path . --script tests/control_settings.gd
+
+run_checked --headless --path . --script tests/loot_loop.gd
+run_checked --headless --path . --script tests/save_migration_edges.gd
+run_checked --headless --path . --script tests/save_isolation.gd
