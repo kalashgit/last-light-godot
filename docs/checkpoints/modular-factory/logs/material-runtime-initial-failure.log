@@ -1,0 +1,157 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+ERROR: valid runtime data
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:10)
+ERROR: Material registry rejected: ["invalid scale: wood_oak", "invalid scale: tile_ceramic", "invalid scale: concrete_stained", "invalid scale: vinyl_check", "invalid scale: asphalt_worn", "invalid scale: grass_sparse", "invalid scale: paver_gray", "invalid scale: plaster_cream", "invalid scale: concrete_block", "invalid scale: brick_aged", "invalid scale: metal_panel", "invalid scale: shingle_asphalt", "invalid scale: standing_seam_metal", "invalid scale: flat_membrane"]
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] _ensure_loaded (res://scripts/material_registry.gd:50)
+       [1] color (res://scripts/material_registry.gd:62)
+       [2] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: wood_oak / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color wood_oak
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: tile_ceramic / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color tile_ceramic
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: concrete_stained / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color concrete_stained
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: vinyl_check / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color vinyl_check
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: asphalt_worn / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color asphalt_worn
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: grass_sparse / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color grass_sparse
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: paver_gray / floor
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color paver_gray
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: plaster_cream / wall
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color plaster_cream
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: concrete_block / wall
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color concrete_block
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: brick_aged / wall
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color brick_aged
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: metal_panel / wall
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color metal_panel
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: shingle_asphalt / roof
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color shingle_asphalt
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: standing_seam_metal / roof
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color standing_seam_metal
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: Unknown/incompatible material: flat_membrane / roof
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] color (res://scripts/material_registry.gd:64)
+       [1] _initialize (res://tests/material_registry.gd:19)
+ERROR: cached color flat_membrane
+   at: push_error (core/variant/variant_utility.cpp:1024)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/material_registry.gd:7)
+       [1] _initialize (res://tests/material_registry.gd:19)
+SCRIPT ERROR: Invalid access to property or key 'palette' on a base object of type 'Dictionary'.
+          at: _initialize (res://tests/material_registry.gd:21)
+          GDScript backtrace (most recent call first):
+              [0] _initialize (res://tests/material_registry.gd:21)

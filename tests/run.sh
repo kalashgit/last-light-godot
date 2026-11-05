@@ -19,3 +19,5 @@ run_checked --headless --path . --script tests/foundation.gd
 run_checked --headless --path . --quit-after 120
 run_checked --headless --path . --script tests/asset_gallery.gd
 run_checked --headless --path . --script tests/five_building_lab.gd
+
+run_checked --headless --path . --script tests/material_registry.gd

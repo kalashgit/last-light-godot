@@ -1,0 +1,9 @@
+PASS: 14 runtime materials, 2 shared textures, 8 kit and 5 live-building bindings
+test_incompatible_bindings (__main__.Materials.test_incompatible_bindings) ... ok
+test_invalid_definitions (__main__.Materials.test_invalid_definitions) ... ok
+test_valid (__main__.Materials.test_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.017s
+
+OK

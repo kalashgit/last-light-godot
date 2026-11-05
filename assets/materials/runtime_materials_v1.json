@@ -1,0 +1,527 @@
+{
+  "schema_version": 1,
+  "revision": "material-runtime-v1",
+  "projection": {
+    "tile_px": [
+      80,
+      40
+    ],
+    "pixels_per_unit": [
+      40,
+      20
+    ]
+  },
+  "specs": {
+    "building_catalog": {
+      "url": "https://www.notion.so/40ef639e237381e3aa21e11fe89428fe",
+      "status": "proposed_catalog",
+      "snapshot": "2026-11-05"
+    },
+    "material_direction": {
+      "url": "https://www.notion.so/40ef639e2373816f91ccd4b54c961e67",
+      "section": "15",
+      "snapshot": "2026-11-05"
+    }
+  },
+  "assets": {
+    "wall_atlas": {
+      "path": "res://assets/materials/wall_kit_atlas_v1.png",
+      "size_px": [
+        512,
+        512
+      ],
+      "sha256": "e53dbf768086be09a291a0712fe373d90bfc8f17f81128537ed83daad1655d46",
+      "repeatable": false,
+      "provenance": "original LAST LIGHT procedural artwork; inherited from five-building V4/V6",
+      "status": "existing_integrated_candidate",
+      "license_status": "original repository artwork; no external source assets added by this checkpoint"
+    },
+    "asphalt_grain": {
+      "path": "res://assets/materials/asphalt_grain_v1.png",
+      "size_px": [
+        128,
+        128
+      ],
+      "sha256": "12f8df4c546e4d7ccc515c9227feb048109db73a9d792c26280e4323879acf09",
+      "repeatable": false,
+      "provenance": "original LAST LIGHT procedural artwork; inherited from five-building V4/V6",
+      "status": "existing_integrated_candidate",
+      "license_status": "original repository artwork; no external source assets added by this checkpoint"
+    }
+  },
+  "materials": [
+    {
+      "id": "wood_oak",
+      "version": 1,
+      "family": "wood_flooring",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "8a7051"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "wood_oak",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "suburban",
+        "rural",
+        "fortified"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "tile_ceramic",
+      "version": 1,
+      "family": "ceramic_stone",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "b8b8ab"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "tile_ceramic",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "suburban",
+        "retail",
+        "civic"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "concrete_stained",
+      "version": 1,
+      "family": "concrete",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "777c76"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "concrete_stained",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "multiunit",
+        "service",
+        "industrial",
+        "rural",
+        "fortified"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "vinyl_check",
+      "version": 1,
+      "family": "vinyl",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "a7a99d"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "vinyl_check",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "multiunit",
+        "retail",
+        "service",
+        "civic"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "asphalt_worn",
+      "version": 1,
+      "family": "asphalt",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "494e4e"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "asphalt_worn",
+      "asset_id": "asphalt_grain",
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "grass_sparse",
+      "version": 1,
+      "family": "terrain",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "4c6650"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "grass_sparse",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "paver_gray",
+      "version": 1,
+      "family": "ceramic_stone",
+      "surfaces": [
+        "floor"
+      ],
+      "palette": {
+        "base": "99978b"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "paver_gray",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "plaster_cream",
+      "version": 1,
+      "family": "painted_plaster",
+      "surfaces": [
+        "wall"
+      ],
+      "palette": {
+        "base": "c5b99d"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "plaster_cream",
+      "asset_id": "wall_atlas",
+      "atlas_region_px": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "sampling": "clamped_inset_1px",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "suburban",
+        "rural"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "concrete_block",
+      "version": 1,
+      "family": "concrete",
+      "surfaces": [
+        "wall"
+      ],
+      "palette": {
+        "base": "898f89"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "concrete_block",
+      "asset_id": "wall_atlas",
+      "atlas_region_px": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "sampling": "clamped_inset_1px",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "service",
+        "civic"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "brick_aged",
+      "version": 1,
+      "family": "brick_masonry",
+      "surfaces": [
+        "wall"
+      ],
+      "palette": {
+        "base": "9b6c5c"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "brick_aged",
+      "asset_id": "wall_atlas",
+      "atlas_region_px": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "sampling": "clamped_inset_1px",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "multiunit",
+        "retail"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "metal_panel",
+      "version": 1,
+      "family": "metal",
+      "surfaces": [
+        "wall"
+      ],
+      "palette": {
+        "base": "778385"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "metal_panel",
+      "asset_id": "wall_atlas",
+      "atlas_region_px": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "sampling": "clamped_inset_1px",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "industrial",
+        "fortified"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "shingle_asphalt",
+      "version": 1,
+      "family": "roof_shingles",
+      "surfaces": [
+        "roof"
+      ],
+      "palette": {
+        "base": "58666c"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "shingle_asphalt",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "suburban"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "standing_seam_metal",
+      "version": 1,
+      "family": "metal",
+      "surfaces": [
+        "roof"
+      ],
+      "palette": {
+        "base": "697e80"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "standing_seam_metal",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "service",
+        "industrial",
+        "rural",
+        "fortified"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    },
+    {
+      "id": "flat_membrane",
+      "version": 1,
+      "family": "roof_membrane",
+      "surfaces": [
+        "roof"
+      ],
+      "palette": {
+        "base": "616968"
+      },
+      "tile_px": [
+        80,
+        40
+      ],
+      "world_cell_m": 1,
+      "renderer": "flat_membrane",
+      "asset_id": null,
+      "atlas_region_px": null,
+      "sampling": "surface",
+      "states": {
+        "weathered": "existing_procedural_detail",
+        "clean": "not_authored",
+        "damaged": "not_authored"
+      },
+      "styles": [
+        "multiunit",
+        "retail",
+        "civic"
+      ],
+      "status": "integrated_candidate",
+      "spec_id": "building_catalog",
+      "test_id": "material_registry"
+    }
+  ],
+  "unimplemented_families": [
+    "glass",
+    "timber_siding"
+  ],
+  "runtime_requires_notion": false
+}
