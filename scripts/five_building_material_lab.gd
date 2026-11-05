@@ -15,6 +15,10 @@ var gameplay = LabSurvival.new()
 var selected_item := ""
 var inventory_open := false
 var sprint_mode := false
+## Temporary screenshot-friendly inspection mode; normal survival remains available.
+var inspection_mode := true
+const INSPECT_ZOOM := 0.60
+const INSPECT_SPEED_MULTIPLIER := 5.0
 var ambient_mode := 0
 var walk_cycle := 0.0
 var walking := false
@@ -39,6 +43,17 @@ func _exit_tree() -> void:
 
 func _vec(value: Array) -> Vector2:
  return Vector2(float(value[0]),float(value[1]))
+
+func _screen(p: Vector2,h: float=0.0) -> Vector2:
+ var normal: Vector2=super._screen(p,h)
+ if not inspection_mode:
+  return normal
+ var center:=get_viewport_rect().size*Vector2(.5,.55)
+ return center+(normal-center)*INSPECT_ZOOM
+
+func _toggle_inspection() -> void:
+ inspection_mode=not inspection_mode
+ _notice("SCOUT: fast + wide view" if inspection_mode else "NORMAL: gameplay view")
 
 func _init_buildings() -> void:
  var payload: Variant = JSON.parse_string(FileAccess.get_file_as_string(RECIPES))
@@ -241,6 +256,8 @@ func _interact() -> void:
  queue_redraw()
 
 func _movement_speed() -> float:
+ if inspection_mode:
+  return MOVE_SPEED*INSPECT_SPEED_MULTIPLIER
  return MOVE_SPEED*1.52 if sprint_mode and gameplay.stamina>2 else MOVE_SPEED
 
 func _process(delta: float) -> void:
@@ -248,7 +265,7 @@ func _process(delta: float) -> void:
  if paused:
   return
  var direction := stick if stick_touch!=-1 else Input.get_vector("ui_left","ui_right","ui_up","ui_down")
- gameplay.tick(minf(delta,.1),direction.length()>.14,sprint_mode)
+ gameplay.tick(minf(delta,.1),direction.length()>.14,sprint_mode and not inspection_mode)
  walking=direction.length()>.14
  if walking:
   walk_cycle=fmod(walk_cycle+delta*(15.0 if sprint_mode else 10.0),TAU)
@@ -323,6 +340,9 @@ func _on_touch(id: int,pos: Vector2) -> void:
   _cycle_ambient()
   return
  if not paused:
+  if pos.distance_to(Vector2(size.x-175,size.y-260))<36:
+   _toggle_inspection()
+   return
   if pos.distance_to(Vector2(size.x-176,size.y-80))<38:
    _toggle_inventory()
    return
@@ -352,6 +372,9 @@ func _input(event: InputEvent) -> void:
     return
    KEY_L:
     _cycle_ambient()
+    return
+   KEY_Z:
+    _toggle_inspection()
     return
  super._input(event)
 
@@ -560,7 +583,7 @@ func _draw() -> void:
  _draw_hud()
 
 func _hud_title() -> String:
- return "LAST LIGHT / FIVE-BUILDING LAB V6"
+ return "LAST LIGHT / FIVE-BUILDING LAB V7"
 
 func _hud_subtitle() -> String:
  return "5 STRUCTURES  •  MODULAR MATERIALS  •  INTERACTIVE DOORS"
@@ -582,7 +605,7 @@ func _draw_hud() -> void:
  var columns:=2 if compact else 4
  var header_height:=142.0 if compact else 106.0
  draw_rect(Rect2(Vector2.ZERO,Vector2(size.x,header_height)),Color("11221e",.95))
- _text("LAST LIGHT / LAB V6" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
+ _text("LAST LIGHT / LAB V7" if compact else _hud_title(),Vector2(12,22),14 if compact else 17,Color("e9e9dc"))
  var bar_width:=minf(99.0,maxf(52.0,(size.x-247.0-9.0*float(columns-1))/float(columns)))
  var labels: Array[String]=["HP","STAMINA","HUNGER","THIRST"]
  var values: Array[float]=[gameplay.health,gameplay.stamina,gameplay.hunger,gameplay.thirst]
@@ -598,6 +621,7 @@ func _draw_hud() -> void:
  _hud_button(Vector2(size.x-80,size.y-99),51,"INTERACT",Color("c4aa7a"))
  _hud_button(Vector2(size.x-80,size.y-207),35,"USE",Color("93b2a6"))
  _hud_button(Vector2(size.x-175,size.y-170),35,"RUN ON" if sprint_mode else "RUN",Color("b2c38a"))
+ _hud_button(Vector2(size.x-175,size.y-260),34,"SCOUT" if inspection_mode else "NORMAL",Color("b9cdb5" if inspection_mode else "87978d"))
  _hud_button(Vector2(size.x-176,size.y-80),35,"PACK",Color("b7b6a4"))
  draw_rect(Rect2(Vector2(size.x-112,12),Vector2(103,34)),Color("40584a"))
  _text("RESUME" if paused else "PAUSE",Vector2(size.x-100,35),13)

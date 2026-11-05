@@ -43,6 +43,16 @@ func run() -> void:
   check(kinds.has(kind),"distinct art archetype "+kind)
 
  var viewport_size: Vector2=lab.get_viewport_rect().size
+ check(lab.inspection_mode,"wide-view SCOUT mode starts enabled for screenshot review")
+ check(lab._movement_speed()>=12.0,"SCOUT traversal is at least five times normal walking speed")
+ var projected_scout: Vector2=lab._screen(lab.player+Vector2(5,0))
+ lab._on_touch(9,Vector2(viewport_size.x-175,viewport_size.y-260))
+ check(not lab.inspection_mode,"SCOUT button returns to normal gameplay")
+ check(is_equal_approx(lab._movement_speed(),2.5),"normal mode restores original walking speed")
+ var projected_normal: Vector2=lab._screen(lab.player+Vector2(5,0))
+ check(projected_scout.distance_to(lab._screen(lab.player))<projected_normal.distance_to(lab._screen(lab.player)),"SCOUT mode has a wider projected view")
+ lab._on_touch(9,Vector2(viewport_size.x-175,viewport_size.y-260))
+ check(lab.inspection_mode,"SCOUT button toggles back on")
  lab._on_touch(9,Vector2(viewport_size.x-176,viewport_size.y-80))
  check(lab.inventory_open,"PACK touch opens the backpack")
  check(lab._inventory_panel().size.y>=400,"empty backpack is a full-size panel instead of a thin strip")
