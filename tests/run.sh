@@ -18,6 +18,7 @@ run_checked --headless --path . --editor --import
 run_checked --headless --path . --script tests/foundation.gd
 run_checked --headless --path . --quit-after 120
 run_checked --headless --path . --script tests/asset_gallery.gd
+run_checked --headless --path . --script tests/golden40_gallery.gd
 
 run_checked --headless --path . --script tests/player_mechanics.gd
 run_checked --headless --path . --script tests/survival_model.gd

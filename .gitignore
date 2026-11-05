@@ -3,3 +3,5 @@
 __pycache__/
 # Factory uses uniform default PNG import settings; regenerate sidecars on import.
 assets/generated/factory/sprites/**/*.png.import
+assets/last_light/golden40/**/*.png.import
+assets/last_light/golden40/*.png.import
