@@ -15,7 +15,7 @@
       "fixtures":[
         {"id":"kitchen_counter","pos":[0.6,0.7],"size":[2.2,0.55],"label":"KITCHEN","kind":"counter","loot":"canned_food","color":"9b8874","solid":true},
         {"id":"bedroom_bed","pos":[6.0,1.1],"size":[1.6,0.9],"label":"BED","kind":"bed","color":"798d91","solid":true},
-        {"id":"living_sofa","pos":[1,5.7],"size":[2.1,0.8],"label":"SOFA","kind":"bed","color":"947d6e","solid":true},
+        {"id":"living_sofa","pos":[1,5.7],"size":[2.1,0.8],"label":"SOFA","kind":"sofa","color":"947d6e","solid":true},
         {"id":"bedroom_drawers","pos":[6,6],"size":[1,0.6],"label":"DRAWERS","kind":"storage","loot":"bandage","color":"78634c","solid":true}
       ]
     },
@@ -79,6 +79,14 @@
         {"id":"supply_crates","pos":[7.3,6.4],"size":[1.8,0.9],"label":"CRATES","kind":"crate","loot":"first_aid_kit","color":"827763","solid":true}
       ]
     }
+  ],
+  "ground_marks":[
+    {"id":"neighborhood_road_center","kind":"road_center","a":[0,11],"b":[24,11]},
+    {"id":"house_approach","kind":"service_line","a":[3.5,8.5],"b":[3.5,10.7]},
+    {"id":"garage_bay","kind":"tire_wear","a":[17,8.4],"b":[17,11]},
+    {"id":"shop_delivery","kind":"service_line","a":[1.1,23.6],"b":[7.7,23.6]},
+    {"id":"forecourt_lane","kind":"service_line","a":[15,27.5],"b":[23,27.5]},
+    {"id":"outpost_gate_warning","kind":"warning","a":[33,19],"b":[36,19]}
   ],
   "fences":[
     {"a":[27,1],"b":[43,1]},
