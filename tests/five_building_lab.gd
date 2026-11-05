@@ -28,6 +28,14 @@ func run() -> void:
  check(lab.ground_marks.size()==6,"six data-driven surface marks load")
  var material_texture: Texture2D=load("res://assets/materials/asphalt_grain_v1.png")
  check(material_texture!=null and material_texture.get_width()==128,"optimized original asphalt texture imports")
+ var wall_atlas: Texture2D=load("res://assets/materials/wall_kit_atlas_v1.png")
+ check(wall_atlas!=null and wall_atlas.get_width()==512 and wall_atlas.get_height()==512,"original four-material wall atlas imports at mobile size")
+ var visual_profiles: Dictionary={}
+ for recipe in lab.recipes.values():
+  var style: Dictionary=recipe.get("visual_style",{})
+  check(style.has("profile") and style.has("accent") and style.has("trim"),"building archetype has reusable facade style")
+  visual_profiles[String(style.get("profile",""))]=true
+ check(visual_profiles.size()==5,"all five buildings have distinctive visual profiles")
  var kinds: Dictionary={}
  for fixture in lab.fixtures+lab.exterior_props:
   kinds[String(fixture.kind)]=true

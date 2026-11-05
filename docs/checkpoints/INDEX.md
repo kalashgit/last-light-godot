@@ -19,6 +19,8 @@ The next action is the actual iPhone/Xogot checklist in V04.md. No merge or depl
 
 `FIVE_BUILDING_MOBILE_V5.md` addresses the founder's first real V4 iPhone screenshots: a six-slot backpack overlay, explicit close/use controls, touch interception and a web-only frame budget. The attempted scene-only Web export failed on iPhone and was reverted to dependency-complete packaging with a new export check. It does not assert completed iPhone performance QA or advance the production milestone.
 
+`FIVE_BUILDING_STYLE_V6.md` records the first original four-material wall atlas and data-driven visual identities for all five existing building archetypes. This visual pass preserves collision, interior rooms, footprint and laboratory-only isolation; iPhone graphic acceptance remains pending.
+
 ## Procedural Asset Factory V1 (separately authorized)
 
 | Checkpoint | Exact commit | Evidence |

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "asset_id": "ll-wall-kit-atlas-v1",
+  "status": "original candidate; device visual review pending",
+  "origin": "OpenAI built-in image generation, 2026-11-05",
+  "source_dimensions": [1254, 1254],
+  "game_dimensions": [512, 512],
+  "postprocess": "mechanically resampled to 512x512 and indexed to 192 colors for mobile",
+  "license_review": "Original generated material; no Project Zomboid assets copied",
+  "quadrants": {
+    "plaster_cream": [0, 0, 256, 256],
+    "brick_aged": [256, 0, 256, 256],
+    "concrete_block": [0, 256, 256, 256],
+    "metal_panel": [256, 256, 256, 256]
+  },
+  "prompt": "Produce a strict 2x2 orthographic, original isometric-game material swatch atlas: warm faded cream residential plaster in top left, muted aged terracotta brick masonry in top right, weathered grey concrete block in bottom left, and blue-grey galvanized corrugated metal in bottom right. Equal square quadrants divided exactly at the midpoint, no perspective, objects, borders, text, logos or watermarks. Low-contrast hand-painted stylized realism, repeatable coarse details readable on phones."
+}
