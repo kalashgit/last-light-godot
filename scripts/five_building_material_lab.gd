@@ -1,11 +1,13 @@
 extends "res://scripts/material_kit_lab.gd"
 ## Isolated five-building district driven by reusable construction recipes.
 const Art := preload("res://scripts/building_material_renderer.gd")
+const PropArt := preload("res://scripts/lab_prop_renderer.gd")
 const LabSurvival := preload("res://scripts/lab_survival_state.gd")
 const RECIPES := "res://assets/buildings/five_building_lab_v2.json"
 var recipes: Dictionary = {}
 var fixtures: Array[Dictionary] = []
 var exterior_props: Array[Dictionary] = []
+var ground_marks: Array[Dictionary] = []
 var fences: Array[Dictionary] = []
 var gameplay = LabSurvival.new()
 var selected_item := ""
@@ -34,6 +36,7 @@ func _init_buildings() -> void:
  doorways.clear()
  fixtures.clear()
  exterior_props.clear()
+ ground_marks.clear()
  fences.clear()
  recipes.clear()
  gameplay.examined.clear()
@@ -63,6 +66,8 @@ func _init_buildings() -> void:
   copy["size_world"]=_vec(item.size)
   copy["exterior"]=true
   exterior_props.append(copy)
+ for mark in payload.get("ground_marks",[]):
+  ground_marks.append(mark.duplicate(true))
  for segment in payload.get("fences",[]):
   var a := _vec(segment.a)
   var b := _vec(segment.b)
@@ -102,6 +107,8 @@ func _draw_ground() -> void:
     material="paver_gray"
    var v := [_screen(p),_screen(p+Vector2(1,0)),_screen(p+Vector2(1,1)),_screen(p+Vector2(0,1))]
    Art.floor_tile(self,v[0],v[1],v[2],v[3],material,x,y)
+ for mark in ground_marks:
+  Art.ground_mark(self,_screen(_vec(mark.a)),_screen(_vec(mark.b)),String(mark.kind))
 
 func _fixture_bounds(fixture: Dictionary) -> Rect2:
  return Rect2(fixture.position,fixture.size_world)
@@ -200,7 +207,7 @@ func _interact() -> void:
  var label := String(nearby.get("label","OBJECT"))
  if kind=="pump":
   _notice(label+": inactive. Fuel mechanics not yet implemented.")
- elif kind=="bed":
+ elif kind=="bed" or kind=="sofa":
   _notice(label+": rest/sleep system not yet implemented.")
  elif gameplay.examined.get(object_id,false):
   _notice(label+": already searched")
@@ -321,38 +328,13 @@ func _draw_fixture(fixture: Dictionary) -> void:
  var b := _screen(p+Vector2(dim.x,0))
  var d := _screen(p+dim)
  var e := _screen(p+Vector2(0,dim.y))
- var lift := Vector2(0,height)
- draw_colored_polygon(PackedVector2Array([e,d,d-lift,e-lift]),tint.darkened(.33))
- draw_colored_polygon(PackedVector2Array([b,d,d-lift,b-lift]),tint.darkened(.16))
- draw_colored_polygon(PackedVector2Array([a-lift,b-lift,d-lift,e-lift]),tint.lightened(.11))
- if _fixture_accessible(fixture) and _fixture_distance(fixture)<1.15:
-  var highlight:=Color("c1daa4")
-  draw_line(a-lift,b-lift,highlight,2)
-  draw_line(b-lift,d-lift,highlight,2)
-  draw_line(d-lift,e-lift,highlight,2)
-  draw_line(e-lift,a-lift,highlight,2)
- if gameplay.examined.get(String(fixture.id),false):
-  draw_circle(a.lerp(d,.5)-lift,3,Color("a6d3bd"))
- match kind:
-  "shelf":
-   for k in range(1,4):
-    var z := lift*float(k)/4.0
-    draw_line(e-z,d-z,Color("c1ab7b"),2.2)
-    draw_line(a-z,e-z,Color("514e47"),1.5)
-  "bed":
-   draw_colored_polygon(PackedVector2Array([a-lift*.70,b-lift*.70,d-lift*.70,e-lift*.70]),Color("87948f"))
-   draw_line(a.lerp(e,.20)-lift*.73,b.lerp(d,.20)-lift*.73,Color("ded7c2"),6)
-  "pump":
-   draw_rect(Rect2(_screen(p+dim*.5)-Vector2(5,height+18),Vector2(10,18)),Color("d5c9ad"))
-   draw_line(_screen(p+dim*.5)-Vector2(6,height+6),_screen(p+dim*.5)+Vector2(10,-height+1),Color("303d3d"),2)
-   draw_circle(_screen(p+dim*.5)-Vector2(0,height+13),2.5,Color("53686d"))
-  "crate":
-   draw_line(e-lift,b-lift,Color("554e40"),1.5)
-   draw_line(a-lift,d-lift,Color("554e40"),1.5)
-  "counter":
-   draw_line(a-lift,e-lift,tint.lightened(.33),3)
-   draw_line(e-lift,d-lift,tint.lightened(.23),2)
- _text(name,_screen(p+dim*.5,height+7),10,Color("f2e7cf"))
+ var nearby := _fixture_accessible(fixture)
+ var searched: bool = bool(gameplay.examined.get(String(fixture.id),false))
+ PropArt.draw_prop(self,a,b,d,e,kind,tint,name,height,nearby,searched)
+ # The formerly permanent 20 labels obscured small phones; show a readable
+ # contextual cue only when the survivor can actually interact with this prop.
+ if nearby:
+  _text("INTERACT / "+name,_screen(p+dim*.5,height+29),11,Color("f2e7cf"))
 
 func _draw() -> void:
  _draw_ground()

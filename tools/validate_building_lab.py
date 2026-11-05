@@ -113,10 +113,10 @@ def verify() -> None:
             stable_id = name+"/"+fixture["id"]
             require(stable_id not in all_ids, f"Duplicate stable fixture identity: {stable_id}")
             all_ids.add(stable_id)
-            require(fixture["kind"] in {"counter", "bed", "shelf", "crate", "storage"}, f"{name}: unsupported fixture type")
+            require(fixture["kind"] in {"counter", "bed", "sofa", "shelf", "crate", "storage"}, f"{name}: unsupported fixture type")
             if "loot" in fixture:
                 require(fixture["loot"] in LOOT, f"{name}: unknown loot ID")
-                require(fixture["kind"]!="bed", f"{name}: bed cannot be used as an item container")
+                require(fixture["kind"] not in {"bed", "sofa"}, f"{name}: rest furniture cannot be used as an item container")
                 loot_count += 1
             fx, fy = fixture["pos"]
             fw, fh = fixture["size"]
@@ -137,6 +137,13 @@ def verify() -> None:
         px, py = fixture["pos"]
         pw, ph = fixture["size"]
         require(not any(box_intersects(box(px, py, pw, ph), bounds) for bounds in footprints), "Exterior prop blocks a building footprint")
+    mark_ids: set[str] = set()
+    for mark in data.get("ground_marks", []):
+        require(mark["id"] not in mark_ids, "Duplicate ground mark identity")
+        mark_ids.add(mark["id"])
+        require(mark["kind"] in {"road_center", "service_line", "tire_wear", "warning"}, "Invalid ground decal kind")
+        require(mark["a"] != mark["b"], "Zero-length ground decal")
+        require(all(-5 <= value <= 47 for coord in (mark["a"], mark["b"]) for value in coord), "Ground decal leaves compact lab")
     fences = data["fences"]
     gates = [f for f in fences if f.get("kind") == "gate"]
     require(len(gates) == 1, "Outpost should have one independently operable gate")
@@ -146,7 +153,7 @@ def verify() -> None:
     require(math.dist(gates[0]["a"], gates[0]["b"]) >= 2, "Outpost gate cannot be traversed")
     require(door_count >= 5 and solid_count >= 12, "Missing interactions or physical props")
     require(loot_count >= 8, "Too few searchable containers for laboratory survival tests")
-    print(f"PASS: {len(buildings)} buildings, {door_count} interior doors, 1 gate, {solid_count} solid fixtures, {len(all_ids)} stable prop IDs, {loot_count} loot containers")
+    print(f"PASS: {len(buildings)} buildings, {door_count} interior doors, 1 gate, {solid_count} solid fixtures, {len(all_ids)} stable prop IDs, {loot_count} loot containers, {len(mark_ids)} ground decals")
 
 
 if __name__ == "__main__":

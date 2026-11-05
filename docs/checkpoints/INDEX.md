@@ -11,6 +11,10 @@
 
 The next action is the actual iPhone/Xogot checklist in V04.md. No merge or deployment authorized or performed. No actual phone test or phone frame-rate measurement was possible in this environment.
 
+## Isolated five-building laboratory (not a production milestone)
+
+`FIVE_BUILDING_MATERIAL_LAB_V2.md` covers the five-building material, fixture, survival and touch-HUD candidate. `FIVE_BUILDING_VISUAL_DETAIL_V3.md` records the subsequent original prop silhouettes, material/roof detail and six data-driven ground marks, with actual Godot 4.3 headless test results. Neither changes the default main scene or satisfies the pending iPhone review gate.
+
 ## Procedural Asset Factory V1 (separately authorized)
 
 | Checkpoint | Exact commit | Evidence |
