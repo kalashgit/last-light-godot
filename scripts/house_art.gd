@@ -287,6 +287,9 @@ func draw_world(g) -> void:
   if inside or not HOME.has_point(prop.pos):
    # Tabletop clutter sorts just after its supporting furniture.
    commands.append({"kind":"decor", "index":i, "depth":prop.pos.x + prop.pos.y + .03})
+ for i in range(g.drops.size()):
+  var point: Vector2=g.drops[i].pos
+  commands.append({"kind":"drop","index":i,"depth":point.x+point.y-.01})
  for i in range(g.infected.size()):
   if g.zombie_health[i] > 0:
    var p: Vector2 = g.infected[i]
@@ -304,6 +307,7 @@ func draw_world(g) -> void:
    "decor":
     var prop: Dictionary = decorations[command.index]
     _sprite(g, prop.asset_id, prop.pos, prop.get("scale", 1.0), prop.get("height", 0.0))
+   "drop": g._draw_drop(command.index)
    "zombie": g._draw_character(g.infected[command.index], false, g.elapsed * 4 + command.index, g.zombies_hit_time[command.index] > 0)
    "player": g._draw_character(g.player, true, g.motion_phase)
  if not inside:

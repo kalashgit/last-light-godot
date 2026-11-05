@@ -23,6 +23,16 @@ var sneaking := false
 var joystick_dead_zone := .14
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
+const SurvivalState := preload("res://scripts/survival_state.gd")
+var survival := SurvivalState.new()
+const HUNGER_RATE := .025
+const THIRST_RATE := .045
+const CONTAINER_LOOT := {
+ "house.kitchen.counter": {"ll_food_bean_tin":2,"ll_food_water_bottle":2},
+ "house.bedroom.bed": {"ll_medical_sterile_bandage":1,"ll_household_flashlight":1},
+ "house.living.sofa": {"ll_tools_claw_hammer":1,"ll_food_bean_tin":1},
+ "house.bathroom.medicine": {"ll_medical_sterile_bandage":3,"ll_medical_first_aid_case":1}
+}
 var shove_cooldown := 0.0
 var recovery_delay := 0.0
 const WALK_SPEED := 2.2
@@ -142,16 +152,33 @@ func _announce(text: String) -> void:
 
 func _interact() -> void:
  if health<=0 or paused: return
- var target := _resolve_target()
+ var target:=_resolve_target()
  if target.is_empty():
-  _announce("Move closer to a door or container")
+  _announce("Move closer to a door, cabinet or dropped item")
   return
- if target.kind=="door": _toggle_door(target.index)
+ if target.kind=="door":
+  _toggle_door(target.index)
  elif target.kind=="container":
   var item: Dictionary=items[target.index]
+  var loot: Dictionary=CONTAINER_LOOT.get(item.id,{})
+  var previous:=survival.snapshot()
+  for id in loot:
+   if not survival.add(id,loot[id]):
+    survival.restore(previous)
+    _announce("Make room in your pack before searching")
+    return
   item.searched=true
   supplies+=1
-  _announce("Found supplies in "+item.name)
+  _announce("Collected supplies from "+String(item.name).capitalize())
+ elif target.kind=="drop":
+  var drop: Dictionary=drops[target.index]
+  if not survival.add(drop.id,drop.count):
+   _announce("Pack is full")
+   return
+  _announce("Picked up "+survival.name_for(drop.id))
+  drops.remove_at(target.index)
+ selected_target={}
+ _save_game()
 
 func _toggle_door(i: int) -> void:
  if i < 0 or i >= doors.size():
@@ -169,7 +196,8 @@ func _toggle_door(i: int) -> void:
  _announce(door.label + (" door OPEN" if door.open else " door CLOSED"))
 
 func _weapon_stats() -> Dictionary:
- return {"damage":1,"reach":1.25,"stamina":8.0}
+ if survival.equipped.is_empty(): return {"damage":1,"reach":1.25,"stamina":8.0}
+ return survival.definitions[survival.equipped]
 
 func _attack() -> void:
  if health<=0 or paused or attack_cooldown>0: return
@@ -223,6 +251,8 @@ func _step(dt: float) -> void:
  if autosave_time>=15:
   autosave_time=0
   _save_game()
+ hunger=minf(100,hunger+HUNGER_RATE*dt)
+ thirst=minf(100,thirst+THIRST_RATE*dt)
  elapsed+=dt
  message_time=maxf(0,message_time-dt)
  attack_cooldown=maxf(0,attack_cooldown-dt)
@@ -534,6 +564,7 @@ func _set_paused(value: bool) -> void:
 
 func _restart_game() -> void:
  _make_house()
+ survival.restore({"inventory":{},"equipped":""})
  stamina=100; hunger=0; thirst=0
  inventory_open=false; sneaking=false
  selected_target={}; drops.clear()
@@ -691,13 +722,86 @@ func _context_prompt() -> String:
  return "Search "+String(items[target.index].name).capitalize()
 
 func _inventory_rows() -> Array:
- return []
+ var rows:=survival.rows()
+ inventory_page=clampi(inventory_page,0,maxi(0,ceili(rows.size()/6.0)-1))
+ return rows.slice(inventory_page*6,inventory_page*6+6)
+
+func _first_item(kind: String) -> String:
+ var ids: Array=survival.inventory.keys()
+ ids.sort()
+ for id in ids:
+  if survival.definitions[id].kind==kind: return id
+ return ""
 
 func _quick_slots() -> Array:
- return ["Hands","—","—","—"]
+ var medical:=_first_item("heal")
+ var supply:=_first_item("drink") if thirst>0 else _first_item("food")
+ if supply.is_empty(): supply=_first_item("food") if _first_item("drink").is_empty() else _first_item("drink")
+ return ["Hands" if survival.equipped.is_empty() else "Tool", "Med" if not medical.is_empty() else "—", "—", "Drink" if survival.definitions.get(supply,{}).get("kind")=="drink" else "Food" if not supply.is_empty() else "—"]
 
-func _inventory_tap(_point: Vector2) -> void:
- pass
+func _inventory_tap(point: Vector2) -> void:
+ var rows:=_inventory_rows()
+ for i in range(rows.size()):
+  if control_rects["modal_use_%d"%i].has_point(point):
+   _use_item(rows[i].id)
+   return
+  if control_rects["modal_drop_%d"%i].has_point(point):
+   _drop_item(rows[i].id)
+   return
+ if control_rects.inv_prev.has_point(point): inventory_page=maxi(0,inventory_page-1)
+ if control_rects.inv_next.has_point(point): inventory_page+=1
+ _inventory_rows()
+
+func _use_item(id: String) -> bool:
+ if health<=0 or (paused and not inventory_open) or not survival.inventory.has(id): return false
+ var definition: Dictionary=survival.definitions[id]
+ var kind: String=definition.kind
+ if kind=="weapon":
+  survival.equip("" if survival.equipped==id else id)
+  _announce("Hands ready" if survival.equipped.is_empty() else "Equipped "+survival.name_for(id))
+ elif kind in ["food","drink","heal"]:
+  if (kind=="food" and hunger<=0) or (kind=="drink" and thirst<=0) or (kind=="heal" and health>=100):
+   _announce("No need to use this yet")
+   return false
+  var effect:=survival.consume(id)
+  if effect.is_empty(): return false
+  if kind=="food": hunger=maxf(0,hunger-effect.amount)
+  elif kind=="drink": thirst=maxf(0,thirst-effect.amount)
+  else: health=minf(100,health+effect.amount)
+  _announce(survival.action(id) if survival.inventory.has(id) else "Used "+survival.name_for(id))
+ else:
+  _announce(survival.name_for(id)+" — carry or drop")
+  return true
+ _save_game()
+ queue_redraw()
+ return true
+
+func _drop_item(id: String) -> bool:
+ if health<=0 or (paused and not inventory_open) or not survival.inventory.has(id) or drops.size()>=128: return false
+ var position:=player
+ var found:=false
+ for offset in [facing*.55,Vector2(.5,0),Vector2(0,.5),Vector2(-.5,0),Vector2(0,-.5),Vector2.ZERO]:
+  var candidate: Vector2=player+offset
+  if not _blocked(candidate,.1) and not _line_blocked(player,candidate,false):
+   position=candidate
+   found=true
+   break
+ if not found:
+  _announce("No clear ground for this item")
+  return false
+ if not survival.remove(id): return false
+ drops.append({"id":id,"count":1,"pos":position})
+ art._cache(survival.definitions[id].art_id)
+ selected_target={}
+ _announce("Dropped "+survival.name_for(id))
+ _save_game()
+ return true
+
+func _draw_drop(index: int) -> void:
+ var drop: Dictionary=drops[index]
+ var id: String=survival.definitions[drop.id].art_id
+ art._sprite(self,id,drop.pos)
+ if player.distance_to(drop.pos)<1.5: draw_circle(_screen(drop.pos,12),2,Color("d5c899"))
 
 func _select_world_target(point: Vector2) -> void:
  var best: Dictionary={}
@@ -721,4 +825,13 @@ func _activate_action(action: String) -> void:
   "interact": _interact()
   "shove": _shove()
   "sneak": sneaking=not sneaking
-  _: _announce("No item assigned to this slot")
+  "quick0":
+   if not survival.equipped.is_empty(): survival.equip("")
+   else: survival.equip(_first_item("weapon"))
+  "quick1":
+   var id:=_first_item("heal")
+   if not id.is_empty(): _use_item(id)
+  "quick3":
+   var id:=_first_item("drink") if thirst>0 else _first_item("food")
+   if not id.is_empty(): _use_item(id)
+  "quick2": pass
