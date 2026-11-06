@@ -1,0 +1,22 @@
+{
+  "purpose": "Independent engineering checks; no artistic, founder, engine or device approval",
+  "executed_utc": "2026-11-06T08:57:05.003187+00:00",
+  "command_argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "tests/sprite_factory_v4_test.py",
+    "--report-json",
+    "production/catalog_readiness/v4_regression_report.json"
+  ],
+  "factory_sha256": "bb11e9b6bd3507b04c6fed3a8362cc9ff8002a4aea56b45008f9c9d8e573b6bc",
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "recipe_version": "native_parts_1",
+  "python_version": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "tests_run": 57,
+  "failures": [],
+  "errors": [],
+  "skipped": [],
+  "passed": true,
+  "iPhone_CodePad_execution_verified": false,
+  "founder_approval_granted": false
+}

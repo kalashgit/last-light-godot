@@ -1,0 +1,9 @@
+{
+  "tests_run": 26,
+  "passed": true,
+  "failures": [],
+  "errors": [],
+  "checker_sha256": "594f45d54e0949cfe4b28faba796bf3ab5aeff8cdfce32e78098385325da5b36",
+  "snapshot_sha256": "2d517440c6f927fc59a406eba40cb2b2631739df46ce05837ef325fd3bf7b3c5",
+  "iphone_execution_of_new_checker_verified": false
+}
