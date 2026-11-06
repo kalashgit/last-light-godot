@@ -897,7 +897,8 @@
           "tone": 0,
           "shape": "rectangle",
           "bbox": [
-            25,            45,
+            25,
+            45,
             30,
             49
           ]
@@ -1796,7 +1797,8 @@
           "tone": 2,
           "shape": "polygon",
           "points": [
-            [              42,
+            [
+              42,
               37
             ],
             [
