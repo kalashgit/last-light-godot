@@ -77,6 +77,20 @@ class MaterialV5Test(unittest.TestCase):
    target.write_text(json.dumps(payload))
    with self.assertRaises(ValueError):mod.produce_from_recipes(target,Path(t)/'out')
 
+ def test_mobile_one_file_no_arg_entrypoint(self):
+  import subprocess,sys
+  with tempfile.TemporaryDirectory() as tmp:
+   home=Path(tmp)/'home'; home.mkdir()
+   job=Path(tmp)/'job';job.mkdir()
+   (job/'v5_authored_showcase_3.json').write_bytes(((ROOT/'data/factory/v5_authored_showcase_3.json') if (ROOT/'data/factory/v5_authored_showcase_3.json').exists() else (HERE/'data/v5_authored_showcase_3.json')).read_bytes())
+   # The single-file script can run directly from a CodePad-writable folder.
+   from shutil import copy2
+   copy2(SOURCE,job/'LAST_LIGHT_V5_MATERIAL_ENGINE.py')
+   env=dict(os.environ,HOME=str(home))
+   result=subprocess.run([sys.executable,str(job/'LAST_LIGHT_V5_MATERIAL_ENGINE.py')],cwd=job,env=env,capture_output=True,text=True,timeout=20)
+   self.assertEqual(result.returncode,0,result.stderr)
+   self.assertTrue((home/'Documents/LAST_LIGHT_FACTORY/exports/LAST_LIGHT_V5_REVIEW_ONLY/manifest.json').is_file())
+
  def test_reject_invalid_approval(self):
   with self.assertRaises(ValueError):mod.render_recipe({'approval':'founder_approved','rights':'original_independent_design'})
  def test_source_unchanged(self):

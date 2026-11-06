@@ -11,7 +11,7 @@ Run:
   python LAST_LIGHT_V5_MATERIAL_ENGINE.py --recipe recipe.json --output OUT
 """
 from __future__ import annotations
-import argparse, hashlib, io, json, math, os, random, tempfile, zipfile
+import argparse, hashlib, io, json, math, os, random, tempfile, zipfile, sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageChops, ImageFilter, ImageFont
 
@@ -358,13 +358,41 @@ def produce_from_recipes(recipe_path,output):
     return {'count':len(recipes),'zip':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
 
 
+def codepad_defaults(script=None,home=None):
+    """Simple iOS CodePad no-argument entrypoint. Never reaches the network.
+
+    Keeps the controller one-file; users can place a recipe JSON or the existing
+    V4 original benchmark ZIP alongside the script or in Documents. This is an
+    art-benchmark workflow, not the complete V3 SQLite catalog engine.
+    """
+    script=Path(script or __file__).resolve()
+    home=Path(home or Path.home())
+    docs=home/'Documents'/'LAST_LIGHT_FACTORY'
+    bases=(script.parent,script.parent.parent,Path.cwd(),docs,docs/'exports')
+    files=('data/factory/v5_authored_showcase_3.json',
+           'v5_authored_showcase_3.json',
+           'input/LAST_LIGHT_V4_BENCHMARK_12_CANDIDATES.zip',
+           'LAST_LIGHT_V4_BENCHMARK_12_CANDIDATES.zip')
+    for base in bases:
+        for relative in files:
+            candidate=base/relative
+            if candidate.is_file():
+                return ('--input-zip' if candidate.suffix=='.zip' else '--recipe',str(candidate),
+                        '--output',str(docs/'exports'/'LAST_LIGHT_V5_REVIEW_ONLY'))
+    raise FileNotFoundError('No V5 recipe JSON or V4 review ZIP was found. Place one beside the one-file CodePad script or in Documents/LAST_LIGHT_FACTORY.')
+
+
 def main():
     ap=argparse.ArgumentParser()
     group=ap.add_mutually_exclusive_group(required=True)
     group.add_argument('--input-zip',type=Path)
     group.add_argument('--recipe',type=Path)
     ap.add_argument('--output',type=Path,default=Path('LAST_LIGHT_V5_CANDIDATES'))
-    args=ap.parse_args()
+    argv=list(sys.argv[1:])
+    if not argv:
+        try:argv=list(codepad_defaults())
+        except FileNotFoundError as e:raise SystemExit(str(e))
+    args=ap.parse_args(argv)
     if args.input_zip:
         print(json.dumps(produce_from_zip(args.input_zip,args.output),indent=2))
     else:
