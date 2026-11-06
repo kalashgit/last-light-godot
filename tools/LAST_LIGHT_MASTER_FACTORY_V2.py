@@ -997,8 +997,7 @@ def compile_region(root:Path,seed:int,start:tuple[int,int],shape:tuple[int,int],
                 counts["buildings"]+=len(chunk["buildings"])
                 counts["rooms"]+=sum(len(b["rooms"]) for b in chunk["buildings"])
                 if preview and nx*ny<=144:preview_chunks.append(chunk)
-            except (OSError,ValueError,KeyError,TypeError) as exc:
-                failed.append({"chunk_xy":[cx,cy],"error":str(exc)})
+            except (OSError,ValueError,KeyError,TypeError) as exc:                failed.append({"chunk_xy":[cx,cy],"error":str(exc)})
     manifest={"schema":"last_light.world_manifest.v1","factory_version":VERSION,"world_seed":seed,
               "grid":CHUNK_SIZE,"tile_px":list(TILE_PX),"mode":"fictional_seeded",
               "origin_chunk":list(start),"chunk_grid":list(shape),"chunks":records,
@@ -1201,7 +1200,31 @@ def sync_reference_catalog(root: Path) -> dict:
             write_atomic(target,raw);count+=1
         except (OSError,ValueError,UnicodeError,HTTPError,URLError,TimeoutError) as exc:
             failures.append({"media_shard":name,"error":str(exc)})
+    # Import the independent LAST LIGHT building-archetype identities as
+    # *proposed* specifications. This does not mark any building playable.
+    building_path = root / "imports" / "notion_building_archetypes_60.json"
+    building_present = building_path.is_file()
+    if not building_present:
+        building_url = (RESEARCH_GITHUB_ROOT + RESEARCH_GITHUB_BRANCH +
+                        "/data/research/notion_building_archetypes_60.json")
+        try:
+            req = Request(building_url, headers={"User-Agent": "LAST-LIGHT-factory/2"})
+            with urlopen(req, timeout=20) as response:
+                raw = response.read(250_001)
+            if len(raw) > 250_000:
+                raise ValueError("Building archetype metadata exceeds safe size cap")
+            building_data = json.loads(raw.decode("utf-8"))
+            archetypes = building_data.get("records", [])
+            if len(archetypes) != 60 or len({x.get("archetype_id") for x in archetypes}) != 60:
+                raise ValueError("Building archetype index must contain 60 unique IDs")
+            if any(x.get("approved_original_recipe") for x in archetypes):
+                raise ValueError("Unexpected production approval in research-only snapshot")
+            write_atomic(building_path, raw)
+            building_present = True
+        except (OSError, ValueError, UnicodeError, HTTPError, URLError, TimeoutError) as exc:
+            failures.append({"family": "building_archetypes", "error": str(exc)})
     result = {"available_batches": count, "expected_batches": EXPECTED_ICON_BATCHES * 2 + len(MEDIA_SHARD_NAMES),
+              "building_archetype_snapshot_available": building_present,
               "preexisting_batches": existing, "errors": failures,
               "note": "Research metadata only, not original approved art"}
     write_atomic(root / "reports" / "source_sync.json", pretty(result))
@@ -1365,6 +1388,8 @@ def main(argv:list[str]|None=None)->int:
             classifiers=catalog.import_classifications(root/"imports"/"notion_classification_batches")
             write_atomic(root/"reports"/"classification_results.json",pretty(classifiers))
             print("CLASSIFICATION:",classifiers["records_seen"],"records; issues:",classifiers["issue_count"])
+            building_count=catalog.db.execute("SELECT COUNT(*) FROM sources WHERE id LIKE 'll.archetype.%'").fetchone()[0]
+            print("BUILDING ARCHETYPES:",building_count,"proposed definitions; no playable renderers implied")
         if args.action in ("demo","batch"):
             result=produce_original_icons(catalog,root,max(1,args.batch))
             print("ICONS:",result["generated"],"candidate icons, errors:",len(result.get("errors",[])))
