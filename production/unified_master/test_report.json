@@ -1,0 +1,9 @@
+{
+  "tests_run": 9,
+  "passed": true,
+  "failures": [],
+  "errors": [],
+  "master_sha256": "7457e1c950b12ed8d0c4af9a371c4d32f7e02abf62938240fb79f174e4d01d64",
+  "renderer_sha256": "bb11e9b6bd3507b04c6fed3a8362cc9ff8002a4aea56b45008f9c9d8e573b6bc",
+  "iphone_execution_of_combined_file_verified": false
+}
