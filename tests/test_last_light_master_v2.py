@@ -1,5 +1,5 @@
 import importlib.util, pathlib, tempfile, json, os, unittest
-spec=importlib.util.spec_from_file_location('factory','/mnt/data/LAST_LIGHT_MASTER_FACTORY_V2.py')
+spec=importlib.util.spec_from_file_location('factory',str(pathlib.Path(__file__).resolve().parents[1] / 'tools' / 'LAST_LIGHT_MASTER_FACTORY_V2.py'))
 mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
 class Test(unittest.TestCase):
  def test_reference_id_and_source_fields(self):

@@ -947,7 +947,8 @@ def render_macro_atlas(root:Path,seed:int,area:tuple[int,int,int,int]=(-320,-110
         for px in range(width):
             x=x0+px*w//width
             if river_at(x,y):color=(49,112,137)
-            else:color=colors[region_at(x,y,seed)["zone"]]            draw.point((px,py),fill=color)
+            else:color=colors[region_at(x,y,seed)["zone"]]
+            draw.point((px,py),fill=color)
     # Highways are shared, deterministic corridors. Draw separately at macro scale.
     for px in range(width):
         gx=x0+px*w//width
@@ -2845,7 +2846,8 @@ def render_neighborhood(root: Path, neighborhood: dict) -> str | None:
         d.rectangle((x*s,y*s,(x+w)*s-1,(y+h)*s-1),fill=(70,74,74))
         for tx in range(x+2,x+w,7):d.line((tx*s,(y+2.5)*s,(tx+3)*s,(y+2.5)*s),fill=(195,181,118),width=2)
     for b in neighborhood["buildings"]:
-        lx,ly,lw,lh=b["lot"]        d.rectangle((lx*s,ly*s,(lx+lw)*s,(ly+lh)*s),outline=(114,136,92),width=2)
+        lx,ly,lw,lh=b["lot"]
+        d.rectangle((lx*s,ly*s,(lx+lw)*s,(ly+lh)*s),outline=(114,136,92),width=2)
         (a,c),(p,q)=b["road_access_path"]
         d.line((a*s,c*s,p*s,q*s),fill=(165,157,134),width=7)
         for j,room in enumerate(b["rooms"]):
@@ -3442,7 +3444,7 @@ def v3_reconcile_and_generate(catalog: Catalog,root:Path,seed:int,max_icons:int)
 
 def main(argv:list[str]|None=None)->int:
     argv=[] if argv is None else list(argv)
-    parser=argparse.ArgumentParser(description="LAST LIGHT Unified Python Factory V2")
+    parser=argparse.ArgumentParser(description="LAST LIGHT Unified Python Factory V3")
     parser.add_argument("--action",choices=["reconcile_and_generate","demo","import","sync_catalog","neighborhood","audit","batch","world","verify","export"],default=ACTION)
     parser.add_argument("--root",default=ROOT_FOLDER)
     parser.add_argument("--seed",type=int,default=WORLD_SEED)

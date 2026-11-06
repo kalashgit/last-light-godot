@@ -6,6 +6,17 @@ spec=importlib.util.spec_from_file_location('llv3',str(SOURCE))
 v3=importlib.util.module_from_spec(spec);spec.loader.exec_module(v3)
 
 class V3FactoryTests(unittest.TestCase):
+ def test_macro_atlas_render_is_real_and_repeatable(self):
+  with tempfile.TemporaryDirectory() as t:
+   root=pathlib.Path(t)
+   first=v3.render_macro_atlas(root,20261106)
+   self.assertIsNotNone(first,'Pillow is needed for the actual visual smoke test')
+   image=root/first if not pathlib.Path(first).is_absolute() else pathlib.Path(first)
+   self.assertTrue(image.is_file(),first)
+   initial=hashlib.sha256(image.read_bytes()).hexdigest()
+   second=v3.render_macro_atlas(root,20261106)
+   self.assertEqual(first,second)
+   self.assertEqual(initial,hashlib.sha256(image.read_bytes()).hexdigest())
  def mk(self,root,full=False):
   c=v3.Catalog(root/'database'/'production.sqlite3')
   size=4347 if full else 5
