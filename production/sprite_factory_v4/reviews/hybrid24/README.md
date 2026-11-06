@@ -8,12 +8,12 @@ PASS here means the independent visual candidate gate. It does not mark `founder
 
 All 24 actual hybrid exports were inspected at native 32/48/64 px, nearest 3× and on light/dark backgrounds, with additional enlarged checks of handles, holes and alpha edges. The original generated source was inspected too. `reviews/hybrid24/` freezes every reviewed PNG and the manifest; all snapshot/current/template/provenance hashes match.
 
-- `reviews/hybrid24/golden_v3_v4hybrid_native32.png`
-- `reviews/hybrid24/golden_v3_v4hybrid_native48.png`
-- `reviews/hybrid24/golden_v3_v4hybrid_native64.png`
-- `reviews/hybrid24/golden_v3_v4hybrid_nearest3x.png`
+- `reviews/hybrid24/v3_v4_same_item_native32.png`
+- `reviews/hybrid24/v3_v4_same_item_native48.png`
+- `reviews/hybrid24/v3_v4_same_item_native64.png`
+- `reviews/hybrid24/v3_v4_same_item_nearest3x.png`
 
-Every cell shows actual Golden material/construction analogue → V3 → V4 hybrid. `comparison_map.json` explicitly identifies analogues that are different objects; no reference silhouette is a production template. All weak/small examples remain visible, including the radio at 32 px.
+The corrected comparison cells show V3 → V4 for the same declared demo identity. Golden40 is shown separately in `golden40_style_only.png`; it is a style reference board, not a source-to-output identity mapping. All weak/small examples remain visible, including the radio at 32 px.
 
 ## Provenance and limits
 

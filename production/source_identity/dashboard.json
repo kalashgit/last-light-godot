@@ -1,0 +1,23 @@
+{
+  "observed_needs_context": 36,
+  "identity_verified": 24,
+  "blocked_conflict": 1,
+  "unverified": 4286,
+  "total_reference_records": 4347,
+  "accounted_reference_records": 4347,
+  "images_retrieved": 61,
+  "images_actually_inspected": 61,
+  "remaining_identity_reviews": 4323,
+  "eligible_source_records": 22,
+  "verified_unique_logical_items": 18,
+  "dispositions": {
+    "requires_human_classification": 4323,
+    "new_original_logical_item": 18,
+    "state_of_existing_item": 2,
+    "unsupported_or_irrelevant": 1,
+    "duplicate_reference": 1,
+    "variant_of_existing_item": 2
+  },
+  "new_sprites_generated": 0,
+  "catalog_sprite_approvals": 0
+}

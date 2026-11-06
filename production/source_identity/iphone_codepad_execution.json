@@ -1,0 +1,25 @@
+{
+  "evidence_type": "user_reported_iPhone_CodePad_execution",
+  "source": "User pasted complete successful console summary in this conversation",
+  "phone_environment": {
+    "Pillow": "11.0.0",
+    "persistent_folder": "CodePad Documents/LAST_LIGHT_FACTORY_V4"
+  },
+  "reported_result": {
+    "generated": 24,
+    "failed": 0,
+    "technical_qa_passes": 24,
+    "elapsed_seconds": 0.344406,
+    "png_files": 24,
+    "manifest_sha256": "06904607d9fe54e844bef84dd11c23a8aa8ac4e58830251618ed9a72cecdf173",
+    "review_sheets": 6,
+    "zip_archives": 1
+  },
+  "evidence_limits": {
+    "actual_phone_PNG_files_retrieved": false,
+    "script_SHA_verified_on_phone": false,
+    "visual_review_of_phone_exports": false,
+    "Godot_Xogot_execution_verified": false
+  },
+  "note": "Successful user-reported CodePad generation on iPhone. Automatic device_verifications=0 means the script does not self-certify testing; it does not negate this execution evidence."
+}

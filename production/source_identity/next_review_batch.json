@@ -1,0 +1,165 @@
+{
+  "batch_id": "LL-IDENTITY-B0002",
+  "records": [
+    {
+      "catalog_index": 1,
+      "reference_id": "pzwiki:catalog:2026-11-05:1",
+      "source_filename": "40calAmmoBox.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:40calAmmoBox.png",
+      "source_image_url": "https://pzwiki.net/w/images/1/19/40calAmmoBox.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 18,
+      "reference_id": "pzwiki:catalog:2026-11-05:18",
+      "source_filename": "Amethyst Raw.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Amethyst_Raw.png",
+      "source_image_url": "https://pzwiki.net/w/images/e/eb/Amethyst_Raw.png",
+      "classification_status": "blocked_conflict"
+    },
+    {
+      "catalog_index": 21,
+      "reference_id": "pzwiki:catalog:2026-11-05:21",
+      "source_filename": "AmmoStrap Bullets.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap_Bullets.png",
+      "source_image_url": "https://pzwiki.net/w/images/8/89/AmmoStrap_Bullets.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 22,
+      "reference_id": "pzwiki:catalog:2026-11-05:22",
+      "source_filename": "AmmoStrap Leather Bullets.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap_Leather_Bullets.png",
+      "source_image_url": "https://pzwiki.net/w/images/7/73/AmmoStrap_Leather_Bullets.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 23,
+      "reference_id": "pzwiki:catalog:2026-11-05:23",
+      "source_filename": "AmmoStrap Leather.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap_Leather.png",
+      "source_image_url": "https://pzwiki.net/w/images/4/48/AmmoStrap_Leather.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 24,
+      "reference_id": "pzwiki:catalog:2026-11-05:24",
+      "source_filename": "AmmoStrap.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap.png",
+      "source_image_url": "https://pzwiki.net/w/images/8/81/AmmoStrap.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 25,
+      "reference_id": "pzwiki:catalog:2026-11-05:25",
+      "source_filename": "Amplifier.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Amplifier.png",
+      "source_image_url": "https://pzwiki.net/w/images/3/3c/Amplifier.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 26,
+      "reference_id": "pzwiki:catalog:2026-11-05:26",
+      "source_filename": "Animalbottle Empty.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Animalbottle_Empty.png",
+      "source_image_url": "https://pzwiki.net/w/images/0/0b/Animalbottle_Empty.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 27,
+      "reference_id": "pzwiki:catalog:2026-11-05:27",
+      "source_filename": "Animalbottle Full.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Animalbottle_Full.png",
+      "source_image_url": "https://pzwiki.net/w/images/f/f7/Animalbottle_Full.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 28,
+      "reference_id": "pzwiki:catalog:2026-11-05:28",
+      "source_filename": "Animalbottle Mask.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Animalbottle_Mask.png",
+      "source_image_url": "https://pzwiki.net/w/images/3/3a/Animalbottle_Mask.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 29,
+      "reference_id": "pzwiki:catalog:2026-11-05:29",
+      "source_filename": "AnimalFeed.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AnimalFeed.png",
+      "source_image_url": "https://pzwiki.net/w/images/8/84/AnimalFeed.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 30,
+      "reference_id": "pzwiki:catalog:2026-11-05:30",
+      "source_filename": "AnimalPelt Grey.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AnimalPelt_Grey.png",
+      "source_image_url": "https://pzwiki.net/w/images/0/0d/AnimalPelt_Grey.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 31,
+      "reference_id": "pzwiki:catalog:2026-11-05:31",
+      "source_filename": "AnimalPelt.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AnimalPelt.png",
+      "source_image_url": "https://pzwiki.net/w/images/4/4f/AnimalPelt.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 32,
+      "reference_id": "pzwiki:catalog:2026-11-05:32",
+      "source_filename": "Antibiotics.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Antibiotics.png",
+      "source_image_url": "https://pzwiki.net/w/images/0/00/Antibiotics.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 33,
+      "reference_id": "pzwiki:catalog:2026-11-05:33",
+      "source_filename": "Antler Headdress.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Antler_Headdress.png",
+      "source_image_url": "https://pzwiki.net/w/images/1/1a/Antler_Headdress.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 34,
+      "reference_id": "pzwiki:catalog:2026-11-05:34",
+      "source_filename": "AntlerFlint.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AntlerFlint.png",
+      "source_image_url": "https://pzwiki.net/w/images/c/c0/AntlerFlint.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 35,
+      "reference_id": "pzwiki:catalog:2026-11-05:35",
+      "source_filename": "AntlerSet.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AntlerSet.png",
+      "source_image_url": "https://pzwiki.net/w/images/5/53/AntlerSet.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 36,
+      "reference_id": "pzwiki:catalog:2026-11-05:36",
+      "source_filename": "Anvil Forged.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Anvil_Forged.png",
+      "source_image_url": "https://pzwiki.net/w/images/1/1c/Anvil_Forged.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 37,
+      "reference_id": "pzwiki:catalog:2026-11-05:37",
+      "source_filename": "Anvil Stone.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Anvil_Stone.png",
+      "source_image_url": "https://pzwiki.net/w/images/b/bb/Anvil_Stone.png",
+      "classification_status": "observed_needs_context"
+    },
+    {
+      "catalog_index": 40,
+      "reference_id": "pzwiki:catalog:2026-11-05:40",
+      "source_filename": "Apron Garbagebag.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Apron_Garbagebag.png",
+      "source_image_url": "https://pzwiki.net/w/images/d/d5/Apron_Garbagebag.png",
+      "classification_status": "observed_needs_context"
+    }
+  ]
+}

@@ -6,14 +6,14 @@ No numerical art scores were invented. The decision follows inspection of all 24
 
 ## Exact reviewed evidence
 
-The frozen PNG copies, original manifest snapshot and SHA-256 hashes are in `reviews/final24/`. `V4_FINAL_VISUAL_REVIEW.json` contains each item's acceptance observations, rejection reason and required correction. The comparison map links every item to an actual Golden reference and explains whether it is a material or construction analogue. Objects such as a beanie have no direct Golden counterpart; the canvas pack is a fabric analogue, not a silhouette target.
+The frozen PNG copies, original manifest snapshot and SHA-256 hashes are in `reviews/final24/`. `V4_FINAL_VISUAL_REVIEW.json` contains each item's acceptance observations, rejection reason and required correction. The corrected comparison map links V3 and V4 versions of the same demo identity. Golden40 appears separately in golden40_style_only.png and provides no source identity mapping.
 
-- `reviews/final24/golden_v3_v4_native32.png`
-- `reviews/final24/golden_v3_v4_native48.png`
-- `reviews/final24/golden_v3_v4_native64.png`
-- `reviews/final24/golden_v3_v4_nearest3x.png`
+- `reviews/final24/v3_v4_same_item_native32.png`
+- `reviews/final24/v3_v4_same_item_native48.png`
+- `reviews/final24/v3_v4_same_item_native64.png`
+- `reviews/final24/v3_v4_same_item_nearest3x.png`
 
-Each numbered cell reads Golden reference → original V3 → final V4. All 24 are shown; weak objects are retained. Existing Golden object exports include pale JPEG-derived matte fragments and resampling, so comparison separates visual direction from export cleanliness.
+Each numbered cell reads original V3 → final V4 for the same demo object. All 24 are shown; weak objects are retained. Existing Golden object exports include pale JPEG-derived matte fragments and resampling, so comparison separates visual direction from export cleanliness.
 
 ## Corrections actually verified
 

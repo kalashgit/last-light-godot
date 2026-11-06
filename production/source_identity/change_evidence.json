@@ -1,0 +1,15 @@
+{
+  "starting_commit": "023f3a8eaa2ca2e05516e7ee8f08d9bb3283519a",
+  "branch": "codex/source-identity-classification",
+  "factory_sha256": "bb11e9b6bd3507b04c6fed3a8362cc9ff8002a4aea56b45008f9c9d8e573b6bc",
+  "original_catalog_unchanged": true,
+  "render_icon_AST_unchanged": true,
+  "draw_design_AST_unchanged": true,
+  "unchanged_function_or_class_count": 31,
+  "all_24_PNG_hashes_unchanged": true,
+  "new_catalog_assets_generated": 0,
+  "Godot_or_device_tests_added": false,
+  "private_source_fetch_actual_records": 20,
+  "private_source_fetch_resume_executed": true,
+  "legacy_generation_request_rejected": true
+}
