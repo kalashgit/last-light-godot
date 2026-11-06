@@ -37,6 +37,20 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def require_source_classification():
+    """Retain existing assets; stop new production until official-source mapping is reviewed."""
+    home = ROOT / 'production/source_identity'
+    gate = read(home / 'production_gate.json')
+    if (gate.get('production_enabled') is not True or gate.get('catalog_review_complete') is not True
+            or gate.get('resolved_reference_records') != gate.get('total_reference_records')
+            or gate.get('catalog_sha256') != digest(BASE / 'catalog.json')
+            or gate.get('ledger_sha256') != digest(home / 'ledger.jsonl')):
+        raise ValueError('Catalog production paused: verify official source identities before new generation/export/promotion. Approved style is retained.')
+    # This legacy path needs an explicit reviewed adapter before it can consume
+    # the new identity ledger; do not silently reconcile incompatible stable IDs.
+    raise ValueError('Use the V4 evidence-ledger path for new catalog production; legacy ID mapping requires explicit reconciliation.')
+
+
 def safe(path):
     path = (ROOT / path).resolve()
     if not path.is_relative_to(ROOT):
@@ -97,6 +111,7 @@ def intake(sources):
 
 
 def extract(batch, revision, sheet=None, only=None):
+    require_source_classification()
     b = batch_dir(batch)
     plan = read(b / 'briefs.json')
     generation_path = b / ('generation_' + revision + '.json')
@@ -319,6 +334,7 @@ def rework(batch, asset_id, defect, cause, change):
 
 def promote(batch, revision, approval):
     """Explicit founder calibration approval and six inspected criteria are required."""
+    require_source_classification()
     b=batch_dir(batch);m=read(b/(revision+'.json'));qa=validate_manifest(m);a=read(approval)
     if qa['errors']:
         raise ValueError('technical gate failed')
@@ -421,6 +437,7 @@ def main():
     try:
         if a.cmd=='intake':intake(a.sources)
         elif a.cmd=='request':
+            require_source_classification()
             b = batch_dir(a.batch)
             payload = {'tool':'image_gen.imagegen','prompt':(b/'prompt.txt').read_text(),'referenced_image_paths':[str(BASE/'evidence/golden40_all.png')],'transparent_background':True}
             write(b/'generation_request.json',payload)

@@ -1,3 +1,5 @@
+> Current amendment: the founder approved the visual style and processing. Official-source names, icons and information remain authoritative. Catalog production is paused for source identity verification; see [the classification checkpoint](../source_identity/README.md). Earlier reports below retain their historical source hashes and approval states.
+
 # Current V4 delivery: original-template hybrid + procedural engine
 
 The default 24-item review uses **original AI-assisted native64 templates embedded

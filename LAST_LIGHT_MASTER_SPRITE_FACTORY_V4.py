@@ -20,6 +20,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 GENERATOR_VERSION = 'LAST_LIGHT_V4.0.2'
 RECIPE_VERSION = 'native_parts_1'
+SOURCE_IDENTITY_POLICY_VERSION = 'll_source_identity_gate_v1'
 CUSTOM_WORK_FOLDER = ''  # Set a persistent, Files-accessible CodePad Documents path.
 DEMO_MODE = True
 USE_AUTHORED_TEMPLATES = True  # Original embedded native64 masters; False selects procedural designs.
@@ -553,6 +554,8 @@ def technical_qa(image):
 
 
 def _v4_fingerprints(recipe):
+    # Derived validation metadata does not change the approved artwork recipe.
+    recipe = {key: value for key, value in recipe.items() if key != "source_identity"}
     recipe_fingerprint = hashlib.sha256(_v4_json(recipe).encode("utf-8")).hexdigest()
     render_fingerprint = hashlib.sha256(_v4_json({
         "recipe_fingerprint": recipe_fingerprint,
@@ -676,7 +679,67 @@ def _v4_database(base):
     return connection
 
 
-def _v4_stage_recipes(connection, recipes):
+def _v4_source_identity(recipe, gate=None):
+    """Keep source identity separate from style approval. Never classify by name.
+
+    The standalone renderer accepts a portable evidence ledger, not reference
+    pixels. A ledger receipt is an attributed review, not cryptographic proof of
+    correct art. Subsequent visual identity review is still required.
+    """
+    refs = recipe.get("source_reference_ids", [])
+    if not isinstance(refs, list) or any(not isinstance(x, str) or not x for x in refs) or len(set(refs)) != len(refs):
+        raise ValueError("source_reference_ids must be distinct exact source IDs")
+    design = recipe.get("design")
+    identity = recipe.get("semantic_identity_key", design)
+    # Each existing original template/grammar represents its declared object.
+    # A metal/grip or organic-volume analogue cannot change that identity.
+    if design in DESIGNS and identity != design:
+        raise ValueError("Source identity mismatch: the %s design cannot render %s" % (design, identity))
+    if not refs:
+        if recipe.get("production_scope") == "catalog_production":
+            raise ValueError("Catalog production requires exact source IDs and classification evidence")
+        return {"scope": "style_calibration_demo" if design in AUTHORED_TEMPLATES else "independent_original_draft",
+            "status": "not_catalog_linked", "policy_version": SOURCE_IDENTITY_POLICY_VERSION,
+            "semantic_identity_key": identity, "catalog_records_covered": 0,
+            "source_reference_ids": [], "production_eligible": False}
+    if not gate or gate.get("schema") != SOURCE_IDENTITY_POLICY_VERSION:
+        raise ValueError("Source classification required: supply --classification-ledger; style references are not identity evidence")
+    receipts = gate.get("receipts", {})
+    if not isinstance(receipts, dict):
+        raise ValueError("Invalid identity receipts")
+    accepted = []
+    for ref in refs:
+        receipt = receipts.get(ref, {})
+        if receipt.get("reference_id") != ref or receipt.get("status") != "identity_verified":
+            raise ValueError("Unverified source identity: " + ref)
+        if receipt.get("identity_key") != identity:
+            raise ValueError("Source identity mismatch: %s is %s, recipe is %s" % (ref, receipt.get("identity_key"), identity))
+        if receipt.get("logical_item_id") != recipe.get("canonical_item_id", recipe["id"]):
+            raise ValueError("Source classification and canonical item ID disagree: " + ref)
+        if receipt.get("view") != recipe.get("view", "inventory_icon") or receipt.get("state") != recipe.get("state", "intact"):
+            raise ValueError("Source state/view requires separately authored representation: " + ref)
+        if not receipt.get("production_eligible") or receipt.get("disposition") not in {
+                "new_original_logical_item", "variant_of_existing_item", "state_of_existing_item"}:
+            raise ValueError("Source disposition is not eligible for original sprite production: " + ref)
+        if receipt.get("reviewer_kind") != "assistant_visual_judgment" or not receipt.get("review_id") or any(
+                not re.fullmatch("[0-9a-f]{64}", receipt.get(key, "")) for key in ("image_sha256", "context_sha256")):
+            raise ValueError("Source review is missing inspected image/context evidence")
+        accepted.append(receipt["review_id"])
+    total = gate.get("total_reference_records")
+    if (type(total) is not int or total < 1 or gate.get("resolved_reference_records") != total
+            or len(receipts) != total or gate.get("catalog_review_complete") is not True
+            or gate.get("production_enabled") is not True):
+        raise ValueError("Catalog production paused: complete source classification before further production; the approved style is retained")
+    for key in ("catalog_sha256", "ledger_sha256"):
+        if not re.fullmatch("[0-9a-f]{64}", gate.get(key, "")):
+            raise ValueError("Classification ledger provenance is missing")
+    return {"scope": "catalog_production", "status": "identity_verified",
+        "policy_version": SOURCE_IDENTITY_POLICY_VERSION, "semantic_identity_key": identity,
+        "source_reference_ids": refs, "review_ids": accepted, "catalog_records_covered": len(refs),
+        "ledger_sha256": gate["ledger_sha256"], "production_eligible": True}
+
+
+def _v4_stage_recipes(connection, recipes, classification_gate=None):
     """Validate the entire input before rendering. Disk indexes bound memory."""
     connection.execute("DELETE FROM recipe_queue")
     count = 0
@@ -685,6 +748,7 @@ def _v4_stage_recipes(connection, recipes):
             for index, raw in enumerate(recipes):
                 try:
                     recipe = normalize_recipe(raw)
+                    recipe["source_identity"] = _v4_source_identity(recipe, classification_gate)
                     logical_id = recipe.get("canonical_item_id", recipe["id"])
                     if not re.fullmatch(r"[a-z0-9_]+(?:\.[a-z0-9_]+)*", logical_id):
                         raise ValueError("Invalid canonical logical item ID")
@@ -786,6 +850,7 @@ def _v4_record(recipe, variant, relative, recipe_fp, render_fp, digest, qa, benc
         "generator_version": GENERATOR_VERSION, "recipe_version": RECIPE_VERSION,
         "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
         "source_reference_ids": recipe.get("source_reference_ids", []),
+        "source_identity": recipe.get("source_identity", {"status": "not_catalog_linked", "catalog_records_covered": 0}),
         "material_specification": recipe.get("parts", recipe.get("materials", recipe.get("material", ""))),
         "required_representations": ["inventory_icon"],
         "source_recipe": recipe,
@@ -949,7 +1014,7 @@ def _v4_snapshot(connection, base, start, stop, variants, chunk_size, benchmark)
 
 def run_batch(recipes, output_dir, variants=1, start=0, limit=24, workers=1,
               chunk_size=250, resume=True, benchmark=False, stop_after=None,
-              approval_path=None):
+              approval_path=None, classification_path=None):
     """Run a deterministic, resumable draft batch; output_dir is an isolated root.
 
     start/limit count output jobs, not logical items. limit=0 selects all jobs.
@@ -977,7 +1042,8 @@ def run_batch(recipes, output_dir, variants=1, start=0, limit=24, workers=1,
     pending_futures = {}
     executor = None
     try:
-        recipe_count = _v4_stage_recipes(connection, recipes)
+        classification_gate = json.loads(Path(classification_path).read_text(encoding="utf-8")) if classification_path else None
+        recipe_count = _v4_stage_recipes(connection, recipes, classification_gate)
         total = recipe_count * variants
         if total > V4_MAX_JOBS:
             raise ValueError("Job count exceeds configured 2,000,000 safety cap")
@@ -1205,6 +1271,7 @@ def main(argv=None):
     parser.add_argument("--workers", type=int, default=V4_WORKERS)
     parser.add_argument("--chunk-size", type=int, default=V4_CHUNK_SIZE)
     parser.add_argument("--benchmark", action="store_true", help="Explicit isolated synthetic throughput test, never art approval")
+    parser.add_argument("--classification-ledger", help="Evidence-based catalog production_gate.json; required for source-linked recipes")
     parser.add_argument("--stop-after", type=int, help="Controlled interruption after N processed jobs; resume with same parameters")
     parser.add_argument("--approval", help="Recorded founder scaling authorization JSON, not automatic visual approval")
     parser.add_argument("--no-resume", action="store_true")
@@ -1230,7 +1297,7 @@ def main(argv=None):
     return run_batch(recipes, output, variants=args.variants, start=args.start,
         limit=args.limit, workers=args.workers, chunk_size=args.chunk_size,
         resume=V4_RESUME and not args.no_resume, benchmark=args.benchmark,
-        stop_after=args.stop_after, approval_path=args.approval)
+        stop_after=args.stop_after, approval_path=args.approval, classification_path=args.classification_ledger)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,8 @@
+{
+  "tests_run": 26,
+  "passed": true,
+  "failures": [],
+  "errors": [],
+  "factory_sha256": "bb11e9b6bd3507b04c6fed3a8362cc9ff8002a4aea56b45008f9c9d8e573b6bc",
+  "purpose": "Source identity gates and unchanged visual processing; no production or device approval"
+}

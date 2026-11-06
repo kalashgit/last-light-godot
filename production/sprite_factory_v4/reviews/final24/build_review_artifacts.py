@@ -5,26 +5,12 @@ from PIL import Image,ImageDraw
 repo=Path(__file__).resolve().parents[4];root=repo/'production/sprite_factory_v4';out=root/'reviews/final24';gold=repo/'assets/last_light/golden40'
 rows=[json.loads(x) for x in (out/'manifest_snapshot.jsonl').read_text().splitlines()]
 refs=json.loads((gold/'manifest.json').read_text())['items'];refbyid={r['id']:r for r in refs}
-# Material/construction analogues only. Differing objects are explicitly not silhouette targets.
-analogs=[('aerosol_canister','curved steel and wrapped label'),('aerosol_canister','curved steel and wrapped label'),('acorn','organic volume; different species'),('acorn','organic volume; different species'),('ammunition_case','lid seam and case hardware'),('ammo_box_40cal','folded matte carton'),('hand_axe','forged metal joined to wood'),('basic_mace','metal head joined to wood'),('hunting_knife','metal shaft/blade and constructed grip'),('pocket_knife','metal shaft/blade and constructed grip'),('butterfly_knife_folded','machined metal joints'),('crowbar','painted steel'),('baseball_bat','directional wood grain'),('aluminum_ingot','solid metal stock; different alloy'),('air_filter_tape','wound roll/core construction'),('stone_axe','rope binding/fiber; different assembly'),('field_pack_olive','loaded sewn canvas pack'),('field_pack_sand','sewn canvas volume; different bag design'),('hunting_knife','leather handle cues; different object'),('field_pack_olive','woven cloth shading; different fabric construction'),('digital_alarm_clock','molded dark housing and controls'),('aerosol_canister','curved metal thickness; different object'),('isopropyl_alcohol','translucent bottle thickness'),('aerosol_canister','curved metal and rolled rims; different object')]
-assert len(rows)==len(analogs)==24
-for r in rows:
- p=out/(r['logical_item_id'].split('.')[-1]+'.png')
- if hashlib.sha256(p.read_bytes()).hexdigest()!=r['sha256']:raise ValueError('Frozen review snapshot hash mismatch: '+str(p))
-base=[json.loads(x) for x in (root/'baseline/manifest_range_000000000_000000024.jsonl').read_text().splitlines()];basebyid={x['logical_item_id']:x for x in base}
-comp=[]
-for i,(r,(refslug,reason)) in enumerate(zip(rows,analogs),1):
- gr=refbyid['ll_golden_'+refslug];br=basebyid[r['logical_item_id']];slug=r['logical_item_id'].split('.')[-1]
- comp.append({'index':i,'logical_item_id':r['logical_item_id'],'golden_reference_id':gr['id'],'golden_reference_index':refs.index(gr)+1,'comparison_basis':reason,'paths':[gold/gr['icon'],root/'baseline/output'/br['relative_path'],out/(slug+'.png')],'original_v4_path':r['relative_path'],'manifest_sha256':r['sha256'],'generator_version':r['generator_version']})
-for size in [32,48,64,192]:
- cw=max(220,3*size+24);ch=size+48;board=Image.new('RGB',(3*cw,8*ch),(38,42,46));d=ImageDraw.Draw(board)
- for i,r in enumerate(comp):
-  bx=i%3*cw;by=i//3*ch;d.text((bx+5,by+3),f'{i+1:02d} '+r['logical_item_id'].split('.')[-1],fill=(232,231,220))
-  centers=[cw/6,cw/2,5*cw/6]
-  for j,path in enumerate(r['paths']):
-   with Image.open(path) as im:icon=im.convert('RGBA').resize((size,size),Image.Resampling.NEAREST)
-   x=round(bx+centers[j]-size/2);y=by+30;board.paste(icon,(x,y),icon);d.text((x,by+17),f'G{r["golden_reference_index"]:02d}' if j==0 else ('V3' if j==1 else 'V4'),fill=(205,207,198))
- board.save(out/(f'golden_v3_v4_native{size}.png' if size<100 else 'golden_v3_v4_nearest3x.png'))
+# Golden references are a separate style board, never per-item identity targets.
+import sys
+sys.path.insert(0,str(repo/'tools'))
+from build_identity_safe_comparisons import build_comparisons
+base=[json.loads(x) for x in (root/'baseline/manifest_range_000000000_000000024.jsonl').read_text().splitlines()]
+comp=build_comparisons(out)
 
 def metrics(path):
  with Image.open(path) as original:im=original.convert('RGBA')
