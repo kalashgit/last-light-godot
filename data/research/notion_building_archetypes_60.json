@@ -1,0 +1,1050 @@
+{
+  "schema": "last_light.building_archetypes.notion_snapshot.v1",
+  "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+  "verified_metadata_records": 60,
+  "production_status": "proposed_not_generated",
+  "records": [
+    {
+      "id": "ll.archetype.house_small",
+      "archetype_id": "house_small",
+      "display_name": "Small single-family house",
+      "group": "Residential",
+      "room_modules": [
+        "entry",
+        "living",
+        "kitchen",
+        "bedroom",
+        "bath"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Small single-family house building with functional modules: entry, living, kitchen, bedroom, bath."
+    },
+    {
+      "id": "ll.archetype.house_large",
+      "archetype_id": "house_large",
+      "display_name": "Large single-family house",
+      "group": "Residential",
+      "room_modules": [
+        "entry",
+        "living",
+        "kitchen",
+        "bedrooms",
+        "bath",
+        "utility"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Large single-family house building with functional modules: entry, living, kitchen, bedrooms, bath, utility."
+    },
+    {
+      "id": "ll.archetype.apartment_block",
+      "archetype_id": "apartment_block",
+      "display_name": "Apartment block / flats",
+      "group": "Residential",
+      "room_modules": [
+        "lobby",
+        "corridor",
+        "stair",
+        "repeated flat"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Apartment block / flats building with functional modules: lobby, corridor, stair, repeated flat."
+    },
+    {
+      "id": "ll.archetype.trailer_park",
+      "archetype_id": "trailer_park",
+      "display_name": "Trailer park environment",
+      "group": "Residential",
+      "room_modules": [
+        "lot",
+        "lane",
+        "power pedestal",
+        "shared utilities"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Trailer park environment building with functional modules: lot, lane, power pedestal, shared utilities."
+    },
+    {
+      "id": "ll.archetype.mobile_home",
+      "archetype_id": "mobile_home",
+      "display_name": "Mobile home / trailer",
+      "group": "Residential",
+      "room_modules": [
+        "compact living/kitchen",
+        "sleep",
+        "bath"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Mobile home / trailer building with functional modules: compact living/kitchen, sleep, bath."
+    },
+    {
+      "id": "ll.archetype.garage",
+      "archetype_id": "garage",
+      "display_name": "Detached garage",
+      "group": "Residential",
+      "room_modules": [
+        "vehicle bay",
+        "shelving",
+        "tool bench"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Detached garage building with functional modules: vehicle bay, shelving, tool bench."
+    },
+    {
+      "id": "ll.archetype.shed",
+      "archetype_id": "shed",
+      "display_name": "Garden/tool shed",
+      "group": "Residential",
+      "room_modules": [
+        "storage",
+        "work surface"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Garden/tool shed building with functional modules: storage, work surface."
+    },
+    {
+      "id": "ll.archetype.townhouse",
+      "archetype_id": "townhouse",
+      "display_name": "Townhouse / row home",
+      "group": "Residential",
+      "room_modules": [
+        "narrow repeated floors",
+        "party walls"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Townhouse / row home building with functional modules: narrow repeated floors, party walls."
+    },
+    {
+      "id": "ll.archetype.duplex",
+      "archetype_id": "duplex",
+      "display_name": "Two-unit duplex",
+      "group": "Residential",
+      "room_modules": [
+        "mirrored flat",
+        "shared boundary",
+        "dual entries"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Two-unit duplex building with functional modules: mirrored flat, shared boundary, dual entries."
+    },
+    {
+      "id": "ll.archetype.grocery_store",
+      "archetype_id": "grocery_store",
+      "display_name": "Grocery / convenience store",
+      "group": "Commercial",
+      "room_modules": [
+        "sales floor",
+        "cashier",
+        "stock"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Grocery / convenience store building with functional modules: sales floor, cashier, stock."
+    },
+    {
+      "id": "ll.archetype.supermarket",
+      "archetype_id": "supermarket",
+      "display_name": "Supermarket",
+      "group": "Commercial",
+      "room_modules": [
+        "aisles",
+        "cold case",
+        "loading",
+        "stock"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Supermarket building with functional modules: aisles, cold case, loading, stock."
+    },
+    {
+      "id": "ll.archetype.gas_station",
+      "archetype_id": "gas_station",
+      "display_name": "Gas station",
+      "group": "Commercial",
+      "room_modules": [
+        "sales",
+        "storage",
+        "forecourt/pumps"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Gas station building with functional modules: sales, storage, forecourt/pumps."
+    },
+    {
+      "id": "ll.archetype.restaurant",
+      "archetype_id": "restaurant",
+      "display_name": "Restaurant",
+      "group": "Commercial",
+      "room_modules": [
+        "dining",
+        "commercial kitchen",
+        "storage",
+        "toilet"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Restaurant building with functional modules: dining, commercial kitchen, storage, toilet."
+    },
+    {
+      "id": "ll.archetype.cafe",
+      "archetype_id": "cafe",
+      "display_name": "Cafe",
+      "group": "Commercial",
+      "room_modules": [
+        "counter",
+        "seating",
+        "kitchen"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Cafe building with functional modules: counter, seating, kitchen."
+    },
+    {
+      "id": "ll.archetype.diner",
+      "archetype_id": "diner",
+      "display_name": "Diner",
+      "group": "Commercial",
+      "room_modules": [
+        "booth dining",
+        "grill",
+        "storeroom"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Diner building with functional modules: booth dining, grill, storeroom."
+    },
+    {
+      "id": "ll.archetype.bar_pub",
+      "archetype_id": "bar_pub",
+      "display_name": "Bar / pub",
+      "group": "Commercial",
+      "room_modules": [
+        "bar counter",
+        "seating",
+        "storage"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Bar / pub building with functional modules: bar counter, seating, storage."
+    },
+    {
+      "id": "ll.archetype.clothing_store",
+      "archetype_id": "clothing_store",
+      "display_name": "Clothing store",
+      "group": "Commercial",
+      "room_modules": [
+        "displays",
+        "fitting",
+        "stock"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Clothing store building with functional modules: displays, fitting, stock."
+    },
+    {
+      "id": "ll.archetype.department_store",
+      "archetype_id": "department_store",
+      "display_name": "Department store",
+      "group": "Commercial",
+      "room_modules": [
+        "multiple retail zones",
+        "receiving"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Department store building with functional modules: multiple retail zones, receiving."
+    },
+    {
+      "id": "ll.archetype.hardware_store",
+      "archetype_id": "hardware_store",
+      "display_name": "Hardware / DIY",
+      "group": "Commercial",
+      "room_modules": [
+        "heavy shelving",
+        "trade counter",
+        "yard"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Hardware / DIY building with functional modules: heavy shelving, trade counter, yard."
+    },
+    {
+      "id": "ll.archetype.pharmacy",
+      "archetype_id": "pharmacy",
+      "display_name": "Pharmacy",
+      "group": "Commercial",
+      "room_modules": [
+        "retail",
+        "secured medicine counter",
+        "stock"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Pharmacy building with functional modules: retail, secured medicine counter, stock."
+    },
+    {
+      "id": "ll.archetype.clinic",
+      "archetype_id": "clinic",
+      "display_name": "Local clinic",
+      "group": "Commercial",
+      "room_modules": [
+        "waiting",
+        "exam",
+        "reception"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Local clinic building with functional modules: waiting, exam, reception."
+    },
+    {
+      "id": "ll.archetype.hair_salon",
+      "archetype_id": "hair_salon",
+      "display_name": "Barber / hair salon",
+      "group": "Commercial",
+      "room_modules": [
+        "stations",
+        "wash area",
+        "reception"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Barber / hair salon building with functional modules: stations, wash area, reception."
+    },
+    {
+      "id": "ll.archetype.bank",
+      "archetype_id": "bank",
+      "display_name": "Bank",
+      "group": "Commercial",
+      "room_modules": [
+        "lobby",
+        "teller",
+        "offices",
+        "secure storage"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Bank building with functional modules: lobby, teller, offices, secure storage."
+    },
+    {
+      "id": "ll.archetype.office",
+      "archetype_id": "office",
+      "display_name": "Offices",
+      "group": "Commercial",
+      "room_modules": [
+        "desks",
+        "meeting",
+        "break room",
+        "records"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Offices building with functional modules: desks, meeting, break room, records."
+    },
+    {
+      "id": "ll.archetype.police_station",
+      "archetype_id": "police_station",
+      "display_name": "Police station",
+      "group": "Civic / public",
+      "room_modules": [
+        "reception",
+        "offices",
+        "evidence",
+        "holding"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Police station building with functional modules: reception, offices, evidence, holding."
+    },
+    {
+      "id": "ll.archetype.fire_station",
+      "archetype_id": "fire_station",
+      "display_name": "Fire station",
+      "group": "Civic / public",
+      "room_modules": [
+        "vehicle bays",
+        "dorm",
+        "kitchen",
+        "equipment"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Fire station building with functional modules: vehicle bays, dorm, kitchen, equipment."
+    },
+    {
+      "id": "ll.archetype.hospital",
+      "archetype_id": "hospital",
+      "display_name": "Hospital",
+      "group": "Civic / public",
+      "room_modules": [
+        "triage",
+        "wards",
+        "treatment",
+        "pharmacy",
+        "service"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Hospital building with functional modules: triage, wards, treatment, pharmacy, service."
+    },
+    {
+      "id": "ll.archetype.medical_center",
+      "archetype_id": "medical_center",
+      "display_name": "Medical center",
+      "group": "Civic / public",
+      "room_modules": [
+        "waiting",
+        "consultation",
+        "treatment"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Medical center building with functional modules: waiting, consultation, treatment."
+    },
+    {
+      "id": "ll.archetype.elementary_school",
+      "archetype_id": "elementary_school",
+      "display_name": "Elementary school",
+      "group": "Civic / public",
+      "room_modules": [
+        "classrooms",
+        "admin",
+        "cafeteria",
+        "playground"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Elementary school building with functional modules: classrooms, admin, cafeteria, playground."
+    },
+    {
+      "id": "ll.archetype.high_school",
+      "archetype_id": "high_school",
+      "display_name": "High school",
+      "group": "Civic / public",
+      "room_modules": [
+        "classrooms",
+        "labs",
+        "gym",
+        "cafeteria"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original High school building with functional modules: classrooms, labs, gym, cafeteria."
+    },
+    {
+      "id": "ll.archetype.college_building",
+      "archetype_id": "college_building",
+      "display_name": "College building",
+      "group": "Civic / public",
+      "room_modules": [
+        "lecture",
+        "lab",
+        "office",
+        "hall"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original College building building with functional modules: lecture, lab, office, hall."
+    },
+    {
+      "id": "ll.archetype.church",
+      "archetype_id": "church",
+      "display_name": "Church",
+      "group": "Civic / public",
+      "room_modules": [
+        "worship hall",
+        "vestry",
+        "storage"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Church building with functional modules: worship hall, vestry, storage."
+    },
+    {
+      "id": "ll.archetype.community_center",
+      "archetype_id": "community_center",
+      "display_name": "Community center",
+      "group": "Civic / public",
+      "room_modules": [
+        "multi-use hall",
+        "office",
+        "kitchen"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Community center building with functional modules: multi-use hall, office, kitchen."
+    },
+    {
+      "id": "ll.archetype.library",
+      "archetype_id": "library",
+      "display_name": "Library",
+      "group": "Civic / public",
+      "room_modules": [
+        "stacks",
+        "reading",
+        "admin"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Library building with functional modules: stacks, reading, admin."
+    },
+    {
+      "id": "ll.archetype.post_office",
+      "archetype_id": "post_office",
+      "display_name": "Post office",
+      "group": "Civic / public",
+      "room_modules": [
+        "public counter",
+        "sorting",
+        "loading"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Post office building with functional modules: public counter, sorting, loading."
+    },
+    {
+      "id": "ll.archetype.prison",
+      "archetype_id": "prison",
+      "display_name": "Prison",
+      "group": "Civic / public",
+      "room_modules": [
+        "secure perimeter",
+        "cells",
+        "control",
+        "support"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Prison building with functional modules: secure perimeter, cells, control, support."
+    },
+    {
+      "id": "ll.archetype.detention_facility",
+      "archetype_id": "detention_facility",
+      "display_name": "Detention / holding",
+      "group": "Civic / public",
+      "room_modules": [
+        "booking",
+        "short-term cells",
+        "control"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Detention / holding building with functional modules: booking, short-term cells, control."
+    },
+    {
+      "id": "ll.archetype.warehouse",
+      "archetype_id": "warehouse",
+      "display_name": "Warehouse",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "rack aisles",
+        "loading",
+        "office"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Warehouse building with functional modules: rack aisles, loading, office."
+    },
+    {
+      "id": "ll.archetype.factory",
+      "archetype_id": "factory",
+      "display_name": "Factory",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "production bay",
+        "service",
+        "stock"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Factory building with functional modules: production bay, service, stock."
+    },
+    {
+      "id": "ll.archetype.farm",
+      "archetype_id": "farm",
+      "display_name": "Farm / farmstead",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "house",
+        "field",
+        "utility paths"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Farm / farmstead building with functional modules: house, field, utility paths."
+    },
+    {
+      "id": "ll.archetype.barn",
+      "archetype_id": "barn",
+      "display_name": "Barn",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "animal/storage bays",
+        "loft"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Barn building with functional modules: animal/storage bays, loft."
+    },
+    {
+      "id": "ll.archetype.silo",
+      "archetype_id": "silo",
+      "display_name": "Silo",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "cylindrical storage",
+        "ladder/service"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Silo building with functional modules: cylindrical storage, ladder/service."
+    },
+    {
+      "id": "ll.archetype.mechanic_shop",
+      "archetype_id": "mechanic_shop",
+      "display_name": "Mechanic garage",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "lifts",
+        "service bays",
+        "parts",
+        "office"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Mechanic garage building with functional modules: lifts, service bays, parts, office."
+    },
+    {
+      "id": "ll.archetype.power_station",
+      "archetype_id": "power_station",
+      "display_name": "Power station/substation",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "control",
+        "transformers",
+        "fenced utility"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Power station/substation building with functional modules: control, transformers, fenced utility."
+    },
+    {
+      "id": "ll.archetype.water_treatment",
+      "archetype_id": "water_treatment",
+      "display_name": "Water treatment works",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "plant hall",
+        "tanks",
+        "pumps",
+        "control"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Water treatment works building with functional modules: plant hall, tanks, pumps, control."
+    },
+    {
+      "id": "ll.archetype.construction_site",
+      "archetype_id": "construction_site",
+      "display_name": "Construction site",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "unfinished structure",
+        "materials",
+        "hazards"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Construction site building with functional modules: unfinished structure, materials, hazards."
+    },
+    {
+      "id": "ll.archetype.storage_yard",
+      "archetype_id": "storage_yard",
+      "display_name": "Storage yard",
+      "group": "Industrial / utility / rural",
+      "room_modules": [
+        "fence",
+        "containers",
+        "equipment",
+        "gate"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Storage yard building with functional modules: fence, containers, equipment, gate."
+    },
+    {
+      "id": "ll.archetype.gym",
+      "archetype_id": "gym",
+      "display_name": "Fitness center",
+      "group": "Recreation",
+      "room_modules": [
+        "exercise floor",
+        "changing",
+        "reception"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Fitness center building with functional modules: exercise floor, changing, reception."
+    },
+    {
+      "id": "ll.archetype.bowling_alley",
+      "archetype_id": "bowling_alley",
+      "display_name": "Bowling alley",
+      "group": "Recreation",
+      "room_modules": [
+        "lanes",
+        "seating",
+        "back service"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Bowling alley building with functional modules: lanes, seating, back service."
+    },
+    {
+      "id": "ll.archetype.movie_theater",
+      "archetype_id": "movie_theater",
+      "display_name": "Movie theater",
+      "group": "Recreation",
+      "room_modules": [
+        "lobby",
+        "ticket",
+        "auditorium",
+        "projection"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Movie theater building with functional modules: lobby, ticket, auditorium, projection."
+    },
+    {
+      "id": "ll.archetype.sports_field",
+      "archetype_id": "sports_field",
+      "display_name": "Sports field",
+      "group": "Recreation",
+      "room_modules": [
+        "field",
+        "fence",
+        "stands/storage"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Sports field building with functional modules: field, fence, stands/storage."
+    },
+    {
+      "id": "ll.archetype.stadium",
+      "archetype_id": "stadium",
+      "display_name": "Stadium",
+      "group": "Recreation",
+      "room_modules": [
+        "seating",
+        "concourse",
+        "service",
+        "field"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Stadium building with functional modules: seating, concourse, service, field."
+    },
+    {
+      "id": "ll.archetype.park",
+      "archetype_id": "park",
+      "display_name": "Public park",
+      "group": "Recreation",
+      "room_modules": [
+        "paths",
+        "greenery",
+        "benches",
+        "amenity"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Public park building with functional modules: paths, greenery, benches, amenity."
+    },
+    {
+      "id": "ll.archetype.campground",
+      "archetype_id": "campground",
+      "display_name": "Campground",
+      "group": "Recreation",
+      "room_modules": [
+        "plots",
+        "restroom",
+        "water",
+        "shelter"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Campground building with functional modules: plots, restroom, water, shelter."
+    },
+    {
+      "id": "ll.archetype.military_base",
+      "archetype_id": "military_base",
+      "display_name": "Military base",
+      "group": "Special",
+      "room_modules": [
+        "barracks",
+        "mess",
+        "supply",
+        "perimeter"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Military base building with functional modules: barracks, mess, supply, perimeter."
+    },
+    {
+      "id": "ll.archetype.checkpoint",
+      "archetype_id": "checkpoint",
+      "display_name": "Security checkpoint",
+      "group": "Special",
+      "room_modules": [
+        "gate",
+        "barriers",
+        "guard shelter"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Security checkpoint building with functional modules: gate, barriers, guard shelter."
+    },
+    {
+      "id": "ll.archetype.radio_station",
+      "archetype_id": "radio_station",
+      "display_name": "Radio station",
+      "group": "Special",
+      "room_modules": [
+        "studio",
+        "office",
+        "transmitter"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Radio station building with functional modules: studio, office, transmitter."
+    },
+    {
+      "id": "ll.archetype.tv_station",
+      "archetype_id": "tv_station",
+      "display_name": "TV station",
+      "group": "Special",
+      "room_modules": [
+        "studio",
+        "control",
+        "support"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original TV station building with functional modules: studio, control, support."
+    },
+    {
+      "id": "ll.archetype.hotel",
+      "archetype_id": "hotel",
+      "display_name": "Hotel",
+      "group": "Special",
+      "room_modules": [
+        "lobby",
+        "corridor",
+        "repeated guest rooms"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Hotel building with functional modules: lobby, corridor, repeated guest rooms."
+    },
+    {
+      "id": "ll.archetype.motel",
+      "archetype_id": "motel",
+      "display_name": "Motel",
+      "group": "Special",
+      "room_modules": [
+        "exterior room entries",
+        "parking",
+        "reception"
+      ],
+      "status": "spec_proposed",
+      "source_notion": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "kind": "building",
+      "provenance": "original_internal",
+      "approved_original_recipe": false,
+      "description": "Proposed original Motel building with functional modules: exterior room entries, parking, reception."
+    }
+  ]
+}
