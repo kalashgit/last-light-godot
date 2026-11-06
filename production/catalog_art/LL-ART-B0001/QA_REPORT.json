@@ -1,0 +1,10 @@
+{
+  "exported_candidates": 20,
+  "technical_passes": 20,
+  "visual_candidate_passes": 20,
+  "founder_approvals": 0,
+  "source_clipping_flags": 0,
+  "phone_runtime_verified": false,
+  "master_script_sha256": "cc81bd90d6753e72bd2b4f5c3d4ba1e6921706613bd174529e49b405e928d1a2",
+  "old_V4_byte_unchanged": true
+}

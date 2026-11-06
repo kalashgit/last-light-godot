@@ -1,0 +1,2130 @@
+[
+  {
+    "slot": 0,
+    "catalog_index": 25,
+    "reference_id": "pzwiki:catalog:2026-11-05:25",
+    "official_source_filename": "Amplifier.png",
+    "official_item_name": "Amplifier",
+    "official_item_ids": [
+      "Base.Amplifier"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Amplifier",
+    "source_context_sha256": "b512ca9fe2e95a5c9ba278eba1a5161486506c348a82f7b2f0ac65bffc74cb16",
+    "source_image_sha256": "50a5529a8d02074cf78cfd554e1772e82e045225fe0b3127ef10c6ce64a9889e",
+    "logical_item_id": "item.electronics.amplifier_component",
+    "design": "amplifier_component",
+    "family": "electronics",
+    "materials": [
+      "bare_steel",
+      "rubber"
+    ],
+    "physical_brief": "Round recessed electronics component, metal rim, compact back and two attached wire leads.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Round recessed electronics component, metal rim, compact back and two attached wire leads."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.electronics.amplifier_component.icon.candidate_v001",
+    "relative_path": "candidates/amplifier_component/icon.png",
+    "sha256": "5be26bc825fb7c260c9c2947878e9bb21a432e3dd29faeb4af7af1753337db41",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          6,
+          4,
+          58,
+          60
+        ],
+        "opaque_pixels": 2036,
+        "visible_pixels": 2036,
+        "visible_fraction": 0.49707,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 49,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      0,
+      0,
+      280,
+      280
+    ],
+    "source_bounds": [
+      32,
+      44,
+      243,
+      271
+    ],
+    "source_margin": 9,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "5be26bc825fb7c260c9c2947878e9bb21a432e3dd29faeb4af7af1753337db41",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Round recessed electronics component, metal rim, compact back and two attached wire leads. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 1,
+    "catalog_index": 26,
+    "reference_id": "pzwiki:catalog:2026-11-05:26",
+    "official_source_filename": "Animalbottle Empty.png",
+    "official_item_name": "Feeding Bottle",
+    "official_item_ids": [
+      "Base.FeedingBottle"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Feeding_Bottle",
+    "source_context_sha256": "527aa9914d4731df635cf8c844e804a0f84ea554049fc722cb0fec7b69bee8d0",
+    "source_image_sha256": "5624120436520cb1025e1cb52b9cdcb302bb3ef61074441a4fe71167aff73f1d",
+    "logical_item_id": "item.containers.animal_feeding_bottle_empty",
+    "design": "animal_feeding_bottle_empty",
+    "family": "containers",
+    "materials": [
+      "plastic",
+      "rubber"
+    ],
+    "physical_brief": "Empty elongated off-white animal-feeding bottle with large russet teat and threaded collar.",
+    "view": "inventory_icon",
+    "state": "empty",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Empty elongated off-white animal-feeding bottle with large russet teat and threaded collar."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.containers.animal_feeding_bottle_empty.icon.candidate_v001",
+    "relative_path": "candidates/animal_feeding_bottle_empty/icon.png",
+    "sha256": "0201f412f40671df912c751324c0fe4bf229050b623e14fffc8d5ecc8020a497",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          7,
+          60,
+          57
+        ],
+        "opaque_pixels": 1420,
+        "visible_pixels": 1420,
+        "visible_fraction": 0.34668,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 41,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      280,
+      0,
+      561,
+      280
+    ],
+    "source_bounds": [
+      26,
+      40,
+      263,
+      252
+    ],
+    "source_margin": 18,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "0201f412f40671df912c751324c0fe4bf229050b623e14fffc8d5ecc8020a497",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Empty elongated off-white animal-feeding bottle with large russet teat and threaded collar. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 2,
+    "catalog_index": 29,
+    "reference_id": "pzwiki:catalog:2026-11-05:29",
+    "official_source_filename": "AnimalFeed.png",
+    "official_item_name": "Animal Feed Bag",
+    "official_item_ids": [
+      "Base.AnimalFeedBag"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Animal_Feed_Bag",
+    "source_context_sha256": "bd543a10f2d0b69ff2059f75c8388b892160db3f9566eca3a106a25362ce6993",
+    "source_image_sha256": "49e835c461b447fd080d75b9dcb586ab15ff54634adbdaa3822608d83d161b99",
+    "logical_item_id": "item.supplies.animal_feed_bag",
+    "design": "animal_feed_bag",
+    "family": "supplies",
+    "materials": [
+      "paper",
+      "food_organic"
+    ],
+    "physical_brief": "Bulging tan heavy-paper animal-feed sack with folded sewn top and independently designed generic grain mark.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Bulging tan heavy-paper animal-feed sack with folded sewn top and independently designed generic grain mark."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.supplies.animal_feed_bag.icon.candidate_v001",
+    "relative_path": "candidates/animal_feed_bag/icon.png",
+    "sha256": "bde8dd52fc0ebbdfe673da3edb638e14c3f7306cbd17baa218ae858501ffd533",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          6,
+          4,
+          58,
+          60
+        ],
+        "opaque_pixels": 2304,
+        "visible_pixels": 2304,
+        "visible_fraction": 0.5625,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 42,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      561,
+      0,
+      841,
+      280
+    ],
+    "source_bounds": [
+      25,
+      25,
+      246,
+      263
+    ],
+    "source_margin": 17,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "bde8dd52fc0ebbdfe673da3edb638e14c3f7306cbd17baa218ae858501ffd533",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Bulging tan heavy-paper animal-feed sack with folded sewn top and independently designed generic grain mark. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 3,
+    "catalog_index": 32,
+    "reference_id": "pzwiki:catalog:2026-11-05:32",
+    "official_source_filename": "Antibiotics.png",
+    "official_item_name": "Antibiotics",
+    "official_item_ids": [
+      "Base.Antibiotics"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Antibiotics",
+    "source_context_sha256": "93e22679af0c72cb9820e900a0fef88bc3637f51e395791e1985e68bcea17069",
+    "source_image_sha256": "a9a57ff16e7531ddf3ec492dee5029a0e9a6478937fc86445fa98b7feb7ec0d2",
+    "logical_item_id": "item.medical.antibiotic_capsules",
+    "design": "antibiotic_capsules",
+    "family": "medical",
+    "materials": [
+      "plastic"
+    ],
+    "physical_brief": "Compact group of three medicine capsules with distinct joined halves and seams; no replacement bottle.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Compact group of three medicine capsules with distinct joined halves and seams; no replacement bottle."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.medical.antibiotic_capsules.icon.candidate_v001",
+    "relative_path": "candidates/antibiotic_capsules/icon.png",
+    "sha256": "52842e666f448f04199c776f9188950c5d7f288e4dfdc4e37f28e942230c34ef",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          10,
+          60,
+          54
+        ],
+        "opaque_pixels": 1510,
+        "visible_pixels": 1510,
+        "visible_fraction": 0.368652,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 42,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      841,
+      0,
+      1122,
+      280
+    ],
+    "source_bounds": [
+      29,
+      70,
+      250,
+      242
+    ],
+    "source_margin": 29,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "52842e666f448f04199c776f9188950c5d7f288e4dfdc4e37f28e942230c34ef",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Compact group of three medicine capsules with distinct joined halves and seams; no replacement bottle. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 4,
+    "catalog_index": 33,
+    "reference_id": "pzwiki:catalog:2026-11-05:33",
+    "official_source_filename": "Antler Headdress.png",
+    "official_item_name": "Antler Headdress",
+    "official_item_ids": [
+      "Base.Hat_DeerHeadress"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Antler_Headdress",
+    "source_context_sha256": "718998d4c180a48ea557a6063a68176dfebb7a48d8cb140914c524c11296b9bc",
+    "source_image_sha256": "fac292a513275d6b1e455ce9b15519473f47c696eb806f8304b579a0497d94d5",
+    "logical_item_id": "item.clothing.antler_headdress",
+    "design": "antler_headdress",
+    "family": "clothing",
+    "materials": [
+      "bone",
+      "leather"
+    ],
+    "physical_brief": "Wearable hide cap/headband with securely mounted branched deer antlers and tied straps.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Wearable hide cap/headband with securely mounted branched deer antlers and tied straps."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.antler_headdress.icon.candidate_v001",
+    "relative_path": "candidates/antler_headdress/icon.png",
+    "sha256": "b16002897f1bbc7dac01b16df5504beedd39c4a90cbf262fcbb3c4ceb9805b2c",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          5,
+          4,
+          58,
+          60
+        ],
+        "opaque_pixels": 1120,
+        "visible_pixels": 1120,
+        "visible_fraction": 0.273438,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 48,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      1122,
+      0,
+      1402,
+      280
+    ],
+    "source_bounds": [
+      176,
+      131,
+      766,
+      755
+    ],
+    "source_margin": 121,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": "corrections/antler_headdress.png",
+      "replacement_sha256": "3fdbd14bd98c27d784b834572c750955fd356123016d7c31a0bae7a8a9ebdc18",
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "b16002897f1bbc7dac01b16df5504beedd39c4a90cbf262fcbb3c4ceb9805b2c",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Wearable hide cap/headband with securely mounted branched deer antlers and tied straps. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 5,
+    "catalog_index": 34,
+    "reference_id": "pzwiki:catalog:2026-11-05:34",
+    "official_source_filename": "AntlerFlint.png",
+    "official_item_name": "Knapping Tool",
+    "official_item_ids": [
+      "Base.KnappingTool"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Knapping_Tool",
+    "source_context_sha256": "7372e7e55ede1849eaf406e8012ad9490f3084e567603332e39997108d6c0e83",
+    "source_image_sha256": "3f4eb5646528a0522a922fe8fc298419c08c97094e3fd4f067dc3109b112ced0",
+    "logical_item_id": "item.tools.antler_knapping_tool",
+    "design": "antler_knapping_tool",
+    "family": "tools",
+    "materials": [
+      "bone"
+    ],
+    "physical_brief": "Single naturally curved antler pressure-flaking tine with thicker grip end and narrow working tip.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Single naturally curved antler pressure-flaking tine with thicker grip end and narrow working tip."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.antler_knapping_tool.icon.candidate_v001",
+    "relative_path": "candidates/antler_knapping_tool/icon.png",
+    "sha256": "93e1decb47613bc34141dc60f22250a77e04de550adde0249447a6d7909286a0",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          4,
+          59,
+          60
+        ],
+        "opaque_pixels": 910,
+        "visible_pixels": 910,
+        "visible_fraction": 0.222168,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 42,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      0,
+      280,
+      280,
+      561
+    ],
+    "source_bounds": [
+      49,
+      48,
+      249,
+      252
+    ],
+    "source_margin": 29,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "93e1decb47613bc34141dc60f22250a77e04de550adde0249447a6d7909286a0",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Single naturally curved antler pressure-flaking tine with thicker grip end and narrow working tip. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 6,
+    "catalog_index": 37,
+    "reference_id": "pzwiki:catalog:2026-11-05:37",
+    "official_source_filename": "Anvil Stone.png",
+    "official_item_name": "Stone Anvil",
+    "official_item_ids": [
+      "Base.StoneAnvil"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Stone_Anvil",
+    "source_context_sha256": "158757de27a5da5fdd44d4e636e8f8f6ddb85647c1b34cb2cfe592f6d9f4a5f6",
+    "source_image_sha256": "e63f84b38af6a6bc8b4b52e103218e6abbe339ed480189f53cc72503b12b9348",
+    "logical_item_id": "item.tools.stone_anvil",
+    "design": "stone_anvil",
+    "family": "tools",
+    "materials": [
+      "stone"
+    ],
+    "physical_brief": "Heavy low irregular gray stone block with broad deliberately flattened working top.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Heavy low irregular gray stone block with broad deliberately flattened working top."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.stone_anvil.icon.candidate_v001",
+    "relative_path": "candidates/stone_anvil/icon.png",
+    "sha256": "718a2745ef5033b3e464342ee7c770a2da9f3e3620e164eee7111a390787ad1f",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          10,
+          60,
+          54
+        ],
+        "opaque_pixels": 1978,
+        "visible_pixels": 1978,
+        "visible_fraction": 0.48291,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 44,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      280,
+      280,
+      561,
+      561
+    ],
+    "source_bounds": [
+      15,
+      52,
+      264,
+      249
+    ],
+    "source_margin": 15,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "718a2745ef5033b3e464342ee7c770a2da9f3e3620e164eee7111a390787ad1f",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Heavy low irregular gray stone block with broad deliberately flattened working top. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 7,
+    "catalog_index": 40,
+    "reference_id": "pzwiki:catalog:2026-11-05:40",
+    "official_source_filename": "Apron Garbagebag.png",
+    "official_item_name": "Garbage Bag Apron",
+    "official_item_ids": [
+      "Base.Apron_Garbage"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Garbage_Bag_Apron",
+    "source_context_sha256": "d4cb59934562c41eb68f91b45d73bd233c2a9ee61cfc2d9683ddcd046080f51a",
+    "source_image_sha256": "d61750d4ba25d6b89630270e2245364afdb7bfa73ddc0d35809b1640b245e67b",
+    "logical_item_id": "item.clothing.garbage_bag_apron",
+    "design": "garbage_bag_apron",
+    "family": "clothing",
+    "materials": [
+      "plastic"
+    ],
+    "physical_brief": "Wearable apron cut from dark waste-bag plastic, thin crinkled bib/lower panel, neck loop and waist ties.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Wearable apron cut from dark waste-bag plastic, thin crinkled bib/lower panel, neck loop and waist ties."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.garbage_bag_apron.icon.candidate_v001",
+    "relative_path": "candidates/garbage_bag_apron/icon.png",
+    "sha256": "04b3b49b025337f586b647457685ba033926f1ebad4f3229831ea32d4172e46c",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          6,
+          4,
+          58,
+          60
+        ],
+        "opaque_pixels": 1511,
+        "visible_pixels": 1511,
+        "visible_fraction": 0.368896,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 43,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      561,
+      280,
+      841,
+      561
+    ],
+    "source_bounds": [
+      16,
+      12,
+      257,
+      274
+    ],
+    "source_margin": 7,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "04b3b49b025337f586b647457685ba033926f1ebad4f3229831ea32d4172e46c",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Wearable apron cut from dark waste-bag plastic, thin crinkled bib/lower panel, neck loop and waist ties. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 8,
+    "catalog_index": 41,
+    "reference_id": "pzwiki:catalog:2026-11-05:41",
+    "official_source_filename": "Apron Hide.png",
+    "official_item_name": "Hide Apron",
+    "official_item_ids": [
+      "Base.Apron_Hide"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Hide_Apron",
+    "source_context_sha256": "3887420ba0801b7664a90f43ee67b4f69bb3e64c7392d00c0c75b75dfd7c6b6e",
+    "source_image_sha256": "54f804b73520d6389270c306a3223f0f2eb8537c9451646acad9f2cfe97cf939",
+    "logical_item_id": "item.clothing.hide_apron",
+    "design": "hide_apron",
+    "family": "clothing",
+    "materials": [
+      "leather"
+    ],
+    "physical_brief": "Rustic hair-on-hide apron with irregular edges, tawny fur patches, neck loop and waist ties.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Rustic hair-on-hide apron with irregular edges, tawny fur patches, neck loop and waist ties."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.hide_apron.icon.candidate_v001",
+    "relative_path": "candidates/hide_apron/icon.png",
+    "sha256": "e3b24b356c46bc9e4b68877f83b6bef193229ac0f18754ba4401431cb0cddb3c",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          7,
+          4,
+          56,
+          60
+        ],
+        "opaque_pixels": 1431,
+        "visible_pixels": 1431,
+        "visible_fraction": 0.349365,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 40,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      841,
+      280,
+      1122,
+      561
+    ],
+    "source_bounds": [
+      21,
+      12,
+      252,
+      274
+    ],
+    "source_margin": 7,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "e3b24b356c46bc9e4b68877f83b6bef193229ac0f18754ba4401431cb0cddb3c",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Rustic hair-on-hide apron with irregular edges, tawny fur patches, neck loop and waist ties. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 9,
+    "catalog_index": 45,
+    "reference_id": "pzwiki:catalog:2026-11-05:45",
+    "official_source_filename": "Apron Leather.png",
+    "official_item_name": "Leather Apron",
+    "official_item_ids": [
+      "Base.Apron_Leather"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Leather_Apron",
+    "source_context_sha256": "f208e28116dd915c98abf818873bb8d588afe83723ac47926f9cdc4191d67830",
+    "source_image_sha256": "1c86bcc4891b40c8de7c3d6ffda61f8606b2798ebf9301b8d7457cf81c05f224",
+    "logical_item_id": "item.clothing.leather_work_apron",
+    "design": "leather_work_apron",
+    "family": "clothing",
+    "materials": [
+      "leather"
+    ],
+    "physical_brief": "Smooth tanned umber leather work apron with stitched reinforcement and thick neck/waist straps.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Smooth tanned umber leather work apron with stitched reinforcement and thick neck/waist straps."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.leather_work_apron.icon.candidate_v001",
+    "relative_path": "candidates/leather_work_apron/icon.png",
+    "sha256": "e5ff7703158b80de9749069d0a8c34207b920b1141c82c30ce9684a33ca155ea",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          8,
+          4,
+          56,
+          60
+        ],
+        "opaque_pixels": 1550,
+        "visible_pixels": 1550,
+        "visible_fraction": 0.378418,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 41,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      1122,
+      280,
+      1402,
+      561
+    ],
+    "source_bounds": [
+      22,
+      11,
+      248,
+      274
+    ],
+    "source_margin": 7,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "e5ff7703158b80de9749069d0a8c34207b920b1141c82c30ce9684a33ca155ea",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Smooth tanned umber leather work apron with stitched reinforcement and thick neck/waist straps. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 10,
+    "catalog_index": 55,
+    "reference_id": "pzwiki:catalog:2026-11-05:55",
+    "official_source_filename": "AramidThread.png",
+    "official_item_name": "Aramid Thread",
+    "official_item_ids": [
+      "Base.Thread_Aramid"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Aramid_Thread",
+    "source_context_sha256": "cef5a0149a2a76f606892fcdf1e7c716494405a51190485bf71b00c79f0117ed",
+    "source_image_sha256": "450a05db927a7d12efb8b764c0f95ff5617bf92c4bd810d229e645664bd1c663",
+    "logical_item_id": "item.materials.aramid_thread",
+    "design": "aramid_thread",
+    "family": "materials",
+    "materials": [
+      "woven_fabric"
+    ],
+    "physical_brief": "Compact winding of golden-cream technical fiber thread around visible central core/open loop.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Compact winding of golden-cream technical fiber thread around visible central core/open loop."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.materials.aramid_thread.icon.candidate_v001",
+    "relative_path": "candidates/aramid_thread/icon.png",
+    "sha256": "c8484e47335d1837ddcabb2b361b1128668066b0014c4d0ac9652eeb5a0f5ab9",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          7,
+          60,
+          57
+        ],
+        "opaque_pixels": 1710,
+        "visible_pixels": 1710,
+        "visible_fraction": 0.41748,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 41,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      0,
+      561,
+      280,
+      842
+    ],
+    "source_bounds": [
+      31,
+      37,
+      252,
+      235
+    ],
+    "source_margin": 28,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "c8484e47335d1837ddcabb2b361b1128668066b0014c4d0ac9652eeb5a0f5ab9",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Compact winding of golden-cream technical fiber thread around visible central core/open loop. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 11,
+    "catalog_index": 58,
+    "reference_id": "pzwiki:catalog:2026-11-05:58",
+    "official_source_filename": "Armwrap Burlap.png",
+    "official_item_name": "Burlap Handwraps",
+    "official_item_ids": [
+      "Base.Gloves_BurlapWrap"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Burlap_Handwraps",
+    "source_context_sha256": "0a5a87dea4390d1c42b46d3bfaadd0a1521959a2ff72f170222de48707f8f8bd",
+    "source_image_sha256": "8b13df8f537d83ef75aa9eee8b0a1d115209cfb496448e24e1bcbbd35b1efe2c",
+    "logical_item_id": "item.clothing.burlap_handwraps",
+    "design": "burlap_handwraps",
+    "family": "clothing",
+    "materials": [
+      "woven_fabric"
+    ],
+    "physical_brief": "Pair of coarse tan overlapping burlap wrap strips with restrained fraying; no hands inserted.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Pair of coarse tan overlapping burlap wrap strips with restrained fraying; no hands inserted."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.burlap_handwraps.icon.candidate_v001",
+    "relative_path": "candidates/burlap_handwraps/icon.png",
+    "sha256": "1da32f9666f9ed3a7edd3be392b46605f190f83d7fca4eb24f237703d8ad3c65",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          10,
+          60,
+          53
+        ],
+        "opaque_pixels": 1829,
+        "visible_pixels": 1829,
+        "visible_fraction": 0.446533,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 45,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      280,
+      561,
+      561,
+      842
+    ],
+    "source_bounds": [
+      21,
+      50,
+      264,
+      237
+    ],
+    "source_margin": 17,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "1da32f9666f9ed3a7edd3be392b46605f190f83d7fca4eb24f237703d8ad3c65",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Pair of coarse tan overlapping burlap wrap strips with restrained fraying; no hands inserted. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 12,
+    "catalog_index": 63,
+    "reference_id": "pzwiki:catalog:2026-11-05:63",
+    "official_source_filename": "ArmyHelmet CamoDesert.png",
+    "official_item_name": "Military Helmet",
+    "official_item_ids": [
+      "Base.Hat_ArmyDesert"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Military_Helmet",
+    "source_context_sha256": "57b364b16af558cb3efe1ffc4b1a4bb2d1bf21971a289f3dee51a16d628d4691",
+    "source_image_sha256": "0136f301bc0f96c68c280daa9aa16617a3d8e88d19e08a3f25edcd47a1228412",
+    "logical_item_id": "item.clothing.desert_military_helmet",
+    "design": "desert_military_helmet",
+    "family": "clothing",
+    "materials": [
+      "painted_metal",
+      "woven_fabric"
+    ],
+    "physical_brief": "Plausible sand-covered steel military helmet, subdued desert camouflage, rim and chinstrap.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Plausible sand-covered steel military helmet, subdued desert camouflage, rim and chinstrap."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.desert_military_helmet.icon.candidate_v001",
+    "relative_path": "candidates/desert_military_helmet/icon.png",
+    "sha256": "c633e41a538f6c7e63f0b91cc9953b631100d39d004100622f15cfe058bcab4d",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          6,
+          60,
+          58
+        ],
+        "opaque_pixels": 1862,
+        "visible_pixels": 1862,
+        "visible_fraction": 0.45459,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 43,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      561,
+      561,
+      841,
+      842
+    ],
+    "source_bounds": [
+      9,
+      20,
+      262,
+      254
+    ],
+    "source_margin": 9,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "c633e41a538f6c7e63f0b91cc9953b631100d39d004100622f15cfe058bcab4d",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Plausible sand-covered steel military helmet, subdued desert camouflage, rim and chinstrap. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 13,
+    "catalog_index": 76,
+    "reference_id": "pzwiki:catalog:2026-11-05:76",
+    "official_source_filename": "AthleticCup.png",
+    "official_item_name": "Athletic Cup",
+    "official_item_ids": [
+      "Base.AthleticCup"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Athletic_Cup",
+    "source_context_sha256": "6826d53be4e8d5a30c79c349a7d0b365347db88c1c777c50adcffc0c6ad98f32",
+    "source_image_sha256": "03d9c4c3a6c59cd33c0a33ba41f04258902331877e4a63dfcb61358295fcea78",
+    "logical_item_id": "item.clothing.athletic_cup",
+    "design": "athletic_cup",
+    "family": "clothing",
+    "materials": [
+      "plastic",
+      "rubber"
+    ],
+    "physical_brief": "Curved elongated triangular groin protector with soft rim and three small vents.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Curved elongated triangular groin protector with soft rim and three small vents."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.clothing.athletic_cup.icon.candidate_v001",
+    "relative_path": "candidates/athletic_cup/icon.png",
+    "sha256": "93afb40fe122fc80381dac55ecc3a8a372b2b14813dbf48df4ca4893d7d9d0c8",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          10,
+          4,
+          53,
+          60
+        ],
+        "opaque_pixels": 1672,
+        "visible_pixels": 1672,
+        "visible_fraction": 0.408203,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 46,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      841,
+      561,
+      1122,
+      842
+    ],
+    "source_bounds": [
+      54,
+      24,
+      231,
+      252
+    ],
+    "source_margin": 24,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "93afb40fe122fc80381dac55ecc3a8a372b2b14813dbf48df4ca4893d7d9d0c8",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Curved elongated triangular groin protector with soft rim and three small vents. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 14,
+    "catalog_index": 78,
+    "reference_id": "pzwiki:catalog:2026-11-05:78",
+    "official_source_filename": "Avocado.png",
+    "official_item_name": "Avocado",
+    "official_item_ids": [
+      "Base.Avocado"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Avocado",
+    "source_context_sha256": "ec99066c5aff6bc032d6ca1281f20269026c7fea81c143ed57a8580eec3dc10d",
+    "source_image_sha256": "2d501258fea616f8f63d2fc9c7ea4285b6d441ce07281e8433911a2b3f115550",
+    "logical_item_id": "item.food.cut_avocado",
+    "design": "cut_avocado",
+    "family": "food",
+    "materials": [
+      "food_organic"
+    ],
+    "physical_brief": "Two complementary halves of one avocado, thick dark rind, olive flesh, one large brown stone.",
+    "view": "inventory_icon",
+    "state": "cut",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Two complementary halves of one avocado, thick dark rind, olive flesh, one large brown stone."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.food.cut_avocado.icon.candidate_v001",
+    "relative_path": "candidates/cut_avocado/icon.png",
+    "sha256": "72167fda60bf35496c63f39f2e9abcbaafdd5b8e999a371550c6055dec16e281",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          10,
+          60,
+          54
+        ],
+        "opaque_pixels": 1693,
+        "visible_pixels": 1693,
+        "visible_fraction": 0.41333,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 44,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      1122,
+      561,
+      1402,
+      842
+    ],
+    "source_bounds": [
+      10,
+      41,
+      261,
+      240
+    ],
+    "source_margin": 10,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "72167fda60bf35496c63f39f2e9abcbaafdd5b8e999a371550c6055dec16e281",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Two complementary halves of one avocado, thick dark rind, olive flesh, one large brown stone. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 15,
+    "catalog_index": 81,
+    "reference_id": "pzwiki:catalog:2026-11-05:81",
+    "official_source_filename": "Awl Bone.png",
+    "official_item_name": "Awl - Bone",
+    "official_item_ids": [
+      "Base.Awl_Bone"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Awl_-_Bone",
+    "source_context_sha256": "fc64056f4c6777c8291252c6826f3393701208b97076e6e5257043d8377e2fc6",
+    "source_image_sha256": "fb09739d23a144a3a832e9ecb8837c23b3da4726f844fa041894d098b53e12d5",
+    "logical_item_id": "item.tools.bone_awl",
+    "design": "bone_awl",
+    "family": "tools",
+    "materials": [
+      "bone"
+    ],
+    "physical_brief": "Narrow polished bone piercing spike with thicker natural bone base; no metal or wooden handle.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Narrow polished bone piercing spike with thicker natural bone base; no metal or wooden handle."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.bone_awl.icon.candidate_v001",
+    "relative_path": "candidates/bone_awl/icon.png",
+    "sha256": "5912d5a111778dba255cb51727815a890c6087a4911b859b9b77f77ec7fb181d",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          5,
+          4,
+          59,
+          60
+        ],
+        "opaque_pixels": 614,
+        "visible_pixels": 614,
+        "visible_fraction": 0.149902,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 37,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      0,
+      842,
+      280,
+      1122
+    ],
+    "source_bounds": [
+      39,
+      15,
+      259,
+      243
+    ],
+    "source_margin": 15,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "5912d5a111778dba255cb51727815a890c6087a4911b859b9b77f77ec7fb181d",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Narrow polished bone piercing spike with thicker natural bone base; no metal or wooden handle. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 16,
+    "catalog_index": 82,
+    "reference_id": "pzwiki:catalog:2026-11-05:82",
+    "official_source_filename": "Awl Leather.png",
+    "official_item_name": "Awl",
+    "official_item_ids": [
+      "Base.Awl"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Awl",
+    "source_context_sha256": "b6b9229ebf8a17c25a725dfdc2bf812b5c6527bba76cfef899655dcd0696b5bd",
+    "source_image_sha256": "ff51177ace9f54d5eb2f1504fbff3ef10307c6a23c3a02b6f665ad6b1b3fcb63",
+    "logical_item_id": "item.tools.leatherworking_awl",
+    "design": "leatherworking_awl",
+    "family": "tools",
+    "materials": [
+      "bare_steel",
+      "wood"
+    ],
+    "physical_brief": "Short pointed steel piercing shaft fitted to a rounded wooden palm grip and small ferrule.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Short pointed steel piercing shaft fitted to a rounded wooden palm grip and small ferrule."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.leatherworking_awl.icon.candidate_v001",
+    "relative_path": "candidates/leatherworking_awl/icon.png",
+    "sha256": "4c1d53abeb514ad529c4825954a78bdaad0d6417f6bc5900000b2eba2227307e",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "opaque_pixels": 827,
+        "visible_pixels": 827,
+        "visible_fraction": 0.201904,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 45,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      280,
+      842,
+      561,
+      1122
+    ],
+    "source_bounds": [
+      26,
+      17,
+      257,
+      244
+    ],
+    "source_margin": 17,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "4c1d53abeb514ad529c4825954a78bdaad0d6417f6bc5900000b2eba2227307e",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Short pointed steel piercing shaft fitted to a rounded wooden palm grip and small ferrule. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 17,
+    "catalog_index": 83,
+    "reference_id": "pzwiki:catalog:2026-11-05:83",
+    "official_source_filename": "Awl Stone.png",
+    "official_item_name": "Awl - Stone",
+    "official_item_ids": [
+      "Base.Awl_Stone"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Awl_-_Stone",
+    "source_context_sha256": "a48620c973dfa9eef4d338f341e555937cee433fb0d07d674966216400d00700",
+    "source_image_sha256": "7acc04207758fb4f9848d644f8b76843bf0f9b6721c5d84f731c236b00528295",
+    "logical_item_id": "item.tools.stone_awl",
+    "design": "stone_awl",
+    "family": "tools",
+    "materials": [
+      "stone"
+    ],
+    "physical_brief": "Single elongated chipped gray stone spike with blunt broad base and tapered sharp point.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Single elongated chipped gray stone spike with blunt broad base and tapered sharp point."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.stone_awl.icon.candidate_v001",
+    "relative_path": "candidates/stone_awl/icon.png",
+    "sha256": "99673f59afd71c495830b7a49233de54a25e0d098e6301dd690660c2ac7e7f69",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          5,
+          60,
+          59
+        ],
+        "opaque_pixels": 961,
+        "visible_pixels": 961,
+        "visible_fraction": 0.234619,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 41,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      561,
+      842,
+      841,
+      1122
+    ],
+    "source_bounds": [
+      39,
+      26,
+      253,
+      231
+    ],
+    "source_margin": 26,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "99673f59afd71c495830b7a49233de54a25e0d098e6301dd690660c2ac7e7f69",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Single elongated chipped gray stone spike with blunt broad base and tapered sharp point. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 18,
+    "catalog_index": 89,
+    "reference_id": "pzwiki:catalog:2026-11-05:89",
+    "official_source_filename": "Axe.png",
+    "official_item_name": "Firefighter Axe",
+    "official_item_ids": [
+      "Base.Axe"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Firefighter_Axe",
+    "source_context_sha256": "de4130064135330e07cd0e1a4f3f4c408ad6d6f4cd62d4de9994cb1c2756e013",
+    "source_image_sha256": "c6e42ef4f0e916d9fe8ac3d114e3f06cfbf412237b80ed62d2ff3cb0bcd1e08f",
+    "logical_item_id": "item.tools.firefighter_axe",
+    "design": "firefighter_axe",
+    "family": "tools",
+    "materials": [
+      "painted_metal",
+      "wood"
+    ],
+    "physical_brief": "Long wooden haft, red lower grip, red forged head, polished broad edge, opposing pick and fitted socket.",
+    "view": "inventory_icon",
+    "state": "intact",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Long wooden haft, red lower grip, red forged head, polished broad edge, opposing pick and fitted socket."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.tools.firefighter_axe.icon.candidate_v001",
+    "relative_path": "candidates/firefighter_axe/icon.png",
+    "sha256": "2d72bb5a2ab92a393fd9363a88d2f08567f7f306d05ed30661879b24141f2a37",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          5,
+          4,
+          58,
+          60
+        ],
+        "opaque_pixels": 683,
+        "visible_pixels": 683,
+        "visible_fraction": 0.166748,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 43,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      821,
+      772,
+      1162,
+      1122
+    ],
+    "source_bounds": [
+      30,
+      68,
+      283,
+      337
+    ],
+    "source_margin": 13,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": null,
+      "replacement_sha256": null,
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "2d72bb5a2ab92a393fd9363a88d2f08567f7f306d05ed30661879b24141f2a37",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Long wooden haft, red lower grip, red forged head, polished broad edge, opposing pick and fitted socket. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  },
+  {
+    "slot": 19,
+    "catalog_index": 94,
+    "reference_id": "pzwiki:catalog:2026-11-05:94",
+    "official_source_filename": "BackgammonBoard.png",
+    "official_item_name": "Backgammon Board",
+    "official_item_ids": [
+      "Base.BackgammonBoard"
+    ],
+    "source_article_url": "https://pzwiki.net/wiki/Backgammon_Board",
+    "source_context_sha256": "9529dd565f5147541cb4f171252d481c5c5ff5b4f0f9a5ebe2b17b79ac463cde",
+    "source_image_sha256": "ba7847e4d3f2b37cb779114f497d6ece8efebdf6f3051ef6f2d917cc2954e664",
+    "logical_item_id": "item.recreation.backgammon_board",
+    "design": "backgammon_board",
+    "family": "recreation",
+    "materials": [
+      "wood"
+    ],
+    "physical_brief": "Open hinged wooden backgammon case with two playing halves, alternating long triangular points, shallow frame and round checkers.",
+    "view": "inventory_icon",
+    "state": "open",
+    "size": [
+      64,
+      64
+    ],
+    "lighting": "upper_left_10_11_oclock",
+    "originality": "Independent semantic composition; no reference pixels supplied to generation; approved original24 used for style only.",
+    "identity_review": {
+      "reviewer_kind": "assistant_visual_and_context_judgment",
+      "actual_source_pixels_inspected": true,
+      "official_context_inspected": true,
+      "notes": "Open hinged wooden backgammon case with two playing halves, alternating long triangular points, shallow frame and round checkers."
+    },
+    "production_status": "visual_review_required",
+    "asset_id": "art.item.recreation.backgammon_board.icon.candidate_v001",
+    "relative_path": "candidates/backgammon_board/icon.png",
+    "sha256": "458b79a1e4efddb9f1d386e0bf5286dde43eb85d42773305c8e263c86066223f",
+    "width": 64,
+    "height": 64,
+    "format": "RGBA_PNG",
+    "technical_qa": {
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "measurements": {
+        "width": 64,
+        "height": 64,
+        "mode": "RGBA",
+        "bbox": [
+          4,
+          11,
+          60,
+          53
+        ],
+        "opaque_pixels": 1827,
+        "visible_pixels": 1827,
+        "visible_fraction": 0.446045,
+        "partial_alpha_fraction": 0.0,
+        "color_count": 47,
+        "min_margin": 4
+      }
+    },
+    "source_crop": [
+      1122,
+      842,
+      1402,
+      1122
+    ],
+    "source_bounds": [
+      112,
+      223,
+      757,
+      704
+    ],
+    "source_margin": 112,
+    "source_clipping_review_required": false,
+    "provenance": {
+      "method": "Original AI-assisted source; native64 nearest sampling, binary-alpha cleanup and undithered48-color palette",
+      "tool": "image_gen.imagegen",
+      "model_version": "not exposed",
+      "seed": "not exposed",
+      "source_sha256": "cd745f4471d9e82d74bd8eaaa25891a9b364cd2776cc7f0bc598d28077b988cd",
+      "replacement_source": "corrections/backgammon_board.png",
+      "replacement_sha256": "ec1fd64c8085aac5934319e03814b7662c476ba64ee4fd5e98ebeb2b0b4664ab",
+      "reference_pixels_used": false
+    },
+    "founder_approved": false,
+    "godot_imported": false,
+    "device_verified": false,
+    "visual_qa": {
+      "decision": "PASS_CANDIDATE",
+      "reviewer_kind": "assistant_independent_visual_judgment",
+      "reviewed_sha256": "458b79a1e4efddb9f1d386e0bf5286dde43eb85d42773305c8e263c86066223f",
+      "scales_inspected": [
+        32,
+        48,
+        64
+      ],
+      "backgrounds": [
+        "dark",
+        "light"
+      ],
+      "acceptance_reason": "Open hinged wooden backgammon case with two playing halves, alternating long triangular points, shallow frame and round checkers. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+      "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+    }
+  }
+]

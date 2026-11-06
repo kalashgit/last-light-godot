@@ -1,0 +1,32 @@
+Create an ORIGINAL LAST LIGHT pixel-art source sprite sheet with EXACTLY 20 isolated inventory objects, 5 columns x 4 rows, each cell exactly 256x256 on a 1280x1024 transparent RGBA canvas. The attached image is ONLY a house-style guide; do not reuse its objects, layouts, pixels or designs. Match its grounded low-resolution survival-game realism: believable physical construction, upper-left 10–11 o'clock key lighting, compact highlights and dark creases, restrained muted palette, crisp clustered pixels, material-specific rendering, no cast floor shadows. Objects independently composed, 3/4 inventory view, generous 24px cell padding, logical native64-pixel detail (4x pixel blocks in 256px cell). No captions, numbers, logos, proprietary packaging, watermark, grid lines, floor or background. Each item entirely inside its own cell, no cross-cell straps/tips/antlers. Keep tiny attachments substantial enough to survive64px.
+
+READ ORDER left-to-right then top-to-bottom, strict identity:
+ROW1:
+1 Amplifier electronics component: small bare ROUND dark metal driver-like component with recessed circular cone, metal rim, compact rear assembly and two attached thin insulated wire leads. NOT a rectangular stereo amp or guitar amplifier.
+2 EMPTY animal FEEDING BOTTLE: long opaque off-white utilitarian bottle, large russet rubber animal-feeding teat, collar and shoulder seam. Empty state; no milk fill, no human baby decorations.
+3 ANIMAL FEED BAG: single tan heavy paper farm-feed sack, folded stitched top, believable bulging volume, tiny invented generic grain pictogram; no readable branding.
+4 ANTIBIOTICS: one compact group of three large simple muted brick-red/ivory medicine capsules, rounded joined halves with seam, slight occlusion. No bottle or carton substituted.
+5 ANTLER HEADDRESS: simple hide/leather headband/cap with a naturally branched pair of modest deer antlers mounted securely, fur trim and ties. No animal skull or whole deer.
+
+ROW2:
+6 KNAPPING TOOL: one short curved antler pressure-flaking tine, pale dense bone material with worn narrow working tip and natural base; NOT a flint axe, knife or screwdriver.
+7 STONE ANVIL: one heavy squat gray irregular boulder with a deliberately flattened broad worktop and darker grounded lower facets; no metal horn, pedestal or attached tool.
+8 GARBAGE BAG APRON: single wearable apron cut from thin dark gray-black waste-bag plastic, obvious neck loop, waist ties, bib and broad lower panel, crinkled seams. Not a full garbage bag.
+9 HIDE APRON: single rustic untanned hide apron with small mottled tawny hair patches, irregular hide edges, neck loop and waist ties; visible animal-hide thickness.
+10 LEATHER APRON: single sturdy warm umber tanned-leather work apron with smooth satin hide, straight hem, stitched reinforcement and thick neck/waist straps; physically distinct from furry hide apron.
+
+ROW3:
+11 ARAMID THREAD: single compact spool/bundle of golden cream technical fiber thread, clear aligned winding and exposed dark core/open loop; no company marks.
+12 BURLAP HANDWRAPS: matching pair of short rolled/wrapped coarse tan burlap strips shaped as usable wrap rolls, subtle frayed edges, clear cloth overlap; no hands, bones or gloves inserted.
+13 DESERT MILITARY HELMET: plausible matte steel combat helmet with subdued sand/tan cloth camouflage cover, joined rim, attached folded chinstrap, cloth seams. Desert palette, no emblem or branding.
+14 ATHLETIC CUP: one off-white molded protective groin cup, elongated curved triangular shell, soft rubber rim and 3 small ventilation holes; not a face mask, helmet or shoe.
+15 CUT AVOCADO: one fruit cut into two complementary halves, pebbly dark green rind with believable thickness, pale olive flesh, one half containing a single large brown stone; no apple or pear.
+
+ROW4:
+16 BONE AWL: one narrow polished pale bone spike with thicker natural bone grip/base, tapering pointed working end; no metal or separate wooden handle.
+17 STANDARD LEATHERWORKING AWL: one short slim pointed STEEL shaft set into a rounded dark wooden palm grip with a small ferrule. This is a piercing awl, not a screwdriver or cutting knife.
+18 STONE AWL: one elongated chipped pale-gray stone spike with broader blunt base and sharp tapered point; all stone, no wood grip or metal.
+19 FIREFIGHTER AXE: one long sturdy wooden haft with dark red lower grip and a red-painted forged steel head, broad polished cutting edge, compact opposing pick, visible socket; a real functional fire axe, not a hammer.
+20 BACKGAMMON BOARD: one small OPEN folding wooden backgammon case with two hinged playing halves, alternating long narrow cream/dark-brown TRIANGULAR POINTS, shallow wood frame and a few small round checkers; no chess squares, numbered text or cardboard game box.
+
+Material cues: metal sharp compact glints, rubber subdued soft reflection, bone subtle warm ivory, stone broad dry facets, cloth diffuse folds, leather satin edge wear, paper matte creases, food natural flesh. Use original construction and graphic marks rather than copying any third-party sprite or distinctive product design. Ensure each of the 20 identities is recognizable without labels.
