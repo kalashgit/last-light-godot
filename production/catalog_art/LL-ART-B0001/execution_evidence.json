@@ -1,0 +1,12 @@
+{
+  "candidate_archive_sha256": "1e51217c592295972f80403896dc2cf3c618072721fc724666f42ffc70438b90",
+  "candidate_archive_bytes": 133370,
+  "master_download": "LAST_LIGHT_MASTER_44.py",
+  "master_sha256": "cc81bd90d6753e72bd2b4f5c3d4ba1e6921706613bd174529e49b405e928d1a2",
+  "native_candidates": 20,
+  "all_24_prior_hashes_unchanged": true,
+  "fresh_run_new_catalog_generated": 20,
+  "second_run_resumed": 20,
+  "production_promotions": 0,
+  "Godot_device_verification_added": false
+}

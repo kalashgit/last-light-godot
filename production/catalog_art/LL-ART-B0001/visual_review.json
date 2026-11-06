@@ -1,0 +1,414 @@
+{
+  "actual_inspection": true,
+  "candidate_passes": 20,
+  "founder_approvals": 0,
+  "corrected_items": [
+    "antler_headdress",
+    "backgammon_board",
+    "firefighter_axe"
+  ],
+  "corrections": "Regenerated only headdress and board; expanded axe crop to recover whole original object and removed adjacent disconnected pixels; binary alpha removes low-alpha red/yellow artifacts.",
+  "no_numerical_scores_invented": true,
+  "items": [
+    {
+      "design": "amplifier_component",
+      "sha256": "5be26bc825fb7c260c9c2947878e9bb21a432e3dd29faeb4af7af1753337db41",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "5be26bc825fb7c260c9c2947878e9bb21a432e3dd29faeb4af7af1753337db41",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Round recessed electronics component, metal rim, compact back and two attached wire leads. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "animal_feeding_bottle_empty",
+      "sha256": "0201f412f40671df912c751324c0fe4bf229050b623e14fffc8d5ecc8020a497",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "0201f412f40671df912c751324c0fe4bf229050b623e14fffc8d5ecc8020a497",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Empty elongated off-white animal-feeding bottle with large russet teat and threaded collar. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "animal_feed_bag",
+      "sha256": "bde8dd52fc0ebbdfe673da3edb638e14c3f7306cbd17baa218ae858501ffd533",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "bde8dd52fc0ebbdfe673da3edb638e14c3f7306cbd17baa218ae858501ffd533",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Bulging tan heavy-paper animal-feed sack with folded sewn top and independently designed generic grain mark. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "antibiotic_capsules",
+      "sha256": "52842e666f448f04199c776f9188950c5d7f288e4dfdc4e37f28e942230c34ef",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "52842e666f448f04199c776f9188950c5d7f288e4dfdc4e37f28e942230c34ef",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Compact group of three medicine capsules with distinct joined halves and seams; no replacement bottle. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "antler_headdress",
+      "sha256": "b16002897f1bbc7dac01b16df5504beedd39c4a90cbf262fcbb3c4ceb9805b2c",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "b16002897f1bbc7dac01b16df5504beedd39c4a90cbf262fcbb3c4ceb9805b2c",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Wearable hide cap/headband with securely mounted branched deer antlers and tied straps. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "antler_knapping_tool",
+      "sha256": "93e1decb47613bc34141dc60f22250a77e04de550adde0249447a6d7909286a0",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "93e1decb47613bc34141dc60f22250a77e04de550adde0249447a6d7909286a0",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Single naturally curved antler pressure-flaking tine with thicker grip end and narrow working tip. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "stone_anvil",
+      "sha256": "718a2745ef5033b3e464342ee7c770a2da9f3e3620e164eee7111a390787ad1f",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "718a2745ef5033b3e464342ee7c770a2da9f3e3620e164eee7111a390787ad1f",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Heavy low irregular gray stone block with broad deliberately flattened working top. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "garbage_bag_apron",
+      "sha256": "04b3b49b025337f586b647457685ba033926f1ebad4f3229831ea32d4172e46c",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "04b3b49b025337f586b647457685ba033926f1ebad4f3229831ea32d4172e46c",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Wearable apron cut from dark waste-bag plastic, thin crinkled bib/lower panel, neck loop and waist ties. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "hide_apron",
+      "sha256": "e3b24b356c46bc9e4b68877f83b6bef193229ac0f18754ba4401431cb0cddb3c",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "e3b24b356c46bc9e4b68877f83b6bef193229ac0f18754ba4401431cb0cddb3c",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Rustic hair-on-hide apron with irregular edges, tawny fur patches, neck loop and waist ties. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "leather_work_apron",
+      "sha256": "e5ff7703158b80de9749069d0a8c34207b920b1141c82c30ce9684a33ca155ea",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "e5ff7703158b80de9749069d0a8c34207b920b1141c82c30ce9684a33ca155ea",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Smooth tanned umber leather work apron with stitched reinforcement and thick neck/waist straps. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "aramid_thread",
+      "sha256": "c8484e47335d1837ddcabb2b361b1128668066b0014c4d0ac9652eeb5a0f5ab9",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "c8484e47335d1837ddcabb2b361b1128668066b0014c4d0ac9652eeb5a0f5ab9",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Compact winding of golden-cream technical fiber thread around visible central core/open loop. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "burlap_handwraps",
+      "sha256": "1da32f9666f9ed3a7edd3be392b46605f190f83d7fca4eb24f237703d8ad3c65",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "1da32f9666f9ed3a7edd3be392b46605f190f83d7fca4eb24f237703d8ad3c65",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Pair of coarse tan overlapping burlap wrap strips with restrained fraying; no hands inserted. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "desert_military_helmet",
+      "sha256": "c633e41a538f6c7e63f0b91cc9953b631100d39d004100622f15cfe058bcab4d",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "c633e41a538f6c7e63f0b91cc9953b631100d39d004100622f15cfe058bcab4d",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Plausible sand-covered steel military helmet, subdued desert camouflage, rim and chinstrap. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "athletic_cup",
+      "sha256": "93afb40fe122fc80381dac55ecc3a8a372b2b14813dbf48df4ca4893d7d9d0c8",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "93afb40fe122fc80381dac55ecc3a8a372b2b14813dbf48df4ca4893d7d9d0c8",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Curved elongated triangular groin protector with soft rim and three small vents. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "cut_avocado",
+      "sha256": "72167fda60bf35496c63f39f2e9abcbaafdd5b8e999a371550c6055dec16e281",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "72167fda60bf35496c63f39f2e9abcbaafdd5b8e999a371550c6055dec16e281",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Two complementary halves of one avocado, thick dark rind, olive flesh, one large brown stone. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "bone_awl",
+      "sha256": "5912d5a111778dba255cb51727815a890c6087a4911b859b9b77f77ec7fb181d",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "5912d5a111778dba255cb51727815a890c6087a4911b859b9b77f77ec7fb181d",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Narrow polished bone piercing spike with thicker natural bone base; no metal or wooden handle. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "leatherworking_awl",
+      "sha256": "4c1d53abeb514ad529c4825954a78bdaad0d6417f6bc5900000b2eba2227307e",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "4c1d53abeb514ad529c4825954a78bdaad0d6417f6bc5900000b2eba2227307e",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Short pointed steel piercing shaft fitted to a rounded wooden palm grip and small ferrule. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "stone_awl",
+      "sha256": "99673f59afd71c495830b7a49233de54a25e0d098e6301dd690660c2ac7e7f69",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "99673f59afd71c495830b7a49233de54a25e0d098e6301dd690660c2ac7e7f69",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Single elongated chipped gray stone spike with blunt broad base and tapered sharp point. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "firefighter_axe",
+      "sha256": "2d72bb5a2ab92a393fd9363a88d2f08567f7f306d05ed30661879b24141f2a37",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "2d72bb5a2ab92a393fd9363a88d2f08567f7f306d05ed30661879b24141f2a37",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Long wooden haft, red lower grip, red forged head, polished broad edge, opposing pick and fitted socket. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    },
+    {
+      "design": "backgammon_board",
+      "sha256": "458b79a1e4efddb9f1d386e0bf5286dde43eb85d42773305c8e263c86066223f",
+      "review": {
+        "decision": "PASS_CANDIDATE",
+        "reviewer_kind": "assistant_independent_visual_judgment",
+        "reviewed_sha256": "458b79a1e4efddb9f1d386e0bf5286dde43eb85d42773305c8e263c86066223f",
+        "scales_inspected": [
+          32,
+          48,
+          64
+        ],
+        "backgrounds": [
+          "dark",
+          "light"
+        ],
+        "acceptance_reason": "Open hinged wooden backgammon case with two playing halves, alternating long triangular points, shallow frame and round checkers. Native silhouette, physical parts, material response and upper-left lighting inspected.",
+        "advisory": "Fine detail simplifies at32px; generated texture is quantized using the approved cleanup process, not certified hand-authored pixel clusters."
+      }
+    }
+  ]
+}
