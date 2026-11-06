@@ -38,7 +38,8 @@ func layout(game) -> Dictionary:
  var top := safe.position.y
  var bottom := safe.end.y
  var portrait := safe.size.y > safe.size.x
- var stick_center := Vector2(left + 78, bottom - 84)
+ # Portrait: use the founder-marked road-side thumb area.
+ var stick_center := Vector2(left + (215.0 if portrait else 105.0), bottom - (345.0 if portrait else 130.0))
  var slots_width := 4.0 * 54.0 + 3.0 * 8.0
  var slots_y := bottom - 58.0 if not portrait else bottom - 244.0
  var slots_x := safe.get_center().x - slots_width * 0.5
@@ -53,11 +54,11 @@ func layout(game) -> Dictionary:
   "joystick_rect": Rect2(stick_center - Vector2(74, 74), Vector2(148, 148)),
   "inventory": Rect2(Vector2(right - 194, top), Vector2(128, 48)),
   "pause": Rect2(Vector2(right - 56, top), Vector2(56, 48)),
-  "attack": Rect2(Vector2(right - 88, bottom - 88), Vector2(88, 88)),
-  "interact": Rect2(Vector2(right - 194, bottom - 156), Vector2(194, 56)),
-  "shove": Rect2(Vector2(right - 194, bottom - 72), Vector2(94, 56)),
-  "sprint": Rect2(Vector2(right - 94, bottom - 220), Vector2(94, 52)),
-  "sneak": Rect2(Vector2(right - 194, bottom - 220), Vector2(94, 52)),
+  "attack": Rect2(Vector2(right - 108, bottom - 108), Vector2(108, 108)),
+  "interact": Rect2(Vector2(right - 228, bottom - 182), Vector2(228, 68)),
+  "shove": Rect2(Vector2(right - 228, bottom - 78), Vector2(112, 68)),
+  "sprint": Rect2(Vector2(right - 110, bottom - 260), Vector2(110, 68)),
+  "sneak": Rect2(Vector2(right - 228, bottom - 260), Vector2(110, 68)),
   "inventory_panel": modal,
   "inv_prev": Rect2(Vector2(modal.position.x + 20, modal.end.y - 64), Vector2(78, 48)),
   "inv_next": Rect2(Vector2(modal.end.x - 98, modal.end.y - 64), Vector2(78, 48)),
@@ -72,8 +73,8 @@ func layout(game) -> Dictionary:
   controls["quick%d" % i] = Rect2(Vector2(slots_x + i * 62, slots_y), Vector2(54, 54))
  for i in range(6):
   var row_y := rows_top + i * row_height
-  controls["modal_use_%d" % i] = Rect2(Vector2(modal.end.x - 180, row_y + 2), Vector2(100, maxf(48, row_height - 4)))
-  controls["modal_drop_%d" % i] = Rect2(Vector2(modal.end.x - 72, row_y + 2), Vector2(52, maxf(48, row_height - 4)))
+  controls["modal_use_%d" % i] = Rect2(Vector2(modal.end.x - 210, row_y + 2), Vector2(116, maxf(48, row_height - 4)))
+  controls["modal_drop_%d" % i] = Rect2(Vector2(modal.end.x - 86, row_y + 2), Vector2(78, maxf(48, row_height - 4)))
  # The input owner and the painted joystick always share the same calibration.
  game.stick_center = stick_center
  game.stick_radius = 54.0
@@ -198,10 +199,15 @@ func _draw_inventory(game, controls: Dictionary) -> void:
   var row_rect := Rect2(panel.position + Vector2(16, 82 + i * row_height), Vector2(panel.size.x - 32, row_height))
   if i % 2 == 0:
    game.draw_rect(row_rect, Color(0.12, 0.18, 0.15, 0.65))
-  var name_width := maxf(60, panel.size.x - 222)
+  var icon_rect := Rect2(row_rect.position + Vector2(8, 3), Vector2(46, 46))
+  _panel(game, icon_rect, Color("26332c"), LINE, 6)
+  var texture: Texture2D = game._item_icon(str(row.get("id", "")))
+  if texture != null:
+   game.draw_texture_rect(texture, icon_rect.grow(-3), false)
+  var name_width := maxf(60, panel.size.x - 296)
   var name := "%s ×%d" % [str(row.get("name", "Unknown item")), int(row.get("count", 1))]
-  game._text(_fit(name, name_width, 16), row_rect.position + Vector2(8, 23), 16, INK)
-  game._text(_fit(str(row.get("detail", "")), name_width, 14), row_rect.position + Vector2(8, 43), 14, MUTED)
+  game._text(_fit(name, name_width, 16), row_rect.position + Vector2(63, 23), 16, INK)
+  game._text(_fit(str(row.get("detail", "")), name_width, 14), row_rect.position + Vector2(63, 43), 14, MUTED)
   var action := str(row.get("action", ""))
   if not action.is_empty():
    _button(game, controls["modal_use_%d" % i], action.to_upper())

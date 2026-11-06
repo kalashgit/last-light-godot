@@ -22,6 +22,10 @@ var sprinting := false
 var sneaking := false
 var joystick_dead_zone := .14
 var held_sprites: Dictionary = {}
+var icon_sprites: Dictionary = {}
+var camera_zoom := 1.0
+const INDOOR_ZOOM := 1.72
+const CAMERA_RESPONSE := 6.0
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
 const SurvivalState := preload("res://scripts/survival_state.gd")
@@ -77,6 +81,7 @@ var stick_radius := 62.0
 var attack_cooldown := 0.0
 
 func _ready() -> void:
+ texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
  art.setup(self)
  _load_controls()
  _make_house()
@@ -258,6 +263,8 @@ func _shove() -> void:
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
+ var desired_zoom := INDOOR_ZOOM if HOME.has_point(player) else 1.0
+ camera_zoom = lerpf(camera_zoom, desired_zoom, 1.0 - exp(-CAMERA_RESPONSE * clampf(delta, 0.0, 0.25)))
  if paused or inventory_open or health<=0:
   queue_redraw()
   return
@@ -321,9 +328,16 @@ func _step(dt: float) -> void:
 func _iso(p: Vector2, height: float = 0) -> Vector2:
  return Vector2((p.x - p.y) * TX, (p.x + p.y) * TY - height)
 
-func _screen(p: Vector2, height: float = 0) -> Vector2:
+func _camera_center() -> Vector2:
  var size := get_viewport_rect().size
- return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+ return size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+
+func _screen(p: Vector2, height: float = 0) -> Vector2:
+ return _iso(p, height) - _iso(player) + _camera_center()
+
+func _world_to_view(point: Vector2) -> Vector2:
+ var center := _camera_center()
+ return center + (point - center) * camera_zoom
 
 func _poly(points: PackedVector2Array, color: Color) -> void:
  draw_colored_polygon(points, color)
@@ -387,7 +401,11 @@ func _alive_zombies() -> int:
  return alive
 
 func _draw() -> void:
+ # World-only transform: never scale the controls or inventory.
+ var center := _camera_center()
+ draw_set_transform(center * (1.0 - camera_zoom), 0.0, Vector2.ONE * camera_zoom)
  art.draw_world(self)
+ draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
  _draw_ui()
 
 func _tap(point: Vector2) -> void:
@@ -764,6 +782,21 @@ func _context_prompt() -> String:
  if target.kind=="drop": return "Pick Up Item"
  return "Search "+String(items[target.index].name).capitalize()
 
+func _item_icon(id: String) -> Texture2D:
+ var definition: Dictionary = survival.definitions.get(id, {})
+ var art_id: String = str(definition.get("art_id", id))
+ if not icon_sprites.has(art_id):
+  var icon: Texture2D = null
+  if art.catalog.has(art_id):
+   for frame in art.catalog[art_id].frames:
+    if frame.mode == "icon":
+     var path := "res://assets/generated/factory/" + str(frame.file)
+     if ResourceLoader.exists(path):
+      icon = load(path) as Texture2D
+     break
+  icon_sprites[art_id] = icon
+ return icon_sprites[art_id] as Texture2D
+
 func _inventory_rows() -> Array:
  var rows:=survival.rows()
  inventory_page=clampi(inventory_page,0,maxi(0,ceili(rows.size()/6.0)-1))
@@ -858,7 +891,7 @@ func _select_world_target(point: Vector2) -> void:
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
-   var screen:=_screen(_target_point(target),30 if kind!="drop" else 0)
+   var screen:=_world_to_view(_screen(_target_point(target),30 if kind!="drop" else 0))
    var score:=point.distance_to(screen)
    if score<distance:
     distance=score
