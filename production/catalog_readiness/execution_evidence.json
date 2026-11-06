@@ -1,0 +1,18 @@
+{
+  "starting_commit": "7939c614303cbf079a6c00963b9798b670bc1ea3",
+  "branch": "codex/catalog-readiness-audit",
+  "official_api_item_articles_retrieved": {
+    "discovered": 4209,
+    "retrieved": 4209,
+    "errors": []
+  },
+  "private_source_images_stored_outside_repository": true,
+  "source_api_responses_cached_outside_repository": true,
+  "approved_V4_factory_sha256": "bb11e9b6bd3507b04c6fed3a8362cc9ff8002a4aea56b45008f9c9d8e573b6bc",
+  "factory_unchanged_from_starting_commit": true,
+  "catalog_unchanged_from_starting_commit": true,
+  "auditor_sha256": "8595f13ddfde5c21b5e171c4763b61bd71b12d357da92bb64c889733864a735b",
+  "phone_checker_sha256": "594f45d54e0949cfe4b28faba796bf3ab5aeff8cdfce32e78098385325da5b36",
+  "source_snapshot_sha256": "2d517440c6f927fc59a406eba40cb2b2631739df46ce05837ef325fd3bf7b3c5",
+  "no_new_Godot_or_device_verification": true
+}

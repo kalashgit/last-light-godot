@@ -1,0 +1,29 @@
+{
+  "total_source_records": 4347,
+  "official_file_checks_completed": 4347,
+  "source_png_checks_completed": 4347,
+  "valid_source_pngs": 4347,
+  "source_fetch_failures": 0,
+  "exact_official_icon_bindings_found": 3607,
+  "identity_bound_brief_drafts": 2761,
+  "source_exceptions": 1586,
+  "requested_remaining_records_automatically_checked": 4323,
+  "remaining_identity_bound_brief_drafts": 2745,
+  "remaining_source_exceptions": 1578,
+  "prior_actual_visual_identity_reviews_verified": 24,
+  "new_actual_visual_identity_approvals": 0,
+  "original_master_templates_in_V4": 24,
+  "new_original_art_generated": 0,
+  "new_factory_render_ready_records": 0,
+  "identical_source_pixel_groups": 30,
+  "blocking_reason_counts": {
+    "no_exact_official_infobox_icon_binding": 740,
+    "icon_shared_by_multiple_official_item_articles": 521,
+    "multiple_official_item_ids_need_per_icon_state_variant_mapping": 324,
+    "served_image_dimensions_disagree_with_official_record": 1,
+    "official_infobox_has_no_item_id": 1
+  },
+  "catalog_sha256": "bb8d9f3f30e7b824d2f46601f743e8d656ca855975823c2cdf5476d9a13dcbc8",
+  "readiness_manifest_sha256": "2d517440c6f927fc59a406eba40cb2b2631739df46ce05837ef325fd3bf7b3c5",
+  "method": "Exact official item infobox icon fields plus item IDs, source file metadata and decoded PNG integrity. Automated source crosscheck; not human-level semantic/visual approval."
+}
