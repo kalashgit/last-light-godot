@@ -313,6 +313,51 @@ def produce_from_zip(input_zip,output):
             z.writestr(info,p.read_bytes(),compress_type=zipfile.ZIP_DEFLATED)
     return {'count':len(manifest),'zip':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'bytes':archive.stat().st_size}
 
+def produce_from_recipes(recipe_path,output):
+    """Authoring mode: reproducible PNGs, contact sheets, states and ZIP.
+
+    Catalog identity and human visual approval remain external to this render step.
+    """
+    source=Path(recipe_path).read_bytes()
+    payload=json.loads(source)
+    recipes=payload.get('recipes') if isinstance(payload,dict) and 'recipes' in payload else payload
+    if isinstance(recipes,dict):recipes=[recipes]
+    if not isinstance(recipes,list) or not recipes:raise ValueError('Recipes required')
+    output=Path(output)
+    seen=set();pairs=[];items=[]
+    for recipe in recipes:
+        asset_id=recipe.get('id','')
+        if asset_id in seen or not asset_id.startswith('ll.'):raise ValueError('Invalid or duplicated ID')
+        seen.add(asset_id)
+        master=render_recipe(recipe)
+        icon=nearest_export(master)
+        qa=qa_png(icon)
+        name=asset_id.split('.')[-1]
+        mb=as_png(master);sb=as_png(icon)
+        safe_save(output/'candidates_128'/f'{name}.png',mb)
+        safe_save(output/'candidates_64'/f'{name}.png',sb)
+        pairs.append((recipe.get('label',name),master))
+        items.append({'id':asset_id,'description':recipe.get('semantic_brief',''),
+                      'materials':recipe['materials'],'component_count':len(recipe['layers']),
+                      'size':list(icon.size),'sha256':hashlib.sha256(sb).hexdigest(),
+                      'rights':'original_independent_design',
+                      'state':'candidate_needs_founder_review','qa':qa})
+    for theme in ('light','dark'):
+        for size in (32,64,128):
+            safe_save(output/'reviews'/f'authored_{size}_{theme}.png',as_png(sheet(pairs,size,theme)))
+    manifest={'engine':VERSION,'mode':'original_semantic_recipe','input_sha256':hashlib.sha256(source).hexdigest(),
+              'count':len(recipes),'founder_approved_count':0,'godot_integrated_count':0,
+              'rights':'original_independent_design','items':items}
+    safe_save(output/'manifest.json',json.dumps(manifest,sort_keys=True,indent=2).encode('utf8'))
+    archive=output/'LAST_LIGHT_V5_AUTHORED_ORIGINAL_CANDIDATES.zip'
+    files=sorted(p for p in output.rglob('*') if p.is_file() and p != archive)
+    with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
+        for f in files:
+            info=zipfile.ZipInfo(f.relative_to(output).as_posix(),date_time=(2026,1,1,0,0,0))
+            z.writestr(info,f.read_bytes(),compress_type=zipfile.ZIP_DEFLATED)
+    return {'count':len(recipes),'zip':str(archive),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
+
+
 def main():
     ap=argparse.ArgumentParser()
     group=ap.add_mutually_exclusive_group(required=True)
@@ -323,15 +368,5 @@ def main():
     if args.input_zip:
         print(json.dumps(produce_from_zip(args.input_zip,args.output),indent=2))
     else:
-        recipes=json.loads(args.recipe.read_text())
-        if isinstance(recipes,dict) and 'recipes' in recipes:recipes=recipes['recipes']
-        if isinstance(recipes,dict):recipes=[recipes]
-        for r in recipes:
-            master=render_recipe(r)
-            icon=nearest_export(master)
-            qa_png(icon)
-            slug=r['id'].split('.')[-1]
-            safe_save(args.output/f'{slug}_128.png',as_png(master))
-            safe_save(args.output/f'{slug}_64.png',as_png(icon))
-        print('Rendered candidates:',len(recipes))
+        print(json.dumps(produce_from_recipes(args.recipe,args.output),indent=2))
 if __name__=='__main__':main()

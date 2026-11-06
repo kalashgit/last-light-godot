@@ -55,6 +55,28 @@ class MaterialV5Test(unittest.TestCase):
   with self.assertRaises(ValueError):mod._material_pass(img,mask,'steel',42,face_normal=[0,0])
   with self.assertRaises(ValueError):mod._material_pass(img,mask,'steel',42,wear_state='stolen')
   with self.assertRaises(ValueError):mod._material_pass(img,mask,'steel',42,roughness=3)
+ def test_authored_three_unique_originals(self):
+  source=(ROOT/'data/factory/v5_authored_showcase_3.json') if (ROOT/'data/factory/v5_authored_showcase_3.json').exists() else (HERE/'data/v5_authored_showcase_3.json')
+  with tempfile.TemporaryDirectory() as t:
+   first=mod.produce_from_recipes(source,Path(t))
+   second=mod.produce_from_recipes(source,Path(t))
+   self.assertEqual(first['sha256'],second['sha256'])
+   m=json.loads((Path(t)/'manifest.json').read_text())
+   self.assertEqual(m['count'],3)
+   self.assertEqual(m['founder_approved_count'],0)
+   self.assertEqual(len(list((Path(t)/'candidates_128').glob('*.png'))),3)
+   self.assertTrue(all(i['component_count']>=20 for i in m['items']))
+   self.assertEqual(len(set(i['sha256'] for i in m['items'])),3)
+
+ def test_authored_duplicate_ids_cannot_package(self):
+  source=(ROOT/'data/factory/v5_authored_showcase_3.json') if (ROOT/'data/factory/v5_authored_showcase_3.json').exists() else (HERE/'data/v5_authored_showcase_3.json')
+  payload=json.loads(source.read_text())
+  payload['recipes'][1]['id']=payload['recipes'][0]['id']
+  with tempfile.TemporaryDirectory() as t:
+   target=Path(t)/'invalid.json'
+   target.write_text(json.dumps(payload))
+   with self.assertRaises(ValueError):mod.produce_from_recipes(target,Path(t)/'out')
+
  def test_reject_invalid_approval(self):
   with self.assertRaises(ValueError):mod.render_recipe({'approval':'founder_approved','rights':'original_independent_design'})
  def test_source_unchanged(self):

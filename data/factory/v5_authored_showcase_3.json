@@ -1,0 +1,2329 @@
+{
+  "schema": "last_light.original_component_recipe.v1",
+  "style": "last_light.grounded_physical_pixel.v2.1",
+  "recipes": [
+    {
+      "schema": "last_light.original_component_recipe.v1",
+      "id": "ll.original.urban_field_pack",
+      "label": "Utility field backpack",
+      "size": [
+        64,
+        64
+      ],
+      "view": "inventory_three_quarter",
+      "rights": "original_independent_design",
+      "approval": "candidate_needs_founder_review",
+      "materials": [
+        "olive_canvas",
+        "khaki_canvas",
+        "leather",
+        "rubber",
+        "aluminum"
+      ],
+      "layers": [
+        {
+          "name": "left_harness_edge",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              21,
+              13
+            ],
+            [
+              13,
+              20
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              10,
+              49
+            ],
+            [
+              16,
+              57
+            ]
+          ],
+          "width": 4
+        },
+        {
+          "name": "left_harness_lining",
+          "material": "khaki_canvas",
+          "tone": 2,
+          "shape": "line",
+          "points": [
+            [
+              21,
+              13
+            ],
+            [
+              15,
+              21
+            ],
+            [
+              12,
+              38
+            ],
+            [
+              13,
+              50
+            ],
+            [
+              16,
+              54
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "right_harness_edge",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              39,
+              13
+            ],
+            [
+              48,
+              20
+            ],
+            [
+              53,
+              39
+            ],
+            [
+              50,
+              54
+            ],
+            [
+              44,
+              57
+            ]
+          ],
+          "width": 5
+        },
+        {
+          "name": "right_harness_lining",
+          "material": "khaki_canvas",
+          "tone": 2,
+          "shape": "line",
+          "points": [
+            [
+              40,
+              13
+            ],
+            [
+              46,
+              21
+            ],
+            [
+              50,
+              39
+            ],
+            [
+              48,
+              52
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "carry_loop_shadow",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              27,
+              12
+            ],
+            [
+              27,
+              7
+            ],
+            [
+              34,
+              6
+            ],
+            [
+              36,
+              13
+            ]
+          ],
+          "width": 3
+        },
+        {
+          "name": "carry_loop_canvas",
+          "material": "olive_canvas",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              28,
+              10
+            ],
+            [
+              29,
+              8
+            ],
+            [
+              33,
+              8
+            ],
+            [
+              34,
+              11
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "underbody",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              18,
+              14
+            ],
+            [
+              26,
+              9
+            ],
+            [
+              41,
+              10
+            ],
+            [
+              47,
+              16
+            ],
+            [
+              52,
+              46
+            ],
+            [
+              48,
+              57
+            ],
+            [
+              42,
+              60
+            ],
+            [
+              18,
+              57
+            ],
+            [
+              13,
+              48
+            ],
+            [
+              14,
+              29
+            ]
+          ],
+          "face_normal": [
+            0.1,
+            0.1,
+            -0.95
+          ]
+        },
+        {
+          "name": "bag_sidewall",
+          "material": "olive_canvas",
+          "tone": 1,
+          "shape": "polygon",
+          "points": [
+            [
+              40,
+              12
+            ],
+            [
+              46,
+              16
+            ],
+            [
+              50,
+              29
+            ],
+            [
+              51,
+              50
+            ],
+            [
+              46,
+              55
+            ],
+            [
+              41,
+              57
+            ],
+            [
+              43,
+              37
+            ]
+          ],
+          "face_normal": [
+            1,
+            0,
+            0.2
+          ],
+          "grain_axis": "vertical"
+        },
+        {
+          "name": "body_face",
+          "material": "olive_canvas",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [
+              19,
+              15
+            ],
+            [
+              27,
+              10
+            ],
+            [
+              41,
+              12
+            ],
+            [
+              45,
+              17
+            ],
+            [
+              46,
+              34
+            ],
+            [
+              44,
+              52
+            ],
+            [
+              39,
+              57
+            ],
+            [
+              21,
+              56
+            ],
+            [
+              17,
+              51
+            ],
+            [
+              16,
+              31
+            ]
+          ],
+          "face_normal": [
+            -0.2,
+            -0.3,
+            0.8
+          ],
+          "grain_axis": "vertical"
+        },
+        {
+          "name": "front_left_gusset",
+          "material": "olive_canvas",
+          "tone": 1,
+          "shape": "polygon",
+          "points": [
+            [
+              18,
+              22
+            ],
+            [
+              23,
+              19
+            ],
+            [
+              24,
+              52
+            ],
+            [
+              21,
+              56
+            ],
+            [
+              17,
+              50
+            ]
+          ],
+          "face_normal": [
+            -1,
+            0.2,
+            0.3
+          ]
+        },
+        {
+          "name": "base_fabric",
+          "material": "olive_canvas",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              21,
+              53
+            ],
+            [
+              40,
+              55
+            ],
+            [
+              45,
+              51
+            ],
+            [
+              44,
+              57
+            ],
+            [
+              39,
+              60
+            ],
+            [
+              20,
+              58
+            ],
+            [
+              18,
+              54
+            ]
+          ]
+        },
+        {
+          "name": "base_seam_lit",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              21,
+              55
+            ],
+            [
+              38,
+              58
+            ],
+            [
+              44,
+              55
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "upper_lid_back",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              19,
+              17
+            ],
+            [
+              26,
+              11
+            ],
+            [
+              40,
+              11
+            ],
+            [
+              45,
+              17
+            ],
+            [
+              44,
+              25
+            ],
+            [
+              38,
+              28
+            ],
+            [
+              21,
+              26
+            ]
+          ]
+        },
+        {
+          "name": "upper_lid",
+          "material": "olive_canvas",
+          "tone": 3,
+          "shape": "polygon",
+          "points": [
+            [
+              20,
+              17
+            ],
+            [
+              27,
+              13
+            ],
+            [
+              39,
+              13
+            ],
+            [
+              43,
+              18
+            ],
+            [
+              41,
+              24
+            ],
+            [
+              37,
+              27
+            ],
+            [
+              22,
+              24
+            ]
+          ],
+          "face_normal": [
+            -0.2,
+            -0.6,
+            0.6
+          ],
+          "grain_axis": "horizontal"
+        },
+        {
+          "name": "upper_lid_welt",
+          "material": "olive_canvas",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              21,
+              18
+            ],
+            [
+              28,
+              14
+            ],
+            [
+              38,
+              14
+            ],
+            [
+              42,
+              18
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "upper_lid_fold",
+          "material": "rubber",
+          "tone": 1,
+          "shape": "line",
+          "points": [
+            [
+              22,
+              24
+            ],
+            [
+              31,
+              27
+            ],
+            [
+              39,
+              26
+            ],
+            [
+              41,
+              24
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "zipper_shadow",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              19,
+              29
+            ],
+            [
+              43,
+              29
+            ]
+          ],
+          "width": 3
+        },
+        {
+          "name": "zipper_teeth",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              20,
+              28
+            ],
+            [
+              42,
+              28
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "zip_teeth_0",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            21,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_1",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            24,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_2",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            27,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_3",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            30,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_4",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            33,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_5",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            36,
+            28
+          ]
+        },
+        {
+          "name": "zip_teeth_6",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            39,
+            28
+          ]
+        },
+        {
+          "name": "pocket_cast_shadow",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              22,
+              36
+            ],
+            [
+              41,
+              36
+            ],
+            [
+              44,
+              40
+            ],
+            [
+              44,
+              51
+            ],
+            [
+              40,
+              55
+            ],
+            [
+              23,
+              55
+            ],
+            [
+              20,
+              50
+            ]
+          ]
+        },
+        {
+          "name": "pocket_side",
+          "material": "olive_canvas",
+          "tone": 1,
+          "shape": "polygon",
+          "points": [
+            [
+              39,
+              39
+            ],
+            [
+              43,
+              39
+            ],
+            [
+              44,
+              50
+            ],
+            [
+              40,
+              53
+            ]
+          ],
+          "face_normal": [
+            1,
+            0,
+            0.1
+          ]
+        },
+        {
+          "name": "pocket_face",
+          "material": "olive_canvas",
+          "tone": 3,
+          "shape": "polygon",
+          "points": [
+            [
+              24,
+              39
+            ],
+            [
+              40,
+              39
+            ],
+            [
+              40,
+              52
+            ],
+            [
+              24,
+              52
+            ],
+            [
+              21,
+              48
+            ],
+            [
+              22,
+              41
+            ]
+          ],
+          "face_normal": [
+            -0.1,
+            -0.3,
+            0.8
+          ]
+        },
+        {
+          "name": "pocket_flap",
+          "material": "olive_canvas",
+          "tone": 4,
+          "shape": "polygon",
+          "points": [
+            [
+              23,
+              37
+            ],
+            [
+              40,
+              37
+            ],
+            [
+              41,
+              43
+            ],
+            [
+              39,
+              45
+            ],
+            [
+              23,
+              44
+            ]
+          ],
+          "face_normal": [
+            0,
+            -0.6,
+            0.9
+          ]
+        },
+        {
+          "name": "pocket_seam",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              23,
+              44
+            ],
+            [
+              39,
+              45
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "pocket_flap_edge",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "line",
+          "points": [
+            [
+              24,
+              38
+            ],
+            [
+              39,
+              38
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "webbing_0",
+          "material": "khaki_canvas",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [
+              26,
+              18
+            ],
+            [
+              29,
+              18
+            ],
+            [
+              29,
+              53
+            ],
+            [
+              26,
+              53
+            ]
+          ],
+          "grain_axis": "vertical",
+          "face_normal": [
+            -0.2,
+            0,
+            0.9
+          ]
+        },
+        {
+          "name": "webbing_edge_0",
+          "material": "olive_canvas",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              26,
+              18
+            ],
+            [
+              26,
+              53
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "stitch_0",
+          "material": "khaki_canvas",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              28,
+              21
+            ],
+            [
+              28,
+              24
+            ],
+            [
+              28,
+              27
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "buckle_outer_0",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "rectangle",
+          "bbox": [
+            25,            45,
+            30,
+            49
+          ]
+        },
+        {
+          "name": "buckle_inner_0",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "rectangle",
+          "bbox": [
+            26,
+            46,
+            29,
+            48
+          ]
+        },
+        {
+          "name": "buckle_slot_0",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "rectangle",
+          "bbox": [
+            27,
+            47,
+            28,
+            48
+          ]
+        },
+        {
+          "name": "webbing_1",
+          "material": "khaki_canvas",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [
+              35,
+              18
+            ],
+            [
+              38,
+              18
+            ],
+            [
+              38,
+              53
+            ],
+            [
+              35,
+              53
+            ]
+          ],
+          "grain_axis": "vertical",
+          "face_normal": [
+            -0.2,
+            0,
+            0.9
+          ]
+        },
+        {
+          "name": "webbing_edge_1",
+          "material": "olive_canvas",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              35,
+              18
+            ],
+            [
+              35,
+              53
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "stitch_1",
+          "material": "khaki_canvas",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              37,
+              21
+            ],
+            [
+              37,
+              24
+            ],
+            [
+              37,
+              27
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "buckle_outer_1",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "rectangle",
+          "bbox": [
+            34,
+            45,
+            39,
+            49
+          ]
+        },
+        {
+          "name": "buckle_inner_1",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "rectangle",
+          "bbox": [
+            35,
+            46,
+            38,
+            48
+          ]
+        },
+        {
+          "name": "buckle_slot_1",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "rectangle",
+          "bbox": [
+            36,
+            47,
+            37,
+            48
+          ]
+        },
+        {
+          "name": "right_compression",
+          "material": "khaki_canvas",
+          "tone": 2,
+          "shape": "line",
+          "points": [
+            [
+              46,
+              28
+            ],
+            [
+              49,
+              28
+            ],
+            [
+              50,
+              35
+            ],
+            [
+              46,
+              35
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "side_clip",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "rectangle",
+          "bbox": [
+            46,
+            31,
+            50,
+            34
+          ]
+        },
+        {
+          "name": "side_zip",
+          "material": "rubber",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              44,
+              23
+            ],
+            [
+              46,
+              29
+            ],
+            [
+              47,
+              35
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "side_zip_glint",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              45,
+              24
+            ],
+            [
+              46,
+              27
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "left_stitch_30",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            30
+          ]
+        },
+        {
+          "name": "right_stitch_30",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            30
+          ]
+        },
+        {
+          "name": "left_stitch_33",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            33
+          ]
+        },
+        {
+          "name": "right_stitch_33",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            33
+          ]
+        },
+        {
+          "name": "left_stitch_36",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            36
+          ]
+        },
+        {
+          "name": "right_stitch_36",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            36
+          ]
+        },
+        {
+          "name": "left_stitch_39",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            39
+          ]
+        },
+        {
+          "name": "right_stitch_39",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            39
+          ]
+        },
+        {
+          "name": "left_stitch_42",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            42
+          ]
+        },
+        {
+          "name": "right_stitch_42",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            42
+          ]
+        },
+        {
+          "name": "left_stitch_45",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            45
+          ]
+        },
+        {
+          "name": "right_stitch_45",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            45
+          ]
+        },
+        {
+          "name": "left_stitch_48",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            19,
+            48
+          ]
+        },
+        {
+          "name": "right_stitch_48",
+          "material": "khaki_canvas",
+          "tone": 4,
+          "shape": "point",
+          "xy": [
+            44,
+            48
+          ]
+        },
+        {
+          "name": "base_stitch_25",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "point",
+          "xy": [
+            25,
+            54
+          ]
+        },
+        {
+          "name": "base_stitch_28",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "point",
+          "xy": [
+            28,
+            54
+          ]
+        },
+        {
+          "name": "base_stitch_31",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "point",
+          "xy": [
+            31,
+            54
+          ]
+        },
+        {
+          "name": "base_stitch_34",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "point",
+          "xy": [
+            34,
+            54
+          ]
+        },
+        {
+          "name": "base_stitch_37",
+          "material": "khaki_canvas",
+          "tone": 3,
+          "shape": "point",
+          "xy": [
+            37,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "last_light.original_component_recipe.v1",
+      "id": "ll.original.cast_steel_ingot",
+      "label": "Cast recycled steel ingot",
+      "size": [
+        64,
+        64
+      ],
+      "view": "inventory_three_quarter",
+      "rights": "original_independent_design",
+      "approval": "candidate_needs_founder_review",
+      "materials": [
+        "steel",
+        "aluminum",
+        "blued_steel",
+        "stone"
+      ],
+      "layers": [
+        {
+          "name": "ingot_lower_dark",
+          "material": "blued_steel",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              11,
+              31
+            ],
+            [
+              45,
+              22
+            ],
+            [
+              59,
+              29
+            ],
+            [
+              55,
+              43
+            ],
+            [
+              40,
+              53
+            ],
+            [
+              9,
+              48
+            ],
+            [
+              6,
+              38
+            ]
+          ],
+          "face_normal": [
+            0.4,
+            0.4,
+            0.2
+          ],
+          "wear_state": "used"
+        },
+        {
+          "name": "left_foot_face",
+          "material": "steel",
+          "tone": 1,
+          "shape": "polygon",
+          "points": [
+            [
+              9,
+              31
+            ],
+            [
+              23,
+              34
+            ],
+            [
+              20,
+              49
+            ],
+            [
+              9,
+              47
+            ],
+            [
+              6,
+              39
+            ]
+          ],
+          "face_normal": [
+            -1,
+            0.2,
+            0.1
+          ],
+          "wear_state": "used"
+        },
+        {
+          "name": "front_face",
+          "material": "steel",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [
+              22,
+              34
+            ],
+            [
+              58,
+              30
+            ],
+            [
+              54,
+              44
+            ],
+            [
+              40,
+              51
+            ],
+            [
+              19,
+              48
+            ]
+          ],
+          "face_normal": [
+            0,
+            0.7,
+            0.4
+          ],
+          "wear_state": "used",
+          "grain_axis": "horizontal"
+        },
+        {
+          "name": "top_plane",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "polygon",
+          "points": [
+            [
+              9,
+              31
+            ],
+            [
+              26,
+              18
+            ],
+            [
+              44,
+              17
+            ],
+            [
+              58,
+              29
+            ],
+            [
+              40,
+              37
+            ],
+            [
+              22,
+              34
+            ]
+          ],
+          "face_normal": [
+            -0.3,
+            -0.8,
+            1
+          ],
+          "roughness": 0.42
+        },
+        {
+          "name": "top_rim_light",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              10,
+              31
+            ],
+            [
+              27,
+              19
+            ],
+            [
+              43,
+              18
+            ],
+            [
+              57,
+              29
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "top_rim_side",
+          "material": "steel",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              22,
+              34
+            ],
+            [
+              40,
+              37
+            ],
+            [
+              58,
+              29
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "left_chamfer",
+          "material": "aluminum",
+          "tone": 4,
+          "shape": "line",
+          "points": [
+            [
+              10,
+              32
+            ],
+            [
+              8,
+              38
+            ],
+            [
+              10,
+              44
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "base_edge",
+          "material": "blued_steel",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              11,
+              47
+            ],
+            [
+              40,
+              52
+            ],
+            [
+              53,
+              44
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "base_reflect",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              22,
+              48
+            ],
+            [
+              39,
+              51
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "cast_flow_1",
+          "material": "aluminum",
+          "tone": 2,
+          "shape": "line",
+          "points": [
+            [
+              25,
+              23
+            ],
+            [
+              33,
+              23
+            ],
+            [
+              40,
+              27
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "cast_flow_2",
+          "material": "steel",
+          "tone": 2,
+          "shape": "line",
+          "points": [
+            [
+              18,
+              30
+            ],
+            [
+              31,
+              29
+            ],
+            [
+              44,
+              31
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "cast_scratch",
+          "material": "aluminum",
+          "tone": 4,
+          "shape": "line",
+          "points": [
+            [
+              29,
+              26
+            ],
+            [
+              37,
+              28
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "casting_pore_0",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            22,
+            28
+          ]
+        },
+        {
+          "name": "casting_pore_1",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            27,
+            30
+          ]
+        },
+        {
+          "name": "casting_pore_2",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            30,
+            23
+          ]
+        },
+        {
+          "name": "casting_pore_3",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            38,
+            24
+          ]
+        },
+        {
+          "name": "casting_pore_4",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            42,
+            28
+          ]
+        },
+        {
+          "name": "casting_pore_5",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            35,
+            33
+          ]
+        },
+        {
+          "name": "casting_pore_6",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            16,
+            33
+          ]
+        },
+        {
+          "name": "casting_pore_7",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            45,
+            34
+          ]
+        },
+        {
+          "name": "casting_pore_8",
+          "material": "steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            42,
+            44
+          ]
+        },
+        {
+          "name": "casting_pore_9",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "point",
+          "xy": [
+            27,
+            46
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "last_light.original_component_recipe.v1",
+      "id": "ll.original.workshop_cleaver",
+      "label": "Forged butcher cleaver",
+      "size": [
+        64,
+        64
+      ],
+      "view": "inventory_three_quarter",
+      "rights": "original_independent_design",
+      "approval": "candidate_needs_founder_review",
+      "materials": [
+        "steel",
+        "blued_steel",
+        "wood",
+        "leather",
+        "aluminum"
+      ],
+      "layers": [
+        {
+          "name": "grip_dark",
+          "material": "leather",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              41,
+              37
+            ],
+            [
+              48,
+              33
+            ],
+            [
+              58,
+              45
+            ],
+            [
+              60,
+              51
+            ],
+            [
+              55,
+              58
+            ],
+            [
+              47,
+              58
+            ],
+            [
+              35,
+              46
+            ]
+          ],
+          "face_normal": [
+            0.3,
+            0.4,
+            0.2
+          ]
+        },
+        {
+          "name": "handle_wood",
+          "material": "wood",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [              42,
+              37
+            ],
+            [
+              47,
+              35
+            ],
+            [
+              56,
+              44
+            ],
+            [
+              58,
+              51
+            ],
+            [
+              53,
+              55
+            ],
+            [
+              48,
+              55
+            ],
+            [
+              37,
+              45
+            ]
+          ],
+          "face_normal": [
+            -0.4,
+            -0.4,
+            0.8
+          ],
+          "grain_axis": "vertical"
+        },
+        {
+          "name": "handle_top_edge",
+          "material": "wood",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              42,
+              37
+            ],
+            [
+              48,
+              36
+            ],
+            [
+              56,
+              45
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "handle_lower_edge",
+          "material": "leather",
+          "tone": 1,
+          "shape": "line",
+          "points": [
+            [
+              39,
+              46
+            ],
+            [
+              48,
+              56
+            ],
+            [
+              54,
+              56
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "grain_wood_1",
+          "material": "wood",
+          "tone": 4,
+          "shape": "line",
+          "points": [
+            [
+              44,
+              41
+            ],
+            [
+              50,
+              47
+            ],
+            [
+              53,
+              50
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "grain_wood_2",
+          "material": "wood",
+          "tone": 1,
+          "shape": "line",
+          "points": [
+            [
+              47,
+              40
+            ],
+            [
+              53,
+              47
+            ],
+            [
+              55,
+              51
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "pin_shadow_0",
+          "material": "leather",
+          "tone": 0,
+          "shape": "ellipse",
+          "bbox": [
+            45,
+            41,
+            48,
+            44
+          ]
+        },
+        {
+          "name": "pin_head_0",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "ellipse",
+          "bbox": [
+            46,
+            42,
+            47,
+            43
+          ]
+        },
+        {
+          "name": "pin_shadow_1",
+          "material": "leather",
+          "tone": 0,
+          "shape": "ellipse",
+          "bbox": [
+            52,
+            48,
+            55,
+            51
+          ]
+        },
+        {
+          "name": "pin_head_1",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "ellipse",
+          "bbox": [
+            53,
+            49,
+            54,
+            50
+          ]
+        },
+        {
+          "name": "blade_underside",
+          "material": "blued_steel",
+          "tone": 0,
+          "shape": "polygon",
+          "points": [
+            [
+              10,
+              9
+            ],
+            [
+              24,
+              8
+            ],
+            [
+              44,
+              17
+            ],
+            [
+              46,
+              31
+            ],
+            [
+              36,
+              47
+            ],
+            [
+              13,
+              45
+            ],
+            [
+              8,
+              40
+            ],
+            [
+              7,
+              18
+            ]
+          ],
+          "face_normal": [
+            0.3,
+            0.3,
+            -0.8
+          ]
+        },
+        {
+          "name": "blade_face",
+          "material": "steel",
+          "tone": 2,
+          "shape": "polygon",
+          "points": [
+            [
+              11,
+              10
+            ],
+            [
+              24,
+              9
+            ],
+            [
+              43,
+              18
+            ],
+            [
+              44,
+              29
+            ],
+            [
+              35,
+              44
+            ],
+            [
+              14,
+              43
+            ],
+            [
+              9,
+              38
+            ],
+            [
+              9,
+              19
+            ]
+          ],
+          "face_normal": [
+            -0.4,
+            -0.35,
+            0.9
+          ],
+          "grain_axis": "horizontal",
+          "roughness": 0.4
+        },
+        {
+          "name": "blade_top_lit",
+          "material": "aluminum",
+          "tone": 4,
+          "shape": "polygon",
+          "points": [
+            [
+              11,
+              10
+            ],
+            [
+              24,
+              10
+            ],
+            [
+              40,
+              18
+            ],
+            [
+              41,
+              21
+            ],
+            [
+              26,
+              15
+            ],
+            [
+              10,
+              14
+            ]
+          ],
+          "face_normal": [
+            -0.4,
+            -1,
+            1
+          ]
+        },
+        {
+          "name": "cutting_bevel",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "polygon",
+          "points": [
+            [
+              9,
+              36
+            ],
+            [
+              15,
+              40
+            ],
+            [
+              34,
+              40
+            ],
+            [
+              43,
+              30
+            ],
+            [
+              35,
+              44
+            ],
+            [
+              14,
+              44
+            ],
+            [
+              9,
+              39
+            ]
+          ],
+          "face_normal": [
+            -0.3,
+            0.6,
+            0.7
+          ]
+        },
+        {
+          "name": "cutting_edge",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              9,
+              39
+            ],
+            [
+              14,
+              43
+            ],
+            [
+              34,
+              43
+            ],
+            [
+              43,
+              30
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "thick_spine",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "line",
+          "points": [
+            [
+              12,
+              12
+            ],
+            [
+              24,
+              11
+            ],
+            [
+              42,
+              19
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "spine_reflection",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "line",
+          "points": [
+            [
+              12,
+              11
+            ],
+            [
+              24,
+              10
+            ],
+            [
+              41,
+              19
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "tang_join_shadow",
+          "material": "blued_steel",
+          "tone": 0,
+          "shape": "line",
+          "points": [
+            [
+              41,
+              32
+            ],
+            [
+              39,
+              38
+            ],
+            [
+              43,
+              43
+            ]
+          ],
+          "width": 2
+        },
+        {
+          "name": "tang_join_light",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              40,
+              35
+            ],
+            [
+              44,
+              38
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "hanging_hole_crease",
+          "material": "blued_steel",
+          "tone": 0,
+          "shape": "ellipse",
+          "bbox": [
+            13,
+            15,
+            19,
+            21
+          ]
+        },
+        {
+          "name": "hanging_hole_inner",
+          "material": "steel",
+          "tone": 0,
+          "shape": "ellipse",
+          "bbox": [
+            15,
+            17,
+            17,
+            19
+          ]
+        },
+        {
+          "name": "hole_glint",
+          "material": "aluminum",
+          "tone": 5,
+          "shape": "point",
+          "xy": [
+            14,
+            16
+          ]
+        },
+        {
+          "name": "face_scratch_a",
+          "material": "aluminum",
+          "tone": 3,
+          "shape": "line",
+          "points": [
+            [
+              20,
+              26
+            ],
+            [
+              30,
+              29
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "face_scratch_b",
+          "material": "blued_steel",
+          "tone": 1,
+          "shape": "line",
+          "points": [
+            [
+              19,
+              33
+            ],
+            [
+              28,
+              34
+            ]
+          ],
+          "width": 1
+        },
+        {
+          "name": "face_scratch_c",
+          "material": "aluminum",
+          "tone": 4,
+          "shape": "line",
+          "points": [
+            [
+              27,
+              23
+            ],
+            [
+              34,
+              26
+            ]
+          ],
+          "width": 1
+        }
+      ]
+    }
+  ]
+}
