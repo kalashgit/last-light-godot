@@ -39,7 +39,7 @@ func layout(game) -> Dictionary:
  var bottom := safe.end.y
  var portrait := safe.size.y > safe.size.x
  # Portrait: use the founder-marked road-side thumb area.
- var stick_center := Vector2(left + (155.0 if portrait else 105.0), bottom - (230.0 if portrait else 130.0))
+ var stick_center := Vector2(left + (215.0 if portrait else 105.0), bottom - (345.0 if portrait else 130.0))
  var slots_width := 4.0 * 54.0 + 3.0 * 8.0
  var slots_y := bottom - 58.0 if not portrait else bottom - 244.0
  var slots_x := safe.get_center().x - slots_width * 0.5
