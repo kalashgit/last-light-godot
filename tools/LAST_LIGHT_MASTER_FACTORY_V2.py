@@ -997,7 +997,8 @@ def compile_region(root:Path,seed:int,start:tuple[int,int],shape:tuple[int,int],
                 counts["buildings"]+=len(chunk["buildings"])
                 counts["rooms"]+=sum(len(b["rooms"]) for b in chunk["buildings"])
                 if preview and nx*ny<=144:preview_chunks.append(chunk)
-            except (OSError,ValueError,KeyError,TypeError) as exc:                failed.append({"chunk_xy":[cx,cy],"error":str(exc)})
+            except (OSError,ValueError,KeyError,TypeError) as exc:
+                failed.append({"chunk_xy":[cx,cy],"error":str(exc)})
     manifest={"schema":"last_light.world_manifest.v1","factory_version":VERSION,"world_seed":seed,
               "grid":CHUNK_SIZE,"tile_px":list(TILE_PX),"mode":"fictional_seeded",
               "origin_chunk":list(start),"chunk_grid":list(shape),"chunks":records,
@@ -1138,6 +1139,14 @@ RESEARCH_GITHUB_BRANCH = "feature/unified-factory-v2-research-neighborhood"
 RESEARCH_GITHUB_ROOT = "https://raw.githubusercontent.com/kalashgit/last-light-godot/"
 EXPECTED_ICON_RECORDS = 4347
 EXPECTED_ICON_BATCHES = 23
+MEDIA_SHARD_NAMES = [
+    "vehicle_models_01.jsonl","vehicle_models_02.jsonl", "vehicle_screenshots_01.jsonl",
+    "animated_images_01.jsonl","animal_images_01.jsonl",
+    "tile_images_01.jsonl","tile_images_02.jsonl","tile_images_03.jsonl","tile_images_04.jsonl",
+    "screenshots_01.jsonl","screenshots_02.jsonl",
+    "devblog_images_01.jsonl","devblog_images_02.jsonl","devblog_images_03.jsonl",
+    "exceptional_parentheses_links.jsonl"
+]
 
 
 def sync_reference_catalog(root: Path) -> dict:
@@ -1176,7 +1185,23 @@ def sync_reference_catalog(root: Path) -> dict:
             count += 1
         except (OSError, ValueError, UnicodeError, HTTPError, URLError, TimeoutError) as exc:
             failures.append({"family":family,"batch": number, "error": str(exc)})
-    result = {"available_batches": count, "expected_batches": EXPECTED_ICON_BATCHES * 2,
+    for name in MEDIA_SHARD_NAMES:
+        target=root/"imports"/"notion_media_shards"/name
+        target.parent.mkdir(parents=True,exist_ok=True)
+        if target.is_file() and target.stat().st_size>0:
+            existing+=1;count+=1;continue
+        url=RESEARCH_GITHUB_ROOT+RESEARCH_GITHUB_BRANCH+"/data/research/notion_media_shards/"+name
+        try:
+            with urlopen(Request(url,headers={"User-Agent":"LAST-LIGHT-factory/2"}),timeout=20) as response:
+                raw=response.read(1_000_001)
+            if len(raw)>1_000_000:raise ValueError("Shard exceeds cap")
+            records=[json.loads(line) for line in raw.decode("utf-8").splitlines() if line.strip()]
+            if not records or not all(x.get("mediawiki_id") and x.get("source_file_page") for x in records):
+                raise ValueError("Invalid universal source shard")
+            write_atomic(target,raw);count+=1
+        except (OSError,ValueError,UnicodeError,HTTPError,URLError,TimeoutError) as exc:
+            failures.append({"media_shard":name,"error":str(exc)})
+    result = {"available_batches": count, "expected_batches": EXPECTED_ICON_BATCHES * 2 + len(MEDIA_SHARD_NAMES),
               "preexisting_batches": existing, "errors": failures,
               "note": "Research metadata only, not original approved art"}
     write_atomic(root / "reports" / "source_sync.json", pretty(result))
