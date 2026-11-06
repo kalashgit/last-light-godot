@@ -1,0 +1,50 @@
+{
+  "schema": "last_light.district_recipe.v1",
+  "district_id": "ll.district.demo_street",
+  "world_seed": 20261106,
+  "road": {
+    "id": "ll.road.main",
+    "rect": [
+      0,
+      14,
+      43,
+      4
+    ],
+    "material": "asphalt_worn"
+  },
+  "lots": [
+    {
+      "id": "ll.lot.001",
+      "rect": [
+        0,
+        0,
+        13,
+        14
+      ],
+      "archetype_id": "house_small",
+      "variant": 0
+    },
+    {
+      "id": "ll.lot.002",
+      "rect": [
+        15,
+        0,
+        13,
+        14
+      ],
+      "archetype_id": "house_small",
+      "variant": 1
+    },
+    {
+      "id": "ll.lot.003",
+      "rect": [
+        30,
+        0,
+        13,
+        14
+      ],
+      "archetype_id": "house_small",
+      "variant": 2
+    }
+  ]
+}
