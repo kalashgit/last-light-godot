@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LAST LIGHT — Unified Reproducible Factory, executable foundation V1.
+"""LAST LIGHT — Unified Reproducible Factory, executable foundation V2.
 
 Runs locally on iPhone Python/CodePad or desktop, without a paid API.
 Python standard library required; Pillow optional for actual PNG creation.
