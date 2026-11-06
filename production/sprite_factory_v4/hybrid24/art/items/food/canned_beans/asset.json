@@ -1,0 +1,133 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "can",
+  "asset_id": "item.food.canned_beans.inventory.intact.v00000",
+  "category": "food",
+  "created_at": "2026-11-06T08:07:45.979240+00:00",
+  "device_verification_status": "not_tested",
+  "family": "food",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.food.canned_beans",
+  "material_specification": [
+    {
+      "construction": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+      "material": "bare_steel",
+      "name": "primary_body"
+    },
+    {
+      "construction": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+      "material": "paper",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "b7c95b8728d80fa0ef38151f410443e6e9238f75fea351823c98d35a38ef0db2",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "dc161931918c8488b6996e525cf47d16c9935dc1c4699a8c08c8f42af09afbf7",
+  "recipe_id": "item.food.canned_beans",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/food/canned_beans/icon.png",
+  "render_fingerprint": "77b7d9d1ad91288c6732a45704ece23771413491ac5ab9e30ac9a45a56828d5e",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "b7c95b8728d80fa0ef38151f410443e6e9238f75fea351823c98d35a38ef0db2",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "can",
+    "brief": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "canned_beans",
+    "family": "food",
+    "geometry": {
+      "construction": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.food.canned_beans",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "bare_steel",
+      "paper"
+    ],
+    "parts": [
+      {
+        "construction": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+        "material": "bare_steel",
+        "name": "primary_body"
+      },
+      {
+        "construction": "A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram",
+        "material": "paper",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "b7c95b8728d80fa0ef38151f410443e6e9238f75fea351823c98d35a38ef0db2",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        15,
+        4,
+        49,
+        60
+      ],
+      "color_count": 49,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 1718,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.419434,
+      "visible_pixels": 1718,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

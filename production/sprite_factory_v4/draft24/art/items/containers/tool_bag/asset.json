@@ -1,0 +1,140 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "bag",
+  "asset_id": "item.containers.tool_bag.inventory.intact.v00000",
+  "category": "containers",
+  "created_at": "2026-11-06T07:57:48.000407+00:00",
+  "device_verification_status": "not_tested",
+  "family": "containers",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.containers.tool_bag",
+  "material_specification": [
+    {
+      "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+      "material": "fabric",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+      "material": "leather",
+      "name": "functional_attachments"
+    },
+    {
+      "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+      "material": "bare_steel",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "397816b213c4de99da3100736ff28fe2ad7828e016d3f22f48227e0b88d33f42",
+  "recipe_id": "item.containers.tool_bag",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/containers/tool_bag/icon.png",
+  "render_fingerprint": "8726b12fe901d6d599d98460dabc73244b665dfcb17ca792b344dac840f5561f",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "1053e4c8a7e542652cb7d4b9727b5a3dfb0e96880885916a85f40387144acc02",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "bag",
+    "brief": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "tool_bag",
+    "family": "containers",
+    "geometry": {
+      "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.containers.tool_bag",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "fabric",
+      "leather",
+      "bare_steel"
+    ],
+    "parts": [
+      {
+        "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+        "material": "fabric",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+        "material": "leather",
+        "name": "functional_attachments"
+      },
+      {
+        "construction": "Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base",
+        "material": "bare_steel",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        9,
+        7,
+        55,
+        56
+      ],
+      "color_count": 13,
+      "height": 64,
+      "min_margin": 7,
+      "mode": "RGBA",
+      "opaque_pixels": 1520,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.371094,
+      "visible_pixels": 1520,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

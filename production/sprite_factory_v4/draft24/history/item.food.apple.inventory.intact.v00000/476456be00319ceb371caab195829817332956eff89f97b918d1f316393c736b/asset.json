@@ -1,0 +1,135 @@
+{
+  "archived_at": "2026-11-06T07:56:51.467605+00:00",
+  "archived_content_sha256": "476456be00319ceb371caab195829817332956eff89f97b918d1f316393c736b",
+  "previous_expected_sha256": "476456be00319ceb371caab195829817332956eff89f97b918d1f316393c736b",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "fruit",
+    "asset_id": "item.food.apple.inventory.intact.v00000",
+    "category": "food",
+    "created_at": "2026-11-06T07:54:46.937430+00:00",
+    "device_verification_status": "not_tested",
+    "family": "food",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.food.apple",
+    "material_specification": [
+      {
+        "construction": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+        "material": "organic",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+        "material": "wood",
+        "name": "functional_attachments"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "783682970fe6ac034897fe8ba09b5e3c7ed9906ede7aef05a40c59884f66de6f",
+    "recipe_id": "item.food.apple",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/food/apple/icon.png",
+    "render_fingerprint": "5a69aa5bf19d218fc50463f9f3a4edcf6feb48ba4b3ce2b9bef53026b9545039",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "476456be00319ceb371caab195829817332956eff89f97b918d1f316393c736b",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "fruit",
+      "brief": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "apple",
+      "family": "food",
+      "geometry": {
+        "construction": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.food.apple",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "organic",
+        "wood"
+      ],
+      "parts": [
+        {
+          "construction": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+          "material": "organic",
+          "name": "primary_body"
+        },
+        {
+          "construction": "Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin",
+          "material": "wood",
+          "name": "functional_attachments"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          14,
+          7,
+          51,
+          54
+        ],
+        "color_count": 12,
+        "height": 64,
+        "min_margin": 7,
+        "mode": "RGBA",
+        "opaque_pixels": 1174,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.286621,
+        "visible_pixels": 1174,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

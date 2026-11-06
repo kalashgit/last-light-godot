@@ -1,0 +1,118 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "mug",
+  "asset_id": "item.survival.camping_mug.inventory.intact.v00000",
+  "category": "survival",
+  "created_at": "2026-11-06T07:57:48.025116+00:00",
+  "device_verification_status": "not_tested",
+  "family": "survival",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.survival.camping_mug",
+  "material_specification": [
+    {
+      "construction": "Thin metal camping mug, hollow dark interior, rolled rim, attached side loop and curved body",
+      "material": "aluminum",
+      "name": "primary_body"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "a8a8bf346eed8a62c74d2a5a0baa3b1f1ca64ddf016945d8a076802f045204d6",
+  "recipe_id": "item.survival.camping_mug",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/survival/camping_mug/icon.png",
+  "render_fingerprint": "ceb0e8e74198f9235a937ec1fcd5622fa10c6d4ec41ecae77376b5a76abca2c5",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "564e01a36b5f9ec1a0d69717b1f2ad44a7fddb779351b9ec7b37d3cd7c0dcd33",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "mug",
+    "brief": "Thin metal camping mug, hollow dark interior, rolled rim, attached side loop and curved body",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "camping_mug",
+    "family": "survival",
+    "geometry": {
+      "construction": "Thin metal camping mug, hollow dark interior, rolled rim, attached side loop and curved body",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.survival.camping_mug",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "aluminum"
+    ],
+    "parts": [
+      {
+        "construction": "Thin metal camping mug, hollow dark interior, rolled rim, attached side loop and curved body",
+        "material": "aluminum",
+        "name": "primary_body"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        12,
+        15,
+        59,
+        54
+      ],
+      "color_count": 7,
+      "height": 64,
+      "min_margin": 5,
+      "mode": "RGBA",
+      "opaque_pixels": 1304,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.318359,
+      "visible_pixels": 1304,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

@@ -1,0 +1,146 @@
+{
+  "archived_at": "2026-11-06T07:56:51.548287+00:00",
+  "archived_content_sha256": "8cba9b478a4db0d6009ea6d3ffe28f79978adcaa7adc80768b4d0c4315b9b01e",
+  "previous_expected_sha256": "8cba9b478a4db0d6009ea6d3ffe28f79978adcaa7adc80768b4d0c4315b9b01e",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "radio",
+    "asset_id": "item.electronics.handheld_radio.inventory.intact.v00000",
+    "category": "electronics",
+    "created_at": "2026-11-06T07:54:46.999227+00:00",
+    "device_verification_status": "not_tested",
+    "family": "electronics",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.electronics.handheld_radio",
+    "material_specification": [
+      {
+        "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+        "material": "plastic",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+        "material": "rubber",
+        "name": "functional_attachments"
+      },
+      {
+        "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+        "material": "bare_steel",
+        "name": "functional_attachments"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "2844b8ba6988a7553120de230761c7db8fdd72d6d954e1da64d13df9c24691f4",
+    "recipe_id": "item.electronics.handheld_radio",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/electronics/handheld_radio/icon.png",
+    "render_fingerprint": "1455556b6c351b2b9fa66908e7ab8af72d1624159af62cc7b6155cb827df9ae0",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "8cba9b478a4db0d6009ea6d3ffe28f79978adcaa7adc80768b4d0c4315b9b01e",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "radio",
+      "brief": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "handheld_radio",
+      "family": "electronics",
+      "geometry": {
+        "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.electronics.handheld_radio",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "plastic",
+        "rubber",
+        "bare_steel"
+      ],
+      "parts": [
+        {
+          "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+          "material": "plastic",
+          "name": "primary_body"
+        },
+        {
+          "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+          "material": "rubber",
+          "name": "functional_attachments"
+        },
+        {
+          "construction": "Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing",
+          "material": "bare_steel",
+          "name": "functional_attachments"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          12,
+          6,
+          50,
+          57
+        ],
+        "color_count": 18,
+        "height": 64,
+        "min_margin": 6,
+        "mode": "RGBA",
+        "opaque_pixels": 1249,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.304932,
+        "visible_pixels": 1249,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

@@ -1,0 +1,122 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "rope",
+  "asset_id": "item.materials.rope_coil.inventory.intact.v00000",
+  "category": "materials",
+  "created_at": "2026-11-06T08:07:46.035700+00:00",
+  "device_verification_status": "not_tested",
+  "family": "materials",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.materials.rope_coil",
+  "material_specification": [
+    {
+      "construction": "Five nested tan braided rope turns, overlap occlusion and attached loose end",
+      "material": "fabric",
+      "name": "primary_body"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "8b085d52646d9407279c5400c9453ea9a22c31b81b83bf6c2366d6bc937ee86e",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "a77c1e9d4bb8c8610456d7488b96ce166180adf1a2f7d70d360006081bb08c93",
+  "recipe_id": "item.materials.rope_coil",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/materials/rope_coil/icon.png",
+  "render_fingerprint": "a220d8171a293b27bebb9f1b65c6ce16ab411cca8a01d71c4a58233b74741f23",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "8b085d52646d9407279c5400c9453ea9a22c31b81b83bf6c2366d6bc937ee86e",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "rope",
+    "brief": "Five nested tan braided rope turns, overlap occlusion and attached loose end",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "rope_coil",
+    "family": "materials",
+    "geometry": {
+      "construction": "Five nested tan braided rope turns, overlap occlusion and attached loose end",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.materials.rope_coil",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "fabric"
+    ],
+    "parts": [
+      {
+        "construction": "Five nested tan braided rope turns, overlap occlusion and attached loose end",
+        "material": "fabric",
+        "name": "primary_body"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "8b085d52646d9407279c5400c9453ea9a22c31b81b83bf6c2366d6bc937ee86e",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        4,
+        10,
+        60,
+        54
+      ],
+      "color_count": 48,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 1619,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.395264,
+      "visible_pixels": 1619,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

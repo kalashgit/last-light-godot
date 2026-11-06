@@ -1,0 +1,124 @@
+{
+  "archived_at": "2026-11-06T07:56:51.481321+00:00",
+  "archived_content_sha256": "5549cb9bdaeb9f95a94afe2a4e9ccd62866c8de93d71eff36454e9b48c255c5a",
+  "previous_expected_sha256": "5549cb9bdaeb9f95a94afe2a4e9ccd62866c8de93d71eff36454e9b48c255c5a",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "box",
+    "asset_id": "item.medical.bandage_box.inventory.intact.v00000",
+    "category": "medical",
+    "created_at": "2026-11-06T07:54:46.949214+00:00",
+    "device_verification_status": "not_tested",
+    "family": "medical",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.medical.bandage_box",
+    "material_specification": [
+      {
+        "construction": "Closed matte sterile dressing carton with folded lid and generic dressing pictogram",
+        "material": "paper",
+        "name": "primary_body"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "57b1f00752b12fdd29594c932e1eecb825745c0e6f4854812c59894b07ca1a2d",
+    "recipe_id": "item.medical.bandage_box",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/medical/bandage_box/icon.png",
+    "render_fingerprint": "81ae3a86c6219b76dd50c127c87a96ce1bef8061d7b46a82f4c106097c4e044f",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "5549cb9bdaeb9f95a94afe2a4e9ccd62866c8de93d71eff36454e9b48c255c5a",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "box",
+      "brief": "Closed matte sterile dressing carton with folded lid and generic dressing pictogram",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "bandage_box",
+      "family": "medical",
+      "geometry": {
+        "construction": "Closed matte sterile dressing carton with folded lid and generic dressing pictogram",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.medical.bandage_box",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "paper"
+      ],
+      "parts": [
+        {
+          "construction": "Closed matte sterile dressing carton with folded lid and generic dressing pictogram",
+          "material": "paper",
+          "name": "primary_body"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          9,
+          13,
+          55,
+          57
+        ],
+        "color_count": 7,
+        "height": 64,
+        "min_margin": 7,
+        "mode": "RGBA",
+        "opaque_pixels": 1548,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.37793,
+        "visible_pixels": 1548,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

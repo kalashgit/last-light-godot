@@ -1,0 +1,144 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "flashlight",
+  "asset_id": "item.electronics.flashlight.inventory.intact.v00000",
+  "category": "electronics",
+  "created_at": "2026-11-06T08:07:46.062398+00:00",
+  "device_verification_status": "not_tested",
+  "family": "electronics",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.electronics.flashlight",
+  "material_specification": [
+    {
+      "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+      "material": "aluminum",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+      "material": "rubber",
+      "name": "functional_attachments"
+    },
+    {
+      "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+      "material": "glass",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "4e34cabbf9442b1041a10c2247bbbe818dc593ed88424a6416713a12f322ae5f",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "68ab76c463c0fcd7f63cd071650e7e47cfb748371b7ac58c9279cc35db29cc03",
+  "recipe_id": "item.electronics.flashlight",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/electronics/flashlight/icon.png",
+  "render_fingerprint": "1c0876ddeb81667658bf11d2a1d70a84c3de31eb9ff9c017dacac9bc8280d577",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "4e34cabbf9442b1041a10c2247bbbe818dc593ed88424a6416713a12f322ae5f",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "flashlight",
+    "brief": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "flashlight",
+    "family": "electronics",
+    "geometry": {
+      "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.electronics.flashlight",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "aluminum",
+      "rubber",
+      "glass"
+    ],
+    "parts": [
+      {
+        "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+        "material": "aluminum",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+        "material": "rubber",
+        "name": "functional_attachments"
+      },
+      {
+        "construction": "Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap",
+        "material": "glass",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "4e34cabbf9442b1041a10c2247bbbe818dc593ed88424a6416713a12f322ae5f",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        4,
+        9,
+        60,
+        55
+      ],
+      "color_count": 45,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 1155,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.281982,
+      "visible_pixels": 1155,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

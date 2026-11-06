@@ -1,0 +1,135 @@
+{
+  "archived_at": "2026-11-06T07:56:51.538652+00:00",
+  "archived_content_sha256": "d1d47158604073939e12e238a77155757c7b00b7ce1509a74b61a42e8b4496ed",
+  "previous_expected_sha256": "d1d47158604073939e12e238a77155757c7b00b7ce1509a74b61a42e8b4496ed",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "gloves",
+    "asset_id": "item.clothing.work_gloves.inventory.intact.v00000",
+    "category": "clothing",
+    "created_at": "2026-11-06T07:54:46.992262+00:00",
+    "device_verification_status": "not_tested",
+    "family": "clothing",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.clothing.work_gloves",
+    "material_specification": [
+      {
+        "construction": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+        "material": "leather",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+        "material": "fabric",
+        "name": "functional_attachments"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "bef082050abd1a18d3045609e61525bd5235cb15e80ca9880124a75a26fdf328",
+    "recipe_id": "item.clothing.work_gloves",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/clothing/work_gloves/icon.png",
+    "render_fingerprint": "14c7224668e5f623b85e662a91381904f074952b9681fdd8741367c5b1468e4a",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "d1d47158604073939e12e238a77155757c7b00b7ce1509a74b61a42e8b4496ed",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "gloves",
+      "brief": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "work_gloves",
+      "family": "clothing",
+      "geometry": {
+        "construction": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.clothing.work_gloves",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "leather",
+        "fabric"
+      ],
+      "parts": [
+        {
+          "construction": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+          "material": "leather",
+          "name": "primary_body"
+        },
+        {
+          "construction": "Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams",
+          "material": "fabric",
+          "name": "functional_attachments"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          7,
+          14,
+          55,
+          55
+        ],
+        "color_count": 8,
+        "height": 64,
+        "min_margin": 7,
+        "mode": "RGBA",
+        "opaque_pixels": 1094,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.26709,
+        "visible_pixels": 1094,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

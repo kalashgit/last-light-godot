@@ -1,0 +1,129 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "can",
+  "asset_id": "item.food.canned_peas.inventory.intact.v00000",
+  "category": "food",
+  "created_at": "2026-11-06T07:57:47.935942+00:00",
+  "device_verification_status": "not_tested",
+  "family": "food",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.food.canned_peas",
+  "material_specification": [
+    {
+      "construction": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+      "material": "bare_steel",
+      "name": "primary_body"
+    },
+    {
+      "construction": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+      "material": "paper",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "79f6ede75ff864c77219f01ccabb654d5846aabc3fe563d9eed0fbc8a98c2dae",
+  "recipe_id": "item.food.canned_peas",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/food/canned_peas/icon.png",
+  "render_fingerprint": "3f454aec58d9e43231010d75fb8c08ccfaedd35de45c34457538795926071314",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "1318f015e8f4859ff9641d60a7e51f0a6526cce01a8d886c8c3a5e16919e8b2b",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "can",
+    "brief": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "canned_peas",
+    "family": "food",
+    "geometry": {
+      "construction": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.food.canned_peas",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "bare_steel",
+      "paper"
+    ],
+    "parts": [
+      {
+        "construction": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+        "material": "bare_steel",
+        "name": "primary_body"
+      },
+      {
+        "construction": "A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram",
+        "material": "paper",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        12,
+        17,
+        52,
+        50
+      ],
+      "color_count": 20,
+      "height": 64,
+      "min_margin": 12,
+      "mode": "RGBA",
+      "opaque_pixels": 1252,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.305664,
+      "visible_pixels": 1252,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

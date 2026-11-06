@@ -1,0 +1,2261 @@
+{
+  "schema_version": 1,
+  "method": "Native64 PNG samples with alpha>=230; sRGB weighted luminance (diagnostic, not physical linear light); HSV saturation; exact RGB 4-connected cluster counting.",
+  "limitations": [
+    "Golden40 exports contain resampling/JPEG-derived matte artifacts. Color counts and singleton clusters cannot be treated as a Golden target.",
+    "Different objects and material proportions make aggregate distributions descriptive only.",
+    "Metrics do not prove style, object correctness, originality or visual approval."
+  ],
+  "summary": {
+    "golden40": {
+      "count": 40,
+      "medians": {
+        "occupied_alpha_fraction": 0.34631,
+        "partial_alpha_fraction": 0.11377,
+        "opaque_unique_colors": 1036.0,
+        "srgb_luminance_p05": 44.9665,
+        "srgb_luminance_p50": 103.0425,
+        "srgb_luminance_p95": 177.6318,
+        "hsv_saturation_p50": 0.16325,
+        "singleton_pixel_fraction": 0.99496,
+        "largest_exact_color_cluster_fraction": 0.00215
+      }
+    },
+    "v3": {
+      "count": 24,
+      "medians": {
+        "occupied_alpha_fraction": 0.22095,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5.0,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 116.4477,
+        "srgb_luminance_p95": 176.4339,
+        "hsv_saturation_p50": 0.2357,
+        "singleton_pixel_fraction": 0.00212,
+        "largest_exact_color_cluster_fraction": 0.41285
+      }
+    },
+    "v4": {
+      "count": 24,
+      "medians": {
+        "occupied_alpha_fraction": 0.35974,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47.0,
+        "srgb_luminance_p05": 56.8673,
+        "srgb_luminance_p50": 112.8635,
+        "srgb_luminance_p95": 192.6453,
+        "hsv_saturation_p50": 0.3092,
+        "singleton_pixel_fraction": 0.55274,
+        "largest_exact_color_cluster_fraction": 0.01714
+      }
+    }
+  },
+  "sets": {
+    "golden40": [
+      {
+        "id": "ll_golden_ammo_box_40cal",
+        "sha256": "5938cf901b5cf9a27c3d9dd0b249a9105052a3af855e270bcf1fc21b68b42635",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          12,
+          60,
+          52
+        ],
+        "occupied_alpha_fraction": 0.45215,
+        "nearly_opaque_pixels": 1601,
+        "partial_alpha_fraction": 0.10742,
+        "opaque_unique_colors": 1301,
+        "srgb_luminance_p05": 28.0,
+        "srgb_luminance_p50": 57.4762,
+        "srgb_luminance_p95": 140.0966,
+        "hsv_saturation_p50": 0.1549,
+        "exact_rgb_cluster_count": 1561,
+        "singleton_pixel_fraction": 0.95503,
+        "largest_exact_color_cluster_fraction": 0.0025
+      },
+      {
+        "id": "ll_golden_acorn",
+        "sha256": "a6d28a88be003fcbf59191c01bebfc14b410abd5ee917a3e5f2c07f4062befde",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.48682,
+        "nearly_opaque_pixels": 1690,
+        "partial_alpha_fraction": 0.12183,
+        "opaque_unique_colors": 1606,
+        "srgb_luminance_p05": 31.0326,
+        "srgb_luminance_p50": 75.9006,
+        "srgb_luminance_p95": 171.055,
+        "hsv_saturation_p50": 0.5522,
+        "exact_rgb_cluster_count": 1686,
+        "singleton_pixel_fraction": 0.99527,
+        "largest_exact_color_cluster_fraction": 0.00118
+      },
+      {
+        "id": "ll_golden_aerosol_canister",
+        "sha256": "42c8a2708bd9a379eaaeb9acbf52eac7ba968fd7611b66e11f304203609ca16b",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          16,
+          4,
+          48,
+          60
+        ],
+        "occupied_alpha_fraction": 0.34009,
+        "nearly_opaque_pixels": 1178,
+        "partial_alpha_fraction": 0.08789,
+        "opaque_unique_colors": 1144,
+        "srgb_luminance_p05": 39.2678,
+        "srgb_luminance_p50": 96.118,
+        "srgb_luminance_p95": 179.9656,
+        "hsv_saturation_p50": 0.1697,
+        "exact_rgb_cluster_count": 1177,
+        "singleton_pixel_fraction": 0.9983,
+        "largest_exact_color_cluster_fraction": 0.0017
+      },
+      {
+        "id": "ll_golden_timed_aerosol_canister",
+        "sha256": "272233564d9fcfc40d246b6feb6f7411607bbbd09480d78f7581c6bd63acfd77",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          4,
+          48,
+          60
+        ],
+        "occupied_alpha_fraction": 0.39893,
+        "nearly_opaque_pixels": 1415,
+        "partial_alpha_fraction": 0.08618,
+        "opaque_unique_colors": 1387,
+        "srgb_luminance_p05": 25.706,
+        "srgb_luminance_p50": 78.408,
+        "srgb_luminance_p95": 187.5616,
+        "hsv_saturation_p50": 0.1829,
+        "exact_rgb_cluster_count": 1411,
+        "singleton_pixel_fraction": 0.99576,
+        "largest_exact_color_cluster_fraction": 0.00283
+      },
+      {
+        "id": "ll_golden_air_filter_tape",
+        "sha256": "1222fd5283e12763ff98d25e1b609103ac8ad3ea9ee162da463953afe304d3ae",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          7,
+          60,
+          57
+        ],
+        "occupied_alpha_fraction": 0.59326,
+        "nearly_opaque_pixels": 2190,
+        "partial_alpha_fraction": 0.09839,
+        "opaque_unique_colors": 1747,
+        "srgb_luminance_p05": 45.2126,
+        "srgb_luminance_p50": 116.5564,
+        "srgb_luminance_p95": 159.2504,
+        "hsv_saturation_p50": 0.0769,
+        "exact_rgb_cluster_count": 2159,
+        "singleton_pixel_fraction": 0.9726,
+        "largest_exact_color_cluster_fraction": 0.00137
+      },
+      {
+        "id": "ll_golden_air_filter_panel",
+        "sha256": "97bf0539f2497a4b077fb26fe53b231a73b6bdc2d8d2480eb97eb5b76f0917e9",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          53
+        ],
+        "occupied_alpha_fraction": 0.43579,
+        "nearly_opaque_pixels": 1538,
+        "partial_alpha_fraction": 0.09546,
+        "opaque_unique_colors": 1289,
+        "srgb_luminance_p05": 32.0722,
+        "srgb_luminance_p50": 114.8292,
+        "srgb_luminance_p95": 175.6888,
+        "hsv_saturation_p50": 0.1299,
+        "exact_rgb_cluster_count": 1536,
+        "singleton_pixel_fraction": 0.9974,
+        "largest_exact_color_cluster_fraction": 0.0013
+      },
+      {
+        "id": "ll_golden_digital_alarm_clock",
+        "sha256": "e5157e0a2c24dbc7d6f554f940d875e6a23946a629ab709d1a9ad1a0bcca0ade",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          53
+        ],
+        "occupied_alpha_fraction": 0.50952,
+        "nearly_opaque_pixels": 1851,
+        "partial_alpha_fraction": 0.09521,
+        "opaque_unique_colors": 1334,
+        "srgb_luminance_p05": 16.4974,
+        "srgb_luminance_p50": 32.2126,
+        "srgb_luminance_p95": 103.777,
+        "hsv_saturation_p50": 0.0909,
+        "exact_rgb_cluster_count": 1821,
+        "singleton_pixel_fraction": 0.97029,
+        "largest_exact_color_cluster_fraction": 0.00216
+      },
+      {
+        "id": "ll_golden_respirator_mask",
+        "sha256": "c46a26fb282aad15398b8dae07adfde1bf3034fd7aa806212b4044db73fc22c9",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          11,
+          60,
+          53
+        ],
+        "occupied_alpha_fraction": 0.41846,
+        "nearly_opaque_pixels": 1453,
+        "partial_alpha_fraction": 0.10767,
+        "opaque_unique_colors": 1253,
+        "srgb_luminance_p05": 44.9422,
+        "srgb_luminance_p50": 105.2166,
+        "srgb_luminance_p95": 248.2126,
+        "hsv_saturation_p50": 0.0353,
+        "exact_rgb_cluster_count": 1412,
+        "singleton_pixel_fraction": 0.96008,
+        "largest_exact_color_cluster_fraction": 0.00895
+      },
+      {
+        "id": "ll_golden_isopropyl_alcohol",
+        "sha256": "e314597b8f3064f9fc334a58e741e27ef0259eae8bfc7ac8dc0d52e0bda5e189",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          4,
+          49,
+          60
+        ],
+        "occupied_alpha_fraction": 0.37036,
+        "nearly_opaque_pixels": 1280,
+        "partial_alpha_fraction": 0.09619,
+        "opaque_unique_colors": 1203,
+        "srgb_luminance_p05": 58.906,
+        "srgb_luminance_p50": 131.9186,
+        "srgb_luminance_p95": 196.2808,
+        "hsv_saturation_p50": 0.0657,
+        "exact_rgb_cluster_count": 1272,
+        "singleton_pixel_fraction": 0.9875,
+        "largest_exact_color_cluster_fraction": 0.00156
+      },
+      {
+        "id": "ll_golden_alcohol_wipes_old",
+        "sha256": "7e5796a4d45d275e90d296c5cb76cede707cf47bedbddb2a292e89b2e89ff054",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          14,
+          60,
+          50
+        ],
+        "occupied_alpha_fraction": 0.396,
+        "nearly_opaque_pixels": 1353,
+        "partial_alpha_fraction": 0.10718,
+        "opaque_unique_colors": 1146,
+        "srgb_luminance_p05": 82.8292,
+        "srgb_luminance_p50": 165.9656,
+        "srgb_luminance_p95": 197.4,
+        "hsv_saturation_p50": 0.1611,
+        "exact_rgb_cluster_count": 1345,
+        "singleton_pixel_fraction": 0.98817,
+        "largest_exact_color_cluster_fraction": 0.00148
+      },
+      {
+        "id": "ll_golden_alcohol_wipes",
+        "sha256": "805394f5737540dee20e0e9b07f0c10128cc0b105f48cd4046ec5174c6ceff0f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          12,
+          60,
+          51
+        ],
+        "occupied_alpha_fraction": 0.44482,
+        "nearly_opaque_pixels": 1561,
+        "partial_alpha_fraction": 0.10522,
+        "opaque_unique_colors": 1481,
+        "srgb_luminance_p05": 82.342,
+        "srgb_luminance_p50": 145.3558,
+        "srgb_luminance_p95": 212.2114,
+        "hsv_saturation_p50": 0.06,
+        "exact_rgb_cluster_count": 1557,
+        "singleton_pixel_fraction": 0.99488,
+        "largest_exact_color_cluster_fraction": 0.00128
+      },
+      {
+        "id": "ll_golden_field_pack_camo",
+        "sha256": "8fd6a2be3488ca98d1c559cd10966f3e641e5a6467377dcccaa5516c4cb97c55",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          7,
+          4,
+          57,
+          60
+        ],
+        "occupied_alpha_fraction": 0.58862,
+        "nearly_opaque_pixels": 2128,
+        "partial_alpha_fraction": 0.11768,
+        "opaque_unique_colors": 2008,
+        "srgb_luminance_p05": 33.0602,
+        "srgb_luminance_p50": 73.7606,
+        "srgb_luminance_p95": 201.992,
+        "hsv_saturation_p50": 0.3772,
+        "exact_rgb_cluster_count": 2120,
+        "singleton_pixel_fraction": 0.99342,
+        "largest_exact_color_cluster_fraction": 0.00141
+      },
+      {
+        "id": "ll_golden_field_pack_sand",
+        "sha256": "052a35ccd17b9805ea578149f69ac9ef6e3a060d2f03b8f54e998a57b661758d",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.61914,
+        "nearly_opaque_pixels": 2246,
+        "partial_alpha_fraction": 0.12329,
+        "opaque_unique_colors": 2041,
+        "srgb_luminance_p05": 43.9576,
+        "srgb_luminance_p50": 97.3484,
+        "srgb_luminance_p95": 232.1954,
+        "hsv_saturation_p50": 0.4639,
+        "exact_rgb_cluster_count": 2221,
+        "singleton_pixel_fraction": 0.98175,
+        "largest_exact_color_cluster_fraction": 0.00267
+      },
+      {
+        "id": "ll_golden_field_pack_olive",
+        "sha256": "ab6a0a05b6d79cf9f8177380f271cd30981e3b1031c85096b16558b237aab8fd",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          58,
+          60
+        ],
+        "occupied_alpha_fraction": 0.62598,
+        "nearly_opaque_pixels": 2265,
+        "partial_alpha_fraction": 0.12451,
+        "opaque_unique_colors": 1824,
+        "srgb_luminance_p05": 28.7794,
+        "srgb_luminance_p50": 72.9692,
+        "srgb_luminance_p95": 177.7754,
+        "hsv_saturation_p50": 0.381,
+        "exact_rgb_cluster_count": 2244,
+        "singleton_pixel_fraction": 0.9819,
+        "largest_exact_color_cluster_fraction": 0.00132
+      },
+      {
+        "id": "ll_golden_licorice_sweets",
+        "sha256": "1cbbfd7eaeb4e3be8797c2abd665a1222866ec662f66e7d6733568a31e27831e",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          9,
+          60,
+          54
+        ],
+        "occupied_alpha_fraction": 0.46021,
+        "nearly_opaque_pixels": 1547,
+        "partial_alpha_fraction": 0.1311,
+        "opaque_unique_colors": 1537,
+        "srgb_luminance_p05": 35.7598,
+        "srgb_luminance_p50": 107.51,
+        "srgb_luminance_p95": 189.8152,
+        "hsv_saturation_p50": 0.3274,
+        "exact_rgb_cluster_count": 1543,
+        "singleton_pixel_fraction": 0.99483,
+        "largest_exact_color_cluster_fraction": 0.00129
+      },
+      {
+        "id": "ll_golden_aluminum_ingot",
+        "sha256": "6a2c67190444640f3b87fde1b7b9da97096080f5f0ae894aa231feee25235aee",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          12,
+          60,
+          51
+        ],
+        "occupied_alpha_fraction": 0.354,
+        "nearly_opaque_pixels": 1203,
+        "partial_alpha_fraction": 0.09766,
+        "opaque_unique_colors": 1087,
+        "srgb_luminance_p05": 63.7862,
+        "srgb_luminance_p50": 108.836,
+        "srgb_luminance_p95": 201.8532,
+        "hsv_saturation_p50": 0.0617,
+        "exact_rgb_cluster_count": 1191,
+        "singleton_pixel_fraction": 0.98171,
+        "largest_exact_color_cluster_fraction": 0.00333
+      },
+      {
+        "id": "ll_golden_aluminum_scrap",
+        "sha256": "cb6a44e64fea0adfc9950865d639bbf3afd0d179ff929c1064d7fb99560785cd",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          11,
+          60,
+          52
+        ],
+        "occupied_alpha_fraction": 0.44409,
+        "nearly_opaque_pixels": 1513,
+        "partial_alpha_fraction": 0.12012,
+        "opaque_unique_colors": 1401,
+        "srgb_luminance_p05": 37.6338,
+        "srgb_luminance_p50": 108.4882,
+        "srgb_luminance_p95": 187.9936,
+        "hsv_saturation_p50": 0.0588,
+        "exact_rgb_cluster_count": 1509,
+        "singleton_pixel_fraction": 0.99471,
+        "largest_exact_color_cluster_fraction": 0.00132
+      },
+      {
+        "id": "ll_golden_amethyst_raw",
+        "sha256": "e9a1d84b10f0ee74e10646dd0831304aa142bf6460713ebd9d6ba800239eb69a",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          56
+        ],
+        "occupied_alpha_fraction": 0.50488,
+        "nearly_opaque_pixels": 1787,
+        "partial_alpha_fraction": 0.1106,
+        "opaque_unique_colors": 1739,
+        "srgb_luminance_p05": 38.4128,
+        "srgb_luminance_p50": 76.7694,
+        "srgb_luminance_p95": 169.4016,
+        "hsv_saturation_p50": 0.2157,
+        "exact_rgb_cluster_count": 1785,
+        "singleton_pixel_fraction": 0.99776,
+        "largest_exact_color_cluster_fraction": 0.00112
+      },
+      {
+        "id": "ll_golden_amethyst_gem",
+        "sha256": "fdd45550d2afa84b7fb23a710dbeea754dee6b477d5a0e31e1dcb423bbc86878",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          7,
+          60,
+          57
+        ],
+        "occupied_alpha_fraction": 0.53198,
+        "nearly_opaque_pixels": 1875,
+        "partial_alpha_fraction": 0.11694,
+        "opaque_unique_colors": 1833,
+        "srgb_luminance_p05": 35.1974,
+        "srgb_luminance_p50": 94.3226,
+        "srgb_luminance_p95": 201.1392,
+        "hsv_saturation_p50": 0.3699,
+        "exact_rgb_cluster_count": 1874,
+        "singleton_pixel_fraction": 0.99893,
+        "largest_exact_color_cluster_fraction": 0.00107
+      },
+      {
+        "id": "ll_golden_ammunition_case",
+        "sha256": "14d7a026b1892453d5a49c13e180d6d4340df6082557bd50595774cc33184f5f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          56
+        ],
+        "occupied_alpha_fraction": 0.54248,
+        "nearly_opaque_pixels": 1962,
+        "partial_alpha_fraction": 0.10669,
+        "opaque_unique_colors": 1578,
+        "srgb_luminance_p05": 31.345,
+        "srgb_luminance_p50": 59.2608,
+        "srgb_luminance_p95": 133.6648,
+        "hsv_saturation_p50": 0.3519,
+        "exact_rgb_cluster_count": 1944,
+        "singleton_pixel_fraction": 0.98216,
+        "largest_exact_color_cluster_fraction": 0.00153
+      },
+      {
+        "id": "ll_golden_hand_axe",
+        "sha256": "e1c440f359b636d34e87c96bf368b9a1c394979aa92eb0b598d086c019c0bfce",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.34521,
+        "nearly_opaque_pixels": 1016,
+        "partial_alpha_fraction": 0.15186,
+        "opaque_unique_colors": 985,
+        "srgb_luminance_p05": 43.0498,
+        "srgb_luminance_p50": 94.126,
+        "srgb_luminance_p95": 178.2074,
+        "hsv_saturation_p50": 0.1654,
+        "exact_rgb_cluster_count": 1013,
+        "singleton_pixel_fraction": 0.99409,
+        "largest_exact_color_cluster_fraction": 0.00197
+      },
+      {
+        "id": "ll_golden_felling_axe",
+        "sha256": "daca0e7a7f0066b19a2c98a8f6f3ed3b8bd5116277571396954fe81d4efaf25f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          5,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.24146,
+        "nearly_opaque_pixels": 634,
+        "partial_alpha_fraction": 0.13892,
+        "opaque_unique_colors": 614,
+        "srgb_luminance_p05": 51.0286,
+        "srgb_luminance_p50": 100.1982,
+        "srgb_luminance_p95": 171.185,
+        "hsv_saturation_p50": 0.1587,
+        "exact_rgb_cluster_count": 633,
+        "singleton_pixel_fraction": 0.99685,
+        "largest_exact_color_cluster_fraction": 0.00315
+      },
+      {
+        "id": "ll_golden_stone_axe",
+        "sha256": "959f2727a2197a256ceee1938323233bbc44186f6a9a764fc756a8563f2eae05",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          58,
+          60
+        ],
+        "occupied_alpha_fraction": 0.30688,
+        "nearly_opaque_pixels": 906,
+        "partial_alpha_fraction": 0.13599,
+        "opaque_unique_colors": 869,
+        "srgb_luminance_p05": 48.6246,
+        "srgb_luminance_p50": 101.0234,
+        "srgb_luminance_p95": 157.7008,
+        "hsv_saturation_p50": 0.2889,
+        "exact_rgb_cluster_count": 901,
+        "singleton_pixel_fraction": 0.98896,
+        "largest_exact_color_cluster_fraction": 0.00221
+      },
+      {
+        "id": "ll_golden_baseball_bat",
+        "sha256": "c8db978607b0dd93e003e34818e53abfb79582cb15a268adad80136a1d066875",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          5,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.19824,
+        "nearly_opaque_pixels": 546,
+        "partial_alpha_fraction": 0.10742,
+        "opaque_unique_colors": 530,
+        "srgb_luminance_p05": 69.3684,
+        "srgb_luminance_p50": 129.4876,
+        "srgb_luminance_p95": 198.7398,
+        "hsv_saturation_p50": 0.3651,
+        "exact_rgb_cluster_count": 546,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00183
+      },
+      {
+        "id": "ll_golden_reinforced_baseball_bat",
+        "sha256": "2feac6c6aa39488de79c1a00b945e42b1be46c79641ca832f4f6ff2ca5332a6b",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          5,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.23511,
+        "nearly_opaque_pixels": 653,
+        "partial_alpha_fraction": 0.12085,
+        "opaque_unique_colors": 644,
+        "srgb_luminance_p05": 49.0458,
+        "srgb_luminance_p50": 97.2108,
+        "srgb_luminance_p95": 170.177,
+        "hsv_saturation_p50": 0.3333,
+        "exact_rgb_cluster_count": 653,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00153
+      },
+      {
+        "id": "ll_golden_basic_mace",
+        "sha256": "3f166460d71bab177c33f05418963ea29b6fd6541783099839ea9eb49e4c6848",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          60
+        ],
+        "occupied_alpha_fraction": 0.24512,
+        "nearly_opaque_pixels": 702,
+        "partial_alpha_fraction": 0.11694,
+        "opaque_unique_colors": 678,
+        "srgb_luminance_p05": 42.118,
+        "srgb_luminance_p50": 81.0836,
+        "srgb_luminance_p95": 164.9816,
+        "hsv_saturation_p50": 0.1429,
+        "exact_rgb_cluster_count": 698,
+        "singleton_pixel_fraction": 0.9886,
+        "largest_exact_color_cluster_fraction": 0.00285
+      },
+      {
+        "id": "ll_golden_bone_club",
+        "sha256": "c9150f18622bd4a54e09c0194a253270638a5937ea7326f93c585c849b4cf641",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.27197,
+        "nearly_opaque_pixels": 815,
+        "partial_alpha_fraction": 0.11694,
+        "opaque_unique_colors": 774,
+        "srgb_luminance_p05": 61.753,
+        "srgb_luminance_p50": 128.9392,
+        "srgb_luminance_p95": 212.3908,
+        "hsv_saturation_p50": 0.3021,
+        "exact_rgb_cluster_count": 814,
+        "singleton_pixel_fraction": 0.99755,
+        "largest_exact_color_cluster_fraction": 0.00245
+      },
+      {
+        "id": "ll_golden_meat_cleaver",
+        "sha256": "9a1d8bb108d4a6f60f60eeff79cae52c1ae6630ba7d61d8d06f995bd866da97e",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          6,
+          60,
+          58
+        ],
+        "occupied_alpha_fraction": 0.34741,
+        "nearly_opaque_pixels": 1111,
+        "partial_alpha_fraction": 0.12231,
+        "opaque_unique_colors": 954,
+        "srgb_luminance_p05": 55.412,
+        "srgb_luminance_p50": 110.2034,
+        "srgb_luminance_p95": 187.4068,
+        "hsv_saturation_p50": 0.0833,
+        "exact_rgb_cluster_count": 1103,
+        "singleton_pixel_fraction": 0.9865,
+        "largest_exact_color_cluster_fraction": 0.0027
+      },
+      {
+        "id": "ll_golden_crowbar",
+        "sha256": "0897522e12fb4debe53ce32d97fad61c49692e053bd308c4cebfafb8489157b9",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          56
+        ],
+        "occupied_alpha_fraction": 0.17554,
+        "nearly_opaque_pixels": 404,
+        "partial_alpha_fraction": 0.12329,
+        "opaque_unique_colors": 401,
+        "srgb_luminance_p05": 47.5052,
+        "srgb_luminance_p50": 103.202,
+        "srgb_luminance_p95": 152.265,
+        "hsv_saturation_p50": 0.3103,
+        "exact_rgb_cluster_count": 403,
+        "singleton_pixel_fraction": 0.99505,
+        "largest_exact_color_cluster_fraction": 0.00495
+      },
+      {
+        "id": "ll_golden_hunting_knife",
+        "sha256": "8f3a28b9b8590691cc2c5191c26f4dfb8348fa7660ecbaeb811c7b5374fa8079",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          56
+        ],
+        "occupied_alpha_fraction": 0.2583,
+        "nearly_opaque_pixels": 720,
+        "partial_alpha_fraction": 0.12695,
+        "opaque_unique_colors": 703,
+        "srgb_luminance_p05": 46.0498,
+        "srgb_luminance_p50": 102.883,
+        "srgb_luminance_p95": 185.4108,
+        "hsv_saturation_p50": 0.1154,
+        "exact_rgb_cluster_count": 720,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00139
+      },
+      {
+        "id": "ll_golden_single_edge_sword",
+        "sha256": "2a4db00c8de6c845d17f47e8b152f528fd46af653569d3fdf038d3e5012373ac",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          56
+        ],
+        "occupied_alpha_fraction": 0.13647,
+        "nearly_opaque_pixels": 290,
+        "partial_alpha_fraction": 0.10498,
+        "opaque_unique_colors": 286,
+        "srgb_luminance_p05": 47.757,
+        "srgb_luminance_p50": 121.9908,
+        "srgb_luminance_p95": 203.412,
+        "hsv_saturation_p50": 0.0611,
+        "exact_rgb_cluster_count": 290,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00345
+      },
+      {
+        "id": "ll_golden_butterfly_knife_folded",
+        "sha256": "7d07dc328da31a1a652913dabdacaa2ec3922a3c87445f907f5bebcec7d3ec54",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          54
+        ],
+        "occupied_alpha_fraction": 0.31836,
+        "nearly_opaque_pixels": 1056,
+        "partial_alpha_fraction": 0.09546,
+        "opaque_unique_colors": 965,
+        "srgb_luminance_p05": 27.7782,
+        "srgb_luminance_p50": 108.6968,
+        "srgb_luminance_p95": 168.479,
+        "hsv_saturation_p50": 0.0968,
+        "exact_rgb_cluster_count": 1052,
+        "singleton_pixel_fraction": 0.99242,
+        "largest_exact_color_cluster_fraction": 0.00189
+      },
+      {
+        "id": "ll_golden_pocket_knife",
+        "sha256": "3e62eca5eebdd696663195c9c1bb6ee026b0977a11a5576f76f5e6965babf635",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          13,
+          60,
+          51
+        ],
+        "occupied_alpha_fraction": 0.20898,
+        "nearly_opaque_pixels": 618,
+        "partial_alpha_fraction": 0.09033,
+        "opaque_unique_colors": 593,
+        "srgb_luminance_p05": 44.9908,
+        "srgb_luminance_p50": 99.4028,
+        "srgb_luminance_p95": 191.6246,
+        "hsv_saturation_p50": 0.11,
+        "exact_rgb_cluster_count": 617,
+        "singleton_pixel_fraction": 0.99676,
+        "largest_exact_color_cluster_fraction": 0.00324
+      },
+      {
+        "id": "ll_golden_crude_machete",
+        "sha256": "218e631f641e5a92946f9283667cae5fc5614c838b149a5be5bf9b394421857e",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          9,
+          60,
+          54
+        ],
+        "occupied_alpha_fraction": 0.23267,
+        "nearly_opaque_pixels": 641,
+        "partial_alpha_fraction": 0.11719,
+        "opaque_unique_colors": 614,
+        "srgb_luminance_p05": 50.1244,
+        "srgb_luminance_p50": 105.0498,
+        "srgb_luminance_p95": 160.2624,
+        "hsv_saturation_p50": 0.1386,
+        "exact_rgb_cluster_count": 640,
+        "singleton_pixel_fraction": 0.99688,
+        "largest_exact_color_cluster_fraction": 0.00312
+      },
+      {
+        "id": "ll_golden_machete",
+        "sha256": "f7c2635566c0a8f012281ee7f7a60d27e0f670eb89d1105e5e7785128704b481",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          53
+        ],
+        "occupied_alpha_fraction": 0.1709,
+        "nearly_opaque_pixels": 466,
+        "partial_alpha_fraction": 0.09229,
+        "opaque_unique_colors": 444,
+        "srgb_luminance_p05": 61.0274,
+        "srgb_luminance_p50": 117.1352,
+        "srgb_luminance_p95": 177.4882,
+        "hsv_saturation_p50": 0.0754,
+        "exact_rgb_cluster_count": 465,
+        "singleton_pixel_fraction": 0.99571,
+        "largest_exact_color_cluster_fraction": 0.00429
+      },
+      {
+        "id": "ll_golden_pickaxe",
+        "sha256": "f83ddbe2a971d826bb7055341fe7a2412950afc9b5ba41d019215dfa3c4f3f70",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          5,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.25586,
+        "nearly_opaque_pixels": 666,
+        "partial_alpha_fraction": 0.146,
+        "opaque_unique_colors": 653,
+        "srgb_luminance_p05": 44.8412,
+        "srgb_luminance_p50": 109.2148,
+        "srgb_luminance_p95": 171.9134,
+        "hsv_saturation_p50": 0.278,
+        "exact_rgb_cluster_count": 664,
+        "singleton_pixel_fraction": 0.99399,
+        "largest_exact_color_cluster_fraction": 0.003
+      },
+      {
+        "id": "ll_golden_pitchfork",
+        "sha256": "74f816bb1c6757254cf9178f0943cc2f285acf90ab0ed0d6e4fdcdffc683ac10",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.1814,
+        "nearly_opaque_pixels": 276,
+        "partial_alpha_fraction": 0.1543,
+        "opaque_unique_colors": 274,
+        "srgb_luminance_p05": 59.4028,
+        "srgb_luminance_p50": 109.3214,
+        "srgb_luminance_p95": 170.8618,
+        "hsv_saturation_p50": 0.2727,
+        "exact_rgb_cluster_count": 276,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00362
+      },
+      {
+        "id": "ll_golden_scythe",
+        "sha256": "b7d560b4f63c25b4f6e7241a4735175b4467d9b5ea9be0ab1381777702fc194d",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          7,
+          4,
+          57,
+          60
+        ],
+        "occupied_alpha_fraction": 0.22388,
+        "nearly_opaque_pixels": 460,
+        "partial_alpha_fraction": 0.17017,
+        "opaque_unique_colors": 450,
+        "srgb_luminance_p05": 59.412,
+        "srgb_luminance_p50": 111.9134,
+        "srgb_luminance_p95": 166.4234,
+        "hsv_saturation_p50": 0.2835,
+        "exact_rgb_cluster_count": 459,
+        "singleton_pixel_fraction": 0.99565,
+        "largest_exact_color_cluster_fraction": 0.00435
+      },
+      {
+        "id": "ll_golden_short_pump_shotgun",
+        "sha256": "9498c841470c36c0588c39d905845daaeb8fefb0263dd2a144db843f9c9392d1",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          15,
+          60,
+          49
+        ],
+        "occupied_alpha_fraction": 0.17798,
+        "nearly_opaque_pixels": 466,
+        "partial_alpha_fraction": 0.10425,
+        "opaque_unique_colors": 444,
+        "srgb_luminance_p05": 44.3896,
+        "srgb_luminance_p50": 83.7782,
+        "srgb_luminance_p95": 167.2756,
+        "hsv_saturation_p50": 0.0973,
+        "exact_rgb_cluster_count": 466,
+        "singleton_pixel_fraction": 1.0,
+        "largest_exact_color_cluster_fraction": 0.00215
+      },
+      {
+        "id": "ll_golden_hunting_rifle",
+        "sha256": "0142953dd497f53f20f8671e64d612a1aa92c9f5c9e6e4e567b2283b7bbe3621",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          12,
+          60,
+          52
+        ],
+        "occupied_alpha_fraction": 0.16528,
+        "nearly_opaque_pixels": 404,
+        "partial_alpha_fraction": 0.10205,
+        "opaque_unique_colors": 395,
+        "srgb_luminance_p05": 49.7782,
+        "srgb_luminance_p50": 79.5564,
+        "srgb_luminance_p95": 145.644,
+        "hsv_saturation_p50": 0.3924,
+        "exact_rgb_cluster_count": 403,
+        "singleton_pixel_fraction": 0.99505,
+        "largest_exact_color_cluster_fraction": 0.00495
+      }
+    ],
+    "v3": [
+      {
+        "id": "item.food.canned_beans",
+        "sha256": "4eddfb2d270284d817937e2ad927a5627bf245f5463ad43af09c8f89c265d5de",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          15,
+          49,
+          54
+        ],
+        "occupied_alpha_fraction": 0.302,
+        "nearly_opaque_pixels": 1237,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 8,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 100.9694,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.5153,
+        "exact_rgb_cluster_count": 13,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.31366
+      },
+      {
+        "id": "item.food.canned_peas",
+        "sha256": "546420caac6ced112567ce0f629ea59d9571eacf237f9a7aa9291f8d117e628a",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          15,
+          49,
+          54
+        ],
+        "occupied_alpha_fraction": 0.302,
+        "nearly_opaque_pixels": 1237,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 8,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 100.4364,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.2545,
+        "exact_rgb_cluster_count": 13,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.31366
+      },
+      {
+        "id": "item.food.apple",
+        "sha256": "43e25c146b3c995aa14b5a92b7969ce8947c78d4674eac1dfa231e81695214a2",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          49,
+          52
+        ],
+        "occupied_alpha_fraction": 0.22827,
+        "nearly_opaque_pixels": 935,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 6,
+        "srgb_luminance_p05": 76.673,
+        "srgb_luminance_p50": 101.3514,
+        "srgb_luminance_p95": 113.333,
+        "hsv_saturation_p50": 0.6,
+        "exact_rgb_cluster_count": 8,
+        "singleton_pixel_fraction": 0.00214,
+        "largest_exact_color_cluster_fraction": 0.42353
+      },
+      {
+        "id": "item.food.pear",
+        "sha256": "d67786de3373a8ee13d765a0c4c1703dbb948d9bd03146dc6574ee5742d3ecbd",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          20,
+          9,
+          46,
+          51
+        ],
+        "occupied_alpha_fraction": 0.17993,
+        "nearly_opaque_pixels": 737,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 6,
+        "srgb_luminance_p05": 100.8784,
+        "srgb_luminance_p50": 106.26,
+        "srgb_luminance_p95": 156.392,
+        "hsv_saturation_p50": 0.4727,
+        "exact_rgb_cluster_count": 8,
+        "singleton_pixel_fraction": 0.00136,
+        "largest_exact_color_cluster_fraction": 0.45319
+      },
+      {
+        "id": "item.medical.first_aid_kit",
+        "sha256": "d562e7db844be71c97297971fd43ce368b78fea72b6f7ac7222f2aef0ca38040",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          8,
+          53,
+          52
+        ],
+        "occupied_alpha_fraction": 0.29077,
+        "nearly_opaque_pixels": 1191,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 6,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 188.0024,
+        "srgb_luminance_p95": 210.7176,
+        "hsv_saturation_p50": 0.0516,
+        "exact_rgb_cluster_count": 41,
+        "singleton_pixel_fraction": 0.01092,
+        "largest_exact_color_cluster_fraction": 0.29471
+      },
+      {
+        "id": "item.medical.bandage_box",
+        "sha256": "1a01b12cb2409b347ce7a5d3ba861a244e8cfc02d64d014d18b7e412b0b0b683",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          16,
+          53,
+          52
+        ],
+        "occupied_alpha_fraction": 0.27466,
+        "nearly_opaque_pixels": 1125,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 144.9708,
+        "srgb_luminance_p50": 190.2476,
+        "srgb_luminance_p95": 213.2436,
+        "hsv_saturation_p50": 0.1683,
+        "exact_rgb_cluster_count": 39,
+        "singleton_pixel_fraction": 0.01156,
+        "largest_exact_color_cluster_fraction": 0.38844
+      },
+      {
+        "id": "item.tools.claw_hammer",
+        "sha256": "344ec39b9e74f9b2a208a097132567e80d3c412fcd1b1dbb8a2f7c35192acf39",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          8,
+          47,
+          48
+        ],
+        "occupied_alpha_fraction": 0.13281,
+        "nearly_opaque_pixels": 544,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 135.6104,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.2169,
+        "exact_rgb_cluster_count": 11,
+        "singleton_pixel_fraction": 0.00368,
+        "largest_exact_color_cluster_fraction": 0.22426
+      },
+      {
+        "id": "item.tools.ball_peen_hammer",
+        "sha256": "b9faa951dd41393bb91872381ff5a341dbf9b088cd0c4ee8ce49268d238f63d2",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          8,
+          47,
+          48
+        ],
+        "occupied_alpha_fraction": 0.13672,
+        "nearly_opaque_pixels": 560,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 110.7002,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.2169,
+        "exact_rgb_cluster_count": 9,
+        "singleton_pixel_fraction": 0.00179,
+        "largest_exact_color_cluster_fraction": 0.25536
+      },
+      {
+        "id": "item.tools.flathead_screwdriver",
+        "sha256": "4ce358d3bb4795426c7b446032ac8ecba4bac56fc90d06fc61aa2560a898b953",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          10,
+          5,
+          55,
+          53
+        ],
+        "occupied_alpha_fraction": 0.11597,
+        "nearly_opaque_pixels": 475,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 90.1964,
+        "srgb_luminance_p50": 132.8668,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.528,
+        "exact_rgb_cluster_count": 9,
+        "singleton_pixel_fraction": 0.00421,
+        "largest_exact_color_cluster_fraction": 0.31579
+      },
+      {
+        "id": "item.tools.phillips_screwdriver",
+        "sha256": "0ed759ca85ba58d5c8cc7b7cffaa56e6ee0e3077d6c1bf87c849c9b634118ae4",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          10,
+          5,
+          55,
+          53
+        ],
+        "occupied_alpha_fraction": 0.11646,
+        "nearly_opaque_pixels": 477,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 87.894,
+        "srgb_luminance_p50": 129.9112,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.2839,
+        "exact_rgb_cluster_count": 10,
+        "singleton_pixel_fraction": 0.0021,
+        "largest_exact_color_cluster_fraction": 0.31447
+      },
+      {
+        "id": "item.tools.adjustable_wrench",
+        "sha256": "6de9164812f351bd23a2d5e5f0a297c4fe3f39deef8cca6ae16dadf03142ab53",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          7,
+          52,
+          52
+        ],
+        "occupied_alpha_fraction": 0.12451,
+        "nearly_opaque_pixels": 510,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 4,
+        "srgb_luminance_p05": 108.3072,
+        "srgb_luminance_p50": 142.7416,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.1316,
+        "exact_rgb_cluster_count": 15,
+        "singleton_pixel_fraction": 0.01569,
+        "largest_exact_color_cluster_fraction": 0.49608
+      },
+      {
+        "id": "item.tools.pipe_wrench",
+        "sha256": "eea85be873926a464db55aea3d8aff3350f05aefc9cb5c0fa6ee27a19a78941a",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          7,
+          52,
+          52
+        ],
+        "occupied_alpha_fraction": 0.12524,
+        "nearly_opaque_pixels": 513,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 62.5786,
+        "srgb_luminance_p50": 113.2386,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.48,
+        "exact_rgb_cluster_count": 16,
+        "singleton_pixel_fraction": 0.01559,
+        "largest_exact_color_cluster_fraction": 0.43665
+      },
+      {
+        "id": "item.materials.wooden_plank",
+        "sha256": "da96d717cc26e4a5c1af423fb7571a21830c29f800324610b7440c121f671ceb",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          13,
+          54,
+          52
+        ],
+        "occupied_alpha_fraction": 0.22095,
+        "nearly_opaque_pixels": 905,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 3,
+        "srgb_luminance_p05": 91.6544,
+        "srgb_luminance_p50": 146.8206,
+        "srgb_luminance_p95": 146.8206,
+        "hsv_saturation_p50": 0.4837,
+        "exact_rgb_cluster_count": 59,
+        "singleton_pixel_fraction": 0.04641,
+        "largest_exact_color_cluster_fraction": 0.53591
+      },
+      {
+        "id": "item.materials.steel_bar",
+        "sha256": "dc227c0f01c37e866b512a9501ab54649855a1fcb6a5a6452fab13e74b5d1acf",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          13,
+          54,
+          52
+        ],
+        "occupied_alpha_fraction": 0.22095,
+        "nearly_opaque_pixels": 905,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 3,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 176.4528,
+        "srgb_luminance_p95": 176.4528,
+        "hsv_saturation_p50": 0.0879,
+        "exact_rgb_cluster_count": 24,
+        "singleton_pixel_fraction": 0.01768,
+        "largest_exact_color_cluster_fraction": 0.56575
+      },
+      {
+        "id": "item.materials.duct_tape",
+        "sha256": "732daa428b1f14e66a14d47db9880e3c049f8539b006cbfddaefe667e534ea1d",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          13,
+          49,
+          50
+        ],
+        "occupied_alpha_fraction": 0.23584,
+        "nearly_opaque_pixels": 966,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 47.0092,
+        "srgb_luminance_p50": 108.6522,
+        "srgb_luminance_p95": 136.2648,
+        "hsv_saturation_p50": 0.0656,
+        "exact_rgb_cluster_count": 11,
+        "singleton_pixel_fraction": 0.00621,
+        "largest_exact_color_cluster_fraction": 0.40269
+      },
+      {
+        "id": "item.materials.rope_coil",
+        "sha256": "4a9ec9d3670cef2dabe9ae21f9779bee3c5e662df8a1846ce762ba73100c067e",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          13,
+          13,
+          52,
+          50
+        ],
+        "occupied_alpha_fraction": 0.16479,
+        "nearly_opaque_pixels": 675,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 3,
+        "srgb_luminance_p05": 119.6568,
+        "srgb_luminance_p50": 119.6568,
+        "srgb_luminance_p95": 176.415,
+        "hsv_saturation_p50": 0.3796,
+        "exact_rgb_cluster_count": 10,
+        "singleton_pixel_fraction": 0.00593,
+        "largest_exact_color_cluster_fraction": 0.49778
+      },
+      {
+        "id": "item.containers.rucksack",
+        "sha256": "521b3f205d147fbbd3fdba6acbb7c02190c841354b63c27565f901042d83a938",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          51,
+          52
+        ],
+        "occupied_alpha_fraction": 0.31689,
+        "nearly_opaque_pixels": 1298,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 62.2884,
+        "srgb_luminance_p50": 86.2896,
+        "srgb_luminance_p95": 126.5768,
+        "hsv_saturation_p50": 0.2119,
+        "exact_rgb_cluster_count": 12,
+        "singleton_pixel_fraction": 0.00154,
+        "largest_exact_color_cluster_fraction": 0.24037
+      },
+      {
+        "id": "item.containers.tool_bag",
+        "sha256": "58e462d8033887746507c42fa847c693e57542ffd291ff8ac39084e7cadad818",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          51,
+          52
+        ],
+        "occupied_alpha_fraction": 0.31689,
+        "nearly_opaque_pixels": 1298,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 4,
+        "srgb_luminance_p05": 65.3186,
+        "srgb_luminance_p50": 90.161,
+        "srgb_luminance_p95": 133.2802,
+        "hsv_saturation_p50": 0.3938,
+        "exact_rgb_cluster_count": 8,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.24422
+      },
+      {
+        "id": "item.clothing.work_gloves",
+        "sha256": "cca32cd5703ecea5130b7697ec9f295338e70316774a46a8f7b45210476d2b02",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          11,
+          15,
+          47,
+          49
+        ],
+        "occupied_alpha_fraction": 0.19385,
+        "nearly_opaque_pixels": 794,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 2,
+        "srgb_luminance_p05": 121.855,
+        "srgb_luminance_p50": 121.855,
+        "srgb_luminance_p95": 121.855,
+        "hsv_saturation_p50": 0.415,
+        "exact_rgb_cluster_count": 3,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.96977
+      },
+      {
+        "id": "item.clothing.winter_beanie",
+        "sha256": "634f08a27f48cfd318168a5629507220a676ab468e7914d14224822e86f45c90",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          13,
+          51,
+          49
+        ],
+        "occupied_alpha_fraction": 0.25342,
+        "nearly_opaque_pixels": 1038,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 3,
+        "srgb_luminance_p05": 82.5238,
+        "srgb_luminance_p50": 108.89,
+        "srgb_luminance_p95": 121.8218,
+        "hsv_saturation_p50": 0.2114,
+        "exact_rgb_cluster_count": 9,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.53276
+      },
+      {
+        "id": "item.electronics.handheld_radio",
+        "sha256": "a2711382d399036db51fd9f2fe4c154ed1e65b9282928b8a2bb9c104fd595023",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          4,
+          50,
+          54
+        ],
+        "occupied_alpha_fraction": 0.28223,
+        "nearly_opaque_pixels": 1156,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 6,
+        "srgb_luminance_p05": 57.941,
+        "srgb_luminance_p50": 71.0408,
+        "srgb_luminance_p95": 105.3072,
+        "hsv_saturation_p50": 0.1452,
+        "exact_rgb_cluster_count": 8,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.42301
+      },
+      {
+        "id": "item.electronics.flashlight",
+        "sha256": "5661e4630c80f472803b43e41a1c5a0097be36f6e9b96264e608e7c054fb0f2a",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          10,
+          57,
+          52
+        ],
+        "occupied_alpha_fraction": 0.14209,
+        "nearly_opaque_pixels": 582,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 5,
+        "srgb_luminance_p05": 102.945,
+        "srgb_luminance_p50": 135.6642,
+        "srgb_luminance_p95": 197.877,
+        "hsv_saturation_p50": 0.1173,
+        "exact_rgb_cluster_count": 18,
+        "singleton_pixel_fraction": 0.02234,
+        "largest_exact_color_cluster_fraction": 0.29897
+      },
+      {
+        "id": "item.survival.water_bottle",
+        "sha256": "218f00083442b3715cf350d601d9756209ae87b90982df479bd552c56d525fe6",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          22,
+          8,
+          44,
+          54
+        ],
+        "occupied_alpha_fraction": 0.20874,
+        "nearly_opaque_pixels": 855,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 4,
+        "srgb_luminance_p05": 74.882,
+        "srgb_luminance_p50": 109.63,
+        "srgb_luminance_p95": 161.3728,
+        "hsv_saturation_p50": 0.3115,
+        "exact_rgb_cluster_count": 4,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.51345
+      },
+      {
+        "id": "item.survival.camping_mug",
+        "sha256": "4784df423aed5f952e8f38e7d7cf8e46351044ba1a5bfc8b2f1ad721614d9d9f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          17,
+          20,
+          60,
+          52
+        ],
+        "occupied_alpha_fraction": 0.23315,
+        "nearly_opaque_pixels": 955,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 4,
+        "srgb_luminance_p05": 73.584,
+        "srgb_luminance_p50": 134.0958,
+        "srgb_luminance_p95": 149.9554,
+        "hsv_saturation_p50": 0.1087,
+        "exact_rgb_cluster_count": 5,
+        "singleton_pixel_fraction": 0.0,
+        "largest_exact_color_cluster_fraction": 0.57906
+      }
+    ],
+    "v4": [
+      {
+        "id": "item.food.canned_beans",
+        "sha256": "b7c95b8728d80fa0ef38151f410443e6e9238f75fea351823c98d35a38ef0db2",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          4,
+          49,
+          60
+        ],
+        "occupied_alpha_fraction": 0.41943,
+        "nearly_opaque_pixels": 1718,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 58.362,
+        "srgb_luminance_p50": 114.761,
+        "srgb_luminance_p95": 195.3966,
+        "hsv_saturation_p50": 0.53,
+        "exact_rgb_cluster_count": 1050,
+        "singleton_pixel_fraction": 0.43539,
+        "largest_exact_color_cluster_fraction": 0.00815
+      },
+      {
+        "id": "item.food.canned_peas",
+        "sha256": "ef9ba13fa51fb482a95d817693df3919cf3fb45b11db2bd4c5f36e3371cf2985",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          58,
+          60
+        ],
+        "occupied_alpha_fraction": 0.65015,
+        "nearly_opaque_pixels": 2663,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 46,
+        "srgb_luminance_p05": 65.2684,
+        "srgb_luminance_p50": 110.966,
+        "srgb_luminance_p95": 194.666,
+        "hsv_saturation_p50": 0.2487,
+        "exact_rgb_cluster_count": 1657,
+        "singleton_pixel_fraction": 0.45475,
+        "largest_exact_color_cluster_fraction": 0.01164
+      },
+      {
+        "id": "item.food.apple",
+        "sha256": "e9b0a1b9a0d8c09cf38add95952df532f13945058474777c6dc275eadd2508d8",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.51929,
+        "nearly_opaque_pixels": 2127,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 46.0998,
+        "srgb_luminance_p50": 80.5626,
+        "srgb_luminance_p95": 146.7646,
+        "hsv_saturation_p50": 0.6104,
+        "exact_rgb_cluster_count": 1117,
+        "singleton_pixel_fraction": 0.34932,
+        "largest_exact_color_cluster_fraction": 0.01975
+      },
+      {
+        "id": "item.food.pear",
+        "sha256": "d2c9d5faf5e1485ef695b18d4d646df4eec0000734f0c887106d520ebd69a013",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          4,
+          50,
+          60
+        ],
+        "occupied_alpha_fraction": 0.2832,
+        "nearly_opaque_pixels": 1160,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47,
+        "srgb_luminance_p05": 82.137,
+        "srgb_luminance_p50": 138.0192,
+        "srgb_luminance_p95": 207.3986,
+        "hsv_saturation_p50": 0.65,
+        "exact_rgb_cluster_count": 711,
+        "singleton_pixel_fraction": 0.44741,
+        "largest_exact_color_cluster_fraction": 0.0181
+      },
+      {
+        "id": "item.medical.first_aid_kit",
+        "sha256": "f2112c632c5eb039ce8a309441fff8db06ed2b88d93f8cc0427bf3bb72be7307",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.48926,
+        "nearly_opaque_pixels": 2004,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 72.408,
+        "srgb_luminance_p50": 137.3186,
+        "srgb_luminance_p95": 214.9656,
+        "hsv_saturation_p50": 0.1944,
+        "exact_rgb_cluster_count": 1341,
+        "singleton_pixel_fraction": 0.51048,
+        "largest_exact_color_cluster_fraction": 0.03244
+      },
+      {
+        "id": "item.medical.bandage_box",
+        "sha256": "c5196ceed0e50c701a55d6a71fecef3926a8b77dfca5b0126fc80f376e5790ca",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          6,
+          60,
+          58
+        ],
+        "occupied_alpha_fraction": 0.60278,
+        "nearly_opaque_pixels": 2469,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47,
+        "srgb_luminance_p05": 93.965,
+        "srgb_luminance_p50": 172.7398,
+        "srgb_luminance_p95": 222.4682,
+        "hsv_saturation_p50": 0.1828,
+        "exact_rgb_cluster_count": 1392,
+        "singleton_pixel_fraction": 0.40826,
+        "largest_exact_color_cluster_fraction": 0.02106
+      },
+      {
+        "id": "item.tools.claw_hammer",
+        "sha256": "31a3002f5559894c8f04782767e0e6e14a7ebe97f662f04ba4599f8b822e59b1",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          7,
+          4,
+          57,
+          60
+        ],
+        "occupied_alpha_fraction": 0.19507,
+        "nearly_opaque_pixels": 799,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 38,
+        "srgb_luminance_p05": 62.2544,
+        "srgb_luminance_p50": 118.114,
+        "srgb_luminance_p95": 208.6676,
+        "hsv_saturation_p50": 0.3243,
+        "exact_rgb_cluster_count": 474,
+        "singleton_pixel_fraction": 0.43054,
+        "largest_exact_color_cluster_fraction": 0.02003
+      },
+      {
+        "id": "item.tools.ball_peen_hammer",
+        "sha256": "c450827f2431c4c9ad0a59bf2f913db17b272280e61d81d6dd5a43ae6e308aba",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          6,
+          4,
+          58,
+          60
+        ],
+        "occupied_alpha_fraction": 0.19971,
+        "nearly_opaque_pixels": 818,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 34,
+        "srgb_luminance_p05": 56.9014,
+        "srgb_luminance_p50": 115.4206,
+        "srgb_luminance_p95": 181.2762,
+        "hsv_saturation_p50": 0.3529,
+        "exact_rgb_cluster_count": 533,
+        "singleton_pixel_fraction": 0.50244,
+        "largest_exact_color_cluster_fraction": 0.022
+      },
+      {
+        "id": "item.tools.flathead_screwdriver",
+        "sha256": "d24a426296848f4033fbce238f14b87da32f9a57e46248114b78a63f72805cca",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.15845,
+        "nearly_opaque_pixels": 649,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 40,
+        "srgb_luminance_p05": 56.8332,
+        "srgb_luminance_p50": 106.3358,
+        "srgb_luminance_p95": 211.5926,
+        "hsv_saturation_p50": 0.5769,
+        "exact_rgb_cluster_count": 411,
+        "singleton_pixel_fraction": 0.53005,
+        "largest_exact_color_cluster_fraction": 0.07242
+      },
+      {
+        "id": "item.tools.phillips_screwdriver",
+        "sha256": "5d1464d94e9cad7422c61f9e64e5b387165f46e43310cc2449d3cd0f05086029",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.17627,
+        "nearly_opaque_pixels": 722,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 38,
+        "srgb_luminance_p05": 51.4826,
+        "srgb_luminance_p50": 92.893,
+        "srgb_luminance_p95": 200.1846,
+        "hsv_saturation_p50": 0.2941,
+        "exact_rgb_cluster_count": 560,
+        "singleton_pixel_fraction": 0.66343,
+        "largest_exact_color_cluster_fraction": 0.0277
+      },
+      {
+        "id": "item.tools.adjustable_wrench",
+        "sha256": "9bdba3dba95acc42c909d3b17fad695c10e370fd4e87db783bc1d8927fcc3887",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.24219,
+        "nearly_opaque_pixels": 992,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 41,
+        "srgb_luminance_p05": 49.4842,
+        "srgb_luminance_p50": 142.9736,
+        "srgb_luminance_p95": 226.8384,
+        "hsv_saturation_p50": 0.1488,
+        "exact_rgb_cluster_count": 687,
+        "singleton_pixel_fraction": 0.56855,
+        "largest_exact_color_cluster_fraction": 0.0121
+      },
+      {
+        "id": "item.tools.pipe_wrench",
+        "sha256": "ddb76a3f82c8cfcca1497f69ae9eb742ab4319f08d3c35307f924680d47216b6",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.28906,
+        "nearly_opaque_pixels": 1184,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 46,
+        "srgb_luminance_p05": 46.08,
+        "srgb_luminance_p50": 94.1088,
+        "srgb_luminance_p95": 158.358,
+        "hsv_saturation_p50": 0.4615,
+        "exact_rgb_cluster_count": 897,
+        "singleton_pixel_fraction": 0.63345,
+        "largest_exact_color_cluster_fraction": 0.0152
+      },
+      {
+        "id": "item.materials.wooden_plank",
+        "sha256": "b5b677cdc119c288fa2f572fcdfc70d913872e855d5b73cf47811347d4741390",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          53
+        ],
+        "occupied_alpha_fraction": 0.30176,
+        "nearly_opaque_pixels": 1236,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 44,
+        "srgb_luminance_p05": 75.7988,
+        "srgb_luminance_p50": 133.267,
+        "srgb_luminance_p95": 175.5398,
+        "hsv_saturation_p50": 0.4497,
+        "exact_rgb_cluster_count": 1057,
+        "singleton_pixel_fraction": 0.74191,
+        "largest_exact_color_cluster_fraction": 0.00485
+      },
+      {
+        "id": "item.materials.steel_bar",
+        "sha256": "6f63cd3ce04524ab905bd3d44f2fee5bd051659333213c604ac0a183acb8b961",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          11,
+          60,
+          52
+        ],
+        "occupied_alpha_fraction": 0.29419,
+        "nearly_opaque_pixels": 1205,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 72.2756,
+        "srgb_luminance_p50": 109.2716,
+        "srgb_luminance_p95": 198.6286,
+        "hsv_saturation_p50": 0.0779,
+        "exact_rgb_cluster_count": 823,
+        "singleton_pixel_fraction": 0.53693,
+        "largest_exact_color_cluster_fraction": 0.01743
+      },
+      {
+        "id": "item.materials.duct_tape",
+        "sha256": "ebce2a53c05cff7c1bd23c04b626b641d0f5318e7d06f08f6db623771ebcf3bd",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          4,
+          60,
+          59
+        ],
+        "occupied_alpha_fraction": 0.59692,
+        "nearly_opaque_pixels": 2445,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 63.6338,
+        "srgb_luminance_p50": 125.059,
+        "srgb_luminance_p95": 172.8842,
+        "hsv_saturation_p50": 0.0692,
+        "exact_rgb_cluster_count": 1585,
+        "singleton_pixel_fraction": 0.50593,
+        "largest_exact_color_cluster_fraction": 0.02086
+      },
+      {
+        "id": "item.materials.rope_coil",
+        "sha256": "8b085d52646d9407279c5400c9453ea9a22c31b81b83bf6c2366d6bc937ee86e",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          10,
+          60,
+          54
+        ],
+        "occupied_alpha_fraction": 0.39526,
+        "nearly_opaque_pixels": 1619,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47,
+        "srgb_luminance_p05": 61.0928,
+        "srgb_luminance_p50": 126.9954,
+        "srgb_luminance_p95": 193.0556,
+        "hsv_saturation_p50": 0.4412,
+        "exact_rgb_cluster_count": 1418,
+        "singleton_pixel_fraction": 0.77517,
+        "largest_exact_color_cluster_fraction": 0.00432
+      },
+      {
+        "id": "item.containers.rucksack",
+        "sha256": "248f1ce61221edbac3641cc1b77fb255bfd3bbecab6cfb7b8056b13d8a061b21",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          5,
+          4,
+          59,
+          60
+        ],
+        "occupied_alpha_fraction": 0.54858,
+        "nearly_opaque_pixels": 2247,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 40.694,
+        "srgb_luminance_p50": 83.4614,
+        "srgb_luminance_p95": 138.7944,
+        "hsv_saturation_p50": 0.3966,
+        "exact_rgb_cluster_count": 1846,
+        "singleton_pixel_fraction": 0.69203,
+        "largest_exact_color_cluster_fraction": 0.00445
+      },
+      {
+        "id": "item.containers.tool_bag",
+        "sha256": "c81d49e4a84d5d297645099eb53602db9736b7996aadf8670d099801bb37c00f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          9,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.4353,
+        "nearly_opaque_pixels": 1783,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 44.8332,
+        "srgb_luminance_p50": 77.0836,
+        "srgb_luminance_p95": 135.4246,
+        "hsv_saturation_p50": 0.4309,
+        "exact_rgb_cluster_count": 1376,
+        "singleton_pixel_fraction": 0.62367,
+        "largest_exact_color_cluster_fraction": 0.00449
+      },
+      {
+        "id": "item.clothing.work_gloves",
+        "sha256": "679de32a4d322603b84d7765bea579eedd8a8820502f526997f2efbc6963f074",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.4939,
+        "nearly_opaque_pixels": 2023,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 47.9564,
+        "srgb_luminance_p50": 119.62,
+        "srgb_luminance_p95": 174.5438,
+        "hsv_saturation_p50": 0.4867,
+        "exact_rgb_cluster_count": 1621,
+        "singleton_pixel_fraction": 0.68067,
+        "largest_exact_color_cluster_fraction": 0.00791
+      },
+      {
+        "id": "item.clothing.winter_beanie",
+        "sha256": "4a4d94c023cf159374314f442950584265373436a3f110af08d81429246525b5",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          8,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.47705,
+        "nearly_opaque_pixels": 1954,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 44,
+        "srgb_luminance_p05": 29.5776,
+        "srgb_luminance_p50": 57.9426,
+        "srgb_luminance_p95": 101.8784,
+        "hsv_saturation_p50": 0.2206,
+        "exact_rgb_cluster_count": 1709,
+        "singleton_pixel_fraction": 0.77994,
+        "largest_exact_color_cluster_fraction": 0.00307
+      },
+      {
+        "id": "item.electronics.handheld_radio",
+        "sha256": "b7173ca7c4de199dda80aa8383bc9a030fbdb396a130e8eeef0ac7aed489eee0",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          18,
+          4,
+          45,
+          60
+        ],
+        "occupied_alpha_fraction": 0.25269,
+        "nearly_opaque_pixels": 1035,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47,
+        "srgb_luminance_p05": 32.9186,
+        "srgb_luminance_p50": 59.4212,
+        "srgb_luminance_p95": 115.333,
+        "hsv_saturation_p50": 0.1154,
+        "exact_rgb_cluster_count": 790,
+        "singleton_pixel_fraction": 0.65217,
+        "largest_exact_color_cluster_fraction": 0.04541
+      },
+      {
+        "id": "item.electronics.flashlight",
+        "sha256": "4e34cabbf9442b1041a10c2247bbbe818dc593ed88424a6416713a12f322ae5f",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          9,
+          60,
+          55
+        ],
+        "occupied_alpha_fraction": 0.28198,
+        "nearly_opaque_pixels": 1155,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 44,
+        "srgb_luminance_p05": 45.5656,
+        "srgb_luminance_p50": 90.4802,
+        "srgb_luminance_p95": 202.4802,
+        "hsv_saturation_p50": 0.1205,
+        "exact_rgb_cluster_count": 887,
+        "singleton_pixel_fraction": 0.64589,
+        "largest_exact_color_cluster_fraction": 0.01818
+      },
+      {
+        "id": "item.survival.water_bottle",
+        "sha256": "993d39f0a2fc80f3aa59ff747182c7830350636f629e20a5fc5ebe27a5654a75",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          16,
+          4,
+          47,
+          60
+        ],
+        "occupied_alpha_fraction": 0.32422,
+        "nearly_opaque_pixels": 1328,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 47,
+        "srgb_luminance_p05": 67.961,
+        "srgb_luminance_p50": 125.1066,
+        "srgb_luminance_p95": 192.235,
+        "hsv_saturation_p50": 0.2074,
+        "exact_rgb_cluster_count": 982,
+        "singleton_pixel_fraction": 0.58133,
+        "largest_exact_color_cluster_fraction": 0.0113
+      },
+      {
+        "id": "item.survival.camping_mug",
+        "sha256": "c226d7cb2d9a0030d50da28d4ec67f5eee9de8dd91bab98809cd0b9968ecce80",
+        "dimensions": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          4,
+          6,
+          60,
+          58
+        ],
+        "occupied_alpha_fraction": 0.52148,
+        "nearly_opaque_pixels": 2136,
+        "partial_alpha_fraction": 0.0,
+        "opaque_unique_colors": 48,
+        "srgb_luminance_p05": 49.1994,
+        "srgb_luminance_p50": 91.5484,
+        "srgb_luminance_p95": 179.106,
+        "hsv_saturation_p50": 0.1806,
+        "exact_rgb_cluster_count": 1423,
+        "singleton_pixel_fraction": 0.50421,
+        "largest_exact_color_cluster_fraction": 0.01685
+      }
+    ]
+  }
+}

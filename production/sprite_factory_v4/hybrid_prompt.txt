@@ -1,0 +1,26 @@
+Author 24 entirely NEW original pixel-art object templates for LAST LIGHT inventory. Attached original founder Golden40 board supplies ONLY broad material/light/pixel language, NEVER trace/reproduce its designs. EXACT 6 columns x4rows regular grid, equal cells, 24 objects in order below, one percell. Native logical64px perobject style, intentionally clustered crisp pixels then nearest-neighbor enlarged; no smooth highresolution painted render. Transparent RGBA background alloutsideobjects. No text,numbers,letters,logos,captions,grid,floor,castshadow,extraobjects. Generous15% padding allcells and intact attachments. Real construction and proportions, upper-left10–11oclock light,darker right/lowerplanes, local overlap/seam occlusion. Muted naturally realistic palette, about4–6 meaningful tones/material, very restrained wear. Sharp steel glints, thickjoints andfasteners, diffuse canvas folds, satinleather,warm directionalwoodgrain, matte foldedcardboard, subtle plastic molding, controlled transparent waterbottle and lens reflections. Rich fine clustered physical shading like Golden40, no toys/cartoon/oversizedblackoutline/randomnoise. Each of24 different identities must be exact. Objects in row-major order:
+1. canned_beans: A tall sealed steel bean tin; rolled lid and foot, ochre wrap with independent bean pictogram.
+2. canned_peas: A shorter wider steel pea tin; rolled lid, green paper wrap and pea cluster pictogram.
+3. apple: Asymmetric red apple, recessed stem socket, tiny attached leaf and natural skin.
+4. pear: Yellow green pear with narrow curved neck and weighty lower body.
+5. first_aid_kit: Closed rigid medical box; integral carry handle, lid lip, two locking clasps.
+6. bandage_box: Closed matte sterile dressing carton with folded lid and generic dressing pictogram.
+7. claw_hammer: Hickory handle fitted through forged head eye, striking face and two curved claw prongs.
+8. ball_peen_hammer: Shaped ash handle, steel eye, flat striking face and spherical peen.
+9. flathead_screwdriver: Amber fluted bulb grip, dark socket, long straight shaft and flattened slotted tip.
+10. phillips_screwdriver: Olive ribbed screwdriver grip, shaft collar and tapered four-face cross tip.
+11. adjustable_wrench: Forged adjustable wrench with fixed jaw, sliding jaw, worm wheel, tapered shank and hanging hole.
+12. pipe_wrench: Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut.
+13. wooden_plank: Solid cut timber plank, visible thickness, directional grain, dark end-grain and worn edges.
+14. steel_bar: Rectangular steel billet with end thickness, narrow cool edge reflection and localized scratches.
+15. duct_tape: Graphite adhesive tape roll with open cardboard core, wound top rings and attached loose flap.
+16. rope_coil: Five nested tan braided rope turns, overlap occlusion and attached loose end.
+17. rucksack: Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket.
+18. tool_bag: Wide horizontal brown canvas tool bag with open-loop paired handles, zip seam and reinforced base.
+19. work_gloves: Pair of thick leather work gloves, four grouped fingers plus opposed thumbs, cuffs and seams.
+20. winter_beanie: Soft navy knit cap with curved crown, ribbed folded brim and gathered top.
+21. handheld_radio: Handheld radio with attached aerial, screen recess, speaker grille, buttons and belt-side casing.
+22. flashlight: Compact metal torch with faceted reflector head, clear lens, knurled barrel, switch and tail cap.
+23. water_bottle: Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs.
+24. camping_mug: Thin metal camping mug, hollow dark interior, rolled rim, attached side loop and curved body.
+Specifics: claw hammer has two distinct curved claw prongs; ball-peen has one ball andoneflatface. Pipewrench mustlook like actualmechanism with slidinghookjaw/serrations/knurledadjuster, distinct fromadjustablewrench worm/openjaws. Workgloves are matching LEFT+RIGHTpair notbothsamehand. Ropecoil lies FLAT, notcone. Ducttape hasopen bore. Steelbar isSOLIDrectangularbillet, nothollowchannel. Bandagebox needs generic bandagestrip icon withcentralpad, no text. Flashlight isoff. All24objects no omissions.

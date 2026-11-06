@@ -1,0 +1,133 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "bottle",
+  "asset_id": "item.survival.water_bottle.inventory.intact.v00000",
+  "category": "survival",
+  "created_at": "2026-11-06T08:07:46.067803+00:00",
+  "device_verification_status": "not_tested",
+  "family": "survival",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.survival.water_bottle",
+  "material_specification": [
+    {
+      "construction": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+      "material": "plastic",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+      "material": "liquid",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "993d39f0a2fc80f3aa59ff747182c7830350636f629e20a5fc5ebe27a5654a75",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "f718ee926921cba76da96314561ebd1117ec4457ed12a6b6d7927a93646b6701",
+  "recipe_id": "item.survival.water_bottle",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/survival/water_bottle/icon.png",
+  "render_fingerprint": "037459e84080dc5e3e5f0b7105398891962e09c434fae480a5d73e1aa7acc7c2",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "993d39f0a2fc80f3aa59ff747182c7830350636f629e20a5fc5ebe27a5654a75",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "bottle",
+    "brief": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "water_bottle",
+    "family": "survival",
+    "geometry": {
+      "construction": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.survival.water_bottle",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "plastic",
+      "liquid"
+    ],
+    "parts": [
+      {
+        "construction": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+        "material": "plastic",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Reusable translucent blue plastic water bottle, screw cap, neck collar, fill line and molded ribs",
+        "material": "liquid",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "993d39f0a2fc80f3aa59ff747182c7830350636f629e20a5fc5ebe27a5654a75",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        16,
+        4,
+        47,
+        60
+      ],
+      "color_count": 48,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 1328,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.324219,
+      "visible_pixels": 1328,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

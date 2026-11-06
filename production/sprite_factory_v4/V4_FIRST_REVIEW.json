@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "snapshot": "V4 first rendered evaluation set, copied from /workspace/v4_render_first before shader iteration",
+  "scope": "Independent first-pass visual review only; does not certify current later V4 outputs",
+  "review_date": "2026-11-06",
+  "method": "Inspected all 24 actual PNGs in native64, nearest4x, and V3/V4 native64 boards against actual Golden40 native64 and nearest3x. No numerical visual scores assigned.",
+  "result": "REWORK",
+  "reviewed": 24,
+  "visual_passes": 0,
+  "founder_approvals": 0,
+  "items": [
+    {
+      "logical_item_id": "item.food.canned_beans",
+      "path": "reviews/v4_first/canned_beans.png",
+      "sha256": "1cca6822e38eb71c74f25c85e613bfe251e362381002affd7bca6cf5f13d332e",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        17,
+        11,
+        47,
+        53
+      ],
+      "colors": 19,
+      "index": 1,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Rolled edges and a bean pictogram improve recognition.",
+      "remaining_defect": "Lid center is so dark it reads as an open hole despite the sealed-tin brief; large wrapper stripes are flat.",
+      "recommended_correction": "Render a continuous closed lid with an inset seam or pull-tab cue; tighten wrapper curvature and preserve compact metal glints.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.food.canned_peas",
+      "path": "reviews/v4_first/canned_peas.png",
+      "sha256": "b71eaf3d6891cffe5d096728ba0e1bc68ff1589d447fa4156eb0a1d52fbfaf2e",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        12,
+        17,
+        52,
+        50
+      ],
+      "colors": 19,
+      "index": 2,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Different short/wide can proportions and pea motif replace simple recoloring.",
+      "remaining_defect": "Dark inset again suggests an open can; bright left wrapper wedge and flat right half do not look like paper around a cylinder.",
+      "recommended_correction": "Keep a closed steel lid and use a broader matte wrapper ramp distinct from the thin steel rim.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.food.apple",
+      "path": "reviews/v4_first/apple.png",
+      "sha256": "8ded137f0657ab383154aae07609698f90cfe1c8ab94470034463d4725e7c5b2",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        14,
+        7,
+        51,
+        54
+      ],
+      "colors": 10,
+      "index": 3,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Asymmetric lobed silhouette and stem recess are meaningful improvements.",
+      "remaining_defect": "Hard diagonal red bands dominate the body, while stem well and small skin marks are noisy relative to the broad unmodeled right side.",
+      "recommended_correction": "Group the highlight into a curved upper-left lobe, shade the lower recess and refine the silhouette with a few connected clusters.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.food.pear",
+      "path": "reviews/v4_first/pear.png",
+      "sha256": "44c6e1d2771064ce519d972afe6f74d1380e3faaf58affa41b4ce56954af200d",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        17,
+        7,
+        49,
+        55
+      ],
+      "colors": 9,
+      "index": 4,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "The narrow curved neck and weighty lower body identify a pear.",
+      "remaining_defect": "The generated fruit is orange-brown, contradicting the yellow-green recipe. Broad diagonal shading makes it resemble carved wood or a gourd.",
+      "recommended_correction": "Fix hue transformation before detail work; render a muted yellow-green rind with coherent curved volume.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.medical.first_aid_kit",
+      "path": "reviews/v4_first/first_aid_kit.png",
+      "sha256": "1ca83189b982db4f28064527328b41d43a29ca27655b1c4a4d8ebf833eb76480",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        7,
+        55,
+        57
+      ],
+      "colors": 14,
+      "index": 5,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Lid seam, latches and handle improve assembly.",
+      "remaining_defect": "Brown case with a pale sign loses the medical off-white/red color language; wide top/front faces remain flat and the handle vanishes on a dark background.",
+      "recommended_correction": "Use a deliberate medical colorway, molded corner thickness and attachment occlusion; improve handle/body contrast.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.medical.bandage_box",
+      "path": "reviews/v4_first/bandage_box.png",
+      "sha256": "5549cb9bdaeb9f95a94afe2a4e9ccd62866c8de93d71eff36454e9b48c255c5a",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        13,
+        55,
+        57
+      ],
+      "colors": 6,
+      "index": 6,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Folded lid edge is clearer than V3.",
+      "remaining_defect": "Looks like a generic brown carton with a stripe and tiny dashes; no readily understood dressing motif, and bottom plane remains unmodulated.",
+      "recommended_correction": "Draw a larger independent bandage pictogram with pad/perforation cues; keep matte folded paper edges.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.tools.claw_hammer",
+      "path": "reviews/v4_first/claw_hammer.png",
+      "sha256": "5786a6de084cc58fa6fc28225885dab957ba0545a888ed58919840eb68e0a7e7",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        8,
+        9,
+        46,
+        53
+      ],
+      "colors": 11,
+      "index": 7,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Curved claw, head thickness and shaped wooden handle give a more believable tool.",
+      "remaining_defect": "Claw still reads as one broad curved hook rather than two prongs; handle/head contact lacks a clear eye or wedged socket.",
+      "recommended_correction": "Separate the claw tips with negative space and add a compact shaded eye/haft junction without enlarging the head.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.tools.ball_peen_hammer",
+      "path": "reviews/v4_first/ball_peen_hammer.png",
+      "sha256": "57038ab4012cedd391b492bc00bd6703e61a7574022d9cd37e2572149a9269d5",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        11,
+        9,
+        46,
+        53
+      ],
+      "colors": 10,
+      "index": 8,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "The round peen and shaped handle distinguish it from the claw hammer.",
+      "remaining_defect": "Peen resembles a vertical disk, with no neck or spherical mass; forging and handle socket remain schematic.",
+      "recommended_correction": "Reduce the peen to a properly connected rounded ball and neck; shade its dome with compact localized highlights.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.tools.flathead_screwdriver",
+      "path": "reviews/v4_first/flathead_screwdriver.png",
+      "sha256": "c5d03a443797cf65f28cba0ae472364702cc8f334b0b8d83d20adb7a8b6fa23b",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        6,
+        57,
+        56
+      ],
+      "colors": 11,
+      "index": 9,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Fluted grip, collar and longer shaft improve construction.",
+      "remaining_defect": "Amber grip renders muddy olive-brown; tip remains a near-identical small diamond to the Phillips, weak at 32px.",
+      "recommended_correction": "Fix the amber hue, establish a clearly flattened blade shoulder and separate grip flutes with broader molded shading.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.tools.phillips_screwdriver",
+      "path": "reviews/v4_first/phillips_screwdriver.png",
+      "sha256": "026039ce2be28ee568db4665edeb52c5dbd8c3ef4d7cfc68b73a272faed3bc02",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        6,
+        56,
+        56
+      ],
+      "colors": 11,
+      "index": 10,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Ribbed grip and collar improve assembly.",
+      "remaining_defect": "Cross-tip distinction remains only a few scattered pixels and is not reliably legible at inventory scale. Grip uses the same straight slab feel as the flathead.",
+      "recommended_correction": "Design a compact tapered cross-facet point with a different silhouette; keep grip shading soft rather than metallic.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.tools.adjustable_wrench",
+      "path": "reviews/v4_first/adjustable_wrench.png",
+      "sha256": "5954e94b9d490966a7ed252aa16430fe237fa78a3b5c5ff7f9fb0e4ff48493e6",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        11,
+        6,
+        53,
+        57
+      ],
+      "colors": 8,
+      "index": 11,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Worm region, thicker head and hanging-hole location are improvements.",
+      "remaining_defect": "Jaw tips are curved prongs with weak straight gripping faces; the hanging hole is filled dark rather than cut out.",
+      "recommended_correction": "Use opposing straight jaw faces and a readable movable slide; cut an actual transparent hanging hole and shade its rim.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.tools.pipe_wrench",
+      "path": "reviews/v4_first/pipe_wrench.png",
+      "sha256": "dabe2164106d3991466b0e48b4bb041fbc7d38f2b502668784c430ca7c1b40a4",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        11,
+        6,
+        54,
+        57
+      ],
+      "colors": 12,
+      "index": 12,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Dedicated red frame, teeth and adjustment collar separate it from the adjustable wrench.",
+      "remaining_defect": "Hook/frame spacing and toothed jaw relationship are still mechanically ambiguous; handle hole is painted dark instead of transparent.",
+      "recommended_correction": "Clarify which jaw moves along the shank, add two opposing grip faces and open the handle hole.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.materials.wooden_plank",
+      "path": "reviews/v4_first/wooden_plank.png",
+      "sha256": "1a8db6c712f7e4ca4b3c0c99b138bde44b9cf225c04e260332450a18df1f6e59",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        7,
+        12,
+        56,
+        56
+      ],
+      "colors": 6,
+      "index": 13,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Directional grain and end face are clearer.",
+      "remaining_defect": "Parallel dark streaks repeat evenly like decorative grooves; broad top is one flat tan face and worn edges lack localized logic.",
+      "recommended_correction": "Use fewer broken grain runs with a subdued knot, darker end grain and a restrained light edge.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.materials.steel_bar",
+      "path": "reviews/v4_first/steel_bar.png",
+      "sha256": "0bc897f11548339c190ee66ef5086105fc46cfa2d9516d08702d8227eae551f0",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        7,
+        12,
+        56,
+        56
+      ],
+      "colors": 4,
+      "index": 14,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Dark end and side plus bright edge are an improvement.",
+      "remaining_defect": "Very broad pale uniform face reads like a painted block or plastic; tiny scratches add detail without making steel physically convincing.",
+      "recommended_correction": "Lower the broad face value and concentrate sharp reflections at selected bevels and facet transitions.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.materials.duct_tape",
+      "path": "reviews/v4_first/duct_tape.png",
+      "sha256": "8e37360a5b0ed684a5d9a6d14173f87e11afe77785feab7c64edd0636d19c8b4",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        10,
+        12,
+        55,
+        55
+      ],
+      "colors": 11,
+      "index": 15,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "An oblique wall, core rim and attached tail replace the puck silhouette.",
+      "remaining_defect": "Core reads as a uniform flat black disk rather than a modeled bore wall; wall and tail merge into large dark blocks and wrapped edge rings are weak.",
+      "recommended_correction": "Clarify bore-wall thickness and wound layers; make any unobstructed through-opening transparent, while retaining physically justified inner-wall shadow. Separate the tail overlap.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.materials.rope_coil",
+      "path": "reviews/v4_first/rope_coil.png",
+      "sha256": "d5af271bd752d4ad1a93fe2fb7b188f4c9c39fc2b442bfce1f2dacdac5dd5492",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        17,
+        58,
+        55
+      ],
+      "colors": 4,
+      "index": 16,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Multiple turns and an attached loose end are visible.",
+      "remaining_defect": "Uniform progressively smaller stacked ellipses produce a stepped cone or nest, not a plausible utility-rope coil.",
+      "recommended_correction": "Flatten the coil and offset overlapping turns, add a tied crossing/binding and a continuous free end rather than concentric tiers.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.containers.rucksack",
+      "path": "reviews/v4_first/rucksack.png",
+      "sha256": "9a6155897844e64174c56174de89679669342080b859f4e9a84c1ea7009aedb6",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        7,
+        6,
+        57,
+        55
+      ],
+      "colors": 9,
+      "index": 17,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Flap, straps, buckles, pocket and side gusset improve identity.",
+      "remaining_defect": "Repeated large diagonal patches look like folded paper; the lower pocket merges into the body, while shoulder straps are thin dark frame-like strokes.",
+      "recommended_correction": "Shade loaded sewn volumes independently, clarify pocket lip/occlusion and give shoulder straps width and continuous attachment.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.containers.tool_bag",
+      "path": "reviews/v4_first/tool_bag.png",
+      "sha256": "739913a91209e0a75383bd439af5956c2b55787f6b3256c48f7c19737fe842cc",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        9,
+        7,
+        55,
+        56
+      ],
+      "colors": 14,
+      "index": 18,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Wider body, paired handles and reinforced base distinguish it from the rucksack.",
+      "remaining_defect": "Front panel is a dark flat rectangle and straps appear pasted on; handles lack clear anchors and sewn fabric sag.",
+      "recommended_correction": "Add a loaded bag volume, end gusset seam, handle mount patches and a shallow zipper/closure recess.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.clothing.work_gloves",
+      "path": "reviews/v4_first/work_gloves.png",
+      "sha256": "88382b3b08a4df855be92f362c93480d1a4960213ca18415021066c920a458dd",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        7,
+        14,
+        51,
+        55
+      ],
+      "colors": 6,
+      "index": 19,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Palm mass, cuffs and finger seams improve substantially on the comb-shaped V3.",
+      "remaining_defect": "Both gloves put the thumb on the same right side, producing a same-handed pair. Finger group anatomy is still stiff and pointed.",
+      "recommended_correction": "Mirror one glove, verify an opposed left/right thumb pair, and round the grouped fingertips with knuckle/palm volume.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.clothing.winter_beanie",
+      "path": "reviews/v4_first/winter_beanie.png",
+      "sha256": "20d046352d30dcd4195a9c2477f540ffe424bc1913d31af5a42422fb73eed9e7",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        11,
+        11,
+        52,
+        52
+      ],
+      "colors": 7,
+      "index": 20,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Folded ribbed brim and crown seam are much clearer.",
+      "remaining_defect": "The navy recipe renders green; broad dark diagonal crown wedge resembles a rigid folded panel rather than soft knit.",
+      "recommended_correction": "Fix the navy hue and use broad soft crown volume with curved seam/rib flow and compact fold occlusion.",
+      "priority": 1
+    },
+    {
+      "logical_item_id": "item.electronics.handheld_radio",
+      "path": "reviews/v4_first/handheld_radio.png",
+      "sha256": "9184c852ae4eb0497718aa81a451994b8b422fd6e322cd4b3de9f574e351e390",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        12,
+        6,
+        50,
+        57
+      ],
+      "colors": 17,
+      "index": 21,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Buttons, display, grille and top control establish more functional construction.",
+      "remaining_defect": "Top plane is oversized and almost flat; antenna is nearly invisible on the dark background, and display/grille lack molded recess thickness.",
+      "recommended_correction": "Reduce the boxy top emphasis, give antenna a readable lit edge and reinforce bezel/grille depths with selective small highlights.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.electronics.flashlight",
+      "path": "reviews/v4_first/flashlight.png",
+      "sha256": "920a6570249a1d498b69aa00db23793166c282e7e0147649cbf6625d5032bec4",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        11,
+        9,
+        58,
+        52
+      ],
+      "colors": 16,
+      "index": 22,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Reflector/lens ring, knurled barrel and switch are meaningful improvements.",
+      "remaining_defect": "Head is a flat pale faceted block with a small dark ring that reads like a camera lens; barrel highlights are broad and disconnected from recesses.",
+      "recommended_correction": "Clarify a recessed reflector bowl behind glass, reduce the broad white head facet and keep compact metal/rubber distinctions.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.survival.water_bottle",
+      "path": "reviews/v4_first/water_bottle.png",
+      "sha256": "fd5c566865208cfea278df4276b968ca2102aba7952965869b7c81f5500ccf17",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        20,
+        8,
+        46,
+        55
+      ],
+      "colors": 16,
+      "index": 23,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Cap, shoulder, fill line and molded ribs improve construction.",
+      "remaining_defect": "The liquid is an opaque rectangular panel pasted on the front; bright left band is too solid and the cap lacks threaded thickness.",
+      "recommended_correction": "Shade translucent container/liquid as one curved volume while preserving fill-line and rim cues; soften the plastic band into deliberate clusters.",
+      "priority": 2
+    },
+    {
+      "logical_item_id": "item.survival.camping_mug",
+      "path": "reviews/v4_first/camping_mug.png",
+      "sha256": "cff32e85c13ca47b6cdb6a40b29423aa730dd7eb93788ff2cdb68ba51bcf1e4f",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "alpha_bounds": [
+        12,
+        15,
+        59,
+        54
+      ],
+      "colors": 6,
+      "index": 24,
+      "reviewer": "independent_visual_agent",
+      "review_status": "REWORK",
+      "qa_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "visible_improvement_over_v3": "Rolled rim, inner wall, curved body and true open handle improve it.",
+      "remaining_defect": "Large broad silver stripes look faceted and painted rather than thin metal; handle attachments and base rim remain weak.",
+      "recommended_correction": "Use a narrower localized highlight, darker joined handle sockets and a subtle base lip; retain the correctly transparent handle.",
+      "priority": 2
+    }
+  ]
+}

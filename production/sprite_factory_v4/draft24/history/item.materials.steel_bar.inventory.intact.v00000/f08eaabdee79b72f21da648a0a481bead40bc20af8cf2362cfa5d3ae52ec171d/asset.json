@@ -1,0 +1,124 @@
+{
+  "archived_at": "2026-11-06T07:56:51.514757+00:00",
+  "archived_content_sha256": "f08eaabdee79b72f21da648a0a481bead40bc20af8cf2362cfa5d3ae52ec171d",
+  "previous_expected_sha256": "f08eaabdee79b72f21da648a0a481bead40bc20af8cf2362cfa5d3ae52ec171d",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "bar",
+    "asset_id": "item.materials.steel_bar.inventory.intact.v00000",
+    "category": "materials",
+    "created_at": "2026-11-06T07:54:46.974649+00:00",
+    "device_verification_status": "not_tested",
+    "family": "materials",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.materials.steel_bar",
+    "material_specification": [
+      {
+        "construction": "Rectangular steel billet with end thickness, narrow cool edge reflection and localized scratches",
+        "material": "bare_steel",
+        "name": "primary_body"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "8cb6c1b3b54d5e652f75ed335325cff9ae7ca3fd6c312c1600cb97ced0bd79e9",
+    "recipe_id": "item.materials.steel_bar",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/materials/steel_bar/icon.png",
+    "render_fingerprint": "44890c17807c4c335d5297fdf82a672676348f84da3411c9931791686f095a5e",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "f08eaabdee79b72f21da648a0a481bead40bc20af8cf2362cfa5d3ae52ec171d",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "bar",
+      "brief": "Rectangular steel billet with end thickness, narrow cool edge reflection and localized scratches",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "steel_bar",
+      "family": "materials",
+      "geometry": {
+        "construction": "Rectangular steel billet with end thickness, narrow cool edge reflection and localized scratches",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.materials.steel_bar",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "bare_steel"
+      ],
+      "parts": [
+        {
+          "construction": "Rectangular steel billet with end thickness, narrow cool edge reflection and localized scratches",
+          "material": "bare_steel",
+          "name": "primary_body"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          7,
+          12,
+          56,
+          56
+        ],
+        "color_count": 6,
+        "height": 64,
+        "min_margin": 7,
+        "mode": "RGBA",
+        "opaque_pixels": 1060,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.258789,
+        "visible_pixels": 1060,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

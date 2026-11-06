@@ -9,3 +9,5 @@ assets/last_light/candidates/**/*.png.import
 production/sprite_factory/**/*.png.import
 production/sprite_factory/.factory.lock
 assets/last_light/approved/**/*.png.import
+# V4 generated previews/masters are imported locally; regenerate Godot sidecars.
+production/sprite_factory_v4/**/*.png.import
