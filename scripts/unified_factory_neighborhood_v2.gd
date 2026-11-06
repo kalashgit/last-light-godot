@@ -59,6 +59,20 @@ func _indoor_building() -> Dictionary:
             return b
     return {}
 
+func _can_walk_to(point: Vector2) -> bool:
+    # UCF-002 gate: building shells are solid. Enter and exit via INTERACT at
+    # front doors; this pilot has not yet installed interior partition collision.
+    var interior: Dictionary = _indoor_building()
+    for b in neighborhood.get("buildings", []):
+        var bounds: Array = b["footprint"]
+        var rect: Rect2 = Rect2(Vector2(float(bounds[0]),float(bounds[1])),Vector2(float(bounds[2]),float(bounds[3])))
+        var inside_next: bool = rect.has_point(point)
+        if interior.is_empty() and inside_next:
+            return false
+        if not interior.is_empty() and b["id"] == interior["id"] and not inside_next:
+            return false
+    return true
+
 func _process(delta: float) -> void:
     if neighborhood.is_empty():
         queue_redraw()
@@ -67,7 +81,7 @@ func _process(delta: float) -> void:
     if move_vector.length_squared() > 0.001:
         direction = move_vector
     var next: Vector2 = player + direction.normalized() * delta * 4.1
-    if next.x >= 0.5 and next.x <= 65.0 and next.y >= 0.5 and next.y <= 45.5:
+    if next.x >= 0.5 and next.x <= 65.0 and next.y >= 0.5 and next.y <= 45.5 and _can_walk_to(next):
         player = next
     # Smooth automatic zoom while the player occupies an interior.
     var wanted_zoom: float = 1.65 if not _indoor_building().is_empty() else 1.0
