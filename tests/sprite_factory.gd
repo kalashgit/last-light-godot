@@ -6,7 +6,7 @@ func _initialize() -> void:
 func run() -> void:
  var registry := Registry.new()
  assert(registry.candidates.size() == 20)
- assert(registry.approved.is_empty())
+ assert(registry.approved.size() == 20)
  var existing := 0
  var survival_bound := 0
  var state := Survival.new()
@@ -14,11 +14,14 @@ func run() -> void:
   var icon: Texture2D = registry.review_icon_for(id)
   assert(icon != null and icon.get_size() == Vector2(64,64))
   var normal := registry.icon_for(id)
+  assert(normal != null and normal.get_size() == Vector2(64,64))
+  var approved_entry: Dictionary = registry.approved[id]
+  assert(normal.resource_path == "res://" + String(approved_entry.export_path))
   if registry.definitions.has(id):
    existing += 1
    assert(normal != null and normal != icon)
   else:
-   assert(normal == null)
+   assert(normal != null)
   if state.definitions.has(id):
    survival_bound += 1
    assert(state.definitions[id].art_id == id)
@@ -37,5 +40,5 @@ func run() -> void:
  scene._resize()
  assert(scene.grid.columns == 2)
  scene.free()
- print("SPRITE FACTORY GODOT PASS: 20 candidate imports, 17 existing IDs, 6 survival IDs; candidate isolation, fallback and 32/48/64 review controls")
+ print("SPRITE FACTORY GODOT PASS: 20 approved registry exports and 20 candidate imports, 17 existing IDs, 6 survival IDs; approved hash/path resolution and 32/48/64 review controls")
  quit()

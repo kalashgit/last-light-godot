@@ -1,3 +1,11 @@
+# Current status after founder approval
+
+B0003 was explicitly approved by the founder ("Its approved") against commit 0d65d25c5b93a9362517832b6ce5bef1c4b3e069. All 20 exact hash-bound inventory exports are promoted to assets/last_light/approved/ and Godot registry resolution passes. No merge, deployment or iPhone approval is implied.
+
+B0004 reviews the next 20 records (#21–31, #33–37, #39–42), skipping already-reviewed #32/#38 and prior Golden40 references. This corrects the earlier queue JSON, which erroneously started at #1. Six new candidate icons pass technical checks and engineer self-review; three state links, three deferred world objects and eight unresolved identities are retained. Six PNGs, not twenty new sprites, were generated. New designs remain candidates, separate from the 20 founder-approved exports.
+
+The historical checkpoint below is retained as evidence; its pending-approval statements describe the earlier checkpoint.
+
 # LAST LIGHT original sprite factory — B0003 checkpoint
 
 The factory is implemented; its first calibration batch has 20 final **candidate**

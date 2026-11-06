@@ -1,0 +1,11 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_version": "not exposed by tool",
+  "seed": null,
+  "transparent_background": true,
+  "prompt_path": "production/sprite_factory/batches/LL-ICON-B0004/prompt.txt",
+  "prompt_sha256": "9a3c159c773a7a7729eb30bca739a75396b49a7d2789f44b10f459653a755ab5",
+  "source_sheet_sha256": "afe2645813725b367f61aa508d3b6e32bf9ae92d1ee0e209c06a5a6ae4168879",
+  "style_reference": "B0003 approved native64 board",
+  "source_artwork_inputs": "Only original approved LAST LIGHT reference board; no third-party pixels"
+}

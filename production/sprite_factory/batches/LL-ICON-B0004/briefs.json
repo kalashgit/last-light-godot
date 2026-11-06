@@ -1,0 +1,282 @@
+{
+  "schema": 1,
+  "batch_id": "LL-ICON-B0004",
+  "style": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "style_calibration": "LL-ICON-B0003 founder approved",
+  "items": [
+    {
+      "order": 1,
+      "logical_item_id": "ll_equipment_leather_bandolier",
+      "name": "Leather bandolier",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:23"
+      ],
+      "reference_indices": [
+        23
+      ],
+      "source_filename": "AmmoStrap Leather.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap_Leather.png",
+      "family": "household",
+      "materials": [
+        "leather",
+        "steel"
+      ],
+      "geometry": "Warm brown broad leather cross-chest strap folded into oblique loop, six empty cartridge sleeves, rectangular steel adjustment buckle; satin leather and dark stitch seams",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Warm brown broad leather cross-chest strap folded into oblique loop, six empty cartridge sleeves, rectangular steel adjustment buckle; satin leather and dark stitch seams",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Warm brown broad leather cross-chest strap folded into oblique loop, six empty cartridge sleeves, rectangular steel adjustment buckle; satin leather and dark stitch seams",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 2,
+      "logical_item_id": "ll_equipment_canvas_bandolier",
+      "name": "Canvas bandolier",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:24"
+      ],
+      "reference_indices": [
+        24
+      ],
+      "source_filename": "AmmoStrap.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap.png",
+      "family": "household",
+      "materials": [
+        "canvas",
+        "steel"
+      ],
+      "geometry": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 3,
+      "logical_item_id": "ll_farming_animal_feed_sack",
+      "name": "Animal feed sack",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:29"
+      ],
+      "reference_indices": [
+        29
+      ],
+      "source_filename": "AnimalFeed.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AnimalFeed.png",
+      "family": "food",
+      "materials": [
+        "paper",
+        "grain"
+      ],
+      "geometry": "Closed heavy kraft animal-feed sack with folded stitched top, broad olive grain-head pictogram and no text; matte paper and lower bulging corners",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed heavy kraft animal-feed sack with folded stitched top, broad olive grain-head pictogram and no text; matte paper and lower bulging corners",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Closed heavy kraft animal-feed sack with folded stitched top, broad olive grain-head pictogram and no text; matte paper and lower bulging corners",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 4,
+      "logical_item_id": "ll_crafting_antler_pair",
+      "name": "Antler pair",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:35"
+      ],
+      "reference_indices": [
+        35
+      ],
+      "source_filename": "AntlerSet.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AntlerSet.png",
+      "family": "crafting",
+      "materials": [
+        "bone"
+      ],
+      "geometry": "A matched pair of naturally shed deer antlers grouped as one item, warm ivory branching tines, rough brown coronet bases, original asymmetric fork arrangement, no skull",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "A matched pair of naturally shed deer antlers grouped as one item, warm ivory branching tines, rough brown coronet bases, original asymmetric fork arrangement, no skull",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "A matched pair of naturally shed deer antlers grouped as one item, warm ivory branching tines, rough brown coronet bases, original asymmetric fork arrangement, no skull",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 5,
+      "logical_item_id": "ll_clothing_improvised_plastic_apron",
+      "name": "Improvised plastic apron",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:40"
+      ],
+      "reference_indices": [
+        40
+      ],
+      "source_filename": "Apron Garbagebag.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Apron_Garbagebag.png",
+      "family": "clothing",
+      "materials": [
+        "plastic"
+      ],
+      "geometry": "One simple charcoal plastic protective apron, cut rectangular bib, attached neck loop and side ties folded inward; soft broad plastic creases, no wearer or text",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "One simple charcoal plastic protective apron, cut rectangular bib, attached neck loop and side ties folded inward; soft broad plastic creases, no wearer or text",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "One simple charcoal plastic protective apron, cut rectangular bib, attached neck loop and side ties folded inward; soft broad plastic creases, no wearer or text",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 6,
+      "logical_item_id": "ll_clothing_leather_apron",
+      "name": "Leather apron",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:41"
+      ],
+      "reference_indices": [
+        41
+      ],
+      "source_filename": "Apron Hide.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Apron_Hide.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "steel"
+      ],
+      "geometry": "One warm russet thick workshop leather apron, tapered bib, attached neck strap and tiny buckles, wide lower hem, one stitched chest pocket; restrained satin wear",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "One warm russet thick workshop leather apron, tapered bib, attached neck strap and tiny buckles, wide lower hem, one stitched chest pocket; restrained satin wear",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "One warm russet thick workshop leather apron, tapered bib, attached neck strap and tiny buckles, wide lower hem, one stitched chest pocket; restrained satin wear",
+      "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped_if_supported"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    }
+  ]
+}

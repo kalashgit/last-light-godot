@@ -24,7 +24,7 @@ func _ready() -> void:
  title.add_theme_font_size_override("font_size", 22)
  layout.add_child(title)
  var status := Label.new()
- status.text = "Candidate artwork · founder review pending"
+ status.text = "B0003 approved inventory artwork · world and device checks pending"
  layout.add_child(status)
  var buttons := HBoxContainer.new()
  layout.add_child(buttons)

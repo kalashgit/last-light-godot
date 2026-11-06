@@ -1,0 +1,74 @@
+{
+  "result": "PASS",
+  "method": "automated technical checks; no visual approval",
+  "errors": [],
+  "warnings": [],
+  "measurements": [
+    {
+      "id": "ll_equipment_leather_bandolier",
+      "bbox": [
+        4,
+        4,
+        59,
+        60
+      ],
+      "opaque_pixels": 1666,
+      "components": 1
+    },
+    {
+      "id": "ll_equipment_canvas_bandolier",
+      "bbox": [
+        4,
+        6,
+        60,
+        58
+      ],
+      "opaque_pixels": 1563,
+      "components": 1
+    },
+    {
+      "id": "ll_farming_animal_feed_sack",
+      "bbox": [
+        5,
+        4,
+        59,
+        60
+      ],
+      "opaque_pixels": 2353,
+      "components": 1
+    },
+    {
+      "id": "ll_crafting_antler_pair",
+      "bbox": [
+        4,
+        9,
+        60,
+        55
+      ],
+      "opaque_pixels": 821,
+      "components": 2
+    },
+    {
+      "id": "ll_clothing_improvised_plastic_apron",
+      "bbox": [
+        8,
+        4,
+        55,
+        60
+      ],
+      "opaque_pixels": 1604,
+      "components": 1
+    },
+    {
+      "id": "ll_clothing_leather_apron",
+      "bbox": [
+        12,
+        4,
+        52,
+        60
+      ],
+      "opaque_pixels": 1486,
+      "components": 1
+    }
+  ]
+}

@@ -359,7 +359,7 @@ def checkpoint():
         if re.fullmatch(r'v\d{3}',p.stem):
             items.extend(read(p)['items'])
     approved=read(BASE/'approved_registry.json')['items'] if (BASE/'approved_registry.json').exists() else []
-    report=dict(reference_records_total=len(rows),legacy_keyword_provisional=sum(x.get('legacy_provisional_classification',{}).get('confidence')=='keyword-provisional' for x in rows),legacy_manual_review=sum(x.get('legacy_provisional_classification',{}).get('confidence')=='manual-review' for x in rows),reference_records_reviewed=sum(x['reviewed'] for x in rows),reference_records_semantically_classified=sum(x['reviewed'] and x['disposition']!='requires_human_classification' for x in rows),disposition_coverage=len(rows),requires_human_classification=sum(x['disposition']=='requires_human_classification' for x in rows),duplicate_references=sum(x['disposition']=='duplicate' for x in rows),deferred_references=sum(x['disposition'].startswith('deferred') for x in rows),semantic_briefs_authored=len({x['logical_item_id'] for p in (BASE/'batches').glob('*/briefs.json') for x in read(p)['items']}),founder_approved_briefs=0,candidate_icons_generated=len(items),pixel_normalized_icons=len(items),hand_pixel_cleaned_icons=0,visual_review_passes=sum((x.get('visual_qa') or {}).get('result')=='PASS' for x in items),rework_icons=sum(x['status']=='rework' for x in items),approved_inventory_exports=len(approved),world_sprites_generated=0,godot_candidate_imports_verified=sum(x.get('godot_import_status')=='verified_review_only' for x in items),godot_production_imports_verified=sum(x.get('godot_import_status')=='verified' for x in approved),iphone_xogot_verified=sum(x.get('iphone_xogot_status')=='verified' for x in items),scope='This factory run; pre-existing 300 procedural candidates and Golden40 counted separately',next_batch_gate='Founder calibration approval and no critical defects; no automatic mass expansion')
+    report=dict(reference_records_total=len(rows),legacy_keyword_provisional=sum(x.get('legacy_provisional_classification',{}).get('confidence')=='keyword-provisional' for x in rows),legacy_manual_review=sum(x.get('legacy_provisional_classification',{}).get('confidence')=='manual-review' for x in rows),reference_records_reviewed=sum(x['reviewed'] for x in rows),reference_records_semantically_classified=sum(x['reviewed'] and x['disposition']!='requires_human_classification' for x in rows),disposition_coverage=len(rows),requires_human_classification=sum(x['disposition']=='requires_human_classification' for x in rows),duplicate_references=sum(x['disposition']=='duplicate' for x in rows),deferred_references=sum(x['disposition'].startswith('deferred') for x in rows),semantic_briefs_authored=len({x['logical_item_id'] for p in (BASE/'batches').glob('*/briefs.json') for x in read(p)['items']}),founder_approved_briefs=len(approved),candidate_icons_generated=len(items),pixel_normalized_icons=len(items),hand_pixel_cleaned_icons=0,visual_review_passes=sum((x.get('visual_qa') or {}).get('result')=='PASS' for x in items),rework_icons=sum(x['status']=='rework' for x in items),approved_inventory_exports=len(approved),world_sprites_generated=0,godot_candidate_imports_verified=sum(x.get('godot_import_status')=='verified_review_only' for x in items),godot_production_imports_verified=sum(x.get('godot_import_status')=='verified' for x in approved),iphone_xogot_verified=sum(x.get('iphone_xogot_status')=='verified' for x in items),scope='This factory run; pre-existing 300 procedural candidates and Golden40 counted separately',next_batch_gate='B0003 calibration approved; subsequent batches require technical and actual visual review; no automatic promotion')
     write(BASE/'dashboard.json',report)
     return report
 
@@ -372,10 +372,10 @@ def assemble(batch, selection):
     for brief in read(b / 'briefs.json')['items']:
         rev = choices[brief['logical_item_id']]
         items.append(next(x for x in revisions[rev]['items'] if x['logical_item_id'] == brief['logical_item_id']))
-    if len(items) != 20:
-        raise ValueError('calibration assembly must contain exactly 20 icons')
+    if not 1 <= len(items) <= 20:
+        raise ValueError('review assembly must contain 1–20 explicitly briefed icons')
     write(b / 'active.json', dict(schema=1, batch_id=batch, revision='active', selection=choices, items=items))
-    print('ASSEMBLE: 20 explicit version selections; no automatic promotion')
+    print(f'ASSEMBLE: {len(items)} explicit version selections; no automatic promotion')
 
 
 def audit_golden():

@@ -1,0 +1,101 @@
+{
+  "reviewer": "Codex authoring engineer",
+  "reviewer_type": "engineer_visual_inspection",
+  "evidence": [
+    "production/sprite_factory/batches/LL-ICON-B0004/reviews/v001/dark_64.png",
+    "production/sprite_factory/batches/LL-ICON-B0004/reviews/v001/light_32.png",
+    "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_64.png"
+  ],
+  "items": [
+    {
+      "asset_id": "art.ll_equipment_leather_bandolier.icon.v001",
+      "content_sha256": "53a3cabef14038291a3b38056d5d2ff62fd21bc1abfdb78568d832407218d160",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Empty sleeve interiors and steel buckle readable; warm satin leather distinct from cloth. Loop count is decorative, not a gameplay capacity promise."
+    },
+    {
+      "asset_id": "art.ll_equipment_canvas_bandolier.icon.v001",
+      "content_sha256": "7aee980dc59f599d327907257f5c6ae5154a4a233dc3ee5cf580e05ffec71099",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Diffuse canvas strap, hollow loops and metal adjuster distinct; no count/capacity mechanics inferred."
+    },
+    {
+      "asset_id": "art.ll_farming_animal_feed_sack.icon.v001",
+      "content_sha256": "9f41f012db899a3307beb297ca7ae7a8200f7a6a59626e901f8ce072b965635e",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Matte folded sack, stitched top and generic grain pictogram remain readable at 32px."
+    },
+    {
+      "asset_id": "art.ll_crafting_antler_pair.icon.v001",
+      "content_sha256": "65e0b093f647bd1f5e772d001532f2a1a92604e67ba8290d6b54050187b4288e",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Two distinct antlers preserved without clipping; pale tines and dark coronets read at 32px."
+    },
+    {
+      "asset_id": "art.ll_clothing_improvised_plastic_apron.icon.v001",
+      "content_sha256": "d53f7f9634d08ff22355a162c1e4a44c0b8d0af4b7b7320901faf441b0493bba",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Plastic bib, neck loop and folded side ties retained; broad creases distinguish plastic from leather."
+    },
+    {
+      "asset_id": "art.ll_clothing_leather_apron.icon.v001",
+      "content_sha256": "8cdd14ce5270762d6d5dd50aafea84d027c3002f5160f99344cc24a7614f7a45",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Leather bib, neck hardware and pocket preserved; warm satin planes and diffuse wear match approved jacket."
+    }
+  ]
+}
