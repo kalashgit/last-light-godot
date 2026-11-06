@@ -1,0 +1,7 @@
+Benchmarking 100 synthetic PNG exports in /workspace/sprite_v4_benchmarks/20261106T080908Z_993ce4/count_000100
+Verified 100 PNGs, 20 logical objects, 0.46 seconds, peak RSS 28663808 bytes
+Benchmarking 1000 synthetic PNG exports in /workspace/sprite_v4_benchmarks/20261106T080908Z_993ce4/count_001000
+Verified 1000 PNGs, 24 logical objects, 5.26 seconds, peak RSS 32595968 bytes
+Benchmarking 10000 synthetic PNG exports in /workspace/sprite_v4_benchmarks/20261106T080908Z_993ce4/count_010000
+Verified 10000 PNGs, 24 logical objects, 51.70 seconds, peak RSS 35385344 bytes
+Measured report: /workspace/sprite_v4_benchmarks/20261106T080908Z_993ce4/benchmark_report.json

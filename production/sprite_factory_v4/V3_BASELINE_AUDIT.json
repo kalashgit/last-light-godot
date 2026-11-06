@@ -1,0 +1,1001 @@
+{
+  "schema_version": 1,
+  "scope": "V3 baseline only; no V4 artistic result is claimed",
+  "execution_date_utc": "2026-11-06",
+  "source_sha256": "c2ac9122df274bd2bd17b3183196bc22b9f54a60639c6cf5300906a2bcea2c1f",
+  "generated": 24,
+  "generation_errors": 0,
+  "matches_supplied_fixed24": 24,
+  "technical_png_checks_passed": 24,
+  "independent_visual_passes": 0,
+  "independent_visual_rejections": 24,
+  "founder_approvals_of_baseline": 0,
+  "golden_references": "assets/last_light/golden40/manifest.json",
+  "reference_status": "founder approved visual references; imported candidates have known alpha issues; not equivalent to production-ready exports",
+  "items": [
+    {
+      "index": 1,
+      "logical_item_id": "item.food.canned_beans",
+      "archetype": "can",
+      "baseline_png": "baseline/output/art/items/food/canned_beans/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Can silhouette is readable, but body is a flat ochre slab with a rectangular shine; thin elliptical lids lack rolled rim, lip thickness, lid depression and localized steel glints. The abstract label does not distinguish contents."
+      ],
+      "recommended_correction": "Build rolled seams, recessed lid, narrow metallic edge response and a distinct independently designed food motif.",
+      "technical_metrics": {
+        "id": "item.food.canned_beans",
+        "path": "art/items/food/canned_beans/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          15,
+          49,
+          54
+        ],
+        "occupied_alpha_pixels": 1237,
+        "nontransparent_colors": 8,
+        "partial_alpha_pixels": 0,
+        "sha256": "4eddfb2d270284d817937e2ad927a5627bf245f5463ad43af09c8f89c265d5de",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 2,
+      "logical_item_id": "item.food.canned_peas",
+      "archetype": "can",
+      "baseline_png": "baseline/output/art/items/food/canned_peas/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Same physical geometry and label rectangles as beans, differentiated only by color. Green body reads as painted plastic rather than paper wrapped around tin; right wall is an unmodulated stripe."
+      ],
+      "recommended_correction": "Retain plausible shared can construction but design a different label motif and a curved paper light response distinct from exposed steel.",
+      "technical_metrics": {
+        "id": "item.food.canned_peas",
+        "path": "art/items/food/canned_peas/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          15,
+          49,
+          54
+        ],
+        "occupied_alpha_pixels": 1237,
+        "nontransparent_colors": 8,
+        "partial_alpha_pixels": 0,
+        "sha256": "546420caac6ced112567ce0f629ea59d9571eacf237f9a7aa9291f8d117e628a",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 3,
+      "logical_item_id": "item.food.apple",
+      "archetype": "fruit",
+      "baseline_png": "baseline/output/art/items/food/apple/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Large nested ellipses make the rind look like concentric flat patches. No stem well, lobed shoulders or convincing apple asymmetry; one bright point is not tied to the curved surface."
+      ],
+      "recommended_correction": "Define the stem cavity, gently lobed silhouette and connected broad rind shading clusters with a restrained upper-left highlight.",
+      "technical_metrics": {
+        "id": "item.food.apple",
+        "path": "art/items/food/apple/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          49,
+          52
+        ],
+        "occupied_alpha_pixels": 935,
+        "nontransparent_colors": 6,
+        "partial_alpha_pixels": 0,
+        "sha256": "43e25c146b3c995aa14b5a92b7969ce8947c78d4674eac1dfa231e81695214a2",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 4,
+      "logical_item_id": "item.food.pear",
+      "archetype": "fruit",
+      "baseline_png": "baseline/output/art/items/food/pear/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Two joined ellipses produce an abrupt neck/body transition and a broad flat light patch. Stem placement reads off-axis; no calyx or localized occlusion."
+      ],
+      "recommended_correction": "Design continuous pear shoulders and bottom, plant the stem into a shaded recess and use a coherent curved tonal ramp.",
+      "technical_metrics": {
+        "id": "item.food.pear",
+        "path": "art/items/food/pear/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          20,
+          9,
+          46,
+          51
+        ],
+        "occupied_alpha_pixels": 737,
+        "nontransparent_colors": 6,
+        "partial_alpha_pixels": 0,
+        "sha256": "d67786de3373a8ee13d765a0c4c1703dbb948d9bd03146dc6574ee5742d3ecbd",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 5,
+      "logical_item_id": "item.medical.first_aid_kit",
+      "archetype": "case",
+      "baseline_png": "baseline/output/art/items/medical/first_aid_kit/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Reads as a cubic carton with a thin bent handle. There is no molded lid thickness, parting seam, latch, hinge, handle socket or shell curvature. Cross sign carries the identity."
+      ],
+      "recommended_correction": "Create a hard medical case with coherent side depth, lid seam, handle mounts and latches; shade plastic separately from metal hardware.",
+      "technical_metrics": {
+        "id": "item.medical.first_aid_kit",
+        "path": "art/items/medical/first_aid_kit/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          8,
+          53,
+          52
+        ],
+        "occupied_alpha_pixels": 1191,
+        "nontransparent_colors": 6,
+        "partial_alpha_pixels": 0,
+        "sha256": "d562e7db844be71c97297971fd43ce368b78fea72b6f7ac7222f2aef0ca38040",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 6,
+      "logical_item_id": "item.medical.bandage_box",
+      "archetype": "box",
+      "baseline_png": "baseline/output/art/items/medical/bandage_box/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Three plain parallelograms plus a white stripe read as an unmarked shipping carton. Fold thickness, flap closure and a bandage-identifying motif are absent."
+      ],
+      "recommended_correction": "Use a small medical carton grammar with closed end tabs, folded edge thickness and a deliberate nonbranded bandage graphic.",
+      "technical_metrics": {
+        "id": "item.medical.bandage_box",
+        "path": "art/items/medical/bandage_box/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          16,
+          53,
+          52
+        ],
+        "occupied_alpha_pixels": 1125,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "1a01b12cb2409b347ce7a5d3ba861a244e8cfc02d64d014d18b7e412b0b0b683",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 7,
+      "logical_item_id": "item.tools.claw_hammer",
+      "archetype": "hammer",
+      "baseline_png": "baseline/output/art/items/tools/claw_hammer/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Head resembles disconnected angular blocks; no readable split claw, neck, eye/socket, striking-face thickness or overlap shadow. Handle is a straight flat stick with one line."
+      ],
+      "recommended_correction": "Construct forged head, striking face, tapered cheeks, curved forked claw and a shaped wooden haft passing into a shaded eye.",
+      "technical_metrics": {
+        "id": "item.tools.claw_hammer",
+        "path": "art/items/tools/claw_hammer/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          8,
+          47,
+          48
+        ],
+        "occupied_alpha_pixels": 544,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "344ec39b9e74f9b2a208a097132567e80d3c412fcd1b1dbb8a2f7c35192acf39",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 8,
+      "logical_item_id": "item.tools.ball_peen_hammer",
+      "archetype": "hammer",
+      "baseline_png": "baseline/output/art/items/tools/ball_peen_hammer/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "The circular peen is a flat dark disk attached to the same angular head as the claw hammer. Missing cylindrical necks, domed peen highlights, head eye and handle joint."
+      ],
+      "recommended_correction": "Use a dedicated compact engineer-hammer construction with a rounded peen, cylindrical striking face and modeled socket.",
+      "technical_metrics": {
+        "id": "item.tools.ball_peen_hammer",
+        "path": "art/items/tools/ball_peen_hammer/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          8,
+          47,
+          48
+        ],
+        "occupied_alpha_pixels": 560,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "b9faa951dd41393bb91872381ff5a341dbf9b088cd0c4ee8ce49268d238f63d2",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 9,
+      "logical_item_id": "item.tools.flathead_screwdriver",
+      "archetype": "screwdriver",
+      "baseline_png": "baseline/output/art/items/tools/flathead_screwdriver/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Handle is a four-sided slab with a single flat plane. Shaft is a broad strip and the blade is only a short line, without a shaped slotted tip, collar or grip molding."
+      ],
+      "recommended_correction": "Add a molded grip with tang collar, a narrower shaft, and a distinct flattened blade with thickness and steel glints.",
+      "technical_metrics": {
+        "id": "item.tools.flathead_screwdriver",
+        "path": "art/items/tools/flathead_screwdriver/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          10,
+          5,
+          55,
+          53
+        ],
+        "occupied_alpha_pixels": 475,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "4ce358d3bb4795426c7b446032ac8ecba4bac56fc90d06fc61aa2560a898b953",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 10,
+      "logical_item_id": "item.tools.phillips_screwdriver",
+      "archetype": "screwdriver",
+      "baseline_png": "baseline/output/art/items/tools/phillips_screwdriver/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Geometry almost matches the flathead; a crosswise two-pixel stroke is the only tool-head distinction and does not clearly form a Phillips point. Handle is equally planar."
+      ],
+      "recommended_correction": "Create a tapered Phillips tip with a compact cross-facet cue; use a distinct grip construction while preserving coherent tool scale.",
+      "technical_metrics": {
+        "id": "item.tools.phillips_screwdriver",
+        "path": "art/items/tools/phillips_screwdriver/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          10,
+          5,
+          55,
+          53
+        ],
+        "occupied_alpha_pixels": 477,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "0ed759ca85ba58d5c8cc7b7cffaa56e6ee0e3077d6c1bf87c849c9b634118ae4",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 11,
+      "logical_item_id": "item.tools.adjustable_wrench",
+      "archetype": "wrench",
+      "baseline_png": "baseline/output/art/items/tools/adjustable_wrench/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Open-jaw head is a jagged polygon without a movable jaw, adjustment worm, slider slot or realistic gripping planes. The handle hole is dark paint rather than an actual opening."
+      ],
+      "recommended_correction": "Build the fixed jaw, sliding jaw, worm barrel and cutout handle as connected metal parts with compact crevice shadows.",
+      "technical_metrics": {
+        "id": "item.tools.adjustable_wrench",
+        "path": "art/items/tools/adjustable_wrench/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          7,
+          52,
+          52
+        ],
+        "occupied_alpha_pixels": 510,
+        "nontransparent_colors": 4,
+        "partial_alpha_pixels": 0,
+        "sha256": "6de9164812f351bd23a2d5e5f0a297c4fe3f39deef8cca6ae16dadf03142ab53",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 12,
+      "logical_item_id": "item.tools.pipe_wrench",
+      "archetype": "wrench",
+      "baseline_png": "baseline/output/art/items/tools/pipe_wrench/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "A recolored adjustable-wrench silhouette with one dark line. Missing hooked upper jaw, teeth, adjustment nut and the characteristic heavy cast handle."
+      ],
+      "recommended_correction": "Give it a separate pipe-wrench grammar with offset toothed jaws, shank and adjustment collar; preserve exposed steel on the red painted body.",
+      "technical_metrics": {
+        "id": "item.tools.pipe_wrench",
+        "path": "art/items/tools/pipe_wrench/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          12,
+          7,
+          52,
+          52
+        ],
+        "occupied_alpha_pixels": 513,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "eea85be873926a464db55aea3d8aff3350f05aefc9cb5c0fa6ee27a19a78941a",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 13,
+      "logical_item_id": "item.materials.wooden_plank",
+      "archetype": "plank",
+      "baseline_png": "baseline/output/art/items/materials/wooden_plank/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "A clean rectangular prism with two straight grain lines; three colors cannot describe end grain, directional fiber or edge wear. Reads as a wooden toy block."
+      ],
+      "recommended_correction": "Keep simple stock geometry but add selective longitudinal grain clusters, dark end grain and irregular saw-cut corner cues.",
+      "technical_metrics": {
+        "id": "item.materials.wooden_plank",
+        "path": "art/items/materials/wooden_plank/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          13,
+          54,
+          52
+        ],
+        "occupied_alpha_pixels": 905,
+        "nontransparent_colors": 3,
+        "partial_alpha_pixels": 0,
+        "sha256": "da96d717cc26e4a5c1af423fb7571a21830c29f800324610b7440c121f671ceb",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 14,
+      "logical_item_id": "item.materials.steel_bar",
+      "archetype": "bar",
+      "baseline_png": "baseline/output/art/items/materials/steel_bar/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Same prism geometry as plank with three colors. Broad blue-gray faces and a uniformly bright stripe do not communicate a sharp localized metal reflection."
+      ],
+      "recommended_correction": "Design rolled/cut steel stock with distinct plane values, a restrained bright bevel and darker cut-end thickness.",
+      "technical_metrics": {
+        "id": "item.materials.steel_bar",
+        "path": "art/items/materials/steel_bar/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          8,
+          13,
+          54,
+          52
+        ],
+        "occupied_alpha_pixels": 905,
+        "nontransparent_colors": 3,
+        "partial_alpha_pixels": 0,
+        "sha256": "dc227c0f01c37e866b512a9501ab54649855a1fcb6a5a6452fab13e74b5d1acf",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 15,
+      "logical_item_id": "item.materials.duct_tape",
+      "archetype": "tape",
+      "baseline_png": "baseline/output/art/items/materials/duct_tape/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Bullseye-like concentric circles are filled through the core, so the roll resembles a solid puck. No cylindrical wall, cardboard-core opening, layered edge or tape end."
+      ],
+      "recommended_correction": "Use an oblique roll with an actually transparent core, inner wall, wrapped edge and an attached short tape tail.",
+      "technical_metrics": {
+        "id": "item.materials.duct_tape",
+        "path": "art/items/materials/duct_tape/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          13,
+          49,
+          50
+        ],
+        "occupied_alpha_pixels": 966,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "732daa428b1f14e66a14d47db9880e3c049f8539b006cbfddaefe667e534ea1d",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 16,
+      "logical_item_id": "item.materials.rope_coil",
+      "archetype": "rope",
+      "baseline_png": "baseline/output/art/items/materials/rope_coil/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Nested overlapping arcs collapse into one open C-shaped band. No readable stacked turns, rope thickness at crossings, fiber twist or coil binding."
+      ],
+      "recommended_correction": "Lay out separate coherent rope turns with occluded overlaps, a defined free end and sparse grouped twist accents.",
+      "technical_metrics": {
+        "id": "item.materials.rope_coil",
+        "path": "art/items/materials/rope_coil/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          13,
+          13,
+          52,
+          50
+        ],
+        "occupied_alpha_pixels": 675,
+        "nontransparent_colors": 3,
+        "partial_alpha_pixels": 0,
+        "sha256": "4a9ec9d3670cef2dabe9ae21f9779bee3c5e662df8a1846ce762ba73100c067e",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 17,
+      "logical_item_id": "item.containers.rucksack",
+      "archetype": "backpack",
+      "baseline_png": "baseline/output/art/items/containers/rucksack/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Rounded rectangle plus one small pocket; side is an unmodulated dark slab. Missing shoulder straps, loaded fabric volume, lid/zipper, gussets, buckles and construction seams."
+      ],
+      "recommended_correction": "Build a main loaded volume, perspective side panel, straps, top carry loop, separate front pocket and construction-caused folds.",
+      "technical_metrics": {
+        "id": "item.containers.rucksack",
+        "path": "art/items/containers/rucksack/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          51,
+          52
+        ],
+        "occupied_alpha_pixels": 1298,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "521b3f205d147fbbd3fdba6acbb7c02190c841354b63c27565f901042d83a938",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 18,
+      "logical_item_id": "item.containers.tool_bag",
+      "archetype": "bag",
+      "baseline_png": "baseline/output/art/items/containers/tool_bag/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Same outer mask as rucksack, with a horizontal bar replacing its pocket. Reads as a flat upright shopping bag; no grounded duffel/tool-bag opening, separate handles or end gussets."
+      ],
+      "recommended_correction": "Use a wide low soft-tool-bag structure with paired handle attachments, zipper/opening, reinforced base and end volume.",
+      "technical_metrics": {
+        "id": "item.containers.tool_bag",
+        "path": "art/items/containers/tool_bag/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          9,
+          51,
+          52
+        ],
+        "occupied_alpha_pixels": 1298,
+        "nontransparent_colors": 4,
+        "partial_alpha_pixels": 0,
+        "sha256": "58e462d8033887746507c42fa847c693e57542ffd291ff8ac39084e7cadad818",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 19,
+      "logical_item_id": "item.clothing.work_gloves",
+      "archetype": "gloves",
+      "baseline_png": "baseline/output/art/items/clothing/work_gloves/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Both gloves are thin comb-like silhouettes with three pointed finger projections and no readable thumb; two colors give no palm volume, seams or leather folds. Anatomy is a critical identity defect."
+      ],
+      "recommended_correction": "Independently draw each glove with five anatomically placed digits, a side thumb, cuff opening, finger joints and separate overlap order.",
+      "technical_metrics": {
+        "id": "item.clothing.work_gloves",
+        "path": "art/items/clothing/work_gloves/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          11,
+          15,
+          47,
+          49
+        ],
+        "occupied_alpha_pixels": 794,
+        "nontransparent_colors": 2,
+        "partial_alpha_pixels": 0,
+        "sha256": "cca32cd5703ecea5130b7697ec9f295338e70316774a46a8f7b45210476d2b02",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 20,
+      "logical_item_id": "item.clothing.winter_beanie",
+      "archetype": "hat",
+      "baseline_png": "baseline/output/art/items/clothing/winter_beanie/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "A semicircle, rectangular cuff and straight bright stripes make a diagram of a hat. No curved rib flow, folded cuff thickness, seam or fabric occlusion; top knob reads as an added pom-pom."
+      ],
+      "recommended_correction": "Create a sewn dome and folded ribbed cuff with broader fabric shading, ribs following curvature and a believable crown seam.",
+      "technical_metrics": {
+        "id": "item.clothing.winter_beanie",
+        "path": "art/items/clothing/winter_beanie/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          13,
+          51,
+          49
+        ],
+        "occupied_alpha_pixels": 1038,
+        "nontransparent_colors": 3,
+        "partial_alpha_pixels": 0,
+        "sha256": "634f08a27f48cfd318168a5629507220a676ab468e7914d14224822e86f45c90",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 21,
+      "logical_item_id": "item.electronics.handheld_radio",
+      "archetype": "radio",
+      "baseline_png": "baseline/output/art/items/electronics/handheld_radio/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Block housing with blank screen and dark disk reads as a generic device. No bevel, knobs, buttons, raised grille, antenna socket or material-specific highlight bands."
+      ],
+      "recommended_correction": "Assemble a molded radio shell with controls, recessed display, speaker slots, antenna base and small overlap shadows.",
+      "technical_metrics": {
+        "id": "item.electronics.handheld_radio",
+        "path": "art/items/electronics/handheld_radio/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          14,
+          4,
+          50,
+          54
+        ],
+        "occupied_alpha_pixels": 1156,
+        "nontransparent_colors": 6,
+        "partial_alpha_pixels": 0,
+        "sha256": "a2711382d399036db51fd9f2fe4c154ed1e65b9282928b8a2bb9c104fd595023",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 22,
+      "logical_item_id": "item.electronics.flashlight",
+      "archetype": "flashlight",
+      "baseline_png": "baseline/output/art/items/electronics/flashlight/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Rectangle shaft and polygon head have weak assembly logic; flat pale disk resembles an emissive bulb, without reflector recess, retaining bezel, grip or switch."
+      ],
+      "recommended_correction": "Construct barrel, head flare, threaded bezel, recessed lens/reflector, switch and restrained machined-metal highlights.",
+      "technical_metrics": {
+        "id": "item.electronics.flashlight",
+        "path": "art/items/electronics/flashlight/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          15,
+          10,
+          57,
+          52
+        ],
+        "occupied_alpha_pixels": 582,
+        "nontransparent_colors": 5,
+        "partial_alpha_pixels": 0,
+        "sha256": "5661e4630c80f472803b43e41a1c5a0097be36f6e9b96264e608e7c054fb0f2a",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 23,
+      "logical_item_id": "item.survival.water_bottle",
+      "archetype": "bottle",
+      "baseline_png": "baseline/output/art/items/survival/water_bottle/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Flat symmetric bottle polygon and vertical stripe; no rim, threaded cap depth, molded shoulder thickness, label or transparent/translucent interior cues. Reads as an opaque flask."
+      ],
+      "recommended_correction": "Specify an original reusable bottle construction with thick neck/cap, coherent shoulders, base and plastic-specific soft reflected bands.",
+      "technical_metrics": {
+        "id": "item.survival.water_bottle",
+        "path": "art/items/survival/water_bottle/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          22,
+          8,
+          44,
+          54
+        ],
+        "occupied_alpha_pixels": 855,
+        "nontransparent_colors": 4,
+        "partial_alpha_pixels": 0,
+        "sha256": "218f00083442b3715cf350d601d9756209ae87b90982df479bd552c56d525fe6",
+        "matches_fixed24": true
+      }
+    },
+    {
+      "index": 24,
+      "logical_item_id": "item.survival.camping_mug",
+      "archetype": "mug",
+      "baseline_png": "baseline/output/art/items/survival/camping_mug/icon_00000.png",
+      "reviewer": "independent_agent_visual_inspection",
+      "review_method": [
+        "native_64_board",
+        "nearest_4x_board",
+        "native_48_board",
+        "native_32_board",
+        "actual_golden40_64px_reference_comparison"
+      ],
+      "visual_status": "visual_qa_rejected",
+      "founder_approved": false,
+      "numerical_score": null,
+      "defects": [
+        "Tapered flat wall, dark oval and open arc give basic mug recognition but no lip thickness, inner-wall depth, base edge, handle thickness or connected handle joints."
+      ],
+      "recommended_correction": "Model rolled rim, interior wall, handle attachment occlusion and steel/enamel plane response without a floating shadow.",
+      "technical_metrics": {
+        "id": "item.survival.camping_mug",
+        "path": "art/items/survival/camping_mug/icon_00000.png",
+        "mode": "RGBA",
+        "size": [
+          64,
+          64
+        ],
+        "alpha_bounds": [
+          17,
+          20,
+          60,
+          52
+        ],
+        "occupied_alpha_pixels": 955,
+        "nontransparent_colors": 4,
+        "partial_alpha_pixels": 0,
+        "sha256": "4784df423aed5f952e8f38e7d7cf8e46351044ba1a5bfc8b2f1ad721614d9d9f",
+        "matches_fixed24": true
+      }
+    }
+  ]
+}

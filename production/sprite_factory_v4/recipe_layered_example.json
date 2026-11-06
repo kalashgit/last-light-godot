@@ -1,0 +1,99 @@
+{
+  "id": "item.materials.original_stone_wedge",
+  "family": "materials",
+  "archetype": "layered",
+  "design": "original_stone_wedge",
+  "materials": [
+    "stone"
+  ],
+  "parts": [
+    {
+      "name": "stone_body",
+      "material": "stone",
+      "construction": "Original three-facet chipped stone wedge"
+    }
+  ],
+  "originality_provenance": "Independent native-coordinate example authored in LAST LIGHT V4; no reference pixels",
+  "layers": [
+    {
+      "op": "polygon",
+      "points": [
+        [
+          12,
+          42
+        ],
+        [
+          24,
+          17
+        ],
+        [
+          45,
+          23
+        ],
+        [
+          52,
+          43
+        ],
+        [
+          34,
+          52
+        ]
+      ],
+      "material": "stone",
+      "tone": 2
+    },
+    {
+      "op": "polygon",
+      "points": [
+        [
+          12,
+          42
+        ],
+        [
+          24,
+          17
+        ],
+        [
+          36,
+          28
+        ],
+        [
+          34,
+          52
+        ]
+      ],
+      "material": "stone",
+      "tone": 4
+    },
+    {
+      "op": "polygon",
+      "points": [
+        [
+          24,
+          17
+        ],
+        [
+          45,
+          23
+        ],
+        [
+          36,
+          28
+        ]
+      ],
+      "material": "stone",
+      "tone": 5
+    }
+  ],
+  "view": "inventory_icon",
+  "state": "intact",
+  "camera": "inventory_3q",
+  "size": [
+    64,
+    64
+  ],
+  "seed": 20261106,
+  "recipe_version": "stone_wedge_1",
+  "wear": "clean",
+  "render_mode": "procedural"
+}

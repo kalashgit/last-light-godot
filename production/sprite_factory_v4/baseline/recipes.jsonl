@@ -1,0 +1,24 @@
+{"id": "item.food.canned_beans", "family": "food", "archetype": "can", "material": "steel", "color": "#A36A4F", "brief": "Tin can with abstract ochre label", "qa_status": "unreviewed"}
+{"id": "item.food.canned_peas", "family": "food", "archetype": "can", "material": "steel", "color": "#667A5B", "brief": "Tin can with subdued green panel", "qa_status": "unreviewed"}
+{"id": "item.food.apple", "family": "food", "archetype": "fruit", "material": "organic", "color": "#A55642", "brief": "Red apple with leaf and uneven shape", "qa_status": "unreviewed"}
+{"id": "item.food.pear", "family": "food", "archetype": "fruit", "material": "organic", "color": "#87934E", "brief": "Pear with green rind and narrow shoulder", "qa_status": "unreviewed"}
+{"id": "item.medical.first_aid_kit", "family": "medical", "archetype": "case", "material": "plastic", "color": "#B8BEB4", "brief": "Hard medical box, generic cross sign", "qa_status": "unreviewed"}
+{"id": "item.medical.bandage_box", "family": "medical", "archetype": "box", "material": "cardboard", "color": "#CABDA8", "brief": "Matte medical packaging with stripe", "qa_status": "unreviewed"}
+{"id": "item.tools.claw_hammer", "family": "tools", "archetype": "hammer", "material": "steel_wood", "color": "#70808B", "brief": "Claw hammer, metal head and wooden handle", "qa_status": "unreviewed"}
+{"id": "item.tools.ball_peen_hammer", "family": "tools", "archetype": "hammer", "material": "steel_wood", "color": "#77858B", "brief": "Ball peen hammer, rounded end", "qa_status": "unreviewed"}
+{"id": "item.tools.flathead_screwdriver", "family": "tools", "archetype": "screwdriver", "material": "steel_plastic", "color": "#A56D4E", "brief": "Slotted screwdriver with plastic grip", "qa_status": "unreviewed"}
+{"id": "item.tools.phillips_screwdriver", "family": "tools", "archetype": "screwdriver", "material": "steel_plastic", "color": "#63778A", "brief": "Cross-head screwdriver with dark grip", "qa_status": "unreviewed"}
+{"id": "item.tools.adjustable_wrench", "family": "tools", "archetype": "wrench", "material": "steel", "color": "#849198", "brief": "Adjustable open-jaw wrench", "qa_status": "unreviewed"}
+{"id": "item.tools.pipe_wrench", "family": "tools", "archetype": "wrench", "material": "steel", "color": "#A46555", "brief": "Pipe wrench with heavy angular jaw", "qa_status": "unreviewed"}
+{"id": "item.materials.wooden_plank", "family": "materials", "archetype": "plank", "material": "wood", "color": "#957455", "brief": "Solid cut plank with end grain", "qa_status": "unreviewed"}
+{"id": "item.materials.steel_bar", "family": "materials", "archetype": "bar", "material": "steel", "color": "#87959A", "brief": "Rectangular steel stock", "qa_status": "unreviewed"}
+{"id": "item.materials.duct_tape", "family": "materials", "archetype": "tape", "material": "rubber", "color": "#686E6D", "brief": "Roll of dark industrial tape", "qa_status": "unreviewed"}
+{"id": "item.materials.rope_coil", "family": "materials", "archetype": "rope", "material": "fabric", "color": "#B49B70", "brief": "Coiled utility cord", "qa_status": "unreviewed"}
+{"id": "item.containers.rucksack", "family": "containers", "archetype": "backpack", "material": "fabric", "color": "#68765D", "brief": "Worn canvas backpack with pockets", "qa_status": "unreviewed"}
+{"id": "item.containers.tool_bag", "family": "containers", "archetype": "bag", "material": "fabric", "color": "#8F7357", "brief": "Rectangular soft bag with handles", "qa_status": "unreviewed"}
+{"id": "item.clothing.work_gloves", "family": "clothing", "archetype": "gloves", "material": "leather", "color": "#937656", "brief": "Pair of utility gloves", "qa_status": "unreviewed"}
+{"id": "item.clothing.winter_beanie", "family": "clothing", "archetype": "hat", "material": "fabric", "color": "#616F7B", "brief": "Ribbed knitted cap", "qa_status": "unreviewed"}
+{"id": "item.electronics.handheld_radio", "family": "electronics", "archetype": "radio", "material": "plastic", "color": "#616B71", "brief": "Portable radio with antenna", "qa_status": "unreviewed"}
+{"id": "item.electronics.flashlight", "family": "electronics", "archetype": "flashlight", "material": "metal", "color": "#808991", "brief": "Compact metal torch", "qa_status": "unreviewed"}
+{"id": "item.survival.water_bottle", "family": "survival", "archetype": "bottle", "material": "plastic", "color": "#6E99A0", "brief": "Reusable bottle with cap", "qa_status": "unreviewed"}
+{"id": "item.survival.camping_mug", "family": "survival", "archetype": "mug", "material": "metal", "color": "#7B898A", "brief": "Metal camp mug and side handle", "qa_status": "unreviewed"}

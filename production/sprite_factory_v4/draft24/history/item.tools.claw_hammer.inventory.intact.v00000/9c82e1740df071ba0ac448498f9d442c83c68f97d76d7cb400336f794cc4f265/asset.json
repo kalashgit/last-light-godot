@@ -1,0 +1,135 @@
+{
+  "archived_at": "2026-11-06T07:56:51.485815+00:00",
+  "archived_content_sha256": "9c82e1740df071ba0ac448498f9d442c83c68f97d76d7cb400336f794cc4f265",
+  "previous_expected_sha256": "9c82e1740df071ba0ac448498f9d442c83c68f97d76d7cb400336f794cc4f265",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "hammer",
+    "asset_id": "item.tools.claw_hammer.inventory.intact.v00000",
+    "category": "tools",
+    "created_at": "2026-11-06T07:54:46.952581+00:00",
+    "device_verification_status": "not_tested",
+    "family": "tools",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.tools.claw_hammer",
+    "material_specification": [
+      {
+        "construction": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+        "material": "bare_steel",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+        "material": "wood",
+        "name": "functional_attachments"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "756d4fba023b2b0c8d08cf1dc77db8b25c9ca7334d508696b74c9c27bd844a96",
+    "recipe_id": "item.tools.claw_hammer",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/tools/claw_hammer/icon.png",
+    "render_fingerprint": "1f58571cff94caa6b3aafd95ee162f27ffffdd0e2abf4210982e2999430e8cb1",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "9c82e1740df071ba0ac448498f9d442c83c68f97d76d7cb400336f794cc4f265",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "hammer",
+      "brief": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "claw_hammer",
+      "family": "tools",
+      "geometry": {
+        "construction": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.tools.claw_hammer",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "bare_steel",
+        "wood"
+      ],
+      "parts": [
+        {
+          "construction": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+          "material": "bare_steel",
+          "name": "primary_body"
+        },
+        {
+          "construction": "Hickory handle fitted through forged head eye, striking face and two curved claw prongs",
+          "material": "wood",
+          "name": "functional_attachments"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          8,
+          9,
+          46,
+          53
+        ],
+        "color_count": 13,
+        "height": 64,
+        "min_margin": 8,
+        "mode": "RGBA",
+        "opaque_pixels": 686,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.16748,
+        "visible_pixels": 686,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

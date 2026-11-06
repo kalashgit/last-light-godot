@@ -1,0 +1,25 @@
+{
+  "starting_branch": "codex/sprite-factory-b0003",
+  "starting_commit": "2a3743264ce10f5deeb9be059f9c752b1f3732f5",
+  "working_branch": "codex/master-sprite-factory-v4",
+  "engine": "Godot 4.6.3",
+  "actual_tests": [
+    "editor --import",
+    "tests/sprite_factory_v4_godot.gd:24 loaded hybrid textures with exact SHA-256/dimensions/paths",
+    "tests/run.sh:existing main, foundation, controls, inventory, loot, save migration/isolation regressions"
+  ],
+  "entry_scene": "res://main.tscn",
+  "world_tile_px": [
+    80,
+    40
+  ],
+  "world_projection": "(40*(x-y),20*(x+y))",
+  "new_asset_view": "inventory_icon",
+  "runtime_registry_bindings_added": 0,
+  "approved_existing_exports_hash_verified": 20,
+  "golden40_modified": false,
+  "iphone_codepad_verified": false,
+  "world_held_views_generated": 0,
+  "integration_status": "Godot resource import/path compatibility verified only; no production promotion or new gameplay binding",
+  "identity_contract": "Preserve all24 supplied V3 recipe IDs. Existing game uses ll_* IDs. Explicit reconciliation required before gameplay import; do not create duplicate canonical logical identities."
+}

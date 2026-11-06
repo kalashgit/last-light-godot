@@ -1,0 +1,11 @@
+LAST LIGHT | ORIGINAL PROCEDURAL SPRITE FACTORY v3
+BASE: /workspace/sprite_v4_baseline
+DRY_RUN: False DEMO_MODE: True
+Created editable recipes: /workspace/sprite_v4_baseline/recipes.jsonl
+RECIPES: 24 TOTAL POSSIBLE JOBS: 24 RANGE: 0 24
+ZIP: /workspace/sprite_v4_baseline/zip_exports/LAST_LIGHT_range_000000000_000000024_part_0001.zip icons: 24
+SUMMARY {"generated": 24, "resumed": 0, "errors": 0, "requested": 24, "qa_approved": 0, "godot_imported": 0}
+Manifest: /workspace/sprite_v4_baseline/manifest_range_000000000_000000024.jsonl
+Review sheets: /workspace/sprite_v4_baseline/review_sheets
+ZIP folder: /workspace/sprite_v4_baseline/zip_exports
+NEXT: visually review first 24; do NOT mass-produce unapproved archetypes.

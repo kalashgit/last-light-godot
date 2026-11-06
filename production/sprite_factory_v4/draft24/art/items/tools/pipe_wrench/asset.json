@@ -1,0 +1,129 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "wrench",
+  "asset_id": "item.tools.pipe_wrench.inventory.intact.v00000",
+  "category": "tools",
+  "created_at": "2026-11-06T07:57:47.971004+00:00",
+  "device_verification_status": "not_tested",
+  "family": "tools",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.tools.pipe_wrench",
+  "material_specification": [
+    {
+      "construction": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+      "material": "painted_metal",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+      "material": "bare_steel",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "9a524c8b89189eb617f2ed86c9c76c4c894213d7ac65800b8650f34dae82a987",
+  "recipe_id": "item.tools.pipe_wrench",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/tools/pipe_wrench/icon.png",
+  "render_fingerprint": "5ee96c65961fe264af794738a1eb268ea8a712a8a1ab2db28ac7f3918df43689",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "bc9bf6eecfdd587c8278a971c7a81f71abae2c7c0425df915f4ae024e86c5f86",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "wrench",
+    "brief": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "pipe_wrench",
+    "family": "tools",
+    "geometry": {
+      "construction": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.tools.pipe_wrench",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "painted_metal",
+      "bare_steel"
+    ],
+    "parts": [
+      {
+        "construction": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+        "material": "painted_metal",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Heavy red pipe wrench with straight handle, open frame, movable hooked serrated jaw and adjustment nut",
+        "material": "bare_steel",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        11,
+        6,
+        54,
+        57
+      ],
+      "color_count": 12,
+      "height": 64,
+      "min_margin": 6,
+      "mode": "RGBA",
+      "opaque_pixels": 763,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.186279,
+      "visible_pixels": 763,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

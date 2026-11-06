@@ -1,0 +1,11 @@
+{
+  "package": "LAST_LIGHT_V4_iPhone_Package.zip",
+  "bytes": 1520253,
+  "sha256": "9599f412dafeaf838b400500c7d8dfa4a7b8898dd81cf9a9a195438ddd17473c",
+  "file_count": 76,
+  "zip_crc_pass": true,
+  "all_file_sha256_pass": true,
+  "native_icon_count": 24,
+  "standalone_source_sha256": "dee1d2a572fc89b1542133a653fc04e96a45c4c68edf2bcf251a1bd493ad6c34",
+  "device_verified": false
+}

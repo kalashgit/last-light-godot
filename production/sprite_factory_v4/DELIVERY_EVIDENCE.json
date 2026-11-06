@@ -1,0 +1,34 @@
+{
+  "starting_commit": "2a3743264ce10f5deeb9be059f9c752b1f3732f5",
+  "branch": "codex/master-sprite-factory-v4",
+  "standalone_file": "LAST_LIGHT_MASTER_SPRITE_FACTORY_V4.py",
+  "standalone_sha256": "dee1d2a572fc89b1542133a653fc04e96a45c4c68edf2bcf251a1bd493ad6c34",
+  "source_inputs": [
+    {
+      "file": "LastLight_Sprites_24_FIXED.zip",
+      "path": "1-LastLight_Sprites_24_FIXED.zip",
+      "role": "24 exact baseline output references"
+    },
+    {
+      "file": "LastLight_SpriteFactory_V3_iPhone.zip",
+      "path": "2-LastLight_SpriteFactory_V3_iPhone.zip",
+      "role": "actual V3 code baseline"
+    }
+  ],
+  "style_authority": "https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96",
+  "runbook": "https://app.notion.com/p/40ff639e23738165aef0e162de122702",
+  "source_sha_bound_tests": "engineering/technical_test_report.json",
+  "source_sha_bound_benchmarks": "engineering/benchmark_report.json",
+  "default_output_review": "hybrid24/manifest.jsonl",
+  "procedural_review": "V4_FINAL_VISUAL_REVIEW.json",
+  "new_original_canonical_designs": 24,
+  "procedural_family_archetypes": 19,
+  "founder_approvals": 0,
+  "godot_texture_imports_verified": 24,
+  "gameplay_bindings_added": 0,
+  "device_verifications": 0,
+  "notion_checkpoint": {
+    "id": "410f639e237381e78a03dfddcfbbaa8d",
+    "url": "https://app.notion.com/p/410f639e237381e78a03dfddcfbbaa8d"
+  }
+}

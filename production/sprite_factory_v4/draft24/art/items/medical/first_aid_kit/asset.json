@@ -1,0 +1,129 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "case",
+  "asset_id": "item.medical.first_aid_kit.inventory.intact.v00000",
+  "category": "medical",
+  "created_at": "2026-11-06T07:57:47.947441+00:00",
+  "device_verification_status": "not_tested",
+  "family": "medical",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.medical.first_aid_kit",
+  "material_specification": [
+    {
+      "construction": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+      "material": "plastic",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+      "material": "bare_steel",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "4be71e122b8bae44dc6fded57d9517457da1d4e4e509dd22926848d181c7943d",
+  "recipe_id": "item.medical.first_aid_kit",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/medical/first_aid_kit/icon.png",
+  "render_fingerprint": "8d418519047e39eb37ded0257d73f22b7dced1c9fa50c2fab028004fb0b57e59",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "b11b32c9323e8b1b11d8fb95a72c7a8d16de39cd5833ebd5d68ca8b765b6cd43",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "case",
+    "brief": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "first_aid_kit",
+    "family": "medical",
+    "geometry": {
+      "construction": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.medical.first_aid_kit",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "plastic",
+      "bare_steel"
+    ],
+    "parts": [
+      {
+        "construction": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+        "material": "plastic",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Closed rigid medical box; integral carry handle, lid lip, two locking clasps",
+        "material": "bare_steel",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        9,
+        7,
+        55,
+        57
+      ],
+      "color_count": 15,
+      "height": 64,
+      "min_margin": 7,
+      "mode": "RGBA",
+      "opaque_pixels": 1647,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.4021,
+      "visible_pixels": 1647,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

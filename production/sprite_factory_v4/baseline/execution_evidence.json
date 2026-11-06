@@ -1,0 +1,496 @@
+{
+  "source": "/workspace/sprite_v4_inputs/v3/LastLight_SpriteFactory_V3_iPhone.py",
+  "source_sha256": "c2ac9122df274bd2bd17b3183196bc22b9f54a60639c6cf5300906a2bcea2c1f",
+  "settings_overrides": {
+    "CUSTOM_WORK_FOLDER": "/workspace/sprite_v4_baseline",
+    "DEMO_MODE": true,
+    "MAX_ITEMS": 24
+  },
+  "source_unmodified": true,
+  "pillow_version": "13.0.0",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "generated_files": 24,
+  "all_match_supplied_fixed24": true,
+  "technical_metrics": [
+    {
+      "id": "item.food.canned_beans",
+      "path": "art/items/food/canned_beans/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        14,
+        15,
+        49,
+        54
+      ],
+      "occupied_alpha_pixels": 1237,
+      "nontransparent_colors": 8,
+      "partial_alpha_pixels": 0,
+      "sha256": "4eddfb2d270284d817937e2ad927a5627bf245f5463ad43af09c8f89c265d5de",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.food.canned_peas",
+      "path": "art/items/food/canned_peas/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        14,
+        15,
+        49,
+        54
+      ],
+      "occupied_alpha_pixels": 1237,
+      "nontransparent_colors": 8,
+      "partial_alpha_pixels": 0,
+      "sha256": "546420caac6ced112567ce0f629ea59d9571eacf237f9a7aa9291f8d117e628a",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.food.apple",
+      "path": "art/items/food/apple/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        15,
+        9,
+        49,
+        52
+      ],
+      "occupied_alpha_pixels": 935,
+      "nontransparent_colors": 6,
+      "partial_alpha_pixels": 0,
+      "sha256": "43e25c146b3c995aa14b5a92b7969ce8947c78d4674eac1dfa231e81695214a2",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.food.pear",
+      "path": "art/items/food/pear/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        20,
+        9,
+        46,
+        51
+      ],
+      "occupied_alpha_pixels": 737,
+      "nontransparent_colors": 6,
+      "partial_alpha_pixels": 0,
+      "sha256": "d67786de3373a8ee13d765a0c4c1703dbb948d9bd03146dc6574ee5742d3ecbd",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.medical.first_aid_kit",
+      "path": "art/items/medical/first_aid_kit/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        12,
+        8,
+        53,
+        52
+      ],
+      "occupied_alpha_pixels": 1191,
+      "nontransparent_colors": 6,
+      "partial_alpha_pixels": 0,
+      "sha256": "d562e7db844be71c97297971fd43ce368b78fea72b6f7ac7222f2aef0ca38040",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.medical.bandage_box",
+      "path": "art/items/medical/bandage_box/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        12,
+        16,
+        53,
+        52
+      ],
+      "occupied_alpha_pixels": 1125,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "1a01b12cb2409b347ce7a5d3ba861a244e8cfc02d64d014d18b7e412b0b0b683",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.claw_hammer",
+      "path": "art/items/tools/claw_hammer/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        8,
+        8,
+        47,
+        48
+      ],
+      "occupied_alpha_pixels": 544,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "344ec39b9e74f9b2a208a097132567e80d3c412fcd1b1dbb8a2f7c35192acf39",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.ball_peen_hammer",
+      "path": "art/items/tools/ball_peen_hammer/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        14,
+        8,
+        47,
+        48
+      ],
+      "occupied_alpha_pixels": 560,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "b9faa951dd41393bb91872381ff5a341dbf9b088cd0c4ee8ce49268d238f63d2",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.flathead_screwdriver",
+      "path": "art/items/tools/flathead_screwdriver/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        10,
+        5,
+        55,
+        53
+      ],
+      "occupied_alpha_pixels": 475,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "4ce358d3bb4795426c7b446032ac8ecba4bac56fc90d06fc61aa2560a898b953",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.phillips_screwdriver",
+      "path": "art/items/tools/phillips_screwdriver/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        10,
+        5,
+        55,
+        53
+      ],
+      "occupied_alpha_pixels": 477,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "0ed759ca85ba58d5c8cc7b7cffaa56e6ee0e3077d6c1bf87c849c9b634118ae4",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.adjustable_wrench",
+      "path": "art/items/tools/adjustable_wrench/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        12,
+        7,
+        52,
+        52
+      ],
+      "occupied_alpha_pixels": 510,
+      "nontransparent_colors": 4,
+      "partial_alpha_pixels": 0,
+      "sha256": "6de9164812f351bd23a2d5e5f0a297c4fe3f39deef8cca6ae16dadf03142ab53",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.tools.pipe_wrench",
+      "path": "art/items/tools/pipe_wrench/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        12,
+        7,
+        52,
+        52
+      ],
+      "occupied_alpha_pixels": 513,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "eea85be873926a464db55aea3d8aff3350f05aefc9cb5c0fa6ee27a19a78941a",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.materials.wooden_plank",
+      "path": "art/items/materials/wooden_plank/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        8,
+        13,
+        54,
+        52
+      ],
+      "occupied_alpha_pixels": 905,
+      "nontransparent_colors": 3,
+      "partial_alpha_pixels": 0,
+      "sha256": "da96d717cc26e4a5c1af423fb7571a21830c29f800324610b7440c121f671ceb",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.materials.steel_bar",
+      "path": "art/items/materials/steel_bar/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        8,
+        13,
+        54,
+        52
+      ],
+      "occupied_alpha_pixels": 905,
+      "nontransparent_colors": 3,
+      "partial_alpha_pixels": 0,
+      "sha256": "dc227c0f01c37e866b512a9501ab54649855a1fcb6a5a6452fab13e74b5d1acf",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.materials.duct_tape",
+      "path": "art/items/materials/duct_tape/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        15,
+        13,
+        49,
+        50
+      ],
+      "occupied_alpha_pixels": 966,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "732daa428b1f14e66a14d47db9880e3c049f8539b006cbfddaefe667e534ea1d",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.materials.rope_coil",
+      "path": "art/items/materials/rope_coil/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        13,
+        13,
+        52,
+        50
+      ],
+      "occupied_alpha_pixels": 675,
+      "nontransparent_colors": 3,
+      "partial_alpha_pixels": 0,
+      "sha256": "4a9ec9d3670cef2dabe9ae21f9779bee3c5e662df8a1846ce762ba73100c067e",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.containers.rucksack",
+      "path": "art/items/containers/rucksack/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        15,
+        9,
+        51,
+        52
+      ],
+      "occupied_alpha_pixels": 1298,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "521b3f205d147fbbd3fdba6acbb7c02190c841354b63c27565f901042d83a938",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.containers.tool_bag",
+      "path": "art/items/containers/tool_bag/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        15,
+        9,
+        51,
+        52
+      ],
+      "occupied_alpha_pixels": 1298,
+      "nontransparent_colors": 4,
+      "partial_alpha_pixels": 0,
+      "sha256": "58e462d8033887746507c42fa847c693e57542ffd291ff8ac39084e7cadad818",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.clothing.work_gloves",
+      "path": "art/items/clothing/work_gloves/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        11,
+        15,
+        47,
+        49
+      ],
+      "occupied_alpha_pixels": 794,
+      "nontransparent_colors": 2,
+      "partial_alpha_pixels": 0,
+      "sha256": "cca32cd5703ecea5130b7697ec9f295338e70316774a46a8f7b45210476d2b02",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.clothing.winter_beanie",
+      "path": "art/items/clothing/winter_beanie/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        14,
+        13,
+        51,
+        49
+      ],
+      "occupied_alpha_pixels": 1038,
+      "nontransparent_colors": 3,
+      "partial_alpha_pixels": 0,
+      "sha256": "634f08a27f48cfd318168a5629507220a676ab468e7914d14224822e86f45c90",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.electronics.handheld_radio",
+      "path": "art/items/electronics/handheld_radio/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        14,
+        4,
+        50,
+        54
+      ],
+      "occupied_alpha_pixels": 1156,
+      "nontransparent_colors": 6,
+      "partial_alpha_pixels": 0,
+      "sha256": "a2711382d399036db51fd9f2fe4c154ed1e65b9282928b8a2bb9c104fd595023",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.electronics.flashlight",
+      "path": "art/items/electronics/flashlight/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        15,
+        10,
+        57,
+        52
+      ],
+      "occupied_alpha_pixels": 582,
+      "nontransparent_colors": 5,
+      "partial_alpha_pixels": 0,
+      "sha256": "5661e4630c80f472803b43e41a1c5a0097be36f6e9b96264e608e7c054fb0f2a",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.survival.water_bottle",
+      "path": "art/items/survival/water_bottle/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        22,
+        8,
+        44,
+        54
+      ],
+      "occupied_alpha_pixels": 855,
+      "nontransparent_colors": 4,
+      "partial_alpha_pixels": 0,
+      "sha256": "218f00083442b3715cf350d601d9756209ae87b90982df479bd552c56d525fe6",
+      "matches_fixed24": true
+    },
+    {
+      "id": "item.survival.camping_mug",
+      "path": "art/items/survival/camping_mug/icon_00000.png",
+      "mode": "RGBA",
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bounds": [
+        17,
+        20,
+        60,
+        52
+      ],
+      "occupied_alpha_pixels": 955,
+      "nontransparent_colors": 4,
+      "partial_alpha_pixels": 0,
+      "sha256": "4784df423aed5f952e8f38e7d7cf8e46351044ba1a5bfc8b2f1ad721614d9d9f",
+      "matches_fixed24": true
+    }
+  ]
+}

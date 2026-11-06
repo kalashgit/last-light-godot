@@ -1,0 +1,133 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "fruit",
+  "asset_id": "item.food.pear.inventory.intact.v00000",
+  "category": "food",
+  "created_at": "2026-11-06T08:07:45.992703+00:00",
+  "device_verification_status": "not_tested",
+  "family": "food",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.food.pear",
+  "material_specification": [
+    {
+      "construction": "Yellow green pear with narrow curved neck and weighty lower body",
+      "material": "organic",
+      "name": "primary_body"
+    },
+    {
+      "construction": "Yellow green pear with narrow curved neck and weighty lower body",
+      "material": "wood",
+      "name": "functional_attachments"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "d2c9d5faf5e1485ef695b18d4d646df4eec0000734f0c887106d520ebd69a013",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "c3fb2425d19ed7af2995a5164dd00b7028c2008f3f398174600dcf7d4c99f39d",
+  "recipe_id": "item.food.pear",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/food/pear/icon.png",
+  "render_fingerprint": "67e37eedbabca279e4d9e10d78b19589a11cec4a5fc82bb94c2b0c3918fa1560",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "d2c9d5faf5e1485ef695b18d4d646df4eec0000734f0c887106d520ebd69a013",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "fruit",
+    "brief": "Yellow green pear with narrow curved neck and weighty lower body",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "pear",
+    "family": "food",
+    "geometry": {
+      "construction": "Yellow green pear with narrow curved neck and weighty lower body",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.food.pear",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "organic",
+      "wood"
+    ],
+    "parts": [
+      {
+        "construction": "Yellow green pear with narrow curved neck and weighty lower body",
+        "material": "organic",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Yellow green pear with narrow curved neck and weighty lower body",
+        "material": "wood",
+        "name": "functional_attachments"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "d2c9d5faf5e1485ef695b18d4d646df4eec0000734f0c887106d520ebd69a013",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        14,
+        4,
+        50,
+        60
+      ],
+      "color_count": 48,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 1160,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.283203,
+      "visible_pixels": 1160,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

@@ -1,0 +1,146 @@
+{
+  "archived_at": "2026-11-06T07:57:47.986634+00:00",
+  "archived_content_sha256": "a49717221360913a98f3a791919fa314796dff712f2e6e88dec8691bf9187cf7",
+  "previous_expected_sha256": "a49717221360913a98f3a791919fa314796dff712f2e6e88dec8691bf9187cf7",
+  "previous_record": {
+    "anchor": null,
+    "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+    "archetype": "backpack",
+    "asset_id": "item.containers.rucksack.inventory.intact.v00000",
+    "category": "containers",
+    "created_at": "2026-11-06T07:56:51.537192+00:00",
+    "device_verification_status": "not_tested",
+    "family": "containers",
+    "format": "RGBA_PNG",
+    "founder_approved": false,
+    "generator_version": "LAST_LIGHT_V4.0.1",
+    "godot_import_status": "not_tested",
+    "height": 64,
+    "logical_item_id": "item.containers.rucksack",
+    "material_specification": [
+      {
+        "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+        "material": "fabric",
+        "name": "primary_body"
+      },
+      {
+        "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+        "material": "leather",
+        "name": "functional_attachments"
+      },
+      {
+        "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+        "material": "bare_steel",
+        "name": "functional_attachments"
+      }
+    ],
+    "production_status": "visual_review_required",
+    "provenance": {
+      "authoring_method": "original_procedural_shape_grammar",
+      "external_reference_pixels_used": false,
+      "generator": "LAST_LIGHT_V4.0.1",
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "source_artwork": "embedded_recipe_and_renderer",
+      "variant": 0
+    },
+    "qa_status": "technical_qa_passed",
+    "recipe_fingerprint": "5f191efb0455c076edcc0ce90e42352bb48e6740beb21fd1503e6574ca3b7d77",
+    "recipe_id": "item.containers.rucksack",
+    "recipe_version": "native_parts_1",
+    "relative_path": "art/items/containers/rucksack/icon.png",
+    "render_fingerprint": "80a279c1e21473bfc8db6fc72e69dd10dacea127006e0783cdaa1f8dc564cc86",
+    "required_representations": [
+      "inventory_icon"
+    ],
+    "sha256": "a49717221360913a98f3a791919fa314796dff712f2e6e88dec8691bf9187cf7",
+    "size": [
+      64,
+      64
+    ],
+    "source_recipe": {
+      "archetype": "backpack",
+      "brief": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+      "camera": "inventory_3q",
+      "colorway": "muted_last_light",
+      "design": "rucksack",
+      "family": "containers",
+      "geometry": {
+        "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+        "proportions": "functional object proportions; individually authored native coordinate recipe"
+      },
+      "id": "item.containers.rucksack",
+      "light": [
+        -0.55,
+        -0.75,
+        0.7
+      ],
+      "materials": [
+        "fabric",
+        "leather",
+        "bare_steel"
+      ],
+      "parts": [
+        {
+          "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+          "material": "fabric",
+          "name": "primary_body"
+        },
+        {
+          "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+          "material": "leather",
+          "name": "functional_attachments"
+        },
+        {
+          "construction": "Loaded olive canvas rucksack, gussets, shoulders, top handle, flap, buckles and lower pocket",
+          "material": "bare_steel",
+          "name": "functional_attachments"
+        }
+      ],
+      "recipe_version": "native_parts_1",
+      "seed": 20261106,
+      "size": [
+        64,
+        64
+      ],
+      "state": "intact",
+      "view": "inventory_icon",
+      "wear": "used"
+    },
+    "source_reference_ids": [],
+    "state": "intact",
+    "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+    "synthetic_benchmark": false,
+    "technical_qa": {
+      "errors": [],
+      "measurements": {
+        "bbox": [
+          7,
+          6,
+          57,
+          55
+        ],
+        "color_count": 10,
+        "height": 64,
+        "min_margin": 6,
+        "mode": "RGBA",
+        "opaque_pixels": 1783,
+        "partial_alpha_fraction": 0.0,
+        "visible_fraction": 0.435303,
+        "visible_pixels": 1783,
+        "width": 64
+      },
+      "passed": true,
+      "warnings": []
+    },
+    "variant": 0,
+    "view": "inventory_icon",
+    "visual_qa": {
+      "reviewer": null,
+      "scores": null,
+      "status": "not_reviewed"
+    },
+    "width": 64
+  },
+  "reason": "versioned_draft_replacement_or_corruption_recovery"
+}

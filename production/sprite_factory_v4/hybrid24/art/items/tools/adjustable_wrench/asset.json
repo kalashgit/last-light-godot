@@ -1,0 +1,122 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "wrench",
+  "asset_id": "item.tools.adjustable_wrench.inventory.intact.v00000",
+  "category": "tools",
+  "created_at": "2026-11-06T08:07:46.018110+00:00",
+  "device_verification_status": "not_tested",
+  "family": "tools",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.2",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.tools.adjustable_wrench",
+  "material_specification": [
+    {
+      "construction": "Forged adjustable wrench with fixed jaw, sliding jaw, worm wheel, tapered shank and hanging hole",
+      "material": "bare_steel",
+      "name": "primary_body"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_AI_assisted_native_pixel_template_with_procedural_variant_cleanup",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.2",
+    "native_template_sha256": "9bdba3dba95acc42c909d3b17fad695c10e370fd4e87db783bc1d8927fcc3887",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_original_native64_template",
+    "template_source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "a62f4aeb2456a53bf75e977331bdf882284244a9aacc60c93f1040c68aa528bb",
+  "recipe_id": "item.tools.adjustable_wrench",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/tools/adjustable_wrench/icon.png",
+  "render_fingerprint": "ce3b11f229ac207b8261ec64a0924c41428ab619768e54ab5017fdcf99f440d6",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "9bdba3dba95acc42c909d3b17fad695c10e370fd4e87db783bc1d8927fcc3887",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "wrench",
+    "brief": "Forged adjustable wrench with fixed jaw, sliding jaw, worm wheel, tapered shank and hanging hole",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "adjustable_wrench",
+    "family": "tools",
+    "geometry": {
+      "construction": "Forged adjustable wrench with fixed jaw, sliding jaw, worm wheel, tapered shank and hanging hole",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.tools.adjustable_wrench",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "bare_steel"
+    ],
+    "parts": [
+      {
+        "construction": "Forged adjustable wrench with fixed jaw, sliding jaw, worm wheel, tapered shank and hanging hole",
+        "material": "bare_steel",
+        "name": "primary_body"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "render_mode": "authored_template",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "template_sha256": "9bdba3dba95acc42c909d3b17fad695c10e370fd4e87db783bc1d8927fcc3887",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        4,
+        4,
+        60,
+        59
+      ],
+      "color_count": 42,
+      "height": 64,
+      "min_margin": 4,
+      "mode": "RGBA",
+      "opaque_pixels": 992,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.242188,
+      "visible_pixels": 992,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}

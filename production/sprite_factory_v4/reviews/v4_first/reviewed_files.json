@@ -1,0 +1,410 @@
+[
+  {
+    "logical_item_id": "item.food.canned_beans",
+    "path": "reviews/v4_first/canned_beans.png",
+    "sha256": "1cca6822e38eb71c74f25c85e613bfe251e362381002affd7bca6cf5f13d332e",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      17,
+      11,
+      47,
+      53
+    ],
+    "colors": 19
+  },
+  {
+    "logical_item_id": "item.food.canned_peas",
+    "path": "reviews/v4_first/canned_peas.png",
+    "sha256": "b71eaf3d6891cffe5d096728ba0e1bc68ff1589d447fa4156eb0a1d52fbfaf2e",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      12,
+      17,
+      52,
+      50
+    ],
+    "colors": 19
+  },
+  {
+    "logical_item_id": "item.food.apple",
+    "path": "reviews/v4_first/apple.png",
+    "sha256": "8ded137f0657ab383154aae07609698f90cfe1c8ab94470034463d4725e7c5b2",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      14,
+      7,
+      51,
+      54
+    ],
+    "colors": 10
+  },
+  {
+    "logical_item_id": "item.food.pear",
+    "path": "reviews/v4_first/pear.png",
+    "sha256": "44c6e1d2771064ce519d972afe6f74d1380e3faaf58affa41b4ce56954af200d",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      17,
+      7,
+      49,
+      55
+    ],
+    "colors": 9
+  },
+  {
+    "logical_item_id": "item.medical.first_aid_kit",
+    "path": "reviews/v4_first/first_aid_kit.png",
+    "sha256": "1ca83189b982db4f28064527328b41d43a29ca27655b1c4a4d8ebf833eb76480",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      7,
+      55,
+      57
+    ],
+    "colors": 14
+  },
+  {
+    "logical_item_id": "item.medical.bandage_box",
+    "path": "reviews/v4_first/bandage_box.png",
+    "sha256": "5549cb9bdaeb9f95a94afe2a4e9ccd62866c8de93d71eff36454e9b48c255c5a",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      13,
+      55,
+      57
+    ],
+    "colors": 6
+  },
+  {
+    "logical_item_id": "item.tools.claw_hammer",
+    "path": "reviews/v4_first/claw_hammer.png",
+    "sha256": "5786a6de084cc58fa6fc28225885dab957ba0545a888ed58919840eb68e0a7e7",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      8,
+      9,
+      46,
+      53
+    ],
+    "colors": 11
+  },
+  {
+    "logical_item_id": "item.tools.ball_peen_hammer",
+    "path": "reviews/v4_first/ball_peen_hammer.png",
+    "sha256": "57038ab4012cedd391b492bc00bd6703e61a7574022d9cd37e2572149a9269d5",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      11,
+      9,
+      46,
+      53
+    ],
+    "colors": 10
+  },
+  {
+    "logical_item_id": "item.tools.flathead_screwdriver",
+    "path": "reviews/v4_first/flathead_screwdriver.png",
+    "sha256": "c5d03a443797cf65f28cba0ae472364702cc8f334b0b8d83d20adb7a8b6fa23b",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      6,
+      57,
+      56
+    ],
+    "colors": 11
+  },
+  {
+    "logical_item_id": "item.tools.phillips_screwdriver",
+    "path": "reviews/v4_first/phillips_screwdriver.png",
+    "sha256": "026039ce2be28ee568db4665edeb52c5dbd8c3ef4d7cfc68b73a272faed3bc02",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      6,
+      56,
+      56
+    ],
+    "colors": 11
+  },
+  {
+    "logical_item_id": "item.tools.adjustable_wrench",
+    "path": "reviews/v4_first/adjustable_wrench.png",
+    "sha256": "5954e94b9d490966a7ed252aa16430fe237fa78a3b5c5ff7f9fb0e4ff48493e6",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      11,
+      6,
+      53,
+      57
+    ],
+    "colors": 8
+  },
+  {
+    "logical_item_id": "item.tools.pipe_wrench",
+    "path": "reviews/v4_first/pipe_wrench.png",
+    "sha256": "dabe2164106d3991466b0e48b4bb041fbc7d38f2b502668784c430ca7c1b40a4",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      11,
+      6,
+      54,
+      57
+    ],
+    "colors": 12
+  },
+  {
+    "logical_item_id": "item.materials.wooden_plank",
+    "path": "reviews/v4_first/wooden_plank.png",
+    "sha256": "1a8db6c712f7e4ca4b3c0c99b138bde44b9cf225c04e260332450a18df1f6e59",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      7,
+      12,
+      56,
+      56
+    ],
+    "colors": 6
+  },
+  {
+    "logical_item_id": "item.materials.steel_bar",
+    "path": "reviews/v4_first/steel_bar.png",
+    "sha256": "0bc897f11548339c190ee66ef5086105fc46cfa2d9516d08702d8227eae551f0",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      7,
+      12,
+      56,
+      56
+    ],
+    "colors": 4
+  },
+  {
+    "logical_item_id": "item.materials.duct_tape",
+    "path": "reviews/v4_first/duct_tape.png",
+    "sha256": "8e37360a5b0ed684a5d9a6d14173f87e11afe77785feab7c64edd0636d19c8b4",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      10,
+      12,
+      55,
+      55
+    ],
+    "colors": 11
+  },
+  {
+    "logical_item_id": "item.materials.rope_coil",
+    "path": "reviews/v4_first/rope_coil.png",
+    "sha256": "d5af271bd752d4ad1a93fe2fb7b188f4c9c39fc2b442bfce1f2dacdac5dd5492",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      17,
+      58,
+      55
+    ],
+    "colors": 4
+  },
+  {
+    "logical_item_id": "item.containers.rucksack",
+    "path": "reviews/v4_first/rucksack.png",
+    "sha256": "9a6155897844e64174c56174de89679669342080b859f4e9a84c1ea7009aedb6",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      7,
+      6,
+      57,
+      55
+    ],
+    "colors": 9
+  },
+  {
+    "logical_item_id": "item.containers.tool_bag",
+    "path": "reviews/v4_first/tool_bag.png",
+    "sha256": "739913a91209e0a75383bd439af5956c2b55787f6b3256c48f7c19737fe842cc",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      9,
+      7,
+      55,
+      56
+    ],
+    "colors": 14
+  },
+  {
+    "logical_item_id": "item.clothing.work_gloves",
+    "path": "reviews/v4_first/work_gloves.png",
+    "sha256": "88382b3b08a4df855be92f362c93480d1a4960213ca18415021066c920a458dd",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      7,
+      14,
+      51,
+      55
+    ],
+    "colors": 6
+  },
+  {
+    "logical_item_id": "item.clothing.winter_beanie",
+    "path": "reviews/v4_first/winter_beanie.png",
+    "sha256": "20d046352d30dcd4195a9c2477f540ffe424bc1913d31af5a42422fb73eed9e7",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      11,
+      11,
+      52,
+      52
+    ],
+    "colors": 7
+  },
+  {
+    "logical_item_id": "item.electronics.handheld_radio",
+    "path": "reviews/v4_first/handheld_radio.png",
+    "sha256": "9184c852ae4eb0497718aa81a451994b8b422fd6e322cd4b3de9f574e351e390",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      12,
+      6,
+      50,
+      57
+    ],
+    "colors": 17
+  },
+  {
+    "logical_item_id": "item.electronics.flashlight",
+    "path": "reviews/v4_first/flashlight.png",
+    "sha256": "920a6570249a1d498b69aa00db23793166c282e7e0147649cbf6625d5032bec4",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      11,
+      9,
+      58,
+      52
+    ],
+    "colors": 16
+  },
+  {
+    "logical_item_id": "item.survival.water_bottle",
+    "path": "reviews/v4_first/water_bottle.png",
+    "sha256": "fd5c566865208cfea278df4276b968ca2102aba7952965869b7c81f5500ccf17",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      20,
+      8,
+      46,
+      55
+    ],
+    "colors": 16
+  },
+  {
+    "logical_item_id": "item.survival.camping_mug",
+    "path": "reviews/v4_first/camping_mug.png",
+    "sha256": "cff32e85c13ca47b6cdb6a40b29423aa730dd7eb93788ff2cdb68ba51bcf1e4f",
+    "size": [
+      64,
+      64
+    ],
+    "mode": "RGBA",
+    "alpha_bounds": [
+      12,
+      15,
+      59,
+      54
+    ],
+    "colors": 6
+  }
+]

@@ -1,0 +1,444 @@
+{
+  "tool": "image_gen.imagegen",
+  "tool_model_version": "not exposed",
+  "seed": "not exposed",
+  "source_sha256": "5ad7711b027a19788d3b136a5f810c5d99cb354900ed85926553172804c7964c",
+  "prompt_path": "production/sprite_factory_v4/hybrid_prompt.txt",
+  "prompt_sha256": "f1a0183afd46bf52836089dff10d6a73c0869b5001096277bb2dfcc80cc26ac7",
+  "reference": "Original founder Golden40 board only; no PZwiki artwork used",
+  "method": "Original AI-assisted source templates; native64 nearest sampling, component/matte cleanup and undithered48-color palette; not purely procedural artwork or hand-pixel approval",
+  "records": [
+    {
+      "recipe_id": "item.food.canned_beans",
+      "design": "canned_beans",
+      "source_crop": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "source_object_bounds": [
+        78,
+        34,
+        201,
+        234
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/canned_beans.png",
+      "sha256": "b7c95b8728d80fa0ef38151f410443e6e9238f75fea351823c98d35a38ef0db2"
+    },
+    {
+      "recipe_id": "item.food.canned_peas",
+      "design": "canned_peas",
+      "source_crop": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "source_object_bounds": [
+        63,
+        77,
+        206,
+        227
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/canned_peas.png",
+      "sha256": "ef9ba13fa51fb482a95d817693df3919cf3fb45b11db2bd4c5f36e3371cf2985"
+    },
+    {
+      "recipe_id": "item.food.apple",
+      "design": "apple",
+      "source_crop": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "source_object_bounds": [
+        50,
+        59,
+        210,
+        224
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/apple.png",
+      "sha256": "e9b0a1b9a0d8c09cf38add95952df532f13945058474777c6dc275eadd2508d8"
+    },
+    {
+      "recipe_id": "item.food.pear",
+      "design": "pear",
+      "source_crop": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "source_object_bounds": [
+        60,
+        35,
+        184,
+        229
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/pear.png",
+      "sha256": "d2c9d5faf5e1485ef695b18d4d646df4eec0000734f0c887106d520ebd69a013"
+    },
+    {
+      "recipe_id": "item.medical.first_aid_kit",
+      "design": "first_aid_kit",
+      "source_crop": [
+        1024,
+        0,
+        1280,
+        256
+      ],
+      "source_object_bounds": [
+        26,
+        51,
+        237,
+        227
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/first_aid_kit.png",
+      "sha256": "f2112c632c5eb039ce8a309441fff8db06ed2b88d93f8cc0427bf3bb72be7307"
+    },
+    {
+      "recipe_id": "item.medical.bandage_box",
+      "design": "bandage_box",
+      "source_crop": [
+        1280,
+        0,
+        1536,
+        256
+      ],
+      "source_object_bounds": [
+        49,
+        68,
+        217,
+        224
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/bandage_box.png",
+      "sha256": "c5196ceed0e50c701a55d6a71fecef3926a8b77dfca5b0126fc80f376e5790ca"
+    },
+    {
+      "recipe_id": "item.tools.claw_hammer",
+      "design": "claw_hammer",
+      "source_crop": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "source_object_bounds": [
+        39,
+        22,
+        232,
+        238
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/claw_hammer.png",
+      "sha256": "31a3002f5559894c8f04782767e0e6e14a7ebe97f662f04ba4599f8b822e59b1"
+    },
+    {
+      "recipe_id": "item.tools.ball_peen_hammer",
+      "design": "ball_peen_hammer",
+      "source_crop": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "source_object_bounds": [
+        41,
+        33,
+        229,
+        234
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/ball_peen_hammer.png",
+      "sha256": "c450827f2431c4c9ad0a59bf2f913db17b272280e61d81d6dd5a43ae6e308aba"
+    },
+    {
+      "recipe_id": "item.tools.flathead_screwdriver",
+      "design": "flathead_screwdriver",
+      "source_crop": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "source_object_bounds": [
+        31,
+        34,
+        225,
+        230
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/flathead_screwdriver.png",
+      "sha256": "d24a426296848f4033fbce238f14b87da32f9a57e46248114b78a63f72805cca"
+    },
+    {
+      "recipe_id": "item.tools.phillips_screwdriver",
+      "design": "phillips_screwdriver",
+      "source_crop": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "source_object_bounds": [
+        37,
+        35,
+        221,
+        226
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/phillips_screwdriver.png",
+      "sha256": "5d1464d94e9cad7422c61f9e64e5b387165f46e43310cc2449d3cd0f05086029"
+    },
+    {
+      "recipe_id": "item.tools.adjustable_wrench",
+      "design": "adjustable_wrench",
+      "source_crop": [
+        1024,
+        256,
+        1280,
+        512
+      ],
+      "source_object_bounds": [
+        30,
+        35,
+        228,
+        231
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/adjustable_wrench.png",
+      "sha256": "9bdba3dba95acc42c909d3b17fad695c10e370fd4e87db783bc1d8927fcc3887"
+    },
+    {
+      "recipe_id": "item.tools.pipe_wrench",
+      "design": "pipe_wrench",
+      "source_crop": [
+        1280,
+        256,
+        1536,
+        512
+      ],
+      "source_object_bounds": [
+        31,
+        34,
+        234,
+        235
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/pipe_wrench.png",
+      "sha256": "ddb76a3f82c8cfcca1497f69ae9eb742ab4319f08d3c35307f924680d47216b6"
+    },
+    {
+      "recipe_id": "item.materials.wooden_plank",
+      "design": "wooden_plank",
+      "source_crop": [
+        0,
+        512,
+        256,
+        768
+      ],
+      "source_object_bounds": [
+        24,
+        52,
+        246,
+        223
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/wooden_plank.png",
+      "sha256": "b5b677cdc119c288fa2f572fcdfc70d913872e855d5b73cf47811347d4741390"
+    },
+    {
+      "recipe_id": "item.materials.steel_bar",
+      "design": "steel_bar",
+      "source_crop": [
+        256,
+        512,
+        512,
+        768
+      ],
+      "source_object_bounds": [
+        27,
+        63,
+        235,
+        214
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/steel_bar.png",
+      "sha256": "6f63cd3ce04524ab905bd3d44f2fee5bd051659333213c604ac0a183acb8b961"
+    },
+    {
+      "recipe_id": "item.materials.duct_tape",
+      "design": "duct_tape",
+      "source_crop": [
+        512,
+        512,
+        768,
+        768
+      ],
+      "source_object_bounds": [
+        36,
+        51,
+        215,
+        226
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/duct_tape.png",
+      "sha256": "ebce2a53c05cff7c1bd23c04b626b641d0f5318e7d06f08f6db623771ebcf3bd"
+    },
+    {
+      "recipe_id": "item.materials.rope_coil",
+      "design": "rope_coil",
+      "source_crop": [
+        768,
+        512,
+        1024,
+        768
+      ],
+      "source_object_bounds": [
+        18,
+        62,
+        226,
+        226
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/rope_coil.png",
+      "sha256": "8b085d52646d9407279c5400c9453ea9a22c31b81b83bf6c2366d6bc937ee86e"
+    },
+    {
+      "recipe_id": "item.containers.rucksack",
+      "design": "rucksack",
+      "source_crop": [
+        1024,
+        512,
+        1280,
+        768
+      ],
+      "source_object_bounds": [
+        24,
+        18,
+        233,
+        233
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/rucksack.png",
+      "sha256": "248f1ce61221edbac3641cc1b77fb255bfd3bbecab6cfb7b8056b13d8a061b21"
+    },
+    {
+      "recipe_id": "item.containers.tool_bag",
+      "design": "tool_bag",
+      "source_crop": [
+        1280,
+        512,
+        1536,
+        768
+      ],
+      "source_object_bounds": [
+        23,
+        50,
+        237,
+        226
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/tool_bag.png",
+      "sha256": "c81d49e4a84d5d297645099eb53602db9736b7996aadf8670d099801bb37c00f"
+    },
+    {
+      "recipe_id": "item.clothing.work_gloves",
+      "design": "work_gloves",
+      "source_crop": [
+        0,
+        768,
+        256,
+        1024
+      ],
+      "source_object_bounds": [
+        19,
+        41,
+        237,
+        224
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/work_gloves.png",
+      "sha256": "679de32a4d322603b84d7765bea579eedd8a8820502f526997f2efbc6963f074"
+    },
+    {
+      "recipe_id": "item.clothing.winter_beanie",
+      "design": "winter_beanie",
+      "source_crop": [
+        256,
+        768,
+        512,
+        1024
+      ],
+      "source_object_bounds": [
+        29,
+        48,
+        233,
+        218
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/winter_beanie.png",
+      "sha256": "4a4d94c023cf159374314f442950584265373436a3f110af08d81429246525b5"
+    },
+    {
+      "recipe_id": "item.electronics.handheld_radio",
+      "design": "handheld_radio",
+      "source_crop": [
+        512,
+        768,
+        768,
+        1024
+      ],
+      "source_object_bounds": [
+        70,
+        16,
+        177,
+        237
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/handheld_radio.png",
+      "sha256": "b7173ca7c4de199dda80aa8383bc9a030fbdb396a130e8eeef0ac7aed489eee0"
+    },
+    {
+      "recipe_id": "item.electronics.flashlight",
+      "design": "flashlight",
+      "source_crop": [
+        768,
+        768,
+        1024,
+        1024
+      ],
+      "source_object_bounds": [
+        22,
+        56,
+        226,
+        225
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/flashlight.png",
+      "sha256": "4e34cabbf9442b1041a10c2247bbbe818dc593ed88424a6416713a12f322ae5f"
+    },
+    {
+      "recipe_id": "item.survival.water_bottle",
+      "design": "water_bottle",
+      "source_crop": [
+        1024,
+        768,
+        1280,
+        1024
+      ],
+      "source_object_bounds": [
+        69,
+        22,
+        188,
+        237
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/water_bottle.png",
+      "sha256": "993d39f0a2fc80f3aa59ff747182c7830350636f629e20a5fc5ebe27a5654a75"
+    },
+    {
+      "recipe_id": "item.survival.camping_mug",
+      "design": "camping_mug",
+      "source_crop": [
+        1280,
+        768,
+        1536,
+        1024
+      ],
+      "source_object_bounds": [
+        42,
+        58,
+        220,
+        224
+      ],
+      "native_png": "production/sprite_factory_v4/hybrid_source/camping_mug.png",
+      "sha256": "c226d7cb2d9a0030d50da28d4ec67f5eee9de8dd91bab98809cd0b9968ecce80"
+    }
+  ]
+}

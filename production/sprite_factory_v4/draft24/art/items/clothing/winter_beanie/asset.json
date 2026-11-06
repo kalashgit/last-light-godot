@@ -1,0 +1,118 @@
+{
+  "anchor": null,
+  "anchor_note": "Inventory icon; no world contact anchor is asserted.",
+  "archetype": "hat",
+  "asset_id": "item.clothing.winter_beanie.inventory.intact.v00000",
+  "category": "clothing",
+  "created_at": "2026-11-06T07:57:48.009805+00:00",
+  "device_verification_status": "not_tested",
+  "family": "clothing",
+  "format": "RGBA_PNG",
+  "founder_approved": false,
+  "generator_version": "LAST_LIGHT_V4.0.1",
+  "godot_import_status": "not_tested",
+  "height": 64,
+  "logical_item_id": "item.clothing.winter_beanie",
+  "material_specification": [
+    {
+      "construction": "Soft navy knit cap with curved crown, ribbed folded brim and gathered top",
+      "material": "fabric",
+      "name": "primary_body"
+    }
+  ],
+  "production_status": "visual_review_required",
+  "provenance": {
+    "authoring_method": "original_procedural_shape_grammar",
+    "external_reference_pixels_used": false,
+    "generator": "LAST_LIGHT_V4.0.1",
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "source_artwork": "embedded_recipe_and_renderer",
+    "variant": 0
+  },
+  "qa_status": "technical_qa_passed",
+  "recipe_fingerprint": "cc578a3140e5b63876c13199a8ef53e21233b28e9c4050311915b803108e508f",
+  "recipe_id": "item.clothing.winter_beanie",
+  "recipe_version": "native_parts_1",
+  "relative_path": "art/items/clothing/winter_beanie/icon.png",
+  "render_fingerprint": "315e955a309b9d9341b98754fb998cd56574f3175a5f46c85648d8c0764a29d9",
+  "required_representations": [
+    "inventory_icon"
+  ],
+  "sha256": "02e9557c884d7a2048d964c58a7a1426b495c5250e624fc54d24ae77be2c7ebb",
+  "size": [
+    64,
+    64
+  ],
+  "source_recipe": {
+    "archetype": "hat",
+    "brief": "Soft navy knit cap with curved crown, ribbed folded brim and gathered top",
+    "camera": "inventory_3q",
+    "colorway": "muted_last_light",
+    "design": "winter_beanie",
+    "family": "clothing",
+    "geometry": {
+      "construction": "Soft navy knit cap with curved crown, ribbed folded brim and gathered top",
+      "proportions": "functional object proportions; individually authored native coordinate recipe"
+    },
+    "id": "item.clothing.winter_beanie",
+    "light": [
+      -0.55,
+      -0.75,
+      0.7
+    ],
+    "materials": [
+      "fabric"
+    ],
+    "parts": [
+      {
+        "construction": "Soft navy knit cap with curved crown, ribbed folded brim and gathered top",
+        "material": "fabric",
+        "name": "primary_body"
+      }
+    ],
+    "recipe_version": "native_parts_1",
+    "seed": 20261106,
+    "size": [
+      64,
+      64
+    ],
+    "state": "intact",
+    "view": "inventory_icon",
+    "wear": "used"
+  },
+  "source_reference_ids": [],
+  "state": "intact",
+  "style_bible_version": "MASTER_SPRITE_BIBLE_V2",
+  "synthetic_benchmark": false,
+  "technical_qa": {
+    "errors": [],
+    "measurements": {
+      "bbox": [
+        11,
+        11,
+        52,
+        52
+      ],
+      "color_count": 9,
+      "height": 64,
+      "min_margin": 11,
+      "mode": "RGBA",
+      "opaque_pixels": 1347,
+      "partial_alpha_fraction": 0.0,
+      "visible_fraction": 0.328857,
+      "visible_pixels": 1347,
+      "width": 64
+    },
+    "passed": true,
+    "warnings": []
+  },
+  "variant": 0,
+  "view": "inventory_icon",
+  "visual_qa": {
+    "reviewer": null,
+    "scores": null,
+    "status": "not_reviewed"
+  },
+  "width": 64
+}
