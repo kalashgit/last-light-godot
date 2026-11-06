@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LAST LIGHT — Unified Reproducible Factory, executable foundation V2.
+"""LAST LIGHT — Unified Reproducible Factory, executable foundation V3.
 
 Runs locally on iPhone Python/CodePad or desktop, without a paid API.
 Python standard library required; Pillow optional for actual PNG creation.
@@ -3395,7 +3395,7 @@ def v3_art_production(root: Path, seed: int, max_icons: int) -> dict:
 def v3_export(root: Path) -> str:
     """Small, verified delivery archive containing V3 reports, candidates, not user DB."""
     targets=[]
-    for rel in ('reports/reconciliation_v3','assets/v3_original_candidates','review','manifests'):
+    for rel in ('reports/reconciliation_v3','assets/v3_original_candidates','assets/original_textures/vegetation','review','manifests'):
         folder=root/rel
         if folder.exists():
             targets.extend(p for p in folder.rglob('*') if p.is_file() and '.tmp' not in p.name)
