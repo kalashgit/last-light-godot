@@ -1,0 +1,489 @@
+{
+  "schema": "last_light.building_archetypes.reference.v1",
+  "source": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+  "declared_count": 60,
+  "actual_count": 60,
+  "source_status": "design_proposals",
+  "archetypes": [
+    {
+      "archetype_id": "house_small",
+      "name": "Small single-family house",
+      "room_modules": "entry, living, kitchen, bedroom, bath",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "pilot"
+    },
+    {
+      "archetype_id": "house_large",
+      "name": "Large single-family house",
+      "room_modules": "entry, living, kitchen, bedrooms, bath, utility",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "apartment_block",
+      "name": "Apartment block / flats",
+      "room_modules": "lobby, corridor, stair, repeated flat",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "trailer_park",
+      "name": "Trailer park environment",
+      "room_modules": "lot, lane, power pedestal, shared utilities",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "mobile_home",
+      "name": "Mobile home / trailer",
+      "room_modules": "compact living/kitchen, sleep, bath",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "garage",
+      "name": "Detached garage",
+      "room_modules": "vehicle bay, shelving, tool bench",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "shed",
+      "name": "Garden/tool shed",
+      "room_modules": "storage, work surface",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "townhouse",
+      "name": "Townhouse / row home",
+      "room_modules": "narrow repeated floors, party walls",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "duplex",
+      "name": "Two-unit duplex",
+      "room_modules": "mirrored flat, shared boundary, dual entries",
+      "family": "Residential (9)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "grocery_store",
+      "name": "Grocery / convenience store",
+      "room_modules": "sales floor, cashier, stock",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "supermarket",
+      "name": "Supermarket",
+      "room_modules": "aisles, cold case, loading, stock",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "gas_station",
+      "name": "Gas station",
+      "room_modules": "sales, storage, forecourt/pumps",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "restaurant",
+      "name": "Restaurant",
+      "room_modules": "dining, commercial kitchen, storage, toilet",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "cafe",
+      "name": "Cafe",
+      "room_modules": "counter, seating, kitchen",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "diner",
+      "name": "Diner",
+      "room_modules": "booth dining, grill, storeroom",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "bar_pub",
+      "name": "Bar / pub",
+      "room_modules": "bar counter, seating, storage",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "clothing_store",
+      "name": "Clothing store",
+      "room_modules": "displays, fitting, stock",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "department_store",
+      "name": "Department store",
+      "room_modules": "multiple retail zones, receiving",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "hardware_store",
+      "name": "Hardware / DIY",
+      "room_modules": "heavy shelving, trade counter, yard",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "pharmacy",
+      "name": "Pharmacy",
+      "room_modules": "retail, secured medicine counter, stock",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "clinic",
+      "name": "Local clinic",
+      "room_modules": "waiting, exam, reception",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "hair_salon",
+      "name": "Barber / hair salon",
+      "room_modules": "stations, wash area, reception",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "bank",
+      "name": "Bank",
+      "room_modules": "lobby, teller, offices, secure storage",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "office",
+      "name": "Offices",
+      "room_modules": "desks, meeting, break room, records",
+      "family": "Commercial (15)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "police_station",
+      "name": "Police station",
+      "room_modules": "reception, offices, evidence, holding",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "fire_station",
+      "name": "Fire station",
+      "room_modules": "vehicle bays, dorm, kitchen, equipment",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "hospital",
+      "name": "Hospital",
+      "room_modules": "triage, wards, treatment, pharmacy, service",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "medical_center",
+      "name": "Medical center",
+      "room_modules": "waiting, consultation, treatment",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "elementary_school",
+      "name": "Elementary school",
+      "room_modules": "classrooms, admin, cafeteria, playground",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "high_school",
+      "name": "High school",
+      "room_modules": "classrooms, labs, gym, cafeteria",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "college_building",
+      "name": "College building",
+      "room_modules": "lecture, lab, office, hall",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "church",
+      "name": "Church",
+      "room_modules": "worship hall, vestry, storage",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "community_center",
+      "name": "Community center",
+      "room_modules": "multi-use hall, office, kitchen",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "library",
+      "name": "Library",
+      "room_modules": "stacks, reading, admin",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "post_office",
+      "name": "Post office",
+      "room_modules": "public counter, sorting, loading",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "prison",
+      "name": "Prison",
+      "room_modules": "secure perimeter, cells, control, support",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "detention_facility",
+      "name": "Detention / holding",
+      "room_modules": "booking, short-term cells, control",
+      "family": "Civic / public (13)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "warehouse",
+      "name": "Warehouse",
+      "room_modules": "rack aisles, loading, office",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "factory",
+      "name": "Factory",
+      "room_modules": "production bay, service, stock",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "farm",
+      "name": "Farm / farmstead",
+      "room_modules": "house, field, utility paths",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "barn",
+      "name": "Barn",
+      "room_modules": "animal/storage bays, loft",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "silo",
+      "name": "Silo",
+      "room_modules": "cylindrical storage, ladder/service",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "mechanic_shop",
+      "name": "Mechanic garage",
+      "room_modules": "lifts, service bays, parts, office",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "power_station",
+      "name": "Power station/substation",
+      "room_modules": "control, transformers, fenced utility",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "water_treatment",
+      "name": "Water treatment works",
+      "room_modules": "plant hall, tanks, pumps, control",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "construction_site",
+      "name": "Construction site",
+      "room_modules": "unfinished structure, materials, hazards",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "storage_yard",
+      "name": "Storage yard",
+      "room_modules": "fence, containers, equipment, gate",
+      "family": "Industrial / utility / rural (10)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "gym",
+      "name": "Fitness center",
+      "room_modules": "exercise floor, changing, reception",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "bowling_alley",
+      "name": "Bowling alley",
+      "room_modules": "lanes, seating, back service",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "movie_theater",
+      "name": "Movie theater",
+      "room_modules": "lobby, ticket, auditorium, projection",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "sports_field",
+      "name": "Sports field",
+      "room_modules": "field, fence, stands/storage",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "stadium",
+      "name": "Stadium",
+      "room_modules": "seating, concourse, service, field",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "park",
+      "name": "Public park",
+      "room_modules": "paths, greenery, benches, amenity",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "campground",
+      "name": "Campground",
+      "room_modules": "plots, restroom, water, shelter",
+      "family": "Recreation (7)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "military_base",
+      "name": "Military base",
+      "room_modules": "barracks, mess, supply, perimeter",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "checkpoint",
+      "name": "Security checkpoint",
+      "room_modules": "gate, barriers, guard shelter",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "radio_station",
+      "name": "Radio station",
+      "room_modules": "studio, office, transmitter",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "tv_station",
+      "name": "TV station",
+      "room_modules": "studio, control, support",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "hotel",
+      "name": "Hotel",
+      "room_modules": "lobby, corridor, repeated guest rooms",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    },
+    {
+      "archetype_id": "motel",
+      "name": "Motel",
+      "room_modules": "exterior room entries, parking, reception",
+      "family": "Special (6)",
+      "approval": "spec_proposed",
+      "factory_support": "not_implemented"
+    }
+  ]
+}

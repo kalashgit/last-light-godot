@@ -1,0 +1,541 @@
+{
+  "asset_stage": "debug_original_geometry_only",
+  "buildings": [
+    {
+      "archetype_id": "house_small",
+      "entry": {
+        "connects": [
+          "outside",
+          "hall"
+        ],
+        "id": "ll.neighborhood.h01.entry",
+        "pos": [
+          11,
+          23
+        ]
+      },
+      "footprint": [
+        6,
+        12,
+        10,
+        11
+      ],
+      "furnishings": [
+        {
+          "id": "ll.neighborhood.h01.room01.fixture",
+          "pos": [
+            7.3,
+            13.2
+          ],
+          "status": "placeholder",
+          "type": "living"
+        },
+        {
+          "id": "ll.neighborhood.h01.room02.fixture",
+          "pos": [
+            12.3,
+            13.2
+          ],
+          "status": "placeholder",
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h01.room03.fixture",
+          "pos": [
+            7.3,
+            18.2
+          ],
+          "status": "placeholder",
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h01.room04.fixture",
+          "pos": [
+            12.3,
+            18.2
+          ],
+          "status": "placeholder",
+          "type": "bathroom"
+        }
+      ],
+      "hall": {
+        "id": "ll.neighborhood.h01.hall",
+        "rect": [
+          10,
+          12,
+          2,
+          11
+        ]
+      },
+      "id": "ll.neighborhood.h01",
+      "interior_doors": [
+        {
+          "id": "ll.neighborhood.h01.room01.door",
+          "pos": [
+            11,
+            14
+          ],
+          "room_id": "ll.neighborhood.h01.room01"
+        },
+        {
+          "id": "ll.neighborhood.h01.room02.door",
+          "pos": [
+            11,
+            14
+          ],
+          "room_id": "ll.neighborhood.h01.room02"
+        },
+        {
+          "id": "ll.neighborhood.h01.room03.door",
+          "pos": [
+            11,
+            20
+          ],
+          "room_id": "ll.neighborhood.h01.room03"
+        },
+        {
+          "id": "ll.neighborhood.h01.room04.door",
+          "pos": [
+            11,
+            20
+          ],
+          "room_id": "ll.neighborhood.h01.room04"
+        }
+      ],
+      "lot": [
+        4,
+        9,
+        15,
+        17
+      ],
+      "lot_id": "ll.neighborhood.h01.lot",
+      "materials": {
+        "floor": "wood_oak",
+        "roof": "shingle_asphalt",
+        "wall": "timber_painted"
+      },
+      "road_access_path": [
+        [
+          11,
+          23
+        ],
+        [
+          11,
+          35
+        ]
+      ],
+      "roof": "gable",
+      "rooms": [
+        {
+          "id": "ll.neighborhood.h01.room01",
+          "rect": [
+            6,
+            12,
+            5,
+            5
+          ],
+          "type": "living"
+        },
+        {
+          "id": "ll.neighborhood.h01.room02",
+          "rect": [
+            11,
+            12,
+            5,
+            5
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h01.room03",
+          "rect": [
+            6,
+            17,
+            5,
+            6
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h01.room04",
+          "rect": [
+            11,
+            17,
+            5,
+            6
+          ],
+          "type": "bathroom"
+        }
+      ],
+      "seed": 16198115494711099140
+    },
+    {
+      "archetype_id": "house_small",
+      "entry": {
+        "connects": [
+          "outside",
+          "hall"
+        ],
+        "id": "ll.neighborhood.h02.entry",
+        "pos": [
+          28,
+          26
+        ]
+      },
+      "footprint": [
+        23,
+        15,
+        11,
+        11
+      ],
+      "furnishings": [
+        {
+          "id": "ll.neighborhood.h02.room01.fixture",
+          "pos": [
+            24.3,
+            16.2
+          ],
+          "status": "placeholder",
+          "type": "bathroom"
+        },
+        {
+          "id": "ll.neighborhood.h02.room02.fixture",
+          "pos": [
+            29.3,
+            16.2
+          ],
+          "status": "placeholder",
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h02.room03.fixture",
+          "pos": [
+            24.3,
+            21.2
+          ],
+          "status": "placeholder",
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h02.room04.fixture",
+          "pos": [
+            29.3,
+            21.2
+          ],
+          "status": "placeholder",
+          "type": "living"
+        }
+      ],
+      "hall": {
+        "id": "ll.neighborhood.h02.hall",
+        "rect": [
+          27,
+          15,
+          2,
+          11
+        ]
+      },
+      "id": "ll.neighborhood.h02",
+      "interior_doors": [
+        {
+          "id": "ll.neighborhood.h02.room01.door",
+          "pos": [
+            28,
+            17
+          ],
+          "room_id": "ll.neighborhood.h02.room01"
+        },
+        {
+          "id": "ll.neighborhood.h02.room02.door",
+          "pos": [
+            28,
+            17
+          ],
+          "room_id": "ll.neighborhood.h02.room02"
+        },
+        {
+          "id": "ll.neighborhood.h02.room03.door",
+          "pos": [
+            28,
+            23
+          ],
+          "room_id": "ll.neighborhood.h02.room03"
+        },
+        {
+          "id": "ll.neighborhood.h02.room04.door",
+          "pos": [
+            28,
+            23
+          ],
+          "room_id": "ll.neighborhood.h02.room04"
+        }
+      ],
+      "lot": [
+        21,
+        12,
+        15,
+        17
+      ],
+      "lot_id": "ll.neighborhood.h02.lot",
+      "materials": {
+        "floor": "tile_ceramic",
+        "roof": "shingle_asphalt",
+        "wall": "brick_aged"
+      },
+      "road_access_path": [
+        [
+          28,
+          26
+        ],
+        [
+          28,
+          35
+        ]
+      ],
+      "roof": "hip",
+      "rooms": [
+        {
+          "id": "ll.neighborhood.h02.room01",
+          "rect": [
+            23,
+            15,
+            5,
+            5
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "ll.neighborhood.h02.room02",
+          "rect": [
+            28,
+            15,
+            6,
+            5
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h02.room03",
+          "rect": [
+            23,
+            20,
+            5,
+            6
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h02.room04",
+          "rect": [
+            28,
+            20,
+            6,
+            6
+          ],
+          "type": "living"
+        }
+      ],
+      "seed": 4876759730132475793
+    },
+    {
+      "archetype_id": "house_small",
+      "entry": {
+        "connects": [
+          "outside",
+          "hall"
+        ],
+        "id": "ll.neighborhood.h03.entry",
+        "pos": [
+          46,
+          23
+        ]
+      },
+      "footprint": [
+        40,
+        12,
+        12,
+        11
+      ],
+      "furnishings": [
+        {
+          "id": "ll.neighborhood.h03.room01.fixture",
+          "pos": [
+            41.3,
+            13.2
+          ],
+          "status": "placeholder",
+          "type": "bathroom"
+        },
+        {
+          "id": "ll.neighborhood.h03.room02.fixture",
+          "pos": [
+            47.3,
+            13.2
+          ],
+          "status": "placeholder",
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h03.room03.fixture",
+          "pos": [
+            41.3,
+            18.2
+          ],
+          "status": "placeholder",
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h03.room04.fixture",
+          "pos": [
+            47.3,
+            18.2
+          ],
+          "status": "placeholder",
+          "type": "living"
+        }
+      ],
+      "hall": {
+        "id": "ll.neighborhood.h03.hall",
+        "rect": [
+          45,
+          12,
+          2,
+          11
+        ]
+      },
+      "id": "ll.neighborhood.h03",
+      "interior_doors": [
+        {
+          "id": "ll.neighborhood.h03.room01.door",
+          "pos": [
+            46,
+            14
+          ],
+          "room_id": "ll.neighborhood.h03.room01"
+        },
+        {
+          "id": "ll.neighborhood.h03.room02.door",
+          "pos": [
+            46,
+            14
+          ],
+          "room_id": "ll.neighborhood.h03.room02"
+        },
+        {
+          "id": "ll.neighborhood.h03.room03.door",
+          "pos": [
+            46,
+            20
+          ],
+          "room_id": "ll.neighborhood.h03.room03"
+        },
+        {
+          "id": "ll.neighborhood.h03.room04.door",
+          "pos": [
+            46,
+            20
+          ],
+          "room_id": "ll.neighborhood.h03.room04"
+        }
+      ],
+      "lot": [
+        38,
+        9,
+        15,
+        17
+      ],
+      "lot_id": "ll.neighborhood.h03.lot",
+      "materials": {
+        "floor": "vinyl_check",
+        "roof": "shingle_asphalt",
+        "wall": "brick_aged"
+      },
+      "road_access_path": [
+        [
+          46,
+          23
+        ],
+        [
+          46,
+          35
+        ]
+      ],
+      "roof": "offset_gable",
+      "rooms": [
+        {
+          "id": "ll.neighborhood.h03.room01",
+          "rect": [
+            40,
+            12,
+            6,
+            5
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "ll.neighborhood.h03.room02",
+          "rect": [
+            46,
+            12,
+            6,
+            5
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "ll.neighborhood.h03.room03",
+          "rect": [
+            40,
+            17,
+            6,
+            6
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "ll.neighborhood.h03.room04",
+          "rect": [
+            46,
+            17,
+            6,
+            6
+          ],
+          "type": "living"
+        }
+      ],
+      "seed": 874193533340326562
+    }
+  ],
+  "godot_verified": false,
+  "ground_bounds": [
+    0,
+    0,
+    66,
+    46
+  ],
+  "iphone_verified": false,
+  "player_spawn": [
+    8,
+    40
+  ],
+  "road": [
+    {
+      "id": "ll.neighborhood.road.main",
+      "material": "asphalt_worn",
+      "rect": [
+        0,
+        35,
+        66,
+        5
+      ]
+    }
+  ],
+  "roof_occlusion": "hide_near_player",
+  "schema": "last_light.playable_neighborhood.v2",
+  "seed": 20261106,
+  "tile_px": [
+    80,
+    40
+  ],
+  "version": "ll-ucf-master-2.0"
+}
