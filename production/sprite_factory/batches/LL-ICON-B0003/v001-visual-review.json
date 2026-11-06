@@ -1,0 +1,315 @@
+{
+  "reviewer": "Codex authoring engineer",
+  "reviewer_type": "engineer_visual_inspection",
+  "evidence": [
+    "reviews/v001/dark_64.png",
+    "reviews/v001/light_32.png",
+    "reviews/v001/golden_comparison.png",
+    "evidence/golden40_all.png"
+  ],
+  "independence": "Self-review; not independent human review or founder approval",
+  "items": [
+    {
+      "asset_id": "art.ll_food_bean_tin.icon.v001",
+      "content_sha256": "3e61f82a4b2ee29871b98f10e30616b800168c5b115387ab95ce57779cbd93eb",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Cylinder, rolled rim and paper band distinct at 32/64; steel highlights localized."
+    },
+    {
+      "asset_id": "art.ll_food_bread_loaf.icon.v001",
+      "content_sha256": "ccec906e75c1ad355cb1c2a9202ff8dbd37bbfd1afdfa65fa3b17d51a20109a8",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Oblong loaf silhouette and three cut scores survive 32px; restrained crust texture."
+    },
+    {
+      "asset_id": "art.ll_food_apple.icon.v001",
+      "content_sha256": "488ccef65541144e0bd981df1b96a4ce013e4dc23d9811da09d28e8431d12d29",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Apple shoulder, stem and natural muted red mass read at 32px; no glass glints."
+    },
+    {
+      "asset_id": "art.ll_food_water_bottle.icon.v001",
+      "content_sha256": "60b908eb510333254b916ef7508b97219b9d6d817c5d2556627290a2ec0e7d14",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Cap, ribbed sides and water-filled clear body distinct at 32/64; blue neutral reflections."
+    },
+    {
+      "asset_id": "art.ll_medical_sterile_bandage.icon.v001",
+      "content_sha256": "536a47231cf7431f9f15b6172d236389c3fde304b26d0d18980796d14b69e6f9",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Folded gauze layers readable; ivory stays clean on light and dark backgrounds."
+    },
+    {
+      "asset_id": "art.ll_medical_first_aid_case.icon.v001",
+      "content_sha256": "ea79c9a76d6e5ca806e4dc7e850112e765b4c1c66541fc65d84db46efa669e45",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Handle and twin clasps remain attached; polymer case distinct from cloth bag."
+    },
+    {
+      "asset_id": "art.ll_medical_antibiotic_tablets.icon.v001",
+      "content_sha256": "0ded0508bffa1a421b58ba2ea00f5943995c58210af162cbb906ab322eb747ff",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Eight tablet domes visible at 64px, strip recognizable at 32px; no lettering."
+    },
+    {
+      "asset_id": "art.ll_tools_claw_hammer.icon.v001",
+      "content_sha256": "1c5997b5c1af5e98095141226c0347e6713aec221faddee1a204bbc4d6ba36af",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Claw head, striking face and wood handle plausible; readable diagonal silhouette."
+    },
+    {
+      "asset_id": "art.ll_tools_flat_screwdriver.icon.v001",
+      "content_sha256": "d988fc4cfd145d16aac5e19cfd1adf52160b27f6679b45e84517edbd7ccc2065",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Amber handle and slender steel shaft distinct at native scale; tip survives 32px."
+    },
+    {
+      "asset_id": "art.ll_tools_crowbar.icon.v001",
+      "content_sha256": "ca9865642e4292d20ea744152660f8ddbf6dca60b3b47510af229dee2a07940f",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Curved claw and straight pry shaft readable; red paint and steel tips restrained."
+    },
+    {
+      "asset_id": "art.ll_tools_hatchet.icon.v001",
+      "content_sha256": "ec8e8161b68f66ca30e625bcbcbcbc1bebb6bc0cd1fd19d7336e4973004943f7",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Short haft and wide single blade distinguish from hammer; wood and iron separate."
+    },
+    {
+      "asset_id": "art.ll_crafting_duct_tape.icon.v001",
+      "content_sha256": "2eb92c7182a5a21fffab6962a45b9b3f7dc6ef7c18b387f1a243ab08f7d706de",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Hollow cardboard core, gray wrap and attached end readable at 32px."
+    },
+    {
+      "asset_id": "art.ll_crafting_rope_coil.icon.v001",
+      "content_sha256": "8a9521694ac5a2ca7c0f8458d1185c838441d3eca3e60d8e7983448592a03730",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Nested coil silhouette and attached rope end survive reduction; no random dust."
+    },
+    {
+      "asset_id": "art.ll_crafting_nail_box.icon.v001",
+      "content_sha256": "c2dccadc101a42e0461b3ffa0f7b0d0e7b1cdc4ba3b1f8824a84a842e7fe5c9a",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Open carton and grouped nails distinct; paper planes matte, steel heads sharper."
+    },
+    {
+      "asset_id": "art.ll_household_backpack.icon.v001",
+      "content_sha256": "495de0f3326798fd18d8a9b6220ce3fdec3cb4ef1f907017be0dcfb2763f2b3b",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Buckles, flap and strap construction credible; diffuse canvas and dark seams."
+    },
+    {
+      "asset_id": "art.ll_household_duffel_bag.icon.v001",
+      "content_sha256": "cbdb2dd9cc262344bb0a9df791598110acd4e6807acb1c33dba7a36fa93826a6",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Long navy bag, attached handles and zipper separate from backpack; soft material."
+    },
+    {
+      "asset_id": "art.ll_household_shoe_box.icon.v001",
+      "content_sha256": "dc859e227d1b13ea2eae2c7ce75f15b5410fadaaaefec07959f9f90163b3e336",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Lid overhang and finger notch readable; matte folded kraft geometry."
+    },
+    {
+      "asset_id": "art.ll_clothing_leather_jacket.icon.v001",
+      "content_sha256": "5edc3473700f5cbda0f550f08c6d555d22c15c21226a7419be9c9cb9ab2e791e",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 3,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "REWORK",
+      "critical_defects": [
+        "Sleeve and lapel separation weak at 32px"
+      ],
+      "inspection_notes": "Original jacket sleeve/lapel detail collapses at 32px; targeted broad plane rework requested."
+    },
+    {
+      "asset_id": "art.ll_clothing_hiking_boots.icon.v001",
+      "content_sha256": "0e74326616b386bd5eeb44d32974ec59758097c409772b15ecb209be50db374e",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Paired boot silhouette, sole thickness and lace clusters distinguish leather/fabric/rubber."
+    },
+    {
+      "asset_id": "art.ll_household_field_notebook.icon.v001",
+      "content_sha256": "2a257b375523343cd2b1e4e62667314f3621a8c7588ec2d5cc92876e965f4897",
+      "scores": {
+        "realism_identity": 4,
+        "silhouette_readability": 4,
+        "material_shading": 4,
+        "style_lighting": 4,
+        "pixel_cleanliness": 5,
+        "originality_provenance": 4
+      },
+      "result": "PASS",
+      "critical_defects": [],
+      "inspection_notes": "Cloth cover, paper block and elastic survive 32px; no caption needed for notebook identity."
+    }
+  ]
+}

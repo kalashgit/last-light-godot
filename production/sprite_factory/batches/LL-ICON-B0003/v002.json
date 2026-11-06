@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "batch_id": "LL-ICON-B0003",
+  "revision": "v002",
+  "source_sheet_sha256": "d6d403ee92bd3bf681b3b74ee737a60426db7c2d601db78d9185a112db632f4b",
+  "items": [
+    {
+      "order": 18,
+      "logical_item_id": "ll_clothing_leather_jacket",
+      "name": "Leather jacket",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1989"
+      ],
+      "reference_indices": [
+        1989
+      ],
+      "source_filename": "JacketLeatherBrown.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:JacketLeatherBrown.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "steel"
+      ],
+      "geometry": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "gameplay_purpose": "clothing; behavior not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_clothing_leather_jacket.icon.v002",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v002/ll_clothing_leather_jacket/icon.png",
+      "content_sha256": "92dc411a85340f34004783671b4bc08ec73b3bf05e2e40a71064ecc0ec34ccc0",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/jacket_v002.png",
+      "source_crop": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "source_object_bounds": [
+        136,
+        158,
+        1112,
+        1096
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation_v002.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v002-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_clothing_leather_jacket.icon.v002",
+        "content_sha256": "92dc411a85340f34004783671b4bc08ec73b3bf05e2e40a71064ecc0ec34ccc0",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Inspected new 64px jacket: broader lit left sleeve, readable open collar, zipper and lower seams. Reduced micro-noise improves 32px recognition; restrained satin leather remains coherent.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/rework_comparison.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    }
+  ]
+}

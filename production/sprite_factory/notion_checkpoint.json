@@ -1,0 +1,131 @@
+{
+  "checkpoint": {
+    "id": "410f639e-2373-81f5-8ced-e341afbaf687",
+    "url": "https://app.notion.com/p/410f639e237381f58cede341afbaf687?pvs=204",
+    "properties": {
+      "title": "LAST LIGHT — LL-ICON-B0003 Factory & 20-Item Calibration Checkpoint · 2026-11-06"
+    }
+  },
+  "production_rows": [
+    {
+      "id": "410f639e-2373-81f9-ac02-dfafbba5be51",
+      "url": "https://app.notion.com/p/410f639e237381f9ac02dfafbba5be51?pvs=204",
+      "logical_item_id": "ll_food_bean_tin",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-816e-b3c2-e6e39ee13a87",
+      "url": "https://app.notion.com/p/410f639e2373816eb3c2e6e39ee13a87?pvs=204",
+      "logical_item_id": "ll_food_bread_loaf",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81ec-8ce5-dd61e5664d95",
+      "url": "https://app.notion.com/p/410f639e237381ec8ce5dd61e5664d95?pvs=204",
+      "logical_item_id": "ll_food_apple",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8187-b469-ce5557b71b79",
+      "url": "https://app.notion.com/p/410f639e23738187b469ce5557b71b79?pvs=204",
+      "logical_item_id": "ll_food_water_bottle",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8150-a21c-c5c235744749",
+      "url": "https://app.notion.com/p/410f639e23738150a21cc5c235744749?pvs=204",
+      "logical_item_id": "ll_medical_sterile_bandage",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81c4-b6cb-df834c67737a",
+      "url": "https://app.notion.com/p/410f639e237381c4b6cbdf834c67737a?pvs=204",
+      "logical_item_id": "ll_medical_first_aid_case",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81b8-92f8-c3a003403eee",
+      "url": "https://app.notion.com/p/410f639e237381b892f8c3a003403eee?pvs=204",
+      "logical_item_id": "ll_medical_antibiotic_tablets",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8101-a2a3-c7d9e539b917",
+      "url": "https://app.notion.com/p/410f639e23738101a2a3c7d9e539b917?pvs=204",
+      "logical_item_id": "ll_tools_claw_hammer",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-813a-8e5f-da238658951b",
+      "url": "https://app.notion.com/p/410f639e2373813a8e5fda238658951b?pvs=204",
+      "logical_item_id": "ll_tools_flat_screwdriver",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81c0-9cd7-eb95e1c1f01d",
+      "url": "https://app.notion.com/p/410f639e237381c09cd7eb95e1c1f01d?pvs=204",
+      "logical_item_id": "ll_tools_crowbar",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8144-8be6-e9a013d32f7e",
+      "url": "https://app.notion.com/p/410f639e237381448be6e9a013d32f7e?pvs=204",
+      "logical_item_id": "ll_tools_hatchet",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8132-ae60-e20faf287568",
+      "url": "https://app.notion.com/p/410f639e23738132ae60e20faf287568?pvs=204",
+      "logical_item_id": "ll_crafting_duct_tape",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8115-8838-d0650aad6e33",
+      "url": "https://app.notion.com/p/410f639e237381158838d0650aad6e33?pvs=204",
+      "logical_item_id": "ll_crafting_rope_coil",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8158-9f9c-d1f0c5267cd1",
+      "url": "https://app.notion.com/p/410f639e237381589f9cd1f0c5267cd1?pvs=204",
+      "logical_item_id": "ll_crafting_nail_box",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8198-8897-fb5a8af85850",
+      "url": "https://app.notion.com/p/410f639e237381988897fb5a8af85850?pvs=204",
+      "logical_item_id": "ll_household_backpack",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-8183-8b2a-c45e997578a0",
+      "url": "https://app.notion.com/p/410f639e237381838b2ac45e997578a0?pvs=204",
+      "logical_item_id": "ll_household_duffel_bag",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81c9-bed0-fc2c1d264552",
+      "url": "https://app.notion.com/p/410f639e237381c9bed0fc2c1d264552?pvs=204",
+      "logical_item_id": "ll_household_shoe_box",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-811b-943c-cab0599f761c",
+      "url": "https://app.notion.com/p/410f639e2373811b943ccab0599f761c?pvs=204",
+      "logical_item_id": "ll_clothing_leather_jacket",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-817f-afac-f1af573dc704",
+      "url": "https://app.notion.com/p/410f639e2373817fafacf1af573dc704?pvs=204",
+      "logical_item_id": "ll_clothing_hiking_boots",
+      "stage": "QA Review"
+    },
+    {
+      "id": "410f639e-2373-81bb-b3b3-f7c5dc952ae4",
+      "url": "https://app.notion.com/p/410f639e237381bbb3b3f7c5dc952ae4?pvs=204",
+      "logical_item_id": "ll_household_field_notebook",
+      "stage": "QA Review"
+    }
+  ]
+}

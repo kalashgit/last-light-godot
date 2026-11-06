@@ -1,0 +1,12 @@
+[
+  {
+    "asset_id": "art.ll_clothing_leather_jacket.icon.v001",
+    "attempt": 1,
+    "defect": "Weak sleeve and lapel separation at 32px",
+    "likely_cause": "Small shaded planes and excess wrinkle detail",
+    "targeted_change": "Generate only jacket with broad left-lit planes and clear collar; preserve other 19 icons",
+    "state": "replacement_reviewed",
+    "replacement_asset_id": "art.ll_clothing_leather_jacket.icon.v002",
+    "comparison": "reviews/rework_comparison.png"
+  }
+]

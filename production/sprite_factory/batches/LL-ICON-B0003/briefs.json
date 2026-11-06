@@ -1,0 +1,915 @@
+{
+  "schema": 1,
+  "batch_id": "LL-ICON-B0003",
+  "style": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "style_amendment": "section_18_golden40_2026-11-06",
+  "source_range": "curated cross-material indices; exact IDs below",
+  "items": [
+    {
+      "order": 1,
+      "logical_item_id": "ll_food_bean_tin",
+      "name": "Sealed bean tin",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:246"
+      ],
+      "reference_indices": [
+        246
+      ],
+      "source_filename": "Beans.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Beans.png",
+      "family": "food",
+      "materials": [
+        "steel",
+        "paper"
+      ],
+      "geometry": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "sealed",
+      "distinguishing_features": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "sealed"
+      ],
+      "state": "sealed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 2,
+      "logical_item_id": "ll_food_bread_loaf",
+      "name": "Bread loaf",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:495"
+      ],
+      "reference_indices": [
+        495
+      ],
+      "source_filename": "Bread.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Bread.png",
+      "family": "food",
+      "materials": [
+        "bread"
+      ],
+      "geometry": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "fresh",
+      "distinguishing_features": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "fresh"
+      ],
+      "state": "fresh",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 3,
+      "logical_item_id": "ll_food_apple",
+      "name": "Apple",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:38"
+      ],
+      "reference_indices": [
+        38
+      ],
+      "source_filename": "Apple.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Apple.png",
+      "family": "food",
+      "materials": [
+        "fruit",
+        "wood"
+      ],
+      "geometry": "Asymmetric red apple with green shoulder and short attached stem",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Asymmetric red apple with green shoulder and short attached stem",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "fresh",
+      "distinguishing_features": "Asymmetric red apple with green shoulder and short attached stem",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "fresh"
+      ],
+      "state": "fresh",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 4,
+      "logical_item_id": "ll_food_water_bottle",
+      "name": "Water bottle",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:4246"
+      ],
+      "reference_indices": [
+        4246
+      ],
+      "source_filename": "WaterBottle Full.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:WaterBottle_Full.png",
+      "family": "food",
+      "materials": [
+        "plastic",
+        "water"
+      ],
+      "geometry": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "full",
+      "distinguishing_features": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "gameplay_purpose": "drink",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "full"
+      ],
+      "state": "full",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 5,
+      "logical_item_id": "ll_medical_sterile_bandage",
+      "name": "Sterile bandage",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:146"
+      ],
+      "reference_indices": [
+        146
+      ],
+      "source_filename": "Bandage.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Bandage.png",
+      "family": "medical",
+      "materials": [
+        "cotton"
+      ],
+      "geometry": "Folded clean ivory gauze with lifted corner and layered edge",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Folded clean ivory gauze with lifted corner and layered edge",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "clean",
+      "distinguishing_features": "Folded clean ivory gauze with lifted corner and layered edge",
+      "gameplay_purpose": "heal",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "clean"
+      ],
+      "state": "clean",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 6,
+      "logical_item_id": "ll_medical_first_aid_case",
+      "name": "First aid case",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1297"
+      ],
+      "reference_indices": [
+        1297
+      ],
+      "source_filename": "FirstAid.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:FirstAid.png",
+      "family": "medical",
+      "materials": [
+        "plastic",
+        "steel"
+      ],
+      "geometry": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "gameplay_purpose": "heal",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 7,
+      "logical_item_id": "ll_medical_antibiotic_tablets",
+      "name": "Antibiotic tablets",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:32"
+      ],
+      "reference_indices": [
+        32
+      ],
+      "source_filename": "Antibiotics.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Antibiotics.png",
+      "family": "medical",
+      "materials": [
+        "aluminum",
+        "paper"
+      ],
+      "geometry": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "sealed",
+      "distinguishing_features": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "gameplay_purpose": "medical; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "sealed"
+      ],
+      "state": "sealed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 8,
+      "logical_item_id": "ll_tools_claw_hammer",
+      "name": "Claw hammer",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1642"
+      ],
+      "reference_indices": [
+        1642
+      ],
+      "source_filename": "Hammer.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Hammer.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "wood"
+      ],
+      "geometry": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "gameplay_purpose": "weapon",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 9,
+      "logical_item_id": "ll_tools_flat_screwdriver",
+      "name": "Flat screwdriver",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3188"
+      ],
+      "reference_indices": [
+        3188
+      ],
+      "source_filename": "Screwdriver.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Screwdriver.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "plastic"
+      ],
+      "geometry": "Amber fluted handle, straight steel shaft and flattened tip",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Amber fluted handle, straight steel shaft and flattened tip",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Amber fluted handle, straight steel shaft and flattened tip",
+      "gameplay_purpose": "tool; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 10,
+      "logical_item_id": "ll_tools_crowbar",
+      "name": "Crowbar",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1021"
+      ],
+      "reference_indices": [
+        1021
+      ],
+      "source_filename": "Crowbar.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Crowbar.png",
+      "family": "tools",
+      "materials": [
+        "painted_steel"
+      ],
+      "geometry": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "gameplay_purpose": "tool; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 11,
+      "logical_item_id": "ll_tools_hatchet",
+      "name": "Hatchet",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:84"
+      ],
+      "reference_indices": [
+        84
+      ],
+      "source_filename": "Axe 1hand.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Axe_1hand.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "wood"
+      ],
+      "geometry": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "gameplay_purpose": "weapon",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 12,
+      "logical_item_id": "ll_crafting_duct_tape",
+      "name": "Duct tape",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1166"
+      ],
+      "reference_indices": [
+        1166
+      ],
+      "source_filename": "DuctTape.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:DuctTape.png",
+      "family": "crafting",
+      "materials": [
+        "fabric",
+        "cardboard"
+      ],
+      "geometry": "Graphite tape coil with hollow kraft core and attached folded end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Graphite tape coil with hollow kraft core and attached folded end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Graphite tape coil with hollow kraft core and attached folded end",
+      "gameplay_purpose": "repair material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 13,
+      "logical_item_id": "ll_crafting_rope_coil",
+      "name": "Rope coil",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3068"
+      ],
+      "reference_indices": [
+        3068
+      ],
+      "source_filename": "Rope.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Rope.png",
+      "family": "crafting",
+      "materials": [
+        "fiber"
+      ],
+      "geometry": "Five nested tan rope loops, plausible overlap and attached short end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Five nested tan rope loops, plausible overlap and attached short end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Five nested tan rope loops, plausible overlap and attached short end",
+      "gameplay_purpose": "craft material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 14,
+      "logical_item_id": "ll_crafting_nail_box",
+      "name": "Nail box",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:2539"
+      ],
+      "reference_indices": [
+        2539
+      ],
+      "source_filename": "NailsBox.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:NailsBox.png",
+      "family": "crafting",
+      "materials": [
+        "steel",
+        "cardboard"
+      ],
+      "geometry": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "open",
+      "distinguishing_features": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "gameplay_purpose": "craft material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "open"
+      ],
+      "state": "open",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 15,
+      "logical_item_id": "ll_household_backpack",
+      "name": "Backpack",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:14"
+      ],
+      "reference_indices": [
+        14
+      ],
+      "source_filename": "AliceBag.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AliceBag.png",
+      "family": "household",
+      "materials": [
+        "canvas",
+        "leather",
+        "steel"
+      ],
+      "geometry": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "gameplay_purpose": "carry container; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 16,
+      "logical_item_id": "ll_household_duffel_bag",
+      "name": "Duffel bag",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1167"
+      ],
+      "reference_indices": [
+        1167
+      ],
+      "source_filename": "Duffelbag Generic.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Duffelbag_Generic.png",
+      "family": "household",
+      "materials": [
+        "canvas",
+        "steel"
+      ],
+      "geometry": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "gameplay_purpose": "carry container; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 17,
+      "logical_item_id": "ll_household_shoe_box",
+      "name": "Shoe box",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3358"
+      ],
+      "reference_indices": [
+        3358
+      ],
+      "source_filename": "Shoebox.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Shoebox.png",
+      "family": "household",
+      "materials": [
+        "cardboard"
+      ],
+      "geometry": "Closed kraft box with overhanging lid and front semicircular notch",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed kraft box with overhanging lid and front semicircular notch",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed kraft box with overhanging lid and front semicircular notch",
+      "gameplay_purpose": "storage; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 18,
+      "logical_item_id": "ll_clothing_leather_jacket",
+      "name": "Leather jacket",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1989"
+      ],
+      "reference_indices": [
+        1989
+      ],
+      "source_filename": "JacketLeatherBrown.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:JacketLeatherBrown.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "steel"
+      ],
+      "geometry": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "gameplay_purpose": "clothing; behavior not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 19,
+      "logical_item_id": "ll_clothing_hiking_boots",
+      "name": "Hiking boots",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:413"
+      ],
+      "reference_indices": [
+        413
+      ],
+      "source_filename": "BootsHiking.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:BootsHiking.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "fabric",
+        "rubber"
+      ],
+      "geometry": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "gameplay_purpose": "clothing; behavior not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    },
+    {
+      "order": 20,
+      "logical_item_id": "ll_household_field_notebook",
+      "name": "Field notebook",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:2594"
+      ],
+      "reference_indices": [
+        2594
+      ],
+      "source_filename": "Notebook.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Notebook.png",
+      "family": "household",
+      "materials": [
+        "paper",
+        "cloth",
+        "rubber"
+      ],
+      "geometry": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "gameplay_purpose": "knowledge; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "semantic_briefed"
+    }
+  ]
+}

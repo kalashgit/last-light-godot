@@ -1,0 +1,28 @@
+Create 20 NEW independently composed LAST LIGHT inventory sprite candidates. The attached image contains 40 founder-approved ORIGINAL style references; use ONLY their broad pixel craft, physical shading and muted material language, never reproduce their exact designs. New objects below must have their own construction, silhouette, layout and packaging.
+Output a perfectly REGULAR 5 columns by 4 rows sprite atlas, equal rectangular cells, row-major order EXACTLY. TRANSPARENT RGBA background everywhere outside objects. No grid, floor, cast shadows, text, letters, labels, numbers, captions, logos or borders. Place exactly ONE item centered within each cell, whole object within 75% of cell width/height, plenty of empty transparent gap. No overlap. This is an original working master for individual native 64px exports.
+STYLE: true crisp meticulously clustered survival-game pixel art, NOT smooth illustrations. Each object should feel authored on a native 64x64 logical grid, then nearest-neighbor enlarged. Fine realistic construction, subtle elevated 3/4 view. Upper-left 10–11 o'clock key light, shaded right/lower planes, localized deep joints, seams and overlaps. 4–6 useful tonal steps per material, sparse single-pixel glints, selective thin contours. Restrained wear, muted natural palette. Sharp steel specular edges, soft cloth folds, satin leather, matte paper, non-glossy organic fruit. No random surface noise/dither, halos, toy proportions, thick black outlines or blurry pixels.
+ROW 1:
+1 Sealed cylindrical BEAN TIN, cool steel rolled rim and lid, matte sage and cream generic paper wrap with one simple bean-shaped pictogram, no lettering. Compact upright 3/4 cylinder.
+2 BREAD LOAF, single unwrapped oblong rustic brown wheat loaf with three diagonal scores, warm crust and pale exposed scored crumb. No plate or packaging.
+3 APPLE, single slightly asymmetric muted red apple with green shoulder, short brown stem, no detached leaf; subtle natural skin, no glassy reflection.
+4 WATER BOTTLE FULL, clear lightly blue PET bottle with visible fill level, ribbed body, small charcoal cap, one narrow neutral wrap band, molded base. No branding.
+5 CLEAN STERILE BANDAGE, one folded ivory gauze rectangle with one corner lifted and two visible folded layers. Clean cotton, no wrapper or giant symbols.
+ROW 2:
+6 FIRST AID HARD CASE, closed small oxblood red rigid polymer case, rounded practical corners, two small front clasps, central carry handle attached to upper rim; tiny cream medical cross only, no text.
+7 ANTIBIOTIC TABLET PACK, one silver aluminum blister strip containing eight cream tablets in two columns of four, white backing edge, restrained teal end tab, no words.
+8 CLAW HAMMER, long natural ash wood handle with oval end, forged charcoal steel head with flat striking face and two distinct curved claw prongs, diagonal handle lower-left to head upper-right.
+9 FLAT SCREWDRIVER, translucent amber fluted polymer handle with dark socket, straight slender steel shaft and flattened slotted tip, diagonal lower-left to upper-right, functional proportions.
+10 CROWBAR, long slender dark red painted forged-steel pry bar with one curved split claw and one flat chisel end, sparse worn exposed steel on tips, no giant grip.
+ROW 3:
+11 HATCHET, short slightly curved honey-brown hickory handle with lanyard hole, forged iron head with a single wide sharpened blade, real head-to-handle ratio, diagonal.
+12 DUCT TAPE ROLL, graphite fabric-backed adhesive tape with brown cardboard core, visible hollow center, short folded loose edge attached to roll, 3/4 horizontal ellipse.
+13 ROPE COIL, single coiled tan braided utility rope with five nested loops, one short attached loose end, plausible overlap shadows and sparse twist clusters.
+14 NAIL BOX, small partly opened plain brown cardboard carton showing a tight bundle of straight steel nails, no writing, folds and steel nail heads distinguish from rope.
+15 FIELD BACKPACK, compact olive canvas rucksack, domed flap, single wide lower zipped pocket, two closed webbing buckles and visible side shoulder straps, believable fabric load and thickness.
+ROW 4:
+16 DUFFEL BAG, horizontal muted navy canvas cylindrical carry bag, closed top zipper, two attached short handles, stitched reinforced ends, one shoulder strap resting against bag, diffuse cloth highlights.
+17 SHOEBOX, closed rectangular unbranded kraft cardboard box with overhanging removable lid, small semicircular finger notch at front, no shoes, text or logos, matte 3/4 planes.
+18 LEATHER JACKET, one worn dark brown hip-length zip jacket laid in compact natural garment arrangement, turned collar, two sleeves both visible, subtle satin leather and reinforced seams, no body or hanger.
+19 HIKING BOOTS, one matched PAIR of brown leather ankle boots grouped as a single inventory object, muted olive fabric cuffs, dark rubber tread, small lace clusters, credible toe and sole thickness.
+20 FIELD NOTEBOOK, closed small olive cloth-bound notebook with tan page block, narrow stitched spine, small black elastic retaining band, rounded worn corners, no text or pen.
+The result must match all twenty specified identities and cell order. Transparency is essential. Do not add any object not listed.

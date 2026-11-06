@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_version": "not exposed by tool",
+  "seed": null,
+  "transparent_background": true,
+  "prompt_path": "production/sprite_factory/batches/LL-ICON-B0003/rework_prompt.txt",
+  "prompt_sha256": "69521d5a40eb0fec20ee12b5b1e68b88cce6a15dd1ed5457dbec38400d292320",
+  "style_reference": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_clothing_leather_jacket/icon.png",
+  "source_sheet_sha256": "d6d403ee92bd3bf681b3b74ee737a60426db7c2d601db78d9185a112db632f4b",
+  "source_artwork_inputs": "Only founder original Golden40 style board; zero PZwiki artwork",
+  "determinism": "Image model nondeterministic; exact source sheet retained. Exports deterministic from retained sheet.",
+  "target": "ll_clothing_leather_jacket",
+  "revision": "v002"
+}

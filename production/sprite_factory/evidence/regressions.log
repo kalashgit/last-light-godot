@@ -1,0 +1,53 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+FOUNDATION: 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+GALLERY PASS: 300 objects, 1032 textures, 45 page/mode combinations
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+GOLDEN40 GODOT: 40 icons, two pages, textures, responsive grid PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+PLAYER MECHANICS: 0 failures, distances [4.40000629425049, 4.40000629425049, 4.39999485015869]
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SURVIVAL_MODEL: 89 checks, 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+HOUSE_SURVIVAL: control checks finished
+HOUSE_SURVIVAL: movement/collision checks finished; distances [4.40000629425049, 4.40000629425049, 4.39999485015869, 7.19999408721924, 1.90000557899475]
+HOUSE_SURVIVAL: combat/zombie checks finished
+HOUSE_SURVIVAL: inventory/survival checks finished
+HOUSE_SURVIVAL: save/migration checks finished
+HOUSE_SURVIVAL: 154 checks, 0 failures (synthetic engine input; actual iPhone/Xogot UNVERIFIED)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+CONTROL SETTINGS: visible paused action, persistence and bounds PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+LOOT LOOP: five reachable containers yield all eight supported IDs; repeat search cannot duplicate PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+MIGRATION EDGES: legacy extras ignored, obstructed actor relocated, caches converted without losing counters PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SAVE ISOLATION: candidate imports legacy progress, writes separate v2 file, legacy bytes unchanged PASS

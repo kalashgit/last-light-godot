@@ -1,0 +1,2096 @@
+{
+  "schema": 1,
+  "batch_id": "LL-ICON-B0003",
+  "revision": "v001",
+  "source_sheet_sha256": "7b4a516894b8927e2da9962cfad39e99803a9089be20becd89cbda10b123ad74",
+  "items": [
+    {
+      "order": 1,
+      "logical_item_id": "ll_food_bean_tin",
+      "name": "Sealed bean tin",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:246"
+      ],
+      "reference_indices": [
+        246
+      ],
+      "source_filename": "Beans.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Beans.png",
+      "family": "food",
+      "materials": [
+        "steel",
+        "paper"
+      ],
+      "geometry": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "sealed",
+      "distinguishing_features": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "sealed"
+      ],
+      "state": "sealed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_food_bean_tin.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_food_bean_tin/icon.png",
+      "content_sha256": "3e61f82a4b2ee29871b98f10e30616b800168c5b115387ab95ce57779cbd93eb",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        0,
+        0,
+        280,
+        280
+      ],
+      "source_object_bounds": [
+        90,
+        54,
+        228,
+        261
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_food_bean_tin.icon.v001",
+        "content_sha256": "3e61f82a4b2ee29871b98f10e30616b800168c5b115387ab95ce57779cbd93eb",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Cylinder, rolled rim and paper band distinct at 32/64; steel highlights localized.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 2,
+      "logical_item_id": "ll_food_bread_loaf",
+      "name": "Bread loaf",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:495"
+      ],
+      "reference_indices": [
+        495
+      ],
+      "source_filename": "Bread.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Bread.png",
+      "family": "food",
+      "materials": [
+        "bread"
+      ],
+      "geometry": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "fresh",
+      "distinguishing_features": "Oblong scored loaf with three diagonal cuts and warm natural crust",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "fresh"
+      ],
+      "state": "fresh",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_food_bread_loaf.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_food_bread_loaf/icon.png",
+      "content_sha256": "ccec906e75c1ad355cb1c2a9202ff8dbd37bbfd1afdfa65fa3b17d51a20109a8",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        280,
+        0,
+        561,
+        280
+      ],
+      "source_object_bounds": [
+        49,
+        75,
+        262,
+        241
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_food_bread_loaf.icon.v001",
+        "content_sha256": "ccec906e75c1ad355cb1c2a9202ff8dbd37bbfd1afdfa65fa3b17d51a20109a8",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Oblong loaf silhouette and three cut scores survive 32px; restrained crust texture.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 3,
+      "logical_item_id": "ll_food_apple",
+      "name": "Apple",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:38"
+      ],
+      "reference_indices": [
+        38
+      ],
+      "source_filename": "Apple.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Apple.png",
+      "family": "food",
+      "materials": [
+        "fruit",
+        "wood"
+      ],
+      "geometry": "Asymmetric red apple with green shoulder and short attached stem",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Asymmetric red apple with green shoulder and short attached stem",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "fresh",
+      "distinguishing_features": "Asymmetric red apple with green shoulder and short attached stem",
+      "gameplay_purpose": "food",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "fresh"
+      ],
+      "state": "fresh",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_food_apple.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_food_apple/icon.png",
+      "content_sha256": "488ccef65541144e0bd981df1b96a4ce013e4dc23d9811da09d28e8431d12d29",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        561,
+        0,
+        841,
+        280
+      ],
+      "source_object_bounds": [
+        57,
+        68,
+        223,
+        248
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_food_apple.icon.v001",
+        "content_sha256": "488ccef65541144e0bd981df1b96a4ce013e4dc23d9811da09d28e8431d12d29",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Apple shoulder, stem and natural muted red mass read at 32px; no glass glints.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 4,
+      "logical_item_id": "ll_food_water_bottle",
+      "name": "Water bottle",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:4246"
+      ],
+      "reference_indices": [
+        4246
+      ],
+      "source_filename": "WaterBottle Full.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:WaterBottle_Full.png",
+      "family": "food",
+      "materials": [
+        "plastic",
+        "water"
+      ],
+      "geometry": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "full",
+      "distinguishing_features": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "gameplay_purpose": "drink",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "full"
+      ],
+      "state": "full",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_food_water_bottle.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_food_water_bottle/icon.png",
+      "content_sha256": "60b908eb510333254b916ef7508b97219b9d6d817c5d2556627290a2ec0e7d14",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        841,
+        0,
+        1122,
+        280
+      ],
+      "source_object_bounds": [
+        81,
+        41,
+        183,
+        264
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_food_water_bottle.icon.v001",
+        "content_sha256": "60b908eb510333254b916ef7508b97219b9d6d817c5d2556627290a2ec0e7d14",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Cap, ribbed sides and water-filled clear body distinct at 32/64; blue neutral reflections.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 5,
+      "logical_item_id": "ll_medical_sterile_bandage",
+      "name": "Sterile bandage",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:146"
+      ],
+      "reference_indices": [
+        146
+      ],
+      "source_filename": "Bandage.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Bandage.png",
+      "family": "medical",
+      "materials": [
+        "cotton"
+      ],
+      "geometry": "Folded clean ivory gauze with lifted corner and layered edge",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Folded clean ivory gauze with lifted corner and layered edge",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "clean",
+      "distinguishing_features": "Folded clean ivory gauze with lifted corner and layered edge",
+      "gameplay_purpose": "heal",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "clean"
+      ],
+      "state": "clean",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_medical_sterile_bandage.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_medical_sterile_bandage/icon.png",
+      "content_sha256": "536a47231cf7431f9f15b6172d236389c3fde304b26d0d18980796d14b69e6f9",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        1122,
+        0,
+        1402,
+        280
+      ],
+      "source_object_bounds": [
+        21,
+        88,
+        228,
+        238
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_medical_sterile_bandage.icon.v001",
+        "content_sha256": "536a47231cf7431f9f15b6172d236389c3fde304b26d0d18980796d14b69e6f9",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Folded gauze layers readable; ivory stays clean on light and dark backgrounds.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 6,
+      "logical_item_id": "ll_medical_first_aid_case",
+      "name": "First aid case",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1297"
+      ],
+      "reference_indices": [
+        1297
+      ],
+      "source_filename": "FirstAid.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:FirstAid.png",
+      "family": "medical",
+      "materials": [
+        "plastic",
+        "steel"
+      ],
+      "geometry": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "gameplay_purpose": "heal",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_medical_first_aid_case.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_medical_first_aid_case/icon.png",
+      "content_sha256": "ea79c9a76d6e5ca806e4dc7e850112e765b4c1c66541fc65d84db46efa669e45",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        0,
+        280,
+        310,
+        561
+      ],
+      "source_object_bounds": [
+        50,
+        50,
+        280,
+        245
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_medical_first_aid_case.icon.v001",
+        "content_sha256": "ea79c9a76d6e5ca806e4dc7e850112e765b4c1c66541fc65d84db46efa669e45",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Handle and twin clasps remain attached; polymer case distinct from cloth bag.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 7,
+      "logical_item_id": "ll_medical_antibiotic_tablets",
+      "name": "Antibiotic tablets",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:32"
+      ],
+      "reference_indices": [
+        32
+      ],
+      "source_filename": "Antibiotics.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Antibiotics.png",
+      "family": "medical",
+      "materials": [
+        "aluminum",
+        "paper"
+      ],
+      "geometry": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "sealed",
+      "distinguishing_features": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "gameplay_purpose": "medical; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "sealed"
+      ],
+      "state": "sealed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_medical_antibiotic_tablets.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_medical_antibiotic_tablets/icon.png",
+      "content_sha256": "0ded0508bffa1a421b58ba2ea00f5943995c58210af162cbb906ab322eb747ff",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        280,
+        280,
+        561,
+        561
+      ],
+      "source_object_bounds": [
+        56,
+        51,
+        244,
+        245
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_medical_antibiotic_tablets.icon.v001",
+        "content_sha256": "0ded0508bffa1a421b58ba2ea00f5943995c58210af162cbb906ab322eb747ff",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Eight tablet domes visible at 64px, strip recognizable at 32px; no lettering.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 8,
+      "logical_item_id": "ll_tools_claw_hammer",
+      "name": "Claw hammer",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1642"
+      ],
+      "reference_indices": [
+        1642
+      ],
+      "source_filename": "Hammer.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Hammer.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "wood"
+      ],
+      "geometry": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "gameplay_purpose": "weapon",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_tools_claw_hammer.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_tools_claw_hammer/icon.png",
+      "content_sha256": "1c5997b5c1af5e98095141226c0347e6713aec221faddee1a204bbc4d6ba36af",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        561,
+        280,
+        841,
+        561
+      ],
+      "source_object_bounds": [
+        26,
+        33,
+        253,
+        261
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_tools_claw_hammer.icon.v001",
+        "content_sha256": "1c5997b5c1af5e98095141226c0347e6713aec221faddee1a204bbc4d6ba36af",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Claw head, striking face and wood handle plausible; readable diagonal silhouette.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 9,
+      "logical_item_id": "ll_tools_flat_screwdriver",
+      "name": "Flat screwdriver",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3188"
+      ],
+      "reference_indices": [
+        3188
+      ],
+      "source_filename": "Screwdriver.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Screwdriver.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "plastic"
+      ],
+      "geometry": "Amber fluted handle, straight steel shaft and flattened tip",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Amber fluted handle, straight steel shaft and flattened tip",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Amber fluted handle, straight steel shaft and flattened tip",
+      "gameplay_purpose": "tool; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_tools_flat_screwdriver.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_tools_flat_screwdriver/icon.png",
+      "content_sha256": "d988fc4cfd145d16aac5e19cfd1adf52160b27f6679b45e84517edbd7ccc2065",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        841,
+        280,
+        1122,
+        561
+      ],
+      "source_object_bounds": [
+        31,
+        48,
+        240,
+        251
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_tools_flat_screwdriver.icon.v001",
+        "content_sha256": "d988fc4cfd145d16aac5e19cfd1adf52160b27f6679b45e84517edbd7ccc2065",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Amber handle and slender steel shaft distinct at native scale; tip survives 32px.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 10,
+      "logical_item_id": "ll_tools_crowbar",
+      "name": "Crowbar",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1021"
+      ],
+      "reference_indices": [
+        1021
+      ],
+      "source_filename": "Crowbar.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Crowbar.png",
+      "family": "tools",
+      "materials": [
+        "painted_steel"
+      ],
+      "geometry": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Slender red forged bar with split curved claw and flat chisel opposite end",
+      "gameplay_purpose": "tool; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_tools_crowbar.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_tools_crowbar/icon.png",
+      "content_sha256": "ca9865642e4292d20ea744152660f8ddbf6dca60b3b47510af229dee2a07940f",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        1122,
+        280,
+        1402,
+        561
+      ],
+      "source_object_bounds": [
+        14,
+        46,
+        238,
+        254
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_tools_crowbar.icon.v001",
+        "content_sha256": "ca9865642e4292d20ea744152660f8ddbf6dca60b3b47510af229dee2a07940f",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Curved claw and straight pry shaft readable; red paint and steel tips restrained.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 11,
+      "logical_item_id": "ll_tools_hatchet",
+      "name": "Hatchet",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:84"
+      ],
+      "reference_indices": [
+        84
+      ],
+      "source_filename": "Axe 1hand.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Axe_1hand.png",
+      "family": "tools",
+      "materials": [
+        "steel",
+        "wood"
+      ],
+      "geometry": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "gameplay_purpose": "weapon",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "held directions deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_tools_hatchet.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_tools_hatchet/icon.png",
+      "content_sha256": "ec8e8161b68f66ca30e625bcbcbcbc1bebb6bc0cd1fd19d7336e4973004943f7",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        0,
+        561,
+        280,
+        842
+      ],
+      "source_object_bounds": [
+        54,
+        33,
+        277,
+        244
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_tools_hatchet.icon.v001",
+        "content_sha256": "ec8e8161b68f66ca30e625bcbcbcbc1bebb6bc0cd1fd19d7336e4973004943f7",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Short haft and wide single blade distinguish from hammer; wood and iron separate.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 12,
+      "logical_item_id": "ll_crafting_duct_tape",
+      "name": "Duct tape",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1166"
+      ],
+      "reference_indices": [
+        1166
+      ],
+      "source_filename": "DuctTape.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:DuctTape.png",
+      "family": "crafting",
+      "materials": [
+        "fabric",
+        "cardboard"
+      ],
+      "geometry": "Graphite tape coil with hollow kraft core and attached folded end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Graphite tape coil with hollow kraft core and attached folded end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Graphite tape coil with hollow kraft core and attached folded end",
+      "gameplay_purpose": "repair material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_crafting_duct_tape.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_crafting_duct_tape/icon.png",
+      "content_sha256": "2eb92c7182a5a21fffab6962a45b9b3f7dc6ef7c18b387f1a243ab08f7d706de",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        280,
+        561,
+        561,
+        842
+      ],
+      "source_object_bounds": [
+        52,
+        57,
+        248,
+        230
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_crafting_duct_tape.icon.v001",
+        "content_sha256": "2eb92c7182a5a21fffab6962a45b9b3f7dc6ef7c18b387f1a243ab08f7d706de",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Hollow cardboard core, gray wrap and attached end readable at 32px.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 13,
+      "logical_item_id": "ll_crafting_rope_coil",
+      "name": "Rope coil",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3068"
+      ],
+      "reference_indices": [
+        3068
+      ],
+      "source_filename": "Rope.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Rope.png",
+      "family": "crafting",
+      "materials": [
+        "fiber"
+      ],
+      "geometry": "Five nested tan rope loops, plausible overlap and attached short end",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Five nested tan rope loops, plausible overlap and attached short end",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Five nested tan rope loops, plausible overlap and attached short end",
+      "gameplay_purpose": "craft material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_crafting_rope_coil.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_crafting_rope_coil/icon.png",
+      "content_sha256": "8a9521694ac5a2ca7c0f8458d1185c838441d3eca3e60d8e7983448592a03730",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        561,
+        561,
+        841,
+        842
+      ],
+      "source_object_bounds": [
+        27,
+        52,
+        251,
+        239
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_crafting_rope_coil.icon.v001",
+        "content_sha256": "8a9521694ac5a2ca7c0f8458d1185c838441d3eca3e60d8e7983448592a03730",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Nested coil silhouette and attached rope end survive reduction; no random dust.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 14,
+      "logical_item_id": "ll_crafting_nail_box",
+      "name": "Nail box",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:2539"
+      ],
+      "reference_indices": [
+        2539
+      ],
+      "source_filename": "NailsBox.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:NailsBox.png",
+      "family": "crafting",
+      "materials": [
+        "steel",
+        "cardboard"
+      ],
+      "geometry": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "open",
+      "distinguishing_features": "Partly open kraft carton filled with straight steel nails and visible heads",
+      "gameplay_purpose": "craft material; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "open"
+      ],
+      "state": "open",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_crafting_nail_box.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_crafting_nail_box/icon.png",
+      "content_sha256": "c2dccadc101a42e0461b3ffa0f7b0d0e7b1cdc4ba3b1f8824a84a842e7fe5c9a",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        841,
+        561,
+        1122,
+        842
+      ],
+      "source_object_bounds": [
+        20,
+        36,
+        233,
+        244
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_crafting_nail_box.icon.v001",
+        "content_sha256": "c2dccadc101a42e0461b3ffa0f7b0d0e7b1cdc4ba3b1f8824a84a842e7fe5c9a",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Open carton and grouped nails distinct; paper planes matte, steel heads sharper.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 15,
+      "logical_item_id": "ll_household_backpack",
+      "name": "Backpack",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:14"
+      ],
+      "reference_indices": [
+        14
+      ],
+      "source_filename": "AliceBag.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:AliceBag.png",
+      "family": "household",
+      "materials": [
+        "canvas",
+        "leather",
+        "steel"
+      ],
+      "geometry": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "gameplay_purpose": "carry container; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_household_backpack.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_household_backpack/icon.png",
+      "content_sha256": "495de0f3326798fd18d8a9b6220ce3fdec3cb4ef1f907017be0dcfb2763f2b3b",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        1122,
+        561,
+        1402,
+        842
+      ],
+      "source_object_bounds": [
+        14,
+        25,
+        232,
+        252
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_household_backpack.icon.v001",
+        "content_sha256": "495de0f3326798fd18d8a9b6220ce3fdec3cb4ef1f907017be0dcfb2763f2b3b",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Buckles, flap and strap construction credible; diffuse canvas and dark seams.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 16,
+      "logical_item_id": "ll_household_duffel_bag",
+      "name": "Duffel bag",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1167"
+      ],
+      "reference_indices": [
+        1167
+      ],
+      "source_filename": "Duffelbag Generic.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Duffelbag_Generic.png",
+      "family": "household",
+      "materials": [
+        "canvas",
+        "steel"
+      ],
+      "geometry": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "gameplay_purpose": "carry container; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_household_duffel_bag.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_household_duffel_bag/icon.png",
+      "content_sha256": "cbdb2dd9cc262344bb0a9df791598110acd4e6807acb1c33dba7a36fa93826a6",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        0,
+        842,
+        310,
+        1122
+      ],
+      "source_object_bounds": [
+        35,
+        28,
+        284,
+        241
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_household_duffel_bag.icon.v001",
+        "content_sha256": "cbdb2dd9cc262344bb0a9df791598110acd4e6807acb1c33dba7a36fa93826a6",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Long navy bag, attached handles and zipper separate from backpack; soft material.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 17,
+      "logical_item_id": "ll_household_shoe_box",
+      "name": "Shoe box",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:3358"
+      ],
+      "reference_indices": [
+        3358
+      ],
+      "source_filename": "Shoebox.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Shoebox.png",
+      "family": "household",
+      "materials": [
+        "cardboard"
+      ],
+      "geometry": "Closed kraft box with overhanging lid and front semicircular notch",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed kraft box with overhanging lid and front semicircular notch",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed kraft box with overhanging lid and front semicircular notch",
+      "gameplay_purpose": "storage; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_household_shoe_box.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_household_shoe_box/icon.png",
+      "content_sha256": "dc859e227d1b13ea2eae2c7ce75f15b5410fadaaaefec07959f9f90163b3e336",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        310,
+        842,
+        561,
+        1122
+      ],
+      "source_object_bounds": [
+        9,
+        48,
+        234,
+        225
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_household_shoe_box.icon.v001",
+        "content_sha256": "dc859e227d1b13ea2eae2c7ce75f15b5410fadaaaefec07959f9f90163b3e336",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Lid overhang and finger notch readable; matte folded kraft geometry.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 18,
+      "logical_item_id": "ll_clothing_leather_jacket",
+      "name": "Leather jacket",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:1989"
+      ],
+      "reference_indices": [
+        1989
+      ],
+      "source_filename": "JacketLeatherBrown.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:JacketLeatherBrown.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "steel"
+      ],
+      "geometry": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "gameplay_purpose": "clothing; behavior not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "rework",
+      "asset_id": "art.ll_clothing_leather_jacket.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_clothing_leather_jacket/icon.png",
+      "content_sha256": "5edc3473700f5cbda0f550f08c6d555d22c15c21226a7419be9c9cb9ab2e791e",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        561,
+        842,
+        841,
+        1122
+      ],
+      "source_object_bounds": [
+        19,
+        18,
+        258,
+        237
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_clothing_leather_jacket.icon.v001",
+        "content_sha256": "5edc3473700f5cbda0f550f08c6d555d22c15c21226a7419be9c9cb9ab2e791e",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 3,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "REWORK",
+        "critical_defects": [
+          "Sleeve and lapel separation weak at 32px"
+        ],
+        "inspection_notes": "Original jacket sleeve/lapel detail collapses at 32px; targeted broad plane rework requested.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "Original superseded jacket imported by editor; final gallery uses v002"
+    },
+    {
+      "order": 19,
+      "logical_item_id": "ll_clothing_hiking_boots",
+      "name": "Hiking boots",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:413"
+      ],
+      "reference_indices": [
+        413
+      ],
+      "source_filename": "BootsHiking.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:BootsHiking.png",
+      "family": "clothing",
+      "materials": [
+        "leather",
+        "fabric",
+        "rubber"
+      ],
+      "geometry": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "intact",
+      "distinguishing_features": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "gameplay_purpose": "clothing; behavior not implemented",
+      "existing_catalog_id": false,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "intact"
+      ],
+      "state": "intact",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot",
+        "equipped view deferred"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_clothing_hiking_boots.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_clothing_hiking_boots/icon.png",
+      "content_sha256": "0e74326616b386bd5eeb44d32974ec59758097c409772b15ecb209be50db374e",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        841,
+        842,
+        1122,
+        1122
+      ],
+      "source_object_bounds": [
+        14,
+        30,
+        242,
+        234
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_clothing_hiking_boots.icon.v001",
+        "content_sha256": "0e74326616b386bd5eeb44d32974ec59758097c409772b15ecb209be50db374e",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Paired boot silhouette, sole thickness and lace clusters distinguish leather/fabric/rubber.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    },
+    {
+      "order": 20,
+      "logical_item_id": "ll_household_field_notebook",
+      "name": "Field notebook",
+      "reference_ids": [
+        "pzwiki:catalog:2026-11-05:2594"
+      ],
+      "reference_indices": [
+        2594
+      ],
+      "source_filename": "Notebook.png",
+      "source_page_url": "https://pzwiki.net/wiki/File:Notebook.png",
+      "family": "household",
+      "materials": [
+        "paper",
+        "cloth",
+        "rubber"
+      ],
+      "geometry": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+      "colors": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "view": "inventory_3q",
+      "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+      "condition": "closed",
+      "distinguishing_features": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "gameplay_purpose": "knowledge; behavior not implemented",
+      "existing_catalog_id": true,
+      "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+      "required_states": [
+        "closed"
+      ],
+      "state": "closed",
+      "required_views": [
+        "inventory_icon"
+      ],
+      "deferred_views": [
+        "ground_loot"
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "anchor_kind": "inventory_center; not ground contact",
+      "originality": "Independent semantic composition; no source art pixels or logos",
+      "status": "visual_review_pass",
+      "asset_id": "art.ll_household_field_notebook.icon.v001",
+      "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_household_field_notebook/icon.png",
+      "content_sha256": "2a257b375523343cd2b1e4e62667314f3621a8c7588ec2d5cc92876e965f4897",
+      "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+      "source_crop": [
+        1122,
+        842,
+        1402,
+        1122
+      ],
+      "source_object_bounds": [
+        14,
+        39,
+        235,
+        236
+      ],
+      "dimensions": [
+        64,
+        64
+      ],
+      "alpha_format": "RGBA_binary",
+      "generator": "image_gen.imagegen",
+      "generator_version": "not exposed by tool",
+      "normalization_version": "nearest64_palette32_alpha128_v1",
+      "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+      "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+      "technical_qa": {
+        "result": "PASS",
+        "report": "production/sprite_factory/batches/LL-ICON-B0003/v001-technical-qa.json"
+      },
+      "visual_qa": {
+        "asset_id": "art.ll_household_field_notebook.icon.v001",
+        "content_sha256": "2a257b375523343cd2b1e4e62667314f3621a8c7588ec2d5cc92876e965f4897",
+        "scores": {
+          "realism_identity": 4,
+          "silhouette_readability": 4,
+          "material_shading": 4,
+          "style_lighting": 4,
+          "pixel_cleanliness": 5,
+          "originality_provenance": 4
+        },
+        "result": "PASS",
+        "critical_defects": [],
+        "inspection_notes": "Cloth cover, paper block and elastic survive 32px; no caption needed for notebook identity.",
+        "reviewer": "Codex authoring engineer",
+        "reviewer_type": "engineer_visual_inspection",
+        "evidence": [
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+          "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+          "production/sprite_factory/evidence/golden40_all.png"
+        ]
+      },
+      "godot_import_status": "verified_review_only",
+      "iphone_xogot_status": "not_tested",
+      "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+    }
+  ]
+}

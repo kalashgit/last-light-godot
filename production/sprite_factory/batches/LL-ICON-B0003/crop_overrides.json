@@ -1,0 +1,20 @@
+{
+  "ll_medical_first_aid_case": [
+    0,
+    280,
+    310,
+    561
+  ],
+  "ll_household_duffel_bag": [
+    0,
+    842,
+    310,
+    1122
+  ],
+  "ll_household_shoe_box": [
+    310,
+    842,
+    561,
+    1122
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "tool": "image_gen.imagegen",
+  "model_version": "not exposed by tool",
+  "seed": null,
+  "transparent_background": true,
+  "prompt_path": "production/sprite_factory/batches/LL-ICON-B0003/prompt.txt",
+  "prompt_sha256": "376679a9a46633ab846d44c33cea91924921b6314594671a91b2c11bd037e3e2",
+  "style_reference": "production/sprite_factory/evidence/golden40_all.png",
+  "source_sheet_sha256": "7b4a516894b8927e2da9962cfad39e99803a9089be20becd89cbda10b123ad74",
+  "source_artwork_inputs": "Only founder original Golden40 style board; zero PZwiki artwork",
+  "determinism": "Image model nondeterministic; exact source sheet retained. Exports deterministic from retained sheet."
+}
