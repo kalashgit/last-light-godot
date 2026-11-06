@@ -1,0 +1,104 @@
+{
+  "order": 3,
+  "logical_item_id": "ll_food_apple",
+  "name": "Apple",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:38"
+  ],
+  "reference_indices": [
+    38
+  ],
+  "source_filename": "Apple.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:Apple.png",
+  "family": "food",
+  "materials": [
+    "fruit",
+    "wood"
+  ],
+  "geometry": "Asymmetric red apple with green shoulder and short attached stem",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Asymmetric red apple with green shoulder and short attached stem",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "fresh",
+  "distinguishing_features": "Asymmetric red apple with green shoulder and short attached stem",
+  "gameplay_purpose": "food",
+  "existing_catalog_id": false,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "fresh"
+  ],
+  "state": "fresh",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "visual_review_pass",
+  "asset_id": "art.ll_food_apple.icon.v001",
+  "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_food_apple/icon.png",
+  "content_sha256": "488ccef65541144e0bd981df1b96a4ce013e4dc23d9811da09d28e8431d12d29",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    561,
+    0,
+    841,
+    280
+  ],
+  "source_object_bounds": [
+    57,
+    68,
+    223,
+    248
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_food_apple.icon.v001",
+    "content_sha256": "488ccef65541144e0bd981df1b96a4ce013e4dc23d9811da09d28e8431d12d29",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Apple shoulder, stem and natural muted red mass read at 32px; no glass glints.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified_review_only",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+}

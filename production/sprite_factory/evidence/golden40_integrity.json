@@ -1,0 +1,610 @@
+{
+  "count": 40,
+  "starting_commit": "65062417ae1167b6fed697a6f2ef8881f5719d97",
+  "tree": "f33632400ca653eeb70302b73ab6000bb4983b0f",
+  "local_5286441_available": false,
+  "source_contact_sheets_available": false,
+  "provenance_limit": "Founder attribution in existing manifest and Bible section 18; original full sheets absent, provenance not independently reconstructed",
+  "items": [
+    {
+      "asset_id": "ll_golden_ammo_box_40cal",
+      "path": "assets/last_light/golden40/objects/ammo_box_40cal/64.png",
+      "sha256": "5938cf901b5cf9a27c3d9dd0b249a9105052a3af855e270bcf1fc21b68b42635",
+      "native_bbox": [
+        4,
+        12,
+        60,
+        52
+      ],
+      "partial_alpha_pixels": 440,
+      "color_count": 1468,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_acorn",
+      "path": "assets/last_light/golden40/objects/acorn/64.png",
+      "sha256": "a6d28a88be003fcbf59191c01bebfc14b410abd5ee917a3e5f2c07f4062befde",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        55
+      ],
+      "partial_alpha_pixels": 499,
+      "color_count": 1795,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_aerosol_canister",
+      "path": "assets/last_light/golden40/objects/aerosol_canister/64.png",
+      "sha256": "42c8a2708bd9a379eaaeb9acbf52eac7ba968fd7611b66e11f304203609ca16b",
+      "native_bbox": [
+        16,
+        4,
+        48,
+        60
+      ],
+      "partial_alpha_pixels": 360,
+      "color_count": 1278,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_timed_aerosol_canister",
+      "path": "assets/last_light/golden40/objects/timed_aerosol_canister/64.png",
+      "sha256": "272233564d9fcfc40d246b6feb6f7411607bbbd09480d78f7581c6bd63acfd77",
+      "native_bbox": [
+        15,
+        4,
+        48,
+        60
+      ],
+      "partial_alpha_pixels": 353,
+      "color_count": 1536,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_tape",
+      "path": "assets/last_light/golden40/objects/air_filter_tape/64.png",
+      "sha256": "1222fd5283e12763ff98d25e1b609103ac8ad3ea9ee162da463953afe304d3ae",
+      "native_bbox": [
+        4,
+        7,
+        60,
+        57
+      ],
+      "partial_alpha_pixels": 403,
+      "color_count": 1890,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_panel",
+      "path": "assets/last_light/golden40/objects/air_filter_panel/64.png",
+      "sha256": "97bf0539f2497a4b077fb26fe53b231a73b6bdc2d8d2480eb97eb5b76f0917e9",
+      "native_bbox": [
+        4,
+        10,
+        60,
+        53
+      ],
+      "partial_alpha_pixels": 391,
+      "color_count": 1426,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_digital_alarm_clock",
+      "path": "assets/last_light/golden40/objects/digital_alarm_clock/64.png",
+      "sha256": "e5157e0a2c24dbc7d6f554f940d875e6a23946a629ab709d1a9ad1a0bcca0ade",
+      "native_bbox": [
+        4,
+        10,
+        60,
+        53
+      ],
+      "partial_alpha_pixels": 390,
+      "color_count": 1475,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_respirator_mask",
+      "path": "assets/last_light/golden40/objects/respirator_mask/64.png",
+      "sha256": "c46a26fb282aad15398b8dae07adfde1bf3034fd7aa806212b4044db73fc22c9",
+      "native_bbox": [
+        4,
+        11,
+        60,
+        53
+      ],
+      "partial_alpha_pixels": 441,
+      "color_count": 1382,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_isopropyl_alcohol",
+      "path": "assets/last_light/golden40/objects/isopropyl_alcohol/64.png",
+      "sha256": "e314597b8f3064f9fc334a58e741e27ef0259eae8bfc7ac8dc0d52e0bda5e189",
+      "native_bbox": [
+        14,
+        4,
+        49,
+        60
+      ],
+      "partial_alpha_pixels": 394,
+      "color_count": 1348,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes_old",
+      "path": "assets/last_light/golden40/objects/alcohol_wipes_old/64.png",
+      "sha256": "7e5796a4d45d275e90d296c5cb76cede707cf47bedbddb2a292e89b2e89ff054",
+      "native_bbox": [
+        4,
+        14,
+        60,
+        50
+      ],
+      "partial_alpha_pixels": 439,
+      "color_count": 1300,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes",
+      "path": "assets/last_light/golden40/objects/alcohol_wipes/64.png",
+      "sha256": "805394f5737540dee20e0e9b07f0c10128cc0b105f48cd4046ec5174c6ceff0f",
+      "native_bbox": [
+        4,
+        12,
+        60,
+        51
+      ],
+      "partial_alpha_pixels": 431,
+      "color_count": 1625,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_camo",
+      "path": "assets/last_light/golden40/objects/field_pack_camo/64.png",
+      "sha256": "8fd6a2be3488ca98d1c559cd10966f3e641e5a6467377dcccaa5516c4cb97c55",
+      "native_bbox": [
+        7,
+        4,
+        57,
+        60
+      ],
+      "partial_alpha_pixels": 482,
+      "color_count": 2186,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_sand",
+      "path": "assets/last_light/golden40/objects/field_pack_sand/64.png",
+      "sha256": "052a35ccd17b9805ea578149f69ac9ef6e3a060d2f03b8f54e998a57b661758d",
+      "native_bbox": [
+        5,
+        4,
+        59,
+        60
+      ],
+      "partial_alpha_pixels": 505,
+      "color_count": 2222,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_olive",
+      "path": "assets/last_light/golden40/objects/field_pack_olive/64.png",
+      "sha256": "ab6a0a05b6d79cf9f8177380f271cd30981e3b1031c85096b16558b237aab8fd",
+      "native_bbox": [
+        5,
+        4,
+        58,
+        60
+      ],
+      "partial_alpha_pixels": 510,
+      "color_count": 2015,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_licorice_sweets",
+      "path": "assets/last_light/golden40/objects/licorice_sweets/64.png",
+      "sha256": "1cbbfd7eaeb4e3be8797c2abd665a1222866ec662f66e7d6733568a31e27831e",
+      "native_bbox": [
+        4,
+        9,
+        60,
+        54
+      ],
+      "partial_alpha_pixels": 537,
+      "color_count": 1745,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_ingot",
+      "path": "assets/last_light/golden40/objects/aluminum_ingot/64.png",
+      "sha256": "6a2c67190444640f3b87fde1b7b9da97096080f5f0ae894aa231feee25235aee",
+      "native_bbox": [
+        4,
+        12,
+        60,
+        51
+      ],
+      "partial_alpha_pixels": 400,
+      "color_count": 1214,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_scrap",
+      "path": "assets/last_light/golden40/objects/aluminum_scrap/64.png",
+      "sha256": "cb6a44e64fea0adfc9950865d639bbf3afd0d179ff929c1064d7fb99560785cd",
+      "native_bbox": [
+        4,
+        11,
+        60,
+        52
+      ],
+      "partial_alpha_pixels": 492,
+      "color_count": 1573,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_raw",
+      "path": "assets/last_light/golden40/objects/amethyst_raw/64.png",
+      "sha256": "e9a1d84b10f0ee74e10646dd0831304aa142bf6460713ebd9d6ba800239eb69a",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "partial_alpha_pixels": 453,
+      "color_count": 1898,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_gem",
+      "path": "assets/last_light/golden40/objects/amethyst_gem/64.png",
+      "sha256": "fdd45550d2afa84b7fb23a710dbeea754dee6b477d5a0e31e1dcb423bbc86878",
+      "native_bbox": [
+        4,
+        7,
+        60,
+        57
+      ],
+      "partial_alpha_pixels": 479,
+      "color_count": 1999,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_ammunition_case",
+      "path": "assets/last_light/golden40/objects/ammunition_case/64.png",
+      "sha256": "14d7a026b1892453d5a49c13e180d6d4340df6082557bd50595774cc33184f5f",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "partial_alpha_pixels": 437,
+      "color_count": 1748,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_hand_axe",
+      "path": "assets/last_light/golden40/weapons/hand_axe/64.png",
+      "sha256": "e1c440f359b636d34e87c96bf368b9a1c394979aa92eb0b598d086c019c0bfce",
+      "native_bbox": [
+        4,
+        4,
+        59,
+        60
+      ],
+      "partial_alpha_pixels": 622,
+      "color_count": 1199,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_felling_axe",
+      "path": "assets/last_light/golden40/weapons/felling_axe/64.png",
+      "sha256": "daca0e7a7f0066b19a2c98a8f6f3ed3b8bd5116277571396954fe81d4efaf25f",
+      "native_bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 569,
+      "color_count": 806,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_stone_axe",
+      "path": "assets/last_light/golden40/weapons/stone_axe/64.png",
+      "sha256": "959f2727a2197a256ceee1938323233bbc44186f6a9a764fc756a8563f2eae05",
+      "native_bbox": [
+        5,
+        4,
+        58,
+        60
+      ],
+      "partial_alpha_pixels": 557,
+      "color_count": 1066,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_baseball_bat",
+      "path": "assets/last_light/golden40/weapons/baseball_bat/64.png",
+      "sha256": "c8db978607b0dd93e003e34818e53abfb79582cb15a268adad80136a1d066875",
+      "native_bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 440,
+      "color_count": 685,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_reinforced_baseball_bat",
+      "path": "assets/last_light/golden40/weapons/reinforced_baseball_bat/64.png",
+      "sha256": "2feac6c6aa39488de79c1a00b945e42b1be46c79641ca832f4f6ff2ca5332a6b",
+      "native_bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 495,
+      "color_count": 827,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_basic_mace",
+      "path": "assets/last_light/golden40/weapons/basic_mace/64.png",
+      "sha256": "3f166460d71bab177c33f05418963ea29b6fd6541783099839ea9eb49e4c6848",
+      "native_bbox": [
+        4,
+        4,
+        60,
+        60
+      ],
+      "partial_alpha_pixels": 479,
+      "color_count": 854,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_bone_club",
+      "path": "assets/last_light/golden40/weapons/bone_club/64.png",
+      "sha256": "c9150f18622bd4a54e09c0194a253270638a5937ea7326f93c585c849b4cf641",
+      "native_bbox": [
+        4,
+        4,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 479,
+      "color_count": 962,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_meat_cleaver",
+      "path": "assets/last_light/golden40/weapons/meat_cleaver/64.png",
+      "sha256": "9a1d8bb108d4a6f60f60eeff79cae52c1ae6630ba7d61d8d06f995bd866da97e",
+      "native_bbox": [
+        4,
+        6,
+        60,
+        58
+      ],
+      "partial_alpha_pixels": 501,
+      "color_count": 1127,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_crowbar",
+      "path": "assets/last_light/golden40/weapons/crowbar/64.png",
+      "sha256": "0897522e12fb4debe53ce32d97fad61c49692e053bd308c4cebfafb8489157b9",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "partial_alpha_pixels": 505,
+      "color_count": 581,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_hunting_knife",
+      "path": "assets/last_light/golden40/weapons/hunting_knife/64.png",
+      "sha256": "8f3a28b9b8590691cc2c5191c26f4dfb8348fa7660ecbaeb811c7b5374fa8079",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "partial_alpha_pixels": 520,
+      "color_count": 910,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_single_edge_sword",
+      "path": "assets/last_light/golden40/weapons/single_edge_sword/64.png",
+      "sha256": "2a4db00c8de6c845d17f47e8b152f528fd46af653569d3fdf038d3e5012373ac",
+      "native_bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "partial_alpha_pixels": 430,
+      "color_count": 439,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_butterfly_knife_folded",
+      "path": "assets/last_light/golden40/weapons/butterfly_knife_folded/64.png",
+      "sha256": "7d07dc328da31a1a652913dabdacaa2ec3922a3c87445f907f5bebcec7d3ec54",
+      "native_bbox": [
+        4,
+        10,
+        60,
+        54
+      ],
+      "partial_alpha_pixels": 391,
+      "color_count": 1102,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_pocket_knife",
+      "path": "assets/last_light/golden40/weapons/pocket_knife/64.png",
+      "sha256": "3e62eca5eebdd696663195c9c1bb6ee026b0977a11a5576f76f5e6965babf635",
+      "native_bbox": [
+        4,
+        13,
+        60,
+        51
+      ],
+      "partial_alpha_pixels": 370,
+      "color_count": 729,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_crude_machete",
+      "path": "assets/last_light/golden40/weapons/crude_machete/64.png",
+      "sha256": "218e631f641e5a92946f9283667cae5fc5614c838b149a5be5bf9b394421857e",
+      "native_bbox": [
+        4,
+        9,
+        60,
+        54
+      ],
+      "partial_alpha_pixels": 480,
+      "color_count": 792,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_machete",
+      "path": "assets/last_light/golden40/weapons/machete/64.png",
+      "sha256": "f7c2635566c0a8f012281ee7f7a60d27e0f670eb89d1105e5e7785128704b481",
+      "native_bbox": [
+        4,
+        10,
+        60,
+        53
+      ],
+      "partial_alpha_pixels": 378,
+      "color_count": 581,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_pickaxe",
+      "path": "assets/last_light/golden40/weapons/pickaxe/64.png",
+      "sha256": "f83ddbe2a971d826bb7055341fe7a2412950afc9b5ba41d019215dfa3c4f3f70",
+      "native_bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 598,
+      "color_count": 866,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_pitchfork",
+      "path": "assets/last_light/golden40/weapons/pitchfork/64.png",
+      "sha256": "74f816bb1c6757254cf9178f0943cc2f285acf90ab0ed0d6e4fdcdffc683ac10",
+      "native_bbox": [
+        4,
+        4,
+        60,
+        59
+      ],
+      "partial_alpha_pixels": 632,
+      "color_count": 562,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_scythe",
+      "path": "assets/last_light/golden40/weapons/scythe/64.png",
+      "sha256": "b7d560b4f63c25b4f6e7241a4735175b4467d9b5ea9be0ab1381777702fc194d",
+      "native_bbox": [
+        7,
+        4,
+        57,
+        60
+      ],
+      "partial_alpha_pixels": 697,
+      "color_count": 687,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_short_pump_shotgun",
+      "path": "assets/last_light/golden40/weapons/short_pump_shotgun/64.png",
+      "sha256": "9498c841470c36c0588c39d905845daaeb8fefb0263dd2a144db843f9c9392d1",
+      "native_bbox": [
+        4,
+        15,
+        60,
+        49
+      ],
+      "partial_alpha_pixels": 427,
+      "color_count": 600,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    },
+    {
+      "asset_id": "ll_golden_hunting_rifle",
+      "path": "assets/last_light/golden40/weapons/hunting_rifle/64.png",
+      "sha256": "0142953dd497f53f20f8671e64d612a1aa92c9f5c9e6e4e567b2283b7bbe3621",
+      "native_bbox": [
+        4,
+        12,
+        60,
+        52
+      ],
+      "partial_alpha_pixels": 418,
+      "color_count": 567,
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "status": "founder_approved_visual_reference_import_candidate"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "counts": [
+    {
+      "draw_calls": 100,
+      "frame_median_ms": 3.899,
+      "frame_p95_ms": 14.36,
+      "objects": 100,
+      "setup_ms": 0.3,
+      "texture_memory_bytes": 7953843
+    },
+    {
+      "draw_calls": 300,
+      "frame_median_ms": 5.323,
+      "frame_p95_ms": 10.154,
+      "objects": 300,
+      "setup_ms": 0.672,
+      "texture_memory_bytes": 7953843
+    },
+    {
+      "draw_calls": 750,
+      "frame_median_ms": 6.331,
+      "frame_p95_ms": 9.243,
+      "objects": 750,
+      "setup_ms": 1.729,
+      "texture_memory_bytes": 7953843
+    },
+    {
+      "draw_calls": 1500,
+      "frame_median_ms": 12.445,
+      "frame_p95_ms": 19.619,
+      "objects": 1500,
+      "setup_ms": 3.189,
+      "texture_memory_bytes": 7953843
+    }
+  ],
+  "engine": "4.6.3-stable (official)",
+  "samples_per_count": 60,
+  "scope": "Synthetic static candidate inventory Sprite2D stress; software desktop rendering; no AI, collision, world anchors or iPhone measurement"
+}

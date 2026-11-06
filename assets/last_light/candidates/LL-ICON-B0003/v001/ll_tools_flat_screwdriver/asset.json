@@ -1,0 +1,105 @@
+{
+  "order": 9,
+  "logical_item_id": "ll_tools_flat_screwdriver",
+  "name": "Flat screwdriver",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:3188"
+  ],
+  "reference_indices": [
+    3188
+  ],
+  "source_filename": "Screwdriver.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:Screwdriver.png",
+  "family": "tools",
+  "materials": [
+    "steel",
+    "plastic"
+  ],
+  "geometry": "Amber fluted handle, straight steel shaft and flattened tip",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Amber fluted handle, straight steel shaft and flattened tip",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "intact",
+  "distinguishing_features": "Amber fluted handle, straight steel shaft and flattened tip",
+  "gameplay_purpose": "tool; behavior not implemented",
+  "existing_catalog_id": true,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "intact"
+  ],
+  "state": "intact",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot",
+    "held directions deferred"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "visual_review_pass",
+  "asset_id": "art.ll_tools_flat_screwdriver.icon.v001",
+  "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_tools_flat_screwdriver/icon.png",
+  "content_sha256": "d988fc4cfd145d16aac5e19cfd1adf52160b27f6679b45e84517edbd7ccc2065",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    841,
+    280,
+    1122,
+    561
+  ],
+  "source_object_bounds": [
+    31,
+    48,
+    240,
+    251
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_tools_flat_screwdriver.icon.v001",
+    "content_sha256": "d988fc4cfd145d16aac5e19cfd1adf52160b27f6679b45e84517edbd7ccc2065",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Amber handle and slender steel shaft distinct at native scale; tip survives 32px.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified_review_only",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+}

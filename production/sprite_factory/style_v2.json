@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "authority_url": "https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96",
+  "effective_amendment": "section18_2026-11-06",
+  "golden_manifest": "assets/last_light/golden40/manifest.json",
+  "golden_manifest_sha256": "2efe36cc9f0a1530754e6f83e92c7e4905301384656527a729322347ee2f5530",
+  "golden_integrity": "production/sprite_factory/evidence/golden40_integrity.json",
+  "founder_approved_scope": "Golden40 visual direction only; extracted PNGs remain candidates",
+  "native_icon_px": [
+    64,
+    64
+  ],
+  "readability_px": [
+    32,
+    48,
+    64
+  ],
+  "padding_px": 4,
+  "pixel_treatment": "Deliberate clusters; nearest-neighbor only; 4\u20136 useful tones per major material, no random dither",
+  "light": {
+    "key_screen": "upper_left",
+    "clock_range": [
+      10,
+      11
+    ],
+    "shaded_planes": [
+      "right",
+      "lower"
+    ],
+    "occlusion": "localized joints and overlaps"
+  },
+  "world_tile_px": [
+    80,
+    40
+  ],
+  "world_projection": "(40*(x-y),20*(x+y))",
+  "world_default_anchor": null,
+  "world_and_held": "Separately authored when scheduled; never rotated icons",
+  "materials": {
+    "steel": {
+      "exemplar": "ll_golden_meat_cleaver",
+      "reason": "Distinct cool edge, broad dark blade, physical thickness"
+    },
+    "wood": {
+      "exemplar": "ll_golden_baseball_bat",
+      "reason": "Directional warm grain with soft narrow edge light"
+    },
+    "canvas": {
+      "exemplar": "ll_golden_field_pack_olive",
+      "reason": "Coherent load, stitched pockets and diffuse folds; ignore white matte residue"
+    },
+    "plastic": {
+      "exemplar": "ll_golden_digital_alarm_clock",
+      "reason": "Dark molded housing, soft bevel and controlled display recess"
+    },
+    "paper_cardboard": {
+      "exemplar": "ll_golden_ammo_box_40cal",
+      "reason": "Folded carton planes; ignore reference text/trade dress and matte"
+    },
+    "food": {
+      "exemplar": "ll_golden_acorn",
+      "reason": "Natural organic volume, cap texture with localized shade"
+    },
+    "stone_crystal": {
+      "exemplar": "ll_golden_amethyst_raw",
+      "reason": "Rock/crystal transition, controlled facets"
+    },
+    "leather": {
+      "exemplar": null,
+      "reason": "No independently verified full-leather Golden40 object; new calibration jacket proposed"
+    },
+    "glass": {
+      "exemplar": null,
+      "reason": "No confirmed Golden40 glass exemplar; bottle material not established. Requires later calibration"
+    },
+    "rubber": {
+      "exemplar": null,
+      "reason": "No isolated approved rubber standard; new boot soles proposed"
+    }
+  },
+  "candidate_normalization": "nearest64_palette32_alpha128_v1; algorithmic cleanup, not hand-pixel approval",
+  "prohibited": [
+    "thick universal outlines",
+    "smooth vector or painterly gradients",
+    "copied source pixels",
+    "neon light",
+    "random grunge",
+    "floating shadows",
+    "wrong object semantics"
+  ],
+  "scale_gate": "Founder acceptance of actual calibration exports; six inspected scores >=4, no critical defects; technical checks pass"
+}

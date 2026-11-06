@@ -1,0 +1,162 @@
+INTAKE PASS: 4347 immutable references; curated decisions preserved
+GOLDEN AUDIT PASS: 40 icons and hash bindings; provenance limits recorded
+{
+  "result": "PASS",
+  "method": "automated technical checks; no visual approval",
+  "errors": [],
+  "warnings": []
+}
+test_catalog_resume_preserves_curation (__main__.FactoryTests.test_catalog_resume_preserves_curation) ... ok
+test_conflicting_export_path (__main__.FactoryTests.test_conflicting_export_path) ... ok
+test_corrupt_png (__main__.FactoryTests.test_corrupt_png) ... ok
+test_duplicate_logical_id (__main__.FactoryTests.test_duplicate_logical_id) ... ok
+test_empty_manifest (__main__.FactoryTests.test_empty_manifest) ... ok
+test_empty_sprite (__main__.FactoryTests.test_empty_sprite) ... ok
+test_metadata_required (__main__.FactoryTests.test_metadata_required) ... ok
+test_missing_source (__main__.FactoryTests.test_missing_source) ... ok
+test_missing_state (__main__.FactoryTests.test_missing_state) ... ok
+test_no_auto_promotion (__main__.FactoryTests.test_no_auto_promotion) ... ok
+test_opaque_background (__main__.FactoryTests.test_opaque_background) ... ok
+test_partial_approval_cannot_copy_any_exports (__main__.FactoryTests.test_partial_approval_cannot_copy_any_exports) ... ok
+test_promotion_transaction_in_temporary_fixture (__main__.FactoryTests.test_promotion_transaction_in_temporary_fixture) ... ok
+test_provenance_prompt_tamper (__main__.FactoryTests.test_provenance_prompt_tamper) ... ok
+test_real_exports (__main__.FactoryTests.test_real_exports) ... ok
+test_retry_limit (__main__.FactoryTests.test_retry_limit) ... ok
+test_review_hash_binding (__main__.FactoryTests.test_review_hash_binding) ... ok
+test_revision_resume_no_overwrite (__main__.FactoryTests.test_revision_resume_no_overwrite) ... ok
+test_rgb_rejected (__main__.FactoryTests.test_rgb_rejected) ... ok
+test_tampered_approval_cannot_copy_any_exports (__main__.FactoryTests.test_tampered_approval_cannot_copy_any_exports) ... ok
+test_unknown_reference (__main__.FactoryTests.test_unknown_reference) ... ok
+test_world_view_not_faked (__main__.FactoryTests.test_world_view_not_faked) ... ok
+test_wrong_anchor (__main__.FactoryTests.test_wrong_anchor) ... ok
+test_wrong_dimensions (__main__.FactoryTests.test_wrong_dimensions) ... ok
+test_wrong_hash (__main__.FactoryTests.test_wrong_hash) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 1.278s
+
+OK
+INTAKE PASS: 4347 immutable references; curated decisions preserved
+REWORK queued; use extract --only with a new revision; accepted files untouched
+REWORK queued; use extract --only with a new revision; accepted files untouched
+REWORK queued; use extract --only with a new revision; accepted files untouched
+RESUME: immutable revision exists; validate rather than overwrite
+GOLDEN40: PASS — 40 RGBA icons, 40 working masters, 40 reference masters, hashes and preview scene
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.971s
+
+OK
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (17 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | dark_32.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | dark_48.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | dark_64.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | golden_comparison.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | light_32.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | light_48.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | light_64.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | source_sheet.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | golden40_native_32.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | golden40_native_48.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | golden40_native_64.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (14 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  33% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  66% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | icon.png[39m[0m
+[   6% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  13% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  20% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  26% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  33% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  40% ] [90m[1mreimport[22m | dark_32.png[39m[0m
+[  46% ] [90m[1mreimport[22m | dark_48.png[39m[0m
+[  53% ] [90m[1mreimport[22m | dark_64.png[39m[0m
+[  60% ] [90m[1mreimport[22m | golden_comparison.png[39m[0m
+[  66% ] [90m[1mreimport[22m | light_32.png[39m[0m
+[  73% ] [90m[1mreimport[22m | light_48.png[39m[0m
+[  80% ] [90m[1mreimport[22m | light_64.png[39m[0m
+[  86% ] [90m[1mreimport[22m | source_sheet.png[39m[0m
+[  93% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (14 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+FOUNDATION: 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+GALLERY PASS: 300 objects, 1032 textures, 45 page/mode combinations
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+GOLDEN40 GODOT: 40 icons, two pages, textures, responsive grid PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+PLAYER MECHANICS: 0 failures, distances [4.40000629425049, 4.40000629425049, 4.39999485015869]
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SURVIVAL_MODEL: 89 checks, 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+HOUSE_SURVIVAL: control checks finished
+HOUSE_SURVIVAL: movement/collision checks finished; distances [4.40000629425049, 4.40000629425049, 4.39999485015869, 7.19999408721924, 1.90000557899475]
+HOUSE_SURVIVAL: combat/zombie checks finished
+HOUSE_SURVIVAL: inventory/survival checks finished
+HOUSE_SURVIVAL: save/migration checks finished
+HOUSE_SURVIVAL: 154 checks, 0 failures (synthetic engine input; actual iPhone/Xogot UNVERIFIED)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+CONTROL SETTINGS: visible paused action, persistence and bounds PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+LOOT LOOP: five reachable containers yield all eight supported IDs; repeat search cannot duplicate PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+MIGRATION EDGES: legacy extras ignored, obstructed actor relocated, caches converted without losing counters PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SAVE ISOLATION: candidate imports legacy progress, writes separate v2 file, legacy bytes unchanged PASS
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SPRITE FACTORY GODOT PASS: 20 approved registry exports and 20 candidate imports, 17 existing IDs, 6 survival IDs; approved hash/path resolution and 32/48/64 review controls

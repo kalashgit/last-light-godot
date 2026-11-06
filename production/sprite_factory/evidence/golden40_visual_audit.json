@@ -1,0 +1,289 @@
+{
+  "items": [
+    {
+      "asset_id": "ll_golden_ammo_box_40cal",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_acorn",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_aerosol_canister",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_timed_aerosol_canister",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_tape",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_panel",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_digital_alarm_clock",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_respirator_mask",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld. Depicted respirator does not establish Alcohol Mask source semantics.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_isopropyl_alcohol",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes_old",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_camo",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_sand",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_olive",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_licorice_sweets",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_ingot",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_scrap",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_raw",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_gem",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_ammunition_case",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. White/gray matte residue visible or possible on first-sheet exports; technical production approval withheld.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_hand_axe",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_felling_axe",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_stone_axe",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_baseball_bat",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_reinforced_baseball_bat",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_basic_mace",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_bone_club",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_meat_cleaver",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_crowbar",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_hunting_knife",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_single_edge_sword",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_butterfly_knife_folded",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. Closed butterfly knife state is explicit; no open state available.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_pocket_knife",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_crude_machete",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_machete",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_pickaxe",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_pitchfork",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_scythe",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_short_pump_shotgun",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite. Short barrel/stock proportions; retain short_pump_shotgun identity pending clarification.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    },
+    {
+      "asset_id": "ll_golden_hunting_rifle",
+      "inspection_type": "engineer_visual_inspection",
+      "finding": "Shape/material/light coherent on the complete 40-icon board; inventory reference, not a world sprite.",
+      "provenance": "Founder attribution in original manifest and V2 section18; original sheets absent",
+      "production_approval": "not granted in this run"
+    }
+  ],
+  "native_boards": [
+    "golden40_native_32.png",
+    "golden40_native_48.png",
+    "golden40_native_64.png"
+  ]
+}

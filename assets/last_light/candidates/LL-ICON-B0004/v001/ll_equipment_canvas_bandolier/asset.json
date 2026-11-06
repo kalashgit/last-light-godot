@@ -1,0 +1,101 @@
+{
+  "order": 2,
+  "logical_item_id": "ll_equipment_canvas_bandolier",
+  "name": "Canvas bandolier",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:24"
+  ],
+  "reference_indices": [
+    24
+  ],
+  "source_filename": "AmmoStrap.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:AmmoStrap.png",
+  "family": "household",
+  "materials": [
+    "canvas",
+    "steel"
+  ],
+  "geometry": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "intact",
+  "distinguishing_features": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+  "gameplay_purpose": "Proposed inventory object; gameplay not implemented",
+  "existing_catalog_id": false,
+  "brief_approval": "engineer_semantic_brief_under_approved_B0003_style",
+  "required_states": [
+    "intact"
+  ],
+  "state": "intact",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot",
+    "equipped_if_supported"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "visual_review_pass",
+  "asset_id": "art.ll_equipment_canvas_bandolier.icon.v001",
+  "export_path": "assets/last_light/candidates/LL-ICON-B0004/v001/ll_equipment_canvas_bandolier/icon.png",
+  "content_sha256": "7aee980dc59f599d327907257f5c6ae5154a4a233dc3ee5cf580e05ffec71099",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0004/source_sheet.png",
+  "source_crop": [
+    280,
+    0,
+    561,
+    280
+  ],
+  "source_object_bounds": [
+    54,
+    76,
+    259,
+    267
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0004/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0004/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_equipment_canvas_bandolier.icon.v001",
+    "content_sha256": "7aee980dc59f599d327907257f5c6ae5154a4a233dc3ee5cf580e05ffec71099",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Diffuse canvas strap, hollow loops and metal adjuster distinct; no count/capacity mechanics inferred.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0004/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0004/reviews/v001/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_64.png"
+    ]
+  },
+  "godot_import_status": "verified_review_only",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/b0004_godot.log"
+}

@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "method": "automated technical checks; no visual approval",
+  "errors": [],
+  "warnings": [],
+  "measurements": [
+    {
+      "id": "ll_clothing_leather_jacket",
+      "bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "opaque_pixels": 2296,
+      "components": 1
+    }
+  ]
+}

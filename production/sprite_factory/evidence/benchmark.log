@@ -1,0 +1,6 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+{"counts":[{"draw_calls":100,"frame_median_ms":3.899,"frame_p95_ms":14.36,"objects":100,"setup_ms":0.3,"texture_memory_bytes":7953843},{"draw_calls":300,"frame_median_ms":5.323,"frame_p95_ms":10.154,"objects":300,"setup_ms":0.672,"texture_memory_bytes":7953843},{"draw_calls":750,"frame_median_ms":6.331,"frame_p95_ms":9.243,"objects":750,"setup_ms":1.729,"texture_memory_bytes":7953843},{"draw_calls":1500,"frame_median_ms":12.445,"frame_p95_ms":19.619,"objects":1500,"setup_ms":3.189,"texture_memory_bytes":7953843}],"engine":"4.6.3-stable (official)","samples_per_count":60,"scope":"Synthetic static candidate inventory Sprite2D stress; software desktop rendering; no AI, collision, world anchors or iPhone measurement"}

@@ -1,0 +1,35 @@
+test_catalog_resume_preserves_curation (__main__.FactoryTests.test_catalog_resume_preserves_curation) ... ok
+test_conflicting_export_path (__main__.FactoryTests.test_conflicting_export_path) ... ok
+test_corrupt_png (__main__.FactoryTests.test_corrupt_png) ... ok
+test_duplicate_logical_id (__main__.FactoryTests.test_duplicate_logical_id) ... ok
+test_empty_manifest (__main__.FactoryTests.test_empty_manifest) ... ok
+test_empty_sprite (__main__.FactoryTests.test_empty_sprite) ... ok
+test_metadata_required (__main__.FactoryTests.test_metadata_required) ... ok
+test_missing_source (__main__.FactoryTests.test_missing_source) ... ok
+test_missing_state (__main__.FactoryTests.test_missing_state) ... ok
+test_no_auto_promotion (__main__.FactoryTests.test_no_auto_promotion) ... ok
+test_opaque_background (__main__.FactoryTests.test_opaque_background) ... ok
+test_partial_approval_cannot_copy_any_exports (__main__.FactoryTests.test_partial_approval_cannot_copy_any_exports) ... ok
+test_promotion_transaction_in_temporary_fixture (__main__.FactoryTests.test_promotion_transaction_in_temporary_fixture) ... ok
+test_provenance_prompt_tamper (__main__.FactoryTests.test_provenance_prompt_tamper) ... ok
+test_real_exports (__main__.FactoryTests.test_real_exports) ... ok
+test_retry_limit (__main__.FactoryTests.test_retry_limit) ... ok
+test_review_hash_binding (__main__.FactoryTests.test_review_hash_binding) ... ok
+test_revision_resume_no_overwrite (__main__.FactoryTests.test_revision_resume_no_overwrite) ... ok
+test_rgb_rejected (__main__.FactoryTests.test_rgb_rejected) ... ok
+test_tampered_approval_cannot_copy_any_exports (__main__.FactoryTests.test_tampered_approval_cannot_copy_any_exports) ... ok
+test_unknown_reference (__main__.FactoryTests.test_unknown_reference) ... ok
+test_world_view_not_faked (__main__.FactoryTests.test_world_view_not_faked) ... ok
+test_wrong_anchor (__main__.FactoryTests.test_wrong_anchor) ... ok
+test_wrong_dimensions (__main__.FactoryTests.test_wrong_dimensions) ... ok
+test_wrong_hash (__main__.FactoryTests.test_wrong_hash) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 1.328s
+
+OK
+INTAKE PASS: 4347 immutable references; curated decisions preserved
+REWORK queued; use extract --only with a new revision; accepted files untouched
+REWORK queued; use extract --only with a new revision; accepted files untouched
+REWORK queued; use extract --only with a new revision; accepted files untouched
+RESUME: immutable revision exists; validate rather than overwrite

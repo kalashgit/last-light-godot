@@ -1,0 +1,104 @@
+{
+  "order": 14,
+  "logical_item_id": "ll_crafting_nail_box",
+  "name": "Nail box",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:2539"
+  ],
+  "reference_indices": [
+    2539
+  ],
+  "source_filename": "NailsBox.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:NailsBox.png",
+  "family": "crafting",
+  "materials": [
+    "steel",
+    "cardboard"
+  ],
+  "geometry": "Partly open kraft carton filled with straight steel nails and visible heads",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Partly open kraft carton filled with straight steel nails and visible heads",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "open",
+  "distinguishing_features": "Partly open kraft carton filled with straight steel nails and visible heads",
+  "gameplay_purpose": "craft material; behavior not implemented",
+  "existing_catalog_id": true,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "open"
+  ],
+  "state": "open",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "visual_review_pass",
+  "asset_id": "art.ll_crafting_nail_box.icon.v001",
+  "export_path": "assets/last_light/candidates/LL-ICON-B0003/v001/ll_crafting_nail_box/icon.png",
+  "content_sha256": "c2dccadc101a42e0461b3ffa0f7b0d0e7b1cdc4ba3b1f8824a84a842e7fe5c9a",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    841,
+    561,
+    1122,
+    842
+  ],
+  "source_object_bounds": [
+    20,
+    36,
+    233,
+    244
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_crafting_nail_box.icon.v001",
+    "content_sha256": "c2dccadc101a42e0461b3ffa0f7b0d0e7b1cdc4ba3b1f8824a84a842e7fe5c9a",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Open carton and grouped nails distinct; paper planes matte, steel heads sharper.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified_review_only",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log"
+}

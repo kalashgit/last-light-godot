@@ -5,3 +5,7 @@ __pycache__/
 assets/generated/factory/sprites/**/*.png.import
 assets/last_light/golden40/**/*.png.import
 assets/last_light/golden40/*.png.import
+assets/last_light/candidates/**/*.png.import
+production/sprite_factory/**/*.png.import
+production/sprite_factory/.factory.lock
+assets/last_light/approved/**/*.png.import

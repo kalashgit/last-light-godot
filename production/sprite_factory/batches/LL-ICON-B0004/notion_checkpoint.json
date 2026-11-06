@@ -1,0 +1,41 @@
+{
+  "checkpoint": {
+    "id": "410f639e-2373-8162-a44d-f35d27c92212",
+    "url": "https://app.notion.com/p/410f639e23738162a44df35d27c92212?pvs=204",
+    "properties": {
+      "title": "LAST LIGHT — LL-ICON-B0004 Source Review & Six Candidate Icons"
+    }
+  },
+  "rows": [
+    {
+      "id": "410f639e-2373-817c-9d41-d17f3d79f892",
+      "url": "https://app.notion.com/p/410f639e2373817c9d41d17f3d79f892?pvs=204",
+      "logical_item_id": "ll_equipment_leather_bandolier"
+    },
+    {
+      "id": "410f639e-2373-8144-9d34-c4a15c21b20b",
+      "url": "https://app.notion.com/p/410f639e237381449d34c4a15c21b20b?pvs=204",
+      "logical_item_id": "ll_equipment_canvas_bandolier"
+    },
+    {
+      "id": "410f639e-2373-8192-ba3a-e4b1e0e18752",
+      "url": "https://app.notion.com/p/410f639e23738192ba3ae4b1e0e18752?pvs=204",
+      "logical_item_id": "ll_farming_animal_feed_sack"
+    },
+    {
+      "id": "410f639e-2373-8138-b46f-d0d289f053f8",
+      "url": "https://app.notion.com/p/410f639e23738138b46fd0d289f053f8?pvs=204",
+      "logical_item_id": "ll_crafting_antler_pair"
+    },
+    {
+      "id": "410f639e-2373-815a-a116-f674982d9e5a",
+      "url": "https://app.notion.com/p/410f639e2373815aa116f674982d9e5a?pvs=204",
+      "logical_item_id": "ll_clothing_improvised_plastic_apron"
+    },
+    {
+      "id": "410f639e-2373-813c-8209-f066b7a4a7d8",
+      "url": "https://app.notion.com/p/410f639e2373813c8209f066b7a4a7d8?pvs=204",
+      "logical_item_id": "ll_clothing_leather_apron"
+    }
+  ]
+}

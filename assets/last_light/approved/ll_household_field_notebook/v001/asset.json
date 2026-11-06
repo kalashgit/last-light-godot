@@ -1,0 +1,106 @@
+{
+  "order": 20,
+  "logical_item_id": "ll_household_field_notebook",
+  "name": "Field notebook",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:2594"
+  ],
+  "reference_indices": [
+    2594
+  ],
+  "source_filename": "Notebook.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:Notebook.png",
+  "family": "household",
+  "materials": [
+    "paper",
+    "cloth",
+    "rubber"
+  ],
+  "geometry": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "closed",
+  "distinguishing_features": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+  "gameplay_purpose": "knowledge; behavior not implemented",
+  "existing_catalog_id": true,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "closed"
+  ],
+  "state": "closed",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "approved_inventory_export",
+  "asset_id": "art.ll_household_field_notebook.icon.v001",
+  "export_path": "assets/last_light/approved/ll_household_field_notebook/v001/icon.png",
+  "content_sha256": "2a257b375523343cd2b1e4e62667314f3621a8c7588ec2d5cc92876e965f4897",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    1122,
+    842,
+    1402,
+    1122
+  ],
+  "source_object_bounds": [
+    14,
+    39,
+    235,
+    236
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_household_field_notebook.icon.v001",
+    "content_sha256": "2a257b375523343cd2b1e4e62667314f3621a8c7588ec2d5cc92876e965f4897",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Cloth cover, paper block and elastic survive 32px; no caption needed for notebook identity.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log",
+  "founder_approval": "https://app.notion.com/p/410f639e237381f58cede341afbaf687"
+}

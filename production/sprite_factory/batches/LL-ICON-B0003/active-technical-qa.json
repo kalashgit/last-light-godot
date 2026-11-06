@@ -1,0 +1,228 @@
+{
+  "result": "PASS",
+  "method": "automated technical checks; no visual approval",
+  "errors": [],
+  "warnings": [],
+  "measurements": [
+    {
+      "id": "ll_food_bean_tin",
+      "bbox": [
+        13,
+        4,
+        50,
+        60
+      ],
+      "opaque_pixels": 1873,
+      "components": 1
+    },
+    {
+      "id": "ll_food_bread_loaf",
+      "bbox": [
+        4,
+        10,
+        60,
+        54
+      ],
+      "opaque_pixels": 1705,
+      "components": 1
+    },
+    {
+      "id": "ll_food_apple",
+      "bbox": [
+        6,
+        4,
+        58,
+        60
+      ],
+      "opaque_pixels": 2075,
+      "components": 1
+    },
+    {
+      "id": "ll_food_water_bottle",
+      "bbox": [
+        19,
+        4,
+        45,
+        60
+      ],
+      "opaque_pixels": 1206,
+      "components": 1
+    },
+    {
+      "id": "ll_medical_sterile_bandage",
+      "bbox": [
+        4,
+        11,
+        60,
+        52
+      ],
+      "opaque_pixels": 1485,
+      "components": 1
+    },
+    {
+      "id": "ll_medical_first_aid_case",
+      "bbox": [
+        4,
+        8,
+        60,
+        55
+      ],
+      "opaque_pixels": 1918,
+      "components": 1
+    },
+    {
+      "id": "ll_medical_antibiotic_tablets",
+      "bbox": [
+        5,
+        4,
+        59,
+        60
+      ],
+      "opaque_pixels": 1681,
+      "components": 1
+    },
+    {
+      "id": "ll_tools_claw_hammer",
+      "bbox": [
+        4,
+        4,
+        60,
+        60
+      ],
+      "opaque_pixels": 835,
+      "components": 1
+    },
+    {
+      "id": "ll_tools_flat_screwdriver",
+      "bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "opaque_pixels": 599,
+      "components": 1
+    },
+    {
+      "id": "ll_tools_crowbar",
+      "bbox": [
+        4,
+        6,
+        60,
+        58
+      ],
+      "opaque_pixels": 544,
+      "components": 1
+    },
+    {
+      "id": "ll_tools_hatchet",
+      "bbox": [
+        4,
+        5,
+        60,
+        58
+      ],
+      "opaque_pixels": 967,
+      "components": 1
+    },
+    {
+      "id": "ll_crafting_duct_tape",
+      "bbox": [
+        4,
+        7,
+        60,
+        56
+      ],
+      "opaque_pixels": 2229,
+      "components": 1
+    },
+    {
+      "id": "ll_crafting_rope_coil",
+      "bbox": [
+        4,
+        8,
+        60,
+        55
+      ],
+      "opaque_pixels": 1840,
+      "components": 1
+    },
+    {
+      "id": "ll_crafting_nail_box",
+      "bbox": [
+        4,
+        4,
+        60,
+        59
+      ],
+      "opaque_pixels": 2112,
+      "components": 1
+    },
+    {
+      "id": "ll_household_backpack",
+      "bbox": [
+        5,
+        4,
+        59,
+        60
+      ],
+      "opaque_pixels": 2309,
+      "components": 1
+    },
+    {
+      "id": "ll_household_duffel_bag",
+      "bbox": [
+        4,
+        8,
+        60,
+        56
+      ],
+      "opaque_pixels": 1865,
+      "components": 1
+    },
+    {
+      "id": "ll_household_shoe_box",
+      "bbox": [
+        4,
+        10,
+        60,
+        54
+      ],
+      "opaque_pixels": 1810,
+      "components": 1
+    },
+    {
+      "id": "ll_clothing_leather_jacket",
+      "bbox": [
+        4,
+        5,
+        60,
+        59
+      ],
+      "opaque_pixels": 2296,
+      "components": 1
+    },
+    {
+      "id": "ll_clothing_hiking_boots",
+      "bbox": [
+        4,
+        7,
+        60,
+        57
+      ],
+      "opaque_pixels": 1866,
+      "components": 1
+    },
+    {
+      "id": "ll_household_field_notebook",
+      "bbox": [
+        4,
+        7,
+        60,
+        57
+      ],
+      "opaque_pixels": 1897,
+      "components": 1
+    }
+  ]
+}

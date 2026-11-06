@@ -1,0 +1,106 @@
+{
+  "order": 11,
+  "logical_item_id": "ll_tools_hatchet",
+  "name": "Hatchet",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:84"
+  ],
+  "reference_indices": [
+    84
+  ],
+  "source_filename": "Axe 1hand.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:Axe_1hand.png",
+  "family": "tools",
+  "materials": [
+    "steel",
+    "wood"
+  ],
+  "geometry": "Short curved hickory handle with eye, forged head and wide honed edge",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Short curved hickory handle with eye, forged head and wide honed edge",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "intact",
+  "distinguishing_features": "Short curved hickory handle with eye, forged head and wide honed edge",
+  "gameplay_purpose": "weapon",
+  "existing_catalog_id": true,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "intact"
+  ],
+  "state": "intact",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot",
+    "held directions deferred"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "approved_inventory_export",
+  "asset_id": "art.ll_tools_hatchet.icon.v001",
+  "export_path": "assets/last_light/approved/ll_tools_hatchet/v001/icon.png",
+  "content_sha256": "ec8e8161b68f66ca30e625bcbcbcbc1bebb6bc0cd1fd19d7336e4973004943f7",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    0,
+    561,
+    280,
+    842
+  ],
+  "source_object_bounds": [
+    54,
+    33,
+    277,
+    244
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_tools_hatchet.icon.v001",
+    "content_sha256": "ec8e8161b68f66ca30e625bcbcbcbc1bebb6bc0cd1fd19d7336e4973004943f7",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Short haft and wide single blade distinguish from hammer; wood and iron separate.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log",
+  "founder_approval": "https://app.notion.com/p/410f639e237381f58cede341afbaf687"
+}

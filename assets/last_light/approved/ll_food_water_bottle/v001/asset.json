@@ -1,0 +1,105 @@
+{
+  "order": 4,
+  "logical_item_id": "ll_food_water_bottle",
+  "name": "Water bottle",
+  "reference_ids": [
+    "pzwiki:catalog:2026-11-05:4246"
+  ],
+  "reference_indices": [
+    4246
+  ],
+  "source_filename": "WaterBottle Full.png",
+  "source_page_url": "https://pzwiki.net/wiki/File:WaterBottle_Full.png",
+  "family": "food",
+  "materials": [
+    "plastic",
+    "water"
+  ],
+  "geometry": "Clear ribbed PET bottle, dark cap and visible full water line",
+  "proportions": "Functional real-world proportions; 75\u201390% of suitable icon dimension",
+  "colors": "Clear ribbed PET bottle, dark cap and visible full water line",
+  "view": "inventory_3q",
+  "light": "upper-left 10\u201311 oclock; right/lower planes darker",
+  "condition": "full",
+  "distinguishing_features": "Clear ribbed PET bottle, dark cap and visible full water line",
+  "gameplay_purpose": "drink",
+  "existing_catalog_id": true,
+  "brief_approval": "engineer_semantic_candidate; founder artwork approval pending",
+  "required_states": [
+    "full"
+  ],
+  "state": "full",
+  "required_views": [
+    "inventory_icon"
+  ],
+  "deferred_views": [
+    "ground_loot"
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "anchor_kind": "inventory_center; not ground contact",
+  "originality": "Independent semantic composition; no source art pixels or logos",
+  "status": "approved_inventory_export",
+  "asset_id": "art.ll_food_water_bottle.icon.v001",
+  "export_path": "assets/last_light/approved/ll_food_water_bottle/v001/icon.png",
+  "content_sha256": "60b908eb510333254b916ef7508b97219b9d6d817c5d2556627290a2ec0e7d14",
+  "source_path": "production/sprite_factory/batches/LL-ICON-B0003/source_sheet.png",
+  "source_crop": [
+    841,
+    0,
+    1122,
+    280
+  ],
+  "source_object_bounds": [
+    81,
+    41,
+    183,
+    264
+  ],
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha_format": "RGBA_binary",
+  "generator": "image_gen.imagegen",
+  "generator_version": "not exposed by tool",
+  "normalization_version": "nearest64_palette32_alpha128_v1",
+  "provenance_path": "production/sprite_factory/batches/LL-ICON-B0003/generation.json",
+  "style_bible": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2",
+  "technical_qa": {
+    "result": "PASS",
+    "report": "production/sprite_factory/batches/LL-ICON-B0003/active-technical-qa.json"
+  },
+  "visual_qa": {
+    "asset_id": "art.ll_food_water_bottle.icon.v001",
+    "content_sha256": "60b908eb510333254b916ef7508b97219b9d6d817c5d2556627290a2ec0e7d14",
+    "scores": {
+      "realism_identity": 4,
+      "silhouette_readability": 4,
+      "material_shading": 4,
+      "style_lighting": 4,
+      "pixel_cleanliness": 5,
+      "originality_provenance": 4
+    },
+    "result": "PASS",
+    "critical_defects": [],
+    "inspection_notes": "Cap, ribbed sides and water-filled clear body distinct at 32/64; blue neutral reflections.",
+    "reviewer": "Codex authoring engineer",
+    "reviewer_type": "engineer_visual_inspection",
+    "evidence": [
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_48.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/light_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/active/dark_32.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/dark_64.png",
+      "production/sprite_factory/batches/LL-ICON-B0003/reviews/v001/golden_comparison.png",
+      "production/sprite_factory/evidence/golden40_all.png"
+    ]
+  },
+  "godot_import_status": "verified",
+  "iphone_xogot_status": "not_tested",
+  "godot_evidence": "production/sprite_factory/evidence/godot_factory.log",
+  "founder_approval": "https://app.notion.com/p/410f639e237381f58cede341afbaf687"
+}
