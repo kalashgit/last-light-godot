@@ -1,6 +1,8 @@
 # LAST LIGHT — CODEX MASTER FACTORY: SINGLE-MAP GAMEPLAY INTEGRATION & MASS PRODUCTION DIRECTIVE V1
 **Prepared 2026-11-07 · Source branch: `codex/last-light-master-vehicle-batch-factory-v1-20261107` · DO NOT merge or deploy without explicit founder sign-off.**
 
+> **SCOPE OVERRIDE (2026-11-08):** Read [CODEX_COMPLETE_CENSUS_MASTER_FACTORY_V2.md](./CODEX_COMPLETE_CENSUS_MASTER_FACTORY_V2.md) first. The founder requires **all** asset, material, tile, geometry, character, vehicle, animation and gameplay families from the complete canonical census—not merely earlier priority lists, first 300 item IDs or visual pilot examples. Those are calibration only. V2 overrides any narrower production-scope interpretation in this V1 document. Preserve the two-hour target and truthful status accounting.
+
 ## Mission
 
 Codex acts as Principal Godot Technical Director, Original 2.5D Content Factory Engineer, Gameplay QA Engineer and Production Integration Lead for LAST LIGHT. Deliver a **fully playable one-map vertical slice** where original, technically validated assets from the unified factories are imported, physically coherent, visible, interactive, saved and tested. Generate all *defined, supportable and approved* production families in bounded parallel batches after reference parity and QA. Do not count fictitious variants or pretend all 4,347+ reference items are already game-ready.
