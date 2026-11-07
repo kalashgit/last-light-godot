@@ -19,7 +19,9 @@ def load_manifest(path):
     """Read JSONL or a read-only SQLite manifest; preserve record order."""
     path = Path(path).resolve(strict=True)
     if path.suffix.lower() in (".sqlite", ".sqlite3", ".db"):
-        connection = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True)
+        # An immutable snapshot prevents SQLite from creating any WAL/SHM files
+        # alongside the retrieval worker's database. Never read a live writer DB.
+        connection = sqlite3.connect(f"file:{path.as_posix()}?mode=ro&immutable=1", uri=True)
         connection.row_factory = sqlite3.Row
         try:
             return [dict(row) for row in connection.execute("SELECT * FROM verified_media ORDER BY source_id")]

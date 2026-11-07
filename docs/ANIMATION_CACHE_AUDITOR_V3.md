@@ -19,7 +19,7 @@ Accepted formats: JSONL (`.jsonl`, one object per line) or read-only SQLite (`.s
 - `category`, `rights`, `retrieved_at`: explicitly supplied provenance; never inferred from a GIF extension.
 - `verification_status`: must be `verified`; partial/pending retrievals remain unavailable.
 
-For SQLite, create `verified_media` with column names matching these JSON keys and use text/integer types as appropriate. `schema` is part of each row. The adapter opens SQLite with `mode=ro`; JSONL is only read.
+For SQLite, create `verified_media` with column names matching these JSON keys and use text/integer types as appropriate. `schema` is part of each row. Supply a **closed, checkpointed SQLite snapshot**, not the database currently being written by the retrieval worker. The adapter opens SQLite with `mode=ro&immutable=1` so it cannot create adjacent WAL/SHM files; JSONL is only read.
 
 ## Run without touching cache contents
 
