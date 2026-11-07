@@ -51,10 +51,10 @@ def qa_image(img,name):
 
 def make_sheet(records, dest):
     w,h=350,365
-    sheet=Image.new("RGBA",(w*5,h*2),(236,237,231))
+    sheet=Image.new("RGBA",(w*3,h),(236,237,231))
     draw=ImageDraw.Draw(sheet)
     for i,rec in enumerate(records):
-        name=rec["name"];x=(i%5)*w;y=(i//5)*h
+        name=rec["name"];x=(i%3)*w;y=(i//3)*h
         bg=checker(w-22,h-95)
         shot=Image.open(dest/rec["world_sprite"]).convert("RGBA")
         shad=Image.open(dest/rec["shadow_sprite"]).convert("RGBA")
@@ -69,7 +69,7 @@ def make_sheet(records, dest):
         draw.text((x+18,y+h-42),"220% WORLD (true scale)",fill=(60,70,61),font=font(14))
         draw.rectangle((x+7,y+40,x+w-7,y+h-45),outline=(179,183,172),width=2)
     sheet.convert("RGB").save(dest.parent/"preview-grid-v3.jpg",quality=95)
-    sheet.save(dest.parent/"preview-grid-v2.png")
+    sheet.save(dest.parent/"preview-grid-v3.png")
 
 def make_compare(records,dest,old_zip):
     if not old_zip.exists(): return
@@ -77,24 +77,29 @@ def make_compare(records,dest,old_zip):
         z=zipfile.ZipFile(old_zip)
     except Exception as e:
         print("Comparison skipped",str(e));return
+    try:
+        old_metadata=json.loads(z.read("game_ready/manifest.json"))
+        old_pivots={e["name"]:e["anchor_px"] for e in old_metadata["items"]}
+    except Exception:
+        old_pivots={}
     rows=3
     w=450;h=400
     output=Image.new("RGBA",(w*2,h*rows),(240,242,235))
     draw=ImageDraw.Draw(output)
-    for i,rec in enumerate(records[:4]):
+    for i,rec in enumerate(records[:3]):
         name=rec["name"]
         try: old=Image.open(io.BytesIO(z.read("game_ready/"+name+"/ground.png"))).convert("RGBA")
         except Exception as e:print("Missing baseline",e);continue
-        for c,(title,im) in enumerate((("V1 BLOCK-OUT",old),("V2 MATERIAL + MESH",Image.open(dest/rec["world_sprite"]).convert("RGBA")))):
+        for c,(title,im) in enumerate((("V2 PREVIOUS",old),("V3 SILHOUETTE + MATERIAL",Image.open(dest/rec["world_sprite"]).convert("RGBA")))):
             bg=checker(w-30,h-70)
-            if c==0: pivot=(old.width*.5,old.height-17)
+            if c==0: pivot=old_pivots.get(name,(old.width*.5,old.height-17))
             else: pivot=rec["anchor_px"]
             im.info["anchor"]=pivot
             paste_at_contact(bg,im,(bg.width//2,int(bg.height*.81)),2.2)
             output.alpha_composite(bg,(c*w+15,i*h+43))
             draw.text((c*w+18,i*h+10),name.upper()+" / "+title,fill=(22,30,26),font=font(19))
-    output.convert("RGB").save(dest.parent/"comparison-v1-v2.jpg",quality=95)
-    output.save(dest.parent/"comparison-v1-v2.png")
+    output.convert("RGB").save(dest.parent/"comparison-v2-v3.jpg",quality=95)
+    output.save(dest.parent/"comparison-v2-v3.png")
 
 def produce(raw,dest,old_zip):
     m=json.loads((raw/"manifest.json").read_text())
@@ -131,32 +136,32 @@ def produce(raw,dest,old_zip):
              "icon_sprite":name+"/icon.png","shadow_sprite":name+"/shadow.png",
              "dimensions_m":asset["dimensions_m"],"footprint_m":asset["footprint_m"],
              "size_px":list(crop.size),"anchor_px":pivot,
-             "source_master":name+".png","source":"Original Blender parametric V2",
+             "source_master":name+".png","source":"Original Blender V3 silhouette and material hero benchmark",
              "status":"automated_qa_pass_visual_pending",
              "sha256":hashlib.sha256((folder/"ground.png").read_bytes()).hexdigest()}
         result["items"].append(rec)
-        print("LL_V2_PACK_OK",name,rec["size_px"],pivot,flush=True)
+        print("LL_V3_PACK_OK",name,rec["size_px"],pivot,flush=True)
     assert len(result["items"])==3
     (dest/"manifest.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf8")
     make_sheet(result["items"],dest)
     make_compare(result["items"],dest,old_zip)
     # All individual transparent sprites, manifests and comparison contact sheets.
-    package=dest.parent/"last-light-v2-10-sprite-preview.zip"
+    package=dest.parent/"last-light-v3-3-hero-preview.zip"
     with zipfile.ZipFile(package,"w",zipfile.ZIP_DEFLATED,compresslevel=7) as z:
         for p in sorted(dest.rglob("*")):
             if p.is_file():z.write(p,arcname="game_ready/"+str(p.relative_to(dest)))
-        for name in ("preview-grid-v2.png","comparison-v1-v2.png"):
+        for name in ("preview-grid-v3.png","comparison-v2-v3.png"):
             src=dest.parent/name
             if src.exists():z.write(src,arcname=name)
         for p in sorted(raw.glob("*.png")):
             z.write(p,arcname="master_renders/"+p.name)
-    print("LL_V2_PACK_DONE",len(result["items"]),package,flush=True)
+    print("LL_V3_PACK_DONE",len(result["items"]),package,flush=True)
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--input",type=Path,required=True)
     p.add_argument("--output",type=Path,required=True)
-    p.add_argument("--baseline",type=Path,default=Path("tools/blender_factory/output/last-light-blender-pilot.zip"))
+    p.add_argument("--baseline",type=Path,default=Path("preview/v2/last-light-v2-10-sprite-preview.zip"))
     a=p.parse_args()
     produce(a.input,a.output,a.baseline)
 if __name__=="__main__":main()
