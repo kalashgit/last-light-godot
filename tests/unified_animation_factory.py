@@ -92,5 +92,21 @@ class UnifiedAnimationFactoryV1(unittest.TestCase):
             self.assertEqual(len(r["frame_sha256"]),3)
             self.assertNotEqual(r["frame_sha256"][0],r["frame_sha256"][-1])
 
+
+    def test_extended_material_source_library(self):
+        sys.path.insert(0,str(ROOT/"tools"/"material_factory"))
+        import expanded_materials
+        import numpy as np
+        self.assertEqual(len(expanded_materials.FAMILIES),9)
+        for name in expanded_materials.FAMILIES:
+            one=expanded_materials.maps_for(name,64,1)
+            again=expanded_materials.maps_for(name,64,1)
+            weather=expanded_materials.maps_for(name,64,3)
+            self.assertEqual(set(one),set(expanded_materials.CHANNELS))
+            self.assertEqual(one["albedo"][0].shape,(64,64,3))
+            self.assertTrue(np.array_equal(one["albedo"][0],again["albedo"][0]))
+            self.assertTrue(np.all(one["metallic"][0] == 0))
+            self.assertFalse(np.array_equal(one["albedo"][0],weather["albedo"][0]))
+
 if __name__ == "__main__":
     unittest.main()
