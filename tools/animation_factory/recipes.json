@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "projection": "2:1 dimetric fixed camera 80x40 diamond per 1m",
+  "status": "animation_pilot_recipe_only",
+  "style_reference": "Golden Furniture Visual Standard V1",
+  "actions": [
+    {
+      "id": "refrigerator_main_open",
+      "family": "refrigerator",
+      "rig": "fridge_hinge",
+      "part": "lower",
+      "frames": 9,
+      "fps": 8,
+      "start_deg": 0,
+      "end_deg": -100,
+      "easing": "smoothstep",
+      "event_frame": 7,
+      "reverse_for_close": true,
+      "condition": 1
+    },
+    {
+      "id": "refrigerator_freezer_open",
+      "family": "refrigerator",
+      "rig": "fridge_hinge",
+      "part": "upper",
+      "frames": 9,
+      "fps": 8,
+      "start_deg": 0,
+      "end_deg": -100,
+      "easing": "smoothstep",
+      "event_frame": 7,
+      "reverse_for_close": true,
+      "condition": 1
+    },
+    {
+      "id": "cabinet_pair_open",
+      "family": "cabinet",
+      "rig": "paired_cabinet_hinges",
+      "part": "both",
+      "frames": 9,
+      "fps": 8,
+      "start_deg": 0,
+      "end_deg": 105,
+      "easing": "smoothstep",
+      "event_frame": 7,
+      "reverse_for_close": true,
+      "condition": 1
+    }
+  ]
+}
