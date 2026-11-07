@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "asset_id": "ll_vehicle_hatchback_golden_candidate_v1",
+  "source": "Blender procedural construction; no source pixels copied",
+  "dimensions_m": [
+    3.86,
+    1.69,
+    1.46
+  ],
+  "wheelbase_m": 2.48,
+  "angle_increment_deg": 22.5,
+  "heading_count": 16,
+  "grid": [
+    4,
+    4
+  ],
+  "cell_px": [
+    216,
+    138
+  ],
+  "anchor_px": [
+    108.0,
+    95.0
+  ],
+  "tile_px": [
+    80,
+    40
+  ],
+  "wear_condition": 1,
+  "collision_footprint_m": [
+    3.86,
+    1.69
+  ],
+  "proposed_gameplay_components": [
+    "body",
+    "wheels",
+    "doors",
+    "hood",
+    "trunk",
+    "windows",
+    "seats"
+  ],
+  "status": "RENDERED_CANDIDATE_NOT_FOUNDER_APPROVED_NOT_GODOT_INTEGRATED",
+  "atlas": "vehicle_16_headings.png",
+  "review": "vehicle_review_16_headings.png",
+  "sha256": "257c33f86df56a7b1d80082938578dabb868e1456a773f36261e723cac3d8115"
+}
