@@ -50,9 +50,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p preview/material-factory-v1/hero-material-test
-          cp build/material_factory/hero_ready/../preview-grid-v3.png preview/material-factory-v1/hero-material-test/
-          cp build/material_factory/hero_ready/../comparison-v2-v3.png preview/material-factory-v1/hero-material-test/
-          cp build/material_factory/hero_ready/../last-light-v3-3-hero-preview.zip preview/material-factory-v1/hero-material-test/
+          cp build/material_factory/preview-grid-v3.png preview/material-factory-v1/hero-material-test/
+          cp build/material_factory/comparison-v2-v3.png preview/material-factory-v1/hero-material-test/
+          cp build/material_factory/last-light-v3-3-hero-preview.zip preview/material-factory-v1/hero-material-test/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add preview/material-factory-v1/hero-material-test
@@ -66,8 +66,8 @@ jobs:
         with:
           name: last-light-v3-three-heroes-with-new-materials
           path: |
-            build/material_factory/hero_ready/../preview-grid-v3.png
-            build/material_factory/hero_ready/../comparison-v2-v3.png
-            build/material_factory/hero_ready/../last-light-v3-3-hero-preview.zip
+            build/material_factory/preview-grid-v3.png
+            build/material_factory/comparison-v2-v3.png
+            build/material_factory/last-light-v3-3-hero-preview.zip
           retention-days: 14
           if-no-files-found: error
