@@ -31,6 +31,21 @@ The founder's priority is implementation and a functional game, not perpetual ro
 - Master Vehicle Fleet Factory V1 (this branch): 12 original chassis archetypes, 8 paint IDs, four condition levels; deterministic 384 planned jobs (6,144 frames). **Do not infer these all rendered**. The branch's CI smoke produces a real sedan/pickup (16 views each) and representative palette if successful.
 - A 241-record external PZ vehicle variant census is reference taxonomy, NOT 241 distinct chassis. Likewise 4,347+ external item references are not 4,347 copyrighted sprites to ingest.
 
+## Codex high-throughput headless factory decision — prioritize Godot import
+
+This directive is updated to reflect current official Codex AGENTS.md guidance and Godot headless import documentation, and the existing LAST LIGHT factory code:
+
+1. **DO NOT restart Blender rendering from scratch.** Existing source `tools/blender_factory/render_v3_recovery.py` already performs original fixed-camera headless 2.5D rendering with source geometry, lighting and materials; vehicle, material, actor, animation and atlas pipelines already exist. The next high-impact missing connector is reusable `tools/unified_factory/import_godot.py` and a deterministic `scripts/factory_importer.gd` or equivalent, with CI tests and representative gameplay import.
+2. **Camera calibration:** preserve existing 30° elevation 2:1 dimetric camera and 80×40px world tile convention. Claude's suggested X=63.435° and 64-pixel ortho-scale formula are not replacements; calibrate projection against an exported 1m diamond. Reproducing the current rig is more important than a generic formula.
+3. **Headless production stages:** manifest → source model family → render all applicable directions/actions → Pillow palette/alpha-safe finishing → atlas+JSON with stable pivots → strict validation → resource generator → `godot --headless --path . --import` → isolated map E2E regression. Do not overwrite or copy `.godot/imported` internals.
+4. **Use the minimal tools:** Blender Python (`bpy`) plus existing Python/Pillow render and pack utilities. Optional external TexturePacker, pngquant, ImageMagick, astcenc/basisu and Blender MCP are **not prerequisites**. Add only if profiling shows net benefit and input/output is deterministic and appropriately licensed.
+5. **Measured optimization:** process assets in bounded parallel Blender processes, hash source recipes and output manifests to skip unchanged work, share material source recipes and cached geometry. Experiment with Eevee/Workbench *on a separate A/B branch* and reject if Golden realism/depth/alpha changes; Cycles may remain required for heroes.
+6. **Layered tint/data:** use palette variants, mesh swaps, damage masks and wear as orthogonal visual components; avoid baking the full Cartesian product of condition × color × angle × state when overlays suffice. Use a single actor biped and clothing rigs; vehicle variants must retain distinct source chassis proportions.
+7. **Codex enforcement:** repository `AGENTS.md` defines these rules. Do not invent a new `/factory` that ignores the existing modules. Add integration adapters and tests rather than moving all source code.
+8. **Timebox:** first implement/test the import converter on one existing actor atlas, one animated hollow cabinet/fridge and one 16-view vehicle before mass generation. Maintain the founder's two-hour target and the real pass/fail accounting.
+
+**Reference:** official Codex agent instructions https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex ; Godot CLI https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html .
+
 ## Milestone A — freeze exact source and build a release manifest
 
 1. Audit all Notion/GitHub references. Create a single canonical catalog for *original* asset IDs, authored geometry family, material/UV recipe, color variants, state representations, animation clips, engine placement, review status, file hashes and source provenance. Deduplicate cross-factory IDs.
