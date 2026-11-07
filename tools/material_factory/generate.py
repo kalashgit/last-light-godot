@@ -71,7 +71,11 @@ def normal_map(height,strength=3.0):
 def byte(a):
     return np.uint8(np.clip(a*255,0,255))
 
-def material_maps(recipe,size):
+CONDITION_NAMES=("maintained", "used", "weathered", "severely_neglected")
+
+def material_maps(recipe,size,condition=1):
+    if condition not in range(4):
+        raise ValueError("condition must be 0, 1, 2 or 3")
     seed=int(recipe["seed"])
     rng=np.random.default_rng(seed)
     yy,xx=np.mgrid[:size,:size].astype(np.float32)
@@ -141,6 +145,37 @@ def material_maps(recipe,size):
     else:
         raise ValueError(family)
     variation=np.asarray(variation,dtype=np.float32)
+    # Environmental age is distinct from construction and intrinsic material
+    # texture. Keep the default relatively fresh; severe decay is opt-in.
+    severity=(0.0, .22, .55, 1.0)[condition]
+    deposition=np.clip(.52*low+.33*mid+.15*fine,0,1)
+    patches=np.clip((deposition-(.57-.10*severity))*3.8,0,1)**1.7
+    micro=np.clip((fine-.57)*3,0,1)
+    if family=="painted_metal":
+        # Sparse damaged paint; object-edge and grip masks still belong in Blender.
+        chips=np.clip((patches*.55+micro*.45-.71)*4,0,1)*severity
+        variation-=.11*severity*patches
+        rough=np.clip(rough+.13*severity*patches,0,1)
+        metal=np.clip(metal*(1-chips)+.72*chips,0,1)
+        wear=np.maximum(wear, chips)
+    elif family=="wood":
+        variation-=.13*severity*patches
+        rough=np.clip(rough+.16*severity*patches,0,1)
+        wear=np.maximum(wear,.65*severity*patches)
+    elif family=="fabric":
+        variation-=.17*severity*patches
+        rough=np.clip(rough+.035*severity*patches,0,1)
+        wear=np.maximum(wear,.8*severity*patches)
+    elif family=="plastic":
+        variation-=.09*severity*patches
+        rough=np.clip(rough+.12*severity*patches,0,1)
+        wear=np.maximum(wear,.55*severity*patches)
+    elif family=="oxidized_metal":
+        # Clean steel remains recognizably metallic; oxidation grows with neglect.
+        rust=np.clip(wear*(.35+.9*severity),0,1)
+        wear=rust
+        metal=np.clip((1-rust)*.84,0,1)
+        rough=np.clip(.43+.49*rust+.11*(mid-.5),0,1)
     # Original maps; no proprietary reference-game textures.
     color=np.clip(base[None,None,:]*(1+variation[:,:,None]),0,1)
     if family=="oxidized_metal":
@@ -149,6 +184,11 @@ def material_maps(recipe,size):
     if family=="painted_metal":
         # slight warm age patina only; keep enamel read
         color[:,:,0]=np.clip(color[:,:,0]+.014*low,0,1)
+        exposed=np.array([.32,.36,.37],dtype=np.float32)
+        color=color*(1-chips[:,:,None])+exposed[None,None,:]*chips[:,:,None]
+    if family=="fabric" and severity>0:
+        # Atmospheric soiling is a soft dye shift, never sharp random pixels.
+        color=np.clip(color*(1-.10*severity*patches[:,:,None]),0,1)
     # local mask is a texture cavity proxy, NOT mesh ambient occlusion.
     local_ao=np.clip(1-.16*np.maximum(0,.49-height)*2,0,1)
     maps={
@@ -190,7 +230,7 @@ def make_contact_sheet(cards,outdir):
     sheet.save(outdir/"contact-sheet.png",optimize=True)
     return sheet
 
-def generate(out,size):
+def generate(out,size,condition=1):
     recipes=json.loads(MATERIALS.read_text(encoding="utf8"))
     assert len(recipes)==5
     out.mkdir(parents=True,exist_ok=True)
@@ -198,7 +238,7 @@ def generate(out,size):
     for recipe in recipes:
         name=recipe["id"];target=out/name
         target.mkdir(exist_ok=True)
-        maps=material_maps(recipe,size)
+        maps=material_maps(recipe,size,condition)
         files={}
         for key,(array,mode) in maps.items():
             path=target/(key+".png")
@@ -212,6 +252,7 @@ def generate(out,size):
                      Image.fromarray(maps["wear_source"][0],"L").convert("RGB")))
         records.append({"id":name,"family":recipe["family"],"status":"GENERATED_PENDING_VISUAL_APPROVAL",
           "rights":"ORIGINAL_PROCEDURAL","seed":recipe["seed"],"base_hex":recipe["base_hex"],
+          "condition_level":condition,"condition_name":CONDITION_NAMES[condition],
           "roughness":recipe["roughness"],"metallic":recipe["metallic"],
           "maps":files,"resolution":[size,size],
           "uv_scale_m":recipe["uv_scale_m"],"wear_semantics":recipe["wear_semantics"],
@@ -220,7 +261,8 @@ def generate(out,size):
           "sha256_albedo":hashlib.sha256((target/"albedo.png").read_bytes()).hexdigest()})
         print("LL_MAT_GENERATED",name,flush=True)
     make_contact_sheet(cards,out)
-    data={"schema":1,"projection":"world texture source maps; independent of 2:1 camera",
+    data={"schema":1,"condition_level":condition,"condition_name":CONDITION_NAMES[condition],
+      "projection":"world texture source maps; independent of 2:1 camera",
       "license":"original procedural generated outputs; texture inputs are synthesized, not copied",
       "format":"PNG RGB/greyscale; normal map OpenGL convention (+Y)",
       "notes":"Prototype PBR maps; material appearance is not yet approved at 80x40 tile in Godot",
@@ -234,7 +276,8 @@ def generate(out,size):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument("--out",type=Path,default=Path("build/material_factory/materials"))
-    p.add_argument("--size",type=int,default=512);a=p.parse_args()
+    p.add_argument("--size",type=int,default=512)
+    p.add_argument("--condition",type=int,choices=range(4),default=1);a=p.parse_args()
     if a.size not in (256,512,1024):raise ValueError("size must be 256/512/1024")
-    generate(a.out,a.size)
+    generate(a.out,a.size,a.condition)
 if __name__=="__main__":main()
