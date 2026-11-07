@@ -58,6 +58,8 @@ jobs:
           git add preview/material-factory-v1/hero-material-test
           if ! git diff --cached --quiet; then
             git commit -m "Publish PBR materials on actual V3 hero geometry and comparison"
+            git fetch origin codex/material-factory-v1-five-recipes-20261107
+            git rebase origin/codex/material-factory-v1-five-recipes-20261107
             git push origin HEAD:codex/material-factory-v1-five-recipes-20261107
           fi
       - uses: actions/upload-artifact@v4
