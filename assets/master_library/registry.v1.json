@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "library": "LAST_LIGHT_MASTER_ASSET_LIBRARY",
+  "status": "INDEX_ONLY_NO_ART_APPROVAL",
+  "revision_date": "2026-11-07",
+  "repository": "kalashgit/last-light-godot",
+  "areas": [
+    {
+      "id": "characters",
+      "source": "tools/actor_factory",
+      "previews": "preview/actor-factory-v1",
+      "state": "rendered_candidate"
+    },
+    {
+      "id": "zombies",
+      "source": "tools/actor_factory",
+      "previews": "preview/actor-factory-v1",
+      "state": "rendered_candidate"
+    },
+    {
+      "id": "clothing",
+      "source": "tools/actor_factory",
+      "previews": "preview/actor-factory-v1",
+      "state": "wearable_render_candidate"
+    },
+    {
+      "id": "held_items",
+      "source": "tools/actor_factory",
+      "previews": "preview/actor-factory-v1",
+      "state": "held_item_render_candidate"
+    },
+    {
+      "id": "furniture",
+      "source": "tools/blender_factory",
+      "previews": "preview/v3-recovery",
+      "state": "mixed_candidates"
+    },
+    {
+      "id": "items_and_weapons",
+      "source": "tools/asset_factory",
+      "previews": "assets/generated/factory",
+      "state": "mixed_candidates"
+    },
+    {
+      "id": "materials_and_textures",
+      "source": "tools/material_factory",
+      "previews": "preview/material-factory-batch-v1",
+      "state": "source_material_candidate"
+    },
+    {
+      "id": "animations",
+      "source": "tools/animation_factory",
+      "previews": "preview/animation-factory-v1",
+      "state": "rendered_candidate"
+    },
+    {
+      "id": "tiles_terrain_buildings",
+      "source": "assets/last_light",
+      "previews": null,
+      "state": "needs_category_census"
+    },
+    {
+      "id": "world_objects_and_batch_recipes",
+      "source": "tools/unified_factory",
+      "previews": null,
+      "state": "schema_and_planner_only"
+    }
+  ],
+  "catalog_baseline": {
+    "stable_catalog_ids": 300,
+    "rendered_actor_pilots": 5,
+    "actor_frames": 52,
+    "prop_animation_sequences": 3,
+    "prop_animation_frames": 27,
+    "asset_count_visually_approved_here": 0
+  },
+  "approval_policy": [
+    "technical_qa",
+    "founder_visual_approval",
+    "actual_godot_import",
+    "persistent_release_manifest"
+  ],
+  "source_of_truth": "repository_paths_and_content_hashes"
+}
