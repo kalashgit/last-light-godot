@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - "codex/material-factory-v1-five-recipes-20261107"
+      - "codex/material-factory-v2-detail-candidate-20261107"
     paths:
+      - "tools/material_factory/generate.py"
       - "tools/material_factory/render_hero_materials.py"
       - ".github/workflows/material-factory-hero-render.yml"
   workflow_dispatch:
