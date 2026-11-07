@@ -66,8 +66,8 @@ jobs:
       - name: Render real V3 mesh hinge animation pilots
         run: |
           mkdir -p build/animation_factory/raw
-          blender -b --factory-startup -t 2 --python tools/animation_factory/render.py -- --output build/animation_factory/raw --actions refrigerator_main_open,cabinet_pair_open 2>&1 | tee build/animation_factory/blender.log
-          grep -q 'LL_ANIM_RENDER_DONE 2 18' build/animation_factory/blender.log
+          blender -b --factory-startup -t 2 --python tools/animation_factory/render.py -- --output build/animation_factory/raw --actions refrigerator_main_open,refrigerator_freezer_open,cabinet_pair_open 2>&1 | tee build/animation_factory/blender.log
+          grep -q 'LL_ANIM_RENDER_DONE 3 27' build/animation_factory/blender.log
           grep -q 'LL_HOLLOW_GEOMETRY_PASS refrigerator' build/animation_factory/blender.log
           grep -q 'LL_HOLLOW_GEOMETRY_PASS cabinet' build/animation_factory/blender.log
           if grep -q 'Traceback (most recent call last)' build/animation_factory/blender.log; then exit 1; fi
@@ -80,7 +80,7 @@ jobs:
           from PIL import Image
           root=Path("build/animation_factory/game_ready")
           m=json.loads((root/"manifest.json").read_text())
-          assert len(m["entries"])==2
+          assert len(m["entries"])==3
           for obj in m["entries"]:
               strip=Image.open(root/obj["strip"]).convert("RGBA")
               assert strip.width==obj["frame_count"]*obj["cell_px"][0]
@@ -88,7 +88,7 @@ jobs:
               assert strip.getchannel("A").getextrema()==(0,255)
               assert (root/obj["preview"]).stat().st_size>500
               assert 0<=obj["event_frame"]<obj["frame_count"]
-          print("LL_ANIM_PILOT_QA_PASS: two actual articulated models, 18 stable frames, RGBA strips")
+          print("LL_ANIM_PILOT_QA_PASS: three hollow-storage sequences, 27 stable frames, RGBA strips")
           PY
       - name: Publish iPhone-viewable previews on isolated branch
         if: github.event_name == 'push'
