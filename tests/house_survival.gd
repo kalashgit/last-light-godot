@@ -461,6 +461,39 @@ func test_saves() -> void:
 	print("HOUSE_SURVIVAL: save/migration checks finished")
 
 
+func test_camera_and_zoom() -> void:
+ fresh()
+ game.zoom_adjust=0.0
+ game.player=Vector2(4.9,9.35)
+ game.camera_zoom=game._zoom_target()
+ check(is_equal_approx(game.camera_zoom,1.0),"outside baseline is 100%")
+ game.player=Vector2(2.0,2.0)
+ game.camera_zoom=game._zoom_target()
+ check(game.camera_zoom >= 2.0,"automatic indoor zoom is substantially closer")
+ var tile := Vector2(3.25,2.2)
+ var projected: Vector2=game._world_to_view(tile)
+ check(game._view_to_world(projected).distance_to(tile)<.001,"tap/placement uses zoom-corrected world coordinates")
+ var initial: float=game.camera_zoom
+ game._tap(button("zoom_in"))
+ check(game.camera_zoom>initial,"touch zoom in increases world magnification")
+ game._tap(button("zoom_out"))
+ check(is_equal_approx(game.camera_zoom,initial),"touch zoom out restores magnification")
+ var saved_gameplay: Dictionary=state()
+ game._tap(button("zoom_in"))
+ check(state()==saved_gameplay,"zoom changes no gameplay/persistent world state")
+ for i in range(20): game._adjust_zoom(game.ZOOM_STEP)
+ check(game.camera_zoom<=game.MAX_ZOOM,"max zoom clamped")
+ for i in range(30): game._adjust_zoom(-game.ZOOM_STEP)
+ check(game.camera_zoom>=game.MIN_ZOOM,"min zoom clamped")
+ game.zoom_adjust=0.0
+ game.camera_zoom=game._zoom_target()
+ game._save_controls()
+ for name in ["zoom_in","zoom_out"]:
+  check(game.control_rects.has(name),"Zoom HUD contains "+name)
+  check(game.get_viewport_rect().has_point(game.control_rects[name].get_center()),"Zoom controls are on screen")
+ print("HOUSE_SURVIVAL: adaptive camera and larger touch controls PASS")
+
+
 func run() -> void:
 	root.size = Vector2i(1152, 720)
 	root.content_scale_size = Vector2i(1152, 720)
@@ -468,6 +501,7 @@ func run() -> void:
 	root.add_child(game)
 	game.set_process(false)
 	test_controls()
+	test_camera_and_zoom()
 	test_movement_and_geometry()
 	test_combat_and_zombies()
 	test_inventory_and_survival()

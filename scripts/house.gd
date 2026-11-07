@@ -21,6 +21,13 @@ var keyboard_sprint := false
 var sprinting := false
 var sneaking := false
 var joystick_dead_zone := .14
+const INDOOR_ZOOM := 2.20
+const OUTDOOR_ZOOM := 1.0
+const MIN_ZOOM := 0.75
+const MAX_ZOOM := 3.25
+const ZOOM_STEP := 0.25
+var camera_zoom := 1.0
+var zoom_adjust := 0.0
 var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
@@ -99,6 +106,7 @@ func _ready() -> void:
   _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
   paused=true
  get_viewport().size_changed.connect(_on_viewport_resized)
+ camera_zoom = _zoom_target()
  loot_builder = LootBuilder.new()
  add_child(loot_builder)
  loot_builder.setup(self)
@@ -266,6 +274,8 @@ func _shove() -> void:
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
+ # The HUD stays at native size while the world eases into indoor/outdoor zoom.
+ camera_zoom = move_toward(camera_zoom, _zoom_target(), 3.0 * clampf(delta,0.0,0.25))
  if paused or inventory_open or builder_open or health<=0:
   queue_redraw()
   return
@@ -333,6 +343,30 @@ func _screen(p: Vector2, height: float = 0) -> Vector2:
  var size := get_viewport_rect().size
  return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
 
+func _camera_pivot() -> Vector2:
+ return get_viewport_rect().size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+
+func _zoom_target() -> float:
+ return clampf((INDOOR_ZOOM if HOME.has_point(player) else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
+
+func _adjust_zoom(delta: float) -> void:
+ if health<=0 or paused or inventory_open or builder_open: return
+ zoom_adjust = clampf(zoom_adjust + delta, MIN_ZOOM-INDOOR_ZOOM, MAX_ZOOM-INDOOR_ZOOM)
+ camera_zoom = _zoom_target()
+ _save_controls()
+ _announce("ZOOM %d%%" % roundi(camera_zoom * 100.0))
+ queue_redraw()
+
+func _world_to_view(p: Vector2, height: float = 0.0) -> Vector2:
+ var anchor := _camera_pivot()
+ return anchor + (_screen(p,height)-anchor)*camera_zoom
+
+func _view_to_world(point: Vector2) -> Vector2:
+ var anchor := _camera_pivot()
+ var raw := anchor + (point-anchor)/maxf(camera_zoom,0.001)
+ var projected := raw-anchor+_iso(player)
+ return Vector2((projected.x/TX+projected.y/TY)*.5,(projected.y/TY-projected.x/TX)*.5)
+
 func _poly(points: PackedVector2Array, color: Color) -> void:
  draw_colored_polygon(points, color)
 
@@ -395,7 +429,10 @@ func _alive_zombies() -> int:
  return alive
 
 func _draw() -> void:
+ var anchor := _camera_pivot()
+ draw_set_transform(anchor*(1.0-camera_zoom),0.0,Vector2.ONE*camera_zoom)
  art.draw_world(self)
+ draw_set_transform(Vector2.ZERO,0.0,Vector2.ONE)
  _draw_ui()
 
 func _tap(point: Vector2) -> void:
@@ -424,7 +461,7 @@ func _tap(point: Vector2) -> void:
    if control_rects.deadzone_down.has_point(point): _set_dead_zone(joystick_dead_zone-.02)
    elif control_rects.deadzone_up.has_point(point): _set_dead_zone(joystick_dead_zone+.02)
   return
- for action in ["attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
+ for action in ["zoom_in","zoom_out","attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
   if control_rects[action].has_point(point):
    _activate_action(action)
    return
@@ -476,7 +513,7 @@ func _pointer_down(pointer: int, point: Vector2) -> void:
   panel_touches[pointer] = "modal"
   _tap(point)
   return
- for action in ["inventory","pause","attack","interact","shove","sprint","sneak","quick0","quick1","quick2","quick3"]:
+ for action in ["inventory","pause","zoom_in","zoom_out","attack","interact","shove","sprint","sneak","quick0","quick1","quick2","quick3"]:
   if control_rects[action].has_point(point):
    panel_touches[pointer] = action
    if action=="sprint": sprint_held=true
@@ -540,6 +577,8 @@ func _input(event: InputEvent) -> void:
     KEY_2: _activate_action("quick1")
     KEY_3: _activate_action("quick2")
     KEY_4: _activate_action("quick3")
+    KEY_EQUAL: _adjust_zoom(ZOOM_STEP)
+    KEY_MINUS: _adjust_zoom(-ZOOM_STEP)
 
 func _line_blocked(a: Vector2, b: Vector2, furniture: bool = true) -> bool:
  for wall in walls:
@@ -915,10 +954,7 @@ func _builder_spawn_near(id: String) -> bool:
  return false
 
 func _place_builder_item(id: String, point: Vector2) -> bool:
- var center: Vector2 = get_viewport_rect().size * Vector2(.50,.58 if HOME.has_point(player) else .70)
- var projected := point - center + _iso(player)
- var tile := Vector2((projected.x/TX+projected.y/TY)*0.5,(projected.y/TY-projected.x/TX)*0.5)
- return _spawn_golden_item(id,tile,1)
+ return _spawn_golden_item(id,_view_to_world(point),1)
 
 
 func _select_world_target(point: Vector2) -> void:
@@ -929,7 +965,7 @@ func _select_world_target(point: Vector2) -> void:
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
-   var screen:=_screen(_target_point(target),30 if kind!="drop" else 0)
+   var screen:=_world_to_view(_target_point(target),30 if kind!="drop" else 0)
    var score:=point.distance_to(screen)
    if score<distance:
     distance=score
@@ -939,6 +975,8 @@ func _select_world_target(point: Vector2) -> void:
 
 func _activate_action(action: String) -> void:
  match action:
+  "zoom_in": _adjust_zoom(ZOOM_STEP)
+  "zoom_out": _adjust_zoom(-ZOOM_STEP)
   "attack": _attack()
   "interact": _interact()
   "shove": _shove()
@@ -990,13 +1028,19 @@ func _load_controls() -> void:
  if config.load("user://last_light_controls.cfg")==OK:
   var value: Variant=config.get_value("touch","dead_zone",.14)
   if _valid_number(value,.05,.35): joystick_dead_zone=float(value)
+  var desired: Variant=config.get_value("camera","zoom_offset",0.0)
+  if _valid_number(desired,-1.45,1.05): zoom_adjust=float(desired)
+
+func _save_controls() -> void:
+ var config := ConfigFile.new()
+ config.set_value("touch","dead_zone",joystick_dead_zone)
+ config.set_value("camera","zoom_offset",zoom_adjust)
+ if config.save("user://last_light_controls.cfg")!=OK: _announce("Could not save controls")
 
 func _set_dead_zone(value: float) -> void:
  joystick_dead_zone=clampf(value,.05,.35)
  _clear_pointers()
- var config:=ConfigFile.new()
- config.set_value("touch","dead_zone",joystick_dead_zone)
- if config.save("user://last_light_controls.cfg")!=OK: _announce("Could not save control setting")
+ _save_controls()
  queue_redraw()
 
 func _interaction_distance(target: Dictionary) -> float:
