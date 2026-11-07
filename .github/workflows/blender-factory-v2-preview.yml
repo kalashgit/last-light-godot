@@ -1,0 +1,82 @@
+name: LAST LIGHT Blender V2 visual trial
+on:
+  push:
+    branches:
+      - "codex/blender-v2-visual-benchmark-20261107"
+    paths:
+      - "tools/blender_factory/render_v2.py"
+      - "tools/blender_factory/package_v2.py"
+      - ".github/workflows/blender-factory-v2-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render-v2-ten-original-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out isolated production trial
+        uses: actions/checkout@v4
+      - name: Install free Blender CPU renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Render 10 original procedural 3D models
+        run: |
+          mkdir -p build/blender_v2/raw
+          blender -b --factory-startup -t 2 --python tools/blender_factory/render_v2.py -- --output build/blender_v2/raw
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image packer dependency
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Package, validate and create V1 vs V2 comparisons
+        run: |
+          python tools/blender_factory/package_v2.py --input build/blender_v2/raw --output build/blender_v2/game_ready
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root=Path("build/blender_v2/game_ready")
+          m=json.loads((root/"manifest.json").read_text())
+          assert len(m["items"])==10
+          for x in m["items"]:
+              image=Image.open(root/x["world_sprite"])
+              assert image.mode=="RGBA" and image.getchannel("A").getextrema()==(0,255)
+              assert all(v>0 for v in x["dimensions_m"])
+              assert all(v>0 for v in x["footprint_m"])
+          for filename in ("preview-grid-v2.png","comparison-v1-v2.png","last-light-v2-10-sprite-preview.zip"):
+              assert (root.parent/filename).stat().st_size>3000
+          print("LL_V2_QA_PASS: 10 original sprites, transparent RGBA, pivots, dimensions, shadows, icons, comparison image, ZIP", flush=True)
+          PY
+      - name: Publish validated preview, images, and ZIP at direct public GitHub URLs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/codex/blender-v2-visual-benchmark-20261107'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/v2
+          cp build/blender_v2/last-light-v2-10-sprite-preview.zip preview/v2/
+          cp build/blender_v2/preview-grid-v2.png preview/v2/
+          cp build/blender_v2/comparison-v1-v2.png preview/v2/
+          cp build/blender_v2/game_ready/manifest.json preview/v2/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/v2
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish visually reviewable Blender V2 10-asset preview"
+            git push origin HEAD:codex/blender-v2-visual-benchmark-20261107
+          fi
+      - name: Upload redundant GitHub Actions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-v2-ten-sprite-visual-benchmark
+          path: |
+            build/blender_v2/last-light-v2-10-sprite-preview.zip
+            build/blender_v2/preview-grid-v2.png
+            build/blender_v2/comparison-v1-v2.png
+            build/blender_v2/game_ready/manifest.json
+          if-no-files-found: error
+          retention-days: 14
