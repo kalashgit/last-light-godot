@@ -35,6 +35,31 @@ def fbm(size,rng,base=4,octaves=5):
         weight+=amplitude
     return np.clip(.5+noise/weight,0,1)
 
+def periodic_ridges(size, rng, frequency=32):
+    """Non-sinusoidal, locally varying fibre paths; opposite tile edges match."""
+    yy, xx = np.mgrid[:size, :size].astype(np.float32)
+    x=xx/size; y=yy/size
+    broad=fbm(size,rng,3,4)-.5
+    warp=fbm(size,rng,7,4)-.5
+    drift=.035*broad+.013*warp
+    phase=(y+drift)*frequency + .32*(fbm(size,rng,17,3)-.5)
+    fractional=np.mod(phase,1.)
+    ridge=np.exp(-((fractional-.5)/.12)**2)
+    breaks=fbm(size,rng,11,4)
+    return np.clip(ridge*(.45+.8*breaks),0,1)
+
+def anisotropic_noise(size, rng, across=72, along=5):
+    """Periodic grain fields stretched along boards, without evenly repeated bands."""
+    values=rng.random((along,across)).astype(np.float32)
+    y=np.arange(size,dtype=np.float32)*along/size
+    x=np.arange(size,dtype=np.float32)*across/size
+    iy=np.floor(y).astype(int)%along;ix=np.floor(x).astype(int)%across
+    fy=y-np.floor(y);fx=x-np.floor(x)
+    fy=fy*fy*(3-2*fy);fx=fx*fx*(3-2*fx)
+    a=values[np.ix_(iy,ix)];b=values[np.ix_(iy,(ix+1)%across)]
+    c=values[np.ix_((iy+1)%along,ix)];d=values[np.ix_((iy+1)%along,(ix+1)%across)]
+    return (a*(1-fx)[None,:]+b*fx[None,:])*(1-fy)[:,None]+(c*(1-fx)[None,:]+d*fx[None,:])*fy[:,None]
+
 def normal_map(height,strength=3.0):
     # periodic gradient; green is OpenGL +Y convention.
     gy=(np.roll(height,-1,0)-np.roll(height,1,0))*strength
@@ -68,24 +93,32 @@ def material_maps(recipe,size):
         rough=np.clip(recipe["roughness"]+.07*(low-.5)+.12*scuff,0,1)
         metal=np.full((size,size),recipe["metallic"],dtype=np.float32)
     elif family=="wood":
-        # Periodic wood fibers oriented lengthwise in X. Use UV axis control on each real board.
-        warped=y+.018*np.sin(2*np.pi*x*3)+.032*(low-.5)
-        bands=np.sin(2*np.pi*(warped*24+2.1*mid))
-        fibers=np.sin(2*np.pi*(warped*65+.7*fine))
-        pores=np.maximum(0,mid-.55)
-        variation=.22*bands+.08*fibers+.17*(low-.5)-.08*pores
-        height=np.clip(.5+.14*bands+.045*fibers+.08*(fine-.5),0,1)
-        wear=np.clip(.12*pores+.15*np.maximum(0,(.39-mid)),0,1)
-        rough=np.clip(recipe["roughness"]+.12*(fine-.5)+.10*pores,0,1)
+        # Broad uneven growth texture plus fine lengthwise (Y) open-pore fibres.
+        growth=anisotropic_noise(size,rng,27,3)
+        fibres=anisotropic_noise(size,rng,110,7)
+        pores=np.maximum(0,.49-fine)*np.clip(mid*.9,0,1)
+        knots=np.maximum(0,low-.67)**2*12
+        grain=.65*growth+.35*fibres
+        variation=.22*(low-.5)+.13*(mid-.5)+.32*(growth-.5)+.095*(fibres-.5)-.12*pores-.08*knots
+        height=np.clip(.5+.12*(growth-.5)+.045*(fibres-.5)+.045*(fine-.5),0,1)
+        wear=np.clip(.07*pores+.06*np.maximum(0,.34-mid),0,1)
+        rough=np.clip(recipe["roughness"]+.10*(fine-.5)+.11*pores-.04*grain,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="fabric":
-        # Very fine periodic warp/weft kept mostly in normal map, broad shading in albedo.
-        warp=np.sin(2*np.pi*x*96);weft=np.sin(2*np.pi*y*96)
-        weave=(warp+weft)*.5
-        variation=.11*(low-.5)+.035*weave+.05*(mid-.5)
-        height=np.clip(.5+.10*weave+.04*(fine-.5),0,1)
-        wear=np.clip(.14*mid+.04*(1-weave)/2,0,1)
-        rough=np.clip(recipe["roughness"]+.03*(low-.5),0,1)
+        # Offset plain-weave fibres, with broken slubs and yarn coloration.
+        threads=96
+        row=np.floor(y*threads).astype(np.int32)
+        col=np.floor(x*threads).astype(np.int32)
+        warp=np.maximum(0,np.cos(2*np.pi*x*threads))**3
+        weft=np.maximum(0,np.cos(2*np.pi*y*threads))**3
+        crossing=((row+col)&1).astype(np.float32)
+        weave=warp*(.72+.28*crossing)+weft*(1-.28*crossing)
+        slub=np.clip((fine-.42)*2,0,1)
+        yarn=mid-.5
+        variation=.17*(low-.5)+.095*yarn+.055*(weave-.55)+.03*(slub-.5)
+        height=np.clip(.46+.13*weave+.035*(fine-.5),0,1)
+        wear=np.clip(.06+.07*np.maximum(0,.4-mid),0,1)
+        rough=np.clip(recipe["roughness"]+.045*(low-.5)-.022*weave,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="plastic":
         mild=.07*(low-.5)+.025*(fine-.5)
@@ -96,12 +129,13 @@ def material_maps(recipe,size):
         rough=np.clip(recipe["roughness"]+.07*(low-.5)+scuff*.25,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="oxidized_metal":
-        corrosion=low*.56+mid*.44
-        rust=np.clip((corrosion-.38)*2.3,0,1)**1.6
+        corrosion=low*.46+mid*.40+fine*.14
+        rust=np.clip((corrosion-.40)*3.0,0,1)**1.5
         # Rust is nonmetallic, bare steel is metallic.
         metal=np.clip((1-rust)*.84,0,1)
-        variation=.18*(fine-.5)-.12*rust
-        height=np.clip(.52+.16*(fine-.5)-.23*rust,0,1)
+        pitting=np.maximum(0,.48-fine)*rust
+        variation=.20*(fine-.5)+.075*(mid-.5)-.12*rust
+        height=np.clip(.53+.10*(fine-.5)-.24*pitting+.035*rust,0,1)
         wear=rust
         rough=np.clip(.43+.49*rust+.11*(mid-.5),0,1)
     else:
@@ -168,7 +202,9 @@ def generate(out,size):
         files={}
         for key,(array,mode) in maps.items():
             path=target/(key+".png")
-            Image.fromarray(array,mode).save(path,optimize=True)
+            # Pillow's optimized PNG writer can leave an empty file on some
+            # runtime/library combinations; reproducible lossless PNG suffices.
+            Image.fromarray(array,mode).save(path,optimize=False)
             files[key]=str(path.relative_to(out))
         lit=preview(maps,recipe,size)
         lit.save(target/"preview.png",optimize=True)
