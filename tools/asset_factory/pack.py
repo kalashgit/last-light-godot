@@ -36,6 +36,9 @@ for page in range(math.ceil(len(result)/30)):
  sheet.save(a.sheets/f'contact_{page+1:02}.jpg',quality=90)
 # Representative ground scale review: all at 1:1 on 80x40 diamonds.
 selected=[s for s in result if s['name'] in __import__('catalog').REPRESENTATIVE_NAMES]
+# A partial parallel shard may contain none of the curated representatives.
+# Review the first five actual batch candidates rather than writing a 0px image.
+if not selected: selected=result[:5]
 sheet=Image.new('RGB',(1200,math.ceil(len(selected)/5)*220),(32,38,36)); draw=ImageDraw.Draw(sheet)
 for i,spec in enumerate(selected):
  x=(i%5)*240+120; y=(i//5)*220+165
