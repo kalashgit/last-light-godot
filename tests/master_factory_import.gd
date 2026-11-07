@@ -24,7 +24,9 @@ func _verify() -> void:
         return
     check(m.get("schema_version") == 1, "index schema not v1")
     check(m.get("asset_count") == 311, "expected 300 items + 5 actors + 3 props + 3 vehicles")
-    check(m.get("tile_px") == [80,40], "wrong tile scale")
+    var grid: Array = m.get("tile_px", [])
+    check(grid.size() == 2 and int(grid[0]) == 80 and int(grid[1]) == 40,
+          "wrong tile scale")
     var counts: Dictionary = m.get("source_counts",{})
     check(counts.get("item",0)==300,"300 real factory items missing")
     check(counts.get("actor",0)==5,"five actor candidates missing")
