@@ -44,6 +44,12 @@ func run() -> void:
  assert(not game._spawn_golden_item(id,Vector2(0,0),1))
  # All original legacy item definitions, interactions and save schema remain in place.
  assert(game.survival.definitions.has("ll_food_bean_tin"))
+ # Icon-only melee candidates must never crash when the character renderer requests held art.
+ var melee := "ll_golden_baseball_bat"
+ assert(game.survival.add(melee, 1))
+ assert(game.survival.equip(melee))
+ assert(game._held_frame(melee, 0).is_empty())
+ game.queue_redraw()
  print("GOLDEN40 HOUSE BUILDER: 40 icons, spawn, pickup, drop, save/reload, blocked placement PASS")
  game.free()
  quit()
