@@ -21,9 +21,21 @@ var keyboard_sprint := false
 var sprinting := false
 var sneaking := false
 var joystick_dead_zone := .14
+const INDOOR_ZOOM := 2.20
+const OUTDOOR_ZOOM := 1.0
+const MIN_ZOOM := 0.75
+const MAX_ZOOM := 3.25
+const ZOOM_STEP := 0.25
+var camera_zoom := 1.0
+var zoom_adjust := 0.0
 var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
+const LootBuilder := preload("res://scripts/loot_builder.gd")
+var loot_builder: CanvasLayer
+var builder_open := false
+var pending_spawn_id := ""
+var golden_textures: Dictionary = {}
 const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
 const HouseNavigation := preload("res://scripts/house_navigation.gd")
@@ -94,6 +106,10 @@ func _ready() -> void:
   _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
   paused=true
  get_viewport().size_changed.connect(_on_viewport_resized)
+ camera_zoom = _zoom_target()
+ loot_builder = LootBuilder.new()
+ add_child(loot_builder)
+ loot_builder.setup(self)
  set_process(true)
  queue_redraw()
 
@@ -258,7 +274,9 @@ func _shove() -> void:
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
- if paused or inventory_open or health<=0:
+ # The HUD stays at native size while the world eases into indoor/outdoor zoom.
+ camera_zoom = move_toward(camera_zoom, _zoom_target(), 3.0 * clampf(delta,0.0,0.25))
+ if paused or inventory_open or builder_open or health<=0:
   queue_redraw()
   return
  var total:=clampf(delta,0,.25)
@@ -325,6 +343,30 @@ func _screen(p: Vector2, height: float = 0) -> Vector2:
  var size := get_viewport_rect().size
  return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
 
+func _camera_pivot() -> Vector2:
+ return get_viewport_rect().size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+
+func _zoom_target() -> float:
+ return clampf((INDOOR_ZOOM if HOME.has_point(player) else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
+
+func _adjust_zoom(delta: float) -> void:
+ if health<=0 or paused or inventory_open or builder_open: return
+ zoom_adjust = clampf(zoom_adjust + delta, MIN_ZOOM-INDOOR_ZOOM, MAX_ZOOM-INDOOR_ZOOM)
+ camera_zoom = _zoom_target()
+ _save_controls()
+ _announce("ZOOM %d%%" % roundi(camera_zoom * 100.0))
+ queue_redraw()
+
+func _world_to_view(p: Vector2, height: float = 0.0) -> Vector2:
+ var anchor := _camera_pivot()
+ return anchor + (_screen(p,height)-anchor)*camera_zoom
+
+func _view_to_world(point: Vector2) -> Vector2:
+ var anchor := _camera_pivot()
+ var raw := anchor + (point-anchor)/maxf(camera_zoom,0.001)
+ var projected := raw-anchor+_iso(player)
+ return Vector2((projected.x/TX+projected.y/TY)*.5,(projected.y/TY-projected.x/TX)*.5)
+
 func _poly(points: PackedVector2Array, color: Color) -> void:
  draw_colored_polygon(points, color)
 
@@ -387,7 +429,10 @@ func _alive_zombies() -> int:
  return alive
 
 func _draw() -> void:
+ var anchor := _camera_pivot()
+ draw_set_transform(anchor*(1.0-camera_zoom),0.0,Vector2.ONE*camera_zoom)
  art.draw_world(self)
+ draw_set_transform(Vector2.ZERO,0.0,Vector2.ONE)
  _draw_ui()
 
 func _tap(point: Vector2) -> void:
@@ -416,7 +461,7 @@ func _tap(point: Vector2) -> void:
    if control_rects.deadzone_down.has_point(point): _set_dead_zone(joystick_dead_zone-.02)
    elif control_rects.deadzone_up.has_point(point): _set_dead_zone(joystick_dead_zone+.02)
   return
- for action in ["attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
+ for action in ["zoom_in","zoom_out","attack","interact","shove","sneak","quick0","quick1","quick2","quick3"]:
   if control_rects[action].has_point(point):
    _activate_action(action)
    return
@@ -453,13 +498,22 @@ func _screen_direction_to_world(direction: Vector2) -> Vector2:
  return Vector2(direction.x / TX + direction.y / TY, direction.y / TY - direction.x / TX).normalized()
 
 func _pointer_down(pointer: int, point: Vector2) -> void:
+ if loot_builder != null and loot_builder.over_launcher(point): return
  if panel_touches.has(pointer) or joystick_touch == pointer: return
+ if not pending_spawn_id.is_empty():
+  var chosen := pending_spawn_id
+  if _place_builder_item(chosen, point):
+   pending_spawn_id = ""
+   _announce("Placed " + survival.name_for(chosen))
+  else:
+   _announce("Blocked placement: tap clear ground")
+  return
  _layout_controls()
  if health <= 0 or paused or inventory_open:
   panel_touches[pointer] = "modal"
   _tap(point)
   return
- for action in ["inventory","pause","attack","interact","shove","sprint","sneak","quick0","quick1","quick2","quick3"]:
+ for action in ["inventory","pause","zoom_in","zoom_out","attack","interact","shove","sprint","sneak","quick0","quick1","quick2","quick3"]:
   if control_rects[action].has_point(point):
    panel_touches[pointer] = action
    if action=="sprint": sprint_held=true
@@ -484,6 +538,7 @@ func _pointer_up(pointer: int) -> void:
   joystick_vector=Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
+ if builder_open: return
  if event is InputEventScreenTouch:
   if event.pressed and not event.canceled: _pointer_down(event.index,event.position)
   else: _pointer_up(event.index)
@@ -501,6 +556,9 @@ func _input(event: InputEvent) -> void:
   if get_viewport_rect().has_point(event.position): _update_stick(event.position)
   else: _pointer_up(MOUSE_POINTER)
  elif event is InputEventKey:
+  if event.pressed and not event.echo and event.keycode==KEY_B and health>0 and not paused and not inventory_open:
+   loot_builder.set_open(not builder_open)
+   return
   if event.keycode==KEY_SHIFT:
    keyboard_sprint=event.pressed and not paused
   if not event.pressed or event.echo: return
@@ -519,6 +577,8 @@ func _input(event: InputEvent) -> void:
     KEY_2: _activate_action("quick1")
     KEY_3: _activate_action("quick2")
     KEY_4: _activate_action("quick3")
+    KEY_EQUAL: _adjust_zoom(ZOOM_STEP)
+    KEY_MINUS: _adjust_zoom(-ZOOM_STEP)
 
 func _line_blocked(a: Vector2, b: Vector2, furniture: bool = true) -> bool:
  for wall in walls:
@@ -552,6 +612,8 @@ func _restart_game() -> void:
  recovery_available=false
  exhausted=false
  _make_house()
+ pending_spawn_id = ""
+ if loot_builder != null: loot_builder.set_open(false)
  survival.restore({"inventory":{},"equipped":""})
  stamina=100; hunger=0; thirst=0
  inventory_open=false; sneaking=false
@@ -699,7 +761,9 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
   if zombie_health[i]>0 and _blocked_static(infected[i],.17): infected[i]=_clear_saved_position(infected[i])
   zombies_hit_time[i]=0.0
  drops=ground
- for drop in drops: art._cache(survival.definitions[drop.id].art_id)
+ for drop in drops:
+  if not String(drop.id).begins_with("ll_golden_"):
+   art._cache(survival.definitions[drop.id].art_id)
  selected_target={}
  attack_cooldown=0; shove_cooldown=0; recovery_delay=0
  navigation.paths.clear(); navigation.timers.clear()
@@ -838,7 +902,8 @@ func _drop_item(id: String) -> bool:
   return false
  if not survival.remove(id): return false
  drops.append({"id":id,"count":1,"pos":position})
- art._cache(survival.definitions[id].art_id)
+ if not id.begins_with("ll_golden_"):
+  art._cache(survival.definitions[id].art_id)
  selected_target={}
  _announce("Dropped "+survival.name_for(id))
  _save_game()
@@ -847,8 +912,50 @@ func _drop_item(id: String) -> bool:
 func _draw_drop(index: int) -> void:
  var drop: Dictionary=drops[index]
  var id: String=survival.definitions[drop.id].art_id
- art._sprite(self,id,drop.pos)
+ if id.begins_with("ll_golden_"):
+  var icon: Texture2D = _golden_icon(id)
+  if icon != null:
+   var point := _screen(drop.pos, 8)
+   draw_texture_rect(icon, Rect2(point - Vector2(20, 30), Vector2(40, 40)), false)
+ else:
+  art._sprite(self,id,drop.pos)
  if player.distance_to(drop.pos)<1.5: draw_circle(_screen(drop.pos,12),2,Color("d5c899"))
+
+func _golden_icon(id: String) -> Texture2D:
+ if not survival.definitions.has(id): return null
+ if not id.begins_with("ll_golden_"): return null
+ if not golden_textures.has(id):
+  var path: String = str(survival.definitions[id].get("icon_path", ""))
+  golden_textures[id] = load("res://" + path) if not path.is_empty() else null
+ return golden_textures[id]
+
+func _spawn_golden_item(id: String, position: Vector2, count: int = 1) -> bool:
+ if builder_open or paused or inventory_open or save_blocked or health<=0: return false
+ if not id.begins_with("ll_golden_") or not survival.definitions.has(id): return false
+ if count<1 or count>int(survival.definitions[id].stack_max) or drops.size()>=128: return false
+ if not Rect2(-6.5,-6.5,23,23).has_point(position) or _blocked(position, 0.14): return false
+ if _golden_icon(id)==null: return false
+ drops.append({"id":id,"count":count,"pos":position})
+ selected_target={}
+ if _save_game()!=OK:
+  drops.pop_back()
+  return false
+ _announce("Spawned " + survival.name_for(id))
+ queue_redraw()
+ return true
+
+func _builder_spawn_near(id: String) -> bool:
+ for distance in [0.65, 0.95, 1.35, 1.8]:
+  for direction in [Vector2(0,1),Vector2(1,0),Vector2(-1,0),Vector2(0,-1)]:
+   var p: Vector2=player + direction*distance
+   if not _blocked(p,0.14) and _spawn_golden_item(id,p):
+    return true
+ _announce("No clear placement nearby")
+ return false
+
+func _place_builder_item(id: String, point: Vector2) -> bool:
+ return _spawn_golden_item(id,_view_to_world(point),1)
+
 
 func _select_world_target(point: Vector2) -> void:
  var best: Dictionary={}
@@ -858,7 +965,7 @@ func _select_world_target(point: Vector2) -> void:
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
-   var screen:=_screen(_target_point(target),30 if kind!="drop" else 0)
+   var screen:=_world_to_view(_target_point(target),30 if kind!="drop" else 0)
    var score:=point.distance_to(screen)
    if score<distance:
     distance=score
@@ -868,6 +975,8 @@ func _select_world_target(point: Vector2) -> void:
 
 func _activate_action(action: String) -> void:
  match action:
+  "zoom_in": _adjust_zoom(ZOOM_STEP)
+  "zoom_out": _adjust_zoom(-ZOOM_STEP)
   "attack": _attack()
   "interact": _interact()
   "shove": _shove()
@@ -904,6 +1013,8 @@ func _recover_backup() -> bool:
  return true
 
 func _held_frame(id: String, direction: int) -> Dictionary:
+ # Golden 40 artwork is an inventory icon, not an authored held animation.
+ if not art.catalog.has(id): return {}
  var key:=id+"/%d"%direction
  if not held_sprites.has(key):
   for frame in art.catalog[id].frames:
@@ -917,13 +1028,19 @@ func _load_controls() -> void:
  if config.load("user://last_light_controls.cfg")==OK:
   var value: Variant=config.get_value("touch","dead_zone",.14)
   if _valid_number(value,.05,.35): joystick_dead_zone=float(value)
+  var desired: Variant=config.get_value("camera","zoom_offset",0.0)
+  if _valid_number(desired,-1.45,1.05): zoom_adjust=float(desired)
+
+func _save_controls() -> void:
+ var config := ConfigFile.new()
+ config.set_value("touch","dead_zone",joystick_dead_zone)
+ config.set_value("camera","zoom_offset",zoom_adjust)
+ if config.save("user://last_light_controls.cfg")!=OK: _announce("Could not save controls")
 
 func _set_dead_zone(value: float) -> void:
  joystick_dead_zone=clampf(value,.05,.35)
  _clear_pointers()
- var config:=ConfigFile.new()
- config.set_value("touch","dead_zone",joystick_dead_zone)
- if config.save("user://last_light_controls.cfg")!=OK: _announce("Could not save control setting")
+ _save_controls()
  queue_redraw()
 
 func _interaction_distance(target: Dictionary) -> float:
