@@ -1,0 +1,58 @@
+{
+  "world_seed": 41007,
+  "neighborhood_id": "last_light_test_street_001",
+  "houses": [
+    {
+      "id": "lot_001_house",
+      "profile": "occupied",
+      "rooms": [
+        {"id": "kitchen", "type": "kitchen", "objects": [
+          {"id": "fridge", "role": "appliance", "material_id": "LL_MAT_ENAMEL_AGED_001"},
+          {"id": "cabinet", "role": "cabinet", "material_id": "LL_MAT_WOOD_WORN_001"}
+        ]},
+        {"id": "living", "type": "living", "objects": [
+          {"id": "sofa", "role": "upholstery", "material_id": "LL_MAT_FABRIC_MOSS_001"}
+        ]}
+      ]
+    },
+    {
+      "id": "lot_002_house",
+      "profile": "recently_vacant",
+      "rooms": [
+        {"id": "kitchen", "type": "kitchen", "objects": [
+          {"id": "fridge", "role": "appliance", "material_id": "LL_MAT_ENAMEL_AGED_001"},
+          {"id": "cabinet", "role": "cabinet", "material_id": "LL_MAT_WOOD_WORN_001"}
+        ]},
+        {"id": "living", "type": "living", "objects": [
+          {"id": "sofa", "role": "upholstery", "material_id": "LL_MAT_FABRIC_MOSS_001"}
+        ]}
+      ]
+    },
+    {
+      "id": "lot_003_house",
+      "profile": "unoccupied",
+      "rooms": [
+        {"id": "kitchen", "type": "kitchen", "objects": [
+          {"id": "fridge", "role": "appliance", "material_id": "LL_MAT_ENAMEL_AGED_001"},
+          {"id": "cabinet", "role": "cabinet", "material_id": "LL_MAT_WOOD_WORN_001"}
+        ]},
+        {"id": "living", "type": "living", "objects": [
+          {"id": "sofa", "role": "upholstery", "material_id": "LL_MAT_FABRIC_MOSS_001"}
+        ]}
+      ]
+    },
+    {
+      "id": "lot_004_house",
+      "profile": "neglected",
+      "rooms": [
+        {"id": "kitchen", "type": "kitchen", "objects": [
+          {"id": "fridge", "role": "appliance", "material_id": "LL_MAT_ENAMEL_AGED_001"},
+          {"id": "cabinet", "role": "cabinet", "material_id": "LL_MAT_WOOD_WORN_001"}
+        ]},
+        {"id": "living", "type": "living", "objects": [
+          {"id": "sofa", "role": "upholstery", "material_id": "LL_MAT_FABRIC_MOSS_001"}
+        ]}
+      ]
+    }
+  ]
+}
