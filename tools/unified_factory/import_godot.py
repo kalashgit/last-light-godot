@@ -179,16 +179,18 @@ def add_prop_source(root, entries):
                             condition=rec.get("condition"), original="hollow Blender prop pilot"))
 
 
-def vehicle_to_entry(root, name, rec, base_dir, original):
+def vehicle_to_entry(root, name, rec, base_dir, original, selected_sha=None):
     cell_w, cell_h = checked_cell(rec["cell_px"], name)
     anchor = checked_anchor(rec["anchor_px"], name)
     require(rec.get("heading_count") == 16 and rec.get("grid") == [4, 4],
             "vehicle heading count/grid mismatch")
     selected = rec.get("pixel_refined_atlas") or rec["atlas"]
     tex = checked_texture(root, (base_dir / selected).as_posix(),
-                          cell_w * 4, cell_h * 4)
-    # Original atlas has its own source hash; don't compare to palette-refined file.
-    if rec.get("sha256"):
+                          cell_w * 4, cell_h * 4, selected_sha)
+    # Source full-color atlas may not be committed for preview-only fleet jobs.
+    # If absent, verify the published pixel-refined atlas by the batch report SHA.
+    original_atlas = (root / base_dir / rec["atlas"])
+    if rec.get("sha256") and original_atlas.is_file():
         checked_texture(root, (base_dir / rec["atlas"]).as_posix(),
                         cell_w * 4, cell_h * 4, rec["sha256"])
     angles = [animation("heading_%02d" % i,
@@ -214,7 +216,8 @@ def add_vehicles(root, entries):
             rec = read_manifest(root, sub_dir / "manifest.json")
             require(rec.get("job_id") == name, "fleet job ID mismatch")
             entries.append(vehicle_to_entry(root, name, rec, sub_dir,
-                                            "fleet smoke technical candidate"))
+                                            "fleet smoke technical candidate",
+                                            selected_sha=job["atlas_sha256"]))
 
 
 def add_item_source(root, entries):
