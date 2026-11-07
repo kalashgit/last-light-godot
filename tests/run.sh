@@ -40,3 +40,4 @@ run_checked --headless --path . --script tests/animation_lab.gd
 
 # Four-direction human/zombie visual factory QA; isolated imported preview assets.
 run_checked --headless --path . --script tests/actor_lab.gd
+\n# Golden hatchback V1 static 16-heading art test; driving system is NOT present.\nrun_checked --headless --path . --script tests/vehicle_lab.gd\n
