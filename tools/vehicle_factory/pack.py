@@ -81,7 +81,8 @@ def process(input_path,output_path):
        collision_footprint_m=[raw["declared_dimensions_m"][0],raw["declared_dimensions_m"][1]],
        proposed_gameplay_components=["body","wheels","doors","hood","trunk","windows","seats"],
        status="RENDERED_CANDIDATE_NOT_FOUNDER_APPROVED_NOT_GODOT_INTEGRATED",
-       atlas="vehicle_16_headings.png",pixel_refined_atlas="vehicle_16_headings_pixel_refined.png",\n       pixel_comparison="pixel_finish_comparison.png",review="vehicle_review_16_headings.png",
+       atlas="vehicle_16_headings.png",pixel_refined_atlas="vehicle_16_headings_pixel_refined.png",
+       pixel_comparison="pixel_finish_comparison.png",review="vehicle_review_16_headings.png",
        sha256=hashlib.sha256((output_path/"vehicle_16_headings.png").read_bytes()).hexdigest())
     (output_path/"manifest.json").write_text(json.dumps(result,indent=2)+"\n")
     print("LL_VEHICLE_PACK_DONE",result["heading_count"],result["cell_px"],flush=True)
