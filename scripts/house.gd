@@ -24,6 +24,11 @@ var joystick_dead_zone := .14
 var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
+const LootBuilder := preload("res://scripts/loot_builder.gd")
+var loot_builder: CanvasLayer
+var builder_open := false
+var pending_spawn_id := ""
+var golden_textures: Dictionary = {}
 const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
 const HouseNavigation := preload("res://scripts/house_navigation.gd")
@@ -94,6 +99,9 @@ func _ready() -> void:
   _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
   paused=true
  get_viewport().size_changed.connect(_on_viewport_resized)
+ loot_builder = LootBuilder.new()
+ add_child(loot_builder)
+ loot_builder.setup(self)
  set_process(true)
  queue_redraw()
 
@@ -258,7 +266,7 @@ func _shove() -> void:
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
- if paused or inventory_open or health<=0:
+ if paused or inventory_open or builder_open or health<=0:
   queue_redraw()
   return
  var total:=clampf(delta,0,.25)
@@ -453,7 +461,16 @@ func _screen_direction_to_world(direction: Vector2) -> Vector2:
  return Vector2(direction.x / TX + direction.y / TY, direction.y / TY - direction.x / TX).normalized()
 
 func _pointer_down(pointer: int, point: Vector2) -> void:
+ if loot_builder != null and loot_builder.over_launcher(point): return
  if panel_touches.has(pointer) or joystick_touch == pointer: return
+ if not pending_spawn_id.is_empty():
+  var chosen := pending_spawn_id
+  if _place_builder_item(chosen, point):
+   pending_spawn_id = ""
+   _announce("Placed " + survival.name_for(chosen))
+  else:
+   _announce("Blocked placement: tap clear ground")
+  return
  _layout_controls()
  if health <= 0 or paused or inventory_open:
   panel_touches[pointer] = "modal"
@@ -484,6 +501,7 @@ func _pointer_up(pointer: int) -> void:
   joystick_vector=Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
+ if builder_open: return
  if event is InputEventScreenTouch:
   if event.pressed and not event.canceled: _pointer_down(event.index,event.position)
   else: _pointer_up(event.index)
@@ -501,6 +519,9 @@ func _input(event: InputEvent) -> void:
   if get_viewport_rect().has_point(event.position): _update_stick(event.position)
   else: _pointer_up(MOUSE_POINTER)
  elif event is InputEventKey:
+  if event.pressed and not event.echo and event.keycode==KEY_B and health>0 and not paused and not inventory_open:
+   loot_builder.set_open(not builder_open)
+   return
   if event.keycode==KEY_SHIFT:
    keyboard_sprint=event.pressed and not paused
   if not event.pressed or event.echo: return
@@ -552,6 +573,8 @@ func _restart_game() -> void:
  recovery_available=false
  exhausted=false
  _make_house()
+ pending_spawn_id = ""
+ if loot_builder != null: loot_builder.set_open(false)
  survival.restore({"inventory":{},"equipped":""})
  stamina=100; hunger=0; thirst=0
  inventory_open=false; sneaking=false
@@ -699,7 +722,9 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
   if zombie_health[i]>0 and _blocked_static(infected[i],.17): infected[i]=_clear_saved_position(infected[i])
   zombies_hit_time[i]=0.0
  drops=ground
- for drop in drops: art._cache(survival.definitions[drop.id].art_id)
+ for drop in drops:
+  if not String(drop.id).begins_with("ll_golden_"):
+   art._cache(survival.definitions[drop.id].art_id)
  selected_target={}
  attack_cooldown=0; shove_cooldown=0; recovery_delay=0
  navigation.paths.clear(); navigation.timers.clear()
@@ -838,7 +863,8 @@ func _drop_item(id: String) -> bool:
   return false
  if not survival.remove(id): return false
  drops.append({"id":id,"count":1,"pos":position})
- art._cache(survival.definitions[id].art_id)
+ if not id.begins_with("ll_golden_"):
+  art._cache(survival.definitions[id].art_id)
  selected_target={}
  _announce("Dropped "+survival.name_for(id))
  _save_game()
@@ -847,8 +873,53 @@ func _drop_item(id: String) -> bool:
 func _draw_drop(index: int) -> void:
  var drop: Dictionary=drops[index]
  var id: String=survival.definitions[drop.id].art_id
- art._sprite(self,id,drop.pos)
+ if id.begins_with("ll_golden_"):
+  var icon: Texture2D = _golden_icon(id)
+  if icon != null:
+   var point := _screen(drop.pos, 8)
+   draw_texture_rect(icon, Rect2(point - Vector2(20, 30), Vector2(40, 40)), false)
+ else:
+  art._sprite(self,id,drop.pos)
  if player.distance_to(drop.pos)<1.5: draw_circle(_screen(drop.pos,12),2,Color("d5c899"))
+
+func _golden_icon(id: String) -> Texture2D:
+ if not survival.definitions.has(id): return null
+ if not id.begins_with("ll_golden_"): return null
+ if not golden_textures.has(id):
+  var path: String = str(survival.definitions[id].get("icon_path", ""))
+  golden_textures[id] = load("res://" + path) if not path.is_empty() else null
+ return golden_textures[id]
+
+func _spawn_golden_item(id: String, position: Vector2, count: int = 1) -> bool:
+ if builder_open or paused or inventory_open or save_blocked or health<=0: return false
+ if not id.begins_with("ll_golden_") or not survival.definitions.has(id): return false
+ if count<1 or count>int(survival.definitions[id].stack_max) or drops.size()>=128: return false
+ if not Rect2(-6.5,-6.5,23,23).has_point(position) or _blocked(position, 0.14): return false
+ if _golden_icon(id)==null: return false
+ drops.append({"id":id,"count":count,"pos":position})
+ selected_target={}
+ if _save_game()!=OK:
+  drops.pop_back()
+  return false
+ _announce("Spawned " + survival.name_for(id))
+ queue_redraw()
+ return true
+
+func _builder_spawn_near(id: String) -> bool:
+ for distance in [0.65, 0.95, 1.35, 1.8]:
+  for direction in [Vector2(0,1),Vector2(1,0),Vector2(-1,0),Vector2(0,-1)]:
+   var p: Vector2=player + direction*distance
+   if not _blocked(p,0.14) and _spawn_golden_item(id,p):
+    return true
+ _announce("No clear placement nearby")
+ return false
+
+func _place_builder_item(id: String, point: Vector2) -> bool:
+ var center: Vector2 = get_viewport_rect().size * Vector2(.50,.58 if HOME.has_point(player) else .70)
+ var projected := point - center + _iso(player)
+ var tile := Vector2((projected.x/TX+projected.y/TY)*0.5,(projected.y/TY-projected.x/TX)*0.5)
+ return _spawn_golden_item(id,tile,1)
+
 
 func _select_world_target(point: Vector2) -> void:
  var best: Dictionary={}

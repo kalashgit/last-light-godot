@@ -198,10 +198,14 @@ func _draw_inventory(game, controls: Dictionary) -> void:
   var row_rect := Rect2(panel.position + Vector2(16, 82 + i * row_height), Vector2(panel.size.x - 32, row_height))
   if i % 2 == 0:
    game.draw_rect(row_rect, Color(0.12, 0.18, 0.15, 0.65))
-  var name_width := maxf(60, panel.size.x - 222)
+  var golden_icon: Texture2D = game._golden_icon(str(row.id))
+  var label_offset := 50.0 if golden_icon != null else 8.0
+  if golden_icon != null:
+   game.draw_texture_rect(golden_icon, Rect2(row_rect.position + Vector2(8, 6), Vector2(36, 36)), false)
+  var name_width := maxf(60, panel.size.x - 222 - label_offset)
   var name := "%s ×%d" % [str(row.get("name", "Unknown item")), int(row.get("count", 1))]
-  game._text(_fit(name, name_width, 16), row_rect.position + Vector2(8, 23), 16, INK)
-  game._text(_fit(str(row.get("detail", "")), name_width, 14), row_rect.position + Vector2(8, 43), 14, MUTED)
+  game._text(_fit(name, name_width, 16), row_rect.position + Vector2(label_offset, 23), 16, INK)
+  game._text(_fit(str(row.get("detail", "")), name_width, 14), row_rect.position + Vector2(label_offset, 43), 14, MUTED)
   var action := str(row.get("action", ""))
   if not action.is_empty():
    _button(game, controls["modal_use_%d" % i], action.to_upper())

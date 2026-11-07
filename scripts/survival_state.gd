@@ -26,6 +26,7 @@ func _init() -> void:
 			push_error("Duplicate survival item ID: " + id)
 			return
 		definitions[id] = raw.duplicate(true)
+	_load_golden40()
 
 
 func add(id: String, count: Variant = 1) -> bool:
@@ -147,3 +148,20 @@ func _valid_count(value: Variant) -> bool:
 		return false
 	var number: float = float(value)
 	return is_finite(number) and number >= 1.0 and number <= 1000.0 and floor(number) == number
+
+# The Golden 40 are a separate icon-only test catalog. Existing original item IDs remain stable.
+func _load_golden40() -> void:
+ var path := "res://data/golden40_items.json"
+ var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+ if not parsed is Dictionary or parsed.get("schema") != 1 or not parsed.get("items") is Array:
+  push_error("Invalid Golden 40 game-item definitions")
+  return
+ for entry in parsed.items:
+  if not entry is Dictionary or not entry.get("id") is String or not entry.get("icon_path") is String:
+   push_error("Malformed Golden 40 prototype item")
+   return
+  var id: String = entry.id
+  if definitions.has(id):
+   push_error("Duplicate Golden 40 item " + id)
+   return
+  definitions[id] = entry.duplicate(true)
