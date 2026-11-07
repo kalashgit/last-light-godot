@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/master_import_v1/resources/prop/refrigerator_main_open.tres" id="1"]
+
+[node name="refrigerator_main_open" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"closed"
+centered = true
+offset = Vector2(-16.50000, -43.50000)

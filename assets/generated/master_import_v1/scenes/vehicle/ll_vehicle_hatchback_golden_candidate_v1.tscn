@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/master_import_v1/resources/vehicle/ll_vehicle_hatchback_golden_candidate_v1.tres" id="1"]
+
+[node name="ll_vehicle_hatchback_golden_candidate_v1" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"heading_00"
+centered = true
+offset = Vector2(0.00000, -26.00000)

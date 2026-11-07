@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/master_import_v1/resources/prop/cabinet_pair_open.tres" id="1"]
+
+[node name="cabinet_pair_open" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"closed"
+centered = true
+offset = Vector2(-11.50000, -34.00000)

@@ -1,0 +1,85 @@
+[gd_resource type="SpriteFrames" load_steps=18 format=3]
+
+[ext_resource type="Texture2D" path="res://preview/fleet-factory-v1/llveh_7046aa8e772dab41f035/vehicle_16_headings_pixel_refined.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f00001"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00002"]
+atlas = ExtResource("1")
+region = Rect2(258, 0, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00003"]
+atlas = ExtResource("1")
+region = Rect2(516, 0, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00004"]
+atlas = ExtResource("1")
+region = Rect2(774, 0, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00005"]
+atlas = ExtResource("1")
+region = Rect2(0, 152, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00006"]
+atlas = ExtResource("1")
+region = Rect2(258, 152, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00007"]
+atlas = ExtResource("1")
+region = Rect2(516, 152, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00008"]
+atlas = ExtResource("1")
+region = Rect2(774, 152, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00009"]
+atlas = ExtResource("1")
+region = Rect2(0, 304, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00010"]
+atlas = ExtResource("1")
+region = Rect2(258, 304, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00011"]
+atlas = ExtResource("1")
+region = Rect2(516, 304, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00012"]
+atlas = ExtResource("1")
+region = Rect2(774, 304, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00013"]
+atlas = ExtResource("1")
+region = Rect2(0, 456, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00014"]
+atlas = ExtResource("1")
+region = Rect2(258, 456, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00015"]
+atlas = ExtResource("1")
+region = Rect2(516, 456, 258, 152)
+
+[sub_resource type="AtlasTexture" id="f00016"]
+atlas = ExtResource("1")
+region = Rect2(774, 456, 258, 152)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f00001")}], "loop": false, "name": &"heading_00", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00002")}], "loop": false, "name": &"heading_01", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00003")}], "loop": false, "name": &"heading_02", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00004")}], "loop": false, "name": &"heading_03", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00005")}], "loop": false, "name": &"heading_04", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00006")}], "loop": false, "name": &"heading_05", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00007")}], "loop": false, "name": &"heading_06", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00008")}], "loop": false, "name": &"heading_07", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00009")}], "loop": false, "name": &"heading_08", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00010")}], "loop": false, "name": &"heading_09", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00011")}], "loop": false, "name": &"heading_10", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00012")}], "loop": false, "name": &"heading_11", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00013")}], "loop": false, "name": &"heading_12", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00014")}], "loop": false, "name": &"heading_13", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00015")}], "loop": false, "name": &"heading_14", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00016")}], "loop": false, "name": &"heading_15", "speed": 1.000000}]

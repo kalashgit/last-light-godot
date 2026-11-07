@@ -1,0 +1,94 @@
+[gd_resource type="SpriteFrames" load_steps=23 format=3]
+
+[ext_resource type="Texture2D" path="res://preview/actor-factory-v1/zombie_hospital/idle_atlas.png" id="1"]
+[ext_resource type="Texture2D" path="res://preview/actor-factory-v1/zombie_hospital/shamble_atlas.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="f00001"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00002"]
+atlas = ExtResource("1")
+region = Rect2(0, 112, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00003"]
+atlas = ExtResource("1")
+region = Rect2(0, 224, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00004"]
+atlas = ExtResource("1")
+region = Rect2(0, 336, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00005"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00006"]
+atlas = ExtResource("2")
+region = Rect2(62, 0, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00007"]
+atlas = ExtResource("2")
+region = Rect2(124, 0, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00008"]
+atlas = ExtResource("2")
+region = Rect2(186, 0, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00009"]
+atlas = ExtResource("2")
+region = Rect2(0, 112, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00010"]
+atlas = ExtResource("2")
+region = Rect2(62, 112, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00011"]
+atlas = ExtResource("2")
+region = Rect2(124, 112, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00012"]
+atlas = ExtResource("2")
+region = Rect2(186, 112, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00013"]
+atlas = ExtResource("2")
+region = Rect2(0, 224, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00014"]
+atlas = ExtResource("2")
+region = Rect2(62, 224, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00015"]
+atlas = ExtResource("2")
+region = Rect2(124, 224, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00016"]
+atlas = ExtResource("2")
+region = Rect2(186, 224, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00017"]
+atlas = ExtResource("2")
+region = Rect2(0, 336, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00018"]
+atlas = ExtResource("2")
+region = Rect2(62, 336, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00019"]
+atlas = ExtResource("2")
+region = Rect2(124, 336, 62, 112)
+
+[sub_resource type="AtlasTexture" id="f00020"]
+atlas = ExtResource("2")
+region = Rect2(186, 336, 62, 112)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f00001")}], "loop": false, "name": &"idle_front", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00002")}], "loop": false, "name": &"idle_right", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00003")}], "loop": false, "name": &"idle_back", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00004")}], "loop": false, "name": &"idle_left", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00005")}, {"duration": 1.0, "texture": SubResource("f00006")}, {"duration": 1.0, "texture": SubResource("f00007")}, {"duration": 1.0, "texture": SubResource("f00008")}], "loop": true, "name": &"shamble_front", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00009")}, {"duration": 1.0, "texture": SubResource("f00010")}, {"duration": 1.0, "texture": SubResource("f00011")}, {"duration": 1.0, "texture": SubResource("f00012")}], "loop": true, "name": &"shamble_right", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00013")}, {"duration": 1.0, "texture": SubResource("f00014")}, {"duration": 1.0, "texture": SubResource("f00015")}, {"duration": 1.0, "texture": SubResource("f00016")}], "loop": true, "name": &"shamble_back", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00017")}, {"duration": 1.0, "texture": SubResource("f00018")}, {"duration": 1.0, "texture": SubResource("f00019")}, {"duration": 1.0, "texture": SubResource("f00020")}], "loop": true, "name": &"shamble_left", "speed": 8.000000}]

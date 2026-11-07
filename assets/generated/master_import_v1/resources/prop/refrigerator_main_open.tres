@@ -1,0 +1,89 @@
+[gd_resource type="SpriteFrames" load_steps=22 format=3]
+
+[ext_resource type="Texture2D" path="res://preview/animation-factory-v1/refrigerator_main_open/strip.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f00001"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00002"]
+atlas = ExtResource("1")
+region = Rect2(103, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00003"]
+atlas = ExtResource("1")
+region = Rect2(206, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00004"]
+atlas = ExtResource("1")
+region = Rect2(309, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00005"]
+atlas = ExtResource("1")
+region = Rect2(412, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00006"]
+atlas = ExtResource("1")
+region = Rect2(515, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00007"]
+atlas = ExtResource("1")
+region = Rect2(618, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00008"]
+atlas = ExtResource("1")
+region = Rect2(721, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00009"]
+atlas = ExtResource("1")
+region = Rect2(824, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00010"]
+atlas = ExtResource("1")
+region = Rect2(824, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00011"]
+atlas = ExtResource("1")
+region = Rect2(721, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00012"]
+atlas = ExtResource("1")
+region = Rect2(618, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00013"]
+atlas = ExtResource("1")
+region = Rect2(515, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00014"]
+atlas = ExtResource("1")
+region = Rect2(412, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00015"]
+atlas = ExtResource("1")
+region = Rect2(309, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00016"]
+atlas = ExtResource("1")
+region = Rect2(206, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00017"]
+atlas = ExtResource("1")
+region = Rect2(103, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00018"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00019"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 103, 123)
+
+[sub_resource type="AtlasTexture" id="f00020"]
+atlas = ExtResource("1")
+region = Rect2(824, 0, 103, 123)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f00001")}, {"duration": 1.0, "texture": SubResource("f00002")}, {"duration": 1.0, "texture": SubResource("f00003")}, {"duration": 1.0, "texture": SubResource("f00004")}, {"duration": 1.0, "texture": SubResource("f00005")}, {"duration": 1.0, "texture": SubResource("f00006")}, {"duration": 1.0, "texture": SubResource("f00007")}, {"duration": 1.0, "texture": SubResource("f00008")}, {"duration": 1.0, "texture": SubResource("f00009")}], "loop": false, "name": &"open", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00010")}, {"duration": 1.0, "texture": SubResource("f00011")}, {"duration": 1.0, "texture": SubResource("f00012")}, {"duration": 1.0, "texture": SubResource("f00013")}, {"duration": 1.0, "texture": SubResource("f00014")}, {"duration": 1.0, "texture": SubResource("f00015")}, {"duration": 1.0, "texture": SubResource("f00016")}, {"duration": 1.0, "texture": SubResource("f00017")}, {"duration": 1.0, "texture": SubResource("f00018")}], "loop": false, "name": &"close", "speed": 8.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00019")}], "loop": false, "name": &"closed", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": SubResource("f00020")}], "loop": false, "name": &"opened", "speed": 1.000000}]

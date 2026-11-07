@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/master_import_v1/resources/vehicle/llveh_7046aa8e772dab41f035.tres" id="1"]
+
+[node name="llveh_7046aa8e772dab41f035" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"heading_00"
+centered = true
+offset = Vector2(0.00000, -27.00000)

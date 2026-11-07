@@ -1,0 +1,8 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/generated/factory/sprites/ll_crafting_fence_slat/ground.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/generated/factory/sprites/ll_crafting_fence_slat/icon.png" id="2"]
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": ExtResource("1")}], "loop": false, "name": &"ground", "speed": 1.000000},
+{"frames": [{"duration": 1.0, "texture": ExtResource("2")}], "loop": false, "name": &"icon", "speed": 1.000000}]
