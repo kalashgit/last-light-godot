@@ -42,6 +42,8 @@
   ],
   "status": "RENDERED_CANDIDATE_NOT_FOUNDER_APPROVED_NOT_GODOT_INTEGRATED",
   "atlas": "vehicle_16_headings.png",
+  "pixel_refined_atlas": "vehicle_16_headings_pixel_refined.png",
+  "pixel_comparison": "pixel_finish_comparison.png",
   "review": "vehicle_review_16_headings.png",
-  "sha256": "257c33f86df56a7b1d80082938578dabb868e1456a773f36261e723cac3d8115"
+  "sha256": "1aa70fb3f168fcf98fb85cd86012cc1520f860eebf19a08e2df1c3b5315492a4"
 }
