@@ -162,5 +162,19 @@ class UnifiedAnimationFactoryV1(unittest.TestCase):
         self.assertTrue(door["components"]["barricade"]["removable"])
         self.assertEqual(door["components"]["destruction"]["stages"],["intact","damaged","broken"])
 
+    def test_every_catalog_item_receives_a_semantic_requirements_audit(self):
+        from capability_audit import audit
+        report=audit()
+        self.assertEqual(report["catalog_id_count"],300)
+        self.assertEqual(len(report["records"]),300)
+        self.assertEqual(len({r["asset_id"] for r in report["records"]}),300)
+        self.assertEqual(report["status"],"COVERAGE_AUDIT_NOT_GAMEPLAY_INTEGRATION")
+        self.assertTrue(all({"collision","sight","sound","placement","persistence"}.issubset(r["required_components"])
+            for r in report["records"]))
+        fridge=[r for r in report["records"] if r["geometry_family"]=="fridge"]
+        self.assertTrue(fridge)
+        self.assertTrue(all("hollow_geometry" in r["required_components"] for r in fridge))
+        self.assertTrue(all(r["status"] != "GAMEPLAY_INTEGRATED" for r in report["records"]))
+
 if __name__ == "__main__":
     unittest.main()
