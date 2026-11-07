@@ -47,6 +47,12 @@ jobs:
               assert (root.parent/path).stat().st_size>1000
           print("LL_MATERIAL_HERO_QA_PASS: 3 original textured V3 models + world icons + comparisons")
           PY
+      - name: Review native-scale pixel finish without replacing world sprites
+        run: |
+          python tests/material_factory_pixel_refine.py
+          python tools/material_factory/pixel_batch.py --source build/material_factory/hero_ready --out build/material_factory/pixel_finish_candidate
+          test -s build/material_factory/pixel_finish_candidate/comparison-220-percent.png
+          test -s build/material_factory/pixel_finish_candidate/LAST_LIGHT_pixel_finish_candidates.zip
       - name: Publish iPhone-accessible material-on-geometry comparison
         if: github.event_name == 'push' && github.ref == 'refs/heads/codex/material-factory-v1-five-recipes-20261107'
         run: |
@@ -64,6 +70,25 @@ jobs:
             git rebase origin/codex/material-factory-v1-five-recipes-20261107
             git push origin HEAD:codex/material-factory-v1-five-recipes-20261107
           fi
+      - name: Publish isolated V2 true Blender previews for phone review
+        if: github.event_name == 'push' && github.ref == 'refs/heads/codex/material-factory-v2-detail-candidate-20261107'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/material-factory-v2/hero-detail-test
+          cp build/material_factory/preview-grid-v3.png preview/material-factory-v2/hero-detail-test/
+          cp build/material_factory/comparison-v2-v3.png preview/material-factory-v2/hero-detail-test/
+          cp build/material_factory/last-light-v3-3-hero-preview.zip preview/material-factory-v2/hero-detail-test/
+          cp build/material_factory/pixel_finish_candidate/comparison-220-percent.png preview/material-factory-v2/hero-detail-test/
+          cp build/material_factory/pixel_finish_candidate/LAST_LIGHT_pixel_finish_candidates.zip preview/material-factory-v2/hero-detail-test/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/material-factory-v2/hero-detail-test
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish V2 physical-detail Blender render candidates for founder review"
+            git fetch origin codex/material-factory-v2-detail-candidate-20261107
+            git rebase origin/codex/material-factory-v2-detail-candidate-20261107
+            git push origin HEAD:codex/material-factory-v2-detail-candidate-20261107
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: last-light-v3-three-heroes-with-new-materials
@@ -71,5 +96,7 @@ jobs:
             build/material_factory/preview-grid-v3.png
             build/material_factory/comparison-v2-v3.png
             build/material_factory/last-light-v3-3-hero-preview.zip
+            build/material_factory/pixel_finish_candidate/comparison-220-percent.png
+            build/material_factory/pixel_finish_candidate/LAST_LIGHT_pixel_finish_candidates.zip
           retention-days: 14
           if-no-files-found: error
