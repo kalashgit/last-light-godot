@@ -1,0 +1,138 @@
+name: LAST LIGHT Master Vehicle Batch Factory V1
+on:
+  push:
+    branches:
+      - codex/last-light-master-vehicle-batch-factory-v1-20261107
+    paths:
+      - "tools/vehicle_factory/fleet_*.py"
+      - "tests/fleet_factory_v1.py"
+      - ".github/workflows/master-vehicle-fleet-v1.yml"
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated original model IDs (empty = smoke selection)
+        required: false
+        default: city_sedan,work_pickup
+        type: string
+      colors:
+        description: Comma-separated paint IDs (empty = faded_red)
+        required: false
+        default: faded_red
+        type: string
+      conditions:
+        description: Comma-separated wear conditions (empty = used only)
+        required: false
+        default: "1"
+        type: string
+      max_jobs:
+        description: Maximum rendered jobs this run, for quota/cost safety
+        required: false
+        default: "2"
+        type: string
+
+concurrency:
+  group: last-light-fleet-factory-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: write
+
+jobs:
+  fleet-factory-v1-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image processing dependencies
+        run: python -m pip install "Pillow>=10,<15" "numpy>=1.24,<3"
+      - name: Verify deterministic large-batch template contract
+        run: |
+          python tests/fleet_factory_v1.py
+          python tools/vehicle_factory/fleet_catalog.py --batch-size 128 --output build/vehicle_factory/fleet_all_plan.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("build/vehicle_factory/fleet_all_plan.json").read_text())
+          assert p["distinct_archetypes"]==12
+          assert p["total_candidate_variants"]==384
+          assert p["planned_frame_count"]==6144
+          assert len(p["batches"])==3
+          print("LL_FLEET_MASTER_PLAN_PASS 12 archetypes x 8 paint x 4 conditions = 384 planned/6144 unrendered frames")
+          PY
+      - name: Plan bounded proof-of-concept batch
+        env:
+          MODEL_SELECTION: ${{ inputs.models || 'city_sedan,work_pickup' }}
+          COLOR_SELECTION: ${{ inputs.colors || 'faded_red' }}
+          CONDITION_SELECTION: ${{ inputs.conditions || '1' }}
+        run: |
+          python tools/vehicle_factory/fleet_catalog.py --models "$MODEL_SELECTION" --colors "$COLOR_SELECTION" --conditions "$CONDITION_SELECTION" --batch-size 128 --output build/vehicle_factory/fleet_smoke_plan.json
+      - name: Install headless Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Render real original multi-family vehicle smoke batch
+        env:
+          MAX_JOBS: ${{ inputs.max_jobs || '2' }}
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/fleet_render.py -- --plan build/vehicle_factory/fleet_smoke_plan.json --out build/vehicle_factory/fleet_raw --max-jobs "$MAX_JOBS" --samples 10 2>&1 | tee build/vehicle_factory/fleet_render.log
+          grep -q 'LL_FLEET_JOB_BATCH_DONE' build/vehicle_factory/fleet_render.log
+          grep -q 'LL_FLEET_RENDER_DONE' build/vehicle_factory/fleet_render.log
+          if grep -q 'Traceback (most recent call last)' build/vehicle_factory/fleet_render.log; then exit 1; fi
+      - name: Package each full 16-heading sprite atlas and report QA status
+        run: |
+          python tools/vehicle_factory/fleet_pack.py --plan build/vehicle_factory/fleet_smoke_plan.json --input build/vehicle_factory/fleet_raw --output build/vehicle_factory/fleet_game_ready
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root=Path("build/vehicle_factory/fleet_game_ready")
+          report=json.loads((root/"batch_report.json").read_text())
+          assert report["technical_candidate_count"]>=1
+          for candidate in report["completed"]:
+            manifest=json.loads((root/candidate["manifest"]).read_text())
+            assert manifest["heading_count"]==16
+            assert manifest["tile_px"]==[80,40]
+            atlas=Image.open((root/candidate["job_id"])/manifest["pixel_refined_atlas"])
+            assert atlas.size==(manifest["cell_px"][0]*4,manifest["cell_px"][1]*4)
+            assert len(list((root/candidate["job_id"]).glob("heading_*.png")))==16
+          print("LL_FLEET_SMOKE_QA_PASS",report["technical_candidate_count"],"unique render jobs")
+          PY
+      - name: Publish small proof batch previews without touching playable scene
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/fleet-factory-v1
+          cp build/vehicle_factory/fleet_game_ready/batch_report.json preview/fleet-factory-v1/
+          for dir in build/vehicle_factory/fleet_game_ready/llveh_*; do
+            [ -d "$dir" ] || continue
+            name="$(basename "$dir")"
+            mkdir -p "preview/fleet-factory-v1/$name"
+            cp "$dir/manifest.json" "$dir/vehicle_review_16_headings.png" "$dir/vehicle_16_headings_pixel_refined.png" "preview/fleet-factory-v1/$name/"
+          done
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/fleet-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish original sedan and pickup 16-heading fleet-factory candidates"
+            for attempt in 1 2 3; do
+              git fetch origin codex/last-light-master-vehicle-batch-factory-v1-20261107
+              git rebase origin/codex/last-light-master-vehicle-batch-factory-v1-20261107
+              if git push origin HEAD:codex/last-light-master-vehicle-batch-factory-v1-20261107; then exit 0; fi
+            done
+            echo "Preview push conflict; full artifacts still uploaded" >&2
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-master-vehicle-factory-v1-smoke
+          path: |
+            build/vehicle_factory/fleet_all_plan.json
+            build/vehicle_factory/fleet_smoke_plan.json
+            build/vehicle_factory/fleet_game_ready
+            build/vehicle_factory/fleet_render.log
+          retention-days: 14
+          if-no-files-found: error
