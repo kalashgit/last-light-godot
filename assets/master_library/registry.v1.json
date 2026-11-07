@@ -75,6 +75,21 @@
       "paint_colors_planned": 8,
       "condition_levels_planned": 4,
       "planned_candidate_variants": 384
+    },
+    {
+      "id": "master_godot_import",
+      "source": "tools/unified_factory/import_godot.py",
+      "resources": "assets/generated/master_import_v1",
+      "test_map": "scenes/master_factory_import_lab.tscn",
+      "state": "native_godot_4_import_verified_visual_and_gameplay_approval_pending",
+      "imported_candidate_entries": 311,
+      "parsed_animation_frames": 1192
+    },
+    {
+      "id": "bounded_parallel_original_render",
+      "source": "tools/unified_factory/run_parallel.py",
+      "previews": "preview/parallel-factory-v1",
+      "state": "four_item_two_worker_technical_smoke_pass_golden_visual_review_pending"
     }
   ],
   "catalog_baseline": {
@@ -87,7 +102,11 @@
     "fleet_source_archetypes": 12,
     "fleet_variants_planned": 384,
     "fleet_variants_rendered_in_smoke": 2,
-    "fleet_golden_visual_approvals": 0
+    "fleet_golden_visual_approvals": 0,
+    "godot_importable_candidate_resources": 311,
+    "godot_resource_scene_files": 622,
+    "godot_frames_parsed": 1192,
+    "integrated_lab_map_instances": 11
   },
   "approval_policy": [
     "technical_qa",
