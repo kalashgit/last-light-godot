@@ -21,6 +21,9 @@ concurrency:
   group: last-light-parallel-bpy-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   parallel-original-sprite-pilot:
     runs-on: ubuntu-latest
