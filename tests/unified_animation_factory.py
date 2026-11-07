@@ -11,6 +11,8 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools"/"unified_factory"))
 sys.path.insert(0,str(ROOT/"tools"/"animation_factory"))
 from batch_plan import build_plan, source_registry
+from object_contracts import validate_catalog, validate_object
+from copy import deepcopy
 from pack import process
 
 class UnifiedAnimationFactoryV1(unittest.TestCase):
@@ -107,6 +109,58 @@ class UnifiedAnimationFactoryV1(unittest.TestCase):
             self.assertTrue(np.array_equal(one["albedo"][0],again["albedo"][0]))
             self.assertTrue(np.all(one["metallic"][0] == 0))
             self.assertFalse(np.array_equal(one["albedo"][0],weather["albedo"][0]))
+
+    def test_universal_world_object_templates(self):
+        samples=json.loads((ROOT/"tools"/"unified_factory"/"examples"/"world_objects_v1.json").read_text())
+        result=validate_catalog(samples)
+        self.assertEqual(result["templates"],8)
+        self.assertEqual(result["hollow_storage"],2)
+        self.assertEqual(result["tile_count"],1)
+        fridge=next(x for x in samples["templates"] if x["family"]=="refrigerator")
+        self.assertEqual({p["bound_to_door"] for p in fridge["components"]["storage"]["compartments"]},
+                         {"lower","upper"})
+        cabinet=next(x for x in samples["templates"] if x["family"]=="cabinet")
+        self.assertTrue(cabinet["components"]["storage"]["hollow"])
+        floor=next(x for x in samples["templates"] if x["kind"]=="tile")
+        self.assertNotIn("storage",floor["components"])
+        self.assertEqual(floor["physical"]["collision"]["mode"],"passable")
+
+    def test_storage_must_be_hollow_and_touch_action_reachable(self):
+        samples=json.loads((ROOT/"tools"/"unified_factory"/"examples"/"world_objects_v1.json").read_text())
+        fridge=next(x for x in samples["templates"] if x["family"]=="refrigerator")
+        a=deepcopy(fridge)
+        a["components"]["storage"]["hollow"]=False
+        with self.assertRaisesRegex(ValueError,"hollow"):
+            validate_object(a)
+        a=deepcopy(fridge)
+        del a["components"]["interaction"]["reach_m"]
+        with self.assertRaisesRegex(ValueError,"reach"):
+            validate_object(a)
+        a=deepcopy(fridge)
+        a["components"]["storage"]["compartments"][0]["slots"]=0
+        with self.assertRaisesRegex(ValueError,"slots"):
+            validate_object(a)
+
+    def test_sight_and_collision_are_independent(self):
+        samples=json.loads((ROOT/"tools"/"unified_factory"/"examples"/"world_objects_v1.json").read_text())
+        glass=next(x for x in samples["templates"] if x["family"]=="glass_table")
+        self.assertEqual(glass["physical"]["collision"]["mode"],"partial")
+        self.assertEqual(glass["physical"]["sight"]["mode"],"transparent")
+        sofa=next(x for x in samples["templates"] if x["family"]=="sofa")
+        self.assertEqual(sofa["physical"]["collision"]["mode"],"solid")
+        self.assertEqual(sofa["physical"]["sight"]["mode"],"partial")
+
+    def test_tile_cannot_fake_storage_and_door_has_removable_barricade(self):
+        samples=json.loads((ROOT/"tools"/"unified_factory"/"examples"/"world_objects_v1.json").read_text())
+        tile=next(x for x in samples["templates"] if x["kind"]=="tile")
+        a=deepcopy(tile)
+        a["components"]["storage"]={"hollow":True,"compartments":[{"id":"x","bound_to_door":"always_open",
+            "slots":1,"capacity_kg":1,"capacity_l":1}]}
+        with self.assertRaisesRegex(ValueError,"tiles cannot"):
+            validate_object(a)
+        door=next(x for x in samples["templates"] if x["kind"]=="door")
+        self.assertTrue(door["components"]["barricade"]["removable"])
+        self.assertEqual(door["components"]["destruction"]["stages"],["intact","damaged","broken"])
 
 if __name__ == "__main__":
     unittest.main()
