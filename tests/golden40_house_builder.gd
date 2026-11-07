@@ -20,7 +20,7 @@ func run() -> void:
  game.zombie_health=[0,0]
  game.player=Vector2(-3.0,1.5)
  var id: String=all_ids[0]
- var before:=game.drops.size()
+ var before: int = game.drops.size()
  assert(game._builder_spawn_near(id))
  assert(game.drops.size()==before+1)
  assert(game.drops.back().id==id)
@@ -34,7 +34,7 @@ func run() -> void:
  assert(game._drop_item(id))
  assert(not game.survival.inventory.has(id))
  assert(game.drops.size()==before+1)
- var snapshot:=game.drops.duplicate(true)
+ var snapshot: Array = game.drops.duplicate(true)
  assert(game._save_game()==OK)
  assert(game._load_game()==OK)
  assert(game.drops==snapshot)
