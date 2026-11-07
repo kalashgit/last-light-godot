@@ -11,7 +11,13 @@ run_checked() {
  logfile=$(mktemp)
  "$engine" "$@" >"$logfile" 2>&1 || { cat "$logfile"; rm "$logfile"; return 1; }
  cat "$logfile"
- if rg -q 'SCRIPT ERROR|ERROR:|Parse Error' "$logfile"; then rm "$logfile"; return 1; fi
+ # Fail on actual parse/runtime errors. Fontconfig is absent from the CI container,
+ # which emits a benign "ERROR:" line unrelated to project scripts.
+ if grep -E 'SCRIPT ERROR|Parse Error|ERROR:|Failed to load script' "$logfile" | grep -Ev 'ERROR: Unable to load fontconfig, system font support is disabled.' >/dev/null; then
+  echo "Godot emitted an unexpected script/engine error" >&2
+  rm "$logfile"
+  return 1
+ fi
  rm "$logfile"
 }
 run_checked --headless --path . --editor --import
