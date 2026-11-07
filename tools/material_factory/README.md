@@ -51,3 +51,19 @@ Direct three-object preview: https://raw.githubusercontent.com/kalashgit/last-li
 On push to the isolated material branch, [GitHub Actions](https://github.com/kalashgit/last-light-godot/actions/workflows/material-factory-v1.yml) runs generator, validates maps and publishes preview PNGs plus a direct GitHub ZIP to \`preview/material-factory-v1/\`. This avoids ChatGPT iOS attachment permission failures.
 
 Original V3 hero Blender code, saved Golden assets and the 21,025 historical reference records remain unchanged.
+# Experimental material-detail revision (2026-11-07)
+
+This working revision addresses the founder's comparison between the Golden 40
+and overly uniform material swatches. It changes only procedural source-map
+synthesis: wood uses anisotropic irregular grain rather than uniform sine bands;
+fabric uses interlaced warp/weft yarn and tonal slubs; oxidized iron gains
+mixed-frequency corrosion and pits. Material IDs, colors, seeds, channel names,
+and downstream Blender contract are unchanged. PNG maps are saved without the
+optional Pillow optimizer for reliability.
+
+These changes are **not visually approved**. A texture swatch is not a furniture
+sprite. Next acceptance steps remain per-part grain orientation and semantic
+handle/corner/seam wear in Blender, real floor-contact shadow passes, matched
+hero render comparisons, and Godot/Xogot 100/220/325% reviews. No production
+assets or gameplay scenes were replaced.
+
