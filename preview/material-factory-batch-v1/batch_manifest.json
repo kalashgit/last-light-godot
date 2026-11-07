@@ -1,19 +1,15 @@
 {
-  "schema_version": 1,
-  "material_source_recipes": 5,
+  "schema_version": 2,
+  "material_source_recipes": 14,
+  "baseline_material_map_sets": 20,
+  "expanded_material_map_sets": 36,
   "environmental_condition_count": 4,
-  "material_map_sets": 20,
+  "material_map_sets": 56,
   "catalog_id_count": 300,
-  "mapped_asset_ids": 227,
-  "missing_material_asset_ids": 73,
-  "unmapped_material_types": {
-    "amber": 10,
-    "clay": 3,
-    "dark": 1,
-    "ivory": 43,
-    "paper": 16
-  },
-  "coverage": "PARTIAL_NOT_EVERY_SPRITE_TYPE",
+  "mapped_asset_ids": 300,
+  "missing_material_asset_ids": 0,
+  "unmapped_material_types": {},
+  "coverage": "BASE_MATERIAL_FAMILIES_MAPPED_VISUAL_APPROVAL_PENDING",
   "validation": "source_map_presence_only_not_GOLDEN_40_VISUAL_APPROVAL",
   "packs": [
     {
@@ -41,79 +37,1208 @@
       "directory": "condition_3"
     }
   ],
-  "missing": [
-    "ll_food_milk_carton",
-    "ll_food_juice_carton",
-    "ll_food_tea_box",
-    "ll_food_salt_box",
-    "ll_food_pasta_box",
-    "ll_food_cereal_box",
-    "ll_food_cracker_box",
-    "ll_food_chocolate_bar",
-    "ll_food_energy_bar",
-    "ll_food_instant_noodles",
-    "ll_food_baking_soda",
-    "ll_food_yeast_sachet",
-    "ll_food_soup_sachet",
-    "ll_food_butter_packet",
-    "ll_food_cheese_packet",
-    "ll_medical_sterile_bandage",
-    "ll_medical_gauze_roll",
-    "ll_medical_adhesive_tape",
-    "ll_medical_elastic_bandage",
-    "ll_medical_cloth_dressing",
-    "ll_medical_alcohol_wipes",
-    "ll_medical_antiseptic",
-    "ll_medical_peroxide",
-    "ll_medical_saline_bottle",
-    "ll_medical_rubbing_alcohol",
-    "ll_medical_pain_tablets",
-    "ll_medical_antibiotic_tablets",
-    "ll_medical_vitamin_tablets",
-    "ll_medical_allergy_tablets",
-    "ll_medical_cold_tablets",
-    "ll_medical_first_aid_case",
-    "ll_medical_suture_kit",
-    "ll_medical_splint",
-    "ll_medical_tongue_depressors",
-    "ll_medical_medical_gloves",
-    "ll_medical_face_masks",
-    "ll_medical_syringe_pack",
-    "ll_medical_cotton_swabs",
-    "ll_medical_safety_pins",
-    "ll_medical_tweezers",
-    "ll_medical_medical_scissors",
-    "ll_medical_eye_drops",
-    "ll_medical_ointment_tube",
-    "ll_medical_burn_cream",
-    "ll_medical_zinc_cream",
-    "ll_medical_petroleum_jelly",
-    "ll_medical_ice_pack",
-    "ll_medical_finger_dressing",
-    "ll_medical_eye_dressing",
-    "ll_medical_triangular_bandage",
-    "ll_medical_emergency_blanket",
-    "ll_medical_surgical_tape",
-    "ll_medical_wound_strips",
-    "ll_medical_rehydration_salts",
-    "ll_medical_dental_floss",
-    "ll_medical_toothache_drops",
-    "ll_medical_inhaler",
-    "ll_medical_pill_organizer",
-    "ll_medical_medical_notebook",
-    "ll_medical_empty_medicine_vial",
-    "ll_crafting_rubber_sheet",
-    "ll_crafting_red_brick",
-    "ll_crafting_concrete_block",
-    "ll_crafting_paving_brick",
-    "ll_crafting_sandpaper",
-    "ll_household_ceramic_mug",
-    "ll_household_enamel_mug",
-    "ll_household_food_bowl",
-    "ll_household_dinner_plate",
-    "ll_furniture_sink_cabinet",
-    "ll_furniture_bathroom_vanity",
-    "ll_furniture_toilet",
-    "ll_furniture_bathtub"
-  ]
+  "expanded_material_directory": "expanded",
+  "mapping": [
+    {
+      "asset_id": "ll_food_bean_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_tomato_soup",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_tuna_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_peach_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_corn_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_pea_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_sardine_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_stew_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_milk_carton",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_juice_carton",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_water_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_cooking_oil",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_vinegar_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_soda_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_coffee_jar",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_tea_box",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_rice_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_flour_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_sugar_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_salt_box",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_pasta_box",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_cereal_box",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_cracker_box",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_biscuit_packet",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_chocolate_bar",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_energy_bar",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_bread_loaf",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_oat_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_lentil_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_dry_bean_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_jam_jar",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_pickle_jar",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_honey_jar",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_peanut_butter",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_mustard_jar",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_sauce_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_syrup_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_food_instant_noodles",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_cocoa_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_powdered_milk",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_baking_soda",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_yeast_sachet",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_dried_fruit",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_nut_packet",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_food_pet_food_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_soup_sachet",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_tea_tin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_evaporated_milk",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_food_butter_packet",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_food_cheese_packet",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_medical_sterile_bandage",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_gauze_roll",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_adhesive_tape",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_elastic_bandage",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_cloth_dressing",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_alcohol_wipes",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_antiseptic",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_peroxide",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_saline_bottle",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_rubbing_alcohol",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_pain_tablets",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_antibiotic_tablets",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_vitamin_tablets",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_allergy_tablets",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_cold_tablets",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_first_aid_case",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_trauma_pouch",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_medical_suture_kit",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_splint",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_tongue_depressors",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_medical_gloves",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_face_masks",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_syringe_pack",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_cotton_wool",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_medical_cotton_swabs",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_safety_pins",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_tweezers",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_medical_scissors",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_thermometer",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_medical_eye_drops",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_ointment_tube",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_burn_cream",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_zinc_cream",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_petroleum_jelly",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_hot_water_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_medical_ice_pack",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_finger_dressing",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_eye_dressing",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_triangular_bandage",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_emergency_blanket",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_surgical_tape",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_wound_strips",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_foot_powder",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_medical_rehydration_salts",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_dental_floss",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_toothache_drops",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_medical_inhaler",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_pill_organizer",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_medical_notebook",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_medical_empty_medicine_vial",
+      "pbr_family": "amber_glass"
+    },
+    {
+      "asset_id": "ll_tools_claw_hammer",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_club_hammer",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_ball_peen_hammer",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_rubber_mallet",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_wood_mallet",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_hatchet",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_felling_axe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_splitting_axe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_garden_hoe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_shovel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_spade",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_snow_shovel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_garden_fork",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_leaf_rake",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_hand_trowel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_crowbar",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_pry_bar",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_flat_screwdriver",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_cross_screwdriver",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_awl",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_cold_chisel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_wood_chisel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_file",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_rasp",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_adjustable_wrench",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_pipe_wrench",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_ring_spanner",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_open_spanner",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_socket_handle",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_combination_pliers",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_long_nose_pliers",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_wire_cutters",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_tin_snips",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_garden_shears",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_hand_saw",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_hacksaw",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_pruning_saw",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_utility_knife",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_pocket_knife",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_kitchen_knife",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_machete",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_hand_drill",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_tape_measure",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_spirit_level",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_paint_brush",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_paint_roller",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_putty_knife",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_caulking_gun",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_workbench_vise",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_tools_toolbox",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_pine_plank",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_oak_plank",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_plywood_sheet",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_hardboard_panel",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_floorboard",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_timber_batten",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_fence_slat",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_wood_dowels",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_firewood",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_steel_pipe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_copper_pipe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_plastic_pipe",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_metal_rod",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_sheet_steel",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_corrugated_metal",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_scrap_plate",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_nail_box",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_screw_box",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_bolt_box",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_nut_box",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_washer_box",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_hinge_pack",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_bracket_pack",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_wire_coil",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_cable_coil",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_rope_coil",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_twine_roll",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_duct_tape",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_insulation_tape",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_cloth_roll",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_canvas_roll",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_leather_patch",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_rubber_sheet",
+      "pbr_family": "rubber"
+    },
+    {
+      "asset_id": "ll_crafting_plastic_sheet",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_crafting_glass_pane",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_red_brick",
+      "pbr_family": "clay"
+    },
+    {
+      "asset_id": "ll_crafting_concrete_block",
+      "pbr_family": "clay"
+    },
+    {
+      "asset_id": "ll_crafting_paving_brick",
+      "pbr_family": "clay"
+    },
+    {
+      "asset_id": "ll_crafting_cement_sack",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_sand_sack",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_gravel_sack",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_charcoal_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_crafting_glue_bottle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_crafting_wood_glue",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_crafting_epoxy_tubes",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_solder_spool",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_steel_wool",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_crafting_sandpaper",
+      "pbr_family": "paper"
+    },
+    {
+      "asset_id": "ll_crafting_lashing_straps",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_crafting_repair_patch",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_household_paperback_book",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_hardback_book",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_magazine",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_field_notebook",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_envelope_stack",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_document_folder",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_photo_album",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_board_game",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_card_deck",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_storage_box",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_shoe_box",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_laundry_basket",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_waste_basket",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_bucket",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_wash_basin",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_cooking_pot",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_frying_pan",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_saucepan",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_kettle",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_ceramic_mug",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_household_enamel_mug",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_household_food_bowl",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_household_dinner_plate",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_household_serving_tray",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_cutting_board",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_rolling_pin",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_dish_soap",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_detergent_jug",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_bleach_jug",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_cleaning_powder",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_bar_soap",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_toilet_roll",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_paper_towels",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_folded_towel",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_household_bed_pillow",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_household_folded_blanket",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_household_candle",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_lantern",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_flashlight",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_portable_radio",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_alarm_clock",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_wall_clock",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_battery_pack",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_match_box",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_fuel_can",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_water_jug",
+      "pbr_family": "plastic"
+    },
+    {
+      "asset_id": "ll_household_propane_bottle",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_fire_extinguisher",
+      "pbr_family": "oxidized_metal"
+    },
+    {
+      "asset_id": "ll_household_backpack",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_household_duffel_bag",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_furniture_dining_chair",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_kitchen_chair",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_office_chair",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_folding_chair",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_garden_chair",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_bar_stool",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_low_stool",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_dining_table",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_kitchen_table",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_coffee_table",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_side_table",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_writing_desk",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_work_desk",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_nightstand",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_dresser",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_tall_dresser",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_wardrobe",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_double_wardrobe",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_bookcase",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_wall_shelf",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_storage_shelf",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_kitchen_counter",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_kitchen_cupboard",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_sink_cabinet",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_furniture_bathroom_vanity",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_furniture_medicine_cabinet",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_single_bed",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_double_bed",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_camp_bed",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_mattress",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_furniture_two_seat_sofa",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_furniture_three_seat_sofa",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_furniture_armchair",
+      "pbr_family": "fabric"
+    },
+    {
+      "asset_id": "ll_furniture_bench",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_park_bench",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_tv_stand",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_filing_cabinet",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_locker",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_storage_chest",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_toy_chest",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_refrigerator",
+      "pbr_family": "painted_metal"
+    },
+    {
+      "asset_id": "ll_furniture_freezer",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_cooking_stove",
+      "pbr_family": "painted_metal"
+    },
+    {
+      "asset_id": "ll_furniture_microwave",
+      "pbr_family": "painted_metal"
+    },
+    {
+      "asset_id": "ll_furniture_washing_machine",
+      "pbr_family": "painted_metal"
+    },
+    {
+      "asset_id": "ll_furniture_toilet",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_furniture_bathtub",
+      "pbr_family": "ceramic"
+    },
+    {
+      "asset_id": "ll_furniture_shower_tray",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_coat_rack",
+      "pbr_family": "wood"
+    },
+    {
+      "asset_id": "ll_furniture_workbench",
+      "pbr_family": "wood"
+    }
+  ],
+  "missing": []
 }
