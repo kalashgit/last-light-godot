@@ -89,10 +89,10 @@ def produce(out,size=256,conditions=(0,1,2,3),run_generator=True):
                 if not (out/"expanded"/p).is_file():
                     raise ValueError("missing expanded material map: "+p)
     summary=dict(schema_version=2,material_source_recipes=len(source)+len(EXPANDED_FAMILIES),
-        baseline_material_map_sets=(len(source)+len(EXPANDED_FAMILIES))*len(conditions) if run_generator else 0,
+        baseline_material_map_sets=len(source)*len(conditions) if run_generator else 0,
         expanded_material_map_sets=expanded["material_count"] if expanded is not None else 0,
         environmental_condition_count=len(conditions),
-        material_map_sets=len(source)*len(conditions) if run_generator else 0,
+        material_map_sets=(len(source)+len(EXPANDED_FAMILIES))*len(conditions) if run_generator else 0,
         catalog_id_count=len(records),mapped_asset_ids=len(matched),
         missing_material_asset_ids=len(missing),
         unmapped_material_types=dict(sorted(Counter(x["catalog_material"] for x in missing).items())),
