@@ -73,6 +73,10 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
           blender --version | head -n 2
+      - name: Verify all 12 original Blender vehicle archetypes before batch rendering
+        run: |
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/fleet_geometry_smoke.py 2>&1 | tee build/vehicle_factory/geometry_smoke.log
+          grep -q 'LL_FLEET_GEOMETRY_ALL_PASS 12' build/vehicle_factory/geometry_smoke.log
       - name: Render real original multi-family vehicle smoke batch
         env:
           MAX_JOBS: ${{ inputs.max_jobs || '2' }}
@@ -134,5 +138,6 @@ jobs:
             build/vehicle_factory/fleet_smoke_plan.json
             build/vehicle_factory/fleet_game_ready
             build/vehicle_factory/fleet_render.log
+            build/vehicle_factory/geometry_smoke.log
           retention-days: 14
           if-no-files-found: error
