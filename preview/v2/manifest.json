@@ -24,7 +24,7 @@
         0.74
       ],
       "size_px": [
-        71,
+        70,
         122
       ],
       "anchor_px": [
@@ -34,7 +34,7 @@
       "source_master": "refrigerator.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "7fed26fc91bd9bd7ebe8209d3097e307d874ac62de7439d2c9320761d1986176"
+      "sha256": "01820723b615e962c1be1e2ee369b9a9a0a64fd47b4f6f35d20b19e4cc22bee0"
     },
     {
       "id": "ll_v2_cabinet",
@@ -62,7 +62,7 @@
       "source_master": "cabinet.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "9c1a2cd4101e710941b8c8347ec395e0db35454e61f7cd3faa0484b3a3f1963c"
+      "sha256": "fc79fa9510576b838e0b036acdd2608d4447550ee346335f022f11621aa6c598"
     },
     {
       "id": "ll_v2_sofa",
@@ -90,7 +90,7 @@
       "source_master": "sofa.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "e82bb96cb4122f6ce59d7ae3fa46eec53b8e52acd0e4e80a84e16cc0c35a5421"
+      "sha256": "1eea9c074a893aa36481d26fffbeda614d58d418717a6aedb16bfc9106e2c31c"
     },
     {
       "id": "ll_v2_crate",
@@ -109,7 +109,7 @@
       ],
       "size_px": [
         64,
-        68
+        67
       ],
       "anchor_px": [
         32.0,
@@ -118,7 +118,7 @@
       "source_master": "crate.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "3ebf77d832304ae5237aa5cb684997aef3c9c5c044fc4f1ddd81068ca3927f1e"
+      "sha256": "975aca93beb9b0f197ef62fd91b98cbba73702a350862978f071ae62b7872099"
     },
     {
       "id": "ll_v2_chair",
@@ -137,7 +137,7 @@
       ],
       "size_px": [
         50,
-        82
+        81
       ],
       "anchor_px": [
         25.0,
@@ -146,7 +146,7 @@
       "source_master": "chair.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "f8b2690b93ee9509be83f28cb99aabc213f607b2bba8f13b3836e562f9ad9139"
+      "sha256": "787140af98e40cca8ede8c5d1347c0f19671aad851b431706699b98690909273"
     },
     {
       "id": "ll_v2_table",
@@ -174,7 +174,7 @@
       "source_master": "table.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "358361413ce13f3e37adfd467a5aece3904ca7b372be247f1c2da65531c3d983"
+      "sha256": "d38adc710e17b232b00f4f522508e5539a1da46aec7fe67032c3b7da983c820e"
     },
     {
       "id": "ll_v2_ammo_box",
@@ -192,17 +192,17 @@
         0.15
       ],
       "size_px": [
-        27,
+        26,
         29
       ],
       "anchor_px": [
-        14.0,
+        13.0,
         20.0
       ],
       "source_master": "ammo_box.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "0ececd6cb859ae55d687717c7d0a7f2c9b33d10b8642adecf277b811631a45d3"
+      "sha256": "5c4aca3b04c86718154defef90d2fdcb5dafc9ec7970f2773efe77f69dc51e3b"
     },
     {
       "id": "ll_v2_aerosol_can",
@@ -221,16 +221,16 @@
       ],
       "size_px": [
         18,
-        30
+        29
       ],
       "anchor_px": [
         9.0,
-        23.0
+        22.0
       ],
       "source_master": "aerosol_can.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "0eaa442e0731f257d44321949b780acd3cd51505f6e12836c27a5b61f539854e"
+      "sha256": "a02946de9e720ab17e374dfcb16a6c4b4927d5887941f7c797c247f1c86656e0"
     },
     {
       "id": "ll_v2_wipes_pack",
@@ -258,7 +258,7 @@
       "source_master": "wipes_pack.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "52ca143823d339d0ed0e28aa05c2ca079be5efdc952ae78581c57b315ea78c50"
+      "sha256": "1c6824e2530eb2fa9ad91d7b12fc48afdab3d6844bcf0f4b128585b6c622286b"
     },
     {
       "id": "ll_v2_backpack",
@@ -286,7 +286,7 @@
       "source_master": "backpack.png",
       "source": "Original Blender parametric V2",
       "status": "automated_qa_pass_visual_pending",
-      "sha256": "4f1745d41fad4a09e74a2bba203789050b2fb107f9e76575a32c493406aaea48"
+      "sha256": "93a4a21c69777f47381a889095e9833eeb28c8cd376b313e669dc89a296c9393"
     }
   ]
 }
