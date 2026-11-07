@@ -1,0 +1,85 @@
+name: LAST LIGHT Blender V3 recovered hero benchmark
+on:
+  push:
+    branches:
+      - "codex/blender-v3-recovery-hero-20261107"
+    paths:
+      - "tools/blender_factory/render_v3_recovery.py"
+      - "tools/blender_factory/package_v3_recovery.py"
+      - ".github/workflows/blender-v3-hero-recovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render-three-original-v3-heroes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install open-source Blender CPU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Render refrigerator cabinet and soft sofa in separate V3 folder
+        run: |
+          mkdir -p build/blender_v3/raw
+          blender -b --factory-startup -t 2 --python tools/blender_factory/render_v3_recovery.py -- --output build/blender_v3/raw
+      - name: Install Pillow
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Package transparent world sprites and V2 versus V3 comparison
+        run: |
+          python tools/blender_factory/package_v3_recovery.py --input build/blender_v3/raw --output build/blender_v3/game_ready --baseline preview/v2/last-light-v2-10-sprite-preview.zip
+          python - <<'PY'
+          from pathlib import Path
+          import json,zipfile
+          from PIL import Image
+          root=Path("build/blender_v3/game_ready")
+          data=json.loads((root/"manifest.json").read_text())
+          assert data["schema"]==3 and data["tile_px"]==[80,40]
+          assert {x["name"] for x in data["items"]}=={"refrigerator","cabinet","sofa"}
+          for x in data["items"]:
+              path=root/x["world_sprite"]
+              im=Image.open(path)
+              assert im.mode=="RGBA" and im.getchannel("A").getextrema()==(0,255),(x["name"],"alpha")
+              assert all(v>0 for v in x["dimensions_m"])
+              assert len(x["anchor_px"])==2
+              assert (root/x["icon_sprite"]).exists() and (root/x["shadow_sprite"]).exists()
+              print("LL_V3_HERO_PASS",x["name"],im.size,x["anchor_px"])
+          for name in ("preview-grid-v3.png","comparison-v2-v3.png","last-light-v3-3-hero-preview.zip"):
+              path=root.parent/name
+              assert path.stat().st_size>4096,(name,"output missing")
+          with zipfile.ZipFile(root.parent/"last-light-v3-3-hero-preview.zip") as z:
+              assert z.testzip() is None
+              assert "game_ready/manifest.json" in z.namelist()
+          print("LL_V3_HERO_QA_PASS 3/3: alpha, dimensions, pivots, icons, shadows, comparison, valid ZIP")
+          PY
+      - name: Publish verified mobile-accessible preview to isolated branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/codex/blender-v3-recovery-hero-20261107'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/v3-recovery
+          cp build/blender_v3/last-light-v3-3-hero-preview.zip preview/v3-recovery/
+          cp build/blender_v3/preview-grid-v3.png preview/v3-recovery/
+          cp build/blender_v3/comparison-v2-v3.png preview/v3-recovery/
+          cp build/blender_v3/game_ready/manifest.json preview/v3-recovery/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/v3-recovery
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish original V3 3-hero rendered benchmark and V2 comparison"
+            git push origin HEAD:codex/blender-v3-recovery-hero-20261107
+          fi
+      - name: Upload signed Actions backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-v3-recovered-three-hero-candidates
+          path: |
+            build/blender_v3/last-light-v3-3-hero-preview.zip
+            build/blender_v3/preview-grid-v3.png
+            build/blender_v3/comparison-v2-v3.png
+            build/blender_v3/game_ready/manifest.json
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,96 @@
+{
+  "schema": 3,
+  "tile_px": [
+    80,
+    40
+  ],
+  "pixel_filter": "BOX premultiplied alpha; Godot nearest at runtime",
+  "render_pipeline": "Blender original mesh+PBR procedural texture -> RGBA -> alpha-safe scale -> world/icon/shadow",
+  "status": "mechanically_verified_visual_approval_pending",
+  "items": [
+    {
+      "id": "ll_v3_refrigerator",
+      "name": "refrigerator",
+      "world_sprite": "refrigerator/ground.png",
+      "icon_sprite": "refrigerator/icon.png",
+      "shadow_sprite": "refrigerator/shadow.png",
+      "dimensions_m": [
+        0.77,
+        0.75,
+        1.77
+      ],
+      "footprint_m": [
+        0.77,
+        0.75
+      ],
+      "size_px": [
+        70,
+        123
+      ],
+      "anchor_px": [
+        36.0,
+        105.0
+      ],
+      "source_master": "refrigerator.png",
+      "source": "Original Blender V3 silhouette and material hero benchmark",
+      "status": "automated_qa_pass_visual_pending",
+      "sha256": "304642a90026684a8b0db4a34c900014c721f5a836b75611e12dc10b022796c9"
+    },
+    {
+      "id": "ll_v3_cabinet",
+      "name": "cabinet",
+      "world_sprite": "cabinet/ground.png",
+      "icon_sprite": "cabinet/icon.png",
+      "shadow_sprite": "cabinet/shadow.png",
+      "dimensions_m": [
+        1.12,
+        0.65,
+        1.51
+      ],
+      "footprint_m": [
+        1.12,
+        0.65
+      ],
+      "size_px": [
+        79,
+        116
+      ],
+      "anchor_px": [
+        40.0,
+        95.0
+      ],
+      "source_master": "cabinet.png",
+      "source": "Original Blender V3 silhouette and material hero benchmark",
+      "status": "automated_qa_pass_visual_pending",
+      "sha256": "4494d2fee3e3eb359d2fc5d783d65b8c5f7bb7b8988b299828c274018bdef716"
+    },
+    {
+      "id": "ll_v3_sofa",
+      "name": "sofa",
+      "world_sprite": "sofa/ground.png",
+      "icon_sprite": "sofa/icon.png",
+      "shadow_sprite": "sofa/shadow.png",
+      "dimensions_m": [
+        1.96,
+        1.02,
+        1.16
+      ],
+      "footprint_m": [
+        1.96,
+        1.02
+      ],
+      "size_px": [
+        121,
+        110
+      ],
+      "anchor_px": [
+        61.0,
+        82.0
+      ],
+      "source_master": "sofa.png",
+      "source": "Original Blender V3 silhouette and material hero benchmark",
+      "status": "automated_qa_pass_visual_pending",
+      "sha256": "aaf983f629f846c45c58f01f4755e002dbdda8faf11edf72512547888246ed65"
+    }
+  ]
+}
