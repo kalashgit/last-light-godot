@@ -83,12 +83,12 @@ v3.material_fidelity_v3=material_fidelity
 # the same grime pattern as a sofa cushion or an entire wooden cabinet carcass.
 # This is original procedural shading, not copied reference-game pixels.
 SEMANTIC_ZONES=(
-    ("curved ivory enamel carcass", "bottom", (.81,.79,.75,1), .32),
-    ("individual pressed convex door", "grip", (.92,.91,.89,1), .20),
-    ("dark walnut solid carcass", "bottom", (.76,.72,.68,1), .23),
-    ("slightly convex hand-finished inner panel", "grip", (1.14,1.12,1.09,1), .17),
-    ("overstuffed curved seat", "top", (.89,.88,.85,1), .14),
-    ("padded back cushion", "top", (.93,.92,.90,1), .10),
+    ("curved ivory enamel carcass", "bottom", (.70,.71,.69,1), .70),
+    ("individual pressed convex door", "grip", (.82,.83,.82,1), .46),
+    ("dark walnut solid carcass", "bottom", (.67,.66,.63,1), .65),
+    ("slightly convex hand-finished inner panel", "grip", (1.21,1.19,1.17,1), .52),
+    ("overstuffed curved seat", "top", (.78,.80,.78,1), .48),
+    ("padded back cushion", "top", (.83,.84,.81,1), .36),
 )
 
 def semantic_surface(obj):
