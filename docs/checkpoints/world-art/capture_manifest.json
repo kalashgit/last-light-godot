@@ -1,0 +1,152 @@
+[
+  {
+    "view": "bathroom-100",
+    "before_sha256": "c702d275b55704979ded9a7c83d706e96e878f7977a2de914ddcabd65a2d97b5",
+    "after_sha256": "6df9c3cb5807115577207565f3c6e578c69fbdead743089e7b2fa35faf444aef",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "bathroom-220",
+    "before_sha256": "10a3c15e1582be2c72bce1f831a07497177d94ce2c6cabdf64f2b9d57f89fb44",
+    "after_sha256": "0e25074077d79a167bb90efff2a21a3b18de386e29bf28733b2233e5cbed9d23",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "bathroom-325",
+    "before_sha256": "5831e71586a20bea9ef55e112919672759e3d51f491472cf6beb1d31535ac25f",
+    "after_sha256": "35ea18f0fde59dde2cceff505507f2a1e1fe90dc7d51a0d6955d8d8be21008aa",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "bedroom-100",
+    "before_sha256": "bb8f2dc082bbd0393094f0cdd2f6aaf2795b6ba03fcff29457762b00adcca8b4",
+    "after_sha256": "17a402ac2d820a16e45a7a09766c0266697b33bae17c4e06e44df893d93756ad",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "bedroom-220",
+    "before_sha256": "d3d78190d103d50fd7d90f44eafe3a15f6b3a5cb98387abebda2efbf8bd4ff5e",
+    "after_sha256": "68e8f4f93a98780c002ceeebbebd16662a4216ddeaa2dbeb07548e1fd4fb73b6",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "bedroom-325",
+    "before_sha256": "f4af2870a72ddef34ba7a517653122276a2bcb354ea7f7a72464c46719df5d64",
+    "after_sha256": "d5c232ddc14427c62453ac6cd0c68962684747535a78d82f534817f1c1d15326",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "kitchen-100",
+    "before_sha256": "28430deccad42e2823e75f5294d3af2a59033234589a89ec8a462c05e3fefc34",
+    "after_sha256": "b9a66518495a8af0f98089c8a81c98f27cc392b6bd53ab2305665e0762baeed7",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "kitchen-220",
+    "before_sha256": "261a272c580c5769942268a7de513d749d768b03a67eddb8eb687f16e0b30e78",
+    "after_sha256": "034dad95bcf7fe5ea725be9237057d1d2973f9b3b908c405a4664998b2498bee",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "kitchen-325",
+    "before_sha256": "08f78d09e454617ea50d64fafdd987fa6aa6cb6ae3208252323b83989e409703",
+    "after_sha256": "5d918aff8ce37ddcdc17bca378a996682bb41c59f5e7141e8b0d69f1c5aabfeb",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "living-100",
+    "before_sha256": "8dee2f9551ca1ffb9796ecd4053e1f56ab30b6ca8128561d2c8732c5b7ac2e30",
+    "after_sha256": "81dcc08749214052b089b6c76f3f0b8b942f3f6e858fb39dfb2459dec395e8de",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "living-220",
+    "before_sha256": "674d12389bd80593ae669b06dcebe1839fda2ded1e87ec98bb1bccedb6daa830",
+    "after_sha256": "98ba440118ffbee8eb40b13d7b9f7aa37c0dd498cf634f84894f736f704cdb91",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "living-325",
+    "before_sha256": "dc02673df04ce1944eb948be4c41bf024cf5cfb7651fceeb73a1afe3b54d96c3",
+    "after_sha256": "444fe203aa44403ede39871fbf7c694f7d05b7d4fae5461719824037f3efa91a",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "outdoor-100",
+    "before_sha256": "bd3ac539ce06d831547f1fc34007c289d719206b13247702e13bfb720e6fc574",
+    "after_sha256": "d5d85621b2a53076a9169776ef9396cda193ee7aa46857fe56993c3096a85827",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "outdoor-220",
+    "before_sha256": "566898c7a015ff58934325886f772e723343c263f05be63042357bcea07d6cca",
+    "after_sha256": "73e45abc9b1541d4bbdac99288c496a84c0aa142ceabe36f484c76a291b13b8e",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  },
+  {
+    "view": "outdoor-325",
+    "before_sha256": "c471733cf6d2dd7cd585997946b6ee7cbc1f49558bc93ed533315e004acb6087",
+    "after_sha256": "ff6d75a837f4b12f35a82f6788dd75bbfa63971d6aa673030cc1cb9b7deccad4",
+    "resolution": [
+      1280,
+      800
+    ],
+    "matched_camera": true
+  }
+]

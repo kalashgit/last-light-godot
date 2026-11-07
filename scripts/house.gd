@@ -8,6 +8,7 @@ const PLAYER_RADIUS := 0.19
 const HOME := Rect2(0.0, 0.0, 9.0, 8.0)
 const HouseArt := preload("res://scripts/house_art.gd")
 var art := HouseArt.new()
+var world_art_debug := false
 const MobileHUD := preload("res://scripts/mobile_hud.gd")
 var hud := MobileHUD.new()
 var control_rects: Dictionary = {}
@@ -89,6 +90,7 @@ var stick_radius := 62.0
 var attack_cooldown := 0.0
 
 func _ready() -> void:
+ texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
  art.setup(self)
  _load_controls()
  _make_house()
@@ -432,6 +434,7 @@ func _draw() -> void:
  var anchor := _camera_pivot()
  draw_set_transform(anchor*(1.0-camera_zoom),0.0,Vector2.ONE*camera_zoom)
  art.draw_world(self)
+ if world_art_debug: art.draw_inspector(self)
  draw_set_transform(Vector2.ZERO,0.0,Vector2.ONE)
  _draw_ui()
 
@@ -538,6 +541,10 @@ func _pointer_up(pointer: int) -> void:
   joystick_vector=Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
+ if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F8:
+  world_art_debug=not world_art_debug
+  queue_redraw()
+  return
  if builder_open: return
  if event is InputEventScreenTouch:
   if event.pressed and not event.canceled: _pointer_down(event.index,event.position)
@@ -912,14 +919,15 @@ func _drop_item(id: String) -> bool:
 func _draw_drop(index: int) -> void:
  var drop: Dictionary=drops[index]
  var id: String=survival.definitions[drop.id].art_id
- if id.begins_with("ll_golden_"):
-  var icon: Texture2D = _golden_icon(id)
-  if icon != null:
-   var point := _screen(drop.pos, 8)
-   draw_texture_rect(icon, Rect2(point - Vector2(20, 30), Vector2(40, 40)), false)
- else:
+ if art.world_art.is_world_ready(id):
+  var meta: Dictionary=art.world_art.lookup(id)
+  var footprint:=Vector2(meta.ground_footprint_m[0],meta.ground_footprint_m[1])
+  art.world_art.contact_shadow(self,drop.pos,footprint)
   art._sprite(self,id,drop.pos)
- if player.distance_to(drop.pos)<1.5: draw_circle(_screen(drop.pos,12),2,Color("d5c899"))
+ else:
+  art.world_art.draw_marker(self,drop.pos)
+ if player.distance_to(drop.pos)<1.5:
+  draw_arc(_screen(drop.pos),3,0,TAU,12,Color("c2b98e"),1,false)
 
 func _golden_icon(id: String) -> Texture2D:
  if not survival.definitions.has(id): return null
