@@ -110,21 +110,35 @@ SEMANTIC_ZONES=(
     ("padded back cushion", "top", (.83,.84,.81,1), .36),
 )
 
-def directionally_grained(obj):
-    """Orient grown wood grain longitudinally on each object-facing surface.
+def orient_surface_maps(obj):
+    """Project textures into the two *visible* axes of each constructed part.
 
-    Mapping X/Z is for tall front panels; Y/X is for horizontal top boards.
-    Without this, image textures were sampled on a very thin Y front face and
-    most cabinet grain vanished even though the swatch looked detailed.
+    Generated X/Y on all geometry made vertical sofa faces, fridge doors and
+    cabinet sides almost textureless. This is deliberately per-object rather
+    than applying one triplanar/noise treatment to an entire item.
     """
     name=obj.name.lower()
-    if not obj.data.materials or not any(
-        n.type=="TEX_IMAGE" and n.label.startswith("LAST LIGHT LL_MAT_WOOD")
-        for n in obj.data.materials[0].node_tree.nodes
-    ):
+    if not obj.data.materials:
         return obj
+    pbr_nodes=[n for n in obj.data.materials[0].node_tree.nodes
+               if n.type=="TEX_IMAGE" and n.label.startswith("LAST LIGHT LL_MAT_")]
+    if not pbr_nodes:
+        return obj
+    material_id=pbr_nodes[0].label
+    wood="WOOD_WORN" in material_id
+    fabric="FABRIC_MOSS" in material_id
+    if wood and ("top board" in name or "front rail" in name):
+        u,v="Y","X"  # longitudinal fibers along the board's X axis
+    elif "carcass" in name or "side arm" in name or "side panel" in name:
+        u,v="Y","Z"  # visible side face, not the thin front depth
+    elif fabric and any(t in name for t in ("seat cushion","upholstered base")):
+        u,v="X","Y"  # horizontal load-bearing fabric weave
+    elif fabric or wood or "pressed convex door" in name:
+        u,v="X","Z"  # vertical front face: grain/weave actually visible
+    else:
+        return obj  # retain original orientation for small metal subparts
     material=obj.data.materials[0].copy()
-    material.name=obj.name+" / aligned directional fibres"
+    material.name=obj.name+" / visible-face projected texture"
     obj.data.materials[0]=material
     nodes=material.node_tree.nodes;links=material.node_tree.links
     tex=next((n for n in nodes if n.type=="TEX_COORD"),None)
@@ -132,18 +146,14 @@ def directionally_grained(obj):
     split=nodes.new("ShaderNodeSeparateXYZ")
     combine=nodes.new("ShaderNodeCombineXYZ")
     links.new(tex.outputs["Generated"],split.inputs["Vector"])
-    if "top board" in name or "front rail" in name:
-        # horizontal-length grain, across width/depth
-        links.new(split.outputs["Y"],combine.inputs["X"])
-        links.new(split.outputs["X"],combine.inputs["Y"])
-    else:
-        links.new(split.outputs["X"],combine.inputs["X"])
-        links.new(split.outputs["Z"],combine.inputs["Y"])
+    links.new(split.outputs[u],combine.inputs["X"])
+    links.new(split.outputs[v],combine.inputs["Y"])
     links.new(split.outputs["Y"],combine.inputs["Z"])
-    for node in nodes:
-        if node.type=="TEX_IMAGE" and node.label.startswith("LAST LIGHT LL_MAT_WOOD"):
-            links.new(combine.outputs["Vector"],node.inputs["Vector"])
-    print("LL_ALIGNED_WOOD_GRAIN",obj.name,flush=True)
+    for node in pbr_nodes:
+        # `pbr_nodes` belonged to the pre-copy material; find counterpart by label.
+        counterpart=next(n for n in nodes if n.type=="TEX_IMAGE" and n.label==node.label)
+        links.new(combine.outputs["Vector"],counterpart.inputs["Vector"])
+    print("LL_VISIBLE_FACE_TEXTURE",obj.name,u+v,flush=True)
     return obj
 
 def semantic_surface(obj):
@@ -154,7 +164,7 @@ def semantic_surface(obj):
     rule=next(((zone,tint,amount) for prefix,zone,tint,amount in SEMANTIC_ZONES
                if name.startswith(prefix)),None)
     if not rule:
-        return directionally_grained(obj)
+        return orient_surface_maps(obj)
     zone,tint,amount=rule
     # Material copies keep existing image maps while isolating object-specific wear.
     material=obj.data.materials[0].copy()
@@ -202,7 +212,7 @@ def semantic_surface(obj):
     mix.inputs[2].default_value=tint
     links.new(mix.outputs["Color"],shader.inputs["Base Color"])
     print("LL_SEMANTIC_MATERIAL",obj.name,zone,flush=True)
-    return directionally_grained(obj)
+    return orient_surface_maps(obj)
 
 original_cube=v3.cube
 def cube_with_semantics(*args,**kwargs):
@@ -223,6 +233,12 @@ def refrigerator_detail(materials):
             .0035,materials["paint"])
     v3.pipe("Lower door rolled upper lip", [(-.31,-.420,1.031),(.31,-.420,1.031)],
             .0035,materials["paint"])
+    # This visible side is sheet metal, not a perfect featureless grey prism.
+    # Thin pressed joints catch a different highlight without looking rusted.
+    v3.pipe("Pressed side back fold",[(.385,.277,.20),(.385,.277,1.56)],
+            .0035,materials["paint"])
+    v3.pipe("Pressed side upper joint",[(.385,-.252,1.63),(.385,.280,1.63)],
+            .003,materials["steel"])
     if CONDITION>=1:
         # Scuff placement comes from human contact: only near the lower grip
         # and the bottom corner. Deliberately avoid full-surface random dirt.
@@ -241,6 +257,16 @@ def cabinet_detail(materials):
         for z in (.27,1.17):
             v3.cube("Inset hinge mounting plate",(x,-.352,z),(.025,.015,.090),
                     materials["steel"],.003)
+    # Distinct side joinery turns the previously flat broad right wall into a
+    # believable cabinet, with recessed veneer and raised vertical stiles.
+    v3.cube("Side panel recessed oak core",(.539,.035,.739),(.014,.430,1.16),
+            materials["wood_dark"],.004)
+    for y in (-.208,.279):
+        v3.cube("Side panel raised frame stile",(.553,y,.744),(.027,.054,1.27),
+                materials["wood"],.006)
+    for z in (.168,1.335):
+        v3.cube("Side panel horizontal joined rail",(.557,.035,z),(.035,.50,.067),
+                materials["wood_light"],.006)
     # End-grain joints appear as physically recessed seams at the top corners.
     for x in (-.48,.48):
         v3.pipe("Top mortise join line",[(x,-.309,1.48),(x,-.309,1.455)],

@@ -119,10 +119,13 @@ def material_maps(recipe,size,condition=1):
         weave=warp*(.72+.28*crossing)+weft*(1-.28*crossing)
         slub=np.clip((fine-.42)*2,0,1)
         yarn=mid-.5
-        variation=.17*(low-.5)+.095*yarn+.055*(weave-.55)+.03*(slub-.5)
-        height=np.clip(.46+.13*weave+.035*(fine-.5),0,1)
+        # Coarse dye/fiber differences must survive conversion from 512px PBR
+        # sources to roughly 100px wide world sprites. Slightly deepen yarn
+        # color variation while preserving a wearable, relatively fresh sofa.
+        variation=.29*(low-.5)+.18*yarn+.095*(weave-.55)+.055*(slub-.5)
+        height=np.clip(.46+.18*weave+.050*(fine-.5),0,1)
         wear=np.clip(.06+.07*np.maximum(0,.4-mid),0,1)
-        rough=np.clip(recipe["roughness"]+.045*(low-.5)-.022*weave,0,1)
+        rough=np.clip(recipe["roughness"]+.080*(low-.5)-.030*weave,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="plastic":
         mild=.07*(low-.5)+.025*(fine-.5)
