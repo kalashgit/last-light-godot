@@ -4,6 +4,8 @@ extends RefCounted
 const HOME := Rect2(0, 0, 9, 8)
 const FACTORY := "res://assets/generated/factory/"
 const TerrainMesh := preload("res://scripts/terrain_mesh.gd")
+const WorldArt := preload("res://scripts/world_art.gd")
+var world_art := WorldArt.new()
 var terrain: ArrayMesh
 var layout: Dictionary = {}
 var catalog: Dictionary = {}
@@ -31,9 +33,11 @@ func setup(_game) -> void:
   item.searched = not entry.get("container", false)
   placed.append(item)
   _cache(entry.asset_id)
- for entry in layout.decorations:
+ for decoration_index in range(layout.decorations.size()):
+  var entry: Dictionary=layout.decorations[decoration_index]
   var prop: Dictionary = entry.duplicate(true)
   prop.pos = Vector2(entry.pos[0], entry.pos[1])
+  prop.support=world_art.supports.get(decoration_index,{})
   decorations.append(prop)
   _cache(entry.asset_id)
 
@@ -200,6 +204,29 @@ func _door(g, door: Dictionary, inside: bool) -> void:
   g.draw_line(g._screen(p, 4), g._screen(p, high - 5), Color("665f4d"), 1, true)
  g.draw_circle(g._screen(a.lerp(end, .83), high * .48), 2, Color("c4b887"))
 
+func _support_item(prop: Dictionary) -> Dictionary:
+ var parent=prop.support.get("parent_support")
+ for item in placed:
+  if item.id==parent:return item
+ return {}
+
+func _decoration_height(prop: Dictionary) -> float:
+ var item:=_support_item(prop)
+ if item.is_empty():return 0.0
+ var surface=prop.support.get("surface_height_m")
+ if surface==null:return float(prop.support.legacy_height_px)*world_art.furniture_scale(item)
+ return float(surface)*WorldArt.VERTICAL_PX_PER_M*world_art.furniture_scale(item)
+
+func _decoration_visible(prop: Dictionary) -> bool:
+ return prop.support.get("status","")!="unsupported_raised_prop_manual_review"
+
+func _draw_decoration(g,prop: Dictionary) -> void:
+ if not _decoration_visible(prop):return
+ var d: Array=world_art.lookup(prop.asset_id).get("ground_footprint_m",[.1,.1])
+ var h:=_decoration_height(prop)
+ world_art.contact_shadow(g,prop.pos,Vector2(d[0],d[1]),h)
+ _sprite(g,prop.asset_id,prop.pos,prop.get("scale",1.0),h)
+
 func _sprite(g, id: String, p: Vector2, scale: float = 1.0, height: float = 0.0) -> void:
  if not sprites.has(id):
   return
@@ -226,9 +253,7 @@ func _furniture(g, item: Dictionary) -> void:
   _box(g, item.pos + Vector2(.06, .14), Vector2(.26, .55), 3, Color("d4cfb7"), 16)
   _box(g, item.pos, Vector2(.06, .9), 29, Color("74604a"))
  else:
-  var definition: Dictionary = sprites[item.asset_id]
-  var d: Vector2 = definition.dimensions
-  var scale := minf(item.size.x / d.x, item.size.y / d.y)
+  var scale := world_art.furniture_scale(item)
   _sprite(g, item.asset_id, center, scale)
  # Small contextual search marker, not a floating label over every furnishing.
  if item.get("container", false) and not item.searched and g.player.distance_to(center) < 1.8:
@@ -269,6 +294,9 @@ func draw_world(g) -> void:
  var inside := HOME.has_point(g.player)
  g.draw_rect(g.get_viewport_rect(),Color("28362d"))
  g.draw_mesh(terrain,null,Transform2D(0,g._screen(Vector2.ZERO)))
+ # Contacts are on the floor, before all opaque entities; never painted over feet.
+ if inside:
+  for item in g.items:world_art.contact_shadow(g,item.pos+item.size*.5,item.size)
  var commands: Array[Dictionary] = []
  for wall in g.walls:
   var a: Vector2 = wall.a
@@ -280,31 +308,37 @@ func draw_world(g) -> void:
   for n in range(count):
    var u := a.lerp(b, float(n) / count)
    var v := a.lerp(b, float(n + 1) / count)
-   commands.append({"kind":"wall", "a":u, "b":v, "height":h, "exterior":wall.exterior, "depth":(u.x + u.y + v.x + v.y) * .5})
+   commands.append({"kind":"wall", "a":u, "b":v, "height":h, "exterior":wall.exterior, "depth":world_art.ground_depth((u+v)*.5)})
  for i in range(g.doors.size()):
   var door: Dictionary = g.doors[i]
-  commands.append({"kind":"door", "index":i, "depth":(door.a.x + door.a.y + door.b.x + door.b.y) * .5 + .01})
+  commands.append({"kind":"door", "index":i, "depth":world_art.ground_depth((door.a+door.b)*.5), "layer":1})
  if inside:
   for i in range(g.items.size()):
    var item: Dictionary = g.items[i]
-   commands.append({"kind":"item", "index":i, "depth":item.pos.x + item.pos.y + (item.size.x + item.size.y) * .5})
+   commands.append({"kind":"item", "index":i, "depth":world_art.ground_depth(item.pos+item.size*.5), "layer":2})
  for i in range(decorations.size()):
   var prop: Dictionary = decorations[i]
   if inside or not HOME.has_point(prop.pos):
-   # Tabletop clutter sorts just after its supporting furniture.
-   commands.append({"kind":"decor", "index":i, "depth":prop.pos.x + prop.pos.y + .03})
+   if not _decoration_visible(prop):continue
+   var support:=_support_item(prop)
+   var contact: Vector2=prop.pos if support.is_empty() else support.pos+support.size*.5
+   commands.append({"kind":"decor", "index":i, "depth":world_art.ground_depth(contact),"layer":3})
  for i in range(g.drops.size()):
   var point: Vector2=g.drops[i].pos
-  commands.append({"kind":"drop","index":i,"depth":point.x+point.y-.01})
+  commands.append({"kind":"drop","index":i,"depth":world_art.ground_depth(point),"layer":0})
  for i in range(g.infected.size()):
   if g.zombie_health[i] > 0:
    var p: Vector2 = g.infected[i]
-   commands.append({"kind":"zombie", "index":i, "depth":p.x + p.y})
- commands.append({"kind":"player", "depth":g.player.x + g.player.y})
+   commands.append({"kind":"zombie", "index":i, "depth":world_art.ground_depth(p),"layer":4})
+ commands.append({"kind":"player", "depth":world_art.ground_depth(g.player),"layer":4})
  # Index insertion order makes equal-depth sorting deterministic.
  for i in range(commands.size()):
   commands[i].order = i
- commands.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.depth < b.depth if a.depth != b.depth else a.order < b.order)
+  if not commands[i].has("layer"):commands[i].layer=1
+ commands.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
+  if not is_equal_approx(a.depth,b.depth):return a.depth<b.depth
+  if a.layer!=b.layer:return a.layer<b.layer
+  return a.order<b.order)
  for command in commands:
   match command.kind:
    "wall": _wall_part(g, command)
@@ -312,9 +346,24 @@ func draw_world(g) -> void:
    "item": _furniture(g, g.items[command.index])
    "decor":
     var prop: Dictionary = decorations[command.index]
-    _sprite(g, prop.asset_id, prop.pos, prop.get("scale", 1.0), prop.get("height", 0.0))
+    _draw_decoration(g,prop)
    "drop": g._draw_drop(command.index)
    "zombie": g._draw_character(g.infected[command.index], false, g.elapsed * 4 + command.index, g.zombies_hit_time[command.index] > 0)
    "player": g._draw_character(g.player, true, g.motion_phase)
  if not inside:
   _roof(g)
+
+func draw_inspector(g) -> void:
+ for item in g.items:
+  var points:=PackedVector2Array()
+  for offset in [Vector2.ZERO,Vector2(item.size.x,0),item.size,Vector2(0,item.size.y),Vector2.ZERO]:points.append(g._screen(item.pos+offset))
+  g.draw_polyline(points,Color("67b8a4"),1,false)
+  var contact: Vector2=g._screen(item.pos+item.size*.5)
+  g.draw_line(contact-Vector2(3,0),contact+Vector2(3,0),Color("ead58c"),1)
+  g.draw_line(contact-Vector2(0,3),contact+Vector2(0,3),Color("ead58c"),1)
+  g._text(item.id,contact+Vector2(4,-3),9,Color("d2d7bd"))
+ for prop in decorations:
+  if not _decoration_visible(prop):continue
+  var a: Vector2=g._screen(prop.pos)
+  var b: Vector2=g._screen(prop.pos,_decoration_height(prop))
+  g.draw_line(a,b,Color("b088c0"),1,false)

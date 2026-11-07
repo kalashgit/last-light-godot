@@ -34,3 +34,5 @@ run_checked --headless --path . --script tests/loot_loop.gd
 run_checked --headless --path . --script tests/golden40_house_builder.gd
 run_checked --headless --path . --script tests/save_migration_edges.gd
 run_checked --headless --path . --script tests/save_isolation.gd
+
+run_checked --headless --path . --script tests/world_art.gd

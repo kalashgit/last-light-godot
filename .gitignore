@@ -3,3 +3,7 @@
 __pycache__/
 # Factory uses uniform default PNG import settings; regenerate sidecars on import.
 assets/generated/factory/sprites/**/*.png.import
+
+# Golden icons also use generated default import sidecars; source PNGs stay tracked.
+assets/last_light/golden40/**/*.png.import
+docs/checkpoints/world-art/*.png.import
