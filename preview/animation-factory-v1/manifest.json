@@ -25,18 +25,49 @@
         105.0
       ],
       "frame_sha256": [
-        "af2018b72be640b308704ef66fa841cefaf0d587311520fb880064e6c916d93a",
-        "71590078b3f83495d7301d431013649e4e3be9b5a8937fdd551828e7648f7cfa",
-        "b267e3df35df7bd76eed4e5235e461a3d9d9581589ac74301b8978cabace8ab7",
-        "60f35e5d09ae1fe1c50a6ff1ad8a12990764059466774ca2a77c602e98d149ff",
-        "86695bc00324fe7f05f430563e50178f631bca90a6bf01477b87b4a0c63c79a2",
-        "f3f803ae196f56e8507690793e93bb1d437426af34e351eaaf8e3d1e71be171d",
-        "1ecd84f5ce29108fa8e6e7040b7b465dbb402c7077a68a87169b375aacef768d",
-        "55648dea8bfc269f0128278f12089a0e6b7014aad2a2449c2a638454be371ba6",
-        "5c6663ceddc5db3ea3bdc701b0a55ac196834d02fea63c2c8c246ff1c248e864"
+        "4714562c62c9377744b9b8a960c674600f12c38294e8718a710264ac05c8043d",
+        "5c482f6e0b5d062881644154521f1c0f4158f8273dd775d2f423c5f25dd441fa",
+        "e1fb342763a9eb5c06e6e77f68694e57fada7a12420d2889e995404a1f52aaf3",
+        "3c40bff978c6c91e964afe80d0bb7592599877c1a95194c46e666927db2e4d8f",
+        "7af366befad2f48774096b5e7aef371f38f7b2c088ea27f90b89110055a4c45a",
+        "33df6f4b0261313e8c27026731db7763a92e45e8fe4b8e8d5b0232f5169c0fde",
+        "0668ecd71ab25e00cc980f9a917f3950f92cf9f26d8623c0f1480f6b91e748dd",
+        "c682a408a4991ca9467426329e539c50e2532e02b72abcf187dbf9aac97860a0",
+        "7db634aed3bc49b146f338bbbd1d3dcb67712cf1314cfbca00bc8629aad920b5"
       ],
       "strip": "refrigerator_main_open/strip.png",
       "preview": "refrigerator_main_open/preview.gif",
+      "status": "mechanically_packed_visual_and_godot_qa_pending"
+    },
+    {
+      "id": "refrigerator_freezer_open",
+      "family": "refrigerator",
+      "fps": 8,
+      "frame_count": 9,
+      "event_frame": 7,
+      "reverse_for_close": true,
+      "condition": 1,
+      "cell_px": [
+        103,
+        123
+      ],
+      "anchor_px": [
+        68.0,
+        105.0
+      ],
+      "frame_sha256": [
+        "11af124a4e068526112d4e65ad68b783e53208e5ce6836074807dab493c9c07f",
+        "d972945ee00d148a29b7584a3e7c47200bfe562e528a691acc2a02b90dbb900c",
+        "6b9627e76806857c7ac207088232dd6a71b68fb43a02264c9318f40e5d63f98a",
+        "3719908fe74fda2ddd9e9cd9cc608c46733d3ed44a3eeaecca4bd96df8847d67",
+        "5e0afe317357fd2b4d07d383a27193b63a73a145891602c280db6af881877776",
+        "358175215e452e8cb6685dc5ff59063baf73f13a3b867beb1a9cbd63389bab30",
+        "f7958ee8e4799dda911f0eef0f1fdbb7225e1cd55dc977e088a303059378bc52",
+        "04769b00499d3a3c4b5a1606e71487fd778fe794db1d9d5b0c2011fb2cc20600",
+        "7994f676439644fafb31407c66c2529df59bee47a72b114890a7cfe540176092"
+      ],
+      "strip": "refrigerator_freezer_open/strip.png",
+      "preview": "refrigerator_freezer_open/preview.gif",
       "status": "mechanically_packed_visual_and_godot_qa_pending"
     },
     {
@@ -56,15 +87,15 @@
         94.0
       ],
       "frame_sha256": [
-        "17a6bfa72bd8a2c98ff40bd035b05990017eb20b91ecdeba7392cb8e4a9765d1",
-        "8ed289d17e45a912f08f3e96fce834e8afae3e11f07dabe9696a2c248b035819",
-        "1861afe8a01645a5d3a7054b131b40479c25c2e0b339b8bc687e81f8f8fe97b2",
-        "8e63ee22d7eec5458298c3fd38da684481afdc5917cd81b75f7a7dd377407716",
-        "7e08fd83458ed0e6c48a5f067223b91a52dcfa9a9456cd23ce6f9e21e942bc9e",
-        "9c23b2c03e0d86483295f610d79911e40baab6af945fbf1d3a87dc44c4d0421b",
-        "e5599e1513d38e0c3295e1c5254aa9caeb5093c119a8582e6c7764112c575ac9",
-        "98e58326e069bdc8ac5b527bee5fa84c3afff3ab3c9b13690027660a224c6de2",
-        "eab955d3d45f698167a5e21d9af231719e0ce97aaae7e79f8fa5b4ef3fec9823"
+        "a7c81688bbe4277cfbb53b84e5912f4919c511a793cdc1ea8524707f4a46fe47",
+        "17c60703659dd6218bf2ec2ab374cf106893a130c6ce4ffa7a0ef2a4de17c526",
+        "5e0d7e435de41bcf23f5d8e7d7d09678b800966c6f1cc806755ce3f297835c67",
+        "ed615b678556fe41bbaef53bb58b602ada3f5f4fd44eb4114954d73b1468f0c7",
+        "638854bcb24582ac1e0419c67fde125bf98f2fdbd473099c86d58c93ff7dcd88",
+        "e0308f524f328ca3e58d3770cd92cb7798b1cc19b8e7173a88e6cd0123a4fa1b",
+        "b8edb7bef10d729117c3af9cc0fd731cbbff3311d06b55c53946a2506dfb8c63",
+        "9971eecee3bf801dccf85c9a5069959be1aa939efc33b349b8a4b205b539e970",
+        "0a71e417d987ded2bc0a950e00873293f2782b1d082718865dd84312a5fa3580"
       ],
       "strip": "cabinet_pair_open/strip.png",
       "preview": "cabinet_pair_open/preview.gif",
