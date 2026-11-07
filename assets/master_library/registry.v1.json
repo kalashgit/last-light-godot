@@ -64,6 +64,17 @@
       "source": "tools/unified_factory",
       "previews": null,
       "state": "schema_and_planner_only"
+    },
+    {
+      "id": "vehicles",
+      "source": "tools/vehicle_factory",
+      "previews": "preview/fleet-factory-v1",
+      "primary_art_reference": "preview/vehicle-factory-v1",
+      "state": "two_multi_family_technical_candidates_golden_visual_qa_failed",
+      "original_archetypes_planned": 12,
+      "paint_colors_planned": 8,
+      "condition_levels_planned": 4,
+      "planned_candidate_variants": 384
     }
   ],
   "catalog_baseline": {
@@ -72,7 +83,11 @@
     "actor_frames": 52,
     "prop_animation_sequences": 3,
     "prop_animation_frames": 27,
-    "asset_count_visually_approved_here": 0
+    "asset_count_visually_approved_here": 0,
+    "fleet_source_archetypes": 12,
+    "fleet_variants_planned": 384,
+    "fleet_variants_rendered_in_smoke": 2,
+    "fleet_golden_visual_approvals": 0
   },
   "approval_policy": [
     "technical_qa",
@@ -80,5 +95,6 @@
     "actual_godot_import",
     "persistent_release_manifest"
   ],
-  "source_of_truth": "repository_paths_and_content_hashes"
+  "source_of_truth": "repository_paths_and_content_hashes",
+  "production_handover": "docs/CODEX_MASTER_FACTORY_SINGLE_MAP_DIRECTIVE_V1.md"
 }
