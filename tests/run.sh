@@ -37,3 +37,6 @@ run_checked --headless --path . --script tests/save_isolation.gd
 
 # Standalone animation pilot; checks imported frame strips and actual playback.
 run_checked --headless --path . --script tests/animation_lab.gd
+
+# Four-direction human/zombie visual factory QA; isolated imported preview assets.
+run_checked --headless --path . --script tests/actor_lab.gd
