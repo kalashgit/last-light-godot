@@ -1,0 +1,93 @@
+name: LAST LIGHT unified animation and batch factory V1
+on:
+  push:
+    branches:
+      - codex/last-light-unified-animation-factory-v1-20261107
+    paths:
+      - "tools/animation_factory/**"
+      - "tools/unified_factory/**"
+      - "tests/unified_animation_factory.py"
+      - ".github/workflows/unified-animation-factory-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pilot-animation-and-batch-planning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image packaging dependency
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Validate 7-day batch planning and animation contracts
+        run: |
+          python tests/unified_animation_factory.py
+          python tools/unified_factory/batch_plan.py --batch-size 256 --palettes 3 --geometry-variants 2 --output build/unified_factory/plan.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("build/unified_factory/plan.json").read_text())
+          assert p["record_count"]==300 and p["candidate_job_count"]==7200
+          assert len(p["batches"])==29 and p["status"].startswith("PLANNED_ONLY")
+          print("LL_UNIFIED_PLANNER_PASS jobs=7200 planned_not_rendered batches=29")
+          PY
+      - name: Install Blender CPU renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Render real V3 mesh hinge animation pilots
+        run: |
+          mkdir -p build/animation_factory/raw
+          blender -b --factory-startup -t 2 --python tools/animation_factory/render.py -- --output build/animation_factory/raw --actions refrigerator_main_open,cabinet_pair_open 2>&1 | tee build/animation_factory/blender.log
+          grep -q 'LL_ANIM_RENDER_DONE 2 18' build/animation_factory/blender.log
+          if grep -q 'Traceback (most recent call last)' build/animation_factory/blender.log; then exit 1; fi
+      - name: Package and check stable-frame sprite sheets
+        run: |
+          python tools/animation_factory/pack.py --input build/animation_factory/raw --output build/animation_factory/game_ready
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root=Path("build/animation_factory/game_ready")
+          m=json.loads((root/"manifest.json").read_text())
+          assert len(m["entries"])==2
+          for obj in m["entries"]:
+              strip=Image.open(root/obj["strip"]).convert("RGBA")
+              assert strip.width==obj["frame_count"]*obj["cell_px"][0]
+              assert strip.height==obj["cell_px"][1]
+              assert strip.getchannel("A").getextrema()==(0,255)
+              assert (root/obj["preview"]).stat().st_size>500
+              assert 0<=obj["event_frame"]<obj["frame_count"]
+          print("LL_ANIM_PILOT_QA_PASS: two actual articulated models, 18 stable frames, RGBA strips")
+          PY
+      - name: Publish iPhone-viewable previews on isolated branch
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/animation-factory-v1
+          cp -r build/animation_factory/game_ready/. preview/animation-factory-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/animation-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish V1 animation pilot frames and GIF previews for review"
+            git push origin HEAD:codex/last-light-unified-animation-factory-v1-20261107
+          fi
+      - name: Upload full planning and animation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-unified-animation-factory-v1-pilot
+          path: |
+            build/unified_factory/plan.json
+            build/animation_factory/game_ready
+            build/animation_factory/blender.log
+          retention-days: 14
+          if-no-files-found: error
