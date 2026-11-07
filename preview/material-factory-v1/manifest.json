@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "projection": "world texture source maps; independent of 2:1 camera",
+  "license": "original procedural generated outputs; texture inputs are synthesized, not copied",
+  "format": "PNG RGB/greyscale; normal map OpenGL convention (+Y)",
+  "notes": "Prototype PBR maps; material appearance is not yet approved at 80x40 tile in Godot",
+  "items": [
+    {
+      "id": "LL_MAT_ENAMEL_AGED_001",
+      "family": "painted_metal",
+      "status": "GENERATED_PENDING_VISUAL_APPROVAL",
+      "rights": "ORIGINAL_PROCEDURAL",
+      "seed": 41001,
+      "base_hex": "#929B91",
+      "roughness": 0.51,
+      "metallic": 0.08,
+      "maps": {
+        "albedo": "LL_MAT_ENAMEL_AGED_001/albedo.png",
+        "roughness": "LL_MAT_ENAMEL_AGED_001/roughness.png",
+        "metallic": "LL_MAT_ENAMEL_AGED_001/metallic.png",
+        "height": "LL_MAT_ENAMEL_AGED_001/height.png",
+        "normal": "LL_MAT_ENAMEL_AGED_001/normal.png",
+        "wear_source": "LL_MAT_ENAMEL_AGED_001/wear_source.png",
+        "cavity_proxy": "LL_MAT_ENAMEL_AGED_001/cavity_proxy.png"
+      },
+      "resolution": [
+        512,
+        512
+      ],
+      "uv_scale_m": 0.7,
+      "wear_semantics": "door grips, frame edges and lower contact; Blender must provide geometry masks",
+      "shader_note": "wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
+      "ao_note": "cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
+      "sha256_albedo": "92ebf4f3a0ea9a821f48efc4286a8154fbbed7ba225f638d92f6464fae4c1929"
+    },
+    {
+      "id": "LL_MAT_WOOD_WORN_001",
+      "family": "wood",
+      "status": "GENERATED_PENDING_VISUAL_APPROVAL",
+      "rights": "ORIGINAL_PROCEDURAL",
+      "seed": 41002,
+      "base_hex": "#795335",
+      "roughness": 0.72,
+      "metallic": 0,
+      "maps": {
+        "albedo": "LL_MAT_WOOD_WORN_001/albedo.png",
+        "roughness": "LL_MAT_WOOD_WORN_001/roughness.png",
+        "metallic": "LL_MAT_WOOD_WORN_001/metallic.png",
+        "height": "LL_MAT_WOOD_WORN_001/height.png",
+        "normal": "LL_MAT_WOOD_WORN_001/normal.png",
+        "wear_source": "LL_MAT_WOOD_WORN_001/wear_source.png",
+        "cavity_proxy": "LL_MAT_WOOD_WORN_001/cavity_proxy.png"
+      },
+      "resolution": [
+        512,
+        512
+      ],
+      "uv_scale_m": 1.1,
+      "wear_semantics": "grain aligned per plank, endgrain shading and handles/contact areas",
+      "shader_note": "wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
+      "ao_note": "cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
+      "sha256_albedo": "3fab8597f4b8c5f4858902fb9ef917da2a38008d410dbd7679e7af67a6ad857b"
+    },
+    {
+      "id": "LL_MAT_FABRIC_MOSS_001",
+      "family": "fabric",
+      "status": "GENERATED_PENDING_VISUAL_APPROVAL",
+      "rights": "ORIGINAL_PROCEDURAL",
+      "seed": 41003,
+      "base_hex": "#667567",
+      "roughness": 0.93,
+      "metallic": 0,
+      "maps": {
+        "albedo": "LL_MAT_FABRIC_MOSS_001/albedo.png",
+        "roughness": "LL_MAT_FABRIC_MOSS_001/roughness.png",
+        "metallic": "LL_MAT_FABRIC_MOSS_001/metallic.png",
+        "height": "LL_MAT_FABRIC_MOSS_001/height.png",
+        "normal": "LL_MAT_FABRIC_MOSS_001/normal.png",
+        "wear_source": "LL_MAT_FABRIC_MOSS_001/wear_source.png",
+        "cavity_proxy": "LL_MAT_FABRIC_MOSS_001/cavity_proxy.png"
+      },
+      "resolution": [
+        512,
+        512
+      ],
+      "uv_scale_m": 0.45,
+      "wear_semantics": "arm rub, compressed seat cushions, seams and load-bearing creases",
+      "shader_note": "wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
+      "ao_note": "cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
+      "sha256_albedo": "df6bec8370d274dc130764411d7ab28540758fcaaccbb7725b763cc76c2a907e"
+    },
+    {
+      "id": "LL_MAT_POLYMER_AGED_001",
+      "family": "plastic",
+      "status": "GENERATED_PENDING_VISUAL_APPROVAL",
+      "rights": "ORIGINAL_PROCEDURAL",
+      "seed": 41004,
+      "base_hex": "#848A80",
+      "roughness": 0.6,
+      "metallic": 0,
+      "maps": {
+        "albedo": "LL_MAT_POLYMER_AGED_001/albedo.png",
+        "roughness": "LL_MAT_POLYMER_AGED_001/roughness.png",
+        "metallic": "LL_MAT_POLYMER_AGED_001/metallic.png",
+        "height": "LL_MAT_POLYMER_AGED_001/height.png",
+        "normal": "LL_MAT_POLYMER_AGED_001/normal.png",
+        "wear_source": "LL_MAT_POLYMER_AGED_001/wear_source.png",
+        "cavity_proxy": "LL_MAT_POLYMER_AGED_001/cavity_proxy.png"
+      },
+      "resolution": [
+        512,
+        512
+      ],
+      "uv_scale_m": 0.33,
+      "wear_semantics": "fingerprints at grips, rounded corners, UV yellowing",
+      "shader_note": "wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
+      "ao_note": "cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
+      "sha256_albedo": "1de0cf7b0f02bc1af288209002106f7957094738e1d2d2bf4cf24add1c9bbae3"
+    },
+    {
+      "id": "LL_MAT_IRON_OXID_001",
+      "family": "oxidized_metal",
+      "status": "GENERATED_PENDING_VISUAL_APPROVAL",
+      "rights": "ORIGINAL_PROCEDURAL",
+      "seed": 41005,
+      "base_hex": "#5F615A",
+      "roughness": 0.67,
+      "metallic": 0.65,
+      "maps": {
+        "albedo": "LL_MAT_IRON_OXID_001/albedo.png",
+        "roughness": "LL_MAT_IRON_OXID_001/roughness.png",
+        "metallic": "LL_MAT_IRON_OXID_001/metallic.png",
+        "height": "LL_MAT_IRON_OXID_001/height.png",
+        "normal": "LL_MAT_IRON_OXID_001/normal.png",
+        "wear_source": "LL_MAT_IRON_OXID_001/wear_source.png",
+        "cavity_proxy": "LL_MAT_IRON_OXID_001/cavity_proxy.png"
+      },
+      "resolution": [
+        512,
+        512
+      ],
+      "uv_scale_m": 0.38,
+      "wear_semantics": "rust in wet pockets, new metal at scratched edges and grips",
+      "shader_note": "wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
+      "ao_note": "cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
+      "sha256_albedo": "4cc75220ff487e3513e391a28c457b35d5a7b25455b5443d4be0d507827e7df0"
+    }
+  ]
+}
