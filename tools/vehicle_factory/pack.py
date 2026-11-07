@@ -5,8 +5,11 @@ Common crop and foot anchor across 16 headings; never recenter cars per frame.
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from PIL import Image,ImageDraw
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"material_factory"))
+from pixel_refine import refine_rgba
 
 def downsample(im):
     return im.convert("RGBa").resize((im.width//2,im.height//2),Image.Resampling.BOX).convert("RGBA")
@@ -48,6 +51,20 @@ def process(input_path,output_path):
         preview.alpha_composite(crop,(x*(w+12)+6,y*(h+32)+22))
         draw.text((x*(w+12)+6,y*(h+32)+5),f"{i*22.5:05.1f} deg",fill=(240,239,222))
     native.save(output_path/"vehicle_16_headings.png",optimize=True)
+    # Quantize the complete 16-view atlas as ONE palette to eliminate heading
+    # color drift. Never alter alpha, crop boxes, native scale or world pivots.
+    finished=refine_rgba(native,colors=96,edge_strength=.55)
+    finished.save(output_path/"vehicle_16_headings_pixel_refined.png",optimize=True)
+    if finished.getchannel("A").tobytes()!=native.getchannel("A").tobytes():
+        raise ValueError("pixel refinement damaged alpha mask")
+    if finished.size!=native.size:
+        raise ValueError("pixel finishing changed world scale")
+    q=Image.new("RGBA",(w*8,h),(77,86,78,255))
+    for i in range(4):
+        src_box=(i*w,0,(i+1)*w,h)
+        q.alpha_composite(native.crop(src_box),(i*w,0))
+        q.alpha_composite(finished.crop(src_box),((i+4)*w,0))
+    q.convert("RGB").save(output_path/"pixel_finish_comparison.png")
     preview.convert("RGB").save(output_path/"vehicle_review_16_headings.png")
     # 16 frame preview shows rotation visually without adding gameplay movement.
     gif_frames=[]
@@ -64,7 +81,7 @@ def process(input_path,output_path):
        collision_footprint_m=[raw["declared_dimensions_m"][0],raw["declared_dimensions_m"][1]],
        proposed_gameplay_components=["body","wheels","doors","hood","trunk","windows","seats"],
        status="RENDERED_CANDIDATE_NOT_FOUNDER_APPROVED_NOT_GODOT_INTEGRATED",
-       atlas="vehicle_16_headings.png",review="vehicle_review_16_headings.png",
+       atlas="vehicle_16_headings.png",pixel_refined_atlas="vehicle_16_headings_pixel_refined.png",\n       pixel_comparison="pixel_finish_comparison.png",review="vehicle_review_16_headings.png",
        sha256=hashlib.sha256((output_path/"vehicle_16_headings.png").read_bytes()).hexdigest())
     (output_path/"manifest.json").write_text(json.dumps(result,indent=2)+"\n")
     print("LL_VEHICLE_PACK_DONE",result["heading_count"],result["cell_px"],flush=True)
