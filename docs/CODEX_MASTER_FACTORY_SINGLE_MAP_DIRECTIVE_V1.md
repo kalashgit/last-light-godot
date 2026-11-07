@@ -46,6 +46,18 @@ This directive is updated to reflect current official Codex AGENTS.md guidance a
 
 **Reference:** official Codex agent instructions https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex ; Godot CLI https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html .
 
+## NEW: Verified execution baseline on master-import branch (7 November 2026)
+
+The earlier action item "build a generalized Godot importer" is now **implemented and passed real Godot 4 validation** on branch `codex/last-light-master-import-scale-v1-20261107`:
+
+- `tools/unified_factory/import_godot.py` validates original PNG/atlas dimensions and source hashes and generates reproducible Godot 4 SpriteFrames and PackedScenes with immutable anchors, animations, directions and normalized manifest metadata.
+- [Native import CI 42413012384](https://github.com/kalashgit/last-light-godot/actions/runs/42413012384): exactly 300 earlier item sprites + five actor pilots + three refrigerator/cabinet animated props + three 16-direction vehicles = **311 imported resource candidates**. 622 `.tres`/`.tscn` generated files, **1,192 actual parsed Godot sprite frames**; rerunning the importer generated no changed files.
+- `scenes/master_factory_import_lab.tscn` and `tests/master_factory_import.gd` load 11 source actors/props/items/vehicles in one 2.5D test map and confirm that opening a fridge toggles visibility of a stored bean-tin sprite and vehicle headings update. This test map is **NOT** the full survival game and does not yet implement persistent timed actions, loot transfer, actual physics, zombie AI or player motion.
+- Existing `main.tscn` remains unchanged. Published files are under `assets/generated/master_import_v1` and carry candidate-only status, never false Golden approval.
+- `tools/unified_factory/run_parallel.py` is a bounded CPU headless-Blender shard orchestrator with an immutable 300-ID selection, per-shard cached source hashes, nonoverlapping asset IDs, merged report, native PNG postprocessing and strict packing validation. Four original item IDs/eight real frames passed a two-worker smoke render (see `.github/workflows/parallel-factory-v1.yml`). The first 4-item test measured ~1.45 seconds in the inner rendering/packaging command, **excluding CI startup/install and NOT representative of 4,000 Golden-grade objects**.
+
+**Immediate remaining priorities for Codex**: (1) source-side Golden-style geometry/shading parity across varied family representatives (current lower-detail 300 objects are not magically Gold 40 quality); (2) actually wire imported SpriteFrames and World Object Contract into main game interactions/collision/inventory/persistence; (3) show founder a side-by-side visual review sheet at native 100/220/325 scales before multiplying unapproved prototypes; (4) bounded real-source batches with measured throughput; (5) one playable integrated map and true gameplay QA on phone.
+
 ## Milestone A — freeze exact source and build a release manifest
 
 1. Audit all Notion/GitHub references. Create a single canonical catalog for *original* asset IDs, authored geometry family, material/UV recipe, color variants, state representations, animation clips, engine placement, review status, file hashes and source provenance. Deduplicate cross-factory IDs.
