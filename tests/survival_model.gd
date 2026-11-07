@@ -13,13 +13,16 @@ var checks: int = 0
 
 func _initialize() -> void:
 	var model = Model.new()
-	check(model.definitions.size() == 8, "exactly eight implemented objects")
+	check(model.definitions.size() == 48, "eight baseline objects and forty Golden prototypes")
 	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/generated/factory/manifest.json"))
 	var art_ids: Dictionary = {}
 	for entry: Dictionary in manifest["objects"]:
 		art_ids[entry["id"]] = true
 	for id: String in model.definitions:
-		check(art_ids.has(model.definitions[id]["art_id"]), "factory art reference " + id)
+		if id.begins_with("ll_golden_"):
+			check(ResourceLoader.exists("res://" + str(model.definitions[id]["icon_path"])), "Golden icon reference " + id)
+		else:
+			check(art_ids.has(model.definitions[id]["art_id"]), "factory art reference " + id)
 		check(model.definitions[id]["id"] == id, "stable definition ID " + id)
 	check(model.add(BEANS, 2), "add beans")
 	check(model.add(BEANS, 1) and model.inventory[BEANS] == 3, "merge stacks")
