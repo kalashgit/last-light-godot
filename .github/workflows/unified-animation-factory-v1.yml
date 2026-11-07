@@ -13,6 +13,10 @@ on:
       - ".github/workflows/unified-animation-factory-v1.yml"
   workflow_dispatch:
 
+concurrency:
+  group: last-light-unified-factory-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -108,7 +112,17 @@ jobs:
           git add preview/animation-factory-v1 preview/material-factory-batch-v1
           if ! git diff --cached --quiet; then
             git commit -m "Publish V1 animation pilot frames and GIF previews for review"
-            git push origin HEAD:codex/last-light-unified-animation-factory-v1-20261107
+            # The branch may gain documentation/code updates while the cloud
+            # renderer runs. Rebase the generated-art commit, never force push.
+            for attempt in 1 2 3; do
+              git fetch origin codex/last-light-unified-animation-factory-v1-20261107
+              git rebase origin/codex/last-light-unified-animation-factory-v1-20261107
+              if git push origin HEAD:codex/last-light-unified-animation-factory-v1-20261107; then
+                exit 0
+              fi
+            done
+            echo "Could not publish render previews safely; artifacts remain available" >&2
+            exit 1
           fi
       - name: Upload full planning and animation artifacts
         uses: actions/upload-artifact@v4
