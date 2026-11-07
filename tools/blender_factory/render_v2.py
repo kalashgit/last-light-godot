@@ -12,7 +12,7 @@ R=1024
 ITEMS=("refrigerator","cabinet","sofa","crate","chair","table","ammo_box","aerosol_can","wipes_pack","backpack")
 TILE=(80,40)
 # Orthographic world tile: projected x/y axes at +/-0.5 slope; camera 30 deg above horizon.
-ORTHO=(R/2.0)*math.sqrt(2.0)/80.0
+ORTHO=(R/4.0)*math.sqrt(2.0)/80.0
 bpy.context.preferences.filepaths.save_version=0
 
 def mat(name, color, metal=0.0, rough=0.7, grain=0, wear=0.08):
@@ -304,7 +304,7 @@ def main():
                         "source":"Original Blender 3D procedural mesh+shader V2; no reference image reuse"})
         print("LL_V2_RENDER_OK",name,dims,contact,flush=True)
     meta={"schema":2,"projection":"fixed 2:1 dimetric (30deg elevation)",
-          "tile_px":[80,40],"render_resolution":R,"downsample":2,
+          "tile_px":[80,40],"render_resolution":R,"downsample":4,
           "reference_use":"shape/material/style analysis only, no copied source",
           "source_sha":"render script versioned by git","entries":entries}
     (out/"manifest.json").write_text(json.dumps(meta,indent=2)+"\n")

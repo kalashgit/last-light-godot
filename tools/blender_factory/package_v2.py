@@ -98,7 +98,7 @@ def make_compare(records,dest,old_zip):
 
 def produce(raw,dest,old_zip):
     m=json.loads((raw/"manifest.json").read_text())
-    assert m["schema"]==2 and m["tile_px"]==[80,40] and m["downsample"]==2
+    assert m["schema"]==2 and m["tile_px"]==[80,40] and m["downsample"]==4
     dest.mkdir(parents=True,exist_ok=True)
     result={"schema":2,"tile_px":[80,40],"pixel_filter":"BOX premultiplied alpha; Godot nearest at runtime",
             "render_pipeline":"Blender original mesh+PBR procedural texture -> RGBA -> alpha-safe scale -> world/icon/shadow",
@@ -107,14 +107,15 @@ def produce(raw,dest,old_zip):
         name=asset["name"]
         img=Image.open(raw/asset["file"]).convert("RGBA")
         # Premultiply first so empty transparent pixels cannot contaminate edge colors.
-        half=img.convert("RGBa").resize((img.width//2,img.height//2),Image.Resampling.BOX).convert("RGBA")
+        factor=m["downsample"]
+        half=img.convert("RGBa").resize((img.width//factor,img.height//factor),Image.Resampling.BOX).convert("RGBA")
         box=half.getchannel("A").getbbox()
         if box is None:raise ValueError("Blank render "+name)
         margin=5;left=max(0,box[0]-margin);upper=max(0,box[1]-margin)
         right=min(half.width,box[2]+margin);bottom=min(half.height,box[3]+margin)
         crop=half.crop((left,upper,right,bottom))
         qa_image(crop,name)
-        pivot=[round(asset["contact_px_raw"][0]/2-left,2),round(asset["contact_px_raw"][1]/2-upper,2)]
+        pivot=[round(asset["contact_px_raw"][0]/factor-left,2),round(asset["contact_px_raw"][1]/factor-upper,2)]
         folder=dest/name;folder.mkdir(exist_ok=True)
         crop.save(folder/"ground.png",optimize=True)
         shad=shadow(crop.size,pivot,asset["footprint_m"])
