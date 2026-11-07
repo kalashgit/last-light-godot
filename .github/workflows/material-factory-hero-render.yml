@@ -1,0 +1,71 @@
+name: LAST LIGHT Material Factory — textured 3D hero comparison
+on:
+  push:
+    branches:
+      - "codex/material-factory-v1-five-recipes-20261107"
+    paths:
+      - "tools/material_factory/render_hero_materials.py"
+      - ".github/workflows/material-factory-hero-render.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  render-textured-heroes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install free Blender and Pillow/NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          python -m pip install "numpy>=1.24,<3" "Pillow>=10,<15"
+      - name: Generate versioned source PBR textures
+        run: |
+          python tools/material_factory/generate.py --size 512 --out build/material_factory/materials
+          python tools/material_factory/validate.py build/material_factory/materials
+      - name: Render original V3 sofa cabinet refrigerator with generated materials
+        run: |
+          mkdir -p build/material_factory/hero_raw
+          blender -b --factory-startup -t 2 --python tools/material_factory/render_hero_materials.py -- --material-root build/material_factory/materials --output build/material_factory/hero_raw
+      - name: Generate calibrated sprite previews and compare against V2
+        run: |
+          python tools/blender_factory/package_v3_recovery.py --input build/material_factory/hero_raw --output build/material_factory/hero_ready --baseline preview/v2/last-light-v2-10-sprite-preview.zip
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json,zipfile
+          root=Path("build/material_factory/hero_ready")
+          meta=json.loads((root/"manifest.json").read_text())
+          assert set(x["name"] for x in meta["items"])=={"refrigerator","cabinet","sofa"}
+          for e in meta["items"]:
+              im=Image.open(root/e["world_sprite"])
+              assert im.mode=="RGBA" and im.getchannel("A").getextrema()==(0,255)
+          for path in ("preview-grid-v3.png","comparison-v2-v3.png","last-light-v3-3-hero-preview.zip"):
+              assert (root.parent/path).stat().st_size>1000
+          print("LL_MATERIAL_HERO_QA_PASS: 3 original textured V3 models + world icons + comparisons")
+          PY
+      - name: Publish iPhone-accessible material-on-geometry comparison
+        if: github.event_name == 'push' && github.ref == 'refs/heads/codex/material-factory-v1-five-recipes-20261107'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/material-factory-v1/hero-material-test
+          cp build/material_factory/hero_ready/../preview-grid-v3.png preview/material-factory-v1/hero-material-test/
+          cp build/material_factory/hero_ready/../comparison-v2-v3.png preview/material-factory-v1/hero-material-test/
+          cp build/material_factory/hero_ready/../last-light-v3-3-hero-preview.zip preview/material-factory-v1/hero-material-test/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/material-factory-v1/hero-material-test
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish PBR materials on actual V3 hero geometry and comparison"
+            git push origin HEAD:codex/material-factory-v1-five-recipes-20261107
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-v3-three-heroes-with-new-materials
+          path: |
+            build/material_factory/hero_ready/../preview-grid-v3.png
+            build/material_factory/hero_ready/../comparison-v2-v3.png
+            build/material_factory/hero_ready/../last-light-v3-3-hero-preview.zip
+          retention-days: 14
+          if-no-files-found: error
