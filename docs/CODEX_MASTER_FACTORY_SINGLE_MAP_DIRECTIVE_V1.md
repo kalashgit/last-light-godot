@@ -10,7 +10,7 @@ The founder's priority is implementation and a functional game, not perpetual ro
 ## Source of truth (read before editing)
 
 - Central GitHub Master Asset Library: `assets/master_library/README.md` and `registry.v1.json` — this is the asset INDEX, not an all-approved release store.
-- Notion 7-day command center: https://app.notion.com/p/411f639e23738184955df0fcb1327f23
+- Notion 2-hour production command center: https://app.notion.com/p/411f639e23738184955df0fcb1327f23
 - Notion Master Sprite Bible V2 (style/geometry): https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96
 - Notion universal physical/gameplay contract: https://app.notion.com/p/411f639e23738154a805f97d08be3869
 - Notion Actor/Zombie/Wearables/biological aging: https://app.notion.com/p/411f639e23738133a298f044f61292a1
@@ -81,7 +81,14 @@ Use screenshots and trace/video artifacts per scene and state, counts of pass/fa
 - Stage 1: **100 visibly distinct candidate original objects**, audited by 10–20 family templates and tested in a single room. No fictional counts.
 - Stage 2: batch 128–256 only after family signoff and artifact cache; quality rejection must regenerate the exact failed family, not restart entire census.
 - Stage 3: import a representative 100-asset catalog into the single playable map and pass interaction/saving tests; expand to the rest of original registry.
-- Stage 4: pursue 4,000+ **approved and integrated** unique/variant assets within aspirational seven-day target, but publish measured throughput, distinct family complexity, visual rejection rate and actual blockers. A goal is NOT an achieved count. If full 4,000 originals cannot be produced at Golden visual quality, report exact partial success rather than quietly lowering style.
+- Stage 4: **2-hour maximum execution target (120 minutes)** replaces the prior seven-day target. Pursue 4,000+ visually approved and game-integrated original/variant assets only where actually achievable; publish measured rendering throughput, unique asset counts, QA results and blockers. This is a founder-imposed aggressive sprint goal, **not a verified estimate or permission to skip quality gates**. Report exact partial success if the full count cannot pass Golden visual and live gameplay verification within the window. Do not relabel generated candidates as approved or silently reduce style quality.
+
+### Strict two-hour timeboxing
+- **0–15 minutes:** reconcile current master library, run baseline tests, establish factory throughput, identify the shortest path to a playable map.
+- **15–45 minutes:** parallelize cached original sprite/material/animation output, refine high-impact source family defects, import verified representative assets.
+- **45–95 minutes:** assemble and exercise ONE integrated map, repair broken interactions, run end-to-end collision/inventory/AI/persistence tests.
+- **95–120 minutes:** run regression/visual checks, collect evidence, report counts, precise deficiencies and commit SHAs. Never fake untested iPhone or founder sign-off.
+- Scope is **best-effort completion in one 120-minute execution window**; no automatic deployment or merge. Prioritize a working integrated slice and honest production metrics over false 4,000-asset completion claims.
 
 ## Merge/deployment and risk controls
 
