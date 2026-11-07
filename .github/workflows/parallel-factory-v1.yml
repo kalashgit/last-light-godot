@@ -1,0 +1,73 @@
+name: LAST LIGHT bounded parallel original sprite production V1
+on:
+  push:
+    branches:
+      - codex/last-light-master-import-scale-v1-20261107
+    paths:
+      - "tools/asset_factory/render_batch.py"
+      - "tools/unified_factory/run_parallel.py"
+      - "tests/parallel_factory_v1.py"
+      - ".github/workflows/parallel-factory-v1.yml"
+  workflow_dispatch:
+    inputs:
+      item_limit:
+        description: Asset count for bounded parallel render proof (1..300)
+        default: "4"
+        required: false
+        type: string
+
+concurrency:
+  group: last-light-parallel-bpy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  parallel-original-sprite-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install "Pillow>=10,<15"
+      - name: Test 300-ID deterministic bounded shards
+        run: python tests/parallel_factory_v1.py
+      - name: Install headless Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Produce source assets in bounded parallel CPU worker processes
+        env:
+          ITEMS: ${{ inputs.item_limit || '4' }}
+        run: |
+          set -o pipefail
+          python tools/unified_factory/run_parallel.py --limit "$ITEMS" --chunk-size 2 --workers 2 --threads 2 --resume --raw build/unified_factory/sharded_raw --output build/unified_factory/sharded_packed --sheets build/unified_factory/sharded_review 2>&1 | tee build_parallel.log
+          grep -q 'LL_PARALLEL_FACTORY_PASS' build_parallel.log
+      - name: Verify actual rendered manifest and measured rates
+        env:
+          ITEMS: ${{ inputs.item_limit || '4' }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          report=json.loads(Path("build/unified_factory/sharded_raw/run_report.json").read_text())
+          expected=int(os.environ["ITEMS"])
+          assert report["items"]==expected
+          assert report["completed_frames"]>=2*expected
+          assert report["status"]=="RENDERED_PACKED_TECHNICAL_QA_PASSED_GOLDEN_REVIEW_PENDING"
+          assert 0<report["elapsed_s"]<1800
+          assert len(report["shard_results"])>=1
+          print("LL_PARALLEL_PROOF_PASS",report["items"],report["completed_frames"],report["elapsed_s"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-parallel-factory-original-asset-test
+          path: |
+            build/unified_factory/sharded_raw/plan.json
+            build/unified_factory/sharded_raw/run_report.json
+            build/unified_factory/sharded_raw/*.log
+            build/unified_factory/sharded_packed
+            build/unified_factory/sharded_review
+          retention-days: 14
+          if-no-files-found: error
