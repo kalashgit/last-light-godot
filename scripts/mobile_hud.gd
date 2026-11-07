@@ -59,7 +59,7 @@ func layout(game) -> Dictionary:
  var rows_top := modal.position.y + 82
  var row_height := minf(56, (modal.size.y - 164) / 6.0)
  var zoom_y: float = top + (132.0 if portrait else 0.0)
- var zoom_start: float = right - (166.0 if portrait else 334.0)
+ var zoom_start: float = right - (166.0 if portrait else 358.0)
  var controls := {
   "safeRect": safe,
   "stick_center": stick_center,
