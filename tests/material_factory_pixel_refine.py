@@ -45,4 +45,11 @@ with tempfile.TemporaryDirectory() as temp:
     assert result["items"][0]["alpha_preserved"]
     assert (output/"comparison-220-percent.png").stat().st_size>1000
     assert (output/"LAST_LIGHT_pixel_finish_candidates.zip").stat().st_size>1000
-print("LL_PIXEL_REFINE_PASS alpha, dimensions, palette, detail, batch packaging and 3 zoom previews")
+    tile_source=root/"tile_inputs";tile_source.mkdir()
+    tile=Image.new("RGBA",(80,40),(121,104,78,255))
+    tile.save(tile_source/"oak_floor_tile.png")
+    tile_result=pixel_batch.candidates(tile_source,root/"tile_candidates",32,.4)
+    assert tile_result["items"][0]["anchor_px"] is None
+    assert tile_result["items"][0]["anchor_policy"]=="external_not_inferred"
+    assert Image.open(root/"tile_candidates/oak_floor_tile.png").size==(80,40)
+print("LL_PIXEL_REFINE_PASS alpha, dimensions, palette, detail, tile/furniture batch, and 3 zoom previews")
