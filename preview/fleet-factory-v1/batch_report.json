@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "plan_sha256": "2b70a983a3cf49f2b6b781f537dcf7649dde96fcee218713a83d8d63189babde",
+  "total_planned": 2,
+  "technical_candidate_count": 2,
+  "unrendered_count": 0,
+  "status": "PACKED_CANDIDATES_ONLY_NO_VISUAL_APPROVAL_NO_GODOT_INTEGRATION",
+  "completed": [
+    {
+      "job_id": "llveh_7046aa8e772dab41f035",
+      "asset_id": "ll_vehicle_city_sedan",
+      "model": "city_sedan",
+      "palette_id": "faded_red",
+      "condition": 1,
+      "manifest": "llveh_7046aa8e772dab41f035/manifest.json",
+      "atlas_sha256": "9568cfa477539625a480211a804f39da1db408de7861377728bed985b401d210"
+    },
+    {
+      "job_id": "llveh_d0e2d93eedffe8b682a9",
+      "asset_id": "ll_vehicle_work_pickup",
+      "model": "work_pickup",
+      "palette_id": "faded_red",
+      "condition": 1,
+      "manifest": "llveh_d0e2d93eedffe8b682a9/manifest.json",
+      "atlas_sha256": "a04f8e3f1f8c86916a856961684b5508b9448d39c84b2f6360b1a47c5c08de9a"
+    }
+  ],
+  "unrendered_job_ids": []
+}

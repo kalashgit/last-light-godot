@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "asset_id": "ll_vehicle_city_sedan",
+  "source": "Original procedural 3D geometry with family-specific body templates",
+  "dimensions_m": [
+    4.48,
+    1.76,
+    1.43
+  ],
+  "wheelbase_m": 2.65,
+  "angle_increment_deg": 22.5,
+  "heading_count": 16,
+  "grid": [
+    4,
+    4
+  ],
+  "cell_px": [
+    258,
+    152
+  ],
+  "anchor_px": [
+    129.0,
+    103.0
+  ],
+  "tile_px": [
+    80,
+    40
+  ],
+  "wear_condition": 1,
+  "collision_footprint_m": [
+    4.48,
+    1.76
+  ],
+  "proposed_gameplay_components": [
+    "body",
+    "wheels",
+    "doors",
+    "hood",
+    "trunk",
+    "windows",
+    "seats"
+  ],
+  "status": "PACKED_TECHNICAL_CANDIDATE_NOT_GOLDEN_APPROVED_OR_PLAYABLE",
+  "atlas": "vehicle_16_headings.png",
+  "pixel_refined_atlas": "vehicle_16_headings_pixel_refined.png",
+  "pixel_comparison": "pixel_finish_comparison.png",
+  "review": "vehicle_review_16_headings.png",
+  "sha256": "f09a42b54b54ab65e6f35032bcddf8d23082a3b93f1e0f19a1360714f7fa8f15",
+  "job_id": "llveh_7046aa8e772dab41f035",
+  "model": "city_sedan",
+  "palette_id": "faded_red",
+  "paint_hex": "#82483f",
+  "condition_level": 1,
+  "world_dimensions_m": [
+    4.48,
+    1.76,
+    1.43
+  ],
+  "source_ortho_scale": 8.0
+}
