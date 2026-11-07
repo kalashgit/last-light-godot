@@ -5,6 +5,7 @@ on:
       - codex/last-light-unified-animation-factory-v1-20261107
     paths:
       - "tools/animation_factory/**"
+      - "tools/blender_factory/render_v3_recovery.py"
       - "tools/unified_factory/**"
       - "tools/material_factory/material_batch.py"
       - "tools/material_factory/expanded_materials.py"
@@ -31,6 +32,7 @@ jobs:
       - name: Validate 7-day batch planning and animation contracts
         run: |
           python tests/unified_animation_factory.py
+          python tools/unified_factory/object_contracts.py tools/unified_factory/examples/world_objects_v1.json
           python tools/unified_factory/batch_plan.py --batch-size 256 --palettes 3 --geometry-variants 2 --output build/unified_factory/plan.json
           python - <<'PY'
           import json
@@ -66,6 +68,8 @@ jobs:
           mkdir -p build/animation_factory/raw
           blender -b --factory-startup -t 2 --python tools/animation_factory/render.py -- --output build/animation_factory/raw --actions refrigerator_main_open,cabinet_pair_open 2>&1 | tee build/animation_factory/blender.log
           grep -q 'LL_ANIM_RENDER_DONE 2 18' build/animation_factory/blender.log
+          grep -q 'LL_HOLLOW_GEOMETRY_PASS refrigerator' build/animation_factory/blender.log
+          grep -q 'LL_HOLLOW_GEOMETRY_PASS cabinet' build/animation_factory/blender.log
           if grep -q 'Traceback (most recent call last)' build/animation_factory/blender.log; then exit 1; fi
       - name: Package and check stable-frame sprite sheets
         run: |
