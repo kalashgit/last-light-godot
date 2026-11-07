@@ -42,6 +42,7 @@ SURVIVAL_LOOT={
  "first_aid":"ll_medical_first_aid_case",
  "hammer":"ll_tools_claw_hammer",
  "hatchet":"ll_tools_hatchet",
+ "crowbar":"ll_tools_crowbar",
  "flashlight":"ll_household_flashlight",
  "water":"ll_food_water_bottle",
  "beans":"ll_food_bean_tin",
