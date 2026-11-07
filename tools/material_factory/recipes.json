@@ -1,0 +1,57 @@
+[
+  {
+    "id": "LL_MAT_ENAMEL_AGED_001",
+    "family": "painted_metal",
+    "base_hex": "#929B91",
+    "roughness": 0.51,
+    "metallic": 0.08,
+    "normal_strength": 3,
+    "uv_scale_m": 0.7,
+    "seed": 41001,
+    "wear_semantics": "door grips, frame edges and lower contact; Blender must provide geometry masks"
+  },
+  {
+    "id": "LL_MAT_WOOD_WORN_001",
+    "family": "wood",
+    "base_hex": "#795335",
+    "roughness": 0.72,
+    "metallic": 0,
+    "normal_strength": 4,
+    "uv_scale_m": 1.1,
+    "seed": 41002,
+    "wear_semantics": "grain aligned per plank, endgrain shading and handles/contact areas"
+  },
+  {
+    "id": "LL_MAT_FABRIC_MOSS_001",
+    "family": "fabric",
+    "base_hex": "#667567",
+    "roughness": 0.93,
+    "metallic": 0,
+    "normal_strength": 2.1,
+    "uv_scale_m": 0.45,
+    "seed": 41003,
+    "wear_semantics": "arm rub, compressed seat cushions, seams and load-bearing creases"
+  },
+  {
+    "id": "LL_MAT_POLYMER_AGED_001",
+    "family": "plastic",
+    "base_hex": "#848A80",
+    "roughness": 0.6,
+    "metallic": 0,
+    "normal_strength": 2,
+    "uv_scale_m": 0.33,
+    "seed": 41004,
+    "wear_semantics": "fingerprints at grips, rounded corners, UV yellowing"
+  },
+  {
+    "id": "LL_MAT_IRON_OXID_001",
+    "family": "oxidized_metal",
+    "base_hex": "#5F615A",
+    "roughness": 0.67,
+    "metallic": 0.65,
+    "normal_strength": 5,
+    "uv_scale_m": 0.38,
+    "seed": 41005,
+    "wear_semantics": "rust in wet pockets, new metal at scratched edges and grips"
+  }
+]

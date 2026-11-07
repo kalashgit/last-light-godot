@@ -1,0 +1,61 @@
+name: LAST LIGHT Material Factory — five PBR recipes
+on:
+  push:
+    branches:
+      - codex/material-factory-v1-five-recipes-20261107
+    paths:
+      - "tools/material_factory/**"
+      - ".github/workflows/material-factory-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  material-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic processing dependencies
+        run: python -m pip install "numpy>=1.24,<3" "Pillow>=10,<15"
+      - name: Bake five source material families
+        run: python tools/material_factory/generate.py --size 512 --out build/material_factory/materials
+      - name: Validate PBR maps and reproducibility
+        run: |
+          python tools/material_factory/validate.py build/material_factory/materials
+          python - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          p=Path('build/material_factory/materials/LL_MAT_WOOD_WORN_001/albedo.png')
+          a=hashlib.sha256(p.read_bytes()).hexdigest()
+          subprocess.run(['python','tools/material_factory/generate.py','--size','512','--out','build/material_factory/materials'],check=True)
+          b=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert a==b, "non-deterministic output"
+          print("LL_MATERIAL_DETERMINISM_PASS",a)
+          PY
+      - name: Publish open preview images and direct ZIP from isolated branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/codex/material-factory-v1-five-recipes-20261107'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/material-factory-v1
+          cp build/material_factory/materials/contact-sheet.png preview/material-factory-v1/
+          cp build/material_factory/materials/manifest.json preview/material-factory-v1/
+          cp build/material_factory/LAST_LIGHT_Material_Factory_5_Recipes.zip preview/material-factory-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/material-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish five independently generated original PBR texture maps"
+            git push origin HEAD:codex/material-factory-v1-five-recipes-20261107
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-five-material-pbr-factory-v1
+          path: |
+            build/material_factory/LAST_LIGHT_Material_Factory_5_Recipes.zip
+            build/material_factory/materials/contact-sheet.png
+            build/material_factory/materials/manifest.json
+          retention-days: 14
+          if-no-files-found: error
