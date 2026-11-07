@@ -33,6 +33,7 @@ jobs:
         run: |
           python tests/unified_animation_factory.py
           python tools/unified_factory/object_contracts.py tools/unified_factory/examples/world_objects_v1.json
+          python tools/unified_factory/capability_audit.py --output build/unified_factory/capability_audit.json
           python tools/unified_factory/batch_plan.py --batch-size 256 --palettes 3 --geometry-variants 2 --output build/unified_factory/plan.json
           python - <<'PY'
           import json
@@ -115,6 +116,7 @@ jobs:
           name: last-light-unified-animation-factory-v1-pilot
           path: |
             build/unified_factory/plan.json
+            build/unified_factory/capability_audit.json
             build/unified_factory/material_batch/batch_manifest.json
             build/unified_factory/material_batch/condition_*/contact-sheet.png
             build/unified_factory/material_batch/expanded/manifest.json
