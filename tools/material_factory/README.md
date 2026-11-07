@@ -89,3 +89,33 @@ python tools/material_factory/condition_gallery.py --out build/material_factory/
 The comparison PNG is a diagnostic pseudo-lit swatch grid, NOT an in-world
 Godot screenshot or evidence of Golden 40 visual acceptance.
 
+## Semantic material passes and mixed-condition neighborhoods (next candidate)
+
+`render_hero_materials.py` adds narrowly scoped mesh-name surface treatments:
+lower fridge/cabinet accumulation, fridge-door grip use, cabinet-panel rub,
+sofa cushion and backrest use. Each material is copied before its localized
+shader nodes are attached so a sofa's handling patterns do not bleed into a
+wooden cabinet. This is an **experimental Blender shader candidate**, to be
+validated in headless CI and reviewed against the actual source render.
+
+`condition_assignment.py` is a seed-stable *cosmetic planning contract* for
+generated neighborhoods. Houses declare `occupied`, `recently_vacant`,
+`unoccupied` or `neglected` profiles. Their rooms and individual object records
+then receive nearby but independently varied condition levels. Reordering
+records cannot reroll their appearances because stable IDs, rather than list
+order, determine the random values. It does not make any Godot runtime changes,
+override saves, or change the canonical building factory.
+
+```bash
+python tests/material_factory_neighborhood.py
+python tests/material_factory_conditions.py
+python tools/material_factory/condition_assignment.py \
+  tools/material_factory/examples/neighborhood.json \
+  --out build/material_factory/neighborhood-conditions.json
+```
+
+This is the first independent integration contract. The next gate is mapping
+generated condition IDs to world art sets in the existing scene/importer,
+proving true 2.5D pixel-level renders, and visually testing floors/walls and
+furniture together. Preserve the original project scene and saves meanwhile.
+
