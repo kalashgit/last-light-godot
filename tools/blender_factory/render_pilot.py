@@ -39,7 +39,6 @@ def block(name, xyz, dimensions, mat, bevel=0.018):
         mod = obj.modifiers.new("subtle worn hard edges", "BEVEL")
         mod.width = min(bevel, min(dimensions) * 0.16)
         mod.segments = 1
-        mod.affect = 'EDGES' if hasattr(mod, "affect") else None
         mod2 = obj.modifiers.new("weighted edge normals", "WEIGHTED_NORMAL")
     return obj
 
@@ -57,11 +56,11 @@ def make_scene():
     cam_data = bpy.data.cameras.new("Locked 2:1 dimetric camera")
     cam = bpy.data.objects.new("Locked 2:1 dimetric camera", cam_data)
     bpy.context.collection.objects.link(cam)
-    elevation = math.atan(0.5)  # projected ground axes have 1:2 slopes
+    elevation = math.radians(30.0)  # sin(elevation)=0.5: projected axes have 1:2 slopes
     horizontal = 10.0
     cam.location = (horizontal/math.sqrt(2), -horizontal/math.sqrt(2),
                     horizontal * math.tan(elevation))
-    target = Vector((0, 0, 0.85))
+    target = Vector((0, 0, 0))
     cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
     # Camera points at a constant fixed world point; all assets retain a real floor-contact pivot.
     cam_data.type = "ORTHO"
@@ -158,7 +157,7 @@ def main():
         out = Path(args[args.index("--output")+1])
     out.mkdir(parents=True,exist_ok=True)
     manifest = {"schema":1, "tile_px":list(TILE_PX),
-                "projection":"fixed 2:1 dimetric, orthographic 26.565-degree elevation",
+                "projection":"fixed 2:1 dimetric, orthographic 30-degree elevation",
                 "source":"Original generated parametric Blender geometry (not imported reference art)",
                 "render_resolution":RES, "downsample":FINAL_DOWNSAMPLE, "entries":[]}
     for name in ITEMS:
