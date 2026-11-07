@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "rig": "ll_biped_v1",
+  "tile_px": [
+    80,
+    40
+  ],
+  "status": "RENDERED_CANDIDATE_NOT_GOLDEN_APPROVED_OR_GODOT_INTEGRATED",
+  "actors": [
+    {
+      "render_id": "human_older",
+      "actor_id": "ll_actor_pilot_older",
+      "kind": "human",
+      "height_m": 1.67,
+      "apparel": [
+        "ll_wear_grey_underwear",
+        "ll_wear_office_shirt",
+        "ll_wear_office_trousers",
+        "ll_wear_street_shoes"
+      ],
+      "held_item_id": null,
+      "grey_fraction": 1.0,
+      "muscle": 0.31,
+      "clips": {
+        "idle": {
+          "atlas": "human_older/idle_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 1,
+          "cell_px": [
+            44,
+            103
+          ],
+          "anchor_px": [
+            22.0,
+            94.0
+          ],
+          "sha256": "13bfedffceeb43ebac6a4db36930289ca4c2683ad17422cb4738c1a4305583f4",
+          "files": [
+            "idle_front_00.png",
+            "idle_right_00.png",
+            "idle_back_00.png",
+            "idle_left_00.png"
+          ]
+        }
+      },
+      "status": "PIXEL_CANDIDATE_NOT_IN_GAME"
+    },
+    {
+      "render_id": "human_underwear",
+      "actor_id": "ll_actor_pilot_grey",
+      "kind": "human",
+      "height_m": 1.74,
+      "apparel": [
+        "ll_wear_grey_underwear",
+        "ll_wear_grey_tank"
+      ],
+      "held_item_id": null,
+      "grey_fraction": 0.0,
+      "muscle": 0.5,
+      "clips": {
+        "idle": {
+          "atlas": "human_underwear/idle_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 1,
+          "cell_px": [
+            44,
+            106
+          ],
+          "anchor_px": [
+            22.0,
+            97.0
+          ],
+          "sha256": "46cecbf0899d016fcb880a853333f8f7ebc3c5b6bf43fbab3425b5f88b7db82e",
+          "files": [
+            "idle_front_00.png",
+            "idle_right_00.png",
+            "idle_back_00.png",
+            "idle_left_00.png"
+          ]
+        }
+      },
+      "status": "PIXEL_CANDIDATE_NOT_IN_GAME"
+    },
+    {
+      "render_id": "human_worker_crowbar",
+      "actor_id": "ll_actor_pilot_builder",
+      "kind": "human",
+      "height_m": 1.81,
+      "apparel": [
+        "ll_wear_grey_underwear",
+        "ll_wear_grey_tank",
+        "ll_wear_work_pants",
+        "ll_wear_work_boots",
+        "ll_wear_hivis_vest"
+      ],
+      "held_item_id": "ll_tools_crowbar",
+      "grey_fraction": 0.00631,
+      "muscle": 0.68,
+      "clips": {
+        "idle": {
+          "atlas": "human_worker_crowbar/idle_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 1,
+          "cell_px": [
+            56,
+            112
+          ],
+          "anchor_px": [
+            28.0,
+            100.0
+          ],
+          "sha256": "557be7ed0d18bf326a045899476c51c3b5fb7d76a9bebfa3d85ade3337bc0a41",
+          "files": [
+            "idle_front_00.png",
+            "idle_right_00.png",
+            "idle_back_00.png",
+            "idle_left_00.png"
+          ]
+        },
+        "walk": {
+          "atlas": "human_worker_crowbar/walk_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 4,
+          "cell_px": [
+            56,
+            112
+          ],
+          "anchor_px": [
+            28.0,
+            100.0
+          ],
+          "sha256": "51dd455c2edcf7c1a9033c74cb1d837180f1868c4b2ed1e05dfdccfce76d1cd9",
+          "files": [
+            "walk_front_00.png",
+            "walk_front_01.png",
+            "walk_front_02.png",
+            "walk_front_03.png",
+            "walk_right_00.png",
+            "walk_right_01.png",
+            "walk_right_02.png",
+            "walk_right_03.png",
+            "walk_back_00.png",
+            "walk_back_01.png",
+            "walk_back_02.png",
+            "walk_back_03.png",
+            "walk_left_00.png",
+            "walk_left_01.png",
+            "walk_left_02.png",
+            "walk_left_03.png"
+          ]
+        }
+      },
+      "status": "PIXEL_CANDIDATE_NOT_IN_GAME"
+    },
+    {
+      "render_id": "zombie_construction",
+      "actor_id": "ll_zombie_40965e12fd4f0724",
+      "kind": "zombie",
+      "height_m": 1.792,
+      "apparel": [
+        "ll_wear_grey_tank",
+        "ll_wear_work_pants",
+        "ll_wear_work_boots",
+        "ll_wear_hivis_vest"
+      ],
+      "held_item_id": null,
+      "grey_fraction": 0.0,
+      "muscle": 0.68,
+      "clips": {
+        "idle": {
+          "atlas": "zombie_construction/idle_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 1,
+          "cell_px": [
+            61,
+            111
+          ],
+          "anchor_px": [
+            30.0,
+            102.0
+          ],
+          "sha256": "0e6e539e9da15286ad864ffbe1db885eaff292af2cec9c4ac2c574f34e99850b",
+          "files": [
+            "idle_front_00.png",
+            "idle_right_00.png",
+            "idle_back_00.png",
+            "idle_left_00.png"
+          ]
+        }
+      },
+      "status": "PIXEL_CANDIDATE_NOT_IN_GAME"
+    },
+    {
+      "render_id": "zombie_hospital",
+      "actor_id": "ll_zombie_63d2abcf0dd02a97",
+      "kind": "zombie",
+      "height_m": 1.791,
+      "apparel": [
+        "ll_wear_medical_scrubs",
+        "ll_wear_medical_pants",
+        "ll_wear_street_shoes"
+      ],
+      "held_item_id": null,
+      "grey_fraction": 0.0,
+      "muscle": 0.32,
+      "clips": {
+        "idle": {
+          "atlas": "zombie_hospital/idle_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 1,
+          "cell_px": [
+            62,
+            112
+          ],
+          "anchor_px": [
+            31.0,
+            102.0
+          ],
+          "sha256": "035c0d80327b8806a7cb723ea8873214fb03ff7a538fcd8f6debac0af5ae8b13",
+          "files": [
+            "idle_front_00.png",
+            "idle_right_00.png",
+            "idle_back_00.png",
+            "idle_left_00.png"
+          ]
+        },
+        "shamble": {
+          "atlas": "zombie_hospital/shamble_atlas.png",
+          "directions": [
+            "front",
+            "right",
+            "back",
+            "left"
+          ],
+          "frame_count_per_direction": 4,
+          "cell_px": [
+            62,
+            112
+          ],
+          "anchor_px": [
+            31.0,
+            102.0
+          ],
+          "sha256": "4512128c7ca9d7da1c2a194d05e0d50fc83ec70e74d2e966164ca528626eaa9a",
+          "files": [
+            "shamble_front_00.png",
+            "shamble_front_01.png",
+            "shamble_front_02.png",
+            "shamble_front_03.png",
+            "shamble_right_00.png",
+            "shamble_right_01.png",
+            "shamble_right_02.png",
+            "shamble_right_03.png",
+            "shamble_back_00.png",
+            "shamble_back_01.png",
+            "shamble_back_02.png",
+            "shamble_back_03.png",
+            "shamble_left_00.png",
+            "shamble_left_01.png",
+            "shamble_left_02.png",
+            "shamble_left_03.png"
+          ]
+        }
+      },
+      "status": "PIXEL_CANDIDATE_NOT_IN_GAME"
+    }
+  ]
+}
