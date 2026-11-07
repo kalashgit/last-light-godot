@@ -7,6 +7,7 @@ on:
       - "tools/animation_factory/**"
       - "tools/unified_factory/**"
       - "tools/material_factory/material_batch.py"
+      - "tools/material_factory/expanded_materials.py"
       - "tests/unified_animation_factory.py"
       - ".github/workflows/unified-animation-factory-v1.yml"
   workflow_dispatch:
@@ -46,11 +47,14 @@ jobs:
           import json
           from pathlib import Path
           d=json.loads(Path("build/unified_factory/material_batch/batch_manifest.json").read_text())
-          assert d["material_map_sets"]==20
+          assert d["material_map_sets"]==56
+          assert d["baseline_material_map_sets"]==20
+          assert d["expanded_material_map_sets"]==36
           assert d["catalog_id_count"]==300
-          assert d["coverage"]=="PARTIAL_NOT_EVERY_SPRITE_TYPE"
+          assert d["mapped_asset_ids"]==300 and d["missing_material_asset_ids"]==0
+          assert d["coverage"]=="BASE_MATERIAL_FAMILIES_MAPPED_VISUAL_APPROVAL_PENDING"
           assert len(d["packs"])==4 and all(p["material_count"]==5 for p in d["packs"])
-          print("LL_MATERIAL_BATCH_PASS 5 original PBR families x 4 conditions; explicit unmapped categories")
+          print("LL_MATERIAL_BATCH_PASS 14 original PBR families x 4 conditions = 56 source map sets; 300 catalog IDs mapped, visual QA pending")
           PY
       - name: Install Blender CPU renderer
         run: |
@@ -95,6 +99,7 @@ jobs:
           for c in 0 1 2 3; do
             cp "build/unified_factory/material_batch/condition_${c}/contact-sheet.png" "preview/material-factory-batch-v1/condition_${c}_sheet.png"
           done
+          cp build/unified_factory/material_batch/expanded/manifest.json preview/material-factory-batch-v1/expanded_manifest.json
           git add preview/animation-factory-v1 preview/material-factory-batch-v1
           if ! git diff --cached --quiet; then
             git commit -m "Publish V1 animation pilot frames and GIF previews for review"
@@ -108,6 +113,7 @@ jobs:
             build/unified_factory/plan.json
             build/unified_factory/material_batch/batch_manifest.json
             build/unified_factory/material_batch/condition_*/contact-sheet.png
+            build/unified_factory/material_batch/expanded/manifest.json
             build/animation_factory/game_ready
             build/animation_factory/blender.log
           retention-days: 14
