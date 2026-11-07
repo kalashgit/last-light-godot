@@ -67,3 +67,25 @@ handle/corner/seam wear in Blender, real floor-contact shadow passes, matched
 hero render comparisons, and Godot/Xogot 100/220/325% reviews. No production
 assets or gameplay scenes were replaced.
 
+## Environmental condition controls (candidate)
+
+Every one of the five stable material IDs now supports four deterministic
+condition levels: `0=maintained`, `1=used` (the relatively fresh default),
+`2=weathered`, `3=severely_neglected`. Condition is an optional overlay on an
+original material—not an implicit post-apocalyptic age for every game item.
+It changes the generated albedo, roughness, metallic and wear-source maps in
+material-specific ways, without changing the original recipe IDs or output
+channel names. A Blender object should later combine these source signals with
+semantic edge, grip, sun, water and floor-contact masks. The source masks alone
+are deliberately not a finished material treatment.
+
+```bash
+python tools/material_factory/generate.py --condition 1 --size 512 --out build/material_factory/materials
+python tools/material_factory/validate.py build/material_factory/materials
+python tests/material_factory_conditions.py
+python tools/material_factory/condition_gallery.py --out build/material_factory/condition-gallery.png
+```
+
+The comparison PNG is a diagnostic pseudo-lit swatch grid, NOT an in-world
+Godot screenshot or evidence of Golden 40 visual acceptance.
+
