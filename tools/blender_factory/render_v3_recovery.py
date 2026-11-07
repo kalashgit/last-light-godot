@@ -354,51 +354,120 @@ def material_fidelity_v3(key,m):
     # are authored by each family constructor below.
 
 def fridge_v3(m):
+    """Real insulated hollow carcass with two cavities and independently hinged doors.
+
+    The old full-size solid center cube and opaque front gasket panel are removed:
+    the empty cavity and shelves remain visible after the doors rotate open.
+    """
     material_fidelity_v3("refrigerator",m)
-    cube("Curved ivory enamel carcass",(0,.018,.88),(.76,.70,1.76),m["paint"],.06,5)
+    # Six-sided appliance is assembled from thin structural panels, not a filler cuboid.
+    for x in (-.355,.355):
+        cube("Fridge insulated outer side shell",(x,.017,.88),
+             (.050,.700,1.71),m["paint"],.020,3)
+    cube("Fridge insulated rear shell",(0,.341,.88),(.755,.053,1.71),m["paint"],.018,3)
+    cube("Fridge top insulated shell",(0,.018,1.738),(.765,.710,.050),m["paint"],.026,4)
+    cube("Fridge bottom insulated shell",(0,.018,.080),(.755,.710,.160),m["paint"],.021,3)
+    # Interior liner at the real back, rather than a solid 'carcass' behind doors.
+    cube("Fridge visible inner back liner",(0,.310,.92),(.650,.012,1.52),m["plastic"],.003)
+    for x in (-.322,.322):
+        cube("Fridge pale interior side liner",(x,.00,.91),
+             (.008,.612,1.50),m["plastic"],.002)
+    # Two separately accessible storage volumes: freezer above the separator.
+    cube("Fridge freezer separator",(0,.005,1.044),(.655,.655,.060),m["plastic"],.008)
+    for level in (.44,.69,.90,1.37):
+        cube("Fridge removable interior shelf",(0,.00,level),
+             (.625,.565,.023),m["plastic"],.004)
+        cube("Fridge front shelf lip",(0,-.286,level),
+             (.617,.009,.020),m["chrome"],.002)
     for z,h in ((1.405,.68),(.617,.82)):
-        worn_panel("Inset black rubber gasket",(0,-.346,z),(.707,.035,h+.026),m["rubber"],m["black"])
-        cube("Individual pressed convex door",(0,-.379,z),(.710,.061,h),m["paint"],.035,6)
+        # The door panel itself is solid, but the volume behind it is hollow.
+        cube("Individual pressed convex door",(0,-.379,z),
+             (.710,.061,h),m["paint"],.035,6)
         for x in (-.32,.32):
-            cube("Door aged left/right seam",(x,-.415,z),(.006,.006,h*.82),m["steel"],.002)
-        # Curved handle is built from four connected points, not a rectangular decal.
+            cube("Door aged left/right seam",(x,-.415,z),
+                 (.006,.006,h*.82),m["steel"],.002)
+        # Narrow rubber sealing strips rotate with their associated door.
+        for x in (-.322,.322):
+            cube("Door rubber seal vertical",(x,-.421,z),
+                 (.010,.007,h*.88),m["rubber"],.002)
+        for zz in (z-h*.442,z+h*.442):
+            cube("Door rubber seal horizontal",(0,-.422,zz),
+                 (.644,.007,.011),m["rubber"],.002)
         pipe("Bent chromed pull",[(.255,-.424,z-.17),(.285,-.465,z-.17),
             (.300,-.471,z),(.285,-.465,z+.17),(.255,-.424,z+.17)],.012,m["chrome"])
         for zz in (z-h*.38,z+h*.38):
-            cyl("Recessed hinge pin",(-.341,-.378,zz),.028,.038,m["steel"],18)
+            cyl("Recessed hinge pin",(-.341,-.378,zz),
+                .028,.038,m["steel"],18)
+    # Real doorjambs surround, but do not cover, the accessible interior opening.
+    for x in (-.34,.34):
+        cube("Fridge fixed opening trim",(x,-.341,.92),
+             (.012,.017,1.48),m["rubber"],.003)
     for i in range(5):
-        cube("Air ventilation louver",(0,-.360,.055+.024*i),(.49,.011,.009),m["black"],.002)
-    # Actual localized dirt and scuffed lower contact, rather than full-face brown noise.
+        cube("Air ventilation louver",(0,-.360,.055+.024*i),
+             (.49,.011,.009),m["black"],.002)
     for x in (-.27,.27):
-        cube("Floor contact gasket",(x,-.22,.026),(.10,.12,.052),m["rubber"],.007)
-    cube("Aged side join",(.383,.02,.89),(.009,.51,.019),m["steel"],.004)
+        cube("Floor contact gasket",(x,-.22,.026),
+             (.10,.12,.052),m["rubber"],.007)
+    cube("Aged side join",(.383,.02,.89),
+         (.009,.51,.019),m["steel"],.004)
     return (.77,.75,1.77)
 
+
 def cabinet_v3(m):
+    """Hollow cabinet: thin joinery panels, real shelves and two working front doors."""
     material_fidelity_v3("cabinet",m)
-    cube("Dark walnut solid carcass",(0,.035,.725),(1.07,.54,1.45),m["wood_dark"],.021)
+    # The former solid dark walnut carcass and fake solid back-of-door panels
+    # are deliberately replaced with an actual interior air volume.
+    for x in (-.513,.513):
+        cube("Cabinet load-bearing hollow side",(x,.030,.724),
+             (.052,.535,1.449),m["wood_dark"],.011)
+        cube("Cabinet inner side veneer",(x-(.022 if x>0 else -.022),.018,.745),
+             (.009,.492,1.33),m["wood"],.003)
+    cube("Cabinet real thin back panel",(0,.286,.732),
+         (1.065,.040,1.445),m["wood_dark"],.008)
+    cube("Cabinet solid lower floor",(0,.015,.103),
+         (1.07,.535,.075),m["wood"],.006)
+    cube("Cabinet upper interior cap",(0,.022,1.423),
+         (1.068,.530,.052),m["wood_dark"],.006)
+    # Actual cabinet storage compartments. No front closure except hinged doors.
+    for level in (.52,.99):
+        cube("Cabinet removable interior shelf",(0,.014,level),
+             (.968,.463,.026),m["wood_light"],.006)
+        cube("Cabinet visible shelf front grain",(0,-.219,level),
+             (.950,.007,.014),m["wood_dark"],.001)
+    cube("Cabinet vertical interior divider",(0,.023,.758),
+         (.022,.46,1.317),m["wood_dark"],.004)
     for i in range(3):
-        wood_board("Separately joined top board "+str(i),(-.35+i*.35,0,1.474),(.352,.62,.049),m,i+10)
+        wood_board("Separately joined top board "+str(i),
+                   (-.35+i*.35,0,1.474),(.352,.62,.049),m,i+10)
     for x in (-.515,.515):
-        cube("Tall load-bearing joinery stile",(x,-.267,.73),(.07,.065,1.41),m["wood_light"],.008)
+        cube("Tall load-bearing joinery stile",(x,-.267,.73),
+             (.07,.065,1.41),m["wood_light"],.008)
     for z in (.107,1.365):
-        wood_board("Front rail"+str(z),(0,-.291,z),(1.02,.051,.069),m,int(z*100))
+        wood_board("Front rail"+str(z),(0,-.291,z),
+                   (1.02,.051,.069),m,int(z*100))
     for x in (-.253,.253):
-        cube("Recessed inset back panel",(x,-.285,.738),(.47,.028,1.20),m["wood_dark"],.007)
-        cube("Individual framed door perimeter",(x,-.323,.738),(.46,.045,1.19),m["wood"],.012)
-        cube("Carved inner recess",(x,-.349,.737),(.33,.019,.995),m["wood_dark"],.008)
-        cube("Slightly convex hand-finished inner panel",(x,-.362,.737),(.292,.028,.960),m["wood_light"],.017,4)
-        for y in (-.362,):
-            for offset in (-.11,.11):
-                pipe("Panel vertical worn grain",[(x+offset,y-.015,.33),
-                    (x+offset+.007,y-.015,1.15)],.002,m["wood_dark"])
+        # Doors are individual solid panels attached to hinge pivots.
+        # Nothing behind the open door fills the storage cavity.
+        cube("Individual framed door perimeter",(x,-.323,.738),
+             (.46,.045,1.19),m["wood"],.012)
+        cube("Carved inner recess",(x,-.349,.737),
+             (.33,.019,.995),m["wood_dark"],.008)
+        cube("Slightly convex hand-finished inner panel",(x,-.362,.737),
+             (.292,.028,.960),m["wood_light"],.017,4)
+        for offset in (-.11,.11):
+            pipe("Panel vertical worn grain",[(x+offset,-.377,.33),
+                 (x+offset+.007,-.377,1.15)],.002,m["wood_dark"])
         hx=x+(.165 if x<0 else -.165)
         pipe("Bent cast door hardware",[(hx,-.376,.65),(hx,-.394,.70),
-              (hx,-.394,.81),(hx,-.377,.84)],.012,m["chrome"])
+             (hx,-.394,.81),(hx,-.377,.84)],.012,m["chrome"])
         for z in (.27,1.17):
-            cyl("Visible brass hinge pin",(-.50 if x<0 else .50,-.327,z),.017,.078,m["steel"],16)
-    cube("Darker inset toe space",(0,-.274,.059),(.93,.028,.116),m["wood_dark"],.008)
+            cyl("Visible brass hinge pin",
+                (-.50 if x<0 else .50,-.327,z),.017,.078,m["steel"],16)
+    cube("Darker inset toe space",(0,-.274,.059),
+         (.93,.028,.116),m["wood_dark"],.008)
     return (1.12,.65,1.51)
+
 
 def sofa_v3(m):
     material_fidelity_v3("sofa",m)
