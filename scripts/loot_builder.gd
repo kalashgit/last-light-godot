@@ -69,8 +69,8 @@ func _reflow() -> void:
  launcher.position = Vector2(size.x - 202, 78)
  launcher.size = Vector2(150, 44)
  if shade != null:
-  shade.position = Vector2.ZERO
-  shade.size = size
+  # PRESET_FULL_RECT already fills the viewport; assigning size causes warnings.
+  pass
  if panel != null:
   panel.position = size * Vector2(.10,.08)
   panel.size = size * Vector2(.80,.84)
