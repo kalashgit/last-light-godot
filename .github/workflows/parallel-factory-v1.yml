@@ -5,6 +5,7 @@ on:
       - codex/last-light-master-import-scale-v1-20261107
     paths:
       - "tools/asset_factory/render_batch.py"
+      - "tools/asset_factory/pack.py"
       - "tools/unified_factory/run_parallel.py"
       - "tests/parallel_factory_v1.py"
       - ".github/workflows/parallel-factory-v1.yml"
