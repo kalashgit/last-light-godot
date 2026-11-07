@@ -25,5 +25,6 @@ run_checked --headless --path . --script tests/house_survival.gd
 run_checked --headless --path . --script tests/control_settings.gd
 
 run_checked --headless --path . --script tests/loot_loop.gd
+run_checked --headless --path . --script tests/golden40_house_builder.gd
 run_checked --headless --path . --script tests/save_migration_edges.gd
 run_checked --headless --path . --script tests/save_isolation.gd
