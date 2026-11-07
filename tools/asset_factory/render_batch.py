@@ -11,15 +11,24 @@ from catalog import registry, REPRESENTATIVE_NAMES
 from geometry import build, MATERIALS, MESHES
 from render_isometric import configure_scene
 
-p=argparse.ArgumentParser(); p.add_argument('--output',type=Path,required=True); p.add_argument('--representatives',action='store_true'); p.add_argument('--resume',action='store_true'); args=p.parse_args(sys.argv[sys.argv.index('--')+1:])
+p=argparse.ArgumentParser(); p.add_argument('--output',type=Path,required=True); p.add_argument('--representatives',action='store_true'); p.add_argument('--resume',action='store_true'); p.add_argument('--ids-file',type=Path); p.add_argument('--batch-manifest',type=Path); p.add_argument('--threads',type=int,default=4); args=p.parse_args(sys.argv[sys.argv.index('--')+1:])
+if args.threads < 1 or args.threads > 32: raise ValueError('threads must be 1..32')
 args.output.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
 scene,cam=configure_scene()
-scene.render.threads_mode='FIXED'; scene.render.threads=4
+scene.render.threads_mode='FIXED'; scene.render.threads=args.threads
 # Same calibrated illumination, sixteen CPU Cycles samples and world pixel density.
 base_cam_loc=cam.location.copy(); base_cam_rot=cam.rotation_euler.copy(); base_scale=cam.data.ortho_scale
 source_hash=hashlib.sha256(b''.join(p.read_bytes() for p in [Path(__file__).parent/n for n in ['catalog.py','geometry.py','render_batch.py']])+Path(__file__).parents[1].joinpath('render_isometric.py').read_bytes()).hexdigest()
 objects=registry(); objects=[o for o in objects if o['name'] in REPRESENTATIVE_NAMES] if args.representatives else objects
+if args.ids_file is not None:
+ ids=json.loads(args.ids_file.read_text())
+ if not isinstance(ids,list) or not ids or len(ids)!=len(set(ids)):
+  raise ValueError('ids-file must contain nonempty unique JSON array')
+ all_ids={o['id'] for o in objects}
+ if set(ids)-all_ids: raise ValueError('unknown or disallowed asset ids: '+str(sorted(set(ids)-all_ids)[:5]))
+ objects=[o for o in objects if o['id'] in set(ids)]
+
 started=time.time(); records=[]
 for index,spec in enumerate(objects):
  folder=args.output/spec['id']; folder.mkdir(exist_ok=True)
@@ -71,5 +80,7 @@ for index,spec in enumerate(objects):
   if isinstance(data,bpy.types.Curve) and data.users==0: bpy.data.curves.remove(data)
  print(f'FACTORY {index+1}/{len(objects)} {spec["id"]} elapsed={time.time()-started:.1f}s',flush=True)
 manifest=dict(schema=1,objects=records,elapsed_seconds=round(time.time()-started,2),blender=bpy.app.version_string,source_hash=source_hash)
-(args.output/'batch.json').write_text(json.dumps(manifest,indent=2)+'\n')
+manifest_path=args.batch_manifest if args.batch_manifest is not None else args.output/'batch.json'
+manifest_path.parent.mkdir(parents=True,exist_ok=True)
+manifest_path.write_text(json.dumps(manifest,indent=2)+'\n')
 print(f'FACTORY DONE objects={len(records)} frames={sum(len(r["frames"]) for r in records)} seconds={time.time()-started:.2f}')
