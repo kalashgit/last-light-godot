@@ -40,7 +40,11 @@ Any texture should be applied using **physical UV scale** recorded by the recipe
 5. Blender uses real material PBR maps and actual geometry-specific wear masks with correct colorspace.
 6. Actual founder-reviewed 3D and Godot world screenshots at 100%, 220%, 325% satisfy the Golden 40 material/silhouette standard.
 
-**This first run is a texture-recipe technical test, not Golden 40 art approval or game integration.**
+**Material-to-Blender hero integration has now been technically tested:** run `.github/workflows/material-factory-hero-render.yml` using `tools/material_factory/render_hero_materials.py` to load maps into the original V3 refrigerator, cabinet and sofa and generate a matched rendered comparison. Latest verified cloud run: https://github.com/kalashgit/last-light-godot/actions/runs/42389600186
+
+Direct three-object preview: https://raw.githubusercontent.com/kalashgit/last-light-godot/codex/material-factory-v1-five-recipes-20261107/preview/material-factory-v1/hero-material-test/comparison-v2-v3.png
+
+**All materials remain unapproved for Golden 40 style parity and are NOT integrated into the playable Godot house.** Wood grain is too periodic/noisy and lacks per-board UV direction, appliance enamel lacks semantic wear, and sofa fabric still needs structural folding/softness refinements. The two workflows must not run mass production.
 
 ## iPhone access
 
