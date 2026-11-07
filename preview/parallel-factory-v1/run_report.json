@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "items": 4,
+  "shards": 2,
+  "completed_frames": 8,
+  "elapsed_s": 1.673,
+  "workers": 2,
+  "threads": 2,
+  "status": "RENDERED_PACKED_TECHNICAL_QA_PASSED_GOLDEN_REVIEW_PENDING",
+  "shard_results": [
+    {
+      "shard": "sprite_shard_0001",
+      "duration_s": 1.337,
+      "item_count": 2,
+      "manifest": "build/unified_factory/sharded_raw/sprite_shard_0001_result.json",
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    },
+    {
+      "shard": "sprite_shard_0002",
+      "duration_s": 1.322,
+      "item_count": 2,
+      "manifest": "build/unified_factory/sharded_raw/sprite_shard_0002_result.json",
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    }
+  ]
+}

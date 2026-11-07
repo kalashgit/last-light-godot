@@ -1,0 +1,412 @@
+{
+  "schema": 1,
+  "tile_px": [
+    80,
+    40
+  ],
+  "style": "ll_worn_residential_v1",
+  "ground_anchor_px": [
+    128,
+    192
+  ],
+  "blender": "bounded_parallel_shards",
+  "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d",
+  "objects": [
+    {
+      "id": "ll_crafting_bolt_box",
+      "name": "Bolt box",
+      "category": "crafting",
+      "family": "box",
+      "dimensions_m": [
+        0.209,
+        0.0936,
+        0.2496
+      ],
+      "material": "steel",
+      "color_variant": 0,
+      "wear": "used",
+      "label": "BOLT BOX",
+      "visible_carry": false,
+      "grip_m": [
+        0,
+        0,
+        0
+      ],
+      "tags": [
+        "crafting",
+        "loot"
+      ],
+      "description": "Bolt box for a lived-in residential survival setting.",
+      "collision": {
+        "footprint_m": [
+          0.209,
+          0.0936
+        ],
+        "solid": false
+      },
+      "occlusion": "ground_depth",
+      "persistence": "id and condition; no gameplay binding yet",
+      "status": "generated_candidate",
+      "source": "Original LAST LIGHT procedural geometry and materials",
+      "license": "CC0-1.0",
+      "frames": [
+        {
+          "file": "sprites/ll_crafting_bolt_box/ground.png",
+          "mode": "ground",
+          "angle_degrees": 0,
+          "size_px": [
+            16,
+            21
+          ],
+          "anchor_px": [
+            8,
+            17
+          ],
+          "source_canvas_px": [
+            256,
+            256
+          ],
+          "crop_rect_px": [
+            120,
+            175,
+            136,
+            196
+          ]
+        },
+        {
+          "file": "sprites/ll_crafting_bolt_box/icon.png",
+          "mode": "icon",
+          "angle_degrees": 0,
+          "size_px": [
+            128,
+            128
+          ],
+          "anchor_px": [
+            64,
+            64
+          ],
+          "source_canvas_px": [
+            128,
+            128
+          ],
+          "crop_rect_px": [
+            0,
+            0,
+            128,
+            128
+          ]
+        }
+      ],
+      "ground_bounds_m": [
+        [
+          -0.10450000315904617,
+          -0.046799998730421066,
+          0.0
+        ],
+        [
+          0.10450000315904617,
+          0.046799998730421066,
+          0.25409600138664246
+        ]
+      ],
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    },
+    {
+      "id": "ll_crafting_bracket_pack",
+      "name": "Bracket pack",
+      "category": "crafting",
+      "family": "packet",
+      "dimensions_m": [
+        0.1908,
+        0.1152,
+        0.0368
+      ],
+      "material": "wood",
+      "color_variant": 1,
+      "wear": "worn",
+      "label": "BRACKET PACK",
+      "visible_carry": false,
+      "grip_m": [
+        0,
+        0,
+        0
+      ],
+      "tags": [
+        "crafting",
+        "loot"
+      ],
+      "description": "Bracket pack for a lived-in residential survival setting.",
+      "collision": {
+        "footprint_m": [
+          0.1908,
+          0.1152
+        ],
+        "solid": false
+      },
+      "occlusion": "ground_depth",
+      "persistence": "id and condition; no gameplay binding yet",
+      "status": "generated_candidate",
+      "source": "Original LAST LIGHT procedural geometry and materials",
+      "license": "CC0-1.0",
+      "frames": [
+        {
+          "file": "sprites/ll_crafting_bracket_pack/ground.png",
+          "mode": "ground",
+          "angle_degrees": 0,
+          "size_px": [
+            15,
+            10
+          ],
+          "anchor_px": [
+            7,
+            6
+          ],
+          "source_canvas_px": [
+            256,
+            256
+          ],
+          "crop_rect_px": [
+            121,
+            186,
+            136,
+            196
+          ]
+        },
+        {
+          "file": "sprites/ll_crafting_bracket_pack/icon.png",
+          "mode": "icon",
+          "angle_degrees": 0,
+          "size_px": [
+            128,
+            128
+          ],
+          "anchor_px": [
+            64,
+            64
+          ],
+          "source_canvas_px": [
+            128,
+            128
+          ],
+          "crop_rect_px": [
+            0,
+            0,
+            128,
+            128
+          ]
+        }
+      ],
+      "ground_bounds_m": [
+        [
+          -0.09539999812841415,
+          -0.0575999990105629,
+          0.0
+        ],
+        [
+          0.09539999812841415,
+          0.0575999990105629,
+          0.03680000081658363
+        ]
+      ],
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    },
+    {
+      "id": "ll_crafting_cable_coil",
+      "name": "Cable coil",
+      "category": "crafting",
+      "family": "coil",
+      "dimensions_m": [
+        0.252,
+        0.2576,
+        0.0756
+      ],
+      "material": "steel",
+      "color_variant": 0,
+      "wear": "used",
+      "label": "CABLE COIL",
+      "visible_carry": false,
+      "grip_m": [
+        0,
+        0,
+        0
+      ],
+      "tags": [
+        "crafting",
+        "loot"
+      ],
+      "description": "Cable coil for a lived-in residential survival setting.",
+      "collision": {
+        "footprint_m": [
+          0.252,
+          0.2576
+        ],
+        "solid": false
+      },
+      "occlusion": "ground_depth",
+      "persistence": "id and condition; no gameplay binding yet",
+      "status": "generated_candidate",
+      "source": "Original LAST LIGHT procedural geometry and materials",
+      "license": "CC0-1.0",
+      "frames": [
+        {
+          "file": "sprites/ll_crafting_cable_coil/ground.png",
+          "mode": "ground",
+          "angle_degrees": 0,
+          "size_px": [
+            18,
+            13
+          ],
+          "anchor_px": [
+            9,
+            8
+          ],
+          "source_canvas_px": [
+            256,
+            256
+          ],
+          "crop_rect_px": [
+            119,
+            184,
+            137,
+            197
+          ]
+        },
+        {
+          "file": "sprites/ll_crafting_cable_coil/icon.png",
+          "mode": "icon",
+          "angle_degrees": 0,
+          "size_px": [
+            128,
+            128
+          ],
+          "anchor_px": [
+            64,
+            64
+          ],
+          "source_canvas_px": [
+            128,
+            128
+          ],
+          "crop_rect_px": [
+            0,
+            0,
+            128,
+            128
+          ]
+        }
+      ],
+      "ground_bounds_m": [
+        [
+          -0.12600000202655792,
+          -0.12880000472068787,
+          0.012852000072598457
+        ],
+        [
+          0.12600000202655792,
+          0.12880000472068787,
+          0.0627480000257492
+        ]
+      ],
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    },
+    {
+      "id": "ll_crafting_canvas_roll",
+      "name": "Canvas roll",
+      "category": "crafting",
+      "family": "roll",
+      "dimensions_m": [
+        0.12,
+        0.12,
+        0.1
+      ],
+      "material": "fabric",
+      "color_variant": 0,
+      "wear": "used",
+      "label": "CANVAS ROLL",
+      "visible_carry": false,
+      "grip_m": [
+        0,
+        0,
+        0
+      ],
+      "tags": [
+        "crafting",
+        "loot"
+      ],
+      "description": "Canvas roll for a lived-in residential survival setting.",
+      "collision": {
+        "footprint_m": [
+          0.12,
+          0.12
+        ],
+        "solid": false
+      },
+      "occlusion": "ground_depth",
+      "persistence": "id and condition; no gameplay binding yet",
+      "status": "generated_candidate",
+      "source": "Original LAST LIGHT procedural geometry and materials",
+      "license": "CC0-1.0",
+      "frames": [
+        {
+          "file": "sprites/ll_crafting_canvas_roll/ground.png",
+          "mode": "ground",
+          "angle_degrees": 0,
+          "size_px": [
+            10,
+            11
+          ],
+          "anchor_px": [
+            5,
+            8
+          ],
+          "source_canvas_px": [
+            256,
+            256
+          ],
+          "crop_rect_px": [
+            123,
+            184,
+            133,
+            195
+          ]
+        },
+        {
+          "file": "sprites/ll_crafting_canvas_roll/icon.png",
+          "mode": "icon",
+          "angle_degrees": 0,
+          "size_px": [
+            128,
+            128
+          ],
+          "anchor_px": [
+            64,
+            64
+          ],
+          "source_canvas_px": [
+            128,
+            128
+          ],
+          "crop_rect_px": [
+            0,
+            0,
+            128,
+            128
+          ]
+        }
+      ],
+      "ground_bounds_m": [
+        [
+          -0.05999999865889549,
+          -0.05999999865889549,
+          0.0030000023543834686
+        ],
+        [
+          0.05999999865889549,
+          0.05999999865889549,
+          0.09700000286102295
+        ]
+      ],
+      "source_hash": "8a9072354c7f8522babbd1bee3ef73b0d30ba64d9876420aaaaee9481a851d5d"
+    }
+  ]
+}
