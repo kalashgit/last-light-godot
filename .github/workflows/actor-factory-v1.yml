@@ -1,0 +1,106 @@
+name: LAST LIGHT actor and zombie factory V1
+on:
+  push:
+    branches:
+      - codex/last-light-actor-zombie-factory-v1-20261107
+    paths:
+      - "tools/actor_factory/**"
+      - "tests/actor_factory_v1.py"
+      - ".github/workflows/actor-factory-v1.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: last-light-actor-factory-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  actor-factory-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Validate actor longevity, training, zombie inventory and sprite contract
+        run: |
+          python tests/actor_factory_v1.py
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,"tools/actor_factory")
+          from actor_state import create_actor,advance_day,spawn_zombie
+          p=create_actor("founder-pilot",13)
+          p=advance_day(p,1,exercise=.8,nutrition=.8,recovery=.8)
+          z=spawn_zombie(31,"hospital","surgery",0,"hospital")
+          assert p["day_index"]==1 and z["kind"]=="zombie"
+          assert all(any(i["item_id"]==w and i["worn"] for i in z["inventory"]) for w in z["apparel"])
+          print("LL_ACTOR_SEMANTIC_PASS ageing, training, area uniforms and persistent loadout")
+          PY
+      - name: Install Blender CPU renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Render original human and zombie models with apparel and equipment
+        run: |
+          mkdir -p build/actor_factory/raw
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/actor_factory/render.py -- --output build/actor_factory/raw 2>&1 | tee build/actor_factory/blender.log
+          grep -q 'LL_ACTOR_RENDER_DONE 52 frames 5 actors' build/actor_factory/blender.log
+          if grep -q 'Traceback (most recent call last)' build/actor_factory/blender.log; then exit 1; fi
+      - name: Pack fixed-world-anchor 4-direction actor atlases
+        run: |
+          python tools/actor_factory/pack.py --input build/actor_factory/raw --output build/actor_factory/game_ready
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root=Path("build/actor_factory/game_ready")
+          data=json.loads((root/"manifest.json").read_text())
+          assert len(data["actors"])==5
+          assert sum(sum(clip["frame_count_per_direction"]*4 for clip in a["clips"].values()) for a in data["actors"])==52
+          for a in data["actors"]:
+            assert 1.55<=a["height_m"]<=1.95
+            for clip in a["clips"].values():
+              im=Image.open(root/clip["atlas"]).convert("RGBA")
+              assert im.getchannel("A").getextrema()==(0,255)
+              assert im.size==(clip["cell_px"][0]*clip["frame_count_per_direction"],
+                                clip["cell_px"][1]*4)
+          print("LL_ACTOR_ATLAS_PASS 5 actor variants, 52 renders, four directions, consistent anchors")
+          PY
+      - name: Publish visual candidate contact sheet and atlases to isolated branch
+        run: |
+          set -euo pipefail
+          mkdir -p preview/actor-factory-v1
+          cp -r build/actor_factory/game_ready/. preview/actor-factory-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/actor-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish V1 actor, zombie, clothing and weapon visual review candidates"
+            for attempt in 1 2 3; do
+              git fetch origin codex/last-light-actor-zombie-factory-v1-20261107
+              git rebase origin/codex/last-light-actor-zombie-factory-v1-20261107
+              if git push origin HEAD:codex/last-light-actor-zombie-factory-v1-20261107; then
+                exit 0
+              fi
+            done
+            echo "Could not publish generated previews safely" >&2
+            exit 1
+          fi
+      - name: Archive all actor candidate assets and render logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-actor-zombie-factory-v1-candidates
+          path: |
+            build/actor_factory/game_ready
+            build/actor_factory/blender.log
+          retention-days: 14
+          if-no-files-found: error
