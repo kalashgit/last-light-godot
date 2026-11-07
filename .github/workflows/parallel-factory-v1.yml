@@ -61,6 +61,30 @@ jobs:
           assert len(report["shard_results"])>=1
           print("LL_PARALLEL_PROOF_PASS",report["items"],report["completed_frames"],report["elapsed_s"])
           PY
+      - name: Publish four real render candidates and native-scale review sheet
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          mkdir -p preview/parallel-factory-v1
+          cp build/unified_factory/sharded_raw/run_report.json preview/parallel-factory-v1/
+          cp build/unified_factory/sharded_review/ground_scale.png preview/parallel-factory-v1/
+          cp build/unified_factory/sharded_review/contact_01.jpg preview/parallel-factory-v1/
+          cp build/unified_factory/sharded_packed/manifest.json preview/parallel-factory-v1/
+          cp -r build/unified_factory/sharded_packed/sprites preview/parallel-factory-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/parallel-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish bounded parallel original sprite candidates for Golden review"
+            for attempt in 1 2 3; do
+              git fetch origin codex/last-light-master-import-scale-v1-20261107
+              git rebase origin/codex/last-light-master-import-scale-v1-20261107
+              if git push origin HEAD:codex/last-light-master-import-scale-v1-20261107; then
+                exit 0
+              fi
+            done
+            exit 1
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: last-light-parallel-factory-original-asset-test
