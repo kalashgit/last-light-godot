@@ -6,6 +6,7 @@ on:
     paths:
       - "tools/animation_factory/**"
       - "tools/unified_factory/**"
+      - "tools/material_factory/material_batch.py"
       - "tests/unified_animation_factory.py"
       - ".github/workflows/unified-animation-factory-v1.yml"
   workflow_dispatch:
@@ -25,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install image packaging dependency
-        run: python -m pip install "Pillow>=10,<15"
+        run: python -m pip install "Pillow>=10,<15" "numpy>=1.24,<3"
       - name: Validate 7-day batch planning and animation contracts
         run: |
           python tests/unified_animation_factory.py
@@ -37,6 +38,19 @@ jobs:
           assert p["record_count"]==300 and p["candidate_job_count"]==7200
           assert len(p["batches"])==29 and p["status"].startswith("PLANNED_ONLY")
           print("LL_UNIFIED_PLANNER_PASS jobs=7200 planned_not_rendered batches=29")
+          PY
+      - name: Generate material source maps for all four wear levels
+        run: |
+          python tools/material_factory/material_batch.py --size 256 --conditions 0,1,2,3 --out build/unified_factory/material_batch
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("build/unified_factory/material_batch/batch_manifest.json").read_text())
+          assert d["material_map_sets"]==20
+          assert d["catalog_id_count"]==300
+          assert d["coverage"]=="PARTIAL_NOT_EVERY_SPRITE_TYPE"
+          assert len(d["packs"])==4 and all(p["material_count"]==5 for p in d["packs"])
+          print("LL_MATERIAL_BATCH_PASS 5 original PBR families x 4 conditions; explicit unmapped categories")
           PY
       - name: Install Blender CPU renderer
         run: |
@@ -87,6 +101,8 @@ jobs:
           name: last-light-unified-animation-factory-v1-pilot
           path: |
             build/unified_factory/plan.json
+            build/unified_factory/material_batch/batch_manifest.json
+            build/unified_factory/material_batch/condition_*/contact-sheet.png
             build/animation_factory/game_ready
             build/animation_factory/blender.log
           retention-days: 14
