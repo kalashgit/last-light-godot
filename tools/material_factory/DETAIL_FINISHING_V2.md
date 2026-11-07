@@ -53,6 +53,8 @@ To apply the same candidate pass to any **manifested** furniture or tile set, wi
 python tools/material_factory/pixel_batch.py --source build/material_factory/hero_ready --out build/material_factory/pixel_finish_candidate
 ```
 
+For independent world-tile PNGs that have no asset manifest, give `--source` a directory containing only those PNGs. The comparison is centered for review; no pivot is inferred or written into Godot. When an asset manifest exists, its anchors are preserved exactly.
+
 `pixel_batch.py` writes `comparison-220-percent.png`, independent transparent candidate PNGs, a checksum/anchor manifest, and a ZIP suitable for mobile review. Every candidate remains `VISUAL_REVIEW_REQUIRED_NOT_GAME_APPROVED`.
 
 ## Two-tier completion
