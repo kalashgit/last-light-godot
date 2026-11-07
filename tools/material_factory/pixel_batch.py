@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Candidate-only 2.5D pixel finishing for any world-sprite set.
+"""Candidate-only 2.5D pixel finishing for a world-sprite or tile set.
 
-Source can contain furniture or world tiles with a packaging manifest. Every
-object retains its original file, dimensions, alpha, anchor and scale. Outputs
-live in a different directory and cannot overwrite the production game tree.
+Source can contain manifested furniture, or a dedicated folder of RGBA tile
+PNGs without a manifest. Every asset retains original dimensions and alpha.
+Any authoritative furniture anchor is carried through unchanged; raw tile
+PNGs have no anchor metadata and are previewed centered only. Outputs live
+in a different directory and cannot overwrite the production game tree.
 """
 import argparse
 import hashlib
@@ -23,10 +25,16 @@ from package_v3_recovery import checker, paste_at_contact, font
 def candidates(source, output, colors=80, edge_strength=.65):
     if source.resolve()==output.resolve() or source.resolve() in output.resolve().parents:
         raise ValueError("Candidate output cannot be inside or equal to the source tree")
-    manifest=json.loads((source/"manifest.json").read_text())
-    objects=manifest.get("items",[])
+    if (source/"manifest.json").exists():
+        manifest=json.loads((source/"manifest.json").read_text())
+        objects=manifest.get("items",[])
+    else:
+        # Tiles often come as independent PNGs with world positioning stored in
+        # Godot resources instead of this manifest. Never invent or modify it.
+        objects=[{"name":p.stem,"world_sprite":str(p.relative_to(source)),
+                  "anchor_px":None} for p in sorted(source.rglob("*.png"))]
     if not objects:
-        raise ValueError("Expected package manifest with items")
+        raise ValueError("Expected manifest items or a dedicated PNG tile folder")
     output.mkdir(parents=True,exist_ok=True)
     sheet_w,sheet_h=440,330
     sheet=Image.new("RGB",(sheet_w*2,sheet_h*len(objects)),(235,237,230))
@@ -44,10 +52,11 @@ def candidates(source, output, colors=80, edge_strength=.65):
         destination=output/rel
         destination.parent.mkdir(parents=True,exist_ok=True)
         refined.save(destination,optimize=True)
-        anchor=item["anchor_px"]
+        anchor=item.get("anchor_px")
         for col,(label,sprite) in enumerate((("CURRENT",original),("PIXEL CANDIDATE",refined))):
             panel=checker(sheet_w-22,sheet_h-56)
-            sprite.info["anchor"]=anchor
+            # The preview-only centering is explicitly not asset pivot metadata.
+            sprite.info["anchor"]=anchor if anchor is not None else [sprite.width/2,sprite.height/2]
             paste_at_contact(panel,sprite,(panel.width//2,round(panel.height*.80)),2.2)
             sheet.paste(panel.convert("RGB"),(sheet_w*col+11,sheet_h*i+35))
             draw.text((sheet_w*col+16,sheet_h*i+9),
@@ -55,6 +64,7 @@ def candidates(source, output, colors=80, edge_strength=.65):
                       font=font(17),fill=(28,34,28))
         records.append({"name":name,"source":str(rel),"candidate":str(rel),
                         "anchor_px":anchor,"size_px":list(original.size),
+                        "anchor_policy":"preserved" if anchor is not None else "external_not_inferred",
                         "alpha_preserved":True,
                         "sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
                         "status":"VISUAL_REVIEW_REQUIRED_NOT_GAME_APPROVED"})
