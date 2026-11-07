@@ -149,19 +149,26 @@ func _valid_count(value: Variant) -> bool:
 	var number: float = float(value)
 	return is_finite(number) and number >= 1.0 and number <= 1000.0 and floor(number) == number
 
-# The Golden 40 are a separate icon-only test catalog. Existing original item IDs remain stable.
+# Golden 40 icon-only loot catalog. Keep the same tab indentation as the base script.
 func _load_golden40() -> void:
- var path := "res://data/golden40_items.json"
- var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
- if not parsed is Dictionary or parsed.get("schema") != 1 or not parsed.get("items") is Array:
-  push_error("Invalid Golden 40 game-item definitions")
-  return
- for entry in parsed.items:
-  if not entry is Dictionary or not entry.get("id") is String or not entry.get("icon_path") is String:
-   push_error("Malformed Golden 40 prototype item")
-   return
-  var id: String = entry.id
-  if definitions.has(id):
-   push_error("Duplicate Golden 40 item " + id)
-   return
-  definitions[id] = entry.duplicate(true)
+	const GOLDEN_PATH := "res://data/golden40_items.json"
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(GOLDEN_PATH))
+	if not parsed is Dictionary:
+		push_error("Invalid Golden 40 catalog: expected Dictionary")
+		return
+	if parsed.get("schema", 0) != 1 or not parsed.get("items") is Array:
+		push_error("Invalid Golden 40 catalog schema/items")
+		return
+	for raw: Variant in parsed["items"]:
+		if not raw is Dictionary:
+			push_error("Invalid Golden 40 item entry")
+			return
+		var record: Dictionary = raw
+		if not record.get("id") is String or not record.get("icon_path") is String:
+			push_error("Incomplete Golden 40 item identity")
+			return
+		var item_id: String = str(record["id"])
+		if definitions.has(item_id):
+			push_error("Duplicate Golden 40 item ID: " + item_id)
+			return
+		definitions[item_id] = record.duplicate(true)
