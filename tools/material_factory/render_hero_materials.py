@@ -78,4 +78,83 @@ def material_fidelity(key,m):
     for slot,material_id in BIND.get(key,{}).items():
         bind_pbr(m[slot],material_id,slot)
 v3.material_fidelity_v3=material_fidelity
+
+# Make *mesh-specific* condition masks. A refrigerator door should not acquire
+# the same grime pattern as a sofa cushion or an entire wooden cabinet carcass.
+# This is original procedural shading, not copied reference-game pixels.
+SEMANTIC_ZONES=(
+    ("curved ivory enamel carcass", "bottom", (.81,.79,.75,1), .32),
+    ("individual pressed convex door", "grip", (.92,.91,.89,1), .20),
+    ("dark walnut solid carcass", "bottom", (.76,.72,.68,1), .23),
+    ("slightly convex hand-finished inner panel", "grip", (1.14,1.12,1.09,1), .17),
+    ("overstuffed curved seat", "top", (.89,.88,.85,1), .14),
+    ("padded back cushion", "top", (.93,.92,.90,1), .10),
+)
+
+def semantic_surface(obj):
+    """Add a restrained location/role-conditioned color variation to one mesh."""
+    if obj is None or not obj.data.materials:
+        return obj
+    name=obj.name.lower()
+    rule=next(((zone,tint,amount) for prefix,zone,tint,amount in SEMANTIC_ZONES
+               if name.startswith(prefix)),None)
+    if not rule:
+        return obj
+    zone,tint,amount=rule
+    # Material copies keep existing image maps while isolating object-specific wear.
+    material=obj.data.materials[0].copy()
+    material.name=obj.name+" / semantic surface"
+    obj.data.materials[0]=material
+    nodes=material.node_tree.nodes;links=material.node_tree.links
+    shader=next((n for n in nodes if n.type=="BSDF_PRINCIPLED"),None)
+    if shader is None or not shader.inputs["Base Color"].is_linked:
+        return obj
+    original=shader.inputs["Base Color"].links[0].from_socket
+    coords=nodes.new("ShaderNodeTexCoord")
+    xyz=nodes.new("ShaderNodeSeparateXYZ")
+    links.new(coords.outputs["Generated"],xyz.inputs["Vector"])
+    region=nodes.new("ShaderNodeMapRange")
+    region.clamp=True
+    if zone=="bottom":
+        region.inputs["From Min"].default_value=.04
+        region.inputs["From Max"].default_value=.43
+        region.inputs["To Min"].default_value=1.
+        region.inputs["To Max"].default_value=0.
+        links.new(xyz.outputs["Z"],region.inputs["Value"])
+    elif zone=="grip":
+        region.inputs["From Min"].default_value=.48
+        region.inputs["From Max"].default_value=.95
+        links.new(xyz.outputs["X"],region.inputs["Value"])
+    else:
+        region.inputs["From Min"].default_value=.45
+        region.inputs["From Max"].default_value=.94
+        links.new(xyz.outputs["Z"],region.inputs["Value"])
+    noise=nodes.new("ShaderNodeTexNoise")
+    noise.inputs["Scale"].default_value=13.
+    noise.inputs["Detail"].default_value=2.
+    links.new(coords.outputs["Generated"],noise.inputs["Vector"])
+    modulation=nodes.new("ShaderNodeMath");modulation.operation="MULTIPLY"
+    links.new(region.outputs["Result"],modulation.inputs[0])
+    links.new(noise.outputs["Fac"],modulation.inputs[1])
+    strength=nodes.new("ShaderNodeMath");strength.operation="MULTIPLY"
+    strength.inputs[1].default_value=amount
+    links.new(modulation.outputs[0],strength.inputs[0])
+    mix=nodes.new("ShaderNodeMixRGB");mix.blend_type="MULTIPLY"
+    links.new(strength.outputs[0],mix.inputs[0])
+    links.new(original,mix.inputs[1])
+    mix.inputs[2].default_value=tint
+    links.new(mix.outputs["Color"],shader.inputs["Base Color"])
+    print("LL_SEMANTIC_MATERIAL",obj.name,zone,flush=True)
+    return obj
+
+original_cube=v3.cube
+def cube_with_semantics(*args,**kwargs):
+    return semantic_surface(original_cube(*args,**kwargs))
+v3.cube=cube_with_semantics
+
+original_pad=v3.anatomical_pad
+def pad_with_semantics(*args,**kwargs):
+    return semantic_surface(original_pad(*args,**kwargs))
+v3.anatomical_pad=pad_with_semantics
+
 v3.main()
