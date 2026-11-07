@@ -1,0 +1,944 @@
+{
+  "schema_version": 1,
+  "status": "contract_candidate_not_gameplay_integrated",
+  "description": "Original object templates, provisional gameplay numbers; collision/capacity/state schema pilot, not gameplay balance.",
+  "templates": [
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_refrigerator_hollow_v1",
+      "kind": "furniture",
+      "family": "refrigerator",
+      "tags": [
+        "container",
+        "appliance",
+        "hollow"
+      ],
+      "appearance": {
+        "geometry_template": "hollow_refrigerator_v1",
+        "materials": [
+          "painted_metal",
+          "plastic",
+          "rubber",
+          "glass"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": [
+          "refrigerator_main_open",
+          "refrigerator_freezer_open"
+        ]
+      },
+      "physical": {
+        "dimensions_m": [
+          0.77,
+          0.75,
+          1.77
+        ],
+        "empty_mass_kg": 65,
+        "collision": {
+          "mode": "solid",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                0,
+                0
+              ],
+              "size_m": [
+                0.75,
+                0.7
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "blocks",
+          "attenuation": 1
+        },
+        "sound": {
+          "material": "painted_metal",
+          "break_noise": 0.85
+        },
+        "movability": {
+          "modes": [
+            "push",
+            "drag"
+          ],
+          "strength_required": 5
+        }
+      },
+      "components": {
+        "storage": {
+          "hollow": true,
+          "compartments": [
+            {
+              "id": "fridge",
+              "bound_to_door": "lower",
+              "slots": 16,
+              "capacity_kg": 35,
+              "capacity_l": 160
+            },
+            {
+              "id": "freezer",
+              "bound_to_door": "upper",
+              "slots": 6,
+              "capacity_kg": 12,
+              "capacity_l": 45
+            }
+          ]
+        },
+        "interaction": {
+          "reach_m": 1.25,
+          "actions": [
+            {
+              "verb": "open",
+              "duration_s": 0.65,
+              "interruptible": true
+            },
+            {
+              "verb": "close",
+              "duration_s": 0.5,
+              "interruptible": true
+            },
+            {
+              "verb": "search",
+              "duration_s": 1.2,
+              "interruptible": true
+            },
+            {
+              "verb": "move",
+              "duration_s": 2.5,
+              "interruptible": true
+            }
+          ]
+        },
+        "state": {
+          "lower_door": "closed",
+          "upper_door": "closed",
+          "locked": false,
+          "powered": true,
+          "inventory_persisted": true
+        },
+        "destruction": {
+          "max_hp": 110,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "floor_tile",
+          "adjacent_access_cell_required": true
+        },
+        "event_contract": {
+          "refrigerator_main_open": {
+            "event_frame": 7,
+            "opens_compartment": "fridge"
+          },
+          "refrigerator_freezer_open": {
+            "event_frame": 7,
+            "opens_compartment": "freezer"
+          }
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_cabinet_hollow_v1",
+      "kind": "furniture",
+      "family": "cabinet",
+      "tags": [
+        "container",
+        "hollow"
+      ],
+      "appearance": {
+        "geometry_template": "hollow_cabinet_v1",
+        "materials": [
+          "wood",
+          "oxidized_metal"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": [
+          "cabinet_pair_open"
+        ]
+      },
+      "physical": {
+        "dimensions_m": [
+          1.12,
+          0.65,
+          1.51
+        ],
+        "empty_mass_kg": 43,
+        "collision": {
+          "mode": "solid",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                0,
+                0
+              ],
+              "size_m": [
+                1.06,
+                0.57
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "blocks",
+          "attenuation": 1
+        },
+        "sound": {
+          "material": "wood",
+          "break_noise": 0.7
+        },
+        "movability": {
+          "modes": [
+            "push",
+            "drag",
+            "carry"
+          ],
+          "strength_required": 3
+        }
+      },
+      "components": {
+        "storage": {
+          "hollow": true,
+          "compartments": [
+            {
+              "id": "left_section",
+              "bound_to_door": "left",
+              "slots": 12,
+              "capacity_kg": 24,
+              "capacity_l": 80
+            },
+            {
+              "id": "right_section",
+              "bound_to_door": "right",
+              "slots": 12,
+              "capacity_kg": 24,
+              "capacity_l": 80
+            }
+          ]
+        },
+        "interaction": {
+          "reach_m": 1.25,
+          "actions": [
+            {
+              "verb": "open",
+              "duration_s": 0.55,
+              "interruptible": true
+            },
+            {
+              "verb": "close",
+              "duration_s": 0.4,
+              "interruptible": true
+            },
+            {
+              "verb": "search",
+              "duration_s": 1.1,
+              "interruptible": true
+            },
+            {
+              "verb": "move",
+              "duration_s": 2.5,
+              "interruptible": true
+            }
+          ]
+        },
+        "state": {
+          "left_door": "closed",
+          "right_door": "closed",
+          "locked": false,
+          "inventory_persisted": true
+        },
+        "destruction": {
+          "max_hp": 90,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "floor_tile",
+          "adjacent_access_cell_required": true
+        },
+        "event_contract": {
+          "cabinet_pair_open": {
+            "event_frame": 7,
+            "opens_compartments": [
+              "left_section",
+              "right_section"
+            ]
+          }
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_sofa_two_seat_v1",
+      "kind": "furniture",
+      "family": "sofa",
+      "tags": [
+        "seat",
+        "cover"
+      ],
+      "appearance": {
+        "geometry_template": "sofa_cushion_v3",
+        "materials": [
+          "fabric",
+          "wood"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": []
+      },
+      "physical": {
+        "dimensions_m": [
+          1.96,
+          1.02,
+          1.16
+        ],
+        "empty_mass_kg": 52,
+        "collision": {
+          "mode": "solid",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                0,
+                0
+              ],
+              "size_m": [
+                1.89,
+                0.94
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "partial",
+          "attenuation": 0.7
+        },
+        "sound": {
+          "material": "fabric",
+          "break_noise": 0.45
+        },
+        "movability": {
+          "modes": [
+            "push",
+            "drag"
+          ],
+          "strength_required": 4
+        }
+      },
+      "components": {
+        "interaction": {
+          "reach_m": 1.3,
+          "actions": [
+            {
+              "verb": "sit",
+              "duration_s": 0.5,
+              "interruptible": true
+            },
+            {
+              "verb": "move",
+              "duration_s": 2,
+              "interruptible": true
+            }
+          ]
+        },
+        "state": {
+          "occupied": false
+        },
+        "destruction": {
+          "max_hp": 80,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "floor_tile",
+          "adjacent_access_cell_required": true
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_wood_floor_tile_v1",
+      "kind": "tile",
+      "family": "wood_floor",
+      "tags": [
+        "floor"
+      ],
+      "appearance": {
+        "geometry_template": "tile_square_1m_v1",
+        "materials": [
+          "wood"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": []
+      },
+      "physical": {
+        "dimensions_m": [
+          1,
+          1,
+          0.028
+        ],
+        "empty_mass_kg": 0,
+        "collision": {
+          "mode": "passable",
+          "shapes": []
+        },
+        "sight": {
+          "mode": "transparent",
+          "attenuation": 0
+        },
+        "sound": {
+          "material": "wood",
+          "break_noise": 0.35
+        },
+        "movability": {
+          "modes": [
+            "static"
+          ],
+          "strength_required": 0
+        }
+      },
+      "components": {
+        "surface": {
+          "friction": 0.81,
+          "footstep_event": "wood_walk",
+          "temperature_modifier": 0,
+          "wet_slip_multiplier": 0.64
+        },
+        "placement": {
+          "snap": "grid",
+          "adjacent_access_cell_required": false
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_glass_coffee_table_v1",
+      "kind": "furniture",
+      "family": "glass_table",
+      "tags": [
+        "table",
+        "transparent_sight"
+      ],
+      "appearance": {
+        "geometry_template": "glass_table_v1",
+        "materials": [
+          "amber_glass",
+          "oxidized_metal"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": []
+      },
+      "physical": {
+        "dimensions_m": [
+          1.2,
+          0.6,
+          0.45
+        ],
+        "empty_mass_kg": 17,
+        "collision": {
+          "mode": "partial",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                -0.46,
+                -0.19
+              ],
+              "size_m": [
+                0.08,
+                0.08
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                0.46,
+                -0.19
+              ],
+              "size_m": [
+                0.08,
+                0.08
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                -0.46,
+                0.19
+              ],
+              "size_m": [
+                0.08,
+                0.08
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                0.46,
+                0.19
+              ],
+              "size_m": [
+                0.08,
+                0.08
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "transparent",
+          "attenuation": 0.03
+        },
+        "sound": {
+          "material": "amber_glass",
+          "break_noise": 0.95
+        },
+        "movability": {
+          "modes": [
+            "pickup",
+            "push"
+          ],
+          "strength_required": 2
+        }
+      },
+      "components": {
+        "interaction": {
+          "reach_m": 1,
+          "actions": [
+            {
+              "verb": "move",
+              "duration_s": 1.6,
+              "interruptible": true
+            }
+          ]
+        },
+        "destruction": {
+          "max_hp": 15,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "floor_tile",
+          "adjacent_access_cell_required": false
+        },
+        "state": {
+          "glass_intact": true
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_wood_door_v1",
+      "kind": "door",
+      "family": "wood_door",
+      "tags": [
+        "opening",
+        "barricadable"
+      ],
+      "appearance": {
+        "geometry_template": "wood_door_hinged_v1",
+        "materials": [
+          "wood",
+          "oxidized_metal"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": [
+          "door_open"
+        ]
+      },
+      "physical": {
+        "dimensions_m": [
+          0.88,
+          0.09,
+          2.02
+        ],
+        "empty_mass_kg": 25,
+        "collision": {
+          "mode": "solid",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                0,
+                0
+              ],
+              "size_m": [
+                0.88,
+                0.09
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "blocks",
+          "attenuation": 1
+        },
+        "sound": {
+          "material": "wood",
+          "break_noise": 0.9
+        },
+        "movability": {
+          "modes": [
+            "static"
+          ],
+          "strength_required": 0
+        }
+      },
+      "components": {
+        "interaction": {
+          "reach_m": 1.2,
+          "actions": [
+            {
+              "verb": "open",
+              "duration_s": 0.65,
+              "interruptible": true
+            },
+            {
+              "verb": "close",
+              "duration_s": 0.55,
+              "interruptible": true
+            },
+            {
+              "verb": "lock",
+              "duration_s": 1.25,
+              "interruptible": true
+            },
+            {
+              "verb": "unlock",
+              "duration_s": 1.25,
+              "interruptible": true
+            },
+            {
+              "verb": "barricade",
+              "duration_s": 2.5,
+              "interruptible": true
+            },
+            {
+              "verb": "remove_barricade",
+              "duration_s": 3,
+              "interruptible": true
+            }
+          ]
+        },
+        "state": {
+          "door": "closed",
+          "locked": false,
+          "damage_stage": "intact",
+          "barricade_layers": []
+        },
+        "barricade": {
+          "anchor_slots": [
+            "interior_top",
+            "interior_middle",
+            "interior_bottom",
+            "exterior_middle"
+          ],
+          "removable": true,
+          "assembly_component": "separate_persisted_layers"
+        },
+        "destruction": {
+          "max_hp": 65,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "wall_edge",
+          "adjacent_access_cell_required": true
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_dining_chair_v1",
+      "kind": "furniture",
+      "family": "chair",
+      "tags": [
+        "seat"
+      ],
+      "appearance": {
+        "geometry_template": "four_leg_dining_chair_v1",
+        "materials": [
+          "wood",
+          "fabric"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": []
+      },
+      "physical": {
+        "dimensions_m": [
+          0.46,
+          0.48,
+          0.88
+        ],
+        "empty_mass_kg": 6.5,
+        "collision": {
+          "mode": "partial",
+          "shapes": [
+            {
+              "kind": "aabb",
+              "center_m": [
+                -0.17,
+                -0.18
+              ],
+              "size_m": [
+                0.045,
+                0.045
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                0.17,
+                -0.18
+              ],
+              "size_m": [
+                0.045,
+                0.045
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                -0.17,
+                0.18
+              ],
+              "size_m": [
+                0.045,
+                0.045
+              ]
+            },
+            {
+              "kind": "aabb",
+              "center_m": [
+                0.17,
+                0.18
+              ],
+              "size_m": [
+                0.045,
+                0.045
+              ]
+            }
+          ]
+        },
+        "sight": {
+          "mode": "partial",
+          "attenuation": 0.38
+        },
+        "sound": {
+          "material": "wood",
+          "break_noise": 0.65
+        },
+        "movability": {
+          "modes": [
+            "pickup",
+            "push",
+            "drag"
+          ],
+          "strength_required": 1
+        }
+      },
+      "components": {
+        "interaction": {
+          "reach_m": 1,
+          "actions": [
+            {
+              "verb": "sit",
+              "duration_s": 0.4,
+              "interruptible": true
+            },
+            {
+              "verb": "pickup",
+              "duration_s": 0.8,
+              "interruptible": true
+            }
+          ]
+        },
+        "destruction": {
+          "max_hp": 27,
+          "stages": [
+            "intact",
+            "damaged",
+            "broken"
+          ]
+        },
+        "placement": {
+          "snap": "floor_tile",
+          "adjacent_access_cell_required": false
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    },
+    {
+      "schema_version": 1,
+      "template_id": "ll_template_food_tin_v1",
+      "kind": "item",
+      "family": "can",
+      "tags": [
+        "loot",
+        "food"
+      ],
+      "appearance": {
+        "geometry_template": "sealed_can_v1",
+        "materials": [
+          "oxidized_metal",
+          "paper"
+        ],
+        "conditions": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "tile_px": [
+          80,
+          40
+        ],
+        "animations": []
+      },
+      "physical": {
+        "dimensions_m": [
+          0.09,
+          0.09,
+          0.13
+        ],
+        "empty_mass_kg": 0.32,
+        "collision": {
+          "mode": "passable",
+          "shapes": []
+        },
+        "sight": {
+          "mode": "transparent",
+          "attenuation": 0
+        },
+        "sound": {
+          "material": "oxidized_metal",
+          "break_noise": 0.6
+        },
+        "movability": {
+          "modes": [
+            "pickup"
+          ],
+          "strength_required": 0.5
+        }
+      },
+      "components": {
+        "interaction": {
+          "reach_m": 1.2,
+          "actions": [
+            {
+              "verb": "pickup",
+              "duration_s": 0.5,
+              "interruptible": true
+            },
+            {
+              "verb": "inspect",
+              "duration_s": 0.2,
+              "interruptible": true
+            }
+          ]
+        },
+        "placement": {
+          "snap": "free",
+          "adjacent_access_cell_required": false
+        },
+        "state": {
+          "sealed": true
+        }
+      },
+      "qa_status": "contract_candidate_not_gameplay_integrated",
+      "design_values_provisional": true
+    }
+  ]
+}
