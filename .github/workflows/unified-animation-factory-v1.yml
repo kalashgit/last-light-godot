@@ -90,7 +90,12 @@ jobs:
           cp -r build/animation_factory/game_ready/. preview/animation-factory-v1/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add preview/animation-factory-v1
+          mkdir -p preview/material-factory-batch-v1
+          cp build/unified_factory/material_batch/batch_manifest.json preview/material-factory-batch-v1/
+          for c in 0 1 2 3; do
+            cp "build/unified_factory/material_batch/condition_${c}/contact-sheet.png" "preview/material-factory-batch-v1/condition_${c}_sheet.png"
+          done
+          git add preview/animation-factory-v1 preview/material-factory-batch-v1
           if ! git diff --cached --quiet; then
             git commit -m "Publish V1 animation pilot frames and GIF previews for review"
             git push origin HEAD:codex/last-light-unified-animation-factory-v1-20261107
