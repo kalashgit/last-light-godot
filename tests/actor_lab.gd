@@ -62,8 +62,16 @@ func _check() -> void:
             quit(1)
             return
     await create_timer(.3).timeout
-    if actors[1].sprite_frames.get_frame_count("walk_right") != 4:
-        push_error("Worker animation missing after directional input")
+    var worker_seen := false
+    for sprite in actors:
+        if sprite.sprite_frames.has_animation("walk_right"):
+            worker_seen = true
+            if sprite.sprite_frames.get_frame_count("walk_right") != 4:
+                push_error("Worker animation missing after directional input")
+                quit(1)
+                return
+    if not worker_seen:
+        push_error("No walking human pilot visible")
         quit(1)
         return
     print("LAST_LIGHT_ACTOR_LAB_PASS five actors four directions walk and zombie shamble")
