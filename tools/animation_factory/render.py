@@ -44,7 +44,8 @@ def rig_parts(action):
     rig = action["rig"]
     if rig == "fridge_hinge":
         z = 1.405 if action["part"] == "upper" else .617
-        names = ("Individual pressed convex door", "Door aged left/right seam", "Bent chromed pull")
+        names = ("Individual pressed convex door", "Door aged left/right seam",
+                 "Door rubber seal", "Bent chromed pull")
         moving = [o for o in all_parts if any(o.name.startswith(s) for s in names)
                   and abs(component_axis(o, 2) - z) < .36]
         if len(moving) < 4:
@@ -65,6 +66,52 @@ def rig_parts(action):
         return [(a,-1.0),(b,1.0)]
     raise ValueError("Unknown rig: "+rig)
 
+def validate_hollow_storage(family):
+    """Mechanical guard: storage is truly void, not a painted solid box.
+
+    Validate two air-pocket witness points per family against world bounding
+    boxes, in addition to requiring separately named sides/rear/shelves.
+    This is a *geometry* check, not proof of final visual quality or loot logic.
+    """
+    expectations = {
+        "refrigerator": dict(
+            required=("Fridge insulated outer side shell",
+                      "Fridge insulated rear shell", "Fridge removable interior shelf",
+                      "Fridge freezer separator"),
+            forbidden=("Curved ivory enamel carcass", "Inset black rubber gasket"),
+            probes=((0,-.06,.56),(0,-.06,1.22))),
+        "cabinet": dict(
+            required=("Cabinet load-bearing hollow side",
+                      "Cabinet real thin back panel", "Cabinet removable interior shelf"),
+            forbidden=("Dark walnut solid carcass", "Recessed inset back panel"),
+            probes= ((-.235,-.06,.765),(.235,-.06,.765)))
+    }
+    if family not in expectations:
+        return
+    rules=expectations[family]
+    meshes=[o for o in bpy.context.scene.objects if o.type=="MESH"]
+    names=[o.name for o in meshes]
+    for key in rules["required"]:
+        if not any(n.startswith(key) for n in names):
+            raise RuntimeError("Storage interior missing required geometry: "+key)
+    for key in rules["forbidden"]:
+        if any(n.startswith(key) for n in names):
+            raise RuntimeError("Solid/opaque interior obstruction remains: "+key)
+    bpy.context.view_layer.update()
+    # This test intentionally uses interior point occupancy. A solid carcass
+    # would enclose the probe; shelves/skins must *not*.
+    for p in rules["probes"]:
+        v=Vector(p)
+        for ob in meshes:
+            points=[ob.matrix_world@Vector(co) for co in ob.bound_box]
+            lo=tuple(min(point[a] for point in points) for a in range(3))
+            hi=tuple(max(point[a] for point in points) for a in range(3))
+            if all(lo[a]+.001 < v[a] < hi[a]-.001 for a in range(3)):
+                raise RuntimeError("Blocked "+family+" air cavity at "+
+                    str(p)+" by "+ob.name)
+    print("LL_HOLLOW_GEOMETRY_PASS",family,len(meshes),flush=True)
+
+
 def render_action(action, out):
     if action["condition"] != 1:
         raise ValueError("Only condition=1 visually test-rendered; do not fake other wear levels")
@@ -79,6 +126,7 @@ def render_action(action, out):
     mats = hero.materials(action["family"])
     hero.BUILD[action["family"]](mats)
     bpy.context.view_layer.update()
+    validate_hollow_storage(action["family"])
     hinges = rig_parts(action)
     bpy.context.view_layer.update()
     fixed_camera = tuple(round(x,6) for x in scene.camera.location)
