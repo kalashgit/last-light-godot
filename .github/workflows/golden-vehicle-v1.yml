@@ -1,0 +1,85 @@
+name: LAST LIGHT Golden Hatchback 16-heading candidate
+on:
+  push:
+    branches:
+      - codex/last-light-golden-vehicle-v1-20261107
+    paths:
+      - "tools/vehicle_factory/**"
+      - "tests/vehicle_factory_v1.py"
+      - ".github/workflows/golden-vehicle-v1.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: last-light-golden-hatchback-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: write
+
+jobs:
+  golden-vehicle-v1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install sprite dependencies
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Run packed atlas regression
+        run: python tests/vehicle_factory_v1.py
+      - name: Install Blender renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Generate real original 16-heading hatchback renders
+        run: |
+          set -o pipefail
+          mkdir -p build/vehicle_factory
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/render.py -- --output build/vehicle_factory/raw 2>&1 | tee build/vehicle_factory/blender.log
+          grep -q 'LL_VEHICLE_RENDER_DONE 16' build/vehicle_factory/blender.log
+          if grep -q 'Traceback (most recent call last)' build/vehicle_factory/blender.log; then exit 1; fi
+      - name: Package game-scale atlas and QA
+        run: |
+          python tools/vehicle_factory/pack.py --input build/vehicle_factory/raw --output build/vehicle_factory/game_ready
+          python - <<'PY'
+          from PIL import Image
+          import json
+          from pathlib import Path
+          o=Path("build/vehicle_factory/game_ready")
+          m=json.loads((o/"manifest.json").read_text())
+          assert m["heading_count"] == 16
+          assert m["tile_px"]==[80,40]
+          assert len(m["anchor_px"])==2
+          img=Image.open(o/m["atlas"]).convert("RGBA")
+          assert img.size == (m["cell_px"][0]*4,m["cell_px"][1]*4)
+          assert img.getchannel("A").getextrema() == (0,255)
+          assert len(list(o.glob("heading_*.png")))==16
+          print("LL_VEHICLE_ATLAS_QA_PASS 16 headings transparent fixed-pivot")
+          PY
+      - name: Publish actual phone-accessible visuals to isolated branch
+        run: |
+          set -euo pipefail
+          mkdir -p preview/vehicle-factory-v1
+          cp -r build/vehicle_factory/game_ready/. preview/vehicle-factory-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/vehicle-factory-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish 16-heading original hatchback visual candidates"
+            for retry in 1 2 3; do
+              git fetch origin codex/last-light-golden-vehicle-v1-20261107
+              git rebase origin/codex/last-light-golden-vehicle-v1-20261107
+              if git push origin HEAD:codex/last-light-golden-vehicle-v1-20261107; then exit 0; fi
+            done
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-golden-hatchback-v1-preview
+          path: |
+            build/vehicle_factory/game_ready
+            build/vehicle_factory/blender.log
+          retention-days: 14
+          if-no-files-found: error
