@@ -975,6 +975,8 @@ func _recover_backup() -> bool:
  return true
 
 func _held_frame(id: String, direction: int) -> Dictionary:
+ # Golden 40 artwork is an inventory icon, not an authored held animation.
+ if not art.catalog.has(id): return {}
  var key:=id+"/%d"%direction
  if not held_sprites.has(key):
   for frame in art.catalog[id].frames:
