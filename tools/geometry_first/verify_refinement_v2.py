@@ -53,10 +53,12 @@ def main():
                                    " [%.3f,%.3f] expected height %.3f"%(
                                        min(zvals),max(zvals),expected))
             print("LL_REFINEMENT_HEIGHT_PASS",aid,round(min(zvals),3),round(max(zvals),3))
-            for tag in ("smooth pressed roof","side left pane","side right pane",
+            for tag in ("smooth pressed roof","sculpted contoured bonnet","side left pane","side right pane",
                         "formed wheel arch lip","functional door-panel line"):
                 if not any(tag in s for s in names):
                     raise RuntimeError("vehicle lacks true V2 "+tag+": "+aid)
+            if any("LL FLEET body nose" in s for s in names):
+                raise RuntimeError("old spherical nose should be replaced: "+aid)
             if any("pressed separate roof" in s for s in names):
                 raise RuntimeError("unrefined box roof remains: "+aid)
             if len([s for s in names if "LL FLEET tire" in s])<4:
