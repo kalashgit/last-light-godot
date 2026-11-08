@@ -12,6 +12,7 @@ import hashlib
 from mathutils import Vector
 
 OUT = os.path.abspath(sys.argv[sys.argv.index('--') + 1]) if '--' in sys.argv else '/tmp/f07-calibration'
+only_species = sys.argv[sys.argv.index('--only')+1] if '--only' in sys.argv else None
 os.makedirs(OUT, exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
@@ -24,6 +25,26 @@ def material(name, color, roughness=0.84):
     bsdf.inputs['Base Color'].default_value = (*color, 1)
     bsdf.inputs['Roughness'].default_value = roughness
     return m
+
+def patterned_material(name, primary, secondary, scale, threshold, roughness):
+    """Original seeded 3D procedural hide/feather color; no external textures."""
+    mat=material(name,primary,roughness)
+    nt=mat.node_tree
+    shader=nt.nodes.get('Principled BSDF')
+    noise=nt.nodes.new('ShaderNodeTexNoise')
+    noise.inputs['Scale'].default_value=scale
+    noise.inputs['Detail'].default_value=3.2
+    noise.inputs['Roughness'].default_value=.63
+    mapping=nt.nodes.new('ShaderNodeTexCoord')
+    nt.links.new(mapping.outputs['Generated'],noise.inputs['Vector'])
+    ramp=nt.nodes.new('ShaderNodeValToRGB')
+    ramp.color_ramp.elements[0].position=max(0,threshold-.065)
+    ramp.color_ramp.elements[0].color=(*secondary,1)
+    ramp.color_ramp.elements[1].position=min(1,threshold+.065)
+    ramp.color_ramp.elements[1].color=(*primary,1)
+    nt.links.new(noise.outputs['Fac'],ramp.inputs['Fac'])
+    nt.links.new(ramp.outputs['Color'],shader.inputs['Base Color'])
+    return mat
 
 def ellipsoid(name, pos, radii, mat):
     bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, location=pos)
@@ -117,50 +138,57 @@ def animate(arm, legs, is_bird):
         action.use_fake_user = True
     arm.animation_data.action = bpy.data.actions[arm.name + '_idle']
 
-hide = material('Original muted umber coat calibration', (0.30, 0.22, 0.16))
-feather = material('Original cream feather mass calibration', (0.65, 0.56, 0.40))
+hide = patterned_material('Original warm dairy cattle coat CAL',(.68,.60,.48),(.15,.105,.078),3.2,.49,.82)
+feather = patterned_material('Original buff feather mass CAL',(.72,.66,.53),(.50,.41,.30),16,.30,.89)
 dark = material('Hoof and eye', (0.085, 0.074, 0.062))
 red = material('Comb red', (0.47, 0.08, 0.057))
 beak = material('Beak ochre', (0.66, 0.43, 0.12))
+horn = material('Horn bone',(.65,.60,.48))
+udder_mat=material('Udder skin',(.54,.34,.29))
 
 # X = forward, Y = sideways, Z = up. Legs are merged into continuous shell.
-cow_lobes = [(0,0,1.05,.85,.39,.43), (.78,0,1.13,.38,.29,.36), (1.14,0,1.03,.29,.23,.24)]
-for x in (-.57,.57):
-    for y in (-.28,.28):
-        cow_lobes += [(x,y,.66,.17,.15,.45),(x,y,.30,.11,.105,.29)]
+cow_lobes = [(-.10,0,1.18,1.08,.42,.46),(.68,0,1.28,.43,.43,.46),
+             (.99,0,1.39,.33,.25,.38),(1.26,0,1.40,.34,.25,.24)]
+for x in (-.76,.63):
+    for y in (-.29,.29):
+        cow_lobes += [(x,y,.78,.18,.16,.48),(x,y,.39,.115,.115,.36)]
 cow = shell('Cow_CAL_NOT_CANONICAL', cow_lobes, hide)
-for x in (-.57,.57):
-    for y in (-.28,.28):
-        ellipsoid('Hoof', (x,y,.105),(.16,.13,.10), dark)
+for x in (-.76,.63):
+    for y in (-.29,.29):
+        for split in (-.055,.055):
+            ellipsoid('SplitClovenHoof', (x+.045,y+split,.085),(.155,.067,.085), dark)
 for y in (-.22,.22):
-    ellipsoid('Eye', (1.27,y,1.15),(.045,.034,.04),dark)
-    ellipsoid('CattleEar', (1.00,y*1.45,1.34),(.20,.10,.085),hide)
-ellipsoid('CattleMuzzle',(1.35,0,.97),(.19,.20,.13),hide)
-ellipsoid('CattleTail',(-.93,0,.87),(.30,.065,.07),hide)
-ellipsoid('CattleUdder',(-.29,0,.62),(.23,.21,.14),hide)
-cow_bones = [('root',(0,0,.95),(0,0,1.16),None),('spine',(-.55,0,1.12),(.55,0,1.12),'root'),('neck',(.53,0,1.15),(1.04,0,1.11),'spine'),('head',(1.04,0,1.11),(1.34,0,1.02),'neck')]
+    ellipsoid('Eye', (1.42,y,1.47),(.045,.034,.04),dark)
+    ellipsoid('CattleEar', (1.10,y*1.55,1.59),(.22,.12,.08),hide)
+    ellipsoid('Horn',(1.13,y*1.15,1.73),(.075,.07,.16),horn)
+ellipsoid('CattleMuzzle',(1.53,0,1.29),(.21,.22,.15),hide)
+ellipsoid('CattleTail',(-1.2,0,.90),(.33,.065,.07),hide)
+ellipsoid('CattleUdder',(-.37,0,.78),(.26,.20,.15),udder_mat)
+cow_bones = [('root',(0,0,1.10),(0,0,1.38),None),('spine',(-.75,0,1.25),(.63,0,1.31),'root'),('neck',(.63,0,1.31),(1.08,0,1.43),'spine'),('head',(1.08,0,1.43),(1.51,0,1.40),'neck')]
 cow_legs=[]
 for side, y in [('L',.28),('R',-.28)]:
-    for end,x in [('front',.57),('hind',-.57)]:
+    for end,x in [('front',.63),('hind',-.76)]:
         n=end+'_'+side
-        cow_bones += [(n,(x,y,.94),(x,y,.45),'root'),(n+'_lower',(x,y,.45),(x,y,.12),n)]
+        cow_bones += [(n,(x,y,1.07),(x,y,.49),'root'),(n+'_lower',(x,y,.49),(x,y,.085),n)]
         cow_legs.append(n)
 cow_arm=rig('CowRig_CAL',cow_bones)
 skin(cow,cow_arm)
 animate(cow_arm,cow_legs,False)
 cow_parts=set(bpy.context.scene.objects)
 
-bird_lobes = [(3,0,.45,.36,.27,.32),(3.27,0,.65,.15,.14,.24),(3.38,0,.81,.115,.12,.13)]
+bird_lobes = [(3,0,.49,.40,.28,.30),(3.27,0,.65,.17,.16,.22),(3.40,0,.81,.13,.12,.14)]
 for y in (-.16,.16):
-    bird_lobes += [(3,y,.42,.19,.1,.19),(2.98,y,.19,.065,.065,.22)]
+    bird_lobes += [(2.97,y,.44,.21,.10,.16),(3.02,y,.20,.05,.05,.22)]
 bird=shell('Chicken_CAL_NOT_CANONICAL',bird_lobes,feather)
 ellipsoid('Beak',(3.53,0,.75),(.13,.09,.065),beak)
-ellipsoid('Comb',(3.39,0,.97),(.13,.06,.095),red)
+for x,z,radius in [(3.28,.94,.075),(3.38,1.01,.082),(3.47,.94,.07)]:
+    ellipsoid('ScallopedComb',(x,0,z),(radius,.044,radius*1.20),red)
 for offset,y in enumerate((-.13,0,.13)):
     ellipsoid('TailFeather',(2.65,y,.66+offset*.075),(.19,.075,.13),feather)
 for y in (-.17,.17):
     ellipsoid('ChickenEye',(3.43,y*.78,.84),(.025,.025,.025),dark)
-    ellipsoid('ChickenFoot',(3.01,y,.055),(.12,.065,.04),beak)
+    for toe_y in (-.055,0,.055):
+        ellipsoid('ChickenToe',(3.115,y+toe_y,.045),(.125,.025,.027),beak)
     ellipsoid('WingFeather',(2.94,y*1.4,.49),(.21,.075,.14),feather)
 bird_bones=[('root',(3,0,.4),(3,0,.57),None),('body',(2.75,0,.48),(3.26,0,.48),'root'),('neck',(3.26,0,.55),(3.40,0,.80),'body'),('head',(3.40,0,.80),(3.49,0,.85),'neck'),('wing_L',(2.95,.08,.52),(3.05,.25,.39),'body'),('wing_R',(2.95,-.08,.52),(3.05,-.25,.39),'body')]
 for s,y in [('L',.16),('R',-.16)]:
@@ -205,7 +233,9 @@ scene=bpy.context.scene
 scene.frame_set(1)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT,'f07_noncanonical_calibration.blend'))
 os.makedirs(os.path.join(OUT,'frames'),exist_ok=True)
-for species,mesh,center,scale,arm in [('cow',cow,Vector((0,0,.75)),3.5,cow_arm),('chicken',bird,Vector((3,0,.45)),1.65,bird_arm)]:
+for species,mesh,center,scale,arm in [('cow',cow,Vector((.13,0,.98)),4.35,cow_arm),('chicken',bird,Vector((3,0,.45)),1.65,bird_arm)]:
+    if only_species and species != only_species:
+        continue
     for heading in range(8):
         for pose,frame in [('idle',1),('walk_a',4),('walk_b',10)]:
             arm.animation_data.action=bpy.data.actions[arm.name+('_idle' if pose=='idle' else '_walk')]
@@ -228,7 +258,9 @@ report['checks']={
     'eight_headings_per_species':all(sum(n.startswith(s+'_') for n in report['frames'])==24 for s in ('cow','chicken')),
     'different_rig_anatomy':len(cow_arm.data.bones)!=len(bird_arm.data.bones),
     'has_uv_and_weights':all(len(o.data.uv_layers)>0 and len(o.vertex_groups)>0 for o in (cow,bird)),
-    'walk_legs_out_of_phase':True, # phase design only, no IK / stance quality assertion
+    'walk_legs_out_of_phase_design_only':True, # no IK / stance quality assertion
+    'foot_sliding_qa':'NOT_RUN',
+    'aesthetic_approval':'NOT_APPROVED',
 }
 with open(os.path.join(OUT,'qa.json'),'w') as f:
     json.dump(report,f,indent=2)
