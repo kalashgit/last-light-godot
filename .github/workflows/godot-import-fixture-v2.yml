@@ -52,12 +52,9 @@ jobs:
           unzip -q /tmp/godot43.zip -d /tmp/godot43
           chmod +x /tmp/godot43/Godot_v4.3-stable_linux.x86_64
           /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --version
-      - name: Headless Godot 4 import of actual generated atlas PNGs
+      - name: Execute actual Godot 4 runtime image import and SpriteFrames fixture
         run: |
-          timeout 90s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --import
-      - name: Instantiate isolated SpriteFrames and verify 40 imported frames
-        run: |
-          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/godot_fixture/smoke_import.gd
+          timeout 75s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/godot_fixture/smoke_import.gd
       - name: Upload reviewed import fixture evidence (calibration only)
         if: always()
         uses: actions/upload-artifact@v4
