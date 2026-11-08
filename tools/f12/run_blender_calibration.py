@@ -166,6 +166,8 @@ def cow():
     if not separator or "cow_arm=rig" not in pre:
         raise RuntimeError("F07 source boundary changed; refusing to guess")
     scene=setup()
+    # Preserve the exact camera matrix proven in the cube calibration.
+    preserved_camera_matrix=scene.camera.matrix_world.copy()
     ns={"__name__":"f07_source_geometry","__file__":str(script)}
     exec(compile(pre,str(script),"exec"),ns)
     # Hide/delete unrelated bird rig and meshes; retain cow source.
@@ -177,8 +179,7 @@ def cow():
     camdata=bpy.data.cameras.new("F12_RESTORED_2_TO_1")
     cam=bpy.data.objects.new("F12_RESTORED_2_TO_1",camdata)
     scene.collection.objects.link(cam)
-    cam.location=(8/math.sqrt(2),-8/math.sqrt(2),8*math.tan(math.radians(30)))
-    cam.rotation_euler=(-cam.location).to_track_quat("-Z","Y").to_euler()
+    cam.matrix_world=preserved_camera_matrix
     camdata.type="ORTHO"
     scene.camera=cam
     light=bpy.data.lights.new("F12_KEY","AREA")
