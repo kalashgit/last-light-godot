@@ -31,6 +31,8 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined'),
+                    default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
 out.mkdir(parents=True,exist_ok=True)
@@ -136,6 +138,82 @@ def segment(name,start,end,radius,bone,material,rig,steps=12):
     faces += [tuple(reversed(range(steps))),tuple(range(steps,steps*2))]
     return mesh_part(name,points,faces,bone,material,rig)
 
+def contoured_torso(name,material,rig,waist=1.0,shoulder=1.0,lean=.0):
+    """Editable multi-ring garment shell with shoulder/waist anatomy and cloth ease."""
+    # World coordinates match F05's provisional chest and waist bone locations.
+    rings=[(1.045,.176*waist,.139,0),
+           (1.115,.194*waist,.148,.006),
+           (1.245,.208,.158,.016),
+           (1.370,.238*shoulder,.159,.024),
+           (1.445,.205*shoulder,.129,.022)]
+    segments=20
+    points=[]
+    for z,rx,ry,offset in rings:
+        for i in range(segments):
+            theta=math.tau*i/segments
+            # Side seams and shoulder volume are prominent, not just a cylinder.
+            x=rx*math.cos(theta)+offset*lean
+            y=ry*math.sin(theta)+(.014 if z>1.30 else 0)
+            points.append((x,y,z))
+    faces=[]
+    for ring in range(len(rings)-1):
+        for i in range(segments):
+            j=(i+1)%segments
+            a=ring*segments+i
+            b=ring*segments+j
+            faces.append((a,b,b+segments,a+segments))
+    faces.append(tuple(reversed(range(segments))))
+    faces.append(tuple(range((len(rings)-1)*segments,len(rings)*segments)))
+    return mesh_part(name,points,faces,'chest',material,rig)
+
+def stitch_fold(name,path,width,bone,material,rig):
+    """A surface-following cloth fold, authored in geometry rather than raster noise."""
+    # Wide folds survive the final downscale; micro-noise remains in material only.
+    points=[]
+    for x,y,z in path:
+        points.extend(((x-width/2,y,z),(x+width/2,y,z)))
+    faces=[(2*i,2*i+1,2*i+3,2*i+2) for i in range(len(path)-1)]
+    return mesh_part(name,points,faces,bone,material,rig)
+
+def refine_v3_anatomy_and_wear(profile,rig):
+    """Original deterministic anatomy and garment finishing; calibration, not F11-approved."""
+    old=bpy.data.objects.get('torso cloth / contoured jacket')
+    if old:bpy.data.objects.remove(old,do_unlink=True)
+    fabric=next(m for m in bpy.data.materials if m.name.startswith('Worn woven cloth'))
+    trim=next(m for m in bpy.data.materials if m.name.startswith('Thread and seams'))
+    skin=next(m for m in bpy.data.materials if m.name.startswith('Pallid skin'))
+    grime=next(m for m in bpy.data.materials if m.name.startswith('Localized grime'))
+    shoulder=1.13 if profile['outfit']=='vest' else .94 if profile['outfit']=='ripped' else 1.0
+    waist=1.11 if profile['outfit']=='jacket' else .93 if profile['outfit']=='scrubs' else 1.0
+    contoured_torso('V3 anatomical torso garment',fabric,rig,waist,shoulder,profile['stance'])
+    # Material folds follow tension and gravity: shoulder-to-armpit and waist compression.
+    for side,sign in (('L',-1),('R',1)):
+        stitch_fold('shoulder tension fold '+side,[(sign*.17,-.142,1.405),
+                  (sign*.105,-.169,1.33),(sign*.071,-.171,1.276)],.016,'chest',trim,rig)
+        stitch_fold('waist compression '+side,[(sign*.17,-.143,1.14),
+                  (sign*.10,-.155,1.16),(sign*.045,-.155,1.13)],.018,'chest',trim,rig)
+        ball('cheekbone '+side,(sign*.077,-.064,1.625),(.047,.031,.036),'head',skin,rig)
+        ball('ear cartilage '+side,(sign*.122,.012,1.649),(.028,.023,.046),'head',skin,rig)
+        # Boot sole and trouser cuff reinforce the grounded physical silhouette.
+        ball('boot sole '+side,(sign*.120,-.127,.034),(.095,.165,.026),'foot_'+side,trim,rig)
+        ball('rolled trouser cuff '+side,(sign*.12,.003,.167),(.085,.081,.023),'shin_'+side,trim,rig)
+    ball('lower lip / slack jaw',(0,-.121,1.575),(.051,.018,.017),'head',grime,rig)
+    ball('collar notch',(0,-.139,1.451),(.055,.026,.029),'chest',trim,rig)
+    if profile['outfit']=='jacket':
+        stitch_fold('torn jacket seam',[(-.192,-.042,1.34),(-.176,-.13,1.285),
+                                       (-.151,-.156,1.215)],.035,'chest',grime,rig)
+    elif profile['outfit']=='scrubs':
+        stitch_fold('medical scrub V neckline',[(-.075,-.149,1.458),
+                    (0,-.174,1.385),(.075,-.149,1.458)],.019,'chest',trim,rig)
+    elif profile['outfit']=='vest':
+        for side,sign in (('L',-1),('R',1)):
+            stitch_fold('vest shoulder webbing '+side,[(sign*.172,-.122,1.44),
+                          (sign*.159,-.192,1.36),(sign*.154,-.186,1.29)],.041,'chest',grime,rig)
+    else:
+        ball('damaged clavicle silhouette',(.156,-.066,1.43),(.065,.065,.041),'chest',skin,rig)
+        stitch_fold('ripped front hem',[(.06,-.151,1.14),(.127,-.157,1.10),
+                    (.168,-.12,1.155)],.049,'chest',grime,rig)
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -214,6 +292,14 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
+    if args.geometry_profile=='v3_refined':
+        # Controlled silhouette differences rather than every zombie sharing one gait.
+        is_crawler=profile['outfit']=='ripped'
+        rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
+        rig.pose.bones['shoulder_R'].rotation_euler.z=-.12
+        rig.pose.bones['chest'].rotation_euler.z=.055+(.032*math.sin(phase) if clip=='shamble' else 0)
+        rig.pose.bones['neck'].rotation_euler.y=-.085 if is_crawler else .055
+        rig.pose.bones['head'].rotation_euler.z=-.13 if is_crawler else -.075
     for side,sign in (('L',1),('R',-1)):
         thigh=rig.pose.bones['thigh_'+side]
         arm=rig.pose.bones['upper_arm_'+side]
@@ -266,6 +352,7 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
+    if args.geometry_profile=='v3_refined':refine_v3_anatomy_and_wear(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
@@ -363,6 +450,7 @@ def export_variant(profile_name,profile):
             'source_f05_rig':'F05_CAL_0.1','f12_approved':False,
             'frame_canvas_px':[scene.render.resolution_x,scene.render.resolution_y],
             'pivot_px':pivot,'render_profile':args.render_profile,
+            'geometry_profile':args.geometry_profile,
             'camera_measurement':profile_measure,
             'directions':list(DIRS),'frames':image_frames,
             'contact_metadata':{'clip':'attack','frame_1_based':3,'time_ms':285,
