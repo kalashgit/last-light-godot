@@ -1,0 +1,790 @@
+{
+  "schema": 1,
+  "source_plan_sha256": "403850478c3c33cc3dbaeabfed6b62891db0720fe9202465d42f827633bf3907",
+  "source_plan_unique_count": 60,
+  "generated_3d_source_count": 60,
+  "ungenerated_remaining": 0,
+  "status": "REAL_3D_SOURCES_NOT_2_5D_OR_GOLDEN_APPROVED",
+  "items": [
+    {
+      "asset_id": "ll_master_actor_human_older",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.66391,
+        0.3795,
+        1.70843
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "f121a538b85797047e3434383aca25c502549ea03bf2ebc0ee99365f50abe631",
+      "glb_sha256": "8664d156c86f3813d5a97db61ba1992b5d333f6ab88ab74451e58253d0eafde3"
+    },
+    {
+      "asset_id": "ll_master_actor_human_underwear",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.68944,
+        0.3795,
+        1.78004
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "81b20c3175419ccd37f0bb7b274b0492c3c1f5634ffdc993a42522356314ec82",
+      "glb_sha256": "990bb3dbc5fd8f10fda36b9c41755cb36a940de7c7b888d4f9b5d69b04aa98b0"
+    },
+    {
+      "asset_id": "ll_master_actor_human_worker_crowbar",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.75476,
+        0.3795,
+        1.85165
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "d585969fea22b3298846eadbc7beeea83c93c979451792327bd7c5d62f5068fe",
+      "glb_sha256": "f5ac502178a6dd01105ee774cf92859da27811b5dbe1c51020e3a68a35bd2aed"
+    },
+    {
+      "asset_id": "ll_master_actor_zombie_construction",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.71222,
+        0.4995,
+        1.83324
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "174ef50059fc4d61b40523768c4df0370b56c7e6a269499e1db9778f9a8e40f8",
+      "glb_sha256": "555d1126a20e42bf81763e6a65f7a8b4ff60f8b9fa03288918785701d4fcf93b"
+    },
+    {
+      "asset_id": "ll_master_actor_zombie_hospital",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.66423,
+        0.4995,
+        1.83221
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "0d157210dfeb3087c70af4017758b51dd84f08012ba423c818e7a9bba49c63f4",
+      "glb_sha256": "60a2173437aee5093949f0c19baa461b5a52ae49d147036aadfd0ec591df7ced"
+    },
+    {
+      "asset_id": "ll_master_furniture_cabinet",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        1.1,
+        0.71582,
+        1.50075
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "2ceba83bd4d2d03144d010fea71e7fe1e3f80dbcefe36efaa033a9cc676ed885",
+      "glb_sha256": "1851ee0936f8f6a509791f16eb9ca08616e5e40c9ec07978549a66ba718b8174"
+    },
+    {
+      "asset_id": "ll_master_furniture_refrigerator",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.77,
+        0.85591,
+        1.763
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "7460481d0269ed447c61fed4ceef1db097079a9f5b92511a7546b45419955cd7",
+      "glb_sha256": "143eae5c339b7578294444e060439dac5da3bf053a18311208d47d183087fc57"
+    },
+    {
+      "asset_id": "ll_master_furniture_sofa",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        1.92,
+        1.02496,
+        1.10491
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "a05cb7d0973d3029ac8a1a64ee911c8f44f645ae4e3696cd510054834197174a",
+      "glb_sha256": "ff0939809f5cafa06b6f340b656fe465ad2addd739b78de6d2d2664a4bbdd8a1"
+    },
+    {
+      "asset_id": "ll_golden_acorn",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.02856,
+        0.02856,
+        0.0402
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "50066751e761c48acec0f86b5e669f408f623d4f06641a788696104c614c8ef0",
+      "glb_sha256": "9cf00d3679f0a8acc98f8903052c347ec86b8b2291b649619d96146a1c8c9032"
+    },
+    {
+      "asset_id": "ll_golden_aerosol_canister",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0705,
+        0.07345,
+        0.18335
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "c5895a2c8c15e428aba532b12956f0f4bbc39945c38e961d941806af102a469d",
+      "glb_sha256": "21082b6150a5eac1be9b16da76d7cf136ae4903a572a15029f8a056d4d854289"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_panel",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.27,
+        0.05955,
+        0.32
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "81ae2287d4478cba920444d028c7af8fbb3c190f76d71dbec2466ed720bf9fb6",
+      "glb_sha256": "0c01c423c5823a991df0fe910292bf9bf87247ba2e268420b64500a7bf81f2e5"
+    },
+    {
+      "asset_id": "ll_golden_air_filter_tape",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.105,
+        0.105,
+        0.0363
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "eabbbbf73cdb053cabf476fbca8f22aea410c5f08e291a5f19f3e4f0d2f088d1",
+      "glb_sha256": "5b69f408cbe10d920065486b1ebf539cd9643413ffbcc3bb2a7ad4b92bd40cfc"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.189,
+        0.126,
+        0.05
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "106a5c36de1a0f6f61ee1806e5ab36d141187e58d88da34a012c2405edc4ff75",
+      "glb_sha256": "5ef5371be321244ad34d2d18c28e607ebf3cd791051c723f565f4024f5cf1c6a"
+    },
+    {
+      "asset_id": "ll_golden_alcohol_wipes_old",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.189,
+        0.126,
+        0.05
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "9a67d90248951b382b0b3b15f96513a1390b619775094e84cdc304d5d2784464",
+      "glb_sha256": "39bf555d36373e1c2281489a71329fd0a373f380a23225aa071f44d668d0d0cd"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_ingot",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.18,
+        0.08,
+        0.0609
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "e5ecf4754937a4ea8ecd1f398e856b31fea4ebaf8978e0d9fb286b76cfce2ed0",
+      "glb_sha256": "968f9a152791a3b692cd759e4e4895c8c151c994b28ab4d56010abaa89b857e5"
+    },
+    {
+      "asset_id": "ll_golden_aluminum_scrap",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.10252,
+        0.10926,
+        0.03988
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "34204445f0959933bcc0f3d6ea5c9096f9d9056e67bea0c55bac8a5206a9b524",
+      "glb_sha256": "ce28e199075b434e1d800d7e0928a874704c40abf6a653c95b2937fd3edef07a"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_gem",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0468,
+        0.038,
+        0.066
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "93c0d84ab97d68ba1869ada2917ff08157ae59a1b38b7248615039a9983c7c08",
+      "glb_sha256": "04fa248ea25f9ffd0811da75165ae3cc7a3a9481adc9924618337c605ebe0fa3"
+    },
+    {
+      "asset_id": "ll_golden_amethyst_raw",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.06425,
+        0.08128,
+        0.04395
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "a54fe071a94cc294a01133bf1932225d00690e965f6fba1e0cf5cc04c6d9bc47",
+      "glb_sha256": "ef9a3206aa4ca90642b00a1dc0d035ad1d5fd7838cc91aa4f5dac5959044ed48"
+    },
+    {
+      "asset_id": "ll_golden_ammo_box_40cal",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.16,
+        0.1025,
+        0.09
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "ddb23de867fcaa2ca78872f4d4c7669e124972bbddb0ced19e2f9ee7a20a34fb",
+      "glb_sha256": "72e8e44f1e6c50cce4eb61e8b0c6b9da565be8b2c6ddcd8b9b8f67e7f470a5bd"
+    },
+    {
+      "asset_id": "ll_golden_ammunition_case",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.3838,
+        0.22115,
+        0.2462
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "7317f2a1fca0c299f2d4dc060a9f0c76225a2d0a5fa8ca9e16b0d7115ab52517",
+      "glb_sha256": "80f76bc64b0b7e79b0ca914aacb5306307a5e8d377189ca3cee974bf4d587927"
+    },
+    {
+      "asset_id": "ll_golden_baseball_bat",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0672,
+        0.0672,
+        0.8118
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "e5a646f1dcc2f5ebed1fc9dd18de55be2d87b3f21ecca638233643bc4220ab67",
+      "glb_sha256": "d27212585dc215b8ea0c1e8c7a7559dd0f2ffa6241e3820ea57ece304181b23a"
+    },
+    {
+      "asset_id": "ll_golden_basic_mace",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.184,
+        0.184,
+        0.6138
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "490941ba818e2a958d2b0fa1399f13968cbfb1c54a6f07ca6fd450f9b414dbe7",
+      "glb_sha256": "49985fced73e5e38234b429b7cf9dc3972d9b2683f24b5833d4405e59ec9b18f"
+    },
+    {
+      "asset_id": "ll_golden_bone_club",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.09345,
+        0.084,
+        0.52
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "8415a09dc6a6c54ea6bdcedb1ff7b3deebfb0998d609267c8c2daeaf84fa70c7",
+      "glb_sha256": "614e4e6e93dc5c2fec44b9a883bcfa821a9176cd8c7bc8912382e3921869544a"
+    },
+    {
+      "asset_id": "ll_golden_butterfly_knife_folded",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.025,
+        0.029,
+        0.1176
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "881eaaee2dcc49b2e2d0cd5a0b9e1a45425ef867f08df78e41d912db79067f19",
+      "glb_sha256": "96e831270ffe730139c6814458094014174377a4095a72627d241ac28cacf4b1"
+    },
+    {
+      "asset_id": "ll_golden_crowbar",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.08516,
+        0.042,
+        0.6728
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "336b59d9f3ec0449b46af771b13d0c623ed4d5d9b82b906d96e039739b35f641",
+      "glb_sha256": "d8d27a544bf7861691b392f03f2f280a605cd0369d713ce2370e4131f8326a8a"
+    },
+    {
+      "asset_id": "ll_golden_crude_machete",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0696,
+        0.036,
+        0.58
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "839c380200bc0e57d1a50895363072d30b9e05eed229356ebf901d369e603ffa",
+      "glb_sha256": "1cc5b9134d99dfcca5e3b8cab92c58b8736d28c9e0bb3317dcc2b6c8c65f570c"
+    },
+    {
+      "asset_id": "ll_golden_digital_alarm_clock",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.18,
+        0.0779,
+        0.1092
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "ba204a0cdf02244800ab34150d0197eb0e2a05b41ab7bc73a9ec6506bd9ea5c5",
+      "glb_sha256": "90046a348df28cb184573a5712a35170b5ba797a89b45d7cac56ef1f1024399c"
+    },
+    {
+      "asset_id": "ll_golden_felling_axe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.3162,
+        0.102,
+        0.8316
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "ec68a5b2f8fdd250af889abcf5a27b0273c14ea0bc3f0a204ad77a4e5b60c912",
+      "glb_sha256": "0bcdc7359f1677ebcf2c532ff7a9812321f37e3b96adf39cc267b0d478038524"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_camo",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.456,
+        0.25771,
+        0.44255
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "f1fc0c6f22160eb5a7a5f24d24262533a27541b108c4dd293fcf1d07734cdd44",
+      "glb_sha256": "4a26b32cad3c6b3b76a2557679711e322ee6fff9f9d876950b62d574bfdda550"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_olive",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.456,
+        0.25771,
+        0.44255
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "ac838245dfeaed2d668d3633d6789a1ef4711f77f16118914f223a647916b7b4",
+      "glb_sha256": "0ade4b5f95801cce7329251cda889b535c805a81c42af2cc0b407a97db46cda9"
+    },
+    {
+      "asset_id": "ll_golden_field_pack_sand",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.456,
+        0.25771,
+        0.44255
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "a22e61c9939aec174b12344f43132095e2eb752ec987ec3e88df827add186d45",
+      "glb_sha256": "7d95672172d9a60baf5e64c640a17d8322125c0097cce52baa8ef944c1b4e9a2"
+    },
+    {
+      "asset_id": "ll_golden_hand_axe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.2139,
+        0.0884,
+        0.3969
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "f1c8b22da0947438b4a4f9062bb23cf5db4f018a820b8f8a25853a8a51ac36df",
+      "glb_sha256": "fbcb7d8103481ce170146ecec5432e765cfb8b881eab2cccd4a58f1f46c445d6"
+    },
+    {
+      "asset_id": "ll_golden_hunting_knife",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.025,
+        0.0305,
+        0.3
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "c212218cb3f0073c6b693f6d34d1363bcbcf64a661fddbb083b3ee006f06a0b6",
+      "glb_sha256": "35f18c4fcd04b2001e2f600a782e066e8cbedacbb0aebdac318760131c1477b8"
+    },
+    {
+      "asset_id": "ll_golden_hunting_rifle",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.085,
+        0.0745,
+        1.04475
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "63dbbb50960a66d9a6c124ba3993bb6f4b4820b21041f2f3a1fed52179808146",
+      "glb_sha256": "95631548a3b17ae50e7318ad05fcc0957dff52db4204d4433a1ae3d4e94438f2"
+    },
+    {
+      "asset_id": "ll_golden_isopropyl_alcohol",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0799,
+        0.08291,
+        0.2002
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "9d3c3e5c6f785c51aa3b296dc2d77e1e2877efcebc3ca96870c53e5bb613a4b7",
+      "glb_sha256": "43d6e722468aa642d526ffa4902374bbae6d3e7d39a486a4ad170dd1503f9cd4"
+    },
+    {
+      "asset_id": "ll_golden_licorice_sweets",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.147,
+        0.105,
+        0.03
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "9700d0ec5c1c3bd8f062278f0a67285059f26378b69dc1712e3ed1fd1a6c61f3",
+      "glb_sha256": "9f4b82d353e874ac35c8371148b2b901a756a2bf0642d5bb6b3cf69cce672793"
+    },
+    {
+      "asset_id": "ll_golden_machete",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0609,
+        0.036,
+        0.57
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "72a23e42ce1c63bd01ccf1cb80b608cb52be04ef0511cfd4f7a452b10f092a6a",
+      "glb_sha256": "93b8c9e79576bef7c523ac4d6869db12e26e65cff23b1ee9ca48415b89593f63"
+    },
+    {
+      "asset_id": "ll_golden_meat_cleaver",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.06975,
+        0.036,
+        0.3162
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "70ff77e1bf3683283a4d633d0cd315f4171e08cdb0ece04b74841203acbbfc12",
+      "glb_sha256": "48dbfc5a8f1738d0cc600fbc8d94a3f8095cf574f8d76652241449f2d2ec1007"
+    },
+    {
+      "asset_id": "ll_golden_pickaxe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.4704,
+        0.11,
+        0.815
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "afb457b59ac6ba7e137a59f333136a952e87246e3ac14c61cab3d00d30d04926",
+      "glb_sha256": "fe72470009426ecbb9dc153be79342adb47b78a297107c3b8e204b40999a6eb5"
+    },
+    {
+      "asset_id": "ll_golden_pitchfork",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.2384,
+        0.044,
+        1.29375
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "17184e5e27852f44b235b8cb40ae4dc737a30a810d9bc72217f9ed9a0e60abea",
+      "glb_sha256": "3f8e82487ae752ab8b58700e749372a88a12530c73f939eefec1e8e27dc9e58c"
+    },
+    {
+      "asset_id": "ll_golden_pocket_knife",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.025,
+        0.029,
+        0.1008
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "dfd0a0791c72c3e4e6df2e793c790404fe3148a6ccb90a6be370c9255c6ed18e",
+      "glb_sha256": "f1d41f330f47af16fc954fef00b65e4f51dbd1434adf542c91250dfbd497fd7f"
+    },
+    {
+      "asset_id": "ll_golden_reinforced_baseball_bat",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0874,
+        0.0874,
+        0.8316
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "05e4d1d8e584bfbf46472a3092f624eac3830978466ab8c112369d1e9c50b667",
+      "glb_sha256": "8217cf0ccdf87d26faba8b76973920568da13032641f1e13235b61d22d58fe78"
+    },
+    {
+      "asset_id": "ll_golden_respirator_mask",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.1632,
+        0.10068,
+        0.1072
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "0496453f9f6117adda173737993d4deacf47ba6043959aa50ba14c8dcf732d3c",
+      "glb_sha256": "0194635f210eca021ebe5b02cb35c609ca58d1317118489768f2db70ff023460"
+    },
+    {
+      "asset_id": "ll_golden_scythe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.78518,
+        0.05,
+        1.62175
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "8f3e7547fff0c0d2d1efb166539ec71e68aba64c547599ec292745d0ff151243",
+      "glb_sha256": "768c4ae7eae2a08f0831c1668092fb1d2f3b62481a6b43ed1299c751352c5aac"
+    },
+    {
+      "asset_id": "ll_golden_short_pump_shotgun",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.085,
+        0.0745,
+        0.7196
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "1d6694aea97c943afa64ea29892e709367ce9aa5eeeb50bb503fd41276d44c43",
+      "glb_sha256": "e45d8324c4f7f8ce755c9bc8f0e33c074743494d8d56b7878ccdfeec192ef816"
+    },
+    {
+      "asset_id": "ll_golden_single_edge_sword",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0696,
+        0.0405,
+        0.89
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "9e68d528c61916726d2aa8a833f924a54fc5e1218cefe62f67f9c526e039af65",
+      "glb_sha256": "fbe8efd269d7038b67c58cbe83044826ee47de4e609ee454176f275f82a02a08"
+    },
+    {
+      "asset_id": "ll_golden_stone_axe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.2232,
+        0.0884,
+        0.5481
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "2b080d5b853d7ea8b8060f5996beff86d10e8f55ac6d0119dea217d4f1f40063",
+      "glb_sha256": "43b92ad8bf2193f10e987b5144cb4f2303e2442d07b4ff2f1f9348e86d20aef1"
+    },
+    {
+      "asset_id": "ll_golden_timed_aerosol_canister",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        0.0752,
+        0.07818,
+        0.20265
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "ed9f20b67898afea120a72f2c70cb9ecee116140babeee32f8220c6725c12277",
+      "glb_sha256": "0fe9ebd2c4528266774d1f6917c01ad719524cad4f234e86d688e2d95d49902b"
+    },
+    {
+      "asset_id": "ll_master_vehicle_box_truck",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        6.48964,
+        2.6412,
+        2.975
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "fc4bfce8c2458a9a36639f6a872917992983d4eda20975d7c1a329577b25216c",
+      "glb_sha256": "1edddeddaf32968d6a711aa512ee66db9268bb5f6abd33ac0aaf66a0696c315a"
+    },
+    {
+      "asset_id": "ll_master_vehicle_city_bus",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        9.6871,
+        2.91,
+        3.085
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "9d51ae94a584eb965a3042fdec5b40efc3c840ba996547ccc40aae7725a23353",
+      "glb_sha256": "a55728412b59727f5451094230faaf73917eb2569228016f8f5332bbbd2efc87"
+    },
+    {
+      "asset_id": "ll_master_vehicle_city_sedan",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        4.7936,
+        2.0812,
+        1.3725
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "4148c9018e42fdcb6430ee0e9046cf9f44288dd11a68aa1f7cb24e9b0182e28c",
+      "glb_sha256": "4331c660bb23c8b5fe7135cfe445a167402a8f0c74811fe1a55064fbb1f75aa1"
+    },
+    {
+      "asset_id": "ll_master_vehicle_compact_hatchback",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        3.89596,
+        2.0028,
+        1.4025
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
+      "glb_sha256": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c"
+    },
+    {
+      "asset_id": "ll_master_vehicle_compact_suv",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        4.44812,
+        2.1708,
+        1.6575
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "75d42d30403bd250c106250a910324af4000628d0392b651c28918c5d04b34d4",
+      "glb_sha256": "b1994ebe7c7524c9ff2c37543744183a12d6073cbd5df84b840cc4589ce4cc2d"
+    },
+    {
+      "asset_id": "ll_master_vehicle_delivery_van",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        5.13916,
+        2.2828,
+        2.305
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "b64b0cc6fab69ce8844d46f6ee3249c95ea6435d430250d1af8b5a62b1c09d9a",
+      "glb_sha256": "0ddc3ee918acb392561fb7a3b2cdad189da8b51501eff69eb0c74a3fa94da6db"
+    },
+    {
+      "asset_id": "ll_master_vehicle_family_wagon",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        4.86774,
+        2.1148,
+        1.4525
+      ],
+      "geometry_warning": null,
+      "preview": "preview_source.png",
+      "recipe_hash": "0fb5801a1359d2110f55d900aca39b219d707c0386272c82c5dcd9bbef59a4fb",
+      "glb_sha256": "70b4f42abf75478724757fbe89a6b540bb6edd031aef5897c21fbd68e622ef62"
+    },
+    {
+      "asset_id": "ll_master_vehicle_rural_tractor",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        3.9061,
+        2.35,
+        2.4375
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "de502720f6e3b0ccf731cfe1f323b1a1090837b8ba3341e04f42d95d39f88342",
+      "glb_sha256": "67046d7bc051d632c8f6afdd8f9d01d5d0b06b16267372e2dea7a6683d5ea1b5"
+    },
+    {
+      "asset_id": "ll_master_vehicle_service_ambulance",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        5.28811,
+        2.3276,
+        2.315
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "ca90aa53321681f4210f406e3198f8055196e45d04f8c0f10ab8eb37089378c0",
+      "glb_sha256": "b1face76daaed090600adbd836d1d8f33d9b9fcb00c3663297e4efc27e8412e6"
+    },
+    {
+      "asset_id": "ll_master_vehicle_service_security",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        4.7936,
+        2.0812,
+        1.3725
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "40e6f06422a4b0c08a55030b4f2dc09bc89c049a7e7da1276d37acf12c12f639",
+      "glb_sha256": "cb2319adc55f325ac6aefe3bad9258c29a8ee835fc1d51d46ee7510fd0ba85bb"
+    },
+    {
+      "asset_id": "ll_master_vehicle_sport_coupe",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        4.48596,
+        2.1484,
+        1.2525
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "12b1193027f54e6e1698cfaf1ac885fe1f264d63b636ab946bd06551ae40b6c7",
+      "glb_sha256": "a8120316323e3cc811b9cd60aec6d3fecaef5f589873a00741d374a77c966385"
+    },
+    {
+      "asset_id": "ll_master_vehicle_work_pickup",
+      "geometry_status": "GEOMETRY_SOURCE_EXPORTED_NEEDS_VISUAL_RECONSTRUCTION_QA",
+      "actual_bounds_m": [
+        5.19874,
+        2.2268,
+        1.7175
+      ],
+      "geometry_warning": null,
+      "preview": null,
+      "recipe_hash": "8975febad9e3d517490556cef2ad728644c2769855e5174443638cbc2973e749",
+      "glb_sha256": "16d2adf661f7ce230bb2d165b6f6aa98c1c32e728167b36fbe3bb0e25074e8c7"
+    }
+  ]
+}
