@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import math
+import struct
 import sys
 from pathlib import Path
 
@@ -127,11 +128,21 @@ def main():
     scene.frame_set(1)
     objs=[o for o in scene.objects if o.type=="MESH"]
     bpy.ops.object.select_all(action="DESELECT")
-    for obj in objs:
+    # Include hinge transform and world-ground anchor; otherwise Blender can
+    # export a visually valid GLB with ZERO animation clips or reusable pivots.
+    for obj in objs+[hinge,ground]:
         obj.select_set(True)
     bpy.context.view_layer.objects.active=objs[0]
     glb=output/"refrigerator_refined_calibration.glb"
-    bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",use_selection=True,export_apply=True)
+    bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",use_selection=True,
+                              export_apply=True,export_animations=True,
+                              export_nla_strips=False,export_force_sampling=True)
+    binary=glb.read_bytes()
+    json_length=struct.unpack_from("<I",binary,12)[0]
+    gltf_doc=json.loads(binary[20:20+json_length])
+    clips=gltf_doc.get("animations",[])
+    assert clips,"GLB export lost hinge animation"
+    assert any("hinge_local" in node.get("name","") for node in gltf_doc.get("nodes",[])),"GLB lost hinge pivot"
     scene.frame_set(7)
     # Deterministic checks of actual Blender hierarchy and full travel.
     doors=[o for o in scene.objects if o.name.startswith("door.") and o.type=="MESH" and o.parent==hinge]
@@ -146,6 +157,7 @@ def main():
       "hinge_range_deg":[0,-105],"frames":7,"mesh_count":len(objs),"door_meshes":len(doors),
       "real_cavity":True,"material_finish":"CALIBRATION_NOT_F11_VALIDATED",
       "checks":{"door_parenting":True,"shelf_pairs":True,"animation_end_angle":True,"render_files":True},
+      "glb_animation_clips":len(clips),"glb_hinge_pivot_exported":True,
       "sha256":{p.name:sha256(p) for p in files}}
     (output/"calibration_report.json").write_text(json.dumps(report,indent=2)+"\n")
     print("F01_REFRIGERATOR_CALIBRATION_PASS", json.dumps(report["checks"]),flush=True)
