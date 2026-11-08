@@ -15,12 +15,19 @@ def main(root):
         assert set(entry["maps"])==keys
         for key,rel in entry["maps"].items():
             im=Image.open(root/rel)
-            assert im.size==(512,512)
+            assert im.size==tuple(entry["resolution"])
             assert im.mode==("RGB" if key in ("albedo","normal") else "L")
             assert np.asarray(im).size>0
             if key=="normal":
                 a=np.asarray(im)
                 assert np.mean(a[:,:,2])>170,entry["id"]
+                vector=a.astype(np.float32)/255*2-1
+                length=np.linalg.norm(vector,axis=2)
+                assert np.max(np.abs(length-1))<.025,entry["id"]
+            if "channel_sha256" in entry:
+                actual=hashlib.sha256((root/rel).read_bytes()).hexdigest()
+                assert actual==entry["channel_sha256"][key],(entry["id"],key)
+                assert entry["channel_color_space"][key]==("sRGB" if key=="albedo" else "Non-Color")
         metals=np.asarray(Image.open(root/entry["maps"]["metallic"]))
         if entry["family"] in ("wood","fabric","plastic"):
             assert metals.max()==0,entry["id"]
