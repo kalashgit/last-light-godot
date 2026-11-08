@@ -90,7 +90,9 @@ def add_roof_shell(L,W,H,roof_len,center,material):
     for k in range(sections):
         u=k/(sections-1)
         x=center+roof_len*(u-.5)
-        taper=.83+.17*math.sin(math.pi*u)
+        # Roof edges must meet the side-glass top corners. The previous .83
+        # end taper left a visible air gap beside the windshield and hatch.
+        taper=.985+.015*math.sin(math.pi*u)
         crown=.065*math.sin(math.pi*u)
         for j in range(5):
             v=(j-2)/2
@@ -116,38 +118,40 @@ def add_roof_shell(L,W,H,roof_len,center,material):
     ob.modifiers.new("Roof weighted normals","WEIGHTED_NORMAL")
     return ob
 
-def roof_window_split(name,front_x,rear_x,front_sill_x,back_sill_x,roof_z,sill_z,W,m):
+def roof_window_split(name,front_x,rear_x,front_sill_x,back_sill_x,roof_z,sill_z,W,m,
+                      unified_end_glazing=False):
     # Vehicle coordinates are x=length, y=width, z=physical height.
     # IMPORTANT: windscreen "front_sill_x" and "back_sill_x" are longitudinal
     # X coordinates, not vertical Z. LL-084 scale gate catches misuse.
-    roof_mid=(front_x+rear_x)*.5
-    sill_mid=(front_sill_x+back_sill_x)*.5
-    zmid=roof_z+.035
+    fractions=(0,.35,.70,1)
+    def interpolate(a,b,t):return a+(b-a)*t
     for sign in (-1,1):
         gutter=sign*W*.392
         lower=sign*W*.474
-        for section in (0,1):
-            if section==0:
-                x1,x2=rear_x,roof_mid
-                low_x1,low_x2=back_sill_x,sill_mid
-                top1,top2=roof_z,zmid
-                material=m["black_glass"]
-            else:
-                x1,x2=roof_mid,front_x
-                low_x1,low_x2=sill_mid,front_sill_x
-                top1,top2=zmid,roof_z
-                material=m["glass"]
-            # Four genuine 3D vertices; window bottom is at sill_z.
+        for section,(u0,u1) in enumerate(zip(fractions,fractions[1:])):
+            x1,x2=(interpolate(rear_x,front_x,u) for u in (u0,u1))
+            low_x1,low_x2=(interpolate(back_sill_x,front_sill_x,u) for u in (u0,u1))
+            top1,top2=(roof_z+.065*math.sin(math.pi*u) for u in (u0,u1))
             surface("%s side %s pane %d"%(name,"left" if sign<0 else "right",section),
-                [(x1,gutter,top1),(x2,gutter,top2),
-                 (low_x2,lower,sill_z),(low_x1,lower,sill_z)],material,.012)
+                [(x1,gutter,top1),(x2,gutter,top2),(low_x2,lower,sill_z),
+                 (low_x1,lower,sill_z)],m["black_glass"] if section==0 else m["glass"],.012)
         from render_v3_recovery import pipe
         pipe("LL REFINE window lower weather seal",
-             [(back_sill_x,lower,sill_z),(sill_mid,lower,sill_z),
-              (front_sill_x,lower,sill_z)],.014,m["trim"])
-        pipe("LL REFINE central B pillar lower",
-             [(roof_mid,gutter,zmid),(sill_mid,lower,sill_z)],
-             .025,m["body"])
+             [(back_sill_x,lower,sill_z),(front_sill_x,lower,sill_z)],.014,m["trim"])
+        for u in fractions:
+            pipe("LL REFINE aligned A B C window pillar",
+                 [(interpolate(rear_x,front_x,u),gutter,roof_z+.065*math.sin(math.pi*u)),
+                  (interpolate(back_sill_x,front_sill_x,u),lower,sill_z)],
+                 .021,m["body"])
+    if unified_end_glazing:
+        roof_y=W*.392
+        lower_y=W*.474
+        surface("hatchback aligned windshield",
+            [(front_x,-roof_y,roof_z),(front_x,roof_y,roof_z),
+             (front_sill_x,lower_y,sill_z),(front_sill_x,-lower_y,sill_z)],m["glass"],.012)
+        surface("hatchback aligned rear hatch glass",
+            [(rear_x,roof_y,roof_z),(rear_x,-roof_y,roof_z),
+             (back_sill_x,-lower_y,sill_z),(back_sill_x,lower_y,sill_z)],m["black_glass"],.012)
 
 def add_contoured_bonnet(L,W,H,material):
     """Reusable original 3D vehicle nose replacing the unconvincing UV sphere.
@@ -193,16 +197,84 @@ def add_contoured_bonnet(L,W,H,material):
     normal=hood.modifiers.new("Bonnet normals","WEIGHTED_NORMAL")
     return hood
 
+def hatchback_body_reconstruction(L,W,H,WB,front_sill,sill_z,m):
+    """Continuous original body skin with *open* wheel wells, not trim arcs
+    painted over a solid box. Wheels and source undercarriage remain untouched.
+    The reference sheet informs proportions; no proprietary mesh is copied.
+    """
+    radius=.382
+    axle_z=.34
+    bottom=[(-L*.49,.335)]
+    for wheel_x in (-WB*.5,WB*.5):
+        bottom.append((wheel_x-radius,.335))
+        for i in range(17):
+            dx=radius*(2*i/16-1)
+            bottom.append((wheel_x+dx,axle_z+math.sqrt(max(0,radius*radius-dx*dx))))
+        bottom.append((wheel_x+radius+.012,.335))
+    bottom.append((L*.49,.335))
+    top=[(L*.49,.735),(L*.40,.86),(L*.23,.944),
+         (-L*.22,.944),(-L*.40,.84),(-L*.49,.70)]
+    for side in (-1,1):
+        y=side*W*.458
+        # A single concave sheet has two physical voids above the tire circles.
+        # It no longer contains a cube that visually fills its own wheel wells.
+        outline=bottom+top
+        panel=surface("hatchback actual cutout fender side "+str(side),
+            [(x,y,z) for x,z in outline],m["body"],.033)
+        panel["wheelbase_m"]=WB
+        panel["wheel_arch_radius_m"]=radius
+        panel["wheel_axle_z_m"]=axle_z
+        from render_v3_recovery import pipe
+        pipe("LL REFINE attached hatchback belt moulding",
+             [(-L*.40,y+side*.016,.815),(L*.32,y+side*.016,.815)],.013,m["trim"])
+    # Bonnet starts at the actual A-pillar sill and terminates at the grille.
+    # It is an upper metal shell, not a spherical volume obscuring front tires.
+    vertices=[]
+    sections=7
+    for i in range(sections):
+        u=i/(sections-1)
+        x=front_sill+(L*.49-front_sill)*u
+        z=sill_z+.022-.185*u+.012*math.sin(math.pi*u)
+        for j in range(5):
+            v=(j-2)/2
+            vertices.append((x,v*W*(.442-.015*u),z+.024*(1-v*v)))
+    faces=[(i*5+j,(i+1)*5+j,(i+1)*5+j+1,i*5+j+1)
+           for i in range(sections-1) for j in range(4)]
+    mesh=bpy.data.meshes.new("hatchback bonnet crown")
+    mesh.from_pydata(vertices,[],faces)
+    bonnet=object_group("sculpted contoured bonnet hatchback hood crown",mesh,m["body"])
+    bonnet.modifiers.new("Actual stamped bonnet thickness","SOLIDIFY").thickness=.025
+    bonnet.modifiers.new("Bonnet curvature normals","WEIGHTED_NORMAL")
+    # Rear hatch slopes into the tail rather than ending at a square cabin box.
+    surface("hatchback rear metal hatch panel",
+        [(-L*.43,-W*.45,sill_z),(-L*.43,W*.45,sill_z),
+         (-L*.49,W*.455,.67),(-L*.49,-W*.455,.67)],m["body"],.025)
+    from render_v3_recovery import cube,pipe
+    cube("LL REFINE front dark ventilated grille",(L*.495,0,.605),
+         (.038,W*.47,.145),m["trim"],.012)
+    for z in (.575,.625,.675):
+        pipe("LL REFINE front grille crossbar",[(L*.518,-W*.215,z),
+             (L*.518,W*.215,z)],.008,m["steel"])
+    return ["actual_open_wheel_wells","attached_body_belt","aligned_bonnet_to_windshield",
+            "rear_hatch_sheet","front_grille_assembly"]
+
 def refine_vehicle(job):
     from fleet_catalog import PROFILES
     from fleet_render import make_materials
     L,W,H,WB,typ,roof_len,center=vehicle_profile_values(job)
     m=make_materials("#616b54",1)
     removed=[]
-    # Never delete tire/body/source architecture. Only replace the oversimplified
-    # roof and both side glass faces in this newly generated V2 candidate scene.
+    # Preserve the original source archive and all four real source wheels.
+    # Repairs occur in a new candidate scene, never in the archived V1 blend.
     for ob in list(bpy.context.scene.objects):
-        if ob.name.startswith("LL FLEET pressed separate roof") or ob.name.startswith("LL FLEET side glazing"):
+        old_roof_glass=(ob.name.startswith("LL FLEET pressed separate roof") or
+                        ob.name.startswith("LL FLEET side glazing"))
+        hatchback_obsolete=(typ=="hatchback" and any(ob.name.startswith(p) for p in (
+            "LL FLEET rear passenger volume","LL FLEET short hatch tail",
+            "LL FLEET frontal glass","LL FLEET rear glass",
+            "LL FLEET cabin pillar","LL FLEET middle cabin pillar",
+            "LL FLEET pressed waist seam")))
+        if old_roof_glass or hatchback_obsolete:
             removed.append(ob.name)
             bpy.data.objects.remove(ob,do_unlink=True)
     if not any("pressed separate roof" in name for name in removed):
@@ -217,21 +289,26 @@ def refine_vehicle(job):
                 bpy.data.objects.remove(ob,do_unlink=True)
         if not removed_bulb:
             raise RuntimeError("Expected original spherical bonnet for V2 replacement")
-        add_contoured_bonnet(L,W,H,m["body"])
-    add_roof_shell(L,W,H,roof_len,center,m["roof"])
+        if typ!="hatchback":
+            add_contoured_bonnet(L,W,H,m["body"])
     front=center+roof_len*.5
     rear=center-roof_len*.5
     sill_z=min(.94,H*.62)
     front_sill=min(L*.40,front+.25)
     back_sill=max(-L*.43,rear-.25)
-    roof_window_split("refined cabin",front,rear,front_sill,back_sill,H-.08,sill_z,W,m)
+    extra_repairs=[]
+    if typ=="hatchback":
+        extra_repairs=hatchback_body_reconstruction(L,W,H,WB,front_sill,sill_z,m)
+    add_roof_shell(L,W,H,roof_len,center,m["roof"])
+    roof_window_split("refined cabin",front,rear,front_sill,back_sill,H-.08,sill_z,W,m,
+                      unified_end_glazing=typ=="hatchback")
     from render_v3_recovery import pipe
     # Actual curved wheel arches, grounded on the four wheel centers.
     if typ in ("hatchback","sedan","wagon","suv","coupe","pickup"):
-        radius=.36 if typ in ("suv","pickup") else .315
+        radius=.36 if typ in ("suv","pickup") else (.382/1.08 if typ=="hatchback" else .315)
         axle=.39 if typ in ("suv","pickup") else .34
         for side in (-1,1):
-            y=side*W*.472
+            y=side*W*(.468 if typ=="hatchback" else .472)
             for x in (-WB*.5,WB*.5):
                 # Semicircular stamped lip, open at lower body edge.
                 coords=[(x+math.cos(math.pi*t/12)*(radius*1.08),y,
@@ -245,7 +322,7 @@ def refine_vehicle(job):
                      .007,m["dark"])
     return dict(specialists=["LL-083","LL-084","LL-085","LL-086","LL-087","LL-091","LL-104"],
                 repaired_geometry=["curved_roof_shell","segmented_glass","wheel_arches","door_parting_lines",
-                                   "contoured_bonnet_replaces_spherical_nose" if typ in ("hatchback","sedan","wagon","suv","coupe") else "retain_original_utility_bonnet"],
+                                   "contoured_bonnet_replaces_spherical_nose" if typ in ("hatchback","sedan","wagon","suv","coupe") else "retain_original_utility_bonnet"]+extra_repairs,
                 original_parts_replaced=removed)
 
 def refine_hand_tool(job):
