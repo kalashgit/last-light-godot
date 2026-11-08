@@ -17,7 +17,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "f121a538b85797047e3434383aca25c502549ea03bf2ebc0ee99365f50abe631",
-      "glb_sha256": "8664d156c86f3813d5a97db61ba1992b5d333f6ab88ab74451e58253d0eafde3"
+      "glb_sha256": "a4e88b4b99f9bd9cdf61aa0666671e9a82f48331cbf7a3e4a315010eebd0cc49"
     },
     {
       "asset_id": "ll_master_actor_human_underwear",
@@ -30,7 +30,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "81b20c3175419ccd37f0bb7b274b0492c3c1f5634ffdc993a42522356314ec82",
-      "glb_sha256": "990bb3dbc5fd8f10fda36b9c41755cb36a940de7c7b888d4f9b5d69b04aa98b0"
+      "glb_sha256": "a33b242c99f3ee055a04774130cf494af7e63e8912a707ffc4b53a6270f38afe"
     },
     {
       "asset_id": "ll_master_actor_human_worker_crowbar",
@@ -43,7 +43,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "d585969fea22b3298846eadbc7beeea83c93c979451792327bd7c5d62f5068fe",
-      "glb_sha256": "f5ac502178a6dd01105ee774cf92859da27811b5dbe1c51020e3a68a35bd2aed"
+      "glb_sha256": "7e614b50d017d6d9c852b410f8c5a1143156cdff9dbc98aa518078e7ba3d6419"
     },
     {
       "asset_id": "ll_master_actor_zombie_construction",
@@ -56,7 +56,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "174ef50059fc4d61b40523768c4df0370b56c7e6a269499e1db9778f9a8e40f8",
-      "glb_sha256": "555d1126a20e42bf81763e6a65f7a8b4ff60f8b9fa03288918785701d4fcf93b"
+      "glb_sha256": "513664c3676ea02437d4b9fb51a1f160679606b48248b6f652d73f60a74ad452"
     },
     {
       "asset_id": "ll_master_actor_zombie_hospital",
@@ -69,7 +69,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "0d157210dfeb3087c70af4017758b51dd84f08012ba423c818e7a9bba49c63f4",
-      "glb_sha256": "60a2173437aee5093949f0c19baa461b5a52ae49d147036aadfd0ec591df7ced"
+      "glb_sha256": "bf1a9fb78435cefd0208935a1f199f5b8176b6b59d5e6436e175231892f2e772"
     },
     {
       "asset_id": "ll_master_furniture_cabinet",
@@ -82,7 +82,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "2ceba83bd4d2d03144d010fea71e7fe1e3f80dbcefe36efaa033a9cc676ed885",
-      "glb_sha256": "1851ee0936f8f6a509791f16eb9ca08616e5e40c9ec07978549a66ba718b8174"
+      "glb_sha256": "9f48187701b3db9b0359c4fe529fe0dc1a44c0941791cd52f317fb2a28aa643c"
     },
     {
       "asset_id": "ll_master_furniture_refrigerator",
@@ -95,7 +95,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "7460481d0269ed447c61fed4ceef1db097079a9f5b92511a7546b45419955cd7",
-      "glb_sha256": "143eae5c339b7578294444e060439dac5da3bf053a18311208d47d183087fc57"
+      "glb_sha256": "982ae3e3d7cd007e9009c12472b2e2bc47e3edc1d236b048aead2351b4bd86ec"
     },
     {
       "asset_id": "ll_master_furniture_sofa",
@@ -108,7 +108,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "a05cb7d0973d3029ac8a1a64ee911c8f44f645ae4e3696cd510054834197174a",
-      "glb_sha256": "ff0939809f5cafa06b6f340b656fe465ad2addd739b78de6d2d2664a4bbdd8a1"
+      "glb_sha256": "745a1c4bd5ce0605cac84c37ed02606700fd53311068ecf23132af4948eab37f"
     },
     {
       "asset_id": "ll_golden_acorn",
@@ -121,7 +121,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "50066751e761c48acec0f86b5e669f408f623d4f06641a788696104c614c8ef0",
-      "glb_sha256": "9cf00d3679f0a8acc98f8903052c347ec86b8b2291b649619d96146a1c8c9032"
+      "glb_sha256": "75d9efc63c40fe4ab5efb7acd83ecb50583848b28173fbde09a371d4bab77d1b"
     },
     {
       "asset_id": "ll_golden_aerosol_canister",
@@ -212,7 +212,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "34204445f0959933bcc0f3d6ea5c9096f9d9056e67bea0c55bac8a5206a9b524",
-      "glb_sha256": "ce28e199075b434e1d800d7e0928a874704c40abf6a653c95b2937fd3edef07a"
+      "glb_sha256": "70c47cece54d04e4efc93bbe198e1a6b58b35486862e649a70cf957c5272d38b"
     },
     {
       "asset_id": "ll_golden_amethyst_gem",
@@ -225,7 +225,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "93c0d84ab97d68ba1869ada2917ff08157ae59a1b38b7248615039a9983c7c08",
-      "glb_sha256": "04fa248ea25f9ffd0811da75165ae3cc7a3a9481adc9924618337c605ebe0fa3"
+      "glb_sha256": "390f884cbedc1c27e041e94641056397cb9a6e597b03b58b63aa5c55af7abde8"
     },
     {
       "asset_id": "ll_golden_amethyst_raw",
@@ -238,7 +238,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "a54fe071a94cc294a01133bf1932225d00690e965f6fba1e0cf5cc04c6d9bc47",
-      "glb_sha256": "ef9a3206aa4ca90642b00a1dc0d035ad1d5fd7838cc91aa4f5dac5959044ed48"
+      "glb_sha256": "98d1210b475b62ab958ecc45deda26af3baf815ebf881e53d1388e122ebbb746"
     },
     {
       "asset_id": "ll_golden_ammo_box_40cal",
@@ -264,7 +264,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "7317f2a1fca0c299f2d4dc060a9f0c76225a2d0a5fa8ca9e16b0d7115ab52517",
-      "glb_sha256": "80f76bc64b0b7e79b0ca914aacb5306307a5e8d377189ca3cee974bf4d587927"
+      "glb_sha256": "4a5b0637a5b3413697a65471412da17c226a0bf42289b9b4560b30c13d96f9b8"
     },
     {
       "asset_id": "ll_golden_baseball_bat",
@@ -290,7 +290,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "490941ba818e2a958d2b0fa1399f13968cbfb1c54a6f07ca6fd450f9b414dbe7",
-      "glb_sha256": "49985fced73e5e38234b429b7cf9dc3972d9b2683f24b5833d4405e59ec9b18f"
+      "glb_sha256": "db577ae8fb5d71754f127852dd62835fce2bf39ddfdb32963db1423aa1bf6846"
     },
     {
       "asset_id": "ll_golden_bone_club",
@@ -303,7 +303,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "8415a09dc6a6c54ea6bdcedb1ff7b3deebfb0998d609267c8c2daeaf84fa70c7",
-      "glb_sha256": "614e4e6e93dc5c2fec44b9a883bcfa821a9176cd8c7bc8912382e3921869544a"
+      "glb_sha256": "05b081de36a856a7b5bd7368e530af28ed08a2700541fab35f9fac3f93ee9f71"
     },
     {
       "asset_id": "ll_golden_butterfly_knife_folded",
@@ -381,7 +381,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "f1fc0c6f22160eb5a7a5f24d24262533a27541b108c4dd293fcf1d07734cdd44",
-      "glb_sha256": "4a26b32cad3c6b3b76a2557679711e322ee6fff9f9d876950b62d574bfdda550"
+      "glb_sha256": "70560c66c10cc69f057f15b450f6092499571a90222539a28bb521ab93f354e3"
     },
     {
       "asset_id": "ll_golden_field_pack_olive",
@@ -394,7 +394,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "ac838245dfeaed2d668d3633d6789a1ef4711f77f16118914f223a647916b7b4",
-      "glb_sha256": "0ade4b5f95801cce7329251cda889b535c805a81c42af2cc0b407a97db46cda9"
+      "glb_sha256": "d2f2cb3e515a6ee7b1bc8cd6285f4a0f9828f6bed2400812d4055594cf1311cc"
     },
     {
       "asset_id": "ll_golden_field_pack_sand",
@@ -407,7 +407,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "a22e61c9939aec174b12344f43132095e2eb752ec987ec3e88df827add186d45",
-      "glb_sha256": "7d95672172d9a60baf5e64c640a17d8322125c0097cce52baa8ef944c1b4e9a2"
+      "glb_sha256": "c73f872c7fc693ffb2560c40ae3a22019eb3cc3a9cf696a1543d0fcdd5781de1"
     },
     {
       "asset_id": "ll_golden_hand_axe",
@@ -485,7 +485,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "72a23e42ce1c63bd01ccf1cb80b608cb52be04ef0511cfd4f7a452b10f092a6a",
-      "glb_sha256": "93b8c9e79576bef7c523ac4d6869db12e26e65cff23b1ee9ca48415b89593f63"
+      "glb_sha256": "751e13e8dd1aedcd9e1e0297146185202324ae7502d95795f8aaca3134d1b12c"
     },
     {
       "asset_id": "ll_golden_meat_cleaver",
@@ -498,7 +498,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "70ff77e1bf3683283a4d633d0cd315f4171e08cdb0ece04b74841203acbbfc12",
-      "glb_sha256": "48dbfc5a8f1738d0cc600fbc8d94a3f8095cf574f8d76652241449f2d2ec1007"
+      "glb_sha256": "ca8d9eb5556c817060167c3d92a58093e22c835dd46794e4872331cc866902d2"
     },
     {
       "asset_id": "ll_golden_pickaxe",
@@ -537,7 +537,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "dfd0a0791c72c3e4e6df2e793c790404fe3148a6ccb90a6be370c9255c6ed18e",
-      "glb_sha256": "f1d41f330f47af16fc954fef00b65e4f51dbd1434adf542c91250dfbd497fd7f"
+      "glb_sha256": "d10f46a6998dfb390852fa4a3f2f91ebfe03ea12dc541dea1051d0bc8d24c750"
     },
     {
       "asset_id": "ll_golden_reinforced_baseball_bat",
@@ -563,7 +563,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "0496453f9f6117adda173737993d4deacf47ba6043959aa50ba14c8dcf732d3c",
-      "glb_sha256": "0194635f210eca021ebe5b02cb35c609ca58d1317118489768f2db70ff023460"
+      "glb_sha256": "e9b839172605dc78ddbd4d24f1b5234c3d64b1d2151f32fd4c6ac28bd3289451"
     },
     {
       "asset_id": "ll_golden_scythe",
@@ -589,7 +589,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "1d6694aea97c943afa64ea29892e709367ce9aa5eeeb50bb503fd41276d44c43",
-      "glb_sha256": "e45d8324c4f7f8ce755c9bc8f0e33c074743494d8d56b7878ccdfeec192ef816"
+      "glb_sha256": "2ea120aba1271f98bbc5b9a8a23360ee5e40688b8099febf49d9c760e2d35561"
     },
     {
       "asset_id": "ll_golden_single_edge_sword",
@@ -641,7 +641,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "fc4bfce8c2458a9a36639f6a872917992983d4eda20975d7c1a329577b25216c",
-      "glb_sha256": "1edddeddaf32968d6a711aa512ee66db9268bb5f6abd33ac0aaf66a0696c315a"
+      "glb_sha256": "b2c20a91ac15d6bf6186a7603963c5a405e1428064d731699c633d5868bb9e39"
     },
     {
       "asset_id": "ll_master_vehicle_city_bus",
@@ -654,7 +654,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "9d51ae94a584eb965a3042fdec5b40efc3c840ba996547ccc40aae7725a23353",
-      "glb_sha256": "a55728412b59727f5451094230faaf73917eb2569228016f8f5332bbbd2efc87"
+      "glb_sha256": "a083f80aa7ea4531c427be9a87de4e7c0bfdf5b9bbf2fe1e7a7dc8da3c4d0764"
     },
     {
       "asset_id": "ll_master_vehicle_city_sedan",
@@ -667,7 +667,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "4148c9018e42fdcb6430ee0e9046cf9f44288dd11a68aa1f7cb24e9b0182e28c",
-      "glb_sha256": "4331c660bb23c8b5fe7135cfe445a167402a8f0c74811fe1a55064fbb1f75aa1"
+      "glb_sha256": "b24bf8fccbe055fddcf036f862eede388eae09c54d3b5b73f153c434ea0e00fc"
     },
     {
       "asset_id": "ll_master_vehicle_compact_hatchback",
@@ -680,7 +680,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
-      "glb_sha256": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c"
+      "glb_sha256": "cb27767ab72fd4d1d8b00d2bedfe2933b9ec8387229e5be829131a6cd9c25ab8"
     },
     {
       "asset_id": "ll_master_vehicle_compact_suv",
@@ -693,7 +693,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "75d42d30403bd250c106250a910324af4000628d0392b651c28918c5d04b34d4",
-      "glb_sha256": "b1994ebe7c7524c9ff2c37543744183a12d6073cbd5df84b840cc4589ce4cc2d"
+      "glb_sha256": "dfb26fec3b87bffd35f459f46587748c9e9eb00530b1ef1b3540a593a6fd7545"
     },
     {
       "asset_id": "ll_master_vehicle_delivery_van",
@@ -706,7 +706,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "b64b0cc6fab69ce8844d46f6ee3249c95ea6435d430250d1af8b5a62b1c09d9a",
-      "glb_sha256": "0ddc3ee918acb392561fb7a3b2cdad189da8b51501eff69eb0c74a3fa94da6db"
+      "glb_sha256": "a23c0a5b1c7a788a025cc0d5ec6ccfca1684102895c5254db784d44798897f48"
     },
     {
       "asset_id": "ll_master_vehicle_family_wagon",
@@ -719,7 +719,7 @@
       "geometry_warning": null,
       "preview": "preview_source.png",
       "recipe_hash": "0fb5801a1359d2110f55d900aca39b219d707c0386272c82c5dcd9bbef59a4fb",
-      "glb_sha256": "70b4f42abf75478724757fbe89a6b540bb6edd031aef5897c21fbd68e622ef62"
+      "glb_sha256": "02a7fb0fa73dc18a2bc716ae9b74f22d52b367d8dab84e2f0c94412aad9828cb"
     },
     {
       "asset_id": "ll_master_vehicle_rural_tractor",
@@ -732,7 +732,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "de502720f6e3b0ccf731cfe1f323b1a1090837b8ba3341e04f42d95d39f88342",
-      "glb_sha256": "67046d7bc051d632c8f6afdd8f9d01d5d0b06b16267372e2dea7a6683d5ea1b5"
+      "glb_sha256": "c75c80496a50e7322ff445871c4feeda3cefa5730d71e9b35e2ed4cd45619946"
     },
     {
       "asset_id": "ll_master_vehicle_service_ambulance",
@@ -745,7 +745,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "ca90aa53321681f4210f406e3198f8055196e45d04f8c0f10ab8eb37089378c0",
-      "glb_sha256": "b1face76daaed090600adbd836d1d8f33d9b9fcb00c3663297e4efc27e8412e6"
+      "glb_sha256": "8ee5ca362653642ab633d1f3296d314233312e8b67aa8ca1b8be724182c21c3d"
     },
     {
       "asset_id": "ll_master_vehicle_service_security",
@@ -758,7 +758,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "40e6f06422a4b0c08a55030b4f2dc09bc89c049a7e7da1276d37acf12c12f639",
-      "glb_sha256": "cb2319adc55f325ac6aefe3bad9258c29a8ee835fc1d51d46ee7510fd0ba85bb"
+      "glb_sha256": "24e1d8cd9f130842f077dd22e06dbeb169cf3ad8fcaa893d2972dce833499e18"
     },
     {
       "asset_id": "ll_master_vehicle_sport_coupe",
@@ -771,7 +771,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "12b1193027f54e6e1698cfaf1ac885fe1f264d63b636ab946bd06551ae40b6c7",
-      "glb_sha256": "a8120316323e3cc811b9cd60aec6d3fecaef5f589873a00741d374a77c966385"
+      "glb_sha256": "582b46d04ffc4c4136a2b6397c1326e716a9112174a424863da19eae671d82a3"
     },
     {
       "asset_id": "ll_master_vehicle_work_pickup",
@@ -784,7 +784,7 @@
       "geometry_warning": null,
       "preview": null,
       "recipe_hash": "8975febad9e3d517490556cef2ad728644c2769855e5174443638cbc2973e749",
-      "glb_sha256": "16d2adf661f7ce230bb2d165b6f6aa98c1c32e728167b36fbe3bb0e25074e8c7"
+      "glb_sha256": "a53467a699e6b811f9ba5a1ce344cb24e904ada931c1f6362149a74ec6288780"
     }
   ]
 }

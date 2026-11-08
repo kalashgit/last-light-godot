@@ -5,7 +5,7 @@
       "asset_id": "ll_master_furniture_refrigerator",
       "index": 0,
       "path": "ll_master_furniture_refrigerator/angle_00.png",
-      "source_model_sha": "143eae5c339b7578294444e060439dac5da3bf053a18311208d47d183087fc57",
+      "source_model_sha": "982ae3e3d7cd007e9009c12472b2e2bc47e3edc1d236b048aead2351b4bd86ec",
       "source_source_sha": "7460481d0269ed447c61fed4ceef1db097079a9f5b92511a7546b45419955cd7",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -14,7 +14,7 @@
       "asset_id": "ll_master_furniture_cabinet",
       "index": 0,
       "path": "ll_master_furniture_cabinet/angle_00.png",
-      "source_model_sha": "1851ee0936f8f6a509791f16eb9ca08616e5e40c9ec07978549a66ba718b8174",
+      "source_model_sha": "9f48187701b3db9b0359c4fe529fe0dc1a44c0941791cd52f317fb2a28aa643c",
       "source_source_sha": "2ceba83bd4d2d03144d010fea71e7fe1e3f80dbcefe36efaa033a9cc676ed885",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -23,7 +23,7 @@
       "asset_id": "ll_master_furniture_sofa",
       "index": 0,
       "path": "ll_master_furniture_sofa/angle_00.png",
-      "source_model_sha": "ff0939809f5cafa06b6f340b656fe465ad2addd739b78de6d2d2664a4bbdd8a1",
+      "source_model_sha": "745a1c4bd5ce0605cac84c37ed02606700fd53311068ecf23132af4948eab37f",
       "source_source_sha": "a05cb7d0973d3029ac8a1a64ee911c8f44f645ae4e3696cd510054834197174a",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -41,7 +41,7 @@
       "asset_id": "ll_golden_field_pack_olive",
       "index": 0,
       "path": "ll_golden_field_pack_olive/angle_00.png",
-      "source_model_sha": "0ade4b5f95801cce7329251cda889b535c805a81c42af2cc0b407a97db46cda9",
+      "source_model_sha": "d2f2cb3e515a6ee7b1bc8cd6285f4a0f9828f6bed2400812d4055594cf1311cc",
       "source_source_sha": "ac838245dfeaed2d668d3633d6789a1ef4711f77f16118914f223a647916b7b4",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -50,7 +50,7 @@
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "index": 0,
       "path": "ll_master_vehicle_compact_hatchback/angle_00.png",
-      "source_model_sha": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c",
+      "source_model_sha": "cb27767ab72fd4d1d8b00d2bedfe2933b9ec8387229e5be829131a6cd9c25ab8",
       "source_source_sha": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -59,7 +59,7 @@
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "index": 1,
       "path": "ll_master_vehicle_compact_hatchback/angle_01.png",
-      "source_model_sha": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c",
+      "source_model_sha": "cb27767ab72fd4d1d8b00d2bedfe2933b9ec8387229e5be829131a6cd9c25ab8",
       "source_source_sha": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -68,7 +68,7 @@
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "index": 2,
       "path": "ll_master_vehicle_compact_hatchback/angle_02.png",
-      "source_model_sha": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c",
+      "source_model_sha": "cb27767ab72fd4d1d8b00d2bedfe2933b9ec8387229e5be829131a6cd9c25ab8",
       "source_source_sha": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
@@ -77,7 +77,7 @@
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "index": 3,
       "path": "ll_master_vehicle_compact_hatchback/angle_03.png",
-      "source_model_sha": "0c24eff3bfa57582a960c84e47e5ddcdd33344881c375cee519f8bba6003a73c",
+      "source_model_sha": "cb27767ab72fd4d1d8b00d2bedfe2933b9ec8387229e5be829131a6cd9c25ab8",
       "source_source_sha": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
       "world_projection": "30deg_elevation_80x40_tile",
       "stage": "RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"
