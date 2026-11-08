@@ -5,6 +5,7 @@ const HOME := Rect2(0, 0, 9, 8)
 const FACTORY := "res://assets/generated/factory/"
 const TerrainMesh := preload("res://scripts/terrain_mesh.gd")
 const WorldArt := preload("res://scripts/world_art.gd")
+const CanvasGeometryBatch := preload("res://scripts/render/canvas_geometry_batch.gd")
 var world_art := WorldArt.new()
 var terrain: ArrayMesh
 var layout: Dictionary = {}
@@ -290,15 +291,23 @@ func _roof(g) -> void:
  _surface(g, Vector2(6.85, 1.05), Vector2(.62, .62), Color("b1aa91"), 161)
  _surface(g, Vector2(7.0, 1.2), Vector2(.32, .32), Color("303c33"), 162)
 
-func draw_world(g) -> void:
- var inside := HOME.has_point(g.player)
- g.draw_rect(g.get_viewport_rect(),Color("28362d"))
- g.draw_mesh(terrain,null,Transform2D(0,g._screen(Vector2.ZERO)))
+## Flat-colored world geometry is collected by this batcher (W08 draw-call
+## optimization). `live` is the real canvas item, kept for game-owned callbacks.
+var batch: CanvasGeometryBatch
+var batching_enabled := true
+
+func draw_world(live) -> void:
+ if batch == null or batch.game != live: batch = CanvasGeometryBatch.new(live)
+ # `g` answers every draw call house_art makes; members still come from `live`.
+ var g = batch if batching_enabled else live
+ var inside := HOME.has_point(live.player)
+ g.draw_rect(live.get_viewport_rect(),Color("28362d"))
+ g.draw_mesh(terrain,null,Transform2D(0,live._screen(Vector2.ZERO)))
  # Contacts are on the floor, before all opaque entities; never painted over feet.
  if inside:
-  for item in g.items:world_art.contact_shadow(g,item.pos+item.size*.5,item.size)
+  for item in live.items:world_art.contact_shadow(g,item.pos+item.size*.5,item.size)
  var commands: Array[Dictionary] = []
- for wall in g.walls:
+ for wall in live.walls:
   var a: Vector2 = wall.a
   var b: Vector2 = wall.b
   var h := 104.0
@@ -309,12 +318,12 @@ func draw_world(g) -> void:
    var u := a.lerp(b, float(n) / count)
    var v := a.lerp(b, float(n + 1) / count)
    commands.append({"kind":"wall", "a":u, "b":v, "height":h, "exterior":wall.exterior, "depth":world_art.ground_depth((u+v)*.5)})
- for i in range(g.doors.size()):
-  var door: Dictionary = g.doors[i]
+ for i in range(live.doors.size()):
+  var door: Dictionary = live.doors[i]
   commands.append({"kind":"door", "index":i, "depth":world_art.ground_depth((door.a+door.b)*.5), "layer":1})
  if inside:
-  for i in range(g.items.size()):
-   var item: Dictionary = g.items[i]
+  for i in range(live.items.size()):
+   var item: Dictionary = live.items[i]
    commands.append({"kind":"item", "index":i, "depth":world_art.ground_depth(item.pos+item.size*.5), "layer":2})
  for i in range(decorations.size()):
   var prop: Dictionary = decorations[i]
@@ -323,14 +332,14 @@ func draw_world(g) -> void:
    var support:=_support_item(prop)
    var contact: Vector2=prop.pos if support.is_empty() else support.pos+support.size*.5
    commands.append({"kind":"decor", "index":i, "depth":world_art.ground_depth(contact),"layer":3})
- for i in range(g.drops.size()):
-  var point: Vector2=g.drops[i].pos
+ for i in range(live.drops.size()):
+  var point: Vector2=live.drops[i].pos
   commands.append({"kind":"drop","index":i,"depth":world_art.ground_depth(point),"layer":0})
- for i in range(g.infected.size()):
-  if g.zombie_health[i] > 0:
-   var p: Vector2 = g.infected[i]
+ for i in range(live.infected.size()):
+  if live.zombie_health[i] > 0:
+   var p: Vector2 = live.infected[i]
    commands.append({"kind":"zombie", "index":i, "depth":world_art.ground_depth(p),"layer":4})
- commands.append({"kind":"player", "depth":world_art.ground_depth(g.player),"layer":4})
+ commands.append({"kind":"player", "depth":world_art.ground_depth(live.player),"layer":4})
  # Index insertion order makes equal-depth sorting deterministic.
  for i in range(commands.size()):
   commands[i].order = i
@@ -342,16 +351,24 @@ func draw_world(g) -> void:
  for command in commands:
   match command.kind:
    "wall": _wall_part(g, command)
-   "door": _door(g, g.doors[command.index], inside)
-   "item": _furniture(g, g.items[command.index])
+   "door": _door(g, live.doors[command.index], inside)
+   "item": _furniture(g, live.items[command.index])
    "decor":
     var prop: Dictionary = decorations[command.index]
     _draw_decoration(g,prop)
-   "drop": g._draw_drop(command.index)
-   "zombie": g._draw_character(g.infected[command.index], false, g.elapsed * 4 + command.index, g.zombies_hit_time[command.index] > 0)
-   "player": g._draw_character(g.player, true, g.motion_phase)
+   # Game-owned actors draw straight onto the canvas: flush pending geometry first.
+   "drop":
+    if g == batch: batch.flush()
+    live._draw_drop(command.index)
+   "zombie":
+    if g == batch: batch.flush()
+    live._draw_character(live.infected[command.index], false, live.elapsed * 4 + command.index, live.zombies_hit_time[command.index] > 0)
+   "player":
+    if g == batch: batch.flush()
+    live._draw_character(live.player, true, live.motion_phase)
  if not inside:
   _roof(g)
+ if g == batch: batch.flush()
 
 func draw_inspector(g) -> void:
  for item in g.items:
