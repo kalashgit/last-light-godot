@@ -13,6 +13,9 @@ def test_recipe_contract():
     assert recipes["schema"]==1
     assert recipes["camera"].startswith("existing_blender_v3_fixed_2_to_1")
     assert recipes["base_world_tile_px"]==[80,40]
+    assert recipes["condition_level"]==2
+    assert recipes["material_profile"].endswith("_v3")
+    assert "no image pixels or textures copied" in recipes["reference_role"]
     assert len(recipes["assets"])==11
     names=[a["asset_id"] for a in recipes["assets"]]
     assert len(set(names))==len(names)

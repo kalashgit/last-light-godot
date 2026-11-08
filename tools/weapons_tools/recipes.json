@@ -1,11 +1,14 @@
 {
   "schema": 1,
-  "family": "last_light_original_weapons_tools_refinement_v2",
+  "family": "last_light_original_weapons_tools_refinement_v3",
   "source_branch": "codex/last-light-geometry-reconstruction-v1-20261108",
-  "status": "SECOND_PASS_GEOMETRY_CANDIDATES_NOT_GOLDEN_APPROVED",
+  "status": "THIRD_PASS_RUGGED_PBR_GEOMETRY_CANDIDATES_NOT_GOLDEN_APPROVED",
   "camera": "existing_blender_v3_fixed_2_to_1_v1",
   "base_world_tile_px": [80, 40],
   "seed": 11082026,
+  "reference_role": "Founder-supplied rugged weapons visual brief 2026-11-08; original procedural modeling, no image pixels or textures copied",
+  "material_profile": "worn_forged_iron_ground_edge_endgrain_hardwood_aged_paint_oxidized_brass_v3",
+  "condition_level": 2,
   "assets": [
     {"asset_id":"ll_tools_awl", "name":"Awl", "archetype":"awl", "dimensions_m":[0.035,0.23,0.038], "material_preset":"aged_wood_and_steel", "reason":"correct known source QA warning"},
     {"asset_id":"ll_tools_cross_screwdriver", "name":"Cross screwdriver", "archetype":"screwdriver", "dimensions_m":[0.042,0.24,0.038], "material_preset":"rubber_polymer_and_steel", "reason":"correct known source QA warning"},

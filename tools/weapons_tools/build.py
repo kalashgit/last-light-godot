@@ -35,18 +35,108 @@ def sha256(path):
     return h.hexdigest()
 
 
+def rugged_material(name, low, mid, high, *, metal, rough, grain=False, paint=False):
+    """Original, deterministic PBR wear authored in Blender nodes.
+
+    Broad surface discoloration, fine pitting, axial hardwood fibers and
+    height variation are separate frequency bands. Generated coordinates are
+    per editable source part, so no reference texture or external image is
+    embedded. The strong macro tones remain legible after 64px sprite reduction.
+    """
+    mat=bpy.data.materials.new(name)
+    mat.diffuse_color=(*mid,1)
+    mat.use_nodes=True
+    tree=mat.node_tree;tree.nodes.clear()
+    links=tree.links
+    out=tree.nodes.new("ShaderNodeOutputMaterial")
+    bsdf=tree.nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Metallic"].default_value=metal
+    bsdf.inputs["Roughness"].default_value=rough
+    links.new(bsdf.outputs["BSDF"],out.inputs["Surface"])
+
+    coord=tree.nodes.new("ShaderNodeTexCoord")
+    stretch=tree.nodes.new("ShaderNodeVectorMath")
+    stretch.operation="MULTIPLY"
+    # The handle's Y axis follows its length: thin visible fibers run along Y.
+    stretch.inputs[1].default_value=(12,1.2,12) if grain else (4.2,5.8,4.8)
+    links.new(coord.outputs["Generated"],stretch.inputs[0])
+    macro=tree.nodes.new("ShaderNodeTexNoise")
+    macro.inputs["Scale"].default_value=4.2 if grain else 6.5
+    macro.inputs["Detail"].default_value=5.0
+    macro.inputs["Roughness"].default_value=.73
+    links.new(stretch.outputs["Vector"],macro.inputs["Vector"])
+    palette=tree.nodes.new("ShaderNodeValToRGB")
+    palette.color_ramp.interpolation="EASE"
+    palette.color_ramp.elements.remove(palette.color_ramp.elements[1])
+    for position,color in ((.18,low),(.48,mid),(.79,high)):
+        element=palette.color_ramp.elements[0] if position==.18 else palette.color_ramp.elements.new(position)
+        element.position=position;element.color=(*color,1)
+    links.new(macro.outputs["Fac"],palette.inputs["Fac"])
+
+    # Short grain catches and tiny forged pits produce a tactile normal map.
+    micro_space=tree.nodes.new("ShaderNodeVectorMath")
+    micro_space.operation="MULTIPLY"
+    micro_space.inputs[1].default_value=(48,3,48) if grain else (34,45,39)
+    links.new(coord.outputs["Generated"],micro_space.inputs[0])
+    fine=tree.nodes.new("ShaderNodeTexNoise")
+    fine.inputs["Scale"].default_value=3.5
+    fine.inputs["Detail"].default_value=3.0
+    links.new(micro_space.outputs["Vector"],fine.inputs["Vector"])
+    bump=tree.nodes.new("ShaderNodeBump")
+    bump.inputs["Strength"].default_value=.22 if grain else .16
+    bump.inputs["Distance"].default_value=.0012 if grain else .0007
+    links.new(fine.outputs["Fac"],bump.inputs["Height"])
+    links.new(bump.outputs["Normal"],bsdf.inputs["Normal"])
+
+    rough_variation=tree.nodes.new("ShaderNodeMapRange")
+    rough_variation.inputs["From Min"].default_value=0
+    rough_variation.inputs["From Max"].default_value=1
+    rough_variation.inputs["To Min"].default_value=max(.15,rough-.17)
+    rough_variation.inputs["To Max"].default_value=min(.99,rough+.16)
+    links.new(macro.outputs["Fac"],rough_variation.inputs["Value"])
+    links.new(rough_variation.outputs["Result"],bsdf.inputs["Roughness"])
+
+    if paint:
+        # Sparse worn-through paint exposes dark, cold forged steel below.
+        chip=tree.nodes.new("ShaderNodeValToRGB")
+        chip.color_ramp.elements[0].position=.62
+        chip.color_ramp.elements[0].color=(0,0,0,1)
+        chip.color_ramp.elements[1].position=.73
+        chip.color_ramp.elements[1].color=(1,1,1,1)
+        chip.color_ramp.interpolation="CONSTANT"
+        links.new(macro.outputs["Fac"],chip.inputs["Fac"])
+        chipped=tree.nodes.new("ShaderNodeMixRGB")
+        chipped.blend_type="MIX"
+        chipped.inputs[2].default_value=(.16,.19,.19,1)
+        links.new(chip.outputs["Color"],chipped.inputs[0])
+        links.new(palette.outputs["Color"],chipped.inputs[1])
+        links.new(chipped.outputs["Color"],bsdf.inputs["Base Color"])
+    else:
+        links.new(palette.outputs["Color"],bsdf.inputs["Base Color"])
+    return mat
+
+
 def material_set():
-    # Named semantic materials; localized scuffs are separate meshes, not a
-    # uniform random grunge mask stretched across an entire asset.
+    # The attached weapons reference is an aesthetic brief, not a copied map.
+    # Distressed forged steel, rubbed edges and longitudinal hardwood grain
+    # remain separate semantic materials for hundreds of future source variants.
     return {
-        "forged": hero.mat("LL forged dark steel", (.31, .35, .34), .78, .54, wear=.025),
-        "edge": hero.mat("LL edge polished steel", (.54, .58, .56), .82, .31, wear=.005),
-        "oxide": hero.mat("LL oxide in recesses", (.18, .12, .085), .12, .89, wear=.025),
-        "wood": hero.mat("LL axial worn hardwood", (.37, .215, .115), 0, .76, grain=1, wear=.045),
-        "endwood": hero.mat("LL dark endgrain", (.18, .105, .065), 0, .89, grain=1, wear=.035),
-        "rubber": hero.mat("LL stippled black polymer", (.085, .10, .098), 0, .91, wear=.03),
-        "red": hero.mat("LL faded vermilion tool paint", (.43, .095, .075), .02, .58, wear=.035),
-        "brass": hero.mat("LL oxidized brass ferrule", (.46, .34, .16), .64, .51, wear=.025),
+        "forged":rugged_material("LL charcoal mottled forged iron",(.105,.126,.125),
+             (.245,.273,.263),(.455,.470,.443),metal=.72,rough=.66),
+        "edge":rugged_material("LL scarred ground cutting steel",(.255,.277,.276),
+             (.485,.505,.487),(.72,.718,.676),metal=.82,rough=.40),
+        "oxide":rugged_material("LL ingrained dark red brown oxide",(.068,.045,.035),
+             (.18,.095,.065),(.34,.18,.105),metal=.16,rough=.90),
+        "wood":rugged_material("LL cracked seasoned warm oak",(.16,.078,.043),
+             (.38,.205,.112),(.61,.41,.257),metal=0,rough=.79,grain=True),
+        "endwood":rugged_material("LL dark stained endgrain",(.075,.037,.023),
+             (.205,.115,.067),(.37,.21,.117),metal=0,rough=.90,grain=True),
+        "rubber":rugged_material("LL worn graphite rubber",(.025,.029,.028),
+             (.069,.071,.068),(.165,.154,.138),metal=0,rough=.91),
+        "red":rugged_material("LL chipped oxide red enamel",(.20,.035,.031),
+             (.40,.088,.067),(.57,.20,.143),metal=.18,rough=.66,paint=True),
+        "brass":rugged_material("LL patinated brass hardware",(.22,.15,.068),
+             (.47,.336,.155),(.73,.58,.295),metal=.60,rough=.60),
     }
 
 
@@ -103,6 +193,33 @@ def curved_bar(name, path, material, sides=14):
     mesh.materials.append(material)
     for f in mesh.polygons:f.use_smooth=True
     ob.modifiers.new("Sweep smoothing", "WEIGHTED_NORMAL")
+    return ob
+
+
+def closed_sweep(name, ring, material, radius=.012, sides=18):
+    """One smooth, closed wooden grip rather than separate capped tubes."""
+    center=[Vector((x,y,z)) for x,y,z in ring]
+    count=len(center)
+    verts=[]; faces=[]
+    for i,p in enumerate(center):
+        tangent=(center[(i+1)%count]-center[(i-1)%count]).normalized()
+        cross=tangent.cross(Vector((0,0,1))).normalized()
+        up=cross.cross(tangent).normalized()
+        for s in range(sides):
+            a=math.tau*s/sides
+            verts.append(tuple(p+radius*(cross*math.cos(a)+up*math.sin(a))))
+    for i in range(count):
+        next_i=(i+1)%count
+        for s in range(sides):
+            q=(s+1)%sides
+            faces.append((i*sides+s,i*sides+q,next_i*sides+q,next_i*sides+s))
+    mesh=bpy.data.meshes.new("LL continuous D-loop wooden handle")
+    mesh.from_pydata(verts,[],faces);mesh.update()
+    ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
+    bpy.context.collection.objects.link(ob)
+    mesh.materials.append(material)
+    for poly in mesh.polygons:poly.use_smooth=True
+    ob.modifiers.new("Contour smoothing","WEIGHTED_NORMAL")
     return ob
 
 
@@ -183,6 +300,16 @@ def small_pin(name, x, y, mat, z=.053, rad=.004):
     tube(name,(x,y,z-.002),(x,y,z+.002),rad,rad,mat,12)
 
 
+def forge_scars(name, strokes, material, z, width=.0014):
+    """Sparse local dents on broad exposed steel, not random uniform noise."""
+    for i,((x0,y0),(x1,y1)) in enumerate(strokes):
+        dx=x1-x0;dy=y1-y0; length=math.hypot(dx,dy)
+        if length<.001:continue
+        nx=-dy/length*width*.5;ny=dx/length*width*.5
+        form(f"{name} nick {i+1}",[(x0+nx,y0+ny),(x1+nx,y1+ny),
+              (x1-nx,y1-ny),(x0-nx,y0-ny)],.00035,material,z,.00004)
+
+
 def wooden_handle(length, m, name="oiled wooden grip", bottom=None, top=None, z=.040):
     bottom = -length*.5 if bottom is None else bottom
     top = length*.5 if top is None else top
@@ -228,6 +355,9 @@ def construction(item, m):
         # Smoothly taper the cutting perimeter instead of gluing a box blade to the haft.
         form("polished hatchet bevel facet",[(-.190,.154),(-.198,.149),(-.218,.186),
              (-.194,.225),(-.179,.216),(-.199,.187)],.010,m["edge"],.054,.0008)
+        forge_scars("forged axe head toolmarks",[((-.112,.166),(-.093,.182)),
+            ((-.147,.187),(-.122,.202)),((-.084,.176),(-.070,.184)),
+            ((-.174,.173),(-.158,.189))],m["oxide"],.0521,.0018)
         tube("wedge atop wood eye",(0,.207,.040),(0,.219,.040),.009,.008,m["endwood"])
     elif kind=="crowbar":
         # Continuous curved bar with genuinely forged J-tip and split nails claw.
@@ -265,6 +395,8 @@ def construction(item, m):
                  (x+.001,.098),(x-.001,.098)],.0008,m["oxide"],.050,.0001)
         form("flat polished shank wear line",[(-.003,-.063),(.001,-.063),
              (.001,.045),(-.003,.045)],.001,m["edge"],.051,.0002)
+        forge_scars("short iron casting scratches",[((-.009,-.074),(.003,-.058)),
+             ((-.006,.025),(.006,.033)),((-.031,.119),(-.023,.109))],m["oxide"],.0505,.001)
     elif kind=="ratchet":
         # The historical 'socket handle' ID gets a real ratchet silhouette,
         # independent from the adjustable/open jaw wrench archetype.
@@ -286,31 +418,37 @@ def construction(item, m):
         form("outward socket square drive",[(-.007,.113),(.007,.113),
              (.007,.127),(-.007,.127)],.017,m["edge"],.072,.001)
         small_pin("low-profile ratchet quick-release",0,.120,m["oxide"],.083,.003)
+        # Lower inlaid pawl line and casting mark; the round head must remain
+        # visually compact and distinct from an open-end wrench.
+        tube("darkened steel ratchet collar",(0,.091,.040),(0,.098,.040),
+             .0105,.0105,m["oxide"],20)
     elif kind=="saw":
         # 48 controlled teeth, each physically cut into the solid steel edge.
         # The former 16 exaggerated teeth were cartoon-sized at full render.
-        poly=[(-.028,-.076),(-.052,.205),(.026,.231)]
+        poly=[(-.038,-.076),(-.049,.210),(-.014,.237)]
         for k in range(48,-1,-1):
-            y=-.072+(k/48.0)*.282
-            x=.052 if k%2 else .046
+            t=k/48.0
+            y=-.072+t*.282
+            x=.050-.035*t + (.003 if k%2 else -.001)
             poly.append((x,y))
-        form("tapered saw plate with fine tooth geometry",poly,.006,m["edge"],.040,.0006)
-        form("stiffening spine along the saw back",[(-.029,-.075),(-.052,.205),
-             (-.044,.209),(-.021,-.075)],.005,m["forged"],.044,.0004)
-        # True through-opening in a five-segment hardwood D frame; the old
-        # source was a filled cuboid with a fake hole painted on the surface.
-        loop=[(-.067,-.227),(.008,-.234),(.044,-.218),(.052,-.176),
-              (.044,-.123),(-.028,-.085),(-.062,-.119),(-.076,-.166),(-.075,-.208)]
-        for k in range(len(loop)):
-            x1,y1=loop[k];x2,y2=loop[(k+1)%len(loop)]
-            tube("saw open D handle shaped wood frame",(x1,y1,.040),
-                 (x2,y2,.040),.014,.012,m["wood"],16)
+        form("dark forged pitted saw blade",poly,.006,m["forged"],.040,.0006)
+        form("stiffening spine along the saw back",[(-.038,-.075),(-.049,.210),
+             (-.041,.211),(-.029,-.075)],.005,m["edge"],.044,.0004)
+        # An actual smooth, open wooden D handle. The predecessor was many
+        # individually capped rods and read like a segmented polygon in 2.5D.
+        loop=[(-.066,-.220,.040),(-.027,-.235,.040),(.011,-.229,.040),
+              (.038,-.203,.040),(.046,-.162,.040),(.035,-.127,.040),
+              (-.022,-.095,.040),(-.060,-.123,.040),(-.076,-.168,.040)]
+        closed_sweep("single worn D-shaped hardwood handle",loop,m["wood"],.0125,20)
         tube("thumb saddle at saw heel",(-.064,-.127,.040),
              (-.029,-.084,.040),.014,.012,m["endwood"])
         for x,y in ((-.018,-.100),(.020,-.105)):
             small_pin("blade fastening rivet",x,y,m["brass"],.054,.004)
         form("steel tang embedded inside wood cheek",[(-.031,-.116),
              (.024,-.116),(.027,-.078),(-.028,-.078)],.003,m["forged"],.042,.0003)
+        forge_scars("diagonal saw steel scrape",[((-.029,-.012),(.009,-.004)),
+             ((-.033,.031),(.006,.037)),((-.034,.094),(-.002,.101)),
+             ((-.040,.161),(-.010,.173))],m["edge"],.0441,.0012)
     elif kind=="knife":
         grip("full tang knife handle",[(-.153,.011,.011),(-.146,.016,.012),
              (-.088,.017,.013),(-.045,.015,.012),(-.024,.012,.010)],m["wood"])
@@ -320,6 +458,8 @@ def construction(item, m):
              (-.041,.133),(-.017,.115),(.012,.035),(.024,-.031)],.003,m["forged"],.042,.0004)
         for y in (-.119,-.071):small_pin("handle flush steel pin",0,y,m["brass"],.055,.004)
         tube("knife forged bolster",(0,-.026,.040),(0,-.018,.040),.014,.014,m["edge"])
+        forge_scars("short heel blade scratches",[((-.014,.051),(.008,.060)),
+            ((-.020,.083),(.001,.089))],m["oxide"],.0439,.0012)
     elif kind=="shovel":
         wooden_handle(.83,m,bottom=-.50,top=.295)
         tube("steel shovel ferrule",(0,.274,.040),(0,.335,.040),.018,.018,m["forged"])
@@ -331,6 +471,8 @@ def construction(item, m):
         for sign in (-1,1):
             form("shovel shoulder foot ledge",[(sign*.049,.349),
                  (sign*.089,.361),(sign*.090,.381),(sign*.048,.370)],.009,m["edge"],.052,.001)
+        forge_scars("shovel edge stone abrasion",[((-.066,.461),(-.045,.472)),
+              ((-.035,.478),(-.010,.487)),((.039,.471),(.062,.460))],m["oxide"],.0535,.002)
     elif kind=="machete":
         grip("flared machete handle",[(-.28,.013,.012),(-.271,.020,.016),
              (-.215,.021,.016),(-.150,.018,.014),(-.125,.014,.013)],m["wood"])
@@ -343,6 +485,8 @@ def construction(item, m):
         for y in (-.253,-.167):small_pin("brass scale rivet",0,y,m["brass"],.056,.005)
         form("machete faint forged fuller facet",[(-.010,-.110),(-.022,.159),
              (-.016,.176),(-.002,-.110)],.001,m["edge"],.0447,.0002)
+        forge_scars("machete sharpening and survival scratches",[((-.019,.030),(.006,.044)),
+             ((-.023,.108),(.013,.120)),((-.016,.206),(.015,.218))],m["oxide"],.0448,.0015)
     else:
         raise ValueError("unknown silhouette archetype: "+kind)
 
@@ -417,7 +561,11 @@ def run_one(item, output, samples):
         "schema":1,"asset_id":ident,"archetype":item["archetype"],
         "physical_spec_m":item["dimensions_m"],"actual_bounds_m":bounds,
         "source_recipe_sha256":sha256(RECIPE_FILE),
+        "source_builder_sha256":sha256(Path(__file__)),
         "source_geometry_status":"REFINED_EDITABLE_SOURCE_CANDIDATE",
+        "material_status":"RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+        "material_recipe":"WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+        "art_reference":"2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
         "render_status":"FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
         "founder_golden_approved":False,"godot_integrated":False,
         "iphone_tested":False,"model_parts":len(obs),
