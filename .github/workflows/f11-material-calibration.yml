@@ -43,6 +43,10 @@ jobs:
           assert len(json.loads((root/'manifest.json').read_text())['entries'])==3
           print('LL_F11_HERO_RENDER_PASS 3')
           PY
+      - name: Export hero geometry with embedded PBR and verify UV coverage
+        run: |
+          blender -b --factory-startup -t 2 --python tools/material_factory/export_hero_glb.py -- --material-root build/f11/materials --output build/f11/heroes_glb
+          python tools/material_factory/validate_hero_glb.py build/f11/heroes_glb
       - uses: actions/upload-artifact@v4
         with:
           name: f11-unapproved-calibration
@@ -52,5 +56,7 @@ jobs:
             build/f11/f11-swatches.glb
             build/f11/heroes/*.png
             build/f11/heroes/manifest.json
+            build/f11/heroes_glb/*.glb
+            build/f11/heroes_glb/manifest.json
           retention-days: 14
           if-no-files-found: error
