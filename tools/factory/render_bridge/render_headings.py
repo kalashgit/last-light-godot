@@ -64,7 +64,13 @@ def main():
         raise ValueError('root is hidden from rendering')
     if root.location.length > 0.0001:
         raise ValueError('root origin must be at world origin for locked F12 camera')
-    descendants = [obj for obj in bpy.data.objects if obj == root or root in obj.parent_recursive]
+    def belongs_to_root(obj):
+        while obj is not None:
+            if obj == root:
+                return True
+            obj = obj.parent
+        return False
+    descendants = [obj for obj in bpy.data.objects if belongs_to_root(obj)]
     geometry = [obj for obj in descendants if obj.type == 'MESH' and not obj.hide_render]
     if not geometry:
         raise ValueError('root has no renderable mesh descendants')
