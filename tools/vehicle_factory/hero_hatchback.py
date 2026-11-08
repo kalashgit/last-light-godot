@@ -26,6 +26,39 @@ WB=2.54
 R=.340
 
 
+def glass_material(name,dark=False):
+    """Original camera-angle-dependent reflective glazing for Blender source.
+
+    Procedural reflection ramps must be baked or simplified for portable GLB;
+    this art-calibration material is not an F11-approved production texture.
+    """
+    material=bpy.data.materials.new(name)
+    material.diffuse_color=(.055,.105,.132,1) if dark else (.105,.193,.239,1)
+    material.use_nodes=True
+    nt=material.node_tree
+    nt.nodes.clear()
+    output=nt.nodes.new("ShaderNodeOutputMaterial")
+    principled=nt.nodes.new("ShaderNodeBsdfPrincipled")
+    principled.inputs["Metallic"].default_value=.16
+    principled.inputs["Roughness"].default_value=.24
+    # Blender 4.x naming; only set clearcoat on versions that support it.
+    coat=principled.inputs.get("Coat Weight") or principled.inputs.get("Clearcoat")
+    if coat:coat.default_value=.34
+    layer=nt.nodes.new("ShaderNodeLayerWeight")
+    layer.inputs["Blend"].default_value=.30
+    ramp=nt.nodes.new("ShaderNodeValToRGB")
+    if dark:
+        ramp.color_ramp.elements[0].color=(.013,.027,.037,1)
+        ramp.color_ramp.elements[1].color=(.091,.137,.161,1)
+    else:
+        ramp.color_ramp.elements[0].color=(.033,.069,.092,1)
+        ramp.color_ramp.elements[1].color=(.172,.254,.285,1)
+    nt.links.new(layer.outputs["Facing"],ramp.inputs[0])
+    nt.links.new(ramp.outputs[0],principled.inputs["Base Color"])
+    nt.links.new(principled.outputs[0],output.inputs["Surface"])
+    return material
+
+
 def mesh_object(name,vertices,polys,materials,material_indices=None):
     mesh=bpy.data.meshes.new(name)
     mesh.from_pydata(vertices,[],polys)
@@ -36,6 +69,16 @@ def mesh_object(name,vertices,polys,materials,material_indices=None):
     for i,poly in enumerate(mesh.polygons):
         poly.material_index=material_indices[i] if material_indices else 0
         poly.use_smooth=True
+    # Portable deterministic UV0 for native Blender editing/glTF export.
+    # Side walls use longitudinal x / height z; upper skins use x / width y.
+    uv=mesh.uv_layers.new(name="F10_HERO_UV0")
+    for poly in mesh.polygons:
+        side_dominant=abs(poly.normal.y)>abs(poly.normal.z)
+        for loop_idx in poly.loop_indices:
+            co=mesh.vertices[mesh.loops[loop_idx].vertex_index].co
+            u=(co.x+L/2)/L
+            v=co.z/H if side_dominant else (co.y+W/2)/W
+            uv.data[loop_idx].uv=(u,v)
     return ob
 
 
@@ -106,8 +149,11 @@ def body_shell(m):
         pipe("sculpted side character crease",[(-L*.44,yy,.798),
              (-L*.16,yy*1.01,.818),(L*.17,yy*1.01,.822),(L*.43,yy,.790)],
              .009,m["highlight"])
-        for x in (-L*.095,L*.270):
-            pipe("door panel edge",[(x,yy,.80),(x,yy,.945)],.010,m["dark"])
+        for x in (-L*.095,L*.220):
+            pipe("door full-height stamped shutline",[(x,yy,.394),(x,yy,.944)],
+                 .008,m["dark"])
+        pipe("lower door rocker moulding",[(-L*.25,yy,.397),(L*.22,yy,.397)],
+             .017,m["trim"])
 
 
 def greenhouse(m):
@@ -135,6 +181,13 @@ def greenhouse(m):
     faces("F10 HERO inset rear liftgate glass",[
         (xrear,-.556,zr+.008),(xrear,.556,zr+.008),
         (rear_sill,.696,.979),(rear_sill,-.696,.979)],m["black_glass"])
+    for name,coords in (
+        ("windscreen header seal",[(xfront,-.560,zf+.014),(xfront,.560,zf+.014)]),
+        ("windscreen lower seal",[(front_sill,-.702,bottom_z),(front_sill,.702,bottom_z)]),
+        ("windscreen left seal",[(xfront,-.560,zf+.014),(front_sill,-.702,bottom_z)]),
+        ("windscreen right seal",[(xfront,.560,zf+.014),(front_sill,.702,bottom_z)]),
+        ("liftgate upper seal",[(xrear,-.560,zr+.014),(xrear,.560,zr+.014)])):
+        pipe(name,coords,.012,m["trim"])
     for side in (-1,1):
         ytop=side*.574
         ylow=side*.710
@@ -206,6 +259,8 @@ def detailing(m):
 
 def build(paint="#364958"):
     m=make_materials(paint,1)
+    m["glass"]=glass_material("F10 HERO original light glazing")
+    m["black_glass"]=glass_material("F10 HERO original rear tint",dark=True)
     body_shell(m)
     greenhouse(m)
     wheels(m)
