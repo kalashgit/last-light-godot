@@ -4,6 +4,9 @@ blender -b --factory-startup --python tests/factory/zombies/f06_blender_reopen_c
 """
 import sys
 from pathlib import Path
+for sys_path in ('/usr/lib/python3.12/lib-dynload',
+                 '/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages'):
+    if sys_path not in sys.path:sys.path.append(sys_path)
 import bpy
 
 path=sys.argv[sys.argv.index('--')+1]
