@@ -28,6 +28,12 @@ const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
 const HouseNavigation := preload("res://scripts/house_navigation.gd")
 var navigation := HouseNavigation.new()
+const ZombieDirector := preload("res://scripts/zombie/zombie_director.gd")
+const ZombieRenderer := preload("res://scripts/zombie/zombie_renderer.gd")
+var zombies := ZombieDirector.new()
+const ZOMBIE_WORLD_SEED := 1107
+var zombie_grab := -1
+var footstep_distance := 0.0
 var save_blocked := false
 var recovery_available := false
 var exhausted := false
@@ -80,6 +86,8 @@ func _ready() -> void:
  art.setup(self)
  _load_controls()
  _make_house()
+ zombies.setup(self)
+ _spawn_house_zombies()
  _layout_controls()
  var load_status:=_load_game()
  if load_status==ERR_FILE_NOT_FOUND and FileAccess.file_exists(LEGACY_SAVE_PATH):
@@ -198,6 +206,9 @@ func _interact() -> void:
    return
   _announce("Picked up "+survival.name_for(drop.id))
   drops.remove_at(target.index)
+ elif target.kind=="corpse":
+  _loot_corpse(target.index)
+  return
  selected_target={}
  _save_game()
 
@@ -215,6 +226,7 @@ func _toggle_door(i: int) -> void:
     _announce("The doorway is occupied")
     return
  door.open = not door.open
+ zombies.emit_noise((door.a+door.b)*.5,6.0,"door")
  _announce(door.label + (" door OPEN" if door.open else " door CLOSED"))
 
 func _weapon_stats() -> Dictionary:
@@ -237,7 +249,9 @@ func _attack() -> void:
    zombie_health[i]=maxi(0,int(zombie_health[i])-int(stats.damage))
    zombies_hit_time[i]=.32
    infected[i]=_try_move(infected[i],offset.normalized()*.12,.17)
+   zombies.notify_hit(i,"melee",player,float(stats.damage),zombie_health[i])
    hit=true
+ zombies.emit_noise(player,5.0 if hit else 3.5,"melee")
  _announce("Strike landed" if hit else "Miss — face the infected and move closer")
 
 func _shove() -> void:
@@ -254,7 +268,9 @@ func _shove() -> void:
   if zombie_health[i]>0 and offset.length()<1.15 and facing.dot(offset.normalized())>=.15 and not _line_blocked(player,infected[i]):
    infected[i]=_try_move(infected[i],offset.normalized()*.65,.17)
    zombies_hit_time[i]=.7
+   zombies.notify_hit(i,"shove",player,0.0,zombie_health[i])
    hit=true
+ zombies.emit_noise(player,3.0,"shove")
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:
@@ -288,6 +304,8 @@ func _step(dt: float) -> void:
  if stamina>=20: exhausted=false
  sprinting=not exhausted and (sprint_held or keyboard_sprint) and not sneaking and direction.length()>.01 and stamina>0
  var speed:=SPRINT_SPEED if sprinting else SNEAK_SPEED if sneaking else WALK_SPEED
+ if zombie_grab>=0: speed*=.35
+ var player_before:=player
  if sprinting:
   stamina=maxf(0,stamina-STAMINA_DRAIN*dt)
   recovery_delay=.5
@@ -297,22 +315,13 @@ func _step(dt: float) -> void:
   facing=_screen_direction_to_world(direction)
   player=_try_move(player,facing*speed*dt*minf(1,direction.length()),PLAYER_RADIUS)
   motion_phase+=dt*(15 if sprinting else 7 if sneaking else 10)
- for i in range(infected.size()):
-  if zombie_health[i]<=0: continue
-  zombies_hit_time[i]=maxf(0,zombies_hit_time[i]-dt)
-  if zombies_hit_time[i]>0 or infected[i].distance_to(player)>6.8: continue
-  var chase: Vector2=navigation.direction(i,infected[i],player,dt)
-  var old: Vector2=infected[i]
-  infected[i]=_try_move(old,chase*.72*dt,.17)
-  if infected[i].distance_to(old)<.008:
-   for door in doors:
-    if not door.open and _segment_distance(infected[i],door.a,door.b)<.55:
-     door.health=maxf(0,door.health-dt*12)
-     if door.health<=0:
-      door.open=true
-      _announce("BREACH! An infected broke a door")
-  if infected[i].distance_to(player)<.62 and not god_mode and not _line_blocked(infected[i],player):
-   health=maxf(0,health-dt*9)
+ var moved:=player.distance_to(player_before)
+ footstep_distance+=moved
+ if footstep_distance>=.6:
+  footstep_distance=0
+  zombies.emit_noise(player,7.5 if sprinting else 1.0 if sneaking else 3.5,"footstep")
+ for i in range(zombies_hit_time.size()): zombies_hit_time[i]=maxf(0,zombies_hit_time[i]-dt)
+ _update_zombies(dt,moved/maxf(dt,.0001))
  if health<=0:
   _clear_pointers()
   _announce("You did not survive — begin again")
@@ -566,6 +575,7 @@ func _restart_game() -> void:
  infected = [Vector2(-1.9, 7.9), Vector2(11.6, 7.2)]
  zombie_health = [3, 3]
  zombies_hit_time = [0.0, 0.0]
+ _spawn_house_zombies()
  elapsed = 0.0
  motion_phase = 0.0
  attack_cooldown = 0.0
@@ -586,11 +596,12 @@ func _save_game(path: String = SAVE_PATH) -> Error:
  for i in range(items.size()):
   if i<4: searched.append(items[i].searched)
   if items[i].get("container",false): containers[items[i].id]=items[i].searched
+ zombies.sync_bodies(infected,zombie_health)
  var enemies: Array=[]
  for i in range(infected.size()): enemies.append({"x":infected[i].x,"y":infected[i].y,"health":zombie_health[i]})
  var ground: Array=[]
  for drop in drops: ground.append({"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y})
- var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground}
+ var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground,"zombie_ai":zombies.snapshot()}
  # Never overwrite unknown/corrupt prior data, including a future schema.
  if FileAccess.file_exists(path):
   if _load_game(path,true)!=OK:
@@ -675,6 +686,10 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
    if not drop is Dictionary or not drop.get("id") is String or not survival.definitions.has(drop.id): return ERR_INVALID_DATA
    if not _integer(drop.get("count"),1,int(survival.definitions[drop.id].stack_max)) or not _valid_number(drop.get("x"),-100,100) or not _valid_number(drop.get("y"),-100,100): return ERR_INVALID_DATA
    ground.append({"id":drop.id,"count":int(drop.count),"pos":Vector2(drop.x,drop.y)})
+ var zombie_ai: Variant=data.get("zombie_ai")
+ var saved_health: Array=[]
+ for enemy in enemies: saved_health.append(int(enemy.health))
+ if zombie_ai!=null and not ZombieDirector.validate_snapshot(zombie_ai,saved_health,survival.definitions): return ERR_INVALID_DATA
  if validate_only: return OK
  # Apply only after every legacy and extended value has passed validation.
  survival.restore(inventory_state)
@@ -698,6 +713,9 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
   zombie_health[i]=int(enemies[i].health)
   if zombie_health[i]>0 and _blocked_static(infected[i],.17): infected[i]=_clear_saved_position(infected[i])
   zombies_hit_time[i]=0.0
+ if zombie_ai is Dictionary: zombies.restore(zombie_ai,infected,zombie_health)
+ else: zombies.restore_legacy(infected,zombie_health)
+ zombie_grab=-1
  drops=ground
  for drop in drops: art._cache(survival.definitions[drop.id].art_id)
  selected_target={}
@@ -733,12 +751,17 @@ func _target_valid(target: Dictionary) -> bool:
   if index<0 or index>=drops.size(): return false
   point=drops[index].pos
   if player.distance_to(point)>1.5: return false
+ elif target.kind=="corpse":
+  if index<0 or index>=infected.size() or not zombies.corpse_has_loot(index): return false
+  point=infected[index]
+  if player.distance_to(point)>1.5: return false
  else: return false
  return not _line_blocked(player,point,false)
 
 func _target_point(target: Dictionary) -> Vector2:
  if target.kind=="door": return (doors[target.index].a+doors[target.index].b)*.5
  if target.kind=="container": return items[target.index].pos+items[target.index].size*.5
+ if target.kind=="corpse": return infected[target.index]
  return drops[target.index].pos
 
 func _resolve_target() -> Dictionary:
@@ -746,8 +769,8 @@ func _resolve_target() -> Dictionary:
  selected_target={}
  var best: Dictionary={}
  var distance:=INF
- for kind in ["door","container","drop"]:
-  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+ for kind in ["door","container","drop","corpse"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size() if kind=="drop" else infected.size()
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
@@ -762,6 +785,7 @@ func _context_prompt() -> String:
  if target.is_empty(): return "No usable target nearby"
  if target.kind=="door": return "Close Door" if doors[target.index].open else "Open Door"
  if target.kind=="drop": return "Pick Up Item"
+ if target.kind=="corpse": return "Search Body"
  return "Search "+String(items[target.index].name).capitalize()
 
 func _inventory_rows() -> Array:
@@ -853,8 +877,8 @@ func _draw_drop(index: int) -> void:
 func _select_world_target(point: Vector2) -> void:
  var best: Dictionary={}
  var distance:=60.0
- for kind in ["door","container","drop"]:
-  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+ for kind in ["door","container","drop","corpse"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size() if kind=="drop" else infected.size()
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
@@ -931,4 +955,91 @@ func _interaction_distance(target: Dictionary) -> float:
  if target.kind=="container":
   var r:=Rect2(items[target.index].pos,items[target.index].size)
   return player.distance_to(player.clamp(r.position,r.end))
+ if target.kind=="corpse": return player.distance_to(infected[target.index])
  return player.distance_to(drops[target.index].pos)
+
+
+# ---- Worker 03 zombie integration (scripts/zombie). Host-side world interface. ----
+
+func _spawn_house_zombies() -> void:
+ zombies.clear()
+ zombie_grab=-1
+ var spawns:=[
+  {"world_seed":ZOMBIE_WORLD_SEED,"region":"house_lot","building":"house_01","room":"yard_west","index":0,"context":"residential","profile":"civilian","position":infected[0],"facing":Vector2(0,-1)},
+  {"world_seed":ZOMBIE_WORLD_SEED,"region":"house_lot","building":"house_01","room":"yard_east","index":1,"context":"residential","profile":"shambler","position":infected[1],"facing":Vector2(0,-1)},
+ ]
+ for spawn in spawns: zombies.spawn(spawn)
+
+func _update_zombies(dt: float, player_speed: float) -> void:
+ zombies.set_target(player,facing*player_speed,health>0,sprinting,sneaking,stamina)
+ zombies.sync_bodies(infected,zombie_health)
+ zombies.update(dt)
+ zombies.write_bodies(infected)
+ for event in zombies.drain_events(): _on_zombie_event(event)
+
+func _on_zombie_event(event: Dictionary) -> void:
+ match event.type:
+  "attack_contact": _apply_zombie_attack(event)
+  "grab_start":
+   zombie_grab=event.zombie
+   _announce("GRABBED — shove to break free")
+  "grab_end":
+   if zombie_grab==event.zombie: zombie_grab=-1
+  "door_breach": _apply_door_breach(event)
+
+## Worker 02 contract point: final player damage for a zombie contact event.
+func _apply_zombie_attack(event: Dictionary) -> void:
+ if god_mode or health<=0: return
+ health=maxf(0,health-float(event.damage))
+
+## Worker 05 contract point: door damage requested by a blocked zombie.
+func _apply_door_breach(event: Dictionary) -> void:
+ var door: Dictionary=doors[event.door]
+ if door.open: return
+ door.health=maxf(0,door.health-float(event.amount))
+ if door.health<=0:
+  door.open=true
+  _announce("BREACH! An infected broke a door")
+
+func _loot_corpse(index: int) -> void:
+ if not zombies.corpse_has_loot(index): return
+ var loot: Dictionary=zombies.agents[index].loadout.inventory
+ var previous:=survival.snapshot()
+ for id in loot:
+  if not survival.add(id,loot[id]):
+   survival.restore(previous)
+   _announce("Make room in your pack before searching")
+   return
+ zombies.take_corpse_loot(index)
+ selected_target={}
+ _announce("Searched the body")
+ _save_game()
+
+func _zombie_visible(i: int) -> bool:
+ if i>=zombies.agents.size(): return zombie_health[i]>0
+ return zombie_health[i]>0 or zombies.agents[i].state in ["death","corpse"]
+
+func _draw_zombie(i: int) -> void:
+ if i>=zombies.agents.size():
+  _draw_character(infected[i],false,elapsed*4+i,zombies_hit_time[i]>0)
+  return
+ ZombieRenderer.draw(self,zombies.agents[i],zombies.anim_frame(i),zombies_hit_time[i]>0)
+
+func zw_blocked(p: Vector2, r: float) -> bool: return _blocked(p,r)
+func zw_blocked_static(p: Vector2, r: float) -> bool: return _blocked_static(p,r)
+func zw_try_move(p: Vector2, d: Vector2, r: float) -> Vector2: return _try_move(p,d,r)
+func zw_sight_blocked(a: Vector2, b: Vector2) -> bool: return _line_blocked(a,b,false)
+func zw_nav_grid() -> AStarGrid2D: return navigation.grid
+func zw_nav_step() -> float: return navigation.STEP
+func zw_door_center(i: int) -> Vector2: return (doors[i].a+doors[i].b)*.5
+func zw_closed_door_near(p: Vector2, r: float) -> int:
+ for i in range(doors.size()):
+  if not doors[i].open and _segment_distance(p,doors[i].a,doors[i].b)<r: return i
+ return -1
+func zw_sound_occlusion(a: Vector2, b: Vector2) -> float:
+ var factor:=1.0
+ for wall in walls:
+  if Geometry2D.segment_intersects_segment(a,b,wall.a,wall.b)!=null: factor*=.45
+ for door in doors:
+  if not door.open and Geometry2D.segment_intersects_segment(a,b,door.a,door.b)!=null: factor*=.6
+ return factor
