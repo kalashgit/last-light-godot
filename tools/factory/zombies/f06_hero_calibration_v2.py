@@ -31,7 +31,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -214,6 +214,61 @@ def refine_v3_anatomy_and_wear(profile,rig):
         stitch_fold('ripped front hem',[(.06,-.151,1.14),(.127,-.157,1.10),
                     (.168,-.12,1.155)],.049,'chest',grime,rig)
 
+def refine_v4_readability(profile,rig):
+    """Distinct workwear silhouettes at F12 scale; all are editable 3D parts."""
+    # These large surface features are intentionally >= roughly two projected
+    # pixels. Fine stains, microbuttons and tiny facial marks cannot carry identity.
+    outfit=profile['outfit']
+    if outfit=='jacket':
+        contrast=mat('V4 faded jacket panel / F11 provisional',(.37,.36,.29),.92,.055)
+        under=mat('V4 exposed inner shirt / F11 provisional',(.21,.26,.24),.97,.025)
+        # Asymmetrical open jacket reveals a vertical contrasting inner garment.
+        tapered('V4 inner shirt broad window',(-.018,-.182),1.135,1.425,
+                (.073,.017),(.079,.018),'chest',under,rig,12)
+        stitch_fold('V4 drooping left open jacket edge',[(-.09,-.185,1.44),
+                    (-.108,-.19,1.32),(-.126,-.171,1.13)],.067,'chest',contrast,rig)
+        stitch_fold('V4 slanted right jacket edge',[(.075,-.18,1.43),
+                    (.095,-.187,1.30),(.075,-.175,1.13)],.056,'chest',contrast,rig)
+        ball('V4 asymmetrical loose jacket shoulder',(-.241,-.003,1.385),
+             (.091,.101,.10),'upper_arm_L',contrast,rig)
+    elif outfit=='scrubs':
+        light=mat('V4 faded sage hospital tunic / F11 provisional',(.55,.64,.60),.91,.035)
+        dark=mat('V4 scrub belt and sleeve edging / F11 provisional',(.23,.39,.37),.96,.035)
+        tapered('V4 oversized orderly tunic',(0,0),1.035,1.425,
+                (.226,.177),(.244,.171),'chest',light,rig,20)
+        tapered('V4 distinct dark waistband',(0,-.004),1.068,1.106,
+                (.232,.184),(.233,.184),'chest',dark,rig,20)
+        for side,sign in (('L',-1),('R',1)):
+            ball('V4 short scrub sleeve '+side,(sign*.268,0,1.344),
+                 (.112,.105,.133),'upper_arm_'+side,light,rig)
+        stitch_fold('V4 large diagonal tunic neckline',[(-.091,-.173,1.439),
+                    (0,-.19,1.347),(.094,-.173,1.438)],.052,'chest',dark,rig)
+    elif outfit=='vest':
+        dark=mat('V4 dark graphite body armor / F11 provisional',(.12,.145,.16),.87,.035)
+        edging=mat('V4 aged charcoal straps / F11 provisional',(.30,.345,.34),.91,.04)
+        # Strong shoulder-and-vest silhouette, not repeated generic torso clothing.
+        tapered('V4 broad ballistic vest',(0,-.009),1.159,1.455,
+                (.239,.191),(.272,.195),'chest',dark,rig,20)
+        for side,sign in (('L',-1),('R',1)):
+            ball('V4 security shoulder pad '+side,(sign*.248,-.001,1.406),
+                 (.126,.131,.083),'upper_arm_'+side,dark,rig)
+            stitch_fold('V4 vertical vest strap '+side,[(sign*.167,-.198,1.45),
+                         (sign*.166,-.215,1.32),(sign*.168,-.216,1.19)],
+                         .061,'chest',edging,rig)
+        tapered('V4 belt with separated silhouette',(0,-.003),1.052,1.122,
+                (.245,.188),(.242,.187),'spine',edging,rig,20)
+    else:
+        bare=mat('V4 exposed pallid injury / F11 provisional',(.52,.47,.39),.91,.045)
+        tear=mat('V4 torn ochre textile / F11 provisional',(.43,.35,.22),.96,.055)
+        # Crawling pose plus missing fabric creates a readable broken shoulder line.
+        ball('V4 exposed wounded shoulder',(.263,-.014,1.385),
+             (.124,.110,.102),'upper_arm_R',bare,rig)
+        stitch_fold('V4 broad torn diagonal fabric',[(.17,-.169,1.448),
+                    (.04,-.192,1.314),(-.113,-.176,1.145)],
+                    .093,'chest',tear,rig)
+        ball('V4 dragging enlarged left cuff',(-.341,0,.972),
+             (.098,.081,.084),'forearm_L',tear,rig)
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -292,7 +347,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile=='v3_refined':
+    if args.geometry_profile in ('v3_refined','v4_readable'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -352,7 +407,9 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile=='v3_refined':refine_v3_anatomy_and_wear(profile,rig)
+    if args.geometry_profile in ('v3_refined','v4_readable'):
+        refine_v3_anatomy_and_wear(profile,rig)
+    if args.geometry_profile=='v4_readable':refine_v4_readability(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
