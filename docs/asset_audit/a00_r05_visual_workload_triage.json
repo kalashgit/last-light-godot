@@ -1,0 +1,37 @@
+{
+  "schema": "A00_R05_VISUAL_WORKLOAD_TRIAGE_V1",
+  "source_total": 6072,
+  "most_common_image_sizes": {
+    "32x32": 3609,
+    "128x256": 523,
+    "128x128": 86,
+    "64x64": 57,
+    "256x256": 55
+  },
+  "physical_master_candidate_icons": {
+    "total_candidates": 3114,
+    "32x32_images": 3091,
+    "interpretation": "Inventory icons are evidence of item identity, not proof that a new Blender master is required. Reconcile against gameplay and existing mesh first."
+  },
+  "needs_visual_evidence": {
+    "total": 1051,
+    "32x32_images": 66,
+    "at_least_one_dimension_256_plus": 799
+  },
+  "tile_or_atlas_components": {
+    "total": 927,
+    "at_least_one_dimension_256_plus": 565,
+    "interpretation": "Determine whether an image depicts one tile, atlas, scene screenshot or reusable kit before assigning production."
+  },
+  "research_composites": {
+    "total": 225,
+    "at_least_one_dimension_256_plus": 185
+  },
+  "next_actions": [
+    "Deduplicate item identities without equating different icon binaries to unique 3D assets",
+    "Visually inspect large unknown and tile screenshots in coherent family contact sheets",
+    "Resolve cross-family Notion and 360-model ID alias conflicts before new master admissions",
+    "Retain original source records, their hashes, and research-only rights"
+  ],
+  "approval_status": "SOURCE_METADATA_ONLY_NOT_GOLDEN"
+}
