@@ -21,6 +21,7 @@ from mathutils import Vector, Matrix
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "blender_factory"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import render_v3_recovery as hero
 
 RECIPE_FILE = Path(__file__).with_name("recipes.json")
