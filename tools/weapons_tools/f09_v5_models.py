@@ -72,7 +72,7 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
              [(.002,.082),(.030,.081),(.043,.095),(.049,.112),
               (.048,.140),(.040,.156),(.025,.156),
               (.019,.147),(.020,.132),(.020,.116),(.010,.103)],
-             .0175,m["forged"],z,.0013)
+             .0175,m["edge"],z,.0013)
         # Visible small polished contact facets make the opposing flats legible.
         form("V8 fixed parallel gripping flat",
              [(-.038,.126),(-.035,.128),(-.022,.157),(-.025,.160)],
@@ -126,10 +126,16 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
         # not an isolated floating wood ring.
         # V9 authentic plate-style handle replaces unrealistic wooden rope loop.
         shaped_wooden_d_handle(m["wood"], z)
-        form("V5 solid wooden thumb cheek connected to blade",
-             [(-.062,-.155),(-.030,-.130),(.022,-.132),
-              (.035,-.107),(.011,-.085),(-.042,-.103)],
-             .014,m["wood"],z,.002)
+        # V10 enlarged solid hardwood heel cheek: attached to both D-plate
+        # and steel tang, with broad thumb support and a flatter top profile.
+        form("V10 shaped hardwood cheek enveloping steel tang",
+             [(-.082,-.173),(-.082,-.145),(-.057,-.112),
+              (-.024,-.092),(.005,-.091),(.034,-.105),
+              (.027,-.145),(.005,-.161),(-.047,-.173)],
+             .018,m["wood"],z,.003)
+        form("V10 worn endgrain heel joint",
+             [(-.063,-.159),(-.055,-.159),(-.038,-.115),(-.045,-.111)],
+             .0008,m["endwood"],z+.010,.0001)
         # Two large pins placed on a solid cheek—not suspended on teeth.
         for x,y in ((-.029,-.119),(.005,-.114)):
             small_pin("V5 saw heavy steel heel rivet",x,y,m["brass"],z=.051,rad=.0036)
