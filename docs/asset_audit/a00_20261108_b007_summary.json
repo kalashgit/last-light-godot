@@ -1,0 +1,380 @@
+{
+  "batch_id": "A00-20261108-B007",
+  "actual_fetched": 8000,
+  "classified": 8000,
+  "cumulative_fetched_and_metadata_classified": 16100,
+  "archive_offsets": {
+    "start_inclusive": 8100,
+    "end_exclusive": 16100
+  },
+  "source_first": 95489,
+  "source_last": 163719,
+  "primary_classes": {
+    "ANIMATION_FRAME_REFERENCE": 1,
+    "CANONICAL_MASTER_CANDIDATE": 1778,
+    "COMPOSITION_REFERENCE": 4870,
+    "DUPLICATE_ALIAS": 2,
+    "MATERIAL_TEXTURE": 28,
+    "MEANINGFUL_VARIANT": 363,
+    "NEEDS_MANUAL_REVIEW": 175,
+    "OUT_OF_SCOPE": 142,
+    "STATE_OR_DIRECTION": 188,
+    "UI_ICON_ONLY": 453
+  },
+  "representations": {
+    "ANIMAL_REFERENCE": 32,
+    "ANIMATION_OR_FRAME": 1,
+    "APPEARANCE_VARIANT": 157,
+    "BRANDING_OR_WIKI_REFERENCE": 141,
+    "CLOTHING_MATERIAL_VARIANT": 71,
+    "FILE_ALIAS": 2,
+    "INVENTORY_REFERENCE_ICON": 1778,
+    "MATERIAL_OR_DECAL": 28,
+    "MODEL_VIEW_REFERENCE": 938,
+    "null": 175,
+    "OBJECT_STATE": 188,
+    "OUTFIT_ASSEMBLY_VIEW": 285,
+    "PRINTED_PAPER_VARIANT": 135,
+    "RESEARCH_SCENE_OR_DOCUMENT": 1519,
+    "TILE_ATLAS_FRAGMENT": 1537,
+    "UI_OR_RECIPE_VISUAL": 453,
+    "VEGETATION_TILE_FRAGMENT": 559,
+    "WIKI_USER_MEDIA": 1
+  },
+  "suggested_queue_counts": {
+    "F01": 310,
+    "F02": 484,
+    "F03": 136,
+    "F04": 559,
+    "F05": 565,
+    "F07": 32,
+    "F09": 2746,
+    "F10": 241,
+    "F11": 28,
+    "F12": 1
+  },
+  "provisional_parent_source_links": 373,
+  "unresolved_parent_stems": 1116,
+  "redirect_references": 2,
+  "semantic_identities_individually_verified": 6,
+  "new_notion_master_rows": 6,
+  "source_records_linked_to_published_masters": 8,
+  "metadata_only_not_approved": 7992,
+  "source_art_research_only_records": 8000,
+  "geometry_360_index_checked": 360,
+  "geometry_exact_match_source_records": 14,
+  "geometry_exact_match_unique_ids": 11,
+  "crosswalk_report": "docs/asset_audit/a00_20261108_b007_360_crosswalk.json",
+  "semantic_work_orders": "docs/asset_audit/a00_20261108_b007_semantic_work_orders.jsonl",
+  "metadata_class_spot_check_examples": 35,
+  "source_snapshot_sha256": "aff90ebeb28c65a1c25da49d7d4b709d41f57114a06e9c2711a8d5f05cbd92d9",
+  "ledger_sha256": "f678175ac8a808a3469444c7291ab13af71acf4768d177c025eaf39299f99556",
+  "next_cursor": {
+    "offset": 16100,
+    "source_page_id_after": 163719
+  },
+  "remaining_after_batch": 4925,
+  "golden_visual_approved_in_batch": 0,
+  "class_examples_for_qa": {
+    "COMPOSITION_REFERENCE": [
+      {
+        "source_page_id": 95489,
+        "source_title": "File:Location shop accessories 01 1.png",
+        "source_url": "https://pzwiki.net/wiki/File:Location_shop_accessories_01_1.png",
+        "reason": "Numbered source tile/atlas fragment; requires component semantics and 360-model crosswalk before master admission",
+        "parent_source_page_id": null,
+        "suggested_queue": "F02"
+      },
+      {
+        "source_page_id": 95491,
+        "source_title": "File:Location shop accessories 01 2.png",
+        "source_url": "https://pzwiki.net/wiki/File:Location_shop_accessories_01_2.png",
+        "reason": "Numbered source tile/atlas fragment; requires component semantics and 360-model crosswalk before master admission",
+        "parent_source_page_id": null,
+        "suggested_queue": "F02"
+      },
+      {
+        "source_page_id": 95493,
+        "source_title": "File:Location shop accessories 01 3.png",
+        "source_url": "https://pzwiki.net/wiki/File:Location_shop_accessories_01_3.png",
+        "reason": "Numbered source tile/atlas fragment; requires component semantics and 360-model crosswalk before master admission",
+        "parent_source_page_id": null,
+        "suggested_queue": "F02"
+      },
+      {
+        "source_page_id": 95495,
+        "source_title": "File:Location shop accessories 01 20.png",
+        "source_url": "https://pzwiki.net/wiki/File:Location_shop_accessories_01_20.png",
+        "reason": "Numbered source tile/atlas fragment; requires component semantics and 360-model crosswalk before master admission",
+        "parent_source_page_id": null,
+        "suggested_queue": "F02"
+      }
+    ],
+    "NEEDS_MANUAL_REVIEW": [
+      {
+        "source_page_id": 96887,
+        "source_title": "File:Seahorse Coffee Riverside.png",
+        "source_url": "https://pzwiki.net/wiki/File:Seahorse_Coffee_Riverside.png",
+        "reason": "Metadata insufficient to decide original standalone asset identity",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98689,
+        "source_title": "File:Spiffos taxi.png",
+        "source_url": "https://pzwiki.net/wiki/File:Spiffos_taxi.png",
+        "reason": "Metadata insufficient to decide original standalone asset identity",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98779,
+        "source_title": "File:Mid profile image.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mid_profile_image.png",
+        "reason": "Metadata insufficient to decide original standalone asset identity",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98987,
+        "source_title": "File:Droids01.jpg",
+        "source_url": "https://pzwiki.net/wiki/File:Droids01.jpg",
+        "reason": "Metadata insufficient to decide original standalone asset identity",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      }
+    ],
+    "MEANINGFUL_VARIANT": [
+      {
+        "source_page_id": 98507,
+        "source_title": "File:Homeward 934 flyer.png",
+        "source_url": "https://pzwiki.net/wiki/File:Homeward_934_flyer.png",
+        "reason": "Artwork/print variant of a reusable paper document or flier master; paper geometry shared",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114625,
+        "source_title": "File:Flyer ScarletOak.png",
+        "source_url": "https://pzwiki.net/wiki/File:Flyer_ScarletOak.png",
+        "reason": "Artwork/print variant of a reusable paper document or flier master; paper geometry shared",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114627,
+        "source_title": "File:Flyer SeaShanty.png",
+        "source_url": "https://pzwiki.net/wiki/File:Flyer_SeaShanty.png",
+        "reason": "Artwork/print variant of a reusable paper document or flier master; paper geometry shared",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114629,
+        "source_title": "File:Flyer WestMapleCountryClub.png",
+        "source_url": "https://pzwiki.net/wiki/File:Flyer_WestMapleCountryClub.png",
+        "reason": "Artwork/print variant of a reusable paper document or flier master; paper geometry shared",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      }
+    ],
+    "OUT_OF_SCOPE": [
+      {
+        "source_page_id": 98911,
+        "source_title": "File:Pzwiki mainpage 20110410.png",
+        "source_url": "https://pzwiki.net/wiki/File:Pzwiki_mainpage_20110410.png",
+        "reason": "Franchise/source branding, wiki-history or logo research is not a reusable original game asset",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98913,
+        "source_title": "File:Pzwiki mainpage 20110516.png",
+        "source_url": "https://pzwiki.net/wiki/File:Pzwiki_mainpage_20110516.png",
+        "reason": "Franchise/source branding, wiki-history or logo research is not a reusable original game asset",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98915,
+        "source_title": "File:Pzwiki mainpage 20111017.png",
+        "source_url": "https://pzwiki.net/wiki/File:Pzwiki_mainpage_20111017.png",
+        "reason": "Franchise/source branding, wiki-history or logo research is not a reusable original game asset",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 98917,
+        "source_title": "File:Pzwiki mainpage 20120412.png",
+        "source_url": "https://pzwiki.net/wiki/File:Pzwiki_mainpage_20120412.png",
+        "reason": "Franchise/source branding, wiki-history or logo research is not a reusable original game asset",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      }
+    ],
+    "CANONICAL_MASTER_CANDIDATE": [
+      {
+        "source_page_id": 114643,
+        "source_title": "File:Webbing.png",
+        "source_url": "https://pzwiki.net/wiki/File:Webbing.png",
+        "reason": "Physical inventory identity candidate; gameplay necessity, duplicate master and original-art rights still unverified",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114645,
+        "source_title": "File:Cereal CornFlakes.png",
+        "source_url": "https://pzwiki.net/wiki/File:Cereal_CornFlakes.png",
+        "reason": "Physical inventory identity candidate; gameplay necessity, duplicate master and original-art rights still unverified",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114661,
+        "source_title": "File:Shirt Neon2.png",
+        "source_url": "https://pzwiki.net/wiki/File:Shirt_Neon2.png",
+        "reason": "Physical inventory identity candidate; gameplay necessity, duplicate master and original-art rights still unverified",
+        "parent_source_page_id": null,
+        "suggested_queue": "F05"
+      },
+      {
+        "source_page_id": 114663,
+        "source_title": "File:BarbedWireBundle.png",
+        "source_url": "https://pzwiki.net/wiki/File:BarbedWireBundle.png",
+        "reason": "Physical inventory identity candidate; gameplay necessity, duplicate master and original-art rights still unverified",
+        "parent_source_page_id": null,
+        "suggested_queue": "F09"
+      }
+    ],
+    "STATE_OR_DIRECTION": [
+      {
+        "source_page_id": 114647,
+        "source_title": "File:CrayfishRotten.png",
+        "source_url": "https://pzwiki.net/wiki/File:CrayfishRotten.png",
+        "reason": "spoiled state of the same physical master; inspect functional geometry differences",
+        "parent_source_page_id": 16999,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114653,
+        "source_title": "File:TurkeyWholeRotten.png",
+        "source_url": "https://pzwiki.net/wiki/File:TurkeyWholeRotten.png",
+        "reason": "spoiled state of the same physical master; inspect functional geometry differences",
+        "parent_source_page_id": 114813,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114677,
+        "source_title": "File:TurkeyLegRotten.png",
+        "source_url": "https://pzwiki.net/wiki/File:TurkeyLegRotten.png",
+        "reason": "spoiled state of the same physical master; inspect functional geometry differences",
+        "parent_source_page_id": 115095,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 114709,
+        "source_title": "File:BlackSageRotten.png",
+        "source_url": "https://pzwiki.net/wiki/File:BlackSageRotten.png",
+        "reason": "spoiled state of the same physical master; inspect functional geometry differences",
+        "parent_source_page_id": 7062,
+        "suggested_queue": "F09"
+      }
+    ],
+    "UI_ICON_ONLY": [
+      {
+        "source_page_id": 131303,
+        "source_title": "File:Mood Angry.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mood_Angry.png",
+        "reason": "Interface/recipe/HUD representation, not a physical Blender geometry master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 131305,
+        "source_title": "File:Mood Bored.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mood_Bored.png",
+        "reason": "Interface/recipe/HUD representation, not a physical Blender geometry master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 131307,
+        "source_title": "File:Mood Concentrating.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mood_Concentrating.png",
+        "reason": "Interface/recipe/HUD representation, not a physical Blender geometry master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 131309,
+        "source_title": "File:Mood Dead.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mood_Dead.png",
+        "reason": "Interface/recipe/HUD representation, not a physical Blender geometry master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      }
+    ],
+    "MATERIAL_TEXTURE": [
+      {
+        "source_page_id": 132411,
+        "source_title": "File:TShirt Alt 1.png",
+        "source_url": "https://pzwiki.net/wiki/File:TShirt_Alt_1.png",
+        "reason": "Texture, marking or decal layer; reusable material recipe or overlay, not standalone geometry",
+        "parent_source_page_id": null,
+        "suggested_queue": "F11"
+      },
+      {
+        "source_page_id": 132413,
+        "source_title": "File:TShirt Alt 2.png",
+        "source_url": "https://pzwiki.net/wiki/File:TShirt_Alt_2.png",
+        "reason": "Texture, marking or decal layer; reusable material recipe or overlay, not standalone geometry",
+        "parent_source_page_id": null,
+        "suggested_queue": "F11"
+      },
+      {
+        "source_page_id": 132415,
+        "source_title": "File:TShirt Alt 3.png",
+        "source_url": "https://pzwiki.net/wiki/File:TShirt_Alt_3.png",
+        "reason": "Texture, marking or decal layer; reusable material recipe or overlay, not standalone geometry",
+        "parent_source_page_id": null,
+        "suggested_queue": "F11"
+      },
+      {
+        "source_page_id": 132417,
+        "source_title": "File:TShirt Blues 1.png",
+        "source_url": "https://pzwiki.net/wiki/File:TShirt_Blues_1.png",
+        "reason": "Texture, marking or decal layer; reusable material recipe or overlay, not standalone geometry",
+        "parent_source_page_id": null,
+        "suggested_queue": "F11"
+      }
+    ],
+    "DUPLICATE_ALIAS": [
+      {
+        "source_page_id": 138397,
+        "source_title": "File:Container Drawer.png",
+        "source_url": "https://pzwiki.net/wiki/File:Container_Drawer.png",
+        "reason": "Confirmed MediaWiki file redirect: resolve target; never create a second master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 138407,
+        "source_title": "File:Container DeadPerson MaleZombie.png",
+        "source_url": "https://pzwiki.net/wiki/File:Container_DeadPerson_MaleZombie.png",
+        "reason": "Confirmed MediaWiki file redirect: resolve target; never create a second master",
+        "parent_source_page_id": null,
+        "suggested_queue": null
+      }
+    ],
+    "ANIMATION_FRAME_REFERENCE": [
+      {
+        "source_page_id": 161671,
+        "source_title": "File:Zombie ragdoll demo.gif",
+        "source_url": "https://pzwiki.net/wiki/File:Zombie_ragdoll_demo.gif",
+        "reason": "Possible animation research or frame sequence; verify relevance, parent action and timing before modeling",
+        "parent_source_page_id": null,
+        "suggested_queue": "F12"
+      }
+    ]
+  }
+}
