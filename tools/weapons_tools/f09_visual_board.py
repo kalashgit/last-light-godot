@@ -32,7 +32,11 @@ def main():
             bbox = alpha.getbbox()
             assert bbox is not None, (item["source_asset_id"], name, "blank")
             area = (bbox[2]-bbox[0]) * (bbox[3]-bbox[1])
-            assert area >= 250, (item["source_asset_id"], name, "too-small")
+            assert area >= 600, (item["source_asset_id"], name, "too-small")
+            extent = max(bbox[2]-bbox[0], bbox[3]-bbox[1])
+            assert extent >= 70, (item["source_asset_id"], name, "underfilled-inspection-frame")
+            cx, cy = (bbox[0]+bbox[2])/2, (bbox[1]+bbox[3])/2
+            assert abs(cx-192) < 115 and abs(cy-192) < 115, (item["source_asset_id"], name, "off-center")
             assert 0 < alpha.getextrema()[1] <= 255
             # Preserve original camera framing in large panels.
             big = source.resize((220, 220), Image.Resampling.BOX)
