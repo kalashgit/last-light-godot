@@ -19,6 +19,7 @@ for sys_path in ('/usr/lib/python3.12/lib-dynload',
 
 import bpy
 from mathutils import Vector
+from bpy_extras.object_utils import world_to_camera_view
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--f05-blend', required=True)
@@ -28,6 +29,8 @@ parser.add_argument('--directions', type=int, choices=(4,8), default=4)
 parser.add_argument('--profiles', nargs='*', choices=('civilian','hospital_orderly','security','injured_crawler'))
 parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
+parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
+                    default='legacy_provisional')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
 out.mkdir(parents=True,exist_ok=True)
@@ -271,7 +274,7 @@ def export_variant(profile_name,profile):
     scene.render.engine='BLENDER_EEVEE'
     scene.eevee.taa_render_samples=args.samples
     scene.render.resolution_x=256
-    scene.render.resolution_y=192
+    scene.render.resolution_y=256 if args.render_profile=='f12_cal01' else 192
     scene.render.resolution_percentage=100
     scene.render.film_transparent=True
     scene.render.image_settings.file_format='PNG'
@@ -279,15 +282,35 @@ def export_variant(profile_name,profile):
     scene.view_settings.view_transform='Standard'
     scene.camera.data.type='ORTHO'
     # Entire prone-to-standing envelope must fit the same canvas in every facing.
-    scene.camera.data.ortho_scale=4.2 if args.directions==8 else 3.5
-    scene.camera.location=(3.5,-3.5,3.25)
-    look_height=.72 if args.directions==8 else .77
-    scene.camera.rotation_euler=(Vector((0,0,look_height))-scene.camera.location).to_track_quat('-Z','Y').to_euler()
+    if args.render_profile=='f12_cal01':
+        elevation=math.asin(20/40)
+        scene.camera.location=(8,8,8*math.sqrt(2)*math.tan(elevation))
+        scene.camera.rotation_euler=(Vector((0,0,0))-scene.camera.location).to_track_quat('-Z','Y').to_euler()
+        scene.camera.data.ortho_scale=256/(40*math.sqrt(2))
+        bpy.context.view_layer.update()
+        measured=[]
+        for point in ((0,0,0),(1,0,0),(0,1,0)):
+            uv=world_to_camera_view(scene,scene.camera,Vector(point))
+            measured.append((uv.x*256,(1-uv.y)*256))
+        bx=tuple(round(measured[1][i]-measured[0][i],6) for i in (0,1))
+        by=tuple(round(measured[2][i]-measured[0][i],6) for i in (0,1))
+        residual=max(abs(bx[0]+40),abs(bx[1]-20),abs(by[0]-40),abs(by[1]-20))
+        assert residual<.001,(bx,by,residual)
+        pivot=[128,128]
+        profile_measure={'basis_blender_x':bx,'basis_blender_y':by,
+                         'residual_px':residual,'status':'F12_CAL01_CANDIDATE_PENDING_W01_W08'}
+    else:
+        scene.camera.data.ortho_scale=4.2 if args.directions==8 else 3.5
+        scene.camera.location=(3.5,-3.5,3.25)
+        look_height=.72 if args.directions==8 else .77
+        scene.camera.rotation_euler=(Vector((0,0,look_height))-scene.camera.location).to_track_quat('-Z','Y').to_euler()
+        pivot=[128,143]
+        profile_measure={'status':'LEGACY_PROVISIONAL_NOT_F12_CALIBRATED'}
     scene.world.color=(.12,.12,.12)
     for o in bpy.data.objects:
         if o.type=='LIGHT':
-            o.location=(-3,-4,6)
-            o.data.energy=680
+            o.location=(-3,2,7) if args.render_profile=='f12_cal01' else (-3,-4,6)
+            o.data.energy=450 if args.render_profile=='f12_cal01' else 680
             o.data.size=3.1
     rendered=[]
     image_frames=[]
@@ -310,7 +333,7 @@ def export_variant(profile_name,profile):
                 image_frames.append({'clip':clip,'frame_1_based':frame,
                                      'direction':dir_name,'file':name,
                                      'duration_ms':CLIPS[clip][1],
-                                     'pivot_px':[128,143]})
+                                     'pivot_px':pivot})
     reset_pose(rig)
     turntable.rotation_euler.z=0
     rig.animation_data.action=bpy.data.actions['F06_V2_CAL_idle']
@@ -327,7 +350,9 @@ def export_variant(profile_name,profile):
         export_error=str(exc)
     result={'status':'CALIBRATION_ONLY','canonical_master_id':None,'profile':profile_name,
             'source_f05_rig':'F05_CAL_0.1','f12_approved':False,
-            'frame_canvas_px':[256,192],'pivot_px':[128,143],
+            'frame_canvas_px':[scene.render.resolution_x,scene.render.resolution_y],
+            'pivot_px':pivot,'render_profile':args.render_profile,
+            'camera_measurement':profile_measure,
             'directions':list(DIRS),'frames':image_frames,
             'contact_metadata':{'clip':'attack','frame_1_based':3,'time_ms':285,
                                 'event':'VISUAL_MARKER_ONLY_W03_OWNS_DAMAGE'},
