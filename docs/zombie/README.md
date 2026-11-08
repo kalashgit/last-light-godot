@@ -227,9 +227,9 @@ Nothing here says how fast this runs on an iPhone. Do not claim large population
 
 ## Handoff to Worker 01 (integration)
 
-* Merge order: this branch sits on PR #10 (`codex/house-survival-v05-v06`). The actor-zombie-factory branch touches
-  `house.gd` in different hunks (zoom/loot builder); expect only trivial textual conflicts in `_select_world_target`
-  (both add to the same loop).
+* Merge order: this branch sits on PR #10 (`codex/house-survival-v05-v06`). A trial merge with
+  `codex/last-light-actor-zombie-factory-v1-20261107` @ `b725329` merges `house.gd`/`house_art.gd` automatically;
+  the only conflict is `tests/run.sh` (both branches append suites; keep both). Not compiled/tested as a merged tree.
 * Shared files edited: `scripts/house.gd` (integration hooks, `zw_*` interface, corpse interact target, `zombie_ai` save
   key), `scripts/house_art.gd` (zombie draw command: corpses visible, delegates to `_draw_zombie`), `tests/house_survival.gd`
   (breach fixture), `tests/run.sh` (two new suites).
