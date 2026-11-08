@@ -32,6 +32,18 @@ jobs:
         run: python -m pip install "Pillow>=10,<12"
       - name: Verify real Blender source SHA and construct 4 RGBA atlases
         run: python tests/godot_fixture/prepare_fixture.py build/source_f12
+      - name: Validate three real hashed V2 candidate packages
+        run: |
+          for file in tests/godot_fixture/generated/v2_*_package.json; do
+            python tools/production_integration_v2/validate_package.py "$file"
+            if python tools/production_integration_v2/validate_package.py "$file" \
+              --ledger docs/production/integration_v2/approval_ledger.json \
+              --target-stage APPROVED_TEMPLATE; then
+              echo "ERROR: unapproved calibration package was promoted"
+              exit 1
+            fi
+          done
+          echo "PASS: real F01/F07/F10 packages valid as calibration only"
       - name: Install pinned Godot 4.3 stable
         run: |
           curl --fail --location --silent --show-error --retry 3 \
@@ -42,7 +54,7 @@ jobs:
           /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --version
       - name: Headless Godot 4 import of actual generated atlas PNGs
         run: |
-          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --import
+          timeout 90s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --import
       - name: Instantiate isolated SpriteFrames and verify 40 imported frames
         run: |
           /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/godot_fixture/smoke_import.gd
