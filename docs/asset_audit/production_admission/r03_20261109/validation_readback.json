@@ -1,0 +1,24 @@
+{
+  "schema": "A00_PRODUCTION_ADMISSION_R03_VALIDATION_V1",
+  "run_date": "2026-11-09",
+  "source_reference_corpus": 21025,
+  "r02_references": 6072,
+  "source_pages_verified": 15,
+  "geometry_manifest_total": 360,
+  "dispatch_orders": 15,
+  "notion_master_count": 60,
+  "notion_dispatched_verified": 15,
+  "direct_work_by_family": {
+    "F01": 3,
+    "F09": 12
+  },
+  "families_count": 12,
+  "geometry_hash_matches": 15,
+  "notion_stage_matches": 15,
+  "source_pixel_visual_comparisons_completed": 0,
+  "geometry_render_visual_comparisons_completed": 0,
+  "release_approvals_granted": 0,
+  "notion_readback_mode": "saved_view",
+  "errors": [],
+  "passed": true
+}
