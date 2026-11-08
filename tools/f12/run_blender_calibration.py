@@ -115,7 +115,7 @@ def cube():
 
 def vehicle():
     scene=setup()
-    build_vehicle(dict(model="hatchback",paint_hex="#647265",condition_level=1))
+    build_vehicle(dict(model="compact_hatchback",paint_hex="#647265",condition_level=1))
     root=group_roots()
     src=save_source(scene,"vehicle")
     for heading in range(16):
