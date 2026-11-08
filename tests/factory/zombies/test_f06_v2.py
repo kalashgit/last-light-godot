@@ -21,6 +21,20 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
     assert m['qa']['glb_export']=='PASS',f'{folder.name}: GLB export failed'
     assert (folder/'editable_noncanonical.blend').exists()
     assert (folder/'noncanonical.glb').exists()
+    atlas_meta=json.loads((folder/'atlas.json').read_text())
+    with Image.open(folder/'atlas.png') as atlas_img:
+        if atlas_img.mode!='RGBA' or max(atlas_img.size)>2048:
+            failures.append(f'oversize or invalid atlas {folder}')
+        if len(atlas_meta['sprites'])!=len(m['frames']):
+            failures.append(f'atlas frame-count mismatch {folder}')
+        for entry in atlas_meta['sprites']:
+            x,y,w,h=entry['rect']
+            if x<0 or y<0 or x+w>atlas_img.width or y+h>atlas_img.height:
+                failures.append(f'out-of-bounds atlas rect {folder}/{entry["name"]}')
+                continue
+            with Image.open(folder/entry['name']) as single:
+                if atlas_img.crop((x,y,x+w,y+h)).tobytes()!=single.tobytes():
+                    failures.append(f'atlas pixels disagree {folder}/{entry["name"]}')
     bboxes={}
     for f in m['frames']:
         path=folder/f['file']
