@@ -1,0 +1,310 @@
+{
+  "batch_id": "A00-20261108-B008",
+  "actual_fetched": 4925,
+  "classified": 4925,
+  "cumulative_fetched_and_metadata_classified": 21025,
+  "source_first": 163721,
+  "source_last": 637297,
+  "archive_offsets": {
+    "start_inclusive": 16100,
+    "end_exclusive": 21025
+  },
+  "primary_classes": {
+    "ANIMATION_FRAME_REFERENCE": 1,
+    "CANONICAL_MASTER_CANDIDATE": 28,
+    "COMPOSITION_REFERENCE": 2805,
+    "NEEDS_MANUAL_REVIEW": 455,
+    "OUT_OF_SCOPE": 45,
+    "STATE_OR_DIRECTION": 1548,
+    "UI_ICON_ONLY": 43
+  },
+  "representation_kinds": {
+    "ANIMATION_OR_GIF": 1,
+    "BRANDING_OR_WIKI": 27,
+    "INVENTORY_REFERENCE_ICON": 28,
+    "MODEL_VIEW_REFERENCE": 1178,
+    "null": 455,
+    "OBJECT_STATE": 52,
+    "OUTFIT_ASSEMBLY_VIEW": 125,
+    "RESEARCH_SCENE_OR_DOCUMENT": 804,
+    "TILE_ATLAS_FRAGMENT": 619,
+    "UI_OR_RECIPE": 43,
+    "USER_MEDIA": 18,
+    "VEGETATION_STATE_ATLAS_FRAGMENT": 1496,
+    "VEGETATION_TILE_FRAGMENT": 79
+  },
+  "suggested_queue_counts": {
+    "F01": 113,
+    "F02": 824,
+    "F03": 3,
+    "F04": 1575,
+    "F05": 141,
+    "F09": 1234,
+    "F10": 8,
+    "F12": 1
+  },
+  "vegetation_state_tile_fragments_by_condition": {
+    "dead": 376,
+    "dying": 368,
+    "trampled": 376,
+    "unhealthy": 376
+  },
+  "provisional_parent_source_links": 501,
+  "unresolved_parent_stems": 729,
+  "semantic_identities_individually_verified": 2,
+  "new_notion_master_rows": 2,
+  "source_records_linked_to_published_masters": 2,
+  "source_records_linked_to_preexisting_masters": 2,
+  "existing_360_geometry_index_checked": 360,
+  "geometry_exact_name_matched_source_records": 6,
+  "geometry_exact_name_matched_unique_model_ids": 5,
+  "geometry_crosswalk_report": "docs/asset_audit/a00_20261108_b008_360_crosswalk.json",
+  "semantic_work_orders": "docs/asset_audit/a00_20261108_b008_semantic_work_orders.jsonl",
+  "source_research_only_records": 4925,
+  "source_snapshot_sha256": "aff90ebeb28c65a1c25da49d7d4b709d41f57114a06e9c2711a8d5f05cbd92d9",
+  "ledger_sha256": "8aae4dc5e32d9965e79d65177305234fb40bf6e3bae078c0dac1730c928a2ad3",
+  "next_cursor": null,
+  "remaining_after_batch": 0,
+  "golden_visual_approved_in_batch": 0,
+  "stratified_metadata_spotcheck_samples": {
+    "COMPOSITION_REFERENCE": [
+      {
+        "source_page_id": 163721,
+        "source_title": "File:Outfit PoliceRiot Male.png",
+        "source_url": "https://pzwiki.net/wiki/File:Outfit_PoliceRiot_Male.png",
+        "primary_class": "COMPOSITION_REFERENCE",
+        "reason": "Full assembled outfit view; F05 clothing and body meshes must be factored into reusable layers",
+        "state_key": null,
+        "suggested_queue": "F05"
+      },
+      {
+        "source_page_id": 163723,
+        "source_title": "File:Outfit PoliceState Female.png",
+        "source_url": "https://pzwiki.net/wiki/File:Outfit_PoliceState_Female.png",
+        "primary_class": "COMPOSITION_REFERENCE",
+        "reason": "Full assembled outfit view; F05 clothing and body meshes must be factored into reusable layers",
+        "state_key": null,
+        "suggested_queue": "F05"
+      },
+      {
+        "source_page_id": 163725,
+        "source_title": "File:Outfit PoliceState Male.png",
+        "source_url": "https://pzwiki.net/wiki/File:Outfit_PoliceState_Male.png",
+        "primary_class": "COMPOSITION_REFERENCE",
+        "reason": "Full assembled outfit view; F05 clothing and body meshes must be factored into reusable layers",
+        "state_key": null,
+        "suggested_queue": "F05"
+      },
+      {
+        "source_page_id": 163727,
+        "source_title": "File:Outfit PoliceStripper Male.png",
+        "source_url": "https://pzwiki.net/wiki/File:Outfit_PoliceStripper_Male.png",
+        "primary_class": "COMPOSITION_REFERENCE",
+        "reason": "Full assembled outfit view; F05 clothing and body meshes must be factored into reusable layers",
+        "state_key": null,
+        "suggested_queue": "F05"
+      }
+    ],
+    "OUT_OF_SCOPE": [
+      {
+        "source_page_id": 164177,
+        "source_title": "File:KY Transit Bus Terminal sign.png",
+        "source_url": "https://pzwiki.net/wiki/File:KY_Transit_Bus_Terminal_sign.png",
+        "primary_class": "OUT_OF_SCOPE",
+        "reason": "External franchise/logo or wiki-history image, not LAST LIGHT original art",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 164181,
+        "source_title": "File:Notable Tables Showroom sign.png",
+        "source_url": "https://pzwiki.net/wiki/File:Notable_Tables_Showroom_sign.png",
+        "primary_class": "OUT_OF_SCOPE",
+        "reason": "External franchise/logo or wiki-history image, not LAST LIGHT original art",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 164193,
+        "source_title": "File:Stur-D-Knobs sign.png",
+        "source_url": "https://pzwiki.net/wiki/File:Stur-D-Knobs_sign.png",
+        "primary_class": "OUT_OF_SCOPE",
+        "reason": "External franchise/logo or wiki-history image, not LAST LIGHT original art",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 164203,
+        "source_title": "File:Barandas Cards sign.png",
+        "source_url": "https://pzwiki.net/wiki/File:Barandas_Cards_sign.png",
+        "primary_class": "OUT_OF_SCOPE",
+        "reason": "External franchise/logo or wiki-history image, not LAST LIGHT original art",
+        "state_key": null,
+        "suggested_queue": null
+      }
+    ],
+    "UI_ICON_ONLY": [
+      {
+        "source_page_id": 164549,
+        "source_title": "File:Generator UI B42.png",
+        "source_url": "https://pzwiki.net/wiki/File:Generator_UI_B42.png",
+        "primary_class": "UI_ICON_ONLY",
+        "reason": "UI/recipe/interaction icon reference; not a standalone physical Blender asset",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 168537,
+        "source_title": "File:Knox Infection Settings.jpg",
+        "source_url": "https://pzwiki.net/wiki/File:Knox_Infection_Settings.jpg",
+        "primary_class": "UI_ICON_ONLY",
+        "reason": "UI/recipe/interaction icon reference; not a standalone physical Blender asset",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 170157,
+        "source_title": "File:Trait crafty.png",
+        "source_url": "https://pzwiki.net/wiki/File:Trait_crafty.png",
+        "primary_class": "UI_ICON_ONLY",
+        "reason": "UI/recipe/interaction icon reference; not a standalone physical Blender asset",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 171181,
+        "source_title": "File:Build Wall Paint.png",
+        "source_url": "https://pzwiki.net/wiki/File:Build_Wall_Paint.png",
+        "primary_class": "UI_ICON_ONLY",
+        "reason": "UI/recipe/interaction icon reference; not a standalone physical Blender asset",
+        "state_key": null,
+        "suggested_queue": null
+      }
+    ],
+    "NEEDS_MANUAL_REVIEW": [
+      {
+        "source_page_id": 164583,
+        "source_title": "File:Favicon windows.png",
+        "source_url": "https://pzwiki.net/wiki/File:Favicon_windows.png",
+        "primary_class": "NEEDS_MANUAL_REVIEW",
+        "reason": "Reference identity or gameplay necessity cannot be established from source metadata alone",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 164857,
+        "source_title": "File:Mad Dan's Billboard Advertisement.png",
+        "source_url": "https://pzwiki.net/wiki/File:Mad_Dan's_Billboard_Advertisement.png",
+        "primary_class": "NEEDS_MANUAL_REVIEW",
+        "reason": "Reference identity or gameplay necessity cannot be established from source metadata alone",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 165147,
+        "source_title": "File:Ashville Road military post.png",
+        "source_url": "https://pzwiki.net/wiki/File:Ashville_Road_military_post.png",
+        "primary_class": "NEEDS_MANUAL_REVIEW",
+        "reason": "Reference identity or gameplay necessity cannot be established from source metadata alone",
+        "state_key": null,
+        "suggested_queue": null
+      },
+      {
+        "source_page_id": 167417,
+        "source_title": "File:Doe Valley Lake Map Location.png",
+        "source_url": "https://pzwiki.net/wiki/File:Doe_Valley_Lake_Map_Location.png",
+        "primary_class": "NEEDS_MANUAL_REVIEW",
+        "reason": "Reference identity or gameplay necessity cannot be established from source metadata alone",
+        "state_key": null,
+        "suggested_queue": null
+      }
+    ],
+    "CANONICAL_MASTER_CANDIDATE": [
+      {
+        "source_page_id": 167515,
+        "source_title": "File:Plush CthulhuEye.png",
+        "source_url": "https://pzwiki.net/wiki/File:Plush_CthulhuEye.png",
+        "primary_class": "CANONICAL_MASTER_CANDIDATE",
+        "reason": "Possible needed physical inventory item, requiring independent gameplay and existing-model verification",
+        "state_key": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 167517,
+        "source_title": "File:Jar Roe.png",
+        "source_url": "https://pzwiki.net/wiki/File:Jar_Roe.png",
+        "primary_class": "CANONICAL_MASTER_CANDIDATE",
+        "reason": "Possible needed physical inventory item, requiring independent gameplay and existing-model verification",
+        "state_key": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 167519,
+        "source_title": "File:Coffin Plain Upright.png",
+        "source_url": "https://pzwiki.net/wiki/File:Coffin_Plain_Upright.png",
+        "primary_class": "CANONICAL_MASTER_CANDIDATE",
+        "reason": "Possible needed physical inventory item, requiring independent gameplay and existing-model verification",
+        "state_key": null,
+        "suggested_queue": "F09"
+      },
+      {
+        "source_page_id": 167521,
+        "source_title": "File:Plush TrashGoblin.png",
+        "source_url": "https://pzwiki.net/wiki/File:Plush_TrashGoblin.png",
+        "primary_class": "CANONICAL_MASTER_CANDIDATE",
+        "reason": "Possible needed physical inventory item, requiring independent gameplay and existing-model verification",
+        "state_key": null,
+        "suggested_queue": "F09"
+      }
+    ],
+    "STATE_OR_DIRECTION": [
+      {
+        "source_page_id": 171807,
+        "source_title": "File:Vegetation farming dead 01 16.png",
+        "source_url": "https://pzwiki.net/wiki/File:Vegetation_farming_dead_01_16.png",
+        "primary_class": "STATE_OR_DIRECTION",
+        "reason": "Vegetation atlas fragment depicting dead crop condition; same botanical archetype family, species identity not established",
+        "state_key": "dead",
+        "suggested_queue": "F04"
+      },
+      {
+        "source_page_id": 171809,
+        "source_title": "File:Vegetation farming dead 01 17.png",
+        "source_url": "https://pzwiki.net/wiki/File:Vegetation_farming_dead_01_17.png",
+        "primary_class": "STATE_OR_DIRECTION",
+        "reason": "Vegetation atlas fragment depicting dead crop condition; same botanical archetype family, species identity not established",
+        "state_key": "dead",
+        "suggested_queue": "F04"
+      },
+      {
+        "source_page_id": 171811,
+        "source_title": "File:Vegetation farming dead 01 18.png",
+        "source_url": "https://pzwiki.net/wiki/File:Vegetation_farming_dead_01_18.png",
+        "primary_class": "STATE_OR_DIRECTION",
+        "reason": "Vegetation atlas fragment depicting dead crop condition; same botanical archetype family, species identity not established",
+        "state_key": "dead",
+        "suggested_queue": "F04"
+      },
+      {
+        "source_page_id": 171813,
+        "source_title": "File:Vegetation farming dead 01 19.png",
+        "source_url": "https://pzwiki.net/wiki/File:Vegetation_farming_dead_01_19.png",
+        "primary_class": "STATE_OR_DIRECTION",
+        "reason": "Vegetation atlas fragment depicting dead crop condition; same botanical archetype family, species identity not established",
+        "state_key": "dead",
+        "suggested_queue": "F04"
+      }
+    ],
+    "ANIMATION_FRAME_REFERENCE": [
+      {
+        "source_page_id": 182457,
+        "source_title": "File:ScrewdriverConditionAnimation.gif",
+        "source_url": "https://pzwiki.net/wiki/File:ScrewdriverConditionAnimation.gif",
+        "primary_class": "ANIMATION_FRAME_REFERENCE",
+        "reason": "Animated visual reference; timing, parent action and actual frame sequence must be verified",
+        "state_key": null,
+        "suggested_queue": "F12"
+      }
+    ]
+  }
+}
