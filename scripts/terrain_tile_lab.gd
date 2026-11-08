@@ -9,7 +9,8 @@ var tile_count: int = 0
 func _ready() -> void:
  var manifest: Variant = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST))
  assert(manifest is Dictionary, "Missing terrain game import manifest")
- assert(manifest.get("tile_px") == [80, 40], "Wrong tile projection")
+ var dimensions: Array = manifest.get("tile_px", [])
+ assert(dimensions.size() == 2 and int(dimensions[0]) == 80 and int(dimensions[1]) == 40, "Wrong tile projection")
  assert(not manifest.get("founder_golden_approved", true), "Pilot must remain unapproved")
  for record in manifest.get("tiles", []):
   var texture: Texture2D = load(record.texture)
