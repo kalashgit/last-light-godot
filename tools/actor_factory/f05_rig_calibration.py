@@ -15,9 +15,12 @@ from mathutils import Vector
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
+parser.add_argument('--physique', choices=('lean', 'broad'), default='lean', help='Noncanonical body-width calibration variant')
 args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else [])
 out = Path(args.output).resolve()
 out.mkdir(parents=True, exist_ok=True)
+body_width = 1.0 if args.physique == 'lean' else 1.18
+limb_width = 1.0 if args.physique == 'lean' else 1.12
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 
@@ -89,20 +92,20 @@ def limb(name, a, b, radius, bone, mat):
     o.rotation_euler = (Vector(b)-Vector(a)).to_track_quat('Z','Y').to_euler()
     return o
 
-ellipsoid('torso skin', (0,0,1.30),(.245,.145,.265),'chest',skin)
-ellipsoid('underwear actual geometry', (0,0,.96),(.21,.155,.14),'pelvis',underwear)
+ellipsoid('torso skin', (0,0,1.30),(.245*body_width,.145*body_width,.265),'chest',skin)
+ellipsoid('underwear actual geometry', (0,0,.96),(.21*body_width,.155*body_width,.14),'pelvis',underwear)
 ellipsoid('head', (0,-.015,1.64),(.125,.117,.16),'head',skin)
 ellipsoid('hair cap test', (0,.012,1.76),(.127,.118,.065),'head',hair)
 for side, sign in [('L',1),('R',-1)]:
-    limb('upper arm '+side,(sign*.25,0,1.43),(sign*.34,0,1.17),.071,'upper_arm_'+side,skin)
-    limb('forearm '+side,(sign*.34,0,1.17),(sign*.37,0,.94),.055,'forearm_'+side,skin)
-    ellipsoid('hand '+side,(sign*.37,0,.88),(.057,.048,.087),'hand_'+side,skin)
-    limb('thigh '+side,(sign*.115,0,.91),(sign*.12,0,.55),.102,'thigh_'+side,skin)
-    limb('shin '+side,(sign*.12,0,.55),(sign*.12,0,.14),.075,'shin_'+side,skin)
-    ellipsoid('foot '+side,(sign*.12,-.105,.08),(.09,.17,.08),'foot_'+side,underwear)
+    limb('upper arm '+side,(sign*.25,0,1.43),(sign*.34,0,1.17),.071*limb_width,'upper_arm_'+side,skin)
+    limb('forearm '+side,(sign*.34,0,1.17),(sign*.37,0,.94),.055*limb_width,'forearm_'+side,skin)
+    ellipsoid('hand '+side,(sign*.37,0,.88),(.057*limb_width,.048*limb_width,.087),'hand_'+side,skin)
+    limb('thigh '+side,(sign*.115,0,.91),(sign*.12,0,.55),.102*limb_width,'thigh_'+side,skin)
+    limb('shin '+side,(sign*.12,0,.55),(sign*.12,0,.14),.075*limb_width,'shin_'+side,skin)
+    ellipsoid('foot '+side,(sign*.12,-.105,.08),(.09*limb_width,.17,.08),'foot_'+side,underwear)
 
 # Explicitly noncanonical calibration props; imported from no outside source.
-ellipsoid('backpack test', (0,.19,1.31),(.19,.12,.27),'chest',fabric)
+ellipsoid('backpack test', (0,.19,1.31),(.19*body_width,.12,.27),'chest',fabric)
 limb('held tool proxy',(.37,0,.83),(.37,0,1.23),.021,'hand_R',steel)
 
 # Socket empties are attached to named bones, not silently baked into sprites.
@@ -204,6 +207,9 @@ bpy.context.scene.render.image_settings.color_mode='RGBA'
 bpy.context.scene.render.filepath=str(out/'calibration.png')
 bpy.ops.render.render(write_still=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'f05_noncanonical_calibration.blend'))
+# Export all tracks, not just the idle track used for the preview.
+for track in rig.animation_data.nla_tracks:
+    track.mute = False
 # Export explicitly excludes camera/lights; Blender GLB exporter includes skinned armature.
 bpy.ops.object.select_all(action='DESELECT')
 rig.select_set(True)
@@ -215,7 +221,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','canonical_master_id':None,'rig_version':'F05_CAL_0.1',
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.1',
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
