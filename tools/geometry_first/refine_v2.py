@@ -149,6 +149,50 @@ def roof_window_split(name,front_x,rear_x,front_sill_x,back_sill_x,roof_z,sill_z
              [(roof_mid,gutter,zmid),(sill_mid,lower,sill_z)],
              .025,m["body"])
 
+def add_contoured_bonnet(L,W,H,material):
+    """Reusable original 3D vehicle nose replacing the unconvincing UV sphere.
+
+    Real source grammar: continuous top crown, shoulder shoulders and deep lower
+    painted side shell. Original physical dimensions stay within bumper width.
+    Chassis families reuse this code but receive independently measured ratios.
+    """
+    profiles=[
+       (.00,1.00,.91),
+       (.12,.995,.94),
+       (.28,.97,.90),
+       (.43,.93,.81),
+       (.48,.87,.76)
+    ]
+    verts=[]
+    for xf,wide,top in profiles:
+        x=L*xf
+        half=W*.46*wide
+        # Seven closed cross-section vertices: 5 visible hood top/shoulder
+        # points plus two belowbody return vertices with paint continuity.
+        verts.extend([(x,-half,.55),(x,-half,top-.12),
+                      (x,-half*.82,top-.028),(x,0,top),
+                      (x,half*.82,top-.028),(x,half,top-.12),
+                      (x,half,.55)])
+    faces=[]
+    for section in range(len(profiles)-1):
+        for p in range(6):
+            a=section*7+p
+            b=(section+1)*7+p
+            faces.append((a,b,b+1,a+1))
+        # underside return connects lower left/right corners
+        faces.append((section*7,(section+1)*7,
+                      (section+1)*7+6,section*7+6))
+    faces.extend([tuple(reversed(range(7))),
+                  tuple((len(profiles)-1)*7+i for i in range(7))])
+    mesh=bpy.data.meshes.new("LL REFINE source contoured hood mesh")
+    mesh.from_pydata(verts,[],faces)
+    hood=object_group("sculpted contoured bonnet",mesh,material)
+    bevel=hood.modifiers.new("True scaled bonnet edge chamfers","BEVEL")
+    bevel.width=.018
+    bevel.segments=2
+    normal=hood.modifiers.new("Bonnet normals","WEIGHTED_NORMAL")
+    return hood
+
 def refine_vehicle(job):
     from fleet_catalog import PROFILES
     from fleet_render import make_materials
@@ -163,6 +207,17 @@ def refine_vehicle(job):
             bpy.data.objects.remove(ob,do_unlink=True)
     if not any("pressed separate roof" in name for name in removed):
         raise RuntimeError("Expected original roof missing; do not modify unknown chassis")
+    # Original low sedan/hatchback fleet source used a very bulbous UV-sphere
+    # bonnet. Replace that bad source anatomy; no texture can hide this.
+    removed_bulb=[]
+    if typ in ("hatchback","sedan","wagon","suv","coupe"):
+        for ob in list(bpy.context.scene.objects):
+            if ob.name.startswith("LL FLEET body nose"):
+                removed_bulb.append(ob.name)
+                bpy.data.objects.remove(ob,do_unlink=True)
+        if not removed_bulb:
+            raise RuntimeError("Expected original spherical bonnet for V2 replacement")
+        add_contoured_bonnet(L,W,H,m["body"])
     add_roof_shell(L,W,H,roof_len,center,m["roof"])
     front=center+roof_len*.5
     rear=center-roof_len*.5
@@ -189,7 +244,8 @@ def refine_vehicle(job):
                      [(x,y,.49),(x,y,.76),(x+.015,y,.93)],
                      .007,m["dark"])
     return dict(specialists=["LL-083","LL-084","LL-085","LL-086","LL-087","LL-091","LL-104"],
-                repaired_geometry=["curved_roof_shell","segmented_glass","wheel_arches","door_parting_lines"],
+                repaired_geometry=["curved_roof_shell","segmented_glass","wheel_arches","door_parting_lines",
+                                   "contoured_bonnet_replaces_spherical_nose" if typ in ("hatchback","sedan","wagon","suv","coupe") else "retain_original_utility_bonnet"],
                 original_parts_replaced=removed)
 
 def refine_hand_tool(job):
