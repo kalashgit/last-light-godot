@@ -63,6 +63,8 @@ const ACTIONS := {
 }
 
 var world
+## Optional WorldVisualResolver: supplies F12 clip/event-frame contracts for action results.
+var visuals = null
 var debounce_s: float = 0.25
 var history_size: int = 64
 var _results_by_request: Dictionary = {}
@@ -124,6 +126,11 @@ func request(req: Dictionary) -> Dictionary:
 		var spec: Dictionary = ACTIONS[action_id]
 		if not str(spec.get("anim", "")).is_empty():
 			result["animation"] = {"clip": spec["anim"], "event_frame": spec.get("event_frame", -1)}
+		var tgt = world.objects.get(target_id)
+		if visuals != null and tgt != null:
+			var obj_anim: Dictionary = visuals.action_animation(tgt.definition_id, action_id)
+			if not obj_anim.is_empty():
+				result["animation"]["object"] = obj_anim
 		var ids := {}
 		for c in result["state_changes"]:
 			ids[c["object_id"]] = true

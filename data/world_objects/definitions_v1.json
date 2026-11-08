@@ -242,16 +242,7 @@
         }
       },
       "visual": {
-        "set": "cabinet_hollow",
-        "sprites": {
-          "closed": "res://assets/world_objects/candidates/cabinet_pair_open_frame_00.png",
-          "open": "res://assets/world_objects/candidates/cabinet_pair_open_frame_08.png"
-        },
-        "anchor_px": [
-          61,
-          94
-        ],
-        "sprite_status": "candidate_not_golden",
+        "set": "box",
         "placeholder": {
           "shape": "box",
           "h": 34,
@@ -260,7 +251,7 @@
       },
       "status": {
         "implementation_status": "runtime_tested",
-        "media_status": "transformed",
+        "media_status": "missing",
         "rights_status": "original_approved"
       }
     },
@@ -350,25 +341,17 @@
         }
       },
       "visual": {
-        "set": "refrigerator_hollow",
-        "sprites": {
-          "closed": "res://assets/world_objects/candidates/refrigerator_main_open_frame_00.png",
-          "open": "res://assets/world_objects/candidates/refrigerator_main_open_frame_08.png"
-        },
-        "anchor_px": [
-          68,
-          105
-        ],
-        "sprite_status": "candidate_not_golden",
+        "set": "box",
         "placeholder": {
           "shape": "box",
           "h": 70,
           "color": "d8dcd6"
-        }
+        },
+        "v2_binding": "data/world_objects/visual_bindings_v2.json"
       },
       "status": {
         "implementation_status": "runtime_tested",
-        "media_status": "transformed",
+        "media_status": "calibration_package_only",
         "rights_status": "original_approved"
       }
     },

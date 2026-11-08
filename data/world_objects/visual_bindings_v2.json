@@ -1,0 +1,33 @@
+{
+  "schema": "last-light.world-visual-bindings.v2",
+  "note": "Worker 05 state->visual contract for Production Integration V2. Binds world-object definitions to F12 output subjects and clips. Holds NO art and grants NO approval: packages are loaded only through game/world_simulation/visual_package_gate.gd. A00 canonical ids are never invented here; null means pending A00.",
+  "contract": {
+    "f12_manifest_shape": "fixture_manifest.json: cases.<subject>.{atlas, atlas_sha256, size, frames[{heading, source_frame, rect, ground_pivot_px, duration_ms}]}",
+    "state_frame_resolution": "first matching key in state_priority; value [clip, frame_index] (-1 = last frame)",
+    "event_frame": "0-based frame on which the world commits the state change (Worker 07 may override when W07 event maps exist)"
+  },
+  "bindings": {
+    "ll.appliance.refrigerator": {
+      "family": "F01",
+      "f12_subject": "fridge",
+      "a00_canonical_master_id": null,
+      "a00_status": "PENDING_A00_PACKAGE_ID",
+      "expected_package_id": "LL-F01-CALIBRATION-FRIDGE-RUN42533683097",
+      "directions": 1,
+      "clips": {
+        "freezer_open": {"heading": 0, "event_frame": 5, "loop": false}
+      },
+      "state_priority": ["broken", "open", "closed"],
+      "state_frames": {
+        "open": ["freezer_open", -1],
+        "closed": ["freezer_open", 0]
+      },
+      "action_clips": {
+        "open": {"clip": "freezer_open", "reverse": false},
+        "close": {"clip": "freezer_open", "reverse": true}
+      },
+      "missing_states": ["broken", "lower_door_open", "condition_1_3"],
+      "note": "F12 PR #53 rendered the corrected freezer-door sequence only (7 frames). Lower fridge door, damage and condition variants are not yet produced; those states fall back to labelled placeholders."
+    }
+  }
+}
