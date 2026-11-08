@@ -42,7 +42,8 @@ class FullFidelityV2(unittest.TestCase):
 
     def test_code_syntax_and_no_auto_promotion(self):
         for filename in ("refine_v2.py","refine_spec_v2.py","export.py",
-            "refinement_ledger_v2.py","compare_v2.py","verify_refinement_v2.py"):
+            "refinement_ledger_v2.py","compare_v2.py","verify_refinement_v2.py",
+            "stage2_render.py"):
             with self.subTest(filename=filename):
                 ast.parse((ROOT/"tools/geometry_first"/filename).read_text())
         result=create(refined_report=ROOT/"preview/geometry-refinement-v2/__not_generated.json")
@@ -89,6 +90,16 @@ class FullFidelityV2(unittest.TestCase):
         self.assertFalse(row["comparison_v1_glb_matches_immutable_archive"])
         self.assertEqual(row["comparison_rebuilt_v1_glb_sha256"],"d"*64)
         self.assertFalse(row["release_gates"]["founder_golden_approved"])
+
+    def test_closeup_review_and_sixteen_heading_render_are_separate(self):
+        export=(ROOT/"tools/geometry_first/export.py").read_text()
+        render=(ROOT/"tools/geometry_first/stage2_render.py").read_text()
+        workflow=(ROOT/".github/workflows/full-fidelity-refinement-v2.yml").read_text()
+        self.assertIn("source_review_camera_scale",export)
+        self.assertIn("if job[\"asset_id\"] in SUPPORTED_TOOLS",export)
+        self.assertIn("scene.camera.data.ortho_scale=hero.ORTHO",render)
+        self.assertIn("choices=(4,8,16),default=16",render)
+        self.assertIn("LL_SOURCE_TO_2_5D_PASS 18",workflow)
 
     def test_refinement_evidence_must_match_original_and_have_unique_ids(self):
         original={"glb_sha256":"a"*64,"recipe_hash":"e"*64}
