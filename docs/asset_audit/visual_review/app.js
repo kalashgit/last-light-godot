@@ -156,9 +156,11 @@ async function importDecisions(event) {
   try {
     const text=await file.text(), lines=text.split(/\r?\n/).filter(Boolean);let count=0;
     const incoming=lines.map(x=>JSON.parse(x));
+    const seen = new Set();
     for(const d of incoming){
       const r=state.byId.get(d.source_page_id);
-      if(!r||d.schema!==REVIEW_SCHEMA||d.catalog_snapshot!==state.catalog.snapshot||d.source_signature!==r.sig||!["accepted","rejected","needs_evidence"].includes(d.decision)||!REVIEW_CHOICES.includes(d.proposed_classification)||typeof d.reviewer!=="string"||!d.reviewer.trim()||typeof d.notes!=="string"||d.production_approval!==false||d.rights_approval!==false)throw Error(`Invalid or different-snapshot decision for #${d.source_page_id}`);
+      if(!r||seen.has(d.source_page_id)||d.schema!==REVIEW_SCHEMA||d.catalog_snapshot!==state.catalog.snapshot||d.source_signature!==r.sig||d.base_classification!==r.proposal||!["accepted","rejected","needs_evidence"].includes(d.decision)||!REVIEW_CHOICES.includes(d.proposed_classification)||typeof d.reviewer!=="string"||!d.reviewer.trim()||d.reviewer.length>80||typeof d.notes!=="string"||d.notes.length>2000||(d.decision==="rejected"&&!d.notes.trim())||typeof d.reviewed_at!=="string"||!Number.isFinite(Date.parse(d.reviewed_at))||d.production_approval!==false||d.rights_approval!==false)throw Error(`Invalid or different-snapshot decision for #${d.source_page_id}`);
+      seen.add(d.source_page_id);
     }
     for(const d of incoming){const old=state.decisions.get(d.source_page_id);if(old&&Date.parse(old.reviewed_at)>Date.parse(d.reviewed_at))continue;state.decisions.set(d.source_page_id,d);if(state.db)await storePut(d);count++;}
     filter();alert(`Imported ${count} review decisions. Remember to export after changes.`);
