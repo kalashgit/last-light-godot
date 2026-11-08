@@ -1,0 +1,6 @@
+{
+  "schema_version": 2,
+  "approval_policy": "NO_MASS_PRODUCTION; require founder and W09 reviewed PR plus branch protections",
+  "asset_approvals": [],
+  "family_authorizations": []
+}
