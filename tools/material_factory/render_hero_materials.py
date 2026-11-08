@@ -89,4 +89,5 @@ def compatible_setup():
             layer.cycles.use_denoising=False
     return scene
 v3.setup=compatible_setup
-v3.main()
+if __name__=="__main__":
+    v3.main()
