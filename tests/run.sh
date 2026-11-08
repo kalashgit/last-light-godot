@@ -43,3 +43,6 @@ run_checked --headless --path . --script tests/actor_lab.gd
 
 # Golden hatchback V1 static 16-heading art test; driving system is NOT present.
 run_checked --headless --path . --script tests/vehicle_lab.gd
+
+# Original sharpened terrain pixels: actual Godot import and 4x4 preview scene.
+run_checked --headless --path . --script tests/terrain_lab.gd
