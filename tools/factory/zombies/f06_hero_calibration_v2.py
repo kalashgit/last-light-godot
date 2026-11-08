@@ -326,6 +326,16 @@ def export_variant(profile_name,profile):
             scene.frame_set(frame)
             for n,dir_name in enumerate(DIRS):
                 turntable.rotation_euler.z=(math.tau*n/args.directions)
+                bpy.context.view_layer.update()
+                origin_uv=world_to_camera_view(scene,scene.camera,rig.matrix_world.translation)
+                ground_px=[round(origin_uv.x*scene.render.resolution_x,3),
+                           round((1-origin_uv.y)*scene.render.resolution_y,3)]
+                contact=bpy.data.objects.get('socket_attack_contact')
+                contact_px=None
+                if clip=='attack' and contact is not None:
+                    contact_uv=world_to_camera_view(scene,scene.camera,contact.matrix_world.translation)
+                    contact_px=[round(contact_uv.x*scene.render.resolution_x,3),
+                                round((1-contact_uv.y)*scene.render.resolution_y,3)]
                 name=f'{clip}_{dir_name}_{frame:02d}.png'
                 scene.render.filepath=str(folder/name)
                 bpy.ops.render.render(write_still=True)
@@ -333,7 +343,8 @@ def export_variant(profile_name,profile):
                 image_frames.append({'clip':clip,'frame_1_based':frame,
                                      'direction':dir_name,'file':name,
                                      'duration_ms':CLIPS[clip][1],
-                                     'pivot_px':pivot})
+                                     'pivot_px':pivot,'projected_ground_px':ground_px,
+                                     'attack_contact_socket_px':contact_px})
     reset_pose(rig)
     turntable.rotation_euler.z=0
     rig.animation_data.action=bpy.data.actions['F06_V2_CAL_idle']
