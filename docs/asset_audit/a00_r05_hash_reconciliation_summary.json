@@ -1,0 +1,11 @@
+{
+  "image_metadata_records": 6072,
+  "resolved_images": 6072,
+  "unique_image_hashes": 6071,
+  "exact_binary_duplicate_groups": 1,
+  "duplicate_references_beyond_one_per_group": 1,
+  "cross_semantic_root_hash_groups": 1,
+  "candidate_master_admissions": 0,
+  "policy": "Identical source bytes prove the same image, not the same game object. Preserve all aliases and verify semantic roles.",
+  "ledger_sha256": "d2c78f6202fd5cc93b3895c8647533ea9cab3e7da057ca93073a80abe15b6c6f"
+}
