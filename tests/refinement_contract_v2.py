@@ -59,6 +59,20 @@ class FullFidelityV2(unittest.TestCase):
         self.assertNotEqual(plans["ll_master_vehicle_compact_hatchback"]["dimensions_m"],
                             plans["ll_master_vehicle_city_sedan"]["dimensions_m"])
 
+    def test_bounded_cloud_blender_batch_reaches_distinct_vehicle_families(self):
+        from fleet_catalog import PROFILES
+        batch=["ll_master_vehicle_"+name for name,profile in PROFILES.items()
+               if profile["geometry"] in {"hatchback","sedan","wagon","suv","pickup","coupe"}]
+        batch.extend(["ll_tools_awl","ll_tools_cross_screwdriver",
+                      "ll_tools_flat_screwdriver","ll_tools_crowbar"])
+        self.assertEqual(len(batch),11)
+        all_ids={j["asset_id"] for j in build_plan()["jobs"]}
+        self.assertTrue(set(batch)<=all_ids)
+        workflow=(ROOT/".github/workflows/full-fidelity-refinement-v2.yml").read_text()
+        for aid in batch:
+            self.assertIn(aid,workflow)
+        self.assertIn("BATCH_COUNT: 11",workflow)
+
     def test_refinement_evidence_must_match_original_and_have_unique_ids(self):
         original={"glb_sha256":"a"*64}
         evidence=dict(asset_id="sample",refinement_applied=True,
