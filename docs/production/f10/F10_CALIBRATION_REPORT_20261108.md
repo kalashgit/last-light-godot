@@ -79,3 +79,12 @@ No merges, deployment, Godot scene or save changes were made.
 - Original editable `.blend` and `.glb` both produced; actual Blender GLB roundtrip **97 meshes** loaded. Evidence is local preview and test log; generated binaries are not placed into the Git source branch until visual review/asset archival is agreed.
 - **Visual gate: STILL NOT GOLDEN.** Remaining art defects are low-poly angular panel transitions, generic wheel arch depth, lack of true door/hatch seam and cavity construction, glass shading/pillar flow, and limited original material sophistication. The experimental opening mechanics from the previous section remain rejected and have **not** been transferred to the hero mesh.
 - Promotion is blocked on A00 semantic/rights verification, founder Golden visual approval, W09 independent QA and W01/W05 engine tests. No playable Godot modifications or release actions.
+
+## Seventh refinement — glass, detailing and UV readiness
+
+- Implemented original view-angle-dependent Blender glazing node materials, with restrained Fresnel shading and independent darker rear tint. After an actual too-bright render, darkened both reflection ranges to preserve side-window contrast at native sprite size. Procedural reflections are Blender art source and **must be baked/reduced** before portable material parity is claimed; F11 material approval remains outstanding.
+- Added glass-edge weather strips and full-height physically positioned door shutlines/rocker trim. Refined the lower front fascia height and sealed roof/windshield overlaps based on visible 16-heading dark-gap defects.
+- Added deterministic `F10_HERO_UV0` for manually authored continuous side, roof and crown meshes, using orientation-aware longitudinal UV coordinates. Blender smoke checks the presence of these maps.
+- Actual **16/16 new directional renders**, RGBA atlas, alpha-preservation, source hash, stable ground anchor and `test_f10_hero.py` **PASS** at 214×151px cropped cells.
+- Saved original `.blend`, exported `.glb`, and performed a real Blender GLB re-import: **104 mesh objects, 98 with UV layers**. This proves geometric portability, not exact procedural glass/PBR equivalence.
+- Visual review: glass has more useful contrast and trim structure is clearer. However roof/hood shapes are still angular and surface variation lacks true Golden 40 sophistication. **Not visually approved; no gameplay integration or mass-production authorization.**
