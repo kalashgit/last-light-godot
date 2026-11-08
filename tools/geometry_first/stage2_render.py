@@ -27,6 +27,7 @@ def main():
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--asset-ids",required=True)
     p.add_argument("--samples",type=int,default=12)
+    p.add_argument("--vehicle-headings",type=int,choices=(4,8,16),default=16)
     args=sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else []
     a=p.parse_args(args)
     names=a.asset_ids.split(",")
@@ -54,7 +55,7 @@ def main():
         scene.cycles.samples=a.samples
         base=a.output/name
         base.mkdir(parents=True,exist_ok=True)
-        orientations=4 if name.startswith("ll_master_vehicle") else 1
+        orientations=a.vehicle_headings if name.startswith("ll_master_vehicle") else 1
         for index in range(orientations):
             # Rotate objects as a group around the original world origin and
             # restore matrices after export. No per-view recenter.
@@ -72,6 +73,8 @@ def main():
             for ob in models:
                 ob.matrix_world=matrices[ob.name]
             report.append(dict(asset_id=name,index=index,
+                heading_deg=round(360*index/orientations,4),
+                total_headings=orientations,
                 path=str(dest.relative_to(a.output)),
                 source_model_sha=info["glb_sha256"],
                 source_source_sha=info["source_recipe_sha256"],
