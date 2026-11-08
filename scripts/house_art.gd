@@ -12,11 +12,28 @@ var catalog: Dictionary = {}
 var sprites: Dictionary = {}
 var placed: Array[Dictionary] = []
 var decorations: Array[Dictionary] = []
+# Lab-only: generated buildings and the extended ground/road span. Empty for main.tscn.
+var lab_buildings: Array = []
+var ground_rect := Rect2i(-9, -8, 30, 28)
+var road_span := Vector2(-8, 29)
+const H01_WINDOWS := [
+ [Vector2(.9, 0), Vector2(2.8, 0)], [Vector2(6, 0), Vector2(7.8, 0)],
+ [Vector2(0, 5), Vector2(0, 6.5)], [Vector2(1, 8), Vector2(3.1, 8)],
+ [Vector2(7.15, 8), Vector2(8.4, 8)], [Vector2(9, 1), Vector2(9, 2.8)],
+ [Vector2(9, 5.1), Vector2(9, 6.5)]
+]
+const FLOOR_COLORS := {"kitchen": "999888", "bathroom": "7b918d", "bedroom": "726449", "living": "85745c", "kitchen_living": "85745c", "shop": "8f8c7c", "stockroom": "6d6a5f"}
 
-func setup(_game) -> void:
+func setup(game) -> void:
+ if game.lab_mode:
+  lab_buildings = game.lab_plan.buildings
+  var b: Rect2 = game.lab_plan.bounds
+  ground_rect = Rect2i(floori(b.position.x) - 2, floori(b.position.y) - 2, ceili(b.size.x) + 4, ceili(b.size.y) + 4)
+  road_span = Vector2(game.lab_plan.road.position.x, game.lab_plan.road.size.x)
  var builder:=TerrainMesh.new()
  _ground(builder)
  _floors(builder)
+ for building in lab_buildings: _lab_floors(builder, building)
  terrain=builder.finish()
  layout = JSON.parse_string(FileAccess.get_file_as_string("res://data/house_layout.json"))
  var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FACTORY + "manifest.json"))
@@ -68,21 +85,22 @@ func _noise(x: int, y: int) -> float:
 func _ground(g) -> void:
  var view: Rect2 = g.get_viewport_rect().grow(100)
  g.draw_rect(g.get_viewport_rect(), Color("28362d"))
- for y in range(-8, 20):
-  for x in range(-9, 21):
+ for y in range(ground_rect.position.y, ground_rect.end.y):
+  for x in range(ground_rect.position.x, ground_rect.end.x):
    var p := Vector2(x, y)
    if not view.has_point(g._screen(p)):
     continue
    var n := _noise(x, y)
    _surface(g, p, Vector2.ONE, Color("3d4e38").lightened(n * .08))
-   if not HOME.has_point(p):
+   if not HOME.has_point(p) and not _in_lab_building(p):
     var q := p + Vector2(.15 + n * .7, .3)
     _line(g, q, q + Vector2(.13, .05), Color("697052"))
     _line(g, q + Vector2(.3, .4), q + Vector2(.33, .5), Color("2d4130"))
  # Driveway, footpath and worn entrance paving. They remain traversable.
- _surface(g, Vector2(-8, 13.6), Vector2(29, 4.2), Color("434745"))
- _line(g, Vector2(-8, 14.1), Vector2(21, 14.1), Color("767a70"), 2)
- for x in range(-7, 21, 3):
+ _surface(g, Vector2(road_span.x, 13.6), Vector2(road_span.y, 4.2), Color("434745"))
+ _line(g, Vector2(road_span.x, 14.1), Vector2(road_span.x + road_span.y, 14.1), Color("767a70"), 2)
+ if not lab_buildings.is_empty(): _line(g, Vector2(road_span.x, 17.3), Vector2(road_span.x + road_span.y, 17.3), Color("767a70"), 2)
+ for x in range(int(road_span.x) + 1, int(road_span.x + road_span.y), 3):
   _surface(g, Vector2(x, 15.55), Vector2(1.35, .08), Color("a39c7a"))
  _surface(g, Vector2(4.65, 8), Vector2(1.6, 5.6), Color("858576"))
  for y in range(9, 14):
@@ -131,6 +149,39 @@ func _floors(g) -> void:
   _line(g, a, a + Vector2(4.5, 0), Color("5e6455"), 2)
   _line(g, a, a + Vector2(0, 4), Color("5e6455"), 2)
 
+func _in_lab_building(p: Vector2) -> bool:
+ for building in lab_buildings:
+  if (building.rect as Rect2).has_point(p): return true
+ return false
+
+## Generated buildings: footpath, slab and per-room procedural floor tiles (original, no imported art).
+func _lab_floors(g, building: Dictionary) -> void:
+ var path_from: Vector2 = building.path.from
+ var path_to: Vector2 = building.path.to
+ var top := minf(path_from.y, path_to.y)
+ _surface(g, Vector2(path_from.x - .8, top), Vector2(1.6, absf(path_to.y - path_from.y)), Color("858576"))
+ var rect: Rect2 = building.rect
+ _surface(g, rect.position - Vector2(.15, .15), rect.size + Vector2(.3, .3), Color("292e29"))
+ for room in building.rooms:
+  var r: Rect2 = room.rect
+  var base := Color(FLOOR_COLORS.get(room.type, "85745c"))
+  var tiled: bool = room.type in ["kitchen", "bathroom", "shop", "stockroom"]
+  var step := Vector2(.5, .5) if tiled else Vector2(.5, .25)
+  var ny := int(roundf(r.size.y / step.y))
+  var nx := int(roundf(r.size.x / step.x))
+  for yi in range(ny):
+   for xi in range(nx):
+    var q := r.position + Vector2(xi * step.x, yi * step.y)
+    var shade := base.lightened(_noise(int(q.x * 4), int(q.y * 4)) * (.08 if tiled else .11))
+    if tiled:
+     _surface(g, q, step, Color("555f56"))
+     _surface(g, q + Vector2(.017, .017), step - Vector2(.034, .034), shade)
+    else:
+     _surface(g, q, step, shade)
+     _line(g, q, q + Vector2(step.x, 0), Color("554d3b"), .7)
+  _line(g, r.position, r.position + Vector2(r.size.x, 0), Color("5e6455"), 2)
+  _line(g, r.position, r.position + Vector2(0, r.size.y), Color("5e6455"), 2)
+
 func _wall_part(g, command: Dictionary) -> void:
  var a: Vector2 = command.a
  var b: Vector2 = command.b
@@ -148,12 +199,7 @@ func _wall_part(g, command: Dictionary) -> void:
   # Fine plaster marks and lower panel seam follow each physical segment.
   _line(g, a.lerp(b, .22), a.lerp(b, .29), Color(0, 0, 0, .09), .7, 29)
   # Window panes draw with their physical wall segment, before foreground actors.
-  var windows := [
-   [Vector2(.9, 0), Vector2(2.8, 0)], [Vector2(6, 0), Vector2(7.8, 0)],
-   [Vector2(0, 5), Vector2(0, 6.5)], [Vector2(1, 8), Vector2(3.1, 8)],
-   [Vector2(7.15, 8), Vector2(8.4, 8)], [Vector2(9, 1), Vector2(9, 2.8)],
-   [Vector2(9, 5.1), Vector2(9, 6.5)]
-  ]
+  var windows: Array = command.get("windows", H01_WINDOWS)
   for window in windows:
    var wa: Vector2 = window[0]
    var wb: Vector2 = window[1]
@@ -290,35 +336,91 @@ func _roof(g) -> void:
  _surface(g, Vector2(6.85, 1.05), Vector2(.62, .62), Color("b1aa91"), 161)
  _surface(g, Vector2(7.0, 1.2), Vector2(.32, .32), Color("303c33"), 162)
 
+## Generated-building hip roof: same slate palette and eave height as the original house.
+func _lab_roof(g, rect: Rect2) -> void:
+ var e := rect.grow(.15)
+ var ridge_along_x := rect.size.x >= rect.size.y
+ var inset := minf(rect.size.x, rect.size.y) * .5
+ var r1: Vector2
+ var r2: Vector2
+ if ridge_along_x:
+  r1 = Vector2(e.position.x + inset, e.get_center().y)
+  r2 = Vector2(e.end.x - inset, e.get_center().y)
+ else:
+  r1 = Vector2(e.get_center().x, e.position.y + inset)
+  r2 = Vector2(e.get_center().x, e.end.y - inset)
+ var peak := 112.0 + inset * 7.0
+ var a: Vector2 = g._screen(e.position, 112)
+ var b: Vector2 = g._screen(Vector2(e.end.x, e.position.y), 112)
+ var c: Vector2 = g._screen(e.end, 112)
+ var d: Vector2 = g._screen(Vector2(e.position.x, e.end.y), 112)
+ var p1: Vector2 = g._screen(r1, peak)
+ var p2: Vector2 = g._screen(r2, peak)
+ if ridge_along_x:
+  g._poly(PackedVector2Array([a, b, p2, p1]), Color("4a5652"))
+  g._poly(PackedVector2Array([a, p1, d]), Color("5e6863"))
+  g._poly(PackedVector2Array([b, c, p2]), Color("424e4b"))
+  g._poly(PackedVector2Array([d, p1, p2, c]), Color("56625c"))
+ else:
+  g._poly(PackedVector2Array([a, b, p1]), Color("4a5652"))
+  g._poly(PackedVector2Array([a, p1, p2, d]), Color("5e6863"))
+  g._poly(PackedVector2Array([b, c, p2, p1]), Color("424e4b"))
+  g._poly(PackedVector2Array([d, p2, c]), Color("56625c"))
+ for i in range(1, 8):
+  var t := float(i) / 8.0
+  g.draw_line(d.lerp(p1 if ridge_along_x else p2, t), c.lerp(p2, t), Color("43504a"), 1, true)
+ g.draw_line(p1, p2, Color("97a08d"), 3, true)
+ g.draw_line(d, c, Color("293b33"), 3, true)
+ g.draw_line(c, b, Color("293b33"), 3, true)
+
+## Pre-zoom canvas rect actually visible on screen (lab culling; main house is always on screen).
+func _view_rect(g) -> Rect2:
+ var view: Rect2 = g.get_viewport_rect()
+ var zoom: float = maxf(g.camera_zoom, .001)
+ var anchor: Vector2 = g._camera_pivot()
+ return Rect2(anchor + (view.position - anchor) / zoom, view.size / zoom).grow(140)
+
 func draw_world(g) -> void:
- var inside := HOME.has_point(g.player)
+ var current: int = g._building_index(g.player)
+ var inside := current >= 0
+ var current_rect: Rect2 = g.buildings[current].rect if inside else Rect2()
  g.draw_rect(g.get_viewport_rect(),Color("28362d"))
  g.draw_mesh(terrain,null,Transform2D(0,g._screen(Vector2.ZERO)))
  # Contacts are on the floor, before all opaque entities; never painted over feet.
  if inside:
-  for item in g.items:world_art.contact_shadow(g,item.pos+item.size*.5,item.size)
+  for item in g.items:
+   if item.get("building", 0) == current: world_art.contact_shadow(g,item.pos+item.size*.5,item.size)
  var commands: Array[Dictionary] = []
+ var cull := not lab_buildings.is_empty()
+ var view := _view_rect(g)
  for wall in g.walls:
   var a: Vector2 = wall.a
   var b: Vector2 = wall.b
   var h := 104.0
-  if inside and (not wall.exterior or a.x == 9 or a.y == 8):
+  # Cutaway only for the occupied building: interior walls plus its camera-facing (east/south) sides.
+  if inside and wall.get("building", 0) == current and (not wall.exterior or absf(a.x - current_rect.end.x) < .01 or absf(a.y - current_rect.end.y) < .01):
    h = 12.0
   var count := maxi(1, ceili(a.distance_to(b)))
   for n in range(count):
    var u := a.lerp(b, float(n) / count)
    var v := a.lerp(b, float(n + 1) / count)
-   commands.append({"kind":"wall", "a":u, "b":v, "height":h, "exterior":wall.exterior, "depth":world_art.ground_depth((u+v)*.5)})
+   if cull and not view.has_point(g._screen(u)) and not view.has_point(g._screen(v)): continue
+   var command := {"kind":"wall", "a":u, "b":v, "height":h, "exterior":wall.exterior, "depth":world_art.ground_depth((u+v)*.5)}
+   if wall.has("windows"): command.windows = wall.windows
+   commands.append(command)
  for i in range(g.doors.size()):
   var door: Dictionary = g.doors[i]
+  if cull and not view.has_point(g._screen((door.a + door.b) * .5)): continue
   commands.append({"kind":"door", "index":i, "depth":world_art.ground_depth((door.a+door.b)*.5), "layer":1})
  if inside:
   for i in range(g.items.size()):
    var item: Dictionary = g.items[i]
+   if item.get("building", 0) != current: continue
+   if cull and not view.has_point(g._screen(item.pos + item.size * .5)): continue
    commands.append({"kind":"item", "index":i, "depth":world_art.ground_depth(item.pos+item.size*.5), "layer":2})
  for i in range(decorations.size()):
   var prop: Dictionary = decorations[i]
-  if inside or not HOME.has_point(prop.pos):
+  if current == 0 or not HOME.has_point(prop.pos):
    if not _decoration_visible(prop):continue
    var support:=_support_item(prop)
    var contact: Vector2=prop.pos if support.is_empty() else support.pos+support.size*.5
@@ -329,6 +431,7 @@ func draw_world(g) -> void:
  for i in range(g.infected.size()):
   if g.zombie_health[i] > 0:
    var p: Vector2 = g.infected[i]
+   if cull and not view.has_point(g._screen(p)): continue
    commands.append({"kind":"zombie", "index":i, "depth":world_art.ground_depth(p),"layer":4})
  commands.append({"kind":"player", "depth":world_art.ground_depth(g.player),"layer":4})
  # Index insertion order makes equal-depth sorting deterministic.
@@ -342,7 +445,7 @@ func draw_world(g) -> void:
  for command in commands:
   match command.kind:
    "wall": _wall_part(g, command)
-   "door": _door(g, g.doors[command.index], inside)
+   "door": _door(g, g.doors[command.index], inside and g.doors[command.index].get("building", 0) == current)
    "item": _furniture(g, g.items[command.index])
    "decor":
     var prop: Dictionary = decorations[command.index]
@@ -350,8 +453,15 @@ func draw_world(g) -> void:
    "drop": g._draw_drop(command.index)
    "zombie": g._draw_character(g.infected[command.index], false, g.elapsed * 4 + command.index, g.zombies_hit_time[command.index] > 0)
    "player": g._draw_character(g.player, true, g.motion_phase)
- if not inside:
+ if current != 0:
   _roof(g)
+ for i in range(1, g.buildings.size()):
+  if i == current: continue
+  var r: Rect2 = g.buildings[i].rect
+  var corners := [g._screen(r.position, 112), g._screen(r.end, 112), g._screen(Vector2(r.end.x, r.position.y), 112), g._screen(Vector2(r.position.x, r.end.y), 150)]
+  var box := Rect2(corners[0], Vector2.ZERO)
+  for c in corners: box = box.expand(c)
+  if not cull or view.intersects(box): _lab_roof(g, r)
 
 func draw_inspector(g) -> void:
  for item in g.items:

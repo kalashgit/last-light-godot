@@ -6,12 +6,13 @@ var paths: Dictionary = {}
 var timers: Dictionary = {}
 var replans := 0
 func rebuild(game) -> void:
- grid.region=Rect2i(-20,-20,66,66)
+ var region: Rect2i=game.nav_region
+ grid.region=region
  grid.cell_size=Vector2.ONE*STEP
  grid.diagonal_mode=AStarGrid2D.DIAGONAL_MODE_NEVER
  grid.update()
- for y in range(-20,46):
-  for x in range(-20,46):
+ for y in range(region.position.y,region.end.y):
+  for x in range(region.position.x,region.end.x):
    var world := Vector2(x,y)*STEP
    grid.set_point_solid(Vector2i(x,y),game._blocked_static(world,.21))
  paths.clear(); timers.clear()

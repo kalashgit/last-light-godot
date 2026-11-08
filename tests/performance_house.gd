@@ -16,7 +16,7 @@ func percentile(samples: Array[float], portion: float) -> float:
 func observe() -> void:
 	root.size = Vector2i(1560, 720)
 	root.content_scale_size = Vector2i(1560, 720)
-	var game = load("res://main.tscn").instantiate()
+	var game = load(OS.get_environment("LL_SCENE") if OS.get_environment("LL_SCENE") != "" else "res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_process(false)
 	game._restart_game()

@@ -6,6 +6,18 @@ const TY := 20.0
 const WALL_HEIGHT := 63.0
 const PLAYER_RADIUS := 0.19
 const HOME := Rect2(0.0, 0.0, 9.0, 8.0)
+## Universal Gameplay Laboratory: lab.tscn sets lab_mode to add generated buildings around
+## the unchanged original house. main.tscn keeps lab_mode=false and its own save file.
+@export var lab_mode := false
+@export var lab_seed := 20261108
+const Neighborhood := preload("res://scripts/neighborhood.gd")
+const LAB_SAVE_PATH := "user://last_light_lab_v1.json"
+var lab_plan: Dictionary = {}
+var lab_digest := ""
+var buildings: Array[Dictionary] = [{"id": "house.h01", "rect": HOME}]
+var world_bounds := Rect2(-7, -7, 24, 24)
+var nav_region := Rect2i(-20, -20, 66, 66)
+var save_path := SAVE_PATH
 const HouseArt := preload("res://scripts/house_art.gd")
 var art := HouseArt.new()
 var world_art_debug := false
@@ -92,18 +104,19 @@ var attack_cooldown := 0.0
 
 func _ready() -> void:
  texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
+ if lab_mode: _setup_lab()
  art.setup(self)
  _load_controls()
  _make_house()
  _layout_controls()
  var load_status:=_load_game()
- if load_status==ERR_FILE_NOT_FOUND and FileAccess.file_exists(LEGACY_SAVE_PATH):
+ if load_status==ERR_FILE_NOT_FOUND and not lab_mode and FileAccess.file_exists(LEGACY_SAVE_PATH):
   load_status=_load_game(LEGACY_SAVE_PATH)
   if load_status==OK and not FileAccess.file_exists(SAVE_PATH+".schema1.bak"):
    if DirAccess.copy_absolute(LEGACY_SAVE_PATH,SAVE_PATH+".schema1.bak")!=OK:
     _announce("Legacy file retained; could not create extra migration backup")
  if load_status not in [OK,ERR_FILE_NOT_FOUND]:
-  var backup_status:=_load_game(SAVE_PATH+".bak")
+  var backup_status:=_load_game(save_path+".bak")
   save_blocked=true
   recovery_available=backup_status==OK
   _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
@@ -143,7 +156,71 @@ func _make_house() -> void:
  _wall_with_door(Vector2(0, 4), Vector2(4.5, 4), Vector2(2.1, 4), 1.6, "LIVING")
  _wall_with_door(Vector2(4.5, 4), Vector2(9, 4), Vector2(6.9, 4), 1.6, "BATHROOM")
  items = art.furniture()
+ for list in [walls, doors, items]:
+  for entry in list: entry.building = 0
+ buildings = [{"id": "house.h01", "rect": HOME}]
+ if lab_mode: _add_lab_buildings()
  navigation.rebuild(self)
+
+func _setup_lab() -> void:
+ var catalog: Dictionary = {}
+ var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(HouseArt.FACTORY + "manifest.json"))
+ for definition in manifest.objects: catalog[definition.id] = definition
+ lab_plan = Neighborhood.new().generate(lab_seed, catalog)
+ lab_digest = Neighborhood.digest(lab_plan)
+ world_bounds = lab_plan.bounds
+ nav_region = Rect2i(floori(world_bounds.position.x / .4) - 2, floori(world_bounds.position.y / .4) - 2, ceili(world_bounds.size.x / .4) + 5, ceili(world_bounds.size.y / .4) + 5)
+ save_path = LAB_SAVE_PATH
+ player = Vector2(4.9, 15.0)
+ _reset_infected()
+ message = "LAB: explore H01, both generated houses and the shop"
+
+func _add_lab_buildings() -> void:
+ for plan_building in lab_plan.buildings:
+  var index := buildings.size()
+  buildings.append({"id": plan_building.id, "rect": plan_building.rect, "archetype": plan_building.archetype})
+  for wall in plan_building.walls:
+   walls.append({"a": wall.a, "b": wall.b, "exterior": wall.exterior, "windows": wall.windows, "building": index})
+  for door in plan_building.doors:
+   doors.append({"a": door.a, "b": door.b, "label": door.label, "open": false, "health": 45.0, "building": index})
+  for entry in plan_building.furniture:
+   var item: Dictionary = entry.duplicate(true)
+   item.tint = Color(entry.tint)
+   item.searched = not entry.container
+   item.building = index
+   items.append(item)
+   art._cache(entry.asset_id)
+
+func _initial_infected() -> Array:
+ var spots: Array = [Vector2(-1.9, 7.9), Vector2(11.6, 7.2)]
+ if lab_mode: spots.append_array(lab_plan.infected)
+ return spots
+
+func _reset_infected() -> void:
+ infected = _initial_infected()
+ zombie_health = []
+ zombies_hit_time = []
+ for i in range(infected.size()):
+  zombie_health.append(3)
+  zombies_hit_time.append(0.0)
+
+## Capture points for tests/capture_integration.gd (empty outside the lab).
+func capture_views() -> Array:
+ if not lab_mode: return []
+ var views: Array = [{"name":"street","p":Vector2(8.0,15.7)}, {"name":"h01-kitchen","p":Vector2(2.4,2.5)}]
+ for building in lab_plan.buildings:
+  for room in building.rooms:
+   var spot: Vector2 = room.rect.get_center()
+   if not _blocked(spot):
+    views.append({"name":"%s-%s" % [building.id.trim_prefix("lab."), room.type],"p":spot})
+    break
+ return views
+
+## Index into `buildings` for the building containing p, or -1 outdoors.
+func _building_index(p: Vector2) -> int:
+ for i in range(buildings.size()):
+  if (buildings[i].rect as Rect2).has_point(p): return i
+ return -1
 
 func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  var line := b - a
@@ -151,7 +228,7 @@ func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  return p.distance_to(a + line * t)
 
 func _blocked_static(p: Vector2, radius: float = PLAYER_RADIUS) -> bool:
- if not Rect2(-7,-7,24,24).grow(-radius).has_point(p): return true
+ if not world_bounds.grow(-radius).has_point(p): return true
  for wall in walls:
   if _segment_distance(p,wall.a,wall.b)<radius+.09: return true
  for item in items:
@@ -200,7 +277,7 @@ func _interact() -> void:
   _toggle_door(target.index)
  elif target.kind=="container":
   var item: Dictionary=items[target.index]
-  var loot: Dictionary=CONTAINER_LOOT.get(item.id,{})
+  var loot: Dictionary=item.get("loot",CONTAINER_LOOT.get(item.id,{}))
   var previous:=survival.snapshot()
   for id in loot:
    if not survival.add(id,loot[id]):
@@ -344,13 +421,13 @@ func _iso(p: Vector2, height: float = 0) -> Vector2:
 
 func _screen(p: Vector2, height: float = 0) -> Vector2:
  var size := get_viewport_rect().size
- return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+ return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if _building_index(player) >= 0 else .70)
 
 func _camera_pivot() -> Vector2:
- return get_viewport_rect().size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+ return get_viewport_rect().size * Vector2(.50, .58 if _building_index(player) >= 0 else .70)
 
 func _zoom_target() -> float:
- return clampf((INDOOR_ZOOM if HOME.has_point(player) else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
+ return clampf((INDOOR_ZOOM if _building_index(player) >= 0 else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
 
 func _adjust_zoom(delta: float) -> void:
  if health<=0 or paused or inventory_open or builder_open: return
@@ -611,11 +688,11 @@ func _set_paused(value: bool) -> void:
  queue_redraw()
 
 func _restart_game() -> void:
- if save_blocked and FileAccess.file_exists(SAVE_PATH):
-  if DirAccess.copy_absolute(SAVE_PATH,SAVE_PATH+".rejected.bak")!=OK:
+ if save_blocked and FileAccess.file_exists(save_path):
+  if DirAccess.copy_absolute(save_path,save_path+".rejected.bak")!=OK:
    _announce("Could not preserve old save; restart cancelled")
    return
-  if DirAccess.remove_absolute(SAVE_PATH)!=OK: return
+  if DirAccess.remove_absolute(save_path)!=OK: return
  save_blocked=false
  recovery_available=false
  exhausted=false
@@ -629,13 +706,11 @@ func _restart_game() -> void:
  shove_cooldown=0; recovery_delay=0
  facing=Vector2(0,1)
  inventory_page=0
- player = Vector2(4.9, 9.35)
+ player = Vector2(4.9, 15.0) if lab_mode else Vector2(4.9, 9.35)
  health = 100.0
  supplies = 0
  god_mode = false
- infected = [Vector2(-1.9, 7.9), Vector2(11.6, 7.2)]
- zombie_health = [3, 3]
- zombies_hit_time = [0.0, 0.0]
+ _reset_infected()
  elapsed = 0.0
  motion_phase = 0.0
  attack_cooldown = 0.0
@@ -645,8 +720,9 @@ func _restart_game() -> void:
  _announce("Find the front door and press INTERACT")
  _save_game()
 
-func _save_game(path: String = SAVE_PATH) -> Error:
- if save_blocked and path==SAVE_PATH:
+func _save_game(path: String = "") -> Error:
+ if path.is_empty(): path = save_path
+ if save_blocked and path==save_path:
   last_save_error=ERR_INVALID_DATA
   return last_save_error
  var door_states: Array=[]
@@ -661,6 +737,7 @@ func _save_game(path: String = SAVE_PATH) -> Error:
  var ground: Array=[]
  for drop in drops: ground.append({"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y})
  var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground}
+ if lab_mode: data.lab_world = lab_digest
  # Never overwrite unknown/corrupt prior data, including a future schema.
  if FileAccess.file_exists(path):
   if _load_game(path,true)!=OK:
@@ -693,7 +770,8 @@ func _valid_number(value: Variant, low: float, high: float) -> bool:
 func _integer(value: Variant, low: int, high: int) -> bool:
  return _valid_number(value,low,high) and floorf(float(value))==float(value)
 
-func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
+func _load_game(path: String = "", validate_only: bool = false) -> Error:
+ if path.is_empty(): path = save_path
  if not FileAccess.file_exists(path): return ERR_FILE_NOT_FOUND
  var file:=FileAccess.open(path,FileAccess.READ)
  if file==null: return FileAccess.get_open_error()
@@ -702,6 +780,8 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
  if parser.parse(file.get_as_text())!=OK: return ERR_INVALID_DATA
  var data: Variant=parser.data
  if not data is Dictionary or not _integer(data.get("version"),1,2): return ERR_INVALID_DATA
+ # A lab save only loads into the exact generated world it was written for.
+ if lab_mode and data.get("lab_world") != lab_digest: return ERR_INVALID_DATA
  var position: Variant=data.get("player")
  if not position is Array or position.size()!=2 or not _valid_number(position[0],-100,100) or not _valid_number(position[1],-100,100): return ERR_INVALID_DATA
  if not _valid_number(data.get("health"),0,100) or not _integer(data.get("supplies"),0,100000): return ERR_INVALID_DATA
@@ -958,7 +1038,7 @@ func _spawn_golden_item(id: String, position: Vector2, count: int = 1) -> bool:
  if builder_open or paused or inventory_open or save_blocked or health<=0: return false
  if not id.begins_with("ll_golden_") or not survival.definitions.has(id): return false
  if count<1 or count>int(survival.definitions[id].stack_max) or drops.size()>=128: return false
- if not Rect2(-6.5,-6.5,23,23).has_point(position) or _blocked(position, 0.14): return false
+ if not world_bounds.grow(-.5).has_point(position) or _blocked(position, 0.14): return false
  if _golden_icon(id)==null: return false
  drops.append({"id":id,"count":count,"pos":position})
  selected_target={}
@@ -1018,7 +1098,7 @@ func _activate_action(action: String) -> void:
   "quick2": pass
 
 func _clear_saved_position(position: Vector2) -> Vector2:
- var center:=position.clamp(Vector2(-6.5,-6.5),Vector2(16.5,16.5))
+ var center:=position.clamp(world_bounds.position+Vector2.ONE*.5,world_bounds.end-Vector2.ONE*.5)
  for radius in range(15):
   for y in range(-radius,radius+1):
    for x in range(-radius,radius+1):
@@ -1027,9 +1107,9 @@ func _clear_saved_position(position: Vector2) -> Vector2:
  return Vector2(4.9,9.35)
 
 func _recover_backup() -> bool:
- if not recovery_available or _load_game(SAVE_PATH+".bak",true)!=OK: return false
- if FileAccess.file_exists(SAVE_PATH) and DirAccess.copy_absolute(SAVE_PATH,SAVE_PATH+".rejected.bak")!=OK: return false
- if DirAccess.copy_absolute(SAVE_PATH+".bak",SAVE_PATH)!=OK: return false
+ if not recovery_available or _load_game(save_path+".bak",true)!=OK: return false
+ if FileAccess.file_exists(save_path) and DirAccess.copy_absolute(save_path,save_path+".rejected.bak")!=OK: return false
+ if DirAccess.copy_absolute(save_path+".bak",save_path)!=OK: return false
  if _load_game()!=OK: return false
  save_blocked=false
  recovery_available=false

@@ -37,3 +37,5 @@ run_checked --headless --path . --script tests/save_isolation.gd
 
 run_checked --headless --path . --script tests/world_art.gd
 run_checked --headless --path . --script tests/integration_hud.gd
+run_checked --headless --path . --script tests/lab_neighborhood.gd
+run_checked --headless --path . --quit-after 120 res://lab.tscn
