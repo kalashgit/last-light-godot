@@ -21,6 +21,10 @@ jobs:
   blender-calibration:
     runs-on: ubuntu-latest
     needs: unit-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        physique: [lean, broad]
     steps:
       - uses: actions/checkout@v4
       - name: Install Blender from Ubuntu packages
@@ -31,14 +35,15 @@ jobs:
       - name: Generate noncanonical source, render and GLB
         run: |
           mkdir -p build/f05-cal
-          blender -b --factory-startup --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal 2>&1 | tee build/f05-blender.log
+          set -o pipefail
+          blender -b --factory-startup --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
       - name: Validate artifact integrity (fails on missing GLB)
         run: python3 tools/actor_factory/f05_validate.py build/f05-cal
       - name: Archive calibration evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f05-noncanonical-calibration
+          name: f05-noncanonical-${{ matrix.physique }}
           path: |
             build/f05-cal/
             build/f05-blender.log
