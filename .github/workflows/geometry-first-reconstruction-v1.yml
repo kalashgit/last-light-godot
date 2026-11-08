@@ -1,0 +1,122 @@
+name: LAST LIGHT Geometry-First 3D Master Reconstruction V1
+on:
+  push:
+    branches:
+      - codex/last-light-geometry-reconstruction-v1-20261108
+    paths:
+      - "tools/geometry_first/**"
+      - "tests/geometry_first_v1.py"
+      - ".github/workflows/geometry-first-reconstruction-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: last-light-geometry-first-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-3d-source-batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify complete source geometry plan
+        run: |
+          python tests/geometry_first_v1.py
+          python tools/geometry_first/plan.py --output build/geometry_first/full_plan.json
+          python tools/geometry_first/plan.py --categories golden40,furniture,actor,vehicle --output build/geometry_first/first_source_plan.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          full=json.loads(Path("build/geometry_first/full_plan.json").read_text())
+          first=json.loads(Path("build/geometry_first/first_source_plan.json").read_text())
+          assert full["total_unique"]==360
+          assert first["total_unique"]==60
+          print("LL_RECONSTRUCTION_CENSUS_PASS 360 unique required source models, first 60 targeted")
+          PY
+      - name: Install original headless Blender and source QA dependencies
+        run: |
+          python -m pip install "Pillow>=10,<15"
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Produce editable .blend and transferable .glb models for 40 icon references plus furniture, actors and cars
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/geometry_first/first_source_plan.json --output build/geometry_first/source_models --max-jobs 60 --preview-every 6 2>&1 | tee build/geometry_first/export.log
+          grep -q 'LL_GEOMETRY_BATCH_PASS 60 60' build/geometry_first/export.log
+          if grep -q 'Traceback (most recent call last)' build/geometry_first/export.log; then exit 1; fi
+      - name: Validate original source geometry, true GLB files and editable Blender masters
+        run: |
+          python tools/geometry_first/qa.py --sources build/geometry_first/source_models --expected 60 --sheet build/geometry_first/geometry_review_sheet.png --zip build/geometry_first/Last_Light_3D_Masters_First_60.zip
+      - name: Render some real 3D sources back to fixed-camera 2.5D candidates
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/stage2_render.py -- --sources build/geometry_first/source_models --output build/geometry_first/2_5d_render --asset-ids ll_master_furniture_refrigerator,ll_master_furniture_cabinet,ll_master_furniture_sofa,ll_golden_crowbar,ll_golden_field_pack_olive,ll_master_vehicle_compact_hatchback --samples 6 2>&1 | tee build/geometry_first/2_5d.log
+          grep -q 'LL_SOURCE_TO_2_5D_PASS 9' build/geometry_first/2_5d.log
+      - name: Verify pixel contact sheets and source-renders real metadata
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageDraw
+          from pathlib import Path
+          import json
+          base=Path("build/geometry_first/2_5d_render")
+          report=json.loads((base/"render_report.json").read_text())
+          assert len(report["frames"])==9
+          width,height=4*240,3*264
+          out=Image.new("RGB",(width,height),(56,60,57))
+          dr=ImageDraw.Draw(out)
+          for i,rec in enumerate(report["frames"]):
+              x=(i%4)*240;y=(i//4)*264
+              im=Image.open(base/rec["path"]).convert("RGBA")
+              assert im.getchannel("A").getbbox()
+              small=im.convert("RGBa").resize((256,256),Image.Resampling.BOX).convert("RGBA")
+              small.thumbnail((224,230))
+              bg=Image.new("RGBA",(228,233),(92,94,86,255))
+              bg.alpha_composite(small,((228-small.width)//2,(233-small.height)//2))
+              out.paste(bg.convert("RGB"),(x+6,y+4))
+              dr.text((x+6,y+240),rec["asset_id"][0:32],fill=(232,229,212))
+          out.save("build/geometry_first/source_to_2_5d_preview.png")
+          print("LL_GEOMETRY_TO_2_5D_RENDER_QA_PASS",len(report["frames"]))
+          PY
+      - name: Publish compact proof images and census reports on isolated GitHub branch
+        run: |
+          set -euo pipefail
+          mkdir -p preview/geometry-first-v1
+          cp build/geometry_first/geometry_review_sheet.png preview/geometry-first-v1/
+          cp build/geometry_first/source_to_2_5d_preview.png preview/geometry-first-v1/
+          cp build/geometry_first/source_models/batch_report.json preview/geometry-first-v1/
+          cp build/geometry_first/2_5d_render/render_report.json preview/geometry-first-v1/
+          cp build/geometry_first/full_plan.json preview/geometry-first-v1/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/geometry-first-v1
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish 60 actual editable 3D model reconstruction results and 2.5D preview candidates"
+            for retry in 1 2 3; do
+              git fetch origin codex/last-light-geometry-reconstruction-v1-20261108
+              git rebase origin/codex/last-light-geometry-reconstruction-v1-20261108
+              if git push origin HEAD:codex/last-light-geometry-reconstruction-v1-20261108; then exit 0; fi
+            done
+            exit 1
+          fi
+      - name: Archive actual 3D Blender sources and new rendered sprites
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-3d-masters-first-60-and-native-isometric-proof-v1
+          path: |
+            build/geometry_first/Last_Light_3D_Masters_First_60.zip
+            build/geometry_first/geometry_review_sheet.png
+            build/geometry_first/source_to_2_5d_preview.png
+            build/geometry_first/2_5d_render
+            build/geometry_first/full_plan.json
+            build/geometry_first/source_models/batch_report.json
+            build/geometry_first/export.log
+            build/geometry_first/2_5d.log
+          retention-days: 30
+          if-no-files-found: error
