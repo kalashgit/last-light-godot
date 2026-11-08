@@ -26,10 +26,15 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
         # Movable jaw is one connected sliding piece; flat gripping face
         # faces left and forms a clean negative-space opening with fixed jaw.
         form("V5 adjustable sliding jaw and throat",
-             [(.006,.082),(.025,.082),(.035,.108),(.049,.121),
-              (.052,.145),(.040,.148),(.028,.137),(.027,.128),
-              (.019,.118),(.014,.103),(.006,.096)],
-             .018,m["forged"],z,.0015)
+             # The movable jaw points inward toward its fixed counterpart;
+             # avoid the old rectangular stub protruding sideways.
+             [(.009,.082),(.031,.086),(.045,.103),(.052,.124),
+              (.049,.142),(.039,.154),(.023,.153),(.020,.143),
+              (.029,.133),(.031,.123),(.025,.111),(.011,.100)],
+             .018,m["forged"],z,.0020)
+        form("V6 sliding jaw polished contact face",
+             [(.022,.140),(.025,.144),(.039,.150),(.034,.153)],
+             .0012,m["edge"],z+.010,.0001)
         form("V5 worm-guide bridge beneath throat",
              [(-.006,.078),(.026,.078),(.026,.093),(-.006,.093)],
              .010,m["oxide"],z-.008,.0006)
@@ -49,7 +54,7 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
     elif kind == "saw":
         # Main saw body: tapered plate with 24 integrated real tooth notches,
         # instead of many disconnected polygonlets intersecting the blade.
-        teeth=24
+        teeth=18
         outline=[(-.046,-.099),(-.050,.205),(-.029,.231)]
         for i in range(teeth,-1,-1):
             t=i/teeth
