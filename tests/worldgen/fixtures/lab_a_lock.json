@@ -1,0 +1,8 @@
+{
+ "LAB-H01": "99c9babf187a2fb8025eae0c2a2d11fb4616a7cc962be80968df2d1ab31834f0",
+ "LAB-H02": "7a7293eb89bbde1c29ad12db5c97b095f26f33f2ae4ba2ee873d8cbb4e3c7d26",
+ "LAB-H03": "013b91223459d2365cc779fdeb8a60a3e91ba8b3bfb404805bf532bcf52dd124",
+ "LAB-S01": "46fe4ef62c1c689325a634592136a339e1ce83517d5065a96d9f50c2c0d7dea9",
+ "LAB-W01": "a4ee196edd0d3d51ae9888b9d3991c28768fbd71344ea0bcf748949f7ca05a8f",
+ "_note": "sha256 of each frozen LAB A fixture blueprint (building id lab.<fixture>, world seed 0). A change means the immutable fixture drifted."
+}

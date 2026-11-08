@@ -1,0 +1,201 @@
+{
+  "schema": "last_light.worldgen.lab_a_fixture.v1",
+  "fixture_version": "lab_a.v1.frozen.2026-11-07",
+  "source_notion": "https://app.notion.com/p/411f639e23738160861bef69a130bbb7",
+  "status": "IMMUTABLE REGRESSION FIXTURE. Room rectangles are copied exactly from the frozen Notion contract. Door/window positions follow the contract's adjacency text; exact sub-tile positions were not specified and are chosen here once, then frozen by test hash. Do not edit: procedural variants are generated separately.",
+  "coordinate_note": "Local logical tiles, x east, y south, half-open [x,y,w,h]. Front faces local south. Doors: connects two room codes or a room and 'exterior' with a side; 'center' is the coordinate along the shared edge.",
+  "deviations": [
+    {"building": "LAB-H02", "code": "SPEC_CONFLICT_STAIR_PORTAL", "detail": "Contract lists HAL<->PAN, but PAN's only wall shared with HAL (x=10, y 9..12) faces the stairwell [7,8,3,4]. A door there would open onto the stair. Fixture omits it; PAN is reached via HAL->BAT0->LND->STO->PAN and KIT->LND->STO->PAN. Needs design review."},
+    {"building": "LAB-H02", "code": "LANDING_SPLIT", "detail": "Upper LAND [6,8,5,4] is split by the stair hole into x=6 and x=10 strips; two CORR<->LAND openings keep both strips reachable."},
+    {"building": "LAB-H03", "code": "VEHICLE_EXTERIOR_PAD", "detail": "GAR is 4 tiles wide with an east vehicle door; a 4x2 car oriented to the door would block the bay. Following the contract rule, the vehicle is parked on the exterior pad, not shrunk."},
+    {"building": "LAB-W01", "code": "SPEC_CONFLICT_SIDE_DOOR", "detail": "Contract lists STOCK<->outside east, but STOCK [8,5,4,5] does not touch the east wall (x=14). The east staff door is placed on UTL (adjacent to STOCK). Needs design review."}
+  ],
+  "buildings": {
+    "LAB-H01": {
+      "name": "Oak House", "program": "house_small", "archetype_id": "house_small", "size": [12, 10], "roof": "gable", "condition": "abandoned",
+      "floors": [{
+        "z": 0,
+        "rooms": {"LIV": ["living", [0, 0, 6, 5]], "KIT": ["kitchen", [6, 0, 6, 5]], "BED": ["bedroom", [0, 5, 5, 5]], "HAL": ["hall", [5, 5, 2, 5]], "BAT": ["bathroom", [7, 5, 5, 3]], "UTL": ["utility", [7, 8, 5, 2]]},
+        "doors": [
+          {"connects": ["HAL", "exterior"], "side": "south", "center": 6.0, "width": 1.2, "kind": "exterior"},
+          {"connects": ["HAL", "LIV"], "center": 5.5, "width": 0.9},
+          {"connects": ["HAL", "KIT"], "center": 6.5, "width": 0.9},
+          {"connects": ["HAL", "BED"], "center": 7.5, "width": 1.2},
+          {"connects": ["HAL", "BAT"], "center": 6.5, "width": 1.2},
+          {"connects": ["HAL", "UTL"], "center": 9.0, "width": 1.2},
+          {"connects": ["LIV", "KIT"], "center": 2.5, "width": 1.2},
+          {"connects": ["KIT", "exterior"], "side": "north", "center": 9.5, "width": 1.2, "kind": "exterior"}
+        ],
+        "windows": [
+          {"room": "LIV", "side": "north", "center": 2.5, "width": 1.6}, {"room": "LIV", "side": "west", "center": 1.6, "width": 1.2},
+          {"room": "KIT", "side": "north", "center": 11.2, "width": 1.2}, {"room": "BED", "side": "south", "center": 2.2, "width": 1.6},
+          {"room": "BED", "side": "west", "center": 6.1, "width": 1.0}, {"room": "BAT", "side": "east", "center": 6.5, "width": 1.0, "privacy": true}
+        ],
+        "furniture": [
+          ["sofa", 1, 1], ["coffee_table", 2, 2], ["tv_stand", 3, 4], ["bookcase", 0, 3],
+          ["fridge", 6, 0], ["stove", 7, 0], ["counter", 8, 0], ["counter", 10, 0], ["sink", 11, 0], ["cupboard", 11, 2], ["dining_table", 8, 3], ["chair", 7, 3], ["chair", 10, 3],
+          ["double_bed", 1, 6], ["nightstand", 3, 6], ["dresser", 0, 7], ["wardrobe", 0, 8],
+          ["vanity", 8, 5], ["toilet", 10, 5], ["bathtub", 11, 5], ["medicine_cabinet", 11, 7],
+          ["electrical_panel", 9, 8], ["utility_shelf", 10, 8], ["washer", 11, 8]
+        ]
+      }]
+    },
+    "LAB-H02": {
+      "name": "Cedar House", "program": "house_two_storey", "archetype_id": "house_large", "size": [16, 12], "roof": "hip", "condition": "occupied",
+      "stairs": [{"id": "STAIR", "rect": [7, 8, 3, 4], "lower": {"z": 0, "room": "HAL", "entry": [8, 7]}, "upper": {"z": 1, "room": "LAND", "entry": [6, 11]}}],
+      "floors": [
+        {
+          "z": 0,
+          "rooms": {"LIV": ["living", [0, 0, 8, 6]], "KIT": ["kitchen", [8, 0, 8, 6]], "DEN": ["den", [0, 6, 5, 6]], "HAL": ["hall", [5, 6, 5, 6]], "BAT0": ["bathroom", [10, 6, 3, 3]], "LND": ["utility", [13, 6, 3, 3]], "PAN": ["pantry", [10, 9, 3, 3]], "STO": ["storage", [13, 9, 3, 3]]},
+          "doors": [
+            {"connects": ["HAL", "exterior"], "side": "south", "center": 6.0, "width": 1.2, "kind": "exterior"},
+            {"connects": ["HAL", "LIV"], "center": 6.5, "width": 1.2},
+            {"connects": ["HAL", "KIT"], "center": 9.0, "width": 1.2},
+            {"connects": ["HAL", "DEN"], "center": 8.0, "width": 1.2},
+            {"connects": ["HAL", "BAT0"], "center": 7.0, "width": 1.2},
+            {"connects": ["LIV", "KIT"], "center": 3.0, "width": 1.2},
+            {"connects": ["KIT", "LND"], "center": 14.5, "width": 1.2},
+            {"connects": ["BAT0", "LND"], "center": 7.5, "width": 1.2},
+            {"connects": ["LND", "STO"], "center": 14.5, "width": 1.2},
+            {"connects": ["PAN", "STO"], "center": 10.5, "width": 1.2},
+            {"connects": ["KIT", "exterior"], "side": "north", "center": 12.0, "width": 1.2, "kind": "exterior"}
+          ],
+          "windows": [
+            {"room": "LIV", "side": "north", "center": 3.0, "width": 2.0}, {"room": "LIV", "side": "west", "center": 3.0, "width": 1.4},
+            {"room": "KIT", "side": "north", "center": 9.5, "width": 1.4}, {"room": "DEN", "side": "west", "center": 9.0, "width": 1.4},
+            {"room": "DEN", "side": "south", "center": 2.5, "width": 1.6}, {"room": "STO", "side": "east", "center": 10.5, "width": 1.0}
+          ],
+          "furniture": [
+            ["sofa_large", 1, 1], ["armchair", 5, 1], ["coffee_table", 2, 2], ["tv_stand", 2, 4], ["bookcase", 0, 5],
+            ["cupboard", 8, 0], ["stove", 9, 0], ["sink", 10, 0], ["counter", 13, 0], ["cupboard", 14, 0], ["fridge", 15, 0], ["dining_table", 11, 3], ["chair", 10, 3], ["chair", 13, 3],
+            ["desk", 1, 6], ["bookcase", 0, 10], ["bookcase", 0, 11], ["armchair", 3, 11],
+            ["vanity", 12, 6], ["toilet", 12, 8], ["medicine_cabinet", 10, 8],
+            ["washer", 15, 6], ["utility_shelf", 15, 8],
+            ["pantry_shelf", 10, 9], ["pantry_shelf", 10, 11],
+            ["crate", 15, 9], ["crate", 15, 11]
+          ]
+        },
+        {
+          "z": 1,
+          "rooms": {"MASTER": ["bedroom", [0, 0, 6, 5]], "BED2": ["bedroom", [6, 0, 6, 5]], "BATH1": ["bathroom", [12, 0, 4, 5]], "CORR": ["corridor", [0, 5, 16, 3]], "BED3": ["bedroom", [0, 8, 6, 4]], "LAND": ["landing", [6, 8, 5, 4]], "OFFICE": ["office", [11, 8, 5, 4]]},
+          "doors": [
+            {"connects": ["MASTER", "CORR"], "center": 3.0, "width": 1.2},
+            {"connects": ["BED2", "CORR"], "center": 9.0, "width": 1.2},
+            {"connects": ["BATH1", "CORR"], "center": 14.0, "width": 1.2},
+            {"connects": ["BED3", "CORR"], "center": 3.0, "width": 1.2},
+            {"connects": ["LAND", "CORR"], "center": 6.5, "width": 0.9, "kind": "opening"},
+            {"connects": ["LAND", "CORR"], "center": 10.5, "width": 0.9, "kind": "opening"},
+            {"connects": ["OFFICE", "CORR"], "center": 13.5, "width": 1.2}
+          ],
+          "windows": [
+            {"room": "MASTER", "side": "north", "center": 3.0, "width": 1.6}, {"room": "BED2", "side": "north", "center": 9.0, "width": 1.4},
+            {"room": "BATH1", "side": "east", "center": 2.5, "width": 1.0, "privacy": true}, {"room": "BED3", "side": "south", "center": 3.0, "width": 1.6},
+            {"room": "OFFICE", "side": "south", "center": 13.5, "width": 1.4}, {"room": "CORR", "side": "west", "center": 6.5, "width": 1.0}
+          ],
+          "furniture": [
+            ["double_bed", 1, 0], ["nightstand", 0, 0], ["nightstand", 3, 0], ["wardrobe", 5, 0], ["dresser", 5, 2],
+            ["single_bed", 6, 0], ["desk", 10, 0], ["bookcase", 11, 0], ["dresser", 11, 3],
+            ["toilet", 12, 0], ["vanity", 13, 0], ["bathtub", 15, 0], ["medicine_cabinet", 15, 3],
+            ["single_bed", 0, 10], ["bookcase", 5, 8], ["dresser", 5, 11],
+            ["desk", 15, 9], ["filing_cabinet", 15, 11], ["bookcase", 11, 11]
+          ]
+        }
+      ]
+    },
+    "LAB-H03": {
+      "name": "Birch House", "program": "house_garage", "archetype_id": "house_small", "size": [18, 14], "roof": "offset_gable", "condition": "boarded",
+      "vehicle_pad": {"side": "east", "rect": [18, 7, 4, 3]},
+      "floors": [{
+        "z": 0,
+        "cutouts": [[14, 0, 4, 4]],
+        "rooms": {"LIV": ["living", [0, 0, 8, 6]], "KIT": ["kitchen", [8, 0, 6, 6]], "DEN": ["den", [0, 6, 6, 4]], "BED": ["bedroom", [0, 10, 6, 4]], "HAL": ["hall", [6, 6, 3, 8]], "OFF": ["office", [9, 6, 5, 5]], "BAT": ["bathroom", [9, 11, 5, 3]], "GAR": ["garage", [14, 4, 4, 10]]},
+        "doors": [
+          {"connects": ["HAL", "exterior"], "side": "south", "center": 7.5, "width": 1.2, "kind": "exterior"},
+          {"connects": ["HAL", "LIV"], "center": 7.0, "width": 1.2},
+          {"connects": ["HAL", "KIT"], "center": 8.5, "width": 0.9},
+          {"connects": ["HAL", "DEN"], "center": 8.0, "width": 1.2},
+          {"connects": ["HAL", "BED"], "center": 12.0, "width": 1.2},
+          {"connects": ["HAL", "OFF"], "center": 8.5, "width": 1.2},
+          {"connects": ["HAL", "BAT"], "center": 12.5, "width": 1.2},
+          {"connects": ["LIV", "KIT"], "center": 3.0, "width": 1.2},
+          {"connects": ["OFF", "GAR"], "center": 8.5, "width": 1.2},
+          {"connects": ["GAR", "exterior"], "side": "east", "center": 9.0, "width": 3.0, "kind": "garage"},
+          {"connects": ["KIT", "exterior"], "side": "north", "center": 11.0, "width": 1.2, "kind": "exterior"}
+        ],
+        "windows": [
+          {"room": "LIV", "side": "north", "center": 4.0, "width": 2.0, "boarded": true}, {"room": "LIV", "side": "west", "center": 3.0, "width": 1.4},
+          {"room": "KIT", "side": "north", "center": 13.0, "width": 1.0}, {"room": "DEN", "side": "west", "center": 8.0, "width": 1.4, "boarded": true},
+          {"room": "BED", "side": "south", "center": 3.0, "width": 1.6}, {"room": "BED", "side": "west", "center": 12.0, "width": 1.2},
+          {"room": "BAT", "side": "south", "center": 11.5, "width": 1.0, "privacy": true}, {"room": "GAR", "side": "south", "center": 16.0, "width": 1.2, "broken": true}
+        ],
+        "furniture": [
+          ["sofa_large", 1, 1], ["armchair", 5, 1], ["coffee_table", 2, 2], ["tv_stand", 2, 4], ["bookcase", 0, 5],
+          ["counter", 8, 0], ["sink", 9, 0], ["stove", 12, 0], ["fridge", 13, 2], ["dining_table", 10, 3], ["chair", 12, 3], ["cupboard", 13, 5],
+          ["desk", 0, 6], ["bookcase", 0, 9], ["armchair", 2, 9],
+          ["double_bed", 1, 11], ["nightstand", 3, 11], ["wardrobe", 0, 13], ["dresser", 4, 13],
+          ["desk", 11, 6], ["filing_cabinet", 13, 6], ["bookcase", 9, 10],
+          ["medicine_cabinet", 10, 11], ["vanity", 11, 11], ["bathtub", 13, 11], ["toilet", 13, 13],
+          ["utility_shelf", 17, 4], ["tire_stack", 14, 4], ["tool_locker", 14, 13], ["workbench", 15, 13]
+        ]
+      }]
+    },
+    "LAB-S01": {
+      "name": "Corner Supply", "program": "convenience_store", "archetype_id": "grocery_store", "size": [18, 12], "roof": "flat", "condition": "looted",
+      "floors": [{
+        "z": 0,
+        "rooms": {"SALES": ["sales", [0, 0, 12, 8]], "FRONT": ["front", [0, 8, 12, 4]], "STOCK": ["stock", [12, 0, 6, 7]], "REST": ["restroom", [12, 7, 3, 3]], "OFFICE": ["office", [15, 7, 3, 3]], "UTIL": ["utility", [12, 10, 6, 2]]},
+        "doors": [
+          {"connects": ["FRONT", "exterior"], "side": "south", "center": 6.0, "width": 1.6, "kind": "exterior"},
+          {"connects": ["FRONT", "SALES"], "center": 6.0, "width": 10.0, "kind": "opening"},
+          {"connects": ["FRONT", "REST"], "center": 9.0, "width": 1.2},
+          {"connects": ["SALES", "STOCK"], "center": 3.0, "width": 1.2},
+          {"connects": ["STOCK", "REST"], "center": 13.5, "width": 1.2},
+          {"connects": ["STOCK", "OFFICE"], "center": 16.5, "width": 1.2},
+          {"connects": ["STOCK", "exterior"], "side": "north", "center": 15.0, "width": 1.2, "kind": "exterior"},
+          {"connects": ["REST", "UTIL"], "center": 13.5, "width": 1.2},
+          {"connects": ["OFFICE", "UTIL"], "center": 16.5, "width": 1.2}
+        ],
+        "windows": [
+          {"room": "SALES", "side": "west", "center": 4.0, "width": 2.0}, {"room": "FRONT", "side": "south", "center": 2.5, "width": 2.4},
+          {"room": "FRONT", "side": "south", "center": 9.5, "width": 2.4}, {"room": "OFFICE", "side": "east", "center": 8.5, "width": 1.0}
+        ],
+        "furniture": [
+          ["cold_case", 1, 0], ["cold_case", 2, 0], ["cold_case", 3, 0], ["cold_case", 4, 0], ["cold_case", 5, 0],
+          ["retail_shelf", 2, 2], ["retail_shelf", 2, 3], ["retail_shelf", 2, 4], ["retail_shelf", 2, 5],
+          ["retail_shelf", 6, 2], ["retail_shelf", 6, 3], ["retail_shelf", 6, 4], ["retail_shelf", 6, 5],
+          ["retail_shelf", 9, 2], ["retail_shelf", 9, 3], ["retail_shelf", 9, 4], ["retail_shelf", 9, 5],
+          ["checkout", 8, 9],
+          ["crate", 12, 0], ["crate", 12, 5], ["utility_shelf", 17, 0], ["utility_shelf", 17, 1], ["utility_shelf", 17, 2],
+          ["toilet", 14, 7], ["vanity", 14, 9],
+          ["desk", 17, 7], ["filing_cabinet", 15, 9], ["electrical_panel", 17, 9],
+          ["utility_shelf", 12, 11], ["utility_shelf", 17, 11]
+        ]
+      }]
+    },
+    "LAB-W01": {
+      "name": "Forge Shed", "program": "workshop", "archetype_id": "mechanic_shop", "size": [14, 10], "roof": "gable", "condition": "abandoned",
+      "floors": [{
+        "z": 0,
+        "rooms": {"BAY": ["bay", [0, 0, 8, 10]], "WORK": ["work", [8, 0, 6, 5]], "STOCK": ["stock", [8, 5, 4, 5]], "UTL": ["plant", [12, 5, 2, 5]]},
+        "doors": [
+          {"connects": ["BAY", "exterior"], "side": "south", "center": 4.0, "width": 3.0, "kind": "garage"},
+          {"connects": ["BAY", "WORK"], "center": 2.5, "width": 1.2},
+          {"connects": ["BAY", "STOCK"], "center": 7.5, "width": 1.2},
+          {"connects": ["WORK", "STOCK"], "center": 10.0, "width": 1.2},
+          {"connects": ["STOCK", "UTL"], "center": 7.5, "width": 1.2},
+          {"connects": ["UTL", "exterior"], "side": "east", "center": 8.0, "width": 1.2, "kind": "exterior"}
+        ],
+        "windows": [
+          {"room": "WORK", "side": "north", "center": 11.0, "width": 1.6}, {"room": "BAY", "side": "west", "center": 5.0, "width": 1.6},
+          {"room": "STOCK", "side": "south", "center": 9.5, "width": 1.0}
+        ],
+        "furniture": [
+          ["vehicle", 3, 3], ["tire_stack", 0, 0], ["utility_shelf", 0, 9],
+          ["workbench", 10, 0], ["tool_locker", 13, 0], ["utility_shelf", 13, 4],
+          ["utility_shelf", 8, 9], ["crate", 11, 9], ["crate", 11, 5],
+          ["electrical_panel", 12, 5], ["utility_shelf", 13, 9]
+        ]
+      }]
+    }
+  }
+}

@@ -1,0 +1,6615 @@
+{
+ "bounds": [
+  0,
+  0,
+  88,
+  62
+ ],
+ "curb_cuts": [
+  {
+   "cell": [
+    68,
+    11
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.003"
+  },
+  {
+   "cell": [
+    69,
+    11
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.003"
+  },
+  {
+   "cell": [
+    70,
+    11
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.003"
+  },
+  {
+   "cell": [
+    71,
+    11
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.003"
+  },
+  {
+   "cell": [
+    64,
+    50
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.006"
+  },
+  {
+   "cell": [
+    65,
+    50
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.006"
+  },
+  {
+   "cell": [
+    66,
+    50
+   ],
+   "lot_id": "ll.r00_lab_a_street.lot.006"
+  }
+ ],
+ "district_id": "ll.r00.lab_a_street",
+ "fences": [
+  {
+   "a": [
+    12,
+    31
+   ],
+   "b": [
+    76,
+    31
+   ],
+   "id": "ll.r00_lab_a_street.fence.001",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    12,
+    15
+   ],
+   "b": [
+    12,
+    47
+   ],
+   "id": "ll.r00_lab_a_street.fence.002",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    28,
+    31
+   ],
+   "b": [
+    28,
+    47
+   ],
+   "id": "ll.r00_lab_a_street.fence.003",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    37,
+    14
+   ],
+   "b": [
+    37,
+    31
+   ],
+   "id": "ll.r00_lab_a_street.fence.004",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    48,
+    31
+   ],
+   "b": [
+    48,
+    48
+   ],
+   "id": "ll.r00_lab_a_street.fence.005",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    59,
+    14
+   ],
+   "b": [
+    59,
+    31
+   ],
+   "id": "ll.r00_lab_a_street.fence.006",
+   "kind": "fence_wood"
+  },
+  {
+   "a": [
+    76,
+    15
+   ],
+   "b": [
+    76,
+    48
+   ],
+   "id": "ll.r00_lab_a_street.fence.007",
+   "kind": "fence_wood"
+  }
+ ],
+ "intersections": [
+  {
+   "id": "ll.r00_lab_a_street.isect.0_0",
+   "rect": [
+    6,
+    6,
+    6,
+    6
+   ],
+   "roads": [
+    "ll.r00_lab_a_street.road.h0",
+    "ll.r00_lab_a_street.road.v0"
+   ]
+  },
+  {
+   "id": "ll.r00_lab_a_street.isect.0_1",
+   "rect": [
+    6,
+    50,
+    6,
+    6
+   ],
+   "roads": [
+    "ll.r00_lab_a_street.road.h1",
+    "ll.r00_lab_a_street.road.v0"
+   ]
+  },
+  {
+   "id": "ll.r00_lab_a_street.isect.1_0",
+   "rect": [
+    76,
+    6,
+    6,
+    6
+   ],
+   "roads": [
+    "ll.r00_lab_a_street.road.h0",
+    "ll.r00_lab_a_street.road.v1"
+   ]
+  },
+  {
+   "id": "ll.r00_lab_a_street.isect.1_1",
+   "rect": [
+    76,
+    50,
+    6,
+    6
+   ],
+   "roads": [
+    "ll.r00_lab_a_street.road.h1",
+    "ll.r00_lab_a_street.road.v1"
+   ]
+  }
+ ],
+ "lots": [
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.001.b01",
+   "corner": true,
+   "front": "north",
+   "id": "ll.r00_lab_a_street.lot.001",
+   "rect": [
+    12,
+    12,
+    25,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h0",
+   "row": "n",
+   "setback": 3,
+   "zoning": "house_garage"
+  },
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.002.b01",
+   "corner": false,
+   "front": "north",
+   "id": "ll.r00_lab_a_street.lot.002",
+   "rect": [
+    37,
+    12,
+    22,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h0",
+   "row": "n",
+   "setback": 2,
+   "zoning": "convenience_store"
+  },
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.003.b01",
+   "corner": true,
+   "front": "north",
+   "id": "ll.r00_lab_a_street.lot.003",
+   "rect": [
+    59,
+    12,
+    17,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h0",
+   "row": "n",
+   "setback": 3,
+   "zoning": "workshop"
+  },
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.004.b01",
+   "corner": true,
+   "front": "south",
+   "id": "ll.r00_lab_a_street.lot.004",
+   "rect": [
+    12,
+    31,
+    16,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h1",
+   "row": "s",
+   "setback": 3,
+   "zoning": "house_small"
+  },
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.005.b01",
+   "corner": false,
+   "front": "south",
+   "id": "ll.r00_lab_a_street.lot.005",
+   "rect": [
+    28,
+    31,
+    20,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h1",
+   "row": "s",
+   "setback": 3,
+   "zoning": "house_two_storey"
+  },
+  {
+   "block": [
+    0,
+    0
+   ],
+   "building_id": "ll.r00_lab_a_street.lot.006.b01",
+   "corner": true,
+   "front": "south",
+   "id": "ll.r00_lab_a_street.lot.006",
+   "rect": [
+    48,
+    31,
+    28,
+    19
+   ],
+   "road_id": "ll.r00_lab_a_street.road.h1",
+   "row": "s",
+   "setback": 2,
+   "zoning": "house_garage"
+  }
+ ],
+ "props": [
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0001",
+   "label": "TREE",
+   "rect": [
+    12,
+    13,
+    1,
+    1
+   ],
+   "solid_rect": [
+    12.32,
+    13.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0002",
+   "label": "TREE",
+   "rect": [
+    24,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    24.32,
+    12.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0003",
+   "label": "TREE",
+   "rect": [
+    12,
+    19,
+    1,
+    1
+   ],
+   "solid_rect": [
+    12.32,
+    19.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0004",
+   "label": "TREE",
+   "rect": [
+    13,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    13.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0005",
+   "label": "TREE",
+   "rect": [
+    19,
+    13,
+    1,
+    1
+   ],
+   "solid_rect": [
+    19.32,
+    13.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0006",
+   "label": "TREE",
+   "rect": [
+    18,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    18.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0007",
+   "label": "TREE",
+   "rect": [
+    30,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    30.32,
+    12.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0008",
+   "label": "TREE",
+   "rect": [
+    14,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    14.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0009",
+   "label": "TREE",
+   "rect": [
+    14,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    14.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 1.1,
+   "id": "ll.r00_lab_a_street.prop.0010",
+   "label": "MAILBOX",
+   "rect": [
+    26,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    26.38,
+    12.38,
+    0.24,
+    0.24
+   ],
+   "type": "mailbox",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0011",
+   "label": "SHRUB",
+   "rect": [
+    36,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    36.22,
+    30.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0012",
+   "label": "SHRUB",
+   "rect": [
+    17,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    17.22,
+    30.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0013",
+   "label": "SHRUB",
+   "rect": [
+    34,
+    13,
+    1,
+    1
+   ],
+   "solid_rect": [
+    34.22,
+    13.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0014",
+   "label": "SHRUB",
+   "rect": [
+    23,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    23.22,
+    30.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0015",
+   "label": "SHRUB",
+   "rect": [
+    13,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    13.22,
+    30.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0016",
+   "label": "TREE",
+   "rect": [
+    40,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    40.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0017",
+   "label": "TREE",
+   "rect": [
+    54,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    54.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0018",
+   "label": "TREE",
+   "rect": [
+    51,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0019",
+   "label": "TREE",
+   "rect": [
+    37,
+    24,
+    1,
+    1
+   ],
+   "solid_rect": [
+    37.32,
+    24.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0020",
+   "label": "TREE",
+   "rect": [
+    43,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0021",
+   "label": "TREE",
+   "rect": [
+    38,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    38.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0022",
+   "label": "TREE",
+   "rect": [
+    58,
+    16,
+    1,
+    1
+   ],
+   "solid_rect": [
+    58.32,
+    16.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0023",
+   "label": "TREE",
+   "rect": [
+    39,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    39.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0024",
+   "label": "TREE",
+   "rect": [
+    43,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 1.1,
+   "id": "ll.r00_lab_a_street.prop.0025",
+   "label": "MAILBOX",
+   "rect": [
+    49,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    49.38,
+    12.38,
+    0.24,
+    0.24
+   ],
+   "type": "mailbox",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.0,
+   "id": "ll.r00_lab_a_street.prop.0026",
+   "initial_contents": {
+    "ll_food_bean_tin": 1
+   },
+   "label": "TRASH BIN",
+   "loot_profile": "trash",
+   "loot_seed": 6824687719288044323,
+   "rect": [
+    57,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    57.24,
+    23.24,
+    0.52,
+    0.52
+   ],
+   "type": "trash_bin",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0027",
+   "label": "SHRUB",
+   "rect": [
+    58,
+    22,
+    1,
+    1
+   ],
+   "solid_rect": [
+    58.22,
+    22.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0028",
+   "label": "SHRUB",
+   "rect": [
+    58,
+    21,
+    1,
+    1
+   ],
+   "solid_rect": [
+    58.22,
+    21.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0029",
+   "label": "SHRUB",
+   "rect": [
+    51,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.22,
+    29.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0030",
+   "label": "SHRUB",
+   "rect": [
+    46,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    46.22,
+    29.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0031",
+   "label": "SHRUB",
+   "rect": [
+    53,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    53.22,
+    27.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0032",
+   "label": "TREE",
+   "rect": [
+    60,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    60.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0033",
+   "label": "TREE",
+   "rect": [
+    69,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0034",
+   "label": "TREE",
+   "rect": [
+    62,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0035",
+   "label": "TREE",
+   "rect": [
+    62,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0036",
+   "label": "TREE",
+   "rect": [
+    63,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    63.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0037",
+   "label": "TREE",
+   "rect": [
+    61,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    61.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0038",
+   "label": "TREE",
+   "rect": [
+    62,
+    13,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.32,
+    13.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0039",
+   "label": "TREE",
+   "rect": [
+    72,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    72.32,
+    12.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0040",
+   "label": "TREE",
+   "rect": [
+    71,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.0,
+   "id": "ll.r00_lab_a_street.prop.0041",
+   "initial_contents": {},
+   "label": "TRASH BIN",
+   "loot_profile": "trash",
+   "loot_seed": 2464527446594978727,
+   "rect": [
+    62,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.24,
+    25.24,
+    0.52,
+    0.52
+   ],
+   "type": "trash_bin",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 5.0,
+   "id": "ll.r00_lab_a_street.prop.0042",
+   "label": "STREETLIGHT",
+   "rect": [
+    67,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    67.42,
+    12.42,
+    0.16,
+    0.16
+   ],
+   "type": "streetlight",
+   "utility": [
+    "power"
+   ]
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0043",
+   "label": "SHRUB",
+   "rect": [
+    60,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    60.22,
+    28.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0044",
+   "label": "SHRUB",
+   "rect": [
+    75,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    75.22,
+    12.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0045",
+   "label": "SHRUB",
+   "rect": [
+    69,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.22,
+    27.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0046",
+   "label": "SHRUB",
+   "rect": [
+    67,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    67.22,
+    29.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0047",
+   "label": "SHRUB",
+   "rect": [
+    75,
+    20,
+    1,
+    1
+   ],
+   "solid_rect": [
+    75.22,
+    20.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0048",
+   "label": "TREE",
+   "rect": [
+    14,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    14.32,
+    35.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0049",
+   "label": "TREE",
+   "rect": [
+    21,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    21.32,
+    34.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0050",
+   "label": "TREE",
+   "rect": [
+    25,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    25.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0051",
+   "label": "TREE",
+   "rect": [
+    27,
+    42,
+    1,
+    1
+   ],
+   "solid_rect": [
+    27.32,
+    42.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0052",
+   "label": "TREE",
+   "rect": [
+    12,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    12.32,
+    39.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0053",
+   "label": "TREE",
+   "rect": [
+    15,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    15.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0054",
+   "label": "TREE",
+   "rect": [
+    18,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    18.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0055",
+   "label": "TREE",
+   "rect": [
+    27,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    27.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0056",
+   "label": "TREE",
+   "rect": [
+    27,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    27.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0057",
+   "label": "TREE",
+   "rect": [
+    13,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    13.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0058",
+   "label": "TREE",
+   "rect": [
+    24,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    24.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 1.1,
+   "id": "ll.r00_lab_a_street.prop.0059",
+   "label": "MAILBOX",
+   "rect": [
+    18,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    18.38,
+    49.38,
+    0.24,
+    0.24
+   ],
+   "type": "mailbox",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 5.0,
+   "id": "ll.r00_lab_a_street.prop.0060",
+   "label": "STREETLIGHT",
+   "rect": [
+    20,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    20.42,
+    49.42,
+    0.16,
+    0.16
+   ],
+   "type": "streetlight",
+   "utility": [
+    "power"
+   ]
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0061",
+   "label": "SHRUB",
+   "rect": [
+    27,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    27.22,
+    35.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0062",
+   "label": "SHRUB",
+   "rect": [
+    26,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    26.22,
+    31.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0063",
+   "label": "SHRUB",
+   "rect": [
+    17,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    17.22,
+    48.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0064",
+   "label": "SHRUB",
+   "rect": [
+    12,
+    40,
+    1,
+    1
+   ],
+   "solid_rect": [
+    12.22,
+    40.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0065",
+   "label": "SHRUB",
+   "rect": [
+    13,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    13.22,
+    49.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0066",
+   "label": "SHRUB",
+   "rect": [
+    18,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    18.22,
+    32.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0067",
+   "label": "TREE",
+   "rect": [
+    39,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    39.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0068",
+   "label": "TREE",
+   "rect": [
+    28,
+    45,
+    1,
+    1
+   ],
+   "solid_rect": [
+    28.32,
+    45.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0069",
+   "label": "TREE",
+   "rect": [
+    44,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    44.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0070",
+   "label": "TREE",
+   "rect": [
+    34,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    34.32,
+    49.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0071",
+   "label": "TREE",
+   "rect": [
+    47,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    47.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0072",
+   "label": "TREE",
+   "rect": [
+    44,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    44.32,
+    49.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0073",
+   "label": "TREE",
+   "rect": [
+    46,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    46.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0074",
+   "label": "TREE",
+   "rect": [
+    47,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    47.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0075",
+   "label": "TREE",
+   "rect": [
+    29,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    29.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0076",
+   "label": "TREE",
+   "rect": [
+    45,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    45.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 1.1,
+   "id": "ll.r00_lab_a_street.prop.0077",
+   "label": "MAILBOX",
+   "rect": [
+    36,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    36.38,
+    49.38,
+    0.24,
+    0.24
+   ],
+   "type": "mailbox",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0078",
+   "label": "SHRUB",
+   "rect": [
+    35,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    35.22,
+    32.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0079",
+   "label": "SHRUB",
+   "rect": [
+    28,
+    46,
+    1,
+    1
+   ],
+   "solid_rect": [
+    28.22,
+    46.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0080",
+   "label": "SHRUB",
+   "rect": [
+    43,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.22,
+    33.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0081",
+   "label": "SHRUB",
+   "rect": [
+    30,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    30.22,
+    49.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0082",
+   "label": "SHRUB",
+   "rect": [
+    44,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    44.22,
+    48.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0083",
+   "label": "SHRUB",
+   "rect": [
+    28,
+    42,
+    1,
+    1
+   ],
+   "solid_rect": [
+    28.22,
+    42.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0084",
+   "label": "TREE",
+   "rect": [
+    50,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    50.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0085",
+   "label": "TREE",
+   "rect": [
+    51,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.32,
+    34.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0086",
+   "label": "TREE",
+   "rect": [
+    74,
+    37,
+    1,
+    1
+   ],
+   "solid_rect": [
+    74.32,
+    37.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0087",
+   "label": "TREE",
+   "rect": [
+    49,
+    40,
+    1,
+    1
+   ],
+   "solid_rect": [
+    49.32,
+    40.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0088",
+   "label": "TREE",
+   "rect": [
+    56,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    56.32,
+    34.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0089",
+   "label": "TREE",
+   "rect": [
+    48,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    48.32,
+    48.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0090",
+   "label": "TREE",
+   "rect": [
+    56,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    56.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0091",
+   "label": "TREE",
+   "rect": [
+    57,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    57.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0092",
+   "label": "TREE",
+   "rect": [
+    66,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    66.32,
+    39.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0093",
+   "label": "TREE",
+   "rect": [
+    70,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    70.32,
+    35.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0094",
+   "label": "TREE",
+   "rect": [
+    53,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    53.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0095",
+   "label": "TREE",
+   "rect": [
+    74,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    74.32,
+    34.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0096",
+   "label": "TREE",
+   "rect": [
+    71,
+    47,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.32,
+    47.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0097",
+   "label": "TREE",
+   "rect": [
+    68,
+    37,
+    1,
+    1
+   ],
+   "solid_rect": [
+    68.32,
+    37.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0098",
+   "label": "TREE",
+   "rect": [
+    61,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    61.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0099",
+   "label": "TREE",
+   "rect": [
+    51,
+    47,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.32,
+    47.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0100",
+   "label": "TREE",
+   "rect": [
+    71,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.32,
+    35.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0101",
+   "label": "TREE",
+   "rect": [
+    50,
+    36,
+    1,
+    1
+   ],
+   "solid_rect": [
+    50.32,
+    36.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0102",
+   "label": "TREE",
+   "rect": [
+    72,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    72.32,
+    34.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0103",
+   "label": "TREE",
+   "rect": [
+    69,
+    38,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.32,
+    38.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0104",
+   "label": "TREE",
+   "rect": [
+    68,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    68.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0105",
+   "label": "TREE",
+   "rect": [
+    71,
+    44,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.32,
+    44.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0106",
+   "label": "TREE",
+   "rect": [
+    67,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    67.32,
+    35.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0107",
+   "label": "TREE",
+   "rect": [
+    75,
+    42,
+    1,
+    1
+   ],
+   "solid_rect": [
+    75.32,
+    42.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0108",
+   "label": "TREE",
+   "rect": [
+    52,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    52.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0109",
+   "label": "TREE",
+   "rect": [
+    62,
+    35,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.32,
+    35.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0110",
+   "label": "TREE",
+   "rect": [
+    66,
+    40,
+    1,
+    1
+   ],
+   "solid_rect": [
+    66.32,
+    40.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0111",
+   "label": "TREE",
+   "rect": [
+    65,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    65.32,
+    39.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 1.1,
+   "id": "ll.r00_lab_a_street.prop.0112",
+   "label": "MAILBOX",
+   "rect": [
+    55,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    55.38,
+    49.38,
+    0.24,
+    0.24
+   ],
+   "type": "mailbox",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.0,
+   "id": "ll.r00_lab_a_street.prop.0113",
+   "initial_contents": {},
+   "label": "TRASH BIN",
+   "loot_profile": "trash",
+   "loot_seed": 6124465556572159664,
+   "rect": [
+    54,
+    36,
+    1,
+    1
+   ],
+   "solid_rect": [
+    54.24,
+    36.24,
+    0.52,
+    0.52
+   ],
+   "type": "trash_bin",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 5.0,
+   "id": "ll.r00_lab_a_street.prop.0114",
+   "label": "STREETLIGHT",
+   "rect": [
+    62,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.42,
+    49.42,
+    0.16,
+    0.16
+   ],
+   "type": "streetlight",
+   "utility": [
+    "power"
+   ]
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0115",
+   "label": "SHRUB",
+   "rect": [
+    48,
+    46,
+    1,
+    1
+   ],
+   "solid_rect": [
+    48.22,
+    46.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0116",
+   "label": "SHRUB",
+   "rect": [
+    49,
+    48,
+    1,
+    1
+   ],
+   "solid_rect": [
+    49.22,
+    48.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0117",
+   "label": "SHRUB",
+   "rect": [
+    65,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    65.22,
+    34.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0118",
+   "label": "SHRUB",
+   "rect": [
+    75,
+    46,
+    1,
+    1
+   ],
+   "solid_rect": [
+    75.22,
+    46.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0119",
+   "label": "SHRUB",
+   "rect": [
+    65,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    65.22,
+    31.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0120",
+   "label": "SHRUB",
+   "rect": [
+    71,
+    42,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.22,
+    42.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0121",
+   "label": "SHRUB",
+   "rect": [
+    54,
+    34,
+    1,
+    1
+   ],
+   "solid_rect": [
+    54.22,
+    34.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0122",
+   "label": "SHRUB",
+   "rect": [
+    65,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    65.22,
+    32.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0123",
+   "label": "SHRUB",
+   "rect": [
+    51,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.22,
+    39.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0124",
+   "label": "SHRUB",
+   "rect": [
+    70,
+    42,
+    1,
+    1
+   ],
+   "solid_rect": [
+    70.22,
+    42.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0125",
+   "label": "SHRUB",
+   "rect": [
+    51,
+    44,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.22,
+    44.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0126",
+   "label": "SHRUB",
+   "rect": [
+    71,
+    41,
+    1,
+    1
+   ],
+   "solid_rect": [
+    71.22,
+    41.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0127",
+   "label": "SHRUB",
+   "rect": [
+    67,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    67.22,
+    31.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0128",
+   "label": "SHRUB",
+   "rect": [
+    70,
+    43,
+    1,
+    1
+   ],
+   "solid_rect": [
+    70.22,
+    43.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0129",
+   "label": "SHRUB",
+   "rect": [
+    69,
+    46,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.22,
+    46.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 0.9,
+   "id": "ll.r00_lab_a_street.prop.0130",
+   "label": "SHRUB",
+   "rect": [
+    69,
+    40,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.22,
+    40.22,
+    0.56,
+    0.56
+   ],
+   "type": "bush",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0131",
+   "label": "TREE",
+   "rect": [
+    0,
+    7,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    7.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0132",
+   "label": "TREE",
+   "rect": [
+    0,
+    8,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    8.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0133",
+   "label": "TREE",
+   "rect": [
+    0,
+    12,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    12.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0134",
+   "label": "TREE",
+   "rect": [
+    0,
+    16,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    16.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0135",
+   "label": "TREE",
+   "rect": [
+    0,
+    22,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    22.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0136",
+   "label": "TREE",
+   "rect": [
+    0,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0137",
+   "label": "TREE",
+   "rect": [
+    0,
+    24,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    24.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0138",
+   "label": "TREE",
+   "rect": [
+    0,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    25.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0139",
+   "label": "TREE",
+   "rect": [
+    0,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0140",
+   "label": "TREE",
+   "rect": [
+    0,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0141",
+   "label": "TREE",
+   "rect": [
+    0,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0142",
+   "label": "TREE",
+   "rect": [
+    0,
+    49,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    49.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0143",
+   "label": "TREE",
+   "rect": [
+    0,
+    60,
+    1,
+    1
+   ],
+   "solid_rect": [
+    0.32,
+    60.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0144",
+   "label": "TREE",
+   "rect": [
+    1,
+    7,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    7.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0145",
+   "label": "TREE",
+   "rect": [
+    1,
+    17,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    17.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0146",
+   "label": "TREE",
+   "rect": [
+    1,
+    19,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    19.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0147",
+   "label": "TREE",
+   "rect": [
+    1,
+    22,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    22.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0148",
+   "label": "TREE",
+   "rect": [
+    1,
+    24,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    24.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0149",
+   "label": "TREE",
+   "rect": [
+    1,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0150",
+   "label": "TREE",
+   "rect": [
+    1,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0151",
+   "label": "TREE",
+   "rect": [
+    1,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0152",
+   "label": "TREE",
+   "rect": [
+    1,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    1.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0153",
+   "label": "TREE",
+   "rect": [
+    2,
+    24,
+    1,
+    1
+   ],
+   "solid_rect": [
+    2.32,
+    24.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0154",
+   "label": "TREE",
+   "rect": [
+    2,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    2.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0155",
+   "label": "TREE",
+   "rect": [
+    3,
+    8,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    8.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0156",
+   "label": "TREE",
+   "rect": [
+    3,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0157",
+   "label": "TREE",
+   "rect": [
+    3,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0158",
+   "label": "TREE",
+   "rect": [
+    3,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0159",
+   "label": "TREE",
+   "rect": [
+    3,
+    43,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    43.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0160",
+   "label": "TREE",
+   "rect": [
+    3,
+    51,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    51.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0161",
+   "label": "TREE",
+   "rect": [
+    3,
+    60,
+    1,
+    1
+   ],
+   "solid_rect": [
+    3.32,
+    60.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0162",
+   "label": "TREE",
+   "rect": [
+    4,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    25.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0163",
+   "label": "TREE",
+   "rect": [
+    4,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0164",
+   "label": "TREE",
+   "rect": [
+    4,
+    32,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    32.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0165",
+   "label": "TREE",
+   "rect": [
+    4,
+    41,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    41.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0166",
+   "label": "TREE",
+   "rect": [
+    4,
+    55,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    55.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0167",
+   "label": "TREE",
+   "rect": [
+    4,
+    56,
+    1,
+    1
+   ],
+   "solid_rect": [
+    4.32,
+    56.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0168",
+   "label": "TREE",
+   "rect": [
+    5,
+    20,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    20.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0169",
+   "label": "TREE",
+   "rect": [
+    5,
+    22,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    22.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0170",
+   "label": "TREE",
+   "rect": [
+    5,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0171",
+   "label": "TREE",
+   "rect": [
+    5,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0172",
+   "label": "TREE",
+   "rect": [
+    5,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0173",
+   "label": "TREE",
+   "rect": [
+    5,
+    33,
+    1,
+    1
+   ],
+   "solid_rect": [
+    5.32,
+    33.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0174",
+   "label": "TREE",
+   "rect": [
+    10,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    10.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0175",
+   "label": "TREE",
+   "rect": [
+    17,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    17.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0176",
+   "label": "TREE",
+   "rect": [
+    20,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    20.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0177",
+   "label": "TREE",
+   "rect": [
+    22,
+    2,
+    1,
+    1
+   ],
+   "solid_rect": [
+    22.32,
+    2.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0178",
+   "label": "TREE",
+   "rect": [
+    28,
+    2,
+    1,
+    1
+   ],
+   "solid_rect": [
+    28.32,
+    2.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0179",
+   "label": "TREE",
+   "rect": [
+    31,
+    56,
+    1,
+    1
+   ],
+   "solid_rect": [
+    31.32,
+    56.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0180",
+   "label": "TREE",
+   "rect": [
+    36,
+    60,
+    1,
+    1
+   ],
+   "solid_rect": [
+    36.32,
+    60.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0181",
+   "label": "TREE",
+   "rect": [
+    38,
+    60,
+    1,
+    1
+   ],
+   "solid_rect": [
+    38.32,
+    60.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0182",
+   "label": "TREE",
+   "rect": [
+    39,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    39.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0183",
+   "label": "TREE",
+   "rect": [
+    39,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    39.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0184",
+   "label": "TREE",
+   "rect": [
+    40,
+    2,
+    1,
+    1
+   ],
+   "solid_rect": [
+    40.32,
+    2.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0185",
+   "label": "TREE",
+   "rect": [
+    40,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    40.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0186",
+   "label": "TREE",
+   "rect": [
+    40,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    40.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0187",
+   "label": "TREE",
+   "rect": [
+    41,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    41.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0188",
+   "label": "TREE",
+   "rect": [
+    42,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    42.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0189",
+   "label": "TREE",
+   "rect": [
+    42,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    42.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0190",
+   "label": "TREE",
+   "rect": [
+    42,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    42.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0191",
+   "label": "TREE",
+   "rect": [
+    43,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0192",
+   "label": "TREE",
+   "rect": [
+    43,
+    2,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    2.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0193",
+   "label": "TREE",
+   "rect": [
+    43,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0194",
+   "label": "TREE",
+   "rect": [
+    43,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    43.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0195",
+   "label": "TREE",
+   "rect": [
+    45,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    45.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0196",
+   "label": "TREE",
+   "rect": [
+    45,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    45.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0197",
+   "label": "TREE",
+   "rect": [
+    45,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    45.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0198",
+   "label": "TREE",
+   "rect": [
+    46,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    46.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0199",
+   "label": "TREE",
+   "rect": [
+    46,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    46.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0200",
+   "label": "TREE",
+   "rect": [
+    47,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    47.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0201",
+   "label": "TREE",
+   "rect": [
+    47,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    47.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0202",
+   "label": "TREE",
+   "rect": [
+    47,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    47.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0203",
+   "label": "TREE",
+   "rect": [
+    49,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    49.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0204",
+   "label": "TREE",
+   "rect": [
+    50,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    50.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0205",
+   "label": "TREE",
+   "rect": [
+    51,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    51.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0206",
+   "label": "TREE",
+   "rect": [
+    52,
+    57,
+    1,
+    1
+   ],
+   "solid_rect": [
+    52.32,
+    57.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0207",
+   "label": "TREE",
+   "rect": [
+    55,
+    61,
+    1,
+    1
+   ],
+   "solid_rect": [
+    55.32,
+    61.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0208",
+   "label": "TREE",
+   "rect": [
+    56,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    56.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0209",
+   "label": "TREE",
+   "rect": [
+    59,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    59.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0210",
+   "label": "TREE",
+   "rect": [
+    59,
+    60,
+    1,
+    1
+   ],
+   "solid_rect": [
+    59.32,
+    60.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0211",
+   "label": "TREE",
+   "rect": [
+    61,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    61.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0212",
+   "label": "TREE",
+   "rect": [
+    62,
+    59,
+    1,
+    1
+   ],
+   "solid_rect": [
+    62.32,
+    59.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0213",
+   "label": "TREE",
+   "rect": [
+    65,
+    61,
+    1,
+    1
+   ],
+   "solid_rect": [
+    65.32,
+    61.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0214",
+   "label": "TREE",
+   "rect": [
+    69,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0215",
+   "label": "TREE",
+   "rect": [
+    69,
+    61,
+    1,
+    1
+   ],
+   "solid_rect": [
+    69.32,
+    61.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0216",
+   "label": "TREE",
+   "rect": [
+    70,
+    61,
+    1,
+    1
+   ],
+   "solid_rect": [
+    70.32,
+    61.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0217",
+   "label": "TREE",
+   "rect": [
+    75,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    75.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0218",
+   "label": "TREE",
+   "rect": [
+    77,
+    61,
+    1,
+    1
+   ],
+   "solid_rect": [
+    77.32,
+    61.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0219",
+   "label": "TREE",
+   "rect": [
+    78,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    78.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0220",
+   "label": "TREE",
+   "rect": [
+    81,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    81.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0221",
+   "label": "TREE",
+   "rect": [
+    81,
+    57,
+    1,
+    1
+   ],
+   "solid_rect": [
+    81.32,
+    57.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0222",
+   "label": "TREE",
+   "rect": [
+    81,
+    58,
+    1,
+    1
+   ],
+   "solid_rect": [
+    81.32,
+    58.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0223",
+   "label": "TREE",
+   "rect": [
+    81,
+    59,
+    1,
+    1
+   ],
+   "solid_rect": [
+    81.32,
+    59.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0224",
+   "label": "TREE",
+   "rect": [
+    82,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0225",
+   "label": "TREE",
+   "rect": [
+    82,
+    6,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    6.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0226",
+   "label": "TREE",
+   "rect": [
+    82,
+    7,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    7.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0227",
+   "label": "TREE",
+   "rect": [
+    82,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    25.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0228",
+   "label": "TREE",
+   "rect": [
+    82,
+    26,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    26.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0229",
+   "label": "TREE",
+   "rect": [
+    82,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0230",
+   "label": "TREE",
+   "rect": [
+    82,
+    31,
+    1,
+    1
+   ],
+   "solid_rect": [
+    82.32,
+    31.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0231",
+   "label": "TREE",
+   "rect": [
+    83,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0232",
+   "label": "TREE",
+   "rect": [
+    83,
+    6,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    6.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0233",
+   "label": "TREE",
+   "rect": [
+    83,
+    16,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    16.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0234",
+   "label": "TREE",
+   "rect": [
+    83,
+    21,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    21.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0235",
+   "label": "TREE",
+   "rect": [
+    83,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    25.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0236",
+   "label": "TREE",
+   "rect": [
+    83,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0237",
+   "label": "TREE",
+   "rect": [
+    83,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    39.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0238",
+   "label": "TREE",
+   "rect": [
+    83,
+    44,
+    1,
+    1
+   ],
+   "solid_rect": [
+    83.32,
+    44.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0239",
+   "label": "TREE",
+   "rect": [
+    84,
+    3,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    3.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0240",
+   "label": "TREE",
+   "rect": [
+    84,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0241",
+   "label": "TREE",
+   "rect": [
+    84,
+    10,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    10.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0242",
+   "label": "TREE",
+   "rect": [
+    84,
+    15,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    15.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0243",
+   "label": "TREE",
+   "rect": [
+    84,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0244",
+   "label": "TREE",
+   "rect": [
+    84,
+    25,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    25.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0245",
+   "label": "TREE",
+   "rect": [
+    84,
+    28,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    28.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0246",
+   "label": "TREE",
+   "rect": [
+    84,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0247",
+   "label": "TREE",
+   "rect": [
+    84,
+    43,
+    1,
+    1
+   ],
+   "solid_rect": [
+    84.32,
+    43.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0248",
+   "label": "TREE",
+   "rect": [
+    85,
+    0,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    0.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0249",
+   "label": "TREE",
+   "rect": [
+    85,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0250",
+   "label": "TREE",
+   "rect": [
+    85,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0251",
+   "label": "TREE",
+   "rect": [
+    85,
+    27,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    27.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0252",
+   "label": "TREE",
+   "rect": [
+    85,
+    37,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    37.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0253",
+   "label": "TREE",
+   "rect": [
+    85,
+    41,
+    1,
+    1
+   ],
+   "solid_rect": [
+    85.32,
+    41.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0254",
+   "label": "TREE",
+   "rect": [
+    86,
+    1,
+    1,
+    1
+   ],
+   "solid_rect": [
+    86.32,
+    1.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0255",
+   "label": "TREE",
+   "rect": [
+    86,
+    2,
+    1,
+    1
+   ],
+   "solid_rect": [
+    86.32,
+    2.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0256",
+   "label": "TREE",
+   "rect": [
+    86,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    86.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0257",
+   "label": "TREE",
+   "rect": [
+    86,
+    22,
+    1,
+    1
+   ],
+   "solid_rect": [
+    86.32,
+    22.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0258",
+   "label": "TREE",
+   "rect": [
+    86,
+    23,
+    1,
+    1
+   ],
+   "solid_rect": [
+    86.32,
+    23.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0259",
+   "label": "TREE",
+   "rect": [
+    87,
+    4,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    4.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0260",
+   "label": "TREE",
+   "rect": [
+    87,
+    5,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    5.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0261",
+   "label": "TREE",
+   "rect": [
+    87,
+    7,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    7.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0262",
+   "label": "TREE",
+   "rect": [
+    87,
+    18,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    18.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0263",
+   "label": "TREE",
+   "rect": [
+    87,
+    20,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    20.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0264",
+   "label": "TREE",
+   "rect": [
+    87,
+    21,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    21.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0265",
+   "label": "TREE",
+   "rect": [
+    87,
+    29,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    29.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0266",
+   "label": "TREE",
+   "rect": [
+    87,
+    30,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    30.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0267",
+   "label": "TREE",
+   "rect": [
+    87,
+    39,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    39.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": false,
+   "height_m": 4.0,
+   "id": "ll.r00_lab_a_street.prop.0268",
+   "label": "TREE",
+   "rect": [
+    87,
+    43,
+    1,
+    1
+   ],
+   "solid_rect": [
+    87.32,
+    43.32,
+    0.36,
+    0.36
+   ],
+   "type": "tree",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.45,
+   "id": "ll.r00_lab_a_street.prop.0269",
+   "initial_contents": {
+    "ll_food_water_bottle": 1
+   },
+   "label": "PARKED CAR",
+   "loot_profile": "vehicle",
+   "loot_seed": 4729356499862415313,
+   "rect": [
+    50,
+    9,
+    4,
+    2
+   ],
+   "solid_rect": [
+    50.08,
+    9.08,
+    3.84,
+    1.84
+   ],
+   "type": "vehicle_h",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.45,
+   "id": "ll.r00_lab_a_street.prop.0270",
+   "initial_contents": {},
+   "label": "PARKED CAR",
+   "loot_profile": "vehicle",
+   "loot_seed": 4305044641172188436,
+   "rect": [
+    59,
+    9,
+    4,
+    2
+   ],
+   "solid_rect": [
+    59.08,
+    9.08,
+    3.84,
+    1.84
+   ],
+   "type": "vehicle_h",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.45,
+   "id": "ll.r00_lab_a_street.prop.0271",
+   "initial_contents": {},
+   "label": "PARKED CAR",
+   "loot_profile": "vehicle",
+   "loot_seed": 3763211641955351203,
+   "rect": [
+    59,
+    53,
+    4,
+    2
+   ],
+   "solid_rect": [
+    59.08,
+    53.08,
+    3.84,
+    1.84
+   ],
+   "type": "vehicle_h",
+   "utility": []
+  },
+  {
+   "art": "placeholder_procedural",
+   "asset_id": null,
+   "container": true,
+   "height_m": 1.45,
+   "id": "ll.r00_lab_a_street.prop.0272",
+   "initial_contents": {
+    "ll_food_water_bottle": 1,
+    "ll_tools_claw_hammer": 1
+   },
+   "label": "PARKED CAR",
+   "loot_profile": "vehicle",
+   "loot_seed": 2619816684902485337,
+   "rect": [
+    13,
+    16,
+    4,
+    2
+   ],
+   "solid_rect": [
+    13.08,
+    16.08,
+    3.84,
+    1.84
+   ],
+   "type": "vehicle_h",
+   "utility": []
+  }
+ ],
+ "road_graph": [
+  [
+   "ll.r00_lab_a_street.isect.0_0",
+   "ll.r00_lab_a_street.isect.1_0",
+   "ll.r00_lab_a_street.road.h0"
+  ],
+  [
+   "ll.r00_lab_a_street.isect.0_1",
+   "ll.r00_lab_a_street.isect.1_1",
+   "ll.r00_lab_a_street.road.h1"
+  ],
+  [
+   "ll.r00_lab_a_street.isect.0_0",
+   "ll.r00_lab_a_street.isect.0_1",
+   "ll.r00_lab_a_street.road.v0"
+  ],
+  [
+   "ll.r00_lab_a_street.isect.1_0",
+   "ll.r00_lab_a_street.isect.1_1",
+   "ll.r00_lab_a_street.road.v1"
+  ]
+ ],
+ "roads": [
+  {
+   "axis": "h",
+   "curbs": true,
+   "id": "ll.r00_lab_a_street.road.h0",
+   "lanes": 2,
+   "rect": [
+    6,
+    6,
+    76,
+    6
+   ],
+   "sidewalk_width": 1,
+   "surface": "asphalt"
+  },
+  {
+   "axis": "h",
+   "curbs": true,
+   "id": "ll.r00_lab_a_street.road.h1",
+   "lanes": 2,
+   "rect": [
+    6,
+    50,
+    76,
+    6
+   ],
+   "sidewalk_width": 1,
+   "surface": "asphalt"
+  },
+  {
+   "axis": "v",
+   "curbs": true,
+   "id": "ll.r00_lab_a_street.road.v0",
+   "lanes": 2,
+   "rect": [
+    6,
+    6,
+    6,
+    50
+   ],
+   "sidewalk_width": 1,
+   "surface": "asphalt"
+  },
+  {
+   "axis": "v",
+   "curbs": true,
+   "id": "ll.r00_lab_a_street.road.v1",
+   "lanes": 2,
+   "rect": [
+    76,
+    6,
+    6,
+    50
+   ],
+   "sidewalk_width": 1,
+   "surface": "asphalt"
+  }
+ ],
+ "schema": "last_light.worldgen.district_spec.v1",
+ "spawn": [
+  19.5,
+  50.5
+ ],
+ "spawn_points": [
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street04",
+   "indoor": false,
+   "pos": [
+    37.5,
+    9.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.002.b01",
+   "context": "sales",
+   "id": "ll.r00_lab_a_street.lot.002.b01.f0.SALES.spawn",
+   "indoor": true,
+   "pos": [
+    51.5,
+    21.5
+   ]
+  },
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street03",
+   "indoor": false,
+   "pos": [
+    7.5,
+    7.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.002.b01",
+   "context": "stock",
+   "id": "ll.r00_lab_a_street.lot.002.b01.f0.STOCK.spawn",
+   "indoor": true,
+   "pos": [
+    41.5,
+    22.5
+   ]
+  },
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street02",
+   "indoor": false,
+   "pos": [
+    66.5,
+    10.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.001.b01",
+   "context": "bedroom",
+   "id": "ll.r00_lab_a_street.lot.001.b01.f0.BED.spawn",
+   "indoor": true,
+   "pos": [
+    31.5,
+    16.5
+   ]
+  },
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street01",
+   "indoor": false,
+   "pos": [
+    43.5,
+    10.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.003.b01",
+   "context": "stock",
+   "id": "ll.r00_lab_a_street.lot.003.b01.f0.STOCK.spawn",
+   "indoor": true,
+   "pos": [
+    63.5,
+    17.5
+   ]
+  },
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street00",
+   "indoor": false,
+   "pos": [
+    10.5,
+    11.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.006.b01",
+   "context": "garage",
+   "id": "ll.r00_lab_a_street.lot.006.b01.f0.GAR.spawn",
+   "indoor": true,
+   "pos": [
+    64.5,
+    44.5
+   ]
+  },
+  {
+   "context": "street",
+   "id": "ll.r00_lab_a_street.spawn.street05",
+   "indoor": false,
+   "pos": [
+    77.5,
+    19.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.004.b01",
+   "context": "living",
+   "id": "ll.r00_lab_a_street.lot.004.b01.f0.LIV.spawn",
+   "indoor": true,
+   "pos": [
+    17.5,
+    39.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.006.b01",
+   "context": "living",
+   "id": "ll.r00_lab_a_street.lot.006.b01.f0.R03.spawn",
+   "indoor": true,
+   "pos": [
+    60.5,
+    43.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.004.b01",
+   "context": "bedroom",
+   "id": "ll.r00_lab_a_street.lot.004.b01.f0.BED.spawn",
+   "indoor": true,
+   "pos": [
+    16.5,
+    45.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.005.b01",
+   "context": "living",
+   "id": "ll.r00_lab_a_street.lot.005.b01.f0.LIV.spawn",
+   "indoor": true,
+   "pos": [
+    33.5,
+    37.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.006.b01",
+   "context": "bedroom",
+   "id": "ll.r00_lab_a_street.lot.006.b01.f0.R04.spawn",
+   "indoor": true,
+   "pos": [
+    54.5,
+    45.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.001.b01",
+   "context": "living",
+   "id": "ll.r00_lab_a_street.lot.001.b01.f0.LIV.spawn",
+   "indoor": true,
+   "pos": [
+    30.5,
+    25.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.003.b01",
+   "context": "bay",
+   "id": "ll.r00_lab_a_street.lot.003.b01.f0.BAY.spawn",
+   "indoor": true,
+   "pos": [
+    68.5,
+    19.5
+   ]
+  },
+  {
+   "building_id": "ll.r00_lab_a_street.lot.001.b01",
+   "context": "garage",
+   "id": "ll.r00_lab_a_street.lot.001.b01.f0.GAR.spawn",
+   "indoor": true,
+   "pos": [
+    18.5,
+    19.5
+   ]
+  }
+ ],
+ "style": "suburban_detached",
+ "world_id": "ll.world.lab_a_street"
+}

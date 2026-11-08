@@ -1,0 +1,116 @@
+{
+ "checks": [
+  {
+   "check": "unique_ids",
+   "detail": "638 ids",
+   "ok": true
+  },
+  {
+   "check": "no_overlapping_parcels",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "parcels_clear_of_roads",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "parcels_inside_bounds",
+   "detail": "",
+   "ok": true
+  },
+  {
+   "check": "every_parcel_has_road_frontage",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "road_network_connected",
+   "detail": "6/6 intersections",
+   "ok": true
+  },
+  {
+   "check": "buildings_inside_parcels",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "no_overlapping_buildings",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "building_structure_world_space",
+   "detail": "",
+   "ok": true
+  },
+  {
+   "check": "spawn_walkable",
+   "detail": "(19, 48)",
+   "ok": true
+  },
+  {
+   "check": "building_entrances_reachable",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "all_ground_rooms_reachable_from_spawn",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "all_ground_furniture_and_containers_reachable",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "stairs_reachable_from_spawn",
+   "detail": "",
+   "ok": true
+  },
+  {
+   "check": "exterior_containers_reachable",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "no_walkable_pockets_in_streets_or_parcels",
+   "detail": "0 cells e.g. []",
+   "ok": true
+  },
+  {
+   "check": "terrain_adjacency_rules",
+   "detail": "",
+   "ok": true
+  },
+  {
+   "check": "no_invalid_cross_references",
+   "detail": "[]",
+   "ok": true
+  },
+  {
+   "check": "fits_single_scene_save_bounds",
+   "detail": "98x60 (limit 100)",
+   "ok": true
+  }
+ ],
+ "ok": true,
+ "schema": "last_light.worldgen.validation_report.v1",
+ "summary": {
+  "bounds": [
+   98,
+   60
+  ],
+  "buildings": 8,
+  "containers": 134,
+  "fences": 10,
+  "generator_version": "ll-worldgen-0.1.0",
+  "lots": 8,
+  "props": 255,
+  "roads": 5,
+  "rooms": 53
+ },
+ "world_id": "ll.world.w04_demo_suburb"
+}

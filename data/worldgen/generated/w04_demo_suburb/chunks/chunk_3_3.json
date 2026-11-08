@@ -1,0 +1,121 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     12
+    ]
+   ],
+   "seam": "saaaasgggggg____|saaaasgggggg____",
+   "sha256": "ac41faae7229ac9e"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "aaasgggggppggggg|aaasssssssssssss",
+   "sha256": "6a34a286264db4ce"
+  },
+  "south": {
+   "portals": [],
+   "seam": "________________|________________",
+   "sha256": "7d03b0b5e65253ae"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     12
+    ]
+   ],
+   "seam": "aaaaaagggggg____|aaaaaagggggg____",
+   "sha256": "2a54fd8d7fd2235d"
+  }
+ },
+ "buildings": [],
+ "chunk": [
+  3,
+  3
+ ],
+ "fences": [],
+ "neighbors": {
+  "east": [
+   4,
+   3
+  ],
+  "north": [
+   3,
+   2
+  ],
+  "south": null,
+  "west": [
+   2,
+   3
+  ]
+ },
+ "props": [
+  "ll.r00_demo_suburb.prop.0165",
+  "ll.r00_demo_suburb.prop.0166",
+  "ll.r00_demo_suburb.prop.0170",
+  "ll.r00_demo_suburb.prop.0171",
+  "ll.r00_demo_suburb.prop.0254"
+ ],
+ "rect": [
+  48,
+  48,
+  16,
+  12
+ ],
+ "roads": [
+  "ll.r00_demo_suburb.road.h1",
+  "ll.r00_demo_suburb.road.v1"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "aaasssssssssssss",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaasssssssssssss",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg"
+ ],
+ "transition_rows": [
+  "0000111110011111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "4444444444444444",
+  "1111111111111111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000"
+ ],
+ "world_id": "ll.world.w04_demo_suburb"
+}

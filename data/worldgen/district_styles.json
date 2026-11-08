@@ -1,0 +1,43 @@
+{
+  "schema": "last_light.worldgen.district_styles.v1",
+  "note": "Original district grammar profiles (District, Streets, Parcel & Location Composition Grammar V1 + 2026-11-08 addendum). Identity comes from road shape, lot size, density, condition and vegetation, never from recreating real or Project Zomboid town blocks.",
+  "styles": {
+    "suburban_detached": {
+      "display_name": "Newer detached suburb",
+      "zone": "residential",
+      "road_surface": "asphalt", "road_width": 4, "sidewalk_width": 1, "curbs": true,
+      "lot_width": [15, 17], "lot_depth": [17, 19], "front_setback": [2, 3], "side_margin": 1,
+      "blocks": [2, 1], "lots_per_row_hint": 2,
+      "zoning": {"house_small": 0.35, "house_two_storey": 0.35, "house_garage": 0.30},
+      "corner_zoning": {"convenience_store": 0.25, "house_small": 0.4, "house_garage": 0.35},
+      "fences": "side_and_back", "tree_density": 0.10, "bush_density": 0.05, "street_trees": true,
+      "parked_car_chance": 0.35, "materials": ["plaster_cream", "timber_siding", "plaster_sage"], "condition_bias": "occupied",
+      "edge_biome": "parkland"
+    },
+    "old_town_dense": {
+      "display_name": "Older compact neighborhood",
+      "zone": "mixed",
+      "road_surface": "asphalt", "road_width": 4, "sidewalk_width": 1, "curbs": true,
+      "lot_width": [14, 17], "lot_depth": [14, 16], "front_setback": [1, 1], "side_margin": 1,
+      "blocks": [2, 1], "lots_per_row_hint": 2,
+      "zoning": {"house_small": 0.45, "house_garage": 0.15, "convenience_store": 0.25, "workshop": 0.15},
+      "corner_zoning": {"convenience_store": 0.55, "workshop": 0.2, "house_small": 0.25},
+      "fences": "back_only", "tree_density": 0.03, "bush_density": 0.02, "street_trees": false,
+      "parked_car_chance": 0.55, "materials": ["brick_aged", "brick_red", "plaster_grey"], "condition_bias": "abandoned",
+      "edge_biome": "urban_lot"
+    },
+    "rural_edge": {
+      "display_name": "Rural roadside cluster",
+      "zone": "agricultural",
+      "road_surface": "gravel", "road_width": 4, "sidewalk_width": 0, "curbs": false,
+      "lot_width": [19, 23], "lot_depth": [17, 19], "front_setback": [3, 4], "side_margin": 2,
+      "blocks": [1, 1], "lots_per_row_hint": 2,
+      "zoning": {"house_garage": 0.4, "workshop": 0.3, "house_small": 0.3},
+      "corner_zoning": {"house_garage": 0.4, "workshop": 0.3, "house_small": 0.3},
+      "fences": "none", "tree_density": 0.06, "bush_density": 0.04, "street_trees": false,
+      "parked_car_chance": 0.5, "materials": ["timber_siding", "corrugated_metal", "plaster_cream"], "condition_bias": "abandoned",
+      "edge_biome": "farm_forest"
+    }
+  },
+  "edge_margin": 6
+}

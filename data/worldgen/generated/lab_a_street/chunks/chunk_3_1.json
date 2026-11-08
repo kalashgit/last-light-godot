@@ -1,0 +1,152 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbggggggg|bbbbbbbbbggggggg",
+   "sha256": "cbdd2bff72a0ee92"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbgggbbbb|bbbbbbbbbgggbbbb",
+   "sha256": "b8069a6a7aff1d9d"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "gggggggggggggggg|gggggggggggggggg",
+   "sha256": "7cb6a1ccd0223bef"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbbgggggg|bbbbbbbbbbgggggg",
+   "sha256": "b8f67d0f40d3c9f3"
+  }
+ },
+ "buildings": [
+  "ll.r00_lab_a_street.lot.002.b01",
+  "ll.r00_lab_a_street.lot.003.b01"
+ ],
+ "chunk": [
+  3,
+  1
+ ],
+ "fences": [
+  "ll.r00_lab_a_street.fence.001",
+  "ll.r00_lab_a_street.fence.005",
+  "ll.r00_lab_a_street.fence.006"
+ ],
+ "neighbors": {
+  "east": [
+   4,
+   1
+  ],
+  "north": [
+   3,
+   0
+  ],
+  "south": [
+   3,
+   2
+  ],
+  "west": [
+   2,
+   1
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0017",
+  "ll.r00_lab_a_street.prop.0018",
+  "ll.r00_lab_a_street.prop.0022",
+  "ll.r00_lab_a_street.prop.0026",
+  "ll.r00_lab_a_street.prop.0027",
+  "ll.r00_lab_a_street.prop.0028",
+  "ll.r00_lab_a_street.prop.0029",
+  "ll.r00_lab_a_street.prop.0031",
+  "ll.r00_lab_a_street.prop.0032",
+  "ll.r00_lab_a_street.prop.0034",
+  "ll.r00_lab_a_street.prop.0035",
+  "ll.r00_lab_a_street.prop.0036",
+  "ll.r00_lab_a_street.prop.0037",
+  "ll.r00_lab_a_street.prop.0041",
+  "ll.r00_lab_a_street.prop.0043",
+  "ll.r00_lab_a_street.prop.0094"
+ ],
+ "rect": [
+  48,
+  16,
+  16,
+  16
+ ],
+ "roads": [],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbgggbbbb",
+  "bbbbbbbbbggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg"
+ ],
+ "transition_rows": [
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "0000000028028000",
+  "000000002802c444",
+  "4444444468001111",
+  "1111111110000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

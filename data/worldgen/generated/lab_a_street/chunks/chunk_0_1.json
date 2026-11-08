@@ -1,0 +1,159 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ddddddgggggggggg|ddddddgggggggggg",
+   "sha256": "0eaaf6ffe315a149"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ogggggsaaaasgddd|ooggggsaaaasgddd",
+   "sha256": "77fa62250dfa89e2"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "oooooosaaaasgggg|oooooosaaaasgggg",
+   "sha256": "cbe9f30364deb09f"
+  },
+  "west": {
+   "portals": [],
+   "seam": "________________|oooooooooooooooo",
+   "sha256": "942a32d32fb1ee83"
+  }
+ },
+ "buildings": [],
+ "chunk": [
+  0,
+  1
+ ],
+ "fences": [
+  "ll.r00_lab_a_street.fence.001",
+  "ll.r00_lab_a_street.fence.002"
+ ],
+ "neighbors": {
+  "east": [
+   1,
+   1
+  ],
+  "north": [
+   0,
+   0
+  ],
+  "south": [
+   0,
+   2
+  ],
+  "west": null
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0003",
+  "ll.r00_lab_a_street.prop.0004",
+  "ll.r00_lab_a_street.prop.0008",
+  "ll.r00_lab_a_street.prop.0009",
+  "ll.r00_lab_a_street.prop.0015",
+  "ll.r00_lab_a_street.prop.0134",
+  "ll.r00_lab_a_street.prop.0135",
+  "ll.r00_lab_a_street.prop.0136",
+  "ll.r00_lab_a_street.prop.0137",
+  "ll.r00_lab_a_street.prop.0138",
+  "ll.r00_lab_a_street.prop.0139",
+  "ll.r00_lab_a_street.prop.0140",
+  "ll.r00_lab_a_street.prop.0141",
+  "ll.r00_lab_a_street.prop.0145",
+  "ll.r00_lab_a_street.prop.0146",
+  "ll.r00_lab_a_street.prop.0147",
+  "ll.r00_lab_a_street.prop.0148",
+  "ll.r00_lab_a_street.prop.0149",
+  "ll.r00_lab_a_street.prop.0150",
+  "ll.r00_lab_a_street.prop.0151",
+  "ll.r00_lab_a_street.prop.0153",
+  "ll.r00_lab_a_street.prop.0154",
+  "ll.r00_lab_a_street.prop.0156",
+  "ll.r00_lab_a_street.prop.0157",
+  "ll.r00_lab_a_street.prop.0158",
+  "ll.r00_lab_a_street.prop.0162",
+  "ll.r00_lab_a_street.prop.0163",
+  "ll.r00_lab_a_street.prop.0168",
+  "ll.r00_lab_a_street.prop.0169",
+  "ll.r00_lab_a_street.prop.0170",
+  "ll.r00_lab_a_street.prop.0171",
+  "ll.r00_lab_a_street.prop.0172",
+  "ll.r00_lab_a_street.prop.0272"
+ ],
+ "rect": [
+  0,
+  16,
+  16,
+  16
+ ],
+ "roads": [
+  "ll.r00_lab_a_street.road.v0"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "ooggggsaaaasgddd",
+  "ooggggsaaaasgddd",
+  "ooggggsaaaasgddd",
+  "ooogggsaaaasgddd",
+  "oooooosaaaasgddd",
+  "oooooosaaaasgddd",
+  "oooooosaaaasgggg",
+  "oooooosaaaasgggg",
+  "ooooogsaaaasgggg",
+  "ooooogsaaaasgggg",
+  "ooooogsaaaasgggg",
+  "oooooosaaaasgggg",
+  "oooooosaaaasgggg",
+  "oooooosaaaasgggg",
+  "oooooosaaaasgggg",
+  "oooooosaaaasgggg"
+ ],
+ "transition_rows": [
+  "000002800002a800",
+  "000002800002a800",
+  "000002800002a800",
+  "000002800002a800",
+  "000002800002a800",
+  "000002800002ac44",
+  "0000028000028111",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000",
+  "0000028000028000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

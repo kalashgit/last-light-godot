@@ -1,0 +1,120 @@
+{
+ "border": {
+  "east": {
+   "portals": [],
+   "seam": "________________|________________",
+   "sha256": "7d03b0b5e65253ae"
+  },
+  "north": {
+   "portals": [],
+   "seam": "________________|go______________",
+   "sha256": "38f3537c3eb47a6f"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     2
+    ]
+   ],
+   "seam": "oo______________|oo______________",
+   "sha256": "2d65c87ce3efd3f3"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggoooooooooooooo|gooooooooooooooo",
+   "sha256": "017a495a6b82d724"
+  }
+ },
+ "buildings": [],
+ "chunk": [
+  6,
+  0
+ ],
+ "fences": [],
+ "neighbors": {
+  "east": null,
+  "north": null,
+  "south": [
+   6,
+   1
+  ],
+  "west": [
+   5,
+   0
+  ]
+ },
+ "props": [
+  "ll.r00_demo_suburb.prop.0221",
+  "ll.r00_demo_suburb.prop.0222",
+  "ll.r00_demo_suburb.prop.0223",
+  "ll.r00_demo_suburb.prop.0224",
+  "ll.r00_demo_suburb.prop.0234",
+  "ll.r00_demo_suburb.prop.0235",
+  "ll.r00_demo_suburb.prop.0236"
+ ],
+ "rect": [
+  96,
+  0,
+  2,
+  16
+ ],
+ "roads": [],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "go",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo",
+  "oo"
+ ],
+ "transition_rows": [
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00",
+  "00"
+ ],
+ "world_id": "ll.world.w04_demo_suburb"
+}

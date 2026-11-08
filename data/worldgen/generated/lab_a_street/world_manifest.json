@@ -1,0 +1,588 @@
+{
+ "art_status": "factory sprites (original CC0) for furniture; procedural placeholders for terrain, structure, vegetation and vehicles",
+ "blueprint_sha256": "b7e0c4de111df992d917f8ad2ae0ec771282f41e0e20735831d78c9ba661ab0d",
+ "bounds": [
+  0,
+  0,
+  88,
+  62
+ ],
+ "buildings": [
+  {
+   "chunks": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.001.b01.json",
+   "footprint": [
+    [
+     21,
+     15,
+     14,
+     14
+    ],
+    [
+     17,
+     15,
+     4,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.001.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.001",
+   "program": "house_garage",
+   "sha256": "9a1e977ac1c58e53a7070400915862a83423e05a94db9fc49b40798e2758e05c",
+   "template": "lab_a:LAB-H03"
+  },
+  {
+   "chunks": [
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.002.b01.json",
+   "footprint": [
+    [
+     39,
+     14,
+     18,
+     12
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.002.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.002",
+   "program": "convenience_store",
+   "sha256": "f2913a754b09ee0e76c21751e5e36ef7aa5a8527fca284b86905a1e51f9c6d95",
+   "template": "lab_a:LAB-S01"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     4,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.003.b01.json",
+   "footprint": [
+    [
+     60,
+     15,
+     14,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.003.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.003",
+   "program": "workshop",
+   "sha256": "bba0806fc61ed921696102dbe8822ca8d920993892d848a215dd239bdb1ad1be",
+   "template": "lab_a:LAB-W01"
+  },
+  {
+   "chunks": [
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.004.b01.json",
+   "footprint": [
+    [
+     14,
+     37,
+     12,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.004.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.004",
+   "program": "house_small",
+   "sha256": "928814dc268dbf5343ca002d9abc0fecce17febafd101a7261173c91474d03e7",
+   "template": "lab_a:LAB-H01"
+  },
+  {
+   "chunks": [
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.005.b01.json",
+   "footprint": [
+    [
+     30,
+     35,
+     16,
+     12
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.005.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.005",
+   "program": "house_two_storey",
+   "sha256": "9469ec3b11995cf135713cd3ac7721c997da76b6041ec855c6c810e3211205fe",
+   "template": "lab_a:LAB-H02"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     2
+    ],
+    [
+     4,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.006.b01.json",
+   "footprint": [
+    [
+     53,
+     37,
+     10,
+     11
+    ],
+    [
+     63,
+     42,
+     5,
+     6
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.006.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.006",
+   "program": "house_garage",
+   "sha256": "f03d0ec937702f172e6ef7352e816118a900902da3caa847d03785512ea7ae39",
+   "template": "proc:house_garage"
+  }
+ ],
+ "chunk_grid": [
+  6,
+  4
+ ],
+ "chunk_size": 16,
+ "chunks": [
+  {
+   "chunk": [
+    0,
+    0
+   ],
+   "file": "chunks/chunk_0_0.json",
+   "rect": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "sha256": "b0128f868582849432ccc66467e6b6dad94fbcf6b153700a2924696da35cc4f4"
+  },
+  {
+   "chunk": [
+    1,
+    0
+   ],
+   "file": "chunks/chunk_1_0.json",
+   "rect": [
+    16,
+    0,
+    16,
+    16
+   ],
+   "sha256": "d6013d732d956604e30c8f01c4e52e3041ba6cd9be981f2ff94822e28a4dbff4"
+  },
+  {
+   "chunk": [
+    2,
+    0
+   ],
+   "file": "chunks/chunk_2_0.json",
+   "rect": [
+    32,
+    0,
+    16,
+    16
+   ],
+   "sha256": "03f76975f9151b77a67e3f29e8f14d7a04e67b2f218f530c8cb68f46c000541e"
+  },
+  {
+   "chunk": [
+    3,
+    0
+   ],
+   "file": "chunks/chunk_3_0.json",
+   "rect": [
+    48,
+    0,
+    16,
+    16
+   ],
+   "sha256": "7fa2a3088c0c67a8612fbc8447e338a32daa8bde9c5e85aeff0f1167c84e043e"
+  },
+  {
+   "chunk": [
+    4,
+    0
+   ],
+   "file": "chunks/chunk_4_0.json",
+   "rect": [
+    64,
+    0,
+    16,
+    16
+   ],
+   "sha256": "29e0c8dbff7d9909ed41afab82118aa6cc2d07ecf892df78b3cef3be5c3cdcad"
+  },
+  {
+   "chunk": [
+    5,
+    0
+   ],
+   "file": "chunks/chunk_5_0.json",
+   "rect": [
+    80,
+    0,
+    8,
+    16
+   ],
+   "sha256": "101b8fe6392a68d512080c43e4b09cc5b694da18678901cf4d42a7d2aefa0eac"
+  },
+  {
+   "chunk": [
+    0,
+    1
+   ],
+   "file": "chunks/chunk_0_1.json",
+   "rect": [
+    0,
+    16,
+    16,
+    16
+   ],
+   "sha256": "c0874500e37185079d58c0455e62b2f1cfecbf539d20733cc423f98e6f5e7e23"
+  },
+  {
+   "chunk": [
+    1,
+    1
+   ],
+   "file": "chunks/chunk_1_1.json",
+   "rect": [
+    16,
+    16,
+    16,
+    16
+   ],
+   "sha256": "bf7abed4da3003bb9ed2083003b404f5f0b5d7513ddee740af3e0535e94f0d20"
+  },
+  {
+   "chunk": [
+    2,
+    1
+   ],
+   "file": "chunks/chunk_2_1.json",
+   "rect": [
+    32,
+    16,
+    16,
+    16
+   ],
+   "sha256": "9ad8ae50a472c9a5737c44cd07f5b88791341ef4cd83cdc322a6c66305c9ab7a"
+  },
+  {
+   "chunk": [
+    3,
+    1
+   ],
+   "file": "chunks/chunk_3_1.json",
+   "rect": [
+    48,
+    16,
+    16,
+    16
+   ],
+   "sha256": "0b9334aa501b1db8e94f444420dd616e48e977a462603773def02f3740d4cc35"
+  },
+  {
+   "chunk": [
+    4,
+    1
+   ],
+   "file": "chunks/chunk_4_1.json",
+   "rect": [
+    64,
+    16,
+    16,
+    16
+   ],
+   "sha256": "bf03c926c1a4de6c1dac37b093573dc8580233b706c74b510c19810ced187665"
+  },
+  {
+   "chunk": [
+    5,
+    1
+   ],
+   "file": "chunks/chunk_5_1.json",
+   "rect": [
+    80,
+    16,
+    8,
+    16
+   ],
+   "sha256": "bba714cf4ee8b549fdcf682078df9bb88c05a5ca06ad69d9e65dc77ee82c6f71"
+  },
+  {
+   "chunk": [
+    0,
+    2
+   ],
+   "file": "chunks/chunk_0_2.json",
+   "rect": [
+    0,
+    32,
+    16,
+    16
+   ],
+   "sha256": "dacee0fac506171579581c3e08b8499b37ae4abb79e9cacb78d5e32725334f09"
+  },
+  {
+   "chunk": [
+    1,
+    2
+   ],
+   "file": "chunks/chunk_1_2.json",
+   "rect": [
+    16,
+    32,
+    16,
+    16
+   ],
+   "sha256": "bfefc6a224ab69e91fa2ed4b61aed0865bc950dab0840544ca696ad750977407"
+  },
+  {
+   "chunk": [
+    2,
+    2
+   ],
+   "file": "chunks/chunk_2_2.json",
+   "rect": [
+    32,
+    32,
+    16,
+    16
+   ],
+   "sha256": "f57c4f54690acae51c8d394e02cd3a2f4e11f5ef1112779969cf1690bcbaf099"
+  },
+  {
+   "chunk": [
+    3,
+    2
+   ],
+   "file": "chunks/chunk_3_2.json",
+   "rect": [
+    48,
+    32,
+    16,
+    16
+   ],
+   "sha256": "847feeabe583937a16f0271a969d60d0f62677b3cede7bb717df5b31896a32a6"
+  },
+  {
+   "chunk": [
+    4,
+    2
+   ],
+   "file": "chunks/chunk_4_2.json",
+   "rect": [
+    64,
+    32,
+    16,
+    16
+   ],
+   "sha256": "19f041d633b45d30aa1c14d6a5e93efd43c662659818c2d357ef8387b7e8120f"
+  },
+  {
+   "chunk": [
+    5,
+    2
+   ],
+   "file": "chunks/chunk_5_2.json",
+   "rect": [
+    80,
+    32,
+    8,
+    16
+   ],
+   "sha256": "084cca4b59dff0c80ff58ce2f2a1c4945df2a29c23ba1b720e455f63a211570b"
+  },
+  {
+   "chunk": [
+    0,
+    3
+   ],
+   "file": "chunks/chunk_0_3.json",
+   "rect": [
+    0,
+    48,
+    16,
+    14
+   ],
+   "sha256": "003f933385ce70103d9555c34746ccc153a3f1ea758f5276489594f0c220f55f"
+  },
+  {
+   "chunk": [
+    1,
+    3
+   ],
+   "file": "chunks/chunk_1_3.json",
+   "rect": [
+    16,
+    48,
+    16,
+    14
+   ],
+   "sha256": "7ad1926f87d5926c96cb37ce7275d5c2f35bea831489aa8aba56e69513737ed0"
+  },
+  {
+   "chunk": [
+    2,
+    3
+   ],
+   "file": "chunks/chunk_2_3.json",
+   "rect": [
+    32,
+    48,
+    16,
+    14
+   ],
+   "sha256": "1cce9abaa771588bf8c3d809de3c87a6d6f7edc672254f856332127d9bfb9faf"
+  },
+  {
+   "chunk": [
+    3,
+    3
+   ],
+   "file": "chunks/chunk_3_3.json",
+   "rect": [
+    48,
+    48,
+    16,
+    14
+   ],
+   "sha256": "28c4bd18f942f02846eba65fc6f219e01588982307f4ccec0e5dc1a6549d305d"
+  },
+  {
+   "chunk": [
+    4,
+    3
+   ],
+   "file": "chunks/chunk_4_3.json",
+   "rect": [
+    64,
+    48,
+    16,
+    14
+   ],
+   "sha256": "2df4ce5abf92183c39a877f939e7d0a420a687c1754f43187cb995162e355227"
+  },
+  {
+   "chunk": [
+    5,
+    3
+   ],
+   "file": "chunks/chunk_5_3.json",
+   "rect": [
+    80,
+    48,
+    8,
+    14
+   ],
+   "sha256": "2a929caa94e83d9ea746d3480c9eba67715aef9e3a0e03b19e8fec3cede8c359"
+  }
+ ],
+ "continent": {
+  "id": "ll.continent.c00",
+  "note": "Continental layer is specified in docs/worldgen; not generated yet.",
+  "status": "design_only"
+ },
+ "district": {
+  "district_id": "ll.r00.lab_a_street",
+  "file": "district_r00_lab_a_street.json",
+  "sha256": "e2bbaa19c149285d873d68064d019c8ed0e6905a15743af9c3959e60b8ae29ab",
+  "style": "suburban_detached"
+ },
+ "generator_version": "ll-worldgen-0.1.0",
+ "name": "LAB A frozen five-building street",
+ "playable_single_scene": true,
+ "region": {
+  "file": "region_spec.json",
+  "region_id": "ll.region.r00",
+  "sha256": "dec7d88a33f04be06b960e38422ac00c3c267b7e8ee3b39f4aab2a5b726e37ce"
+ },
+ "save_contract": {
+  "blueprint": "Immutable. Runtime copies the manifest set to user:// on first load and never regenerates a visited world.",
+  "delta_keys": [
+   "doors[door_id].open",
+   "doors[door_id].health",
+   "containers[item_id].searched",
+   "player",
+   "enemies",
+   "drops"
+  ],
+  "identity_check": "save delta stores world_id + generator_version + blueprint_sha256 and refuses to apply to a different blueprint"
+ },
+ "schema": "last_light.worldgen.world_manifest.v1",
+ "seed_salt": "llwg.layout.v1",
+ "spawn": [
+  19.5,
+  50.5
+ ],
+ "tile_units": "1 logical tile = 1 gameplay unit = 80x40 px at 2:1 isometric",
+ "validation_ok": true,
+ "world_id": "ll.world.lab_a_street",
+ "world_seed": 20261107
+}

@@ -1,0 +1,17 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.lab_a_street",
+ "name": "LAB A frozen five-building street",
+ "world_seed": 20261107,
+ "style": "suburban_detached",
+ "district_id": "ll.r00.lab_a_street",
+ "blocks": [1, 1],
+ "lots_per_row": 3,
+ "lot_depth": 19,
+ "lot_widths": {"0,0,n": [25, 22, 17], "0,0,s": [16, 20, 28]},
+ "lot_overrides": {
+  "1": {"fixture": "LAB-H03"}, "2": {"fixture": "LAB-S01"}, "3": {"fixture": "LAB-W01"},
+  "4": {"fixture": "LAB-H01"}, "5": {"fixture": "LAB-H02"}, "6": {"program": "house_garage"}
+ },
+ "notes": "Frozen LAB A buildings on one block. Lot 6 is a procedural variant beside the fixtures."
+}

@@ -1,0 +1,142 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbbgggggg|bbbbbbbbbbgggggg",
+   "sha256": "b8f67d0f40d3c9f3"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbggggbbbbbbbb|bbbbggggbbbbbbbb",
+   "sha256": "341d922a2f2cd59a"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "gggggggggggggggg|gggggggggggggggg",
+   "sha256": "7cb6a1ccd0223bef"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbggggggg|bbbbbbbbbggggggg",
+   "sha256": "cbdd2bff72a0ee92"
+  }
+ },
+ "buildings": [
+  "ll.r00_demo_suburb.lot.003.b01",
+  "ll.r00_demo_suburb.lot.004.b01"
+ ],
+ "chunk": [
+  4,
+  1
+ ],
+ "fences": [
+  "ll.r00_demo_suburb.fence.002",
+  "ll.r00_demo_suburb.fence.008",
+  "ll.r00_demo_suburb.fence.009"
+ ],
+ "neighbors": {
+  "east": [
+   5,
+   1
+  ],
+  "north": [
+   4,
+   0
+  ],
+  "south": [
+   4,
+   2
+  ],
+  "west": [
+   3,
+   1
+  ]
+ },
+ "props": [
+  "ll.r00_demo_suburb.prop.0040",
+  "ll.r00_demo_suburb.prop.0042",
+  "ll.r00_demo_suburb.prop.0043",
+  "ll.r00_demo_suburb.prop.0046",
+  "ll.r00_demo_suburb.prop.0048",
+  "ll.r00_demo_suburb.prop.0058"
+ ],
+ "rect": [
+  64,
+  16,
+  16,
+  16
+ ],
+ "roads": [],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "bbbbggggbbbbbbbb",
+  "ggggggggbbbbbbbb",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg"
+ ],
+ "transition_rows": [
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "0002800280000000",
+  "4446800280000000",
+  "11110002c4444444",
+  "0000000011111111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000"
+ ],
+ "world_id": "ll.world.w04_demo_suburb"
+}

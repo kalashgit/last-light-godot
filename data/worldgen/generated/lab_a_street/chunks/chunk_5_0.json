@@ -1,0 +1,134 @@
+{
+ "border": {
+  "east": {
+   "portals": [],
+   "seam": "________________|________________",
+   "sha256": "7d03b0b5e65253ae"
+  },
+  "north": {
+   "portals": [],
+   "seam": "________________|oooooooo________",
+   "sha256": "e9c46e5fdeb21add"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     8
+    ]
+   ],
+   "seam": "asgggggg________|asgggggg________",
+   "sha256": "7b746cbd112e0f03"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggggggaaaaaaaaaa|ogggggaaaaaaaaaa",
+   "sha256": "6718635a36564472"
+  }
+ },
+ "buildings": [],
+ "chunk": [
+  5,
+  0
+ ],
+ "fences": [],
+ "neighbors": {
+  "east": null,
+  "north": null,
+  "south": [
+   5,
+   1
+  ],
+  "west": [
+   4,
+   0
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0220",
+  "ll.r00_lab_a_street.prop.0224",
+  "ll.r00_lab_a_street.prop.0225",
+  "ll.r00_lab_a_street.prop.0226",
+  "ll.r00_lab_a_street.prop.0231",
+  "ll.r00_lab_a_street.prop.0232",
+  "ll.r00_lab_a_street.prop.0239",
+  "ll.r00_lab_a_street.prop.0240",
+  "ll.r00_lab_a_street.prop.0241",
+  "ll.r00_lab_a_street.prop.0242",
+  "ll.r00_lab_a_street.prop.0248",
+  "ll.r00_lab_a_street.prop.0249",
+  "ll.r00_lab_a_street.prop.0254",
+  "ll.r00_lab_a_street.prop.0255",
+  "ll.r00_lab_a_street.prop.0256",
+  "ll.r00_lab_a_street.prop.0259",
+  "ll.r00_lab_a_street.prop.0260",
+  "ll.r00_lab_a_street.prop.0261"
+ ],
+ "rect": [
+  80,
+  0,
+  8,
+  16
+ ],
+ "roads": [
+  "ll.r00_lab_a_street.road.h0",
+  "ll.r00_lab_a_street.road.v1"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "oooooooo",
+  "gooooooo",
+  "ggoooooo",
+  "ggoooooo",
+  "gggooooo",
+  "gggooooo",
+  "asoooooo",
+  "aaogggoo",
+  "aagggggo",
+  "aagggggg",
+  "aagggggg",
+  "asgggggg",
+  "asgggggg",
+  "asgggggg",
+  "asgggggg",
+  "asgggggg"
+ ],
+ "transition_rows": [
+  "00000000",
+  "00000000",
+  "00000000",
+  "00000000",
+  "00000000",
+  "44000000",
+  "13800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000",
+  "02800000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}
