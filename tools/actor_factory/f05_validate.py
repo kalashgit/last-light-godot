@@ -67,7 +67,7 @@ def validate(directory):
     png = directory / "calibration.png"
     if png.is_file():
         raw = png.read_bytes()
-        if raw[:8] != b"\\x89PNG\\r\\n\\x1a\\n":
+        if raw[:8] != bytes((137, 80, 78, 71, 13, 10, 26, 10)):
             errors.append("Calibration render is not a PNG")
         elif len(raw) >= 26:
             width, height, depth, color_type = struct.unpack(">IIBB", raw[16:26])
