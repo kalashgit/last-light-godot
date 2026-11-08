@@ -39,3 +39,12 @@ run_checked --headless --path . --script tests/world_art.gd
 run_checked --headless --path . --script tests/integration_hud.gd
 run_checked --headless --path . --script tests/lab_neighborhood.gd
 run_checked --headless --path . --quit-after 120 res://lab.tscn
+# V2 asset intake gate (synthetic packages; needs python3 to build them).
+if command -v python3 >/dev/null; then
+ intake_dir="$qa_data/intake_v2"
+ python3 tools/intake_v2/make_test_packages.py "$intake_dir"
+ LL_INTAKE_DIR="$intake_dir" run_checked --headless --path . --script tests/asset_intake_v2.gd
+ python3 tests/intake_v2_crosscheck.py "$intake_dir"
+else
+ echo "INTAKE V2: SKIPPED (python3 unavailable)"
+fi

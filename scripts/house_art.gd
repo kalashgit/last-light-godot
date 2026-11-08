@@ -5,6 +5,8 @@ const HOME := Rect2(0, 0, 9, 8)
 const FACTORY := "res://assets/generated/factory/"
 const TerrainMesh := preload("res://scripts/terrain_mesh.gd")
 const WorldArt := preload("res://scripts/world_art.gd")
+const AssetIntakeV2 := preload("res://scripts/asset_intake_v2.gd")
+var intake_reports: Array = []
 var world_art := WorldArt.new()
 var terrain: ArrayMesh
 var layout: Dictionary = {}
@@ -40,6 +42,9 @@ func setup(game) -> void:
  assert(int(manifest.tile_px[0]) == 80 and int(manifest.tile_px[1]) == 40, "House projection must remain 80x40")
  for definition in manifest.objects:
   catalog[definition.id] = definition
+ # V2 intake: only exact-package W09 + founder-approved F12 sprites override factory sprites.
+ # assets/approved_v2/ does not exist yet, so this is a no-op until a package is approved.
+ intake_reports = AssetIntakeV2.install_approved(self)
  placed.clear()
  decorations.clear()
  for entry in layout.furniture:
