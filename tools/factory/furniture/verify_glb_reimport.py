@@ -23,10 +23,16 @@ def main():
         bpy.ops.object.delete(use_global=False)
         bpy.ops.import_scene.gltf(filepath=str(path))
         mesh=[o for o in bpy.context.scene.objects if o.type=="MESH"]
+        hinges=[o for o in bpy.context.scene.objects if "hinge_local.main_door" in o.name]
+        actions=list(bpy.data.actions)
         verts=sum(len(o.data.vertices) for o in mesh)
         assert mesh and verts>50,(path,verts)
         assert all(o.dimensions.length>0 for o in mesh),(path,"empty object")
+        if "refrigerator_v6" in str(path):
+            assert hinges,(path,"hinge pivot not imported")
+            assert actions,(path,"hinge action not imported")
         reports.append({"file":path.name,"mesh_count":len(mesh),"vertex_count":verts,
+                        "hinge_pivot_count":len(hinges),"imported_action_count":len(actions),
                         "status":"GLB_REIMPORT_GEOMETRY_PASS"})
     print("F01_GLTF_REIMPORT_PASS",json.dumps(reports),flush=True)
 
