@@ -33,7 +33,8 @@ python tests/terrain_factory_v1.py
 blender -b --factory-startup -t 2 --python tools/terrain_factory/build.py -- \
   --out build/terrain_v1 --limit 12 --samples 8
 python tools/terrain_factory/qa.py --sources build/terrain_v1 \
-  --expected 12 --sheet build/terrain_v1/terrain_2_5d_review.png
+  --expected 12 --sheet build/terrain_v1/terrain_2_5d_review.png \
+  --seam-sheet build/terrain_v1/terrain_4x4_seam_review.png
 ```
 
 The `--limit` can be raised to 106 after founder review and resource profiling.
