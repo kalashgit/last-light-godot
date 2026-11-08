@@ -1,0 +1,120 @@
+name: LAST LIGHT Full Fidelity Geometry Refinement V2
+on:
+  push:
+    branches:
+      - codex/last-light-full-fidelity-refinement-v2-20261108
+    paths:
+      - "tools/geometry_first/**"
+      - "tests/refinement_contract_v2.py"
+      - ".github/workflows/full-fidelity-refinement-v2.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  original-source-geometry-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify all-360 transferable refinement specification
+        run: |
+          python tests/refinement_contract_v2.py
+          mkdir -p build/refinement_v2
+          python tools/geometry_first/plan.py --asset-ids ll_master_vehicle_compact_hatchback,ll_master_vehicle_city_sedan,ll_tools_awl,ll_tools_cross_screwdriver,ll_tools_flat_screwdriver,ll_tools_crowbar --output build/refinement_v2/plan.json
+      - name: Install Blender and PNG verification tools
+        run: |
+          python -m pip install "Pillow>=10,<15"
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+      - name: Reconstruct BASELINE V1 3D geometry without overwriting original archive
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/baseline_models --max-jobs 6 --preview-every 1 --refinement-profile v1 2>&1 | tee build/refinement_v2/baseline.log
+          grep -q 'LL_GEOMETRY_BATCH_PASS 6 6' build/refinement_v2/baseline.log
+      - name: Build 6 genuine V2 geometry refineries with versioned source recipes
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/refined_models --max-jobs 6 --preview-every 1 --refinement-profile v2 2>&1 | tee build/refinement_v2/refined.log
+          grep -q 'LL_GEOMETRY_BATCH_PASS 6 6' build/refinement_v2/refined.log
+      - name: Reopen Blender files and assert actual new roof panes and tool shaft geometry
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/verify_refinement_v2.py -- --sources build/refinement_v2/refined_models --asset-ids ll_master_vehicle_compact_hatchback,ll_master_vehicle_city_sedan,ll_tools_awl,ll_tools_cross_screwdriver,ll_tools_flat_screwdriver,ll_tools_crowbar 2>&1 | tee build/refinement_v2/blender_inspection.log
+          grep -q 'LL_REFINEMENT_BLENDER_ALL_PASS 6' build/refinement_v2/blender_inspection.log
+      - name: Compare before versus after and package editable mesh files
+        run: |
+          python tools/geometry_first/qa.py --sources build/refinement_v2/refined_models --expected 6 --sheet build/refinement_v2/refined_geometry_sheet.png --zip build/refinement_v2/Last_Light_Refined_3D_Masters_V2_First_Six.zip
+          python tools/geometry_first/compare_v2.py --baseline build/refinement_v2/baseline_models --refined build/refinement_v2/refined_models --expected 6 --out build/refinement_v2/before_after_geometry.png --report build/refinement_v2/refined_report.json
+          python tools/geometry_first/refinement_ledger_v2.py --refined-report build/refinement_v2/refined_report.json --out build/refinement_v2/geometry_refinement_ledger_v2.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("build/refinement_v2")
+          x=json.loads((root/"geometry_refinement_ledger_v2.json").read_text())
+          assert x["counts"]["source_models"]==360
+          assert x["counts"]["refined_geometry_verified"]==6
+          assert x["counts"]["remaining_refinements"]==354
+          assert x["counts"]["golden_visual_approved"]==0
+          print("LL_REFINEMENT_COVERAGE_QA_PASS 6 of 360 geometries, 0 Golden approvals")
+          PY
+      - name: Render real updated 3D models back into fixed camera 2.5D
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/stage2_render.py -- --sources build/refinement_v2/refined_models --output build/refinement_v2/isometric --asset-ids ll_master_vehicle_compact_hatchback,ll_tools_awl,ll_tools_crowbar --samples 8 2>&1 | tee build/refinement_v2/isometric.log
+          grep -q 'LL_SOURCE_TO_2_5D_PASS 6' build/refinement_v2/isometric.log
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          root=Path("build/refinement_v2/isometric")
+          frames=json.loads((root/"render_report.json").read_text())["frames"]
+          assert len(frames)==6
+          dst=Image.new("RGB",(750,564),(55,57,53))
+          pen=ImageDraw.Draw(dst)
+          for i,frame in enumerate(frames):
+              img=Image.open(root/frame["path"]).convert("RGBA")
+              assert img.getchannel("A").getbbox()
+              img.thumbnail((238,238))
+              background=Image.new("RGBA",(244,245),(87,91,88,255))
+              background.alpha_composite(img,((244-img.width)//2,(245-img.height)//2))
+              x=i%3*250;y=i//3*282
+              dst.paste(background.convert("RGB"),(x+3,y+3))
+              pen.text((x+3,y+255),frame["asset_id"][:30],fill=(230,231,222))
+          dst.save("build/refinement_v2/2_5d_render_review.png")
+          print("LL_REFINED_ISO_REPLAY_QA_PASS 6")
+          PY
+      - name: Publish evidence and exact census accounting on isolated branch
+        run: |
+          set -euo pipefail
+          mkdir -p preview/geometry-refinement-v2
+          cp build/refinement_v2/before_after_geometry.png preview/geometry-refinement-v2/
+          cp build/refinement_v2/refined_geometry_sheet.png preview/geometry-refinement-v2/
+          cp build/refinement_v2/2_5d_render_review.png preview/geometry-refinement-v2/
+          cp build/refinement_v2/refined_report.json preview/geometry-refinement-v2/
+          cp build/refinement_v2/geometry_refinement_ledger_v2.json assets/master_library/geometry_refinement_ledger_v2.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/geometry-refinement-v2 assets/master_library/geometry_refinement_ledger_v2.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish V2 geometry correction models, 360 coverage ledger and comparison"
+            for retry in 1 2 3; do
+              git fetch origin codex/last-light-full-fidelity-refinement-v2-20261108
+              git rebase origin/codex/last-light-full-fidelity-refinement-v2-20261108
+              if git push origin HEAD:codex/last-light-full-fidelity-refinement-v2-20261108; then exit 0; fi
+            done
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-v2-source-refinement-six-models-and-2_5d
+          path: |
+            build/refinement_v2/Last_Light_Refined_3D_Masters_V2_First_Six.zip
+            build/refinement_v2/*.png
+            build/refinement_v2/*.json
+            build/refinement_v2/*.log
+            build/refinement_v2/isometric
+          retention-days: 30
+          if-no-files-found: error
