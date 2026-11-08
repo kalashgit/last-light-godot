@@ -102,5 +102,14 @@ class CalibrationOutputs(unittest.TestCase):
         self.assertEqual(report["glb_animation_clips"],1)
         self.assertTrue(report["glb_hinge_pivot_exported"])
 
+    def test_isolated_godot_fixture_is_ready_but_not_executed(self):
+        fixture=Path(__file__).resolve().parent/"godot_fixture"
+        self.assertTrue((fixture/"project.godot").is_file())
+        self.assertTrue((fixture/"main.tscn").is_file())
+        source=(fixture/"verify_import.gd").read_text()
+        self.assertIn("F01_GODOT_GLTF_IMPORT_PASS",source)
+        self.assertIn("AnimationPlayer",source)
+        self.assertFalse((fixture/"model.glb").exists(),"fixture source must not be committed as final game asset")
+
 
 if __name__=="__main__":unittest.main()
