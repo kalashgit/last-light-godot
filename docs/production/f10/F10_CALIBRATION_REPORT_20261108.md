@@ -43,3 +43,12 @@ No merges, deployment, Godot scene or save changes were made.
 - `tests/factory/vehicles/test_f10_pilot.py` checks 16 heading order and angle, fixed anchor, Blender and GLB source presence, RGBA atlas-alpha equivalence after pixel refinement, every frame and atlas SHA-256. **2/2 pilot jobs PASS**.
 - Visual improvement: wheels no longer float outside the side body, and the bonnet/deck now read as continuous forms across headings. **Still not Golden-approved**: fender depth, original headlamp/grille detailing, material finish, hatchback-vs-sedan differentiation, doors and hinges need further work.
 - No verified A00 IDs have been supplied. Neither candidate can be admitted to the canonical fleet or game release by this technical audit.
+
+## Third refinement — 2026-11-09
+
+- Separated hatchback and sedan rear volume more explicitly: hatchback rear roof and liftgate glass move toward the tail and have a rear wiper, top weatherstrip and upright lamp modules; sedan retains a recessed rear window and horizontal boot-lid seam.
+- Added original unbranded fascia recipe: shallow headlamps, narrow three-slat front grille, lower cooling aperture, rear registration recess, bonnet shutlines and restrained corner indicators. No marque badges or proprietary reference art.
+- Blender geometry regression **12/12 PASS**; another **32/32** directional pilot render completed at eight Cycles samples per view and both fixed-anchor atlases packed.
+- Technical artifact auditor **2/2 PASS**, including actual editable `.blend`, GLB, RGBA alpha, full heading array and atlas SHA.
+- Added `tools/vehicle_factory/fleet_sockets.py` with **22 art-only proposed sockets per car** for axle and wheel hubs, door hinges/access, hood, trunk, fuel, engine, seat and cargo. The proposal explicitly reports `NO_VALIDATED_PANEL_RIG` and requires W01/W05/W07/W09 acceptance.
+- Visual inspection: stronger hatchback versus sedan distinction and clearer front/rear lighting. Remaining defects include faceted shell profile, generic wheel arch depth, insufficient door thickness and interior cavities, and a material finish still well short of Golden 40. **Visual quality gate remains FAIL/pending founder review**, no scaled fleet run authorized.
