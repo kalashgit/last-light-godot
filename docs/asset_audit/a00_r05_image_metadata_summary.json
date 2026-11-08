@@ -1,0 +1,9 @@
+{
+  "requested": 6072,
+  "resolved": 6072,
+  "missing_from_source": 0,
+  "api_failed_batches": [],
+  "distinct_remote_sha1": 6071,
+  "image_records": 6072,
+  "scope": "remote image metadata only; not visual semantic verification or rights clearance"
+}
