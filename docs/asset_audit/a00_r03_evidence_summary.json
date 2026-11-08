@@ -1,0 +1,24 @@
+{
+  "schema": "A00_R03_EVIDENCE_QUEUE_V1",
+  "source_references": 6072,
+  "provisional_groups": 5173,
+  "decisions": {
+    "ANIMATION_REFERENCE": 25,
+    "APPEARANCE_VARIANT": 342,
+    "MODEL_VIEW_OF_PARENT": 64,
+    "NEEDS_VISUAL_EVIDENCE": 1051,
+    "NON_PHYSICAL_RESEARCH": 226,
+    "PHYSICAL_MASTER_CANDIDATE": 3114,
+    "RESEARCH_COMPOSITE": 225,
+    "STATE_OF_PARENT": 98,
+    "TILE_OR_ATLAS_COMPONENT": 927
+  },
+  "groups_with_model_links": 45,
+  "groups_with_canonical_links": 18,
+  "groups_with_conflicting_master_ids": 0,
+  "groups_with_role_collisions": 0,
+  "not_individually_verified": 6072,
+  "newly_admitted_masters": 0,
+  "queue_sha256": "f3c498b1f7f584ef4bcac220e0a1dfbf9568f835210ba543f97306fccb90bb68",
+  "review_policy": "Only visual/source/gameplay/rights/registry corroboration can resolve a group; do not auto-approve."
+}
