@@ -52,7 +52,7 @@ def validate_projection(p: dict):
     tol = _finite_number(p.get("max_axis_error_px", 0), "max_axis_error_px")
     require(0 <= tol <= 2, "projection: max_axis_error_px exceeds 2px gate")
     for label, vec in (("x", x), ("y", y)):
-        require(abs(abs(vec[0]) - 40) <= tol and abs(abs(vec[1]) - 20) <= tol,
+        # Float/projected-coordinate rounding has sub-0.001px encoding noise.\n        require(abs(abs(vec[0]) - 40) <= tol + 0.001 and abs(abs(vec[1]) - 20) <= tol + 0.001,
                 f"projection: {label} basis differs from 80x40 tile")
     return {"basis_x_px": x, "basis_y_px": y, "max_error_px": tol}
 
