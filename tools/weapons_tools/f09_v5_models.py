@@ -4,8 +4,49 @@ Large mechanically meaningful shapes first; no surface-confetti detail.
 All sizes are in meters, constructed through the editable V3 mesh primitives.
 """
 import math
+import bpy
 
 TARGETS = frozenset({"saw", "wrench", "ratchet"})
+
+def shaped_wooden_d_handle(material, z=.040):
+    """Solid beveled wooden grip with a genuine through-hole, not tube sections."""
+    outer=[(-.090,-.181),(-.077,-.228),(-.054,-.245),(-.008,-.243),
+           (.030,-.221),(.043,-.184),(.035,-.153),(.013,-.131),
+           (-.032,-.118),(-.070,-.136)]
+    inner=[(-.064,-.182),(-.054,-.210),(-.042,-.219),(-.010,-.218),
+           (.011,-.204),(.018,-.181),(.008,-.164),(-.006,-.155),
+           (-.030,-.147),(-.052,-.157)]
+    n=len(outer)
+    top=z+.011;bot=z-.011
+    verts=([(x,y,top) for x,y in outer]+
+           [(x,y,top) for x,y in inner]+
+           [(x,y,bot) for x,y in outer]+
+           [(x,y,bot) for x,y in inner])
+    faces=[]
+    for i in range(n):
+        j=(i+1)%n
+        faces.extend([(i,j,n+j,n+i),
+                      (2*n+j,2*n+i,3*n+i,3*n+j),
+                      (j,i,2*n+i,2*n+j),
+                      (n+i,n+j,3*n+j,3*n+i)])
+    mesh=bpy.data.meshes.new("F09 contiguous D-grip with real aperture")
+    mesh.from_pydata(verts,[],faces)
+    mesh.update()
+    ob=bpy.data.objects.new("LL TOOL | V9 solid wooden D grip with cutout",mesh)
+    bpy.context.collection.objects.link(ob)
+    mesh.materials.append(material)
+    uv=mesh.uv_layers.new(name="F09_HARDWOOD_FACE_UV")
+    for poly in mesh.polygons:
+        for loop_index in poly.loop_indices:
+            co=mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            uv.data[loop_index].uv=(co.x*5+.5,co.y*5+1.0)
+    bevel=ob.modifiers.new("Hand worn grip radiused edges","BEVEL")
+    bevel.width=.0025
+    bevel.segments=2
+    ob.modifiers.new("Smooth wooden handle face normals","WEIGHTED_NORMAL")
+    if hasattr(mesh,"use_auto_smooth"):mesh.use_auto_smooth=True
+    return ob
+
 
 def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
     z = .040
@@ -83,12 +124,8 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
              .008,m["forged"],z,.0006)
         # Full D-loop and broad cheek bridge make an actual tool handle,
         # not an isolated floating wood ring.
-        # Flatter D shape with a straighter rear palm rest, not a round donut.
-        loop=[(-.077,-.211,z),(-.066,-.230,z),(-.014,-.235,z),
-              (.019,-.224,z),(.038,-.197,z),(.034,-.161,z),
-              (.018,-.136,z),(-.039,-.117,z),(-.074,-.141,z),
-              (-.084,-.182,z)]
-        closed_sweep("V5 continuous wooden D-grip",loop,m["wood"],.014,20)
+        # V9 authentic plate-style handle replaces unrealistic wooden rope loop.
+        shaped_wooden_d_handle(m["wood"], z)
         form("V5 solid wooden thumb cheek connected to blade",
              [(-.062,-.155),(-.030,-.130),(.022,-.132),
               (.035,-.107),(.011,-.085),(-.042,-.103)],
