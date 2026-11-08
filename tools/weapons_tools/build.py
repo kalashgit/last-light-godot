@@ -141,10 +141,18 @@ def material_set():
     }
 
 
+def mesh_smoothing_compat(ob):
+    """Enable weighted normals on Blender 4.0 while keeping newer builds safe."""
+    if ob.type == "MESH" and hasattr(ob.data, "use_auto_smooth"):
+        ob.data.use_auto_smooth = True
+    return ob
+
+
 def named(ob, name, mat):
     ob.name = "LL TOOL | " + name
     if mat:
         ob.data.materials.append(mat)
+    mesh_smoothing_compat(ob)
     return ob
 
 
@@ -192,6 +200,7 @@ def curved_bar(name, path, material, sides=14):
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(material)
+    mesh_smoothing_compat(ob)
     for f in mesh.polygons:f.use_smooth=True
     ob.modifiers.new("Sweep smoothing", "WEIGHTED_NORMAL")
     return ob
@@ -219,6 +228,7 @@ def closed_sweep(name, ring, material, radius=.012, sides=18):
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(material)
+    mesh_smoothing_compat(ob)
     for poly in mesh.polygons:poly.use_smooth=True
     ob.modifiers.new("Contour smoothing","WEIGHTED_NORMAL")
     return ob
@@ -257,6 +267,7 @@ def form(name, xy_points, thickness, mat, z=.040, bevel=.0014):
     ob = bpy.data.objects.new("LL TOOL | "+name, mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(mat)
+    mesh_smoothing_compat(ob)
     if bevel:
         m = ob.modifiers.new("Soft machined edge", "BEVEL")
         m.width = min(bevel, thickness*.25); m.segments = 2
@@ -292,6 +303,7 @@ def grip(name, points, mat, z=.040, segments=18):
                                   (co.y-points[0][0])/length)
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob);mesh.materials.append(mat)
+    mesh_smoothing_compat(ob)
     for poly in mesh.polygons:poly.use_smooth=True
     ob.modifiers.new("Smooth cross-section transitions", "WEIGHTED_NORMAL")
     return ob
