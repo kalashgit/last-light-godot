@@ -4,7 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 from PIL import Image
-from tools.factory.render_bridge.compose_atlas import compose
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'tools/factory/render_bridge'))
+from compose_atlas import compose
 
 class CompositorTests(unittest.TestCase):
     def setUp(self):
