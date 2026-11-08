@@ -41,6 +41,12 @@ def validate(directory):
         return [f"Unreadable manifest: {exc}"]
     if manifest.get("status") != "CALIBRATION_ONLY":
         errors.append("Unexpected release status; calibration must remain noncanonical")
+    physique = manifest.get("physique")
+    expected_dimensions = {"lean": (1.0, 1.0), "broad": (1.18, 1.12)}
+    if physique not in expected_dimensions:
+        errors.append("Missing or unsupported physique calibration")
+    elif (manifest.get("body_width_factor"), manifest.get("limb_width_factor")) != expected_dimensions[physique]:
+        errors.append("Physique dimensions do not match calibration contract")
     if manifest.get("canonical_master_id") is not None:
         errors.append("Noncanonical calibration must not claim a master ID")
     if not EXPECTED_BONES.issubset(set(manifest.get("bones", []))):
