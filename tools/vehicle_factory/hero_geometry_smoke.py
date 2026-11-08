@@ -22,6 +22,7 @@ def main():
     roof=[ob for ob in meshes if "crowned roof" in ob.name]
     assert len(tires)==4 and len(spokes)==24
     assert len(side)==2 and len(roof)==1
+    assert all("F10_HERO_UV0" in ob.data.uv_layers for ob in side+roof)
     assert sum(len(ob.data.polygons) for ob in meshes)>700
     for ob in tires:
         center=ob.location
