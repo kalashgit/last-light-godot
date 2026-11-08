@@ -79,3 +79,18 @@ Other independent content:
 - Notion task routing: [36 specialist skills](https://app.notion.com/p/40ef639e2373817a9f8be267ca26ee25), [Blender 36 specialist integration](./BLENDER_36_SKILLS_PRODUCTION_ROUTING_V1.md), [Master Sprite Bible](https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96).
 
 **Versioning:** The original 360 GLB/Blend archive remains immutable at its successful CI run. New refinements are exported into new asset IDs' folders and tagged with V2 source SHA; mass scale-out is a tested recipe compiler plus a quality ledger, not a duplicate geometry census. Work stays isolated, no merge or deployment without approval.
+
+
+## First verified source-refinement execution and visual lessons (2026-11-08)
+
+**[Successful cloud run 42466260894](https://github.com/kalashgit/last-light-godot/actions/runs/42466260894)** exported and independently reopened six actually changed Blender model sources, checked physical bounds and GLB hashes, created [before/after source contact sheets](../preview/geometry-refinement-v2/before_after_geometry.png), and re-rendered saved V2 geometry into [six 2.5D proof images](../preview/geometry-refinement-v2/2_5d_render_review.png). The downloaded Action artifact contains editable 3D files for all six and image QA evidence.
+
+**Exact status:** 360 original source models preserved; 6 pass V2 geometry technical checks; 354 remain pending family-specific refinement; zero new founder Golden approvals and zero newly proven gameplay-integrated V2 assets. [Per-model ledger](../assets/master_library/geometry_refinement_ledger_v2.json) records every starter identity. This is an initial working grammar, not a full-library visual completion claim.
+
+**New visual learning:**
+- Hatchback and sedan: the former giant spherical bonnet now has a continuous contoured metal hood, physically sized within the body; the source includes rounded roof shell, independent glass panes and fitted wheel arches. Visual contact sheets show better shape, **but the cabin is still boxy and detailed body construction is incomplete**. Next iteration should rebuild the full surface profile and window/door junctions, not add more cosmetic trim.
+- Awl, cross/flat screwdrivers and crowbar: their true length is the Y axis and their Z describes thin physical thickness. New ergonomic grips, fitted steel shafts and distinct tips preserve true physical dimensions. World-scale 2.5D sprites are tiny by design; **do not enlarge collision geometry to get readable inventory art**. Instead produce dedicated 32/48/64px inventory icon views from the same source masters with different framing, separate from fixed world-scale render rig.
+- Earlier Blender source QA caught two real 3D recipe mistakes: (1) hand-tool axis confusion, and (2) using windshield bottom X positions as height Z, yielding a three-metre passenger car. Both were corrected, and explicit physical vehicle-height and source-reopen checks now enforce the lessons.
+- Silhouette overlap scores are strictly diagnostics, **not automatic acceptance**. Only founder visual comparison of source silhouettes, material identity and native game-size pixels can award Golden approval.
+
+**Scale-out rule:** Once the original family morphology and materials pass full visual QA, reuse the parameterized source constructor for every matching original ID. Different objects still need distinctive functional geometry. Preserve the 354 outstanding source records and full external-census reconciliation separately. No merge or deployment.
