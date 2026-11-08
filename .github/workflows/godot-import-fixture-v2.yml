@@ -1,0 +1,58 @@
+name: LAST LIGHT W01 Godot 4 Real F12 Atlas Import Fixture
+
+on:
+  pull_request:
+    paths:
+      - "tests/godot_fixture/**"
+      - ".github/workflows/godot-import-fixture-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  real-render-to-godot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download immutable successful F12 Blender calibration output
+        uses: actions/download-artifact@v4
+        with:
+          name: f12-real-blender-pilot-candidate
+          run-id: 42533683097
+          repository: kalashgit/last-light-godot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/source_f12
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install image packaging library
+        run: python -m pip install "Pillow>=10,<12"
+      - name: Verify real Blender source SHA and construct 4 RGBA atlases
+        run: python tests/godot_fixture/prepare_fixture.py build/source_f12
+      - name: Install pinned Godot 4.3 stable
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" \
+            --output /tmp/godot43.zip
+          unzip -q /tmp/godot43.zip -d /tmp/godot43
+          chmod +x /tmp/godot43/Godot_v4.3-stable_linux.x86_64
+          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Headless Godot 4 import of actual generated atlas PNGs
+        run: |
+          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --import
+      - name: Instantiate isolated SpriteFrames and verify 40 imported frames
+        run: |
+          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/godot_fixture/smoke_import.gd
+      - name: Upload reviewed import fixture evidence (calibration only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-real-atlas-godot4-import-fixture-calibration
+          path: |
+            tests/godot_fixture/generated/*.json
+            tests/godot_fixture/generated/*.png
+          retention-days: 14
+          if-no-files-found: warn
