@@ -31,7 +31,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -132,6 +132,44 @@ def weighted_joint(name,center,axis,length,radius,bone_a,bone_b,material,rig):
     modifier.object=rig
     ob['F06_WEIGHTED_JOINT']=True
     ob['F06_JOINT_BONES']=[bone_a,bone_b]
+    return ob
+
+def multi_bone_elliptic_shell(name,rings,bones,material,rig):
+    """Continuous body/garment mesh with independently authored ring skin weights.
+
+    rings: (x, y, z, radius_x, radius_y, influence tuple), ordered lower-to-upper
+    in body-space. No F05 rest bones or gameplay systems are mutated.
+    """
+    sides=20
+    vertices=[]
+    for x,y,z,rx,ry,weights in rings:
+        assert len(weights)==len(bones) and abs(sum(weights)-1)<1e-6
+        for i in range(sides):
+            angle=math.tau*i/sides
+            vertices.append((x+rx*math.cos(angle),y+ry*math.sin(angle),z))
+    faces=[]
+    for j in range(len(rings)-1):
+        for i in range(sides):
+            k=(i+1)%sides
+            faces.append((j*sides+i,j*sides+k,(j+1)*sides+k,(j+1)*sides+i))
+    faces.extend((tuple(reversed(range(sides))),
+                  tuple(range((len(rings)-1)*sides,len(rings)*sides))))
+    mesh=bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices,[],faces)
+    mesh.update()
+    ob=bpy.data.objects.new(name,mesh)
+    bpy.context.collection.objects.link(ob)
+    ob.data.materials.append(material)
+    groups=[ob.vertex_groups.new(name=b) for b in bones]
+    for j,ring in enumerate(rings):
+        for group,weight in zip(groups,ring[-1]):
+            if weight>0:
+                group.add(list(range(j*sides,(j+1)*sides)),weight,'REPLACE')
+    ob.parent=rig
+    modifier=ob.modifiers.new('F05 continuous weighted mesh','ARMATURE')
+    modifier.object=rig
+    ob['F06_V6_SKINNED']=True
+    ob['F06_BONE_CHAIN']=list(bones)
     return ob
 
 def tapered(name,center,z_min,z_max,bottom_xy,top_xy,bone,material,rig,segments=12):
@@ -327,6 +365,56 @@ def refine_v5_weighted_joints(profile,rig):
                        (sign*.12,0,.56),(0,0,-1),.21,.102,
                        'thigh_'+side,'shin_'+side,trousers,rig)
 
+def refine_v6_continuous_skinning(profile,rig):
+    """Replace rigid jacket/arm/leg shells with continuous multi-weight geometry."""
+    remove_names=('V3 anatomical torso garment','V5 deforming ',
+                  'upper sleeve ','forearm ','trouser leg ','lower trouser ')
+    for obj in list(bpy.data.objects):
+        if obj.type=='MESH' and obj.name.startswith(remove_names):
+            bpy.data.objects.remove(obj,do_unlink=True)
+    fabric=next(m for m in bpy.data.materials if m.name.startswith('Worn woven cloth'))
+    trousers=next(m for m in bpy.data.materials if m.name.startswith('Stained twill'))
+    is_security=profile['outfit']=='vest'
+    is_crawler=profile['outfit']=='ripped'
+    # Shoulder/waist contour is now deformable across spine/chest, not one rigid chest bone.
+    torso_rings=[]
+    for z,rx,ry,weights in ((1.035,.181,.143,(.93,.07)),
+                            (1.105,.191,.153,(.73,.27)),
+                            (1.190,.199,.159,(.44,.56)),
+                            (1.285,.212,.162,(.19,.81)),
+                            (1.377,.251 if is_security else .229,.161,(.04,.96)),
+                            (1.451,.202,.132,(0,1))):
+        torso_rings.append((0,.005,z,rx,ry,weights))
+    multi_bone_elliptic_shell('V6 continuous torso cloth',torso_rings,
+                             ('spine','chest'),fabric,rig)
+    for side,sign in (('L',1),('R',-1)):
+        # Arm weights transition from chest through upper-arm into forearm.
+        arm=[]
+        arm_specs=((sign*.231,1.453,.085,(.62,.38,0)),
+                   (sign*.272,1.383,.096,(.27,.73,0)),
+                   (sign*.291,1.313,.086,(.06,.94,0)),
+                   (sign*.315,1.246,.079,(0,.81,.19)),
+                   (sign*.340,1.179,.076,(0,.53,.47)),
+                   (sign*.350,1.102,.069,(0,.28,.72)),
+                   (sign*.366,1.024,.061,(0,.08,.92)),
+                   (sign*.374,.953,.056,(0,0,1)))
+        for x,z,r,weights in arm_specs:
+            arm.append((x,0,z,r,r*(.93 if is_crawler else 1),weights))
+        multi_bone_elliptic_shell('V6 skinned arm '+side,arm,
+                                 ('chest','upper_arm_'+side,'forearm_'+side),fabric,rig)
+        leg=[]
+        for z,rx,ry,weights in ((.939,.126,.113,(1,0)),
+                                (.835,.126,.119,(.96,.04)),
+                                (.718,.123,.111,(.83,.17)),
+                                (.606,.118,.102,(.64,.36)),
+                                (.549,.116,.097,(.48,.52)),
+                                (.451,.107,.087,(.25,.75)),
+                                (.325,.099,.082,(.07,.93)),
+                                (.156,.084,.076,(0,1))):
+            leg.append((sign*.12,0,z,rx,ry,weights))
+        multi_bone_elliptic_shell('V6 skinned trouser leg '+side,leg,
+                                 ('thigh_'+side,'shin_'+side),trousers,rig)
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -405,7 +493,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -465,11 +553,13 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned'):
         refine_v3_anatomy_and_wear(profile,rig)
-    if args.geometry_profile in ('v4_readable','v5_weighted'):
+    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned'):
         refine_v4_readability(profile,rig)
-    if args.geometry_profile=='v5_weighted':refine_v5_weighted_joints(profile,rig)
+    if args.geometry_profile in ('v5_weighted','v6_skinned'):
+        refine_v5_weighted_joints(profile,rig)
+    if args.geometry_profile=='v6_skinned':refine_v6_continuous_skinning(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
