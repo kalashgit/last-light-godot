@@ -43,8 +43,9 @@ jobs:
         run: |
           python -m pip install "Pillow>=10,<15"
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
+          blender -b --factory-startup --python-expr 'import numpy; print("LL_BLENDER_NUMPY_OK", numpy.__version__)'
       - name: Produce editable .blend and transferable .glb models for 40 icon references plus furniture, actors and cars
         run: |
           set -o pipefail
