@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "queue_id": "F07",
+  "queue_name": "Animals",
+  "primary_owner": "W07",
+  "engineering_interfaces": [
+    "W03",
+    "W04",
+    "W06"
+  ],
+  "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+  "reference_archetypes": [
+    "cattle",
+    "chicken",
+    "pig",
+    "sheep",
+    "turkey",
+    "deer",
+    "mouse",
+    "rabbit",
+    "raccoon",
+    "rat from founder-supplied species reference; canonical catalog to be reconciled"
+  ],
+  "calibration_work_orders": [
+    {
+      "work_order_id": "LL-F07-CAL-01",
+      "candidate_name": "V8 adult cow",
+      "candidate_key": "f07:v8-adult-cow",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F07-CAL-02",
+      "candidate_name": "calf",
+      "candidate_key": "f07:calf",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F07-CAL-03",
+      "candidate_name": "chicken",
+      "candidate_key": "f07:chicken",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F07-CAL-04",
+      "candidate_name": "pig",
+      "candidate_key": "f07:pig",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F07-CAL-05",
+      "candidate_name": "rabbit",
+      "candidate_key": "f07:rabbit",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    }
+  ],
+  "imported_reference_record_count": 6,
+  "imported_reference_record_ids": [
+    "PZWIKI-ICON-0029",
+    "PZWIKI-ICON-0030",
+    "PZWIKI-ICON-0031",
+    "PZWIKI-ICON-0034",
+    "PZWIKI-ICON-0035",
+    "PZWIKI-ICON-0155"
+  ],
+  "reference_status": "NOTION_METADATA_REQUIRES_SEMANTIC_QA",
+  "target_stage": "HERO_CALIBRATION",
+  "first_batch_limit": 20,
+  "automatic_scale_up": false,
+  "requirements": [
+    "Do not confuse reference IDs with canonical assets",
+    "No unapproved third-party art redistribution",
+    "Independent visual review before Golden status",
+    "Keep game runtime intact"
+  ],
+  "status": "READY_FOR_REVIEW_NOT_EXECUTED"
+}
