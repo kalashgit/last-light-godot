@@ -89,11 +89,17 @@ def validate(directory):
             else:
                 try:
                     scene = json.loads(data[20:20 + chunk_length])
-                    if not scene.get("skins"):
+                    skins = scene.get("skins", [])
+                    if not skins or not any(skin.get("joints") for skin in skins):
                         errors.append("GLB missing skinned armature")
-                    if not scene.get("animations"):
+                    animations = scene.get("animations", [])
+                    if not animations or not any(
+                        animation.get("channels") and animation.get("samplers")
+                        for animation in animations
+                    ):
                         errors.append("GLB missing exported animation")
-                    if not scene.get("meshes"):
+                    meshes = scene.get("meshes", [])
+                    if not meshes or not any(mesh.get("primitives") for mesh in meshes):
                         errors.append("GLB missing mesh geometry")
                 except (UnicodeDecodeError, ValueError):
                     errors.append("GLB JSON chunk cannot be decoded")
