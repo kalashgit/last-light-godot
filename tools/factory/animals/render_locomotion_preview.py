@@ -7,6 +7,7 @@ from mathutils import Vector
 
 root=os.path.abspath(sys.argv[sys.argv.index('--')+1])
 travel='--travel' in sys.argv
+show_ground='--ground' in sys.argv
 os.makedirs(os.path.join(root,'preview_frames'),exist_ok=True)
 scene=bpy.context.scene
 scene.render.engine='BLENDER_EEVEE'
@@ -32,7 +33,7 @@ for species,center,scale in [('cow',Vector((.1+.17*(travel),0,1.0)),4.35),('chic
             continue
         is_cow=(ob.name.startswith(('Cow_CAL','SplitClovenHoof','Eye','Cattle','Horn')))
         is_bird=(ob.name.startswith(('Chicken_CAL','Beak','ScallopedComb','TailFeather','ChickenEye','ChickenToe','WingFeather')))
-        ob.hide_render=not (is_cow if species=='cow' else is_bird)
+        ob.hide_render=not ((is_cow if species=='cow' else is_bird) or (show_ground and ob.name=='F07SlopeTestPlane'))
     frames=(1,5,9,13,17,21,25,29) if travel else (1,3,5,7,9,11,13,15)
     for f in frames:
         scene.frame_set(f)
