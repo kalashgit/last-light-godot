@@ -26,7 +26,7 @@ def build(m, *, form, tube, hoop, z=.040):
     # Its top contact is Y=.117. Negative-space open throat is 22-25mm.
     form("V11 translating lower jaw and integral sliding rack",
          [(.012,.070),(-.012,.076),(-.045,.084),(-.071,.098),
-          (-.079,.112),(-.072,.123),(-.060,.129),
+          (-.074,.112),(-.072,.123),(-.060,.129),
           (-.040,.117),(-.013,.115),(.011,.116),(.035,.103),(.031,.083)],
          .018,m["edge"],z-.001,.0016)
     # Two *horizontal* faces bite a hex fastener; no hook-on-hook geometry.
