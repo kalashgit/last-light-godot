@@ -52,3 +52,11 @@ No merges, deployment, Godot scene or save changes were made.
 - Technical artifact auditor **2/2 PASS**, including actual editable `.blend`, GLB, RGBA alpha, full heading array and atlas SHA.
 - Added `tools/vehicle_factory/fleet_sockets.py` with **22 art-only proposed sockets per car** for axle and wheel hubs, door hinges/access, hood, trunk, fuel, engine, seat and cargo. The proposal explicitly reports `NO_VALIDATED_PANEL_RIG` and requires W01/W05/W07/W09 acceptance.
 - Visual inspection: stronger hatchback versus sedan distinction and clearer front/rear lighting. Remaining defects include faceted shell profile, generic wheel arch depth, insufficient door thickness and interior cavities, and a material finish still well short of Golden 40. **Visual quality gate remains FAIL/pending founder review**, no scaled fleet run authorized.
+
+## Fourth refinement — mechanical hinge source prototypes
+
+- Added `tools/vehicle_factory/fleet_mechanics.py`: uses the current original sedan/hatchback chassis builders, then attaches physical moving overlays to Blender empty-object hinge pivots and authors separate four-frame 100ms calibration clips.
+- Generated three real keyframed clips per car: front-left door 64°, hood -48°, rear hatch/trunk 58°. Editable per-clip `.blend` sources saved; hatchback's three clips were rendered as 12 actual RGBA frames at a single calibration heading. Sedan clips were built and saved without sprites.
+- `tests/factory/vehicles/test_f10_mechanics.py`: **2/2 source jobs and 6/6 hinge transform clips PASS** for source presence, clip timing, final rotation and identity status. These tests deliberately do **not** assert clearance, silhouette or engine acceptance.
+- Visual finding: hood and door overlays visibly pivot, but do not expose real engine/interior cavities; hatch liftgate overlay still looks visually disconnected/occluded in its fully open frame despite a rigid frame addition. **Hatch-open visual QA FAIL**. These clips must remain isolated calibration data and not ship as finished mechanical art.
+- Next required geometry: create true shell aperture/cutout and door jambs, mate glass and body into a single connected mesh, add hinge clearance/collision sweeps, and render the opening from multiple headings before W05/W07 acceptance.
