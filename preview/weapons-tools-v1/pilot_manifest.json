@@ -30,8 +30,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 4,
-      "model_blend_sha256": "caa24deda660c6919372410eaa2d73b96c4ac198fe408b3297a59eb8422e8e90",
-      "model_glb_sha256": "5fed5bab94856d319749dca8cf1b213bbe6ceb6c093e7538c459c05256350150",
+      "model_blend_sha256": "d648b450004dc960d677bd84bd0e583962cddeced103ad59c91d19a3c00ec59f",
+      "model_glb_sha256": "50a9d447fba8eeaf897094e677130ce7055098eca2e8070950260d2cdaa9bef9",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -145,8 +145,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 9,
-      "model_blend_sha256": "90707f76fa7c9d44c58dcdcdc165356db415478c6e189b5e2032a8e0cd561a1c",
-      "model_glb_sha256": "44737cd6c21e4654ae4222c0fbb535e3fa73513fca8147e71f172c9767d4e138",
+      "model_blend_sha256": "11abee42e81bc1e8e496fe968875f980ee20888c55b7d01f6067ce68d37fd857",
+      "model_glb_sha256": "8b0ca86c7a5c0afc0f3c1f968f7c6073e60a5a6ef1cf394b7873cf5b12614f6e",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -260,8 +260,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 9,
-      "model_blend_sha256": "27ffe204e33d8f493cdb868cbd6c4f1fa538714fa6df573dd406bbaa25d216cb",
-      "model_glb_sha256": "63a4c942335cfbb6913e5e3357d83199fe77434ad65a9c09e26d7b3946d84218",
+      "model_blend_sha256": "d954a99cdfa15cc2268c7152882d87c0630957cd11fb3be5821b35ab0641b872",
+      "model_glb_sha256": "6b5801204af87f3f52d8be23ab7fd3b10eef1ffddf6f0abb2908c1dd537f6cdd",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -375,8 +375,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 6,
-      "model_blend_sha256": "fad5291a12cbc86308b5ce39072d4a5a1102e16069950c73eee58915fa34c7e0",
-      "model_glb_sha256": "1a55254dd48712f3c2ea90eb45d005b0d497a141c723992e6b50b231d0c39b49",
+      "model_blend_sha256": "9e503c0fd01173d7f91c9fdb9ae225cee96304cde621767e6278497821087475",
+      "model_glb_sha256": "508a74d1eb92031d6d0dc764eed2887feec34f8571c326f8207345cb88c672bb",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -490,7 +490,7 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 6,
-      "model_blend_sha256": "6ebecd6d8f2d619a831fe661a7ea480d93546fc8277d0d063d7f66b6d9847441",
+      "model_blend_sha256": "92abd98a62aba068b6332ba3d94231065efa6d2089c66ef7fa2ba86691b27730",
       "model_glb_sha256": "c6a1cb53d75abc42b9ef8c9ea417006a787e4a156e6301de85a8a0d0db43ecd2",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
@@ -594,9 +594,9 @@
         0.026
       ],
       "actual_bounds_m": [
-        0.10983,
-        0.2945,
-        0.029
+        0.10583,
+        0.29149,
+        0.0235
       ],
       "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
@@ -604,9 +604,9 @@
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 14,
-      "model_blend_sha256": "48d4fac3fc87e1d1830ad809494d1b380f257c5e83e17d25ac01b3254de142d0",
-      "model_glb_sha256": "065050d688b19802718122702e6b0bca7435cc6dedb86d9169b6cea28c62865c",
+      "model_parts": 10,
+      "model_blend_sha256": "93314d8fd6cece3c72ae2b8f7a2561a551286adee266651a825e2acd69c46cba",
+      "model_glb_sha256": "0157ad23f73d341743f90b567f4a5496b852ea85662436bf4594d9ff86096fd9",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -615,80 +615,80 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "87c06cd7121aa440b2f190234ec12bf230e111f7022e2f57050a728295a3f312",
+          "rgba_sha256": "de9b33e545c4d33a78e3cb92e8a5f5710ba074189bf4c34a024d86b06bebd9a6",
           "size_px": [
-            21,
-            14
+            20,
+            13
           ],
           "ground_anchor_px": [
-            10.25,
+            10.0,
             8.5
           ]
         },
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "778c634d05a760edc4c987c8779e83c36347e4119ebb5e04383079b955ad9ffa",
+          "rgba_sha256": "186d91fb59272670c3245a8e1cbae56d5dcf60bb284303fe8d7915c2f4126be3",
           "size_px": [
-            21,
-            14
+            20,
+            13
           ],
           "ground_anchor_px": [
-            10.25,
+            10.0,
             8.5
           ]
         },
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "18ed5ce3cb98f998a84005ed33e3aed7f131bb0f7fa5fcaaca0a35c26db5b519",
+          "rgba_sha256": "64bdcbbcb5982b769b75d652a4fcf086a11cda6646d243f50f36d5bd1c48a4d1",
           "size_px": [
-            21,
-            14
+            20,
+            13
           ],
           "ground_anchor_px": [
-            10.25,
+            10.0,
             8.5
           ]
         },
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "6b60e2566e5cb414b8954b542c2fffb116cdc93f79b1fb3eed813af135d3aa59",
+          "rgba_sha256": "1aedc89e9f4a342eca077a19de30e6cf91caf93f50f863b4691e9f906c022b0e",
           "size_px": [
-            21,
-            14
+            20,
+            13
           ],
           "ground_anchor_px": [
-            10.25,
+            10.0,
             8.5
           ]
         }
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "7377b2d326d10036a3e9cfd300b3c09da0c4630235ee37be424288883a7dc898",
+          "sha256": "2f27b0653f779da03c2311d8f9ed5809eff467a7c260020dc59bd0f951b19238",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "609d8cf55dff49ada4c06def7106a4eac7489e2ee6d8701cf38ca9202fa91af0",
+          "sha256": "8bf899e2f7a7588a7b6a2c81ad81595e436d56327b73cff0c98d3830ea8a0350",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "0ec18653afe56ef6a4c41711568a45c041264d342838675bbdb45ebf6649da8f",
+          "sha256": "e41d4a7c5da6c963913297db3fb62e3f4fc0c41f836c438daf8861c3a38e65da",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "dfa9a4646427d96d4d4636d0b05218356c831d7fb9806adca1adb047090dbb48",
+          "sha256": "f29edc7e2669da08e3d63a465c5131b1da1cfa28e9caa284ab2cc076195451d4",
           "size_px": [
             128,
             128
@@ -709,9 +709,9 @@
         0.07
       ],
       "actual_bounds_m": [
-        0.06,
-        0.304,
-        0.0672
+        0.054,
+        0.301,
+        0.0632
       ],
       "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
@@ -720,8 +720,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 12,
-      "model_blend_sha256": "4994a7eefa6472e675d983116b885ad7f6fe6600e3934eb450f2befe55cda298",
-      "model_glb_sha256": "b41696dce11029c7cc07eb502da780451e92ea469bc80d480e9bfd7beb50f2a1",
+      "model_blend_sha256": "e30b80d9c1197ca50463c5ad73bd25c9115489d73153fe417ba815771241cff5",
+      "model_glb_sha256": "21bd73f6cb100c1e34df193aa9d212cc143277bc3ebfd41b1122ecf5ab332888",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -730,80 +730,80 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "ea57b718847a6a46f373130721bc4ef1ba4df6051681d7449058b64be7fcebfe",
+          "rgba_sha256": "41561e86c892967a85e3c364710c562dadd458a37367f9bdfc02aa3ffc8650d5",
           "size_px": [
             18,
-            14
+            13
           ],
           "ground_anchor_px": [
             9.0,
-            9.0
+            8.75
           ]
         },
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "4afef6090ddee88bdc6da5ec38070436291ffcd65e4a34199e72af92dfd96f23",
+          "rgba_sha256": "af91c49a928f32a647dc86da620f7f9a05bb8833309f183ed2ce32d7b95ff219",
           "size_px": [
             18,
-            14
+            13
           ],
           "ground_anchor_px": [
             9.0,
-            9.0
+            8.75
           ]
         },
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "c96fa4fd557d9ac99d3e9c8b16448d4ca25a22ea8e77e01938f16ebdf2b85d3e",
+          "rgba_sha256": "d9a567c9ad9ec411005de0d94615ef43c46cf1a53fe1aec1c58b2a7f13e441b5",
           "size_px": [
             18,
-            14
+            13
           ],
           "ground_anchor_px": [
             9.0,
-            9.0
+            8.75
           ]
         },
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "7d3fcf3e7f46c4d500c7a3282aed045d5f2e57613e9077f984f0754c036ddb4f",
+          "rgba_sha256": "24b839608ba92ad503d10d4c8bfd66e33c15a13d33030ca004b3f0a39b298cb2",
           "size_px": [
             18,
-            14
+            13
           ],
           "ground_anchor_px": [
             9.0,
-            9.0
+            8.75
           ]
         }
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "7d68f302469c92a8796a98bc212e293640add9c9f62de97ac3b6884261e890b6",
+          "sha256": "ce8ceb4d98ce550f5fc1c41847635b63b34527cad4ffccf0806cd8c927f33e09",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "46748f0e9b849c785bc2cf57b5c71b16466ab4bab25dd0f093d65dd9f408ea18",
+          "sha256": "491a6b77a95f10f7a47fe345295ce012f157ace39f23875064748a9d3968485f",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "6afc9fe07b4aecd9acf00b0a9af046e6c36bf49174d6e79f347340485c93b649",
+          "sha256": "46c6a06fac8fa1a85c9c596a5df4e33171ee4205b8ceb2273014a5d142062246",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "a850eb44d1a3c71ee97eba1a606a89573f80c2deab7abb8a95e2bf4891b72a6c",
+          "sha256": "c1f1393829ccf144c4a8ce446bb2dbed0ccb39b1b7cd1017d764c0f22482047a",
           "size_px": [
             128,
             128
@@ -824,9 +824,9 @@
         0.035
       ],
       "actual_bounds_m": [
-        0.14122,
-        0.47275,
-        0.02996
+        0.15524,
+        0.47693,
+        0.02993
       ],
       "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
@@ -834,9 +834,9 @@
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 11,
-      "model_blend_sha256": "13dd55e07dbbe1ba069abd916a0ea03ad58ddc17708eea6cba8d28110a4da659",
-      "model_glb_sha256": "021ab9fe57e719849379e457d9558a7208d1040f13dde3edc095cd311e212756",
+      "model_parts": 15,
+      "model_blend_sha256": "aea87187feb0ddce7b7c4e888f5cef08bb0d7ae1862bafd003213d0544f5d9ed",
+      "model_glb_sha256": "c02cb8d0443769b70bddbd77bed2c93f950ffe4f824bb8e3f2952e711a450f66",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -845,80 +845,80 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "30e5cd6af447ded5fd28ecf98d145d1fdb5102250d2304e29a53e299887bd7c2",
+          "rgba_sha256": "84bf1a3e81a292ff53e978e6c3611f6506a6b76aa6a0778d0fa68fad3236742f",
           "size_px": [
             29,
             18
           ],
           "ground_anchor_px": [
-            14.25,
+            14.5,
             10.75
           ]
         },
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "a7f066edd1eac734ebe256a3f1c4915be388da8130fffabe2233399ae830864b",
+          "rgba_sha256": "e21e8f936ff516f7a299d259927cc57e7f034fb684999f20a3b3cf15a051b63d",
           "size_px": [
             29,
             18
           ],
           "ground_anchor_px": [
-            14.25,
+            14.5,
             10.75
           ]
         },
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "2265671130cbc04edf71cf1516b8b705a4deb1a181da3d8b709d348a5b6766f0",
+          "rgba_sha256": "abc9049d75e108f5317af1a9fbb2017fa287d64db2ef59bd2043bde8287030cc",
           "size_px": [
             29,
             18
           ],
           "ground_anchor_px": [
-            14.25,
+            14.5,
             10.75
           ]
         },
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "601a1d05931024941dbfd2b6203b9091a26ee31c5e532f9f377cd40198060a96",
+          "rgba_sha256": "9e394562b3c28fed9daa8b84c109fc075ce6ce26b1f4f22a1dc8599b51aa1bae",
           "size_px": [
             29,
             18
           ],
           "ground_anchor_px": [
-            14.25,
+            14.5,
             10.75
           ]
         }
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "59d40060b3f6ff69f81fc3fa0d73f03904391864c762968c735e91b2a3627851",
+          "sha256": "3071e62a913812b8c25657b4b55a9fa7326337186e9b1992d1182e5ba62971d5",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "7d13d9da7e583d2c56901b01d9fde8e6772b84505bf44ba1d537a918bc2e208e",
+          "sha256": "2090bfe6cd4d007c3291666390569a16a8aa910b6cbb92dd055a5495966ec912",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "5db5dbc86b2edefbf7144d3efe444cc868509187632e0203b1baa1a39db03487",
+          "sha256": "f96bfc49b5e0c1ed39e550581afe322adf4bc6ba4929d86077c64c48392b76e5",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "b15dd7735980d0032f5c25ed680c39f6387adfe9c64408ad03299d250b58cf8a",
+          "sha256": "c7f5d471f47928cfc0a3d5af75e192eea4a480a0249a7046b3c0a4a9ebad410d",
           "size_px": [
             128,
             128
@@ -950,8 +950,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 6,
-      "model_blend_sha256": "3ba21dba9b18f6ec452f089eed2db4abf8d2f31eb1ecf77779313f18b3d9ae39",
-      "model_glb_sha256": "985c16daac81707fb55a728e86f24d0197c4c0589778a1f3392303bbf0e2e385",
+      "model_blend_sha256": "7b909d75090fc99787f5ac31c046fb64b4393d4263d1215338bfbbc150a7bb6e",
+      "model_glb_sha256": "9bf136b2d2a2245e7c6caa1e1ef27297ace705cdbfeb03f1a5dbf70aa9edf292",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -1065,8 +1065,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 7,
-      "model_blend_sha256": "9bd6b2b593596de41d0c14a35f072440f6a759aee8d7db6d48782564ff28a64e",
-      "model_glb_sha256": "824e640df6648b0beba78b06d70707a21111f710205a3cad28fcf1137d2836b9",
+      "model_blend_sha256": "467dc43e373057a4eabfc2b08530d9008aff29ef93aba5fcfadac9f76575c51f",
+      "model_glb_sha256": "0953ccb2289714822d5eff68d6b115e22fe5f29d61f202351276bd8521a6de4a",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -1180,8 +1180,8 @@
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 6,
-      "model_blend_sha256": "777077efa14d4f957057b557151c1b45b1845f75cd12c95be6a43e538c3bb6b1",
-      "model_glb_sha256": "9d992e2048610e56ef5d78d3cb2a0ed2934e61dfadc91698f673e9e7d6778fa3",
+      "model_blend_sha256": "6e3da8b296d43c3d1b6e3fd7add9c220d72bd4300daee92733caf3c6e84f9640",
+      "model_glb_sha256": "48432caf3bbaccc483843809be7a7c7dc020ca66da06375b6e6e30cec386c43e",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
