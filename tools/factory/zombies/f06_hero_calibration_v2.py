@@ -31,7 +31,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -89,6 +89,49 @@ def mesh_part(name,points,faces,bone,material,rig):
     ob.parent=rig
     deform=ob.modifiers.new('F05 shared-armature compatibility','ARMATURE')
     deform.object=rig
+    return ob
+
+def weighted_joint(name,center,axis,length,radius,bone_a,bone_b,material,rig):
+    """Five-ring continuous sleeve with smooth cross-joint F05 weights."""
+    center=Vector(center)
+    axis=Vector(axis).normalized()
+    guide=Vector((0,1,0)) if abs(axis.dot(Vector((0,1,0))))<.9 else Vector((1,0,0))
+    u=axis.cross(guide).normalized()
+    v=axis.cross(u).normalized()
+    ring_count=5
+    sides=16
+    points=[]
+    for j in range(ring_count):
+        t=j/(ring_count-1)
+        c=center+axis*(t-.5)*length
+        taper=1-.13*abs(2*t-1)
+        for i in range(sides):
+            a=math.tau*i/sides
+            points.append(tuple(c+radius*taper*(math.cos(a)*u+math.sin(a)*v)))
+    faces=[]
+    for j in range(ring_count-1):
+        for i in range(sides):
+            k=(i+1)%sides
+            faces.append((j*sides+i,j*sides+k,(j+1)*sides+k,(j+1)*sides+i))
+    faces.extend((tuple(reversed(range(sides))),tuple(range((ring_count-1)*sides,ring_count*sides))))
+    mesh=bpy.data.meshes.new(name)
+    mesh.from_pydata(points,[],faces)
+    mesh.update()
+    ob=bpy.data.objects.new(name,mesh)
+    bpy.context.collection.objects.link(ob)
+    ob.data.materials.append(material)
+    group_a=ob.vertex_groups.new(name=bone_a)
+    group_b=ob.vertex_groups.new(name=bone_b)
+    for j in range(ring_count):
+        t=j/(ring_count-1)
+        # No rigid seam: each ring has a full normalized influence pair.
+        group_a.add(list(range(j*sides,(j+1)*sides)),max(.02,1-t*.96),'REPLACE')
+        group_b.add(list(range(j*sides,(j+1)*sides)),max(.02,.04+t*.96),'REPLACE')
+    ob.parent=rig
+    modifier=ob.modifiers.new('F05 dual-weight smooth joint','ARMATURE')
+    modifier.object=rig
+    ob['F06_WEIGHTED_JOINT']=True
+    ob['F06_JOINT_BONES']=[bone_a,bone_b]
     return ob
 
 def tapered(name,center,z_min,z_max,bottom_xy,top_xy,bone,material,rig,segments=12):
@@ -269,6 +312,21 @@ def refine_v4_readability(profile,rig):
         ball('V4 dragging enlarged left cuff',(-.341,0,.972),
              (.098,.081,.084),'forearm_L',tear,rig)
 
+def refine_v5_weighted_joints(profile,rig):
+    """First deformation-compatible anatomical transitions for F05_CAL_0.1."""
+    fabric=next(m for m in bpy.data.materials if m.name.startswith('Worn woven cloth'))
+    trousers=next(m for m in bpy.data.materials if m.name.startswith('Stained twill'))
+    for side,sign in (('L',1),('R',-1)):
+        weighted_joint('V5 deforming shoulder sleeve '+side,
+                       (sign*.255,0,1.405),(sign*1,0,-.45),.22,.09,
+                       'chest','upper_arm_'+side,fabric,rig)
+        weighted_joint('V5 deforming elbow sleeve '+side,
+                       (sign*.338,0,1.177),(sign*.16,0,-1),.19,.074,
+                       'upper_arm_'+side,'forearm_'+side,fabric,rig)
+        weighted_joint('V5 deforming knee trousers '+side,
+                       (sign*.12,0,.56),(0,0,-1),.21,.102,
+                       'thigh_'+side,'shin_'+side,trousers,rig)
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -347,7 +405,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile in ('v3_refined','v4_readable'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -407,9 +465,11 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile in ('v3_refined','v4_readable'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted'):
         refine_v3_anatomy_and_wear(profile,rig)
-    if args.geometry_profile=='v4_readable':refine_v4_readability(profile,rig)
+    if args.geometry_profile in ('v4_readable','v5_weighted'):
+        refine_v4_readability(profile,rig)
+    if args.geometry_profile=='v5_weighted':refine_v5_weighted_joints(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
