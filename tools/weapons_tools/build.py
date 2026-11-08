@@ -549,6 +549,8 @@ def run_one(item, output, samples):
     folder.mkdir(parents=True,exist_ok=True)
     scene=hero.setup()
     mats=material_set()
+    from f09_v6_materials import refine_materials
+    refine_materials(mats)
     from f09_v5_models import TARGETS as V5_TARGETS, build as build_v5
     if item["archetype"] in V5_TARGETS:
         build_v5(item["archetype"],mats,form=form,tube=tube,
