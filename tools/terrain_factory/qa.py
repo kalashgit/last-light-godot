@@ -64,15 +64,45 @@ def sheet(folder, assets, out):
     return out
 
 
+def seam_sheet(folder, out):
+    """Real native Blender tiles assembled into one 4x4 isometric patch.
+
+    The edge fixture intentionally needs masks 1,2,3,4 plus the grass base,
+    all included in the 12-item calibration run. It is not full-mask approval.
+    """
+    corner = [[0 for _ in range(5)] for _ in range(5)]
+    for x in (1, 2, 3):
+        corner[0][x] = 1
+    corner[4][4] = 1
+    mosaic = Image.new("RGBA", (440, 260), (42, 48, 46, 255))
+    for y in range(4):
+        for x in range(4):
+            bits = (corner[y][x] + 2*corner[y][x+1] +
+                    4*corner[y+1][x+1] + 8*corner[y+1][x])
+            name = ("ll_tile_grass_sparse" if bits == 0 else
+                    "ll_tile_grass_sparse_to_asphalt_worn_c%02d" % bits)
+            tile = Image.open(folder / name / "world.png").convert("RGBA")
+            left = 180 + 40*(x-y) - 40
+            top = 45 + 20*(x+y) - 20
+            mosaic.alpha_composite(tile, (left, top))
+    # Native pixels enlarged without interpolation for material/seam review.
+    mosaic.convert("RGB").resize((1320, 780), Image.Resampling.NEAREST).save(out)
+    return out
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--sources", type=Path, required=True)
     p.add_argument("--expected", type=int, required=True)
     p.add_argument("--sheet", type=Path, required=True)
+    p.add_argument("--seam-sheet", type=Path)
     a = p.parse_args()
     assets = verify(a.sources, a.expected)
     a.sheet.parent.mkdir(parents=True, exist_ok=True)
     sheet(a.sources, assets, a.sheet)
+    if a.seam_sheet:
+        a.seam_sheet.parent.mkdir(parents=True, exist_ok=True)
+        seam_sheet(a.sources, a.seam_sheet)
     print("LL_TERRAIN_QA_PASS", len(assets), a.sheet, flush=True)
 
 
