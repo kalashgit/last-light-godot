@@ -1,0 +1,86 @@
+name: LAST LIGHT Full 360 Editable 3D Geometry Masters V1
+on:
+  push:
+    branches:
+      - codex/last-light-geometry-reconstruction-v1-20261108
+    paths:
+      - "tools/geometry_first/export.py"
+      - "tools/geometry_first/plan.py"
+      - "tools/geometry_first/golden40_mesh.py"
+      - ".github/workflows/geometry-first-all-360-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: last-light-all-360-source-models-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  geometry-master-full-census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate all 360 known source identities
+        run: |
+          python tests/geometry_first_v1.py
+          python tools/geometry_first/plan.py --output build/geometry_first/full_plan.json
+      - name: Install headless Blender and GLB dependencies
+        run: |
+          python -m pip install "Pillow>=10,<15"
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender -b --factory-startup --python-expr 'import numpy; print("LL_GEOMETRY_EXPORTER_READY")'
+      - name: Build all 360 first-pass source geometry models
+        run: |
+          set -o pipefail
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/geometry_first/full_plan.json --output build/geometry_first/all_source_models --max-jobs 360 --preview-every 24 2>&1 | tee build/geometry_first/360_export.log
+          grep -q 'LL_GEOMETRY_BATCH_PASS 360 360' build/geometry_first/360_export.log
+          if grep -q 'Traceback (most recent call last)' build/geometry_first/360_export.log; then exit 1; fi
+      - name: Validate actual editable source models, GLB metadata and package complete 3D asset archive
+        run: |
+          python tools/geometry_first/qa.py --sources build/geometry_first/all_source_models --expected 360 --sheet build/geometry_first/all_360_geometry_review.png --zip build/geometry_first/Last_Light_3D_Masters_All_360.zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("build/geometry_first/all_source_models/batch_report.json").read_text())
+          assert p["generated_3d_source_count"]==360 and p["ungenerated_remaining"]==0
+          assert len(set(x["asset_id"] for x in p["items"]))==360
+          assert all(x["glb_sha256"] for x in p["items"])
+          print("LL_ALL_360_GEOMETRY_VERIFIED 360 editable .blend and 360 original glb")
+          PY
+      - name: Publish concise branch review and production ledger
+        run: |
+          set -euo pipefail
+          mkdir -p preview/geometry-first-all-360
+          cp build/geometry_first/all_360_geometry_review.png preview/geometry-first-all-360/
+          cp build/geometry_first/all_source_models/batch_report.json preview/geometry-first-all-360/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/geometry-first-all-360
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish first-pass 360 real Blender GLB geometry-source census and QA"
+            for retry in 1 2 3; do
+              git fetch origin codex/last-light-geometry-reconstruction-v1-20261108
+              git rebase origin/codex/last-light-geometry-reconstruction-v1-20261108
+              if git push origin HEAD:codex/last-light-geometry-reconstruction-v1-20261108; then exit 0; fi
+            done
+            exit 1
+          fi
+      - name: Publish complete downloadable original 3D geometry masters
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-360-editable-3d-masters-geometry-only-v1
+          path: |
+            build/geometry_first/Last_Light_3D_Masters_All_360.zip
+            build/geometry_first/all_360_geometry_review.png
+            build/geometry_first/all_source_models/batch_report.json
+            build/geometry_first/full_plan.json
+            build/geometry_first/360_export.log
+          retention-days: 30
+          if-no-files-found: error
