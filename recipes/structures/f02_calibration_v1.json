@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "queue_id": "F02",
+  "status": "NONCANONICAL_CALIBRATION_ONLY",
+  "promotion_gate": "BLOCKED_CANONICAL_IDS",
+  "canonical_master_ids": [],
+  "canonical_snapshot": {
+    "source": "Notion LL Original Asset & Content Production Registry",
+    "database_url": "https://app.notion.com/p/165d2e3653284b86a829c260f0895276",
+    "view_result_count": 51,
+    "f02_assigned_count": 0,
+    "f02_canonical_verified_count": 0,
+    "read_at": "2026-11-08",
+    "github_snapshot_commit": null
+  },
+  "source_queue_commit": "bcc8777f683978d7878a509d196369ed0fa7d3ad",
+  "source_queue_url": "https://github.com/kalashgit/last-light-godot/blob/claude/last-light-production-director/docs/production/queues/F02_v1.json",
+  "materials": "ORIGINAL_CALIBRATION_UNAPPROVED_F11",
+  "render_contract": "PROVISIONAL_F12_2TO1_80x40",
+  "geometry_contract": "PROVISIONAL_W01_W04_1M_TILE_2_8M_WALL",
+  "work_orders": [
+    {"calibration_label": "LL-F02-CAL-01", "subject": "small_house", "canonical_master_id": null},
+    {"calibration_label": "LL-F02-CAL-02", "subject": "garage", "canonical_master_id": null},
+    {"calibration_label": "LL-F02-CAL-03", "subject": "shopfront", "canonical_master_id": null},
+    {"calibration_label": "LL-F02-CAL-04", "subject": "door_window", "canonical_master_id": null},
+    {"calibration_label": "LL-F02-CAL-05", "subject": "roof_corner", "canonical_master_id": null}
+  ],
+  "next_action": "A00 assigns and verifies structural masters; F02 reconciles exact IDs before promotion"
+}
