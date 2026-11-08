@@ -42,6 +42,7 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
                     if atlas_img.crop((x,y,x+w,y+h)).tobytes()!=single.tobytes():
                         failures.append(f'atlas pixels disagree {folder}/{entry["name"]}')
     bboxes={}
+    footprint=[]
     for f in m['frames']:
         if m.get('render_profile')=='f12_cal01':
             if max(abs(f['projected_ground_px'][i]-m['pivot_px'][i]) for i in (0,1))>.02:
@@ -59,6 +60,15 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
             if not bb: failures.append(f'empty sprite {path}')
             else:
                 bboxes.setdefault((f['clip'],f['direction']),[]).append(bb)
+                if f['clip']=='idle' and f['frame_1_based']==1:
+                    values=(alpha.get_flattened_data() if hasattr(alpha,'get_flattened_data')
+                            else alpha.getdata())
+                    occupied=sum(1 for pixel in values if pixel>32)
+                    footprint.append({'direction':f['direction'],
+                                      'width_px':bb[2]-bb[0],
+                                      'height_px':bb[3]-bb[1],
+                                      'opaque_pixels':occupied,
+                                      'canvas_coverage':round(occupied/(image.width*image.height),5)})
                 if bb[0]<=0 or bb[2]>=expected_size[0] or bb[1]<=0 or bb[3]>=expected_size[1]:
                     failures.append(f'edge crop {path}: {bb}')
         digest=hashlib.sha256(path.read_bytes()).hexdigest()
@@ -69,7 +79,9 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
             # Detect anchor instability, but don't confuse mesh bounds with true world pivot.
             failures.append(f'{folder.name}/{clip}/{direction} image-bottom spread {spread}px (>16)')
     report.append({'profile':folder.name,'frames':len(m['frames']),
-                   'clips':sorted(set(k[0] for k in bboxes)),'glb_export':m['qa']['glb_export']})
+                   'clips':sorted(set(k[0] for k in bboxes)),'glb_export':m['qa']['glb_export'],
+                   'geometry_profile':m.get('geometry_profile','v2_baseline'),
+                   'idle_native_scale_footprint':footprint})
 result={'status':'PASS' if not failures else 'FAIL','profiles':report,'failures':failures}
 (args.directory/'qa_result.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))
