@@ -41,6 +41,7 @@ actor_spec=importlib.util.spec_from_file_location("ll_actor_source_render",actor
 actor_render=importlib.util.module_from_spec(actor_spec)
 actor_spec.loader.exec_module(actor_render)
 from golden40_mesh import build as build_golden
+from refine_v2 import apply as apply_v2_refinement, recipe_sha256 as refine_v2_sha
 
 MODEL_TYPES={"MESH","CURVE","FONT","SURFACE"}
 HERO_FURNITURE={"refrigerator":hero.fridge_v3,
@@ -149,21 +150,30 @@ def preview(path,job,objects,samples=8):
     sc.render.filepath=str(path.resolve())
     bpy.ops.render.render(write_still=True)
 
-def build_one(job,out,preview_png=False,skip_existing=False):
+def build_one(job,out,preview_png=False,skip_existing=False,refinement_profile="v1"):
     source_id=job["asset_id"]
     dest=out/source_id
     dest.mkdir(parents=True,exist_ok=True)
     metadata=dest/"geometry_manifest.json"
     if skip_existing and metadata.exists():
         cached=json.loads(metadata.read_text())
-        if cached.get("source_recipe_sha256")==job["template_source_hash"] and (
-            dest/"model.blend").is_file() and (dest/"model.glb").is_file():
+        if (cached.get("source_recipe_sha256")==job["template_source_hash"]
+            and cached.get("refinement_profile","v1")==refinement_profile
+            and (refinement_profile!="v2" or cached.get("refinement_code_sha256")==refine_v2_sha())
+            and (dest/"model.blend").is_file() and (dest/"model.glb").is_file()):
             print("LL_GEOMETRY_CACHE_HIT",source_id,flush=True)
             return cached
     start=time.monotonic()
     # Reference fixed camera and light for consistent shape previews.
     hero.setup()
     build_item(job)
+    if refinement_profile=="v2":
+        refinement=apply_v2_refinement(job)
+    elif refinement_profile=="v1":
+        refinement=dict(refinement_version="original_geometry_first_v1",applied=False,
+                        reason="ORIGINAL_FIRST_PASS_SOURCE_UNMODIFIED")
+    else:
+        raise ValueError("unsupported refinement profile: "+refinement_profile)
     bpy.context.view_layer.update()
     objects=actual_geometry()
     metrics=validate_bounds(objects,job)
@@ -178,6 +188,9 @@ def build_one(job,out,preview_png=False,skip_existing=False):
     manifest=dict(
        schema=1,asset_id=source_id,category=job["category"],
        source_recipe_sha256=job["template_source_hash"],
+       refinement_profile=refinement_profile,
+       refinement_code_sha256=refine_v2_sha() if refinement_profile=="v2" else None,
+       refinement=refinement,
        source_reference=job.get("source_reference"),
        source_reference_sha256=job.get("source_reference_sha256"),
        original_geometry=True,
@@ -202,6 +215,7 @@ def main():
     parser.add_argument("--max-jobs",type=int,default=0)
     parser.add_argument("--preview-every",type=int,default=5)
     parser.add_argument("--resume",action="store_true")
+    parser.add_argument("--refinement-profile",choices=("v1","v2"),default="v1")
     args=sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else []
     a=parser.parse_args(args)
     plan=json.loads(a.plan.read_text())
@@ -214,7 +228,8 @@ def main():
     for idx,job in enumerate(jobs):
         result=build_one(job,a.output,
                          preview_png=a.preview_every>0 and idx%a.preview_every==0,
-                         skip_existing=a.resume)
+                         skip_existing=a.resume,
+                         refinement_profile=a.refinement_profile)
         built.append(dict(asset_id=result["asset_id"],
             geometry_status=result["geometry_status"],
             actual_bounds_m=result["actual_bounds_m"],
@@ -227,6 +242,10 @@ def main():
         generated_3d_source_count=len(built),
         ungenerated_remaining=plan["total_unique"]-len(built),
         status="REAL_3D_SOURCES_NOT_2_5D_OR_GOLDEN_APPROVED",
+        refinement_profile=a.refinement_profile,
+        refined_sources_count=sum(bool((a.output/x["asset_id"]/"geometry_manifest.json").exists()
+                and json.loads((a.output/x["asset_id"]/"geometry_manifest.json").read_text())
+                    .get("refinement",{}).get("applied")) for x in built),
         items=built)
     (a.output/"batch_report.json").write_text(json.dumps(report,indent=2)+"\n")
     print("LL_GEOMETRY_BATCH_PASS",len(built),plan["total_unique"],
