@@ -16,7 +16,7 @@ Date: 2026-11-08. Scope: isolated, reproducible **NONCANONICAL CALIBRATION**. Th
 ## Current isolated branch and PR
 
 - Branch: `chatgpt/f02-buildings-structural-kits`, based on the inspected production-director lineage. The F02 queue source was `bcc8777f683978d7878a509d196369ed0fa7d3ad`; while this worker ran, the director advanced through F03/F04 documentation to `152b12930495c39bec40e942c72edbd9a607497b`, which the remote F02 review branch retains without modifying those files.
-- Draft PR: link to be recorded after remote creation. No merge or deployment authorized.
+- Draft review: [PR #45](https://github.com/kalashgit/last-light-godot/pull/45), remote commit `e8eb9916b6009fa96655a61b9624cf7f23cb0dc2`. No merge or deployment authorized.
 
 ## Reuse of 360 existing source masters
 
@@ -97,7 +97,7 @@ Check stdout for `F02_BLENDER_CALIBRATION_PASS 5` and individual `F02_BLEND_REOP
 - `tools/factory/structures/geometry.py` SHA-256 `5869007e9b1439ccab775dd2eb9b59cd7015ec0fdd86af72f49f9086f02dbf4e`.
 - `tools/factory/structures/blender_calibration.py` SHA-256 `c5748f39a10972dab0fcf7563152b419e7804153f9e499d66c049808e3ff2905`.
 - Each scene's `manifest.json` carries `.blend`, `.glb`, PNG and plan hashes; `reopen_qa.json`, `qa_report.json`, `f02_contact_sheet.png`, `blender_run.log` and a `f02_noncanonical_calibration.zip` were generated locally.
-- Archive is a **calibration evidence pack**, not a permanent canonical source release. W10 must establish retention/CI archiving for production.
+- Saved [calibration evidence ZIP](https://chatgpt.com/library?file_id=libfile_15efddd5fac881918e156034557761fb&account_id=personal) and [review contact sheet](https://chatgpt.com/library?file_id=libfile_c5009fba2720819190e3e23ea19f4f35&account_id=personal). Archive is **not** a canonical source release. W10 must establish retention/CI archiving for production.
 
 ## Blocked dependencies and owner
 
