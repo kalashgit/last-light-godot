@@ -41,7 +41,7 @@ actor_spec=importlib.util.spec_from_file_location("ll_actor_source_render",actor
 actor_render=importlib.util.module_from_spec(actor_spec)
 actor_spec.loader.exec_module(actor_render)
 from golden40_mesh import build as build_golden
-from refine_v2 import apply as apply_v2_refinement, recipe_sha256 as refine_v2_sha
+from refine_v2 import apply as apply_v2_refinement, recipe_sha256 as refine_v2_sha, SUPPORTED_TOOLS
 
 MODEL_TYPES={"MESH","CURVE","FONT","SURFACE"}
 HERO_FURNITURE={"refrigerator":hero.fridge_v3,
@@ -139,7 +139,14 @@ def preview(path,job,objects,samples=8):
     # Render for 3D source verification only. This is not world-scale 2.5D atlas.
     sc=bpy.context.scene
     length=max(job["dimensions_m"])
-    sc.camera.data.ortho_scale=max(hero.ORTHO,length*1.45)
+    # Small hand tools were previously <3% of a 512px review frame, making
+    # visual inspection meaningless. This is a *review-only* close-up; stage2
+    # uses the untouched canonical world camera and anchor scale.
+    if job["asset_id"] in SUPPORTED_TOOLS:
+        scale=max(.34,length*1.6)
+    else:
+        scale=max(hero.ORTHO,length*1.45)
+    sc.camera.data.ortho_scale=scale
     sc.cycles.samples=samples
     sc.render.resolution_x=512
     sc.render.resolution_y=512
@@ -149,6 +156,7 @@ def preview(path,job,objects,samples=8):
     sc.render.image_settings.color_mode="RGBA"
     sc.render.filepath=str(path.resolve())
     bpy.ops.render.render(write_still=True)
+    return scale
 
 def build_one(job,out,preview_png=False,skip_existing=False,refinement_profile="v1"):
     source_id=job["asset_id"]
@@ -183,8 +191,8 @@ def build_one(job,out,preview_png=False,skip_existing=False,refinement_profile="
     # modifiers/material zones and independent part names.
     bpy.ops.wm.save_as_mainfile(filepath=str(blend.resolve()),compress=False)
     glb_export(glb,objects)
-    if preview_png:
-        preview(dest/"preview_source.png",job,objects)
+    preview_scale=(preview(dest/"preview_source.png",job,objects)
+                   if preview_png else None)
     manifest=dict(
        schema=1,asset_id=source_id,category=job["category"],
        source_recipe_sha256=job["template_source_hash"],
@@ -202,6 +210,7 @@ def build_one(job,out,preview_png=False,skip_existing=False,refinement_profile="
        editable_blend="model.blend",editable_blend_sha256=sha(blend),
        interoperable_glb="model.glb",glb_sha256=sha(glb),
        preview="preview_source.png" if preview_png else None,
+       source_review_camera_scale=preview_scale,
        elapsed_s=round(time.monotonic()-start,3),**metrics)
     metadata.write_text(json.dumps(manifest,indent=2)+"\n")
     print("LL_GEOMETRY_SOURCE_EXPORTED",source_id,
