@@ -12,9 +12,9 @@
     {
       "asset_id": "ll_master_vehicle_city_sedan",
       "refinement_applied": true,
-      "original_sha256": "d43ba2b37589e5a50793f7e926f6a79effdf88b2eabd10ced70adccd6093f4bb",
+      "original_sha256": "654254e084bd77c576646b5752eb72fb0adc7c7e88fcb43bde41edcf3add39d5",
       "rebuilt_source_recipe_sha256": "4148c9018e42fdcb6430ee0e9046cf9f44288dd11a68aa1f7cb24e9b0182e28c",
-      "glb_sha256": "ca7705c1b10ad240b90e9f3ca8e76e3fcc02c84532de504adb60d8366aba7fb1",
+      "glb_sha256": "f8ed06dbdc8f8cd6d8434ffc9d3b2c7cc104c5c5eaade1b2de1fccfd39b53d49",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.7936,
@@ -51,9 +51,9 @@
     {
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "refinement_applied": true,
-      "original_sha256": "b469cbaef9ddef0bdc83f8610672c65d3724fef23dc7e9cd83d6d175dd7351c7",
+      "original_sha256": "dd660e44d116f9fafeaf966523ba427f6a0b80585930895d07fdf40fe70a6976",
       "rebuilt_source_recipe_sha256": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
-      "glb_sha256": "37188e185b64721bb6c6c94c27b072ce3c76d4c415a793cb2dfd30ab7e030823",
+      "glb_sha256": "e51536af468fa25bcb6aae44bdaff96431c1e5467776983eb661944e65094e76",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         3.89596,
@@ -90,9 +90,9 @@
     {
       "asset_id": "ll_master_vehicle_compact_suv",
       "refinement_applied": true,
-      "original_sha256": "43b6c8d27c3c75aded14a0e2eeb02f0ade65ce1a23f65a494ad058e3e3037149",
+      "original_sha256": "f432d362c043b3e25ed903813a5e6684e58a3a343ff9dc60429fbbf3209009e9",
       "rebuilt_source_recipe_sha256": "75d42d30403bd250c106250a910324af4000628d0392b651c28918c5d04b34d4",
-      "glb_sha256": "5bb43d8322b536928b42decd415d161e21536f083bce84dddf921b6c4e444ae7",
+      "glb_sha256": "a1c28aee10821057640a4234a9e21aa923cc9d53d92645b74be9002b15b73042",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.44812,
@@ -129,9 +129,9 @@
     {
       "asset_id": "ll_master_vehicle_family_wagon",
       "refinement_applied": true,
-      "original_sha256": "b1f0e690c33fe361ef376651ca522ebc115c5c37f88ea2b4ff272d90ee954273",
+      "original_sha256": "3d47cb80b595d13836d6b4467d9e5ddf6361a6465a494193b8daf1b889cf3a5a",
       "rebuilt_source_recipe_sha256": "0fb5801a1359d2110f55d900aca39b219d707c0386272c82c5dcd9bbef59a4fb",
-      "glb_sha256": "a1cd56555b41d23aacb11c0f0b3c91b2971215fcb440641d2a82eafbbf3b5e40",
+      "glb_sha256": "9b343f10db1d1e6c3701293372c1441084a4108ac33188503be93d9ca1a0dbb1",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.86774,
@@ -168,9 +168,9 @@
     {
       "asset_id": "ll_master_vehicle_service_security",
       "refinement_applied": true,
-      "original_sha256": "9caf052119946beb8869dd4daa87541a379e0ef4bd3ed8e368b02bcbd65c23be",
+      "original_sha256": "e1cd0cdd72dd88e6208a1754b080b9b00efcf9b9b9c1b794f401516fb9870645",
       "rebuilt_source_recipe_sha256": "40e6f06422a4b0c08a55030b4f2dc09bc89c049a7e7da1276d37acf12c12f639",
-      "glb_sha256": "ff6990a9d15793bdfe423fea698e940833a79e80e372150eede34d846cd28a60",
+      "glb_sha256": "722f0b6a7299729ad12221b6ba17afa0ccd369d56937eaaa8269582f5e01cf69",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.7936,
@@ -207,9 +207,9 @@
     {
       "asset_id": "ll_master_vehicle_sport_coupe",
       "refinement_applied": true,
-      "original_sha256": "f08d99753c37b67fb24f6fac031ea4dbc9950ceb0bd605c235e488ddcbfc43ea",
+      "original_sha256": "1cd9ba395a590e216c34fb400e42c39eb51b280f6fff7796727d494ede818205",
       "rebuilt_source_recipe_sha256": "12b1193027f54e6e1698cfaf1ac885fe1f264d63b636ab946bd06551ae40b6c7",
-      "glb_sha256": "b3cf0a2d518713dfcd3d2530d260bd5b3dafab1bde76165b38d20c7a6bad9d59",
+      "glb_sha256": "a546df22c94ebdffc332f58d5cf1f5299353e2bba293d319dca1c58be3301610",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.48596,
@@ -246,9 +246,9 @@
     {
       "asset_id": "ll_master_vehicle_work_pickup",
       "refinement_applied": true,
-      "original_sha256": "f0b9287063245ea265aa48928f77537fb0e86c56b2cfd86aeaf7b589804883bc",
+      "original_sha256": "f3226cf120ed697ac84226baa26d80cf00dbee016570b4670f819184d862efb1",
       "rebuilt_source_recipe_sha256": "8975febad9e3d517490556cef2ad728644c2769855e5174443638cbc2973e749",
-      "glb_sha256": "8ec0d9b2f7ec8ab40774020c80617ea97ff20bdf8b257a79dd880d334c0f6a48",
+      "glb_sha256": "e95a4d6611137716a513523e7eb99612dbf2b23dc3c029a9335c6f237e9635ec",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         5.19874,
@@ -313,7 +313,7 @@
         "tapered_shaft",
         "functional_tool_head"
       ],
-      "silhouette_overlap_diagnostic": 0.4,
+      "silhouette_overlap_diagnostic": 0.6552,
       "geometry_source_verified": true,
       "visual_quality_approved": false,
       "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
@@ -350,7 +350,7 @@
         "tapered_shaft",
         "functional_tool_head"
       ],
-      "silhouette_overlap_diagnostic": 0.5,
+      "silhouette_overlap_diagnostic": 0.626,
       "geometry_source_verified": true,
       "visual_quality_approved": false,
       "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
@@ -359,7 +359,7 @@
     {
       "asset_id": "ll_tools_crowbar",
       "refinement_applied": true,
-      "original_sha256": "741721b04f2aae457a5b4445c911cf54f527093d42cfaf90268616408587ad07",
+      "original_sha256": "f81e810a564f81a16f8bf1aaa07d1b2dfd2f2e7cf61a17883b8486f2025be1e4",
       "rebuilt_source_recipe_sha256": "27ed42d3bf1eea4578b646f2b75495ce550d529c419eaa98531226f4381bcea6",
       "glb_sha256": "d524fe469d9bba3c1b819d6213b5904a8f16692a7e6b6f309157a3c04e1fe3f8",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
@@ -387,7 +387,7 @@
         "tapered_shaft",
         "functional_tool_head"
       ],
-      "silhouette_overlap_diagnostic": 0.4643,
+      "silhouette_overlap_diagnostic": 0.5622,
       "geometry_source_verified": true,
       "visual_quality_approved": false,
       "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
@@ -424,7 +424,7 @@
         "tapered_shaft",
         "functional_tool_head"
       ],
-      "silhouette_overlap_diagnostic": 0.3333,
+      "silhouette_overlap_diagnostic": 0.6142,
       "geometry_source_verified": true,
       "visual_quality_approved": false,
       "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
