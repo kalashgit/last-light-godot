@@ -19,7 +19,8 @@ func _ready() -> void:
     if data.get("approval_status", "") != "CALIBRATION_ONLY":
         validation_error = "fixture cannot import or claim approval"
         return
-    if data.get("logical_tile_px", []) != [80, 40]:
+    var logical_tile: Array = data.get("logical_tile_px", [])
+    if logical_tile.size() != 2 or int(logical_tile[0]) != 80 or int(logical_tile[1]) != 40:
         validation_error = "logical tile mismatch"
         return
     var cases: Dictionary = data.get("cases", {})
