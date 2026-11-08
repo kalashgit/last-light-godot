@@ -58,3 +58,12 @@ GitHub source and artifact index: `assets/master_library/README.md` and `registr
 **A completed geometry master counts as valid stage progress even if materials or 2.5D outputs are pending or visually inadequate.** Keep its editable source and content hash; never redo a correct mesh because the material pipeline failed. Record independent geometry/material/render/engine/gameplay/visual-approval states per asset, without conflating status or promising all finished in two hours. Reuse shared source meshes and material parameters to derive variants; don't independently sculpt every paint/wear/color variant.
 
 Authoritative detailed contract: `docs/CODEX_COMPLETE_CENSUS_MASTER_FACTORY_V2.md`, "Geometry-first production doctrine".
+
+## Verified geometry-first 3D master source library (2026-11-08)
+**Source branch:** `codex/last-light-geometry-reconstruction-v1-20261108`.
+**Worker handover:** `docs/GEOMETRY_FIRST_SOURCE_LIBRARY_V1.md`.
+**Evidence:** GitHub Actions [360 real 3D models PASS](https://github.com/kalashgit/last-light-godot/actions/runs/42460745955), [60 original models + 2.5D sample renders PASS](https://github.com/kalashgit/last-light-godot/actions/runs/42460565389).
+
+The existing 360 source asset IDs (40 Golden semantic reconstructions, 300 original item catalog, 3 furniture, 5 actor pose meshes, 12 vehicle archetypes) were actually exported into editable `.blend` and portable `.glb` files, valid hash/size checks and original Blender source code. **Do not regenerate these as planes or pretend source geometry has Golden textures/animations/gameplay.** Source design still needs founder silhouette review. Two flagged dimensions to refine: `ll_tools_awl` and `ll_tools_cross_screwdriver`. Reuse proper source geometry, increase fidelity by family, apply independent material/texture pass, render true 2.5D atlases, and use the already proven Godot resource importer for playback/interaction.
+
+The 360 records are the **currently cataloged subset**, NOT the entire larger Notion census or 20k source research records. Expand the census diligently; source geometry progress counts separately from final art approvals.
