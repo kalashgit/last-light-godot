@@ -77,3 +77,47 @@ report["not_verified"]=["exact Godot visual projection comparison", "founder Gol
                        "Godot import", "real iPhone/Xogot device"]
 report_path.write_text(json.dumps(report,indent=2)+"\n")
 print("F12_REAL_FRAMES_QA_PASS",len(records),json.dumps(checks,sort_keys=True))
+
+# Convert executed Blender results into F12's shared manifest schema and
+# run the *same* independent validator used by pull-request regressions.
+# No semantic canonical master IDs are claimed for this calibration batch.
+from validate_render_manifest import validate_manifest
+source_projection=results["cube"]["camera_measurement"]
+for slug, count in expected.items():
+    poses=[r for r in records if r["slug"]==slug]
+    directions=16 if slug=="vehicle" else 8 if slug=="cow" else 1
+    expected_source_frames=sorted({r["source_frame"] for r in poses})
+    if len(expected_source_frames)*directions!=count:
+        raise RuntimeError("unexpected source frame sequence "+slug)
+    frame_index={value:i for i,value in enumerate(expected_source_frames)}
+    payload={
+        "schema_version":1,
+        "production_status":"CALIBRATION_ONLY",
+        "calibration_subject":slug,
+        "source_blend_sha256":results[slug]["source_sha"],
+        "source_identity_approval":"NOT_A00_RELEASE_APPROVED",
+        "godot_import_status":"NOT_RUN",
+        "projection":source_projection,
+        "direction_count":directions,
+        "heading_degrees":[round(i*360.0/directions,5) for i in range(directions)],
+        "frames":[{
+            "clip":"walk_sample" if slug=="cow" else "freezer_open" if slug=="fridge" else "static",
+            "direction":r["heading"],
+            "frame":frame_index[r["source_frame"]],
+            "duration_ms":100,  # Technical placeholder, NOT W07 gameplay approval
+            "ground_pivot_px":r["origin_px"],
+            "png":r["png"],
+            "source_sha256":r["sha256"]
+        } for r in poses],
+        "atlases":[]
+    }
+    manifest_file=root/(slug+"_f12_render_manifest.json")
+    manifest_file.write_text(json.dumps(payload,indent=2)+"\\n")
+    validation=validate_manifest(payload,root)
+    if validation["frame_count"]!=count:
+        raise RuntimeError("independent manifest validation frame mismatch")
+    checks[slug]["f12_manifest"]=manifest_file.name
+    checks[slug]["f12_manifest_validation"]=validation["status"]
+report["image_qa"]=checks
+report_path.write_text(json.dumps(report,indent=2)+"\\n")
+print("F12_STANDARD_MANIFESTS_VALIDATED",len(expected),flush=True)
