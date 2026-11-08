@@ -171,7 +171,7 @@ def build_one(job,out,preview_png=False,skip_existing=False):
     glb=dest/"model.glb"
     # Preserve the original editable Blender procedural source with all
     # modifiers/material zones and independent part names.
-    bpy.ops.wm.save_as_mainfile(filepath=str(blend.resolve()),compress=True)
+    bpy.ops.wm.save_as_mainfile(filepath=str(blend.resolve()),compress=False)
     glb_export(glb,objects)
     if preview_png:
         preview(dest/"preview_source.png",job,objects)
