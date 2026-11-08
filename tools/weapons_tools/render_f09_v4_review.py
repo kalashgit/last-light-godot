@@ -59,7 +59,10 @@ def main():
                 ob.matrix_world = rotation @ transforms[ob.name]
             bpy.context.view_layer.update()
             name = "review_heading_%02d.png" % heading
-            # Inspection-only lens: canonical F12/world camera is unchanged.\n            # Fit the entire longest axis with one constant scale across headings.\n            review_scale = max(.40, max(item["dimensions_m"]) * 1.85)\n            render_png(scene, folder / name, scale=review_scale, samples=4)
+            # Inspection-only lens: canonical F12/world camera is unchanged.
+            # Fit the entire longest axis with one constant scale across headings.
+            review_scale = max(.40, max(item["dimensions_m"]) * 1.85)
+            render_png(scene, folder / name, scale=review_scale, samples=4)
             outputs.append(name)
         for ob in objects:
             ob.matrix_world = transforms[ob.name]
