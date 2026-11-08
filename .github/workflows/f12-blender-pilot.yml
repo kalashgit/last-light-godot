@@ -35,7 +35,7 @@ jobs:
       - name: Install headless Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender libegl1 libgl1 libgl1-mesa-dri libxrender1 libxi6
           blender --version
       - uses: actions/setup-python@v5
         with:
