@@ -191,60 +191,62 @@ def refine_vehicle(job):
                 original_parts_replaced=removed)
 
 def refine_hand_tool(job):
-    from render_v3_recovery import mat,pipe,cube
+    from render_v3_recovery import mat,pipe,cube,cyl
     family=SUPPORTED_TOOLS[job["asset_id"]]
-    # Original catalog tools remain stored in immutable V1 master archive.
-    # Remove them only from this *separate new output scene* and rebuild
-    # hand-tool geometry with consistent handles and functional tapered heads.
+    # Item catalog coordinates are X width, Y LONG AXIS, Z thickness. Do not
+    # mistake the short vertical thickness for shaft length: this was a
+    # real first-run QA failure, now enforced by measured physical dimensions.
     for ob in list(bpy.context.scene.objects):
-        if ob.type in {"MESH","CURVE","FONT"} and not ob.name.startswith("Camera"):
+        if ob.type in {"MESH","CURVE","FONT"}:
             bpy.data.objects.remove(ob,do_unlink=True)
-    w,d,h=job["dimensions_m"]
-    steel=mat("LL REFINE hand tool original hardened steel",(.42,.45,.45),.67,.4)
-    polymer=mat("LL REFINE hand tool original dark rubber",(.135,.145,.14),.02,.83)
-    accent=mat("LL REFINE hand tool graphite grip",(.32,.35,.32),.08,.6)
+    w,length,thickness=job["dimensions_m"]
+    z=thickness*.51
+    steel=mat("LL REFINE original forged steel",(.42,.45,.45),.67,.4)
+    polymer=mat("LL REFINE original grippy rubber",(.135,.145,.14),.02,.83)
+    accent=mat("LL REFINE grip ring graphite",(.32,.35,.32),.08,.6)
     if family=="crowbar":
-        # Proper actual bent/tapered forged steel lever, no flat box clone.
-        r=max(.012,min(w,d)*.14)
-        points=[(-w*.27,0,h*.065),(0,0,h*.12),(0,0,h*.83),
-                (w*.30,0,h*.97),(w*.47,0,h*.92)]
-        pipe("LL REFINE curved forged crowbar",points,r,steel)
-        tapered_rod("crowbar flattened pry edge",points[-2],points[-1],r,r*.30,steel)
+        # Physically bent rod: long Y shaft, short X prying sections, not boxes.
+        radius=min(w,thickness)*.19
+        path=[(-w*.31,-length*.48,z*.6),(0,-length*.37,z),
+              (0,length*.29,z),(w*.30,length*.45,z),
+              (w*.47,length*.41,z*.7)]
+        pipe("LL REFINE curved forged crowbar",path,radius,steel)
+        tapered_rod("crowbar tapered pry edge",path[-2],path[-1],
+                    radius,radius*.32,steel)
     else:
-        grip_len=h*(.42 if family=="awl" else .36)
-        grip_radius=max(.012,min(w,d)*.38)
+        grip_len=length*(.40 if family=="awl" else .34)
+        grip_radius=min(w,thickness)*.42
+        y0=-length*.48
+        # Long tool Y axis; a true tapered handle, geometric bit, and collar.
         tapered_rod("reusable ergonomic molded handle",
-                    (0,0,0),(0,0,grip_len),grip_radius*.8,
-                    grip_radius,polymer)
-        # Knurled or ergonomic grip bands, intentionally sparse.
+                    (0,y0,z),(0,y0+grip_len,z),
+                    grip_radius*.88,grip_radius,polymer)
         for i in (1,2,3):
-            z=grip_len*(.27+i*.16)
-            from render_v3_recovery import cyl
-            cyl("LL REFINE rubber grip reinforcement",(0,0,z),
-                grip_radius*.94,.008,accent,vertices=12)
-        shaft_z=grip_len
-        shaft_length=h-shaft_z
-        shaft_radius=max(.0035,min(w,d)*.105)
-        tapered_rod("functional steel shaft",(0,0,shaft_z),
-                    (0,0,h*.925),shaft_radius,shaft_radius*.58,steel)
+            y=y0+grip_len*(.27+i*.17)
+            cyl("LL REFINE grip collar",(0,y,z),grip_radius*.92,
+                .008,accent,vertices=12,rotation=(math.pi/2,0,0))
+        shaft_start=y0+grip_len
+        sh_radius=max(.003,min(w,thickness)*.13)
+        tapered_rod("functional steel shaft",(0,shaft_start,z),
+                    (0,length*.37,z),sh_radius,sh_radius*.68,steel)
         if family=="awl":
-            tapered_rod("awl genuine piercing tip",(0,0,h*.915),
-                        (0,0,h),shaft_radius*.62,.0008,steel,segments=12)
+            tapered_rod("awl genuine piercing tip",(0,length*.37,z),
+                        (0,length*.49,z),sh_radius*.7,.0007,steel,segments=12)
         elif family=="cross_screwdriver":
-            # Cross shaped metal bit in the terminal head, not another label.
-            tapered_rod("cross driver bit",(0,0,h*.915),
-                        (0,0,h),shaft_radius*.65,shaft_radius*.48,steel)
-            cube("LL REFINE cross driver transverse ridges",(0,0,h*.98),
-                 (shaft_radius*1.5,shaft_radius*.32,.009),steel,.001)
-            cube("LL REFINE second orthogonal cross ridge",(0,0,h*.98),
-                 (shaft_radius*.32,shaft_radius*1.5,.009),steel,.001)
+            tapered_rod("cross driver bit",(0,length*.37,z),
+                        (0,length*.49,z),sh_radius*.7,sh_radius*.48,steel)
+            cube("LL REFINE cross driver horizontal ridge",(0,length*.47,z),
+                 (sh_radius*1.8,.008,sh_radius*.45),steel,.001)
+            cube("LL REFINE orthogonal ridge",(0,length*.47,z),
+                 (sh_radius*.45,.008,sh_radius*1.8),steel,.001)
         else:
-            tapered_rod("flat driver bit",(0,0,h*.925),
-                        (0,0,h),shaft_radius*.8,shaft_radius*.3,steel)
-            cube("LL REFINE flat bit blade",(0,0,h*.987),
-                 (shaft_radius*2.2,shaft_radius*.38,.022),steel,.001)
+            tapered_rod("flat driver bit",(0,length*.37,z),
+                        (0,length*.48,z),sh_radius*.7,sh_radius*.38,steel)
+            cube("LL REFINE flat driver working tip",(0,length*.47,z),
+                 (sh_radius*2.3,.010,sh_radius*.55),steel,.001)
     return dict(specialists=["LL-082","LL-084","LL-086","LL-087","LL-090","LL-110"],
-                repaired_geometry=["semantic_grip","tapered_shaft","functional_tool_head"])
+                repaired_geometry=["real_Y_axis_physical_dimensions",
+                                   "semantic_grip","tapered_shaft","functional_tool_head"])
 
 def apply(job):
     """Return explicit rule result, never falsely approve unaffected jobs."""
