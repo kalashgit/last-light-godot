@@ -64,13 +64,13 @@ def main():
             # Inspection-only lens: canonical F12/world camera is unchanged.
             # Fit the entire longest axis with one constant scale across headings.
             review_scale = max(.40, max(item["dimensions_m"]) * 1.85)
-            render_png(scene, folder / name, scale=review_scale, samples=4)
+            render_png(scene, folder / name, scale=review_scale, samples=24)
             outputs.append(name)
         for ob in objects:
             ob.matrix_world = transforms[ob.name]
         bpy.context.view_layer.update()
         render_png(scene, folder / "review_icon.png",
-                   scale=max(.36, item["dimensions_m"][1] * 1.55), samples=4)
+                   scale=max(.36, item["dimensions_m"][1] * 1.55), samples=24)
         outputs.append("review_icon.png")
         report.append({"source_asset_id": item["asset_id"],
                        "outputs": outputs, "resolution_px": [384, 384],
