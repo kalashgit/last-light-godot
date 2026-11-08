@@ -17,6 +17,13 @@ spec.loader.exec_module(validator)
 
 
 class F05ArtifactGateTests(unittest.TestCase):
+    @staticmethod
+    def make_glb():
+        scene = json.dumps({"asset": {"version": "2.0"}, "skins": [{}],
+                            "animations": [{}], "meshes": [{}]}).encode()
+        scene += b" " * (-len(scene) % 4)
+        return b"glTF" + struct.pack("<II", 2, 20 + len(scene)) + struct.pack("<I4s", len(scene), b"JSON") + scene
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -38,7 +45,7 @@ class F05ArtifactGateTests(unittest.TestCase):
             "calibration.png": b"\\x89PNG\\r\\n\\x1a\\n" + struct.pack(">I", 13) +
                 b"IHDR" + struct.pack(">IIBBBBB", 2, 2, 8, 6, 0, 0, 0) + b"0" * 24,
             "f05_noncanonical_calibration.blend": b"BLENDER-v400" + b"0" * 32,
-            "f05_noncanonical_calibration.glb": b"glTF" + struct.pack("<II", 2, 32) + b"0" * 20,
+            "f05_noncanonical_calibration.glb": self.make_glb(),
         }
         for name, payload in files.items():
             (self.path / name).write_bytes(payload)
@@ -73,6 +80,16 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.manifest["clips"]["walk"]["contract"] = "APPROVED"
         self.save()
         self.assertTrue(validator.validate(self.path))
+
+    def test_glb_missing_skin_fails(self):
+        scene = json.dumps({"asset": {"version": "2.0"}, "animations": [{}],
+                            "meshes": [{}]}).encode()
+        scene += b" " * (-len(scene) % 4)
+        payload = b"glTF" + struct.pack("<II", 2, 20 + len(scene)) + struct.pack("<I4s", len(scene), b"JSON") + scene
+        (self.path / "f05_noncanonical_calibration.glb").write_bytes(payload)
+        self.manifest["sha256"]["f05_noncanonical_calibration.glb"] = hashlib.sha256(payload).hexdigest()
+        self.save()
+        self.assertIn("GLB missing skinned armature", validator.validate(self.path))
 
     def test_failed_export_fails(self):
         self.manifest["qa"]["glb_export"] = "FAIL"
