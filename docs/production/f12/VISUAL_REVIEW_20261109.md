@@ -69,3 +69,17 @@ After inspecting the original detached-top-door contact sheet, the F12 freezer a
 **Independent visual check of the corrected `fridge_native_review_sheet.png`:** all seven frames show the top door connected at the cabinet hinge; it no longer floats detached above the refrigerator. Mark **ATTACHMENT_VISUAL_CORRECTION: PASS (technical calibration)**. Do not mark Golden art or W01/W05 runtime gameplay passed. The cabinet still requires better material/geometry fidelity and a separate Godot door-collision/interaction/save-state test.
 
 The original failing review evidence is preserved above for regression comparison. This amendment supersedes only the earlier freezer-detachment failure; hatchback geometry and cow coat/anatomy defects remain open.
+
+## 5. Corrected F01 freezer hinge verification — real Blender execution
+
+**Correction commit:** `08e75066ec3ecbb3c1b52a8fe28bf5b4dc229deb`
+
+**Successful corrected Blender run:** https://github.com/kalashgit/last-light-godot/actions/runs/42533683097
+
+**Artifact:** https://github.com/kalashgit/last-light-godot/actions/runs/42533683097/artifacts/13638880512
+
+Replaced unreliable parent-inverse reparenting of the refrigerator's top door with deterministic source-space rotation around its physical hinge `(-0.341,-0.378,1.405)`. The render loop asserts the source door-panel center stays within 35 projected pixels of the hinge across all seven frames. **Measured maximum distance: 15.22319 px**. The original source is kept editable. After rendering, inspected the actual seven-frame PNG review sheet and last open pose: freezer panel now visibly remains attached and reveals the hollow interior. The previous detached-door **specific geometry defect is FIXED and visually verified**.
+
+The technical batch still consists of cube 1 + original compact hatchback 16 + F07 cow 16 + refrigerator 7 = 40 true Blender-rendered frames. The programmatic source, alpha, frame-count, anchor and standardized F12 manifest tests pass. These tests do **not** certify final hinge clearance with game collision or lower refrigerator door animation. Artistic Golden approval, W09 independent review, W01 Godot gameplay import and real iPhone performance remain **NOT RUN**. Vehicle/cow art defects remain open.
+
+The initial unchecked item above **"Attached freezer panel visually corrected and re-rendered" is now satisfied by this specific run**, without advancing the remaining approval stages.
