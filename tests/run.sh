@@ -36,3 +36,8 @@ run_checked --headless --path . --script tests/save_migration_edges.gd
 run_checked --headless --path . --script tests/save_isolation.gd
 
 run_checked --headless --path . --script tests/world_art.gd
+
+# Integration candidate: merged #18/#19/#25/#26 interfaces in one build.
+run_checked --headless --path . --script tests/integration.gd
+python3 -m unittest discover -s tests -p 'test_*.py'
+python3 tests/world_art_test.py
