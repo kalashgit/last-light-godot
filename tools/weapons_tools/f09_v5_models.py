@@ -16,43 +16,47 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
               (.020,.095),(-.020,.095),(-.021,.071),(-.012,.049)],
              .014,m["forged"],z,.0020)
         hoop("V5 handle hanging eye",0,-.121,z,.0060,.0030,m["edge"])
-        # V7: real crescent geometry uses opposing PARALLEL planar grip faces.
-        # The open throat is a negative-space channel, not two inward-curved hooks.
-        form("V7 fixed crescent jaw continuous forged head",
-             [(-.020,.072),(-.038,.080),(-.050,.105),(-.052,.132),
-              (-.046,.156),(-.034,.170),(-.021,.170),(-.013,.160),
-              (-.015,.146),(-.023,.137),(-.026,.113),(-.018,.097),
-              (.001,.087)],
-             .019,m["forged"],z,.0018)
-        # Independent moving jaw: parallel contact face x=.013 .. .018
-        # engages the same flat above the worm slider and leaves a real gap.
-        form("V7 sliding jaw forged moving half",
-             [(.002,.080),(.026,.081),(.039,.098),(.045,.117),
-              (.044,.144),(.035,.155),(.023,.154),(.015,.144),
-              (.016,.132),(.022,.121),(.017,.107),(.006,.097)],
-             .018,m["forged"],z,.0018)
-        form("V7 fixed jaw bright flat contact",
-             [(-.014,.147),(-.012,.146),(-.011,.159),(-.014,.161)],
-             .0011,m["edge"],z+.010,.0001)
-        form("V7 moving jaw bright flat contact",
-             [(.015,.132),(.018,.132),(.018,.143),(.015,.145)],
-             .0011,m["edge"],z+.010,.0001)
-        form("V5 worm-guide bridge beneath throat",
-             [(-.006,.078),(.026,.078),(.026,.093),(-.006,.093)],
-             .010,m["oxide"],z-.008,.0006)
-        # The textured worm is recessed below jaw faces to avoid confusing
-        # the opening; 6 broad flutes, not 12 protruding spikes.
-        tube("V5 worm adjustment wheel body",
-             (.012,.086,.026),(.012,.101,.026),.010,.010,m["edge"],24)
-        for i in range(6):
-            a=math.tau*i/6
-            x=.012 + .010*math.cos(a)
-            zz=.026 + .010*math.sin(a)
-            tube("V5 worm low-profile knurl %02d" % i,
-                 (x,.087,zz),(x,.100,zz),.00065,.00065,m["oxide"],8)
-        form("V5 rubbed steel on fixed gripping face",
-             [(-.024,.128),(-.021,.132),(-.023,.143),(-.026,.141)],
-             .001,m["edge"],z+.010,.0001)
+        # V8: crescent head is deliberately OFFSET from the shank axis.
+        # Larger forged fixed jaw, shorter blunt slider, and nearly planar
+        # gripping faces. The adjuster is *inside* the neck, not dangling.
+        form("V8 offset fixed head with long angled fixed jaw",
+             [(-.023,.070),(-.040,.078),(-.060,.099),(-.071,.125),
+              (-.070,.145),(-.058,.164),(-.035,.173),(-.023,.171),
+              (-.022,.158),(-.029,.150),(-.037,.140),(-.040,.125),
+              (-.033,.110),(-.015,.099),(.005,.092)],
+             .018,m["forged"],z,.0015)
+        # The movable jaw is shorter, with a broad angled back and
+        # a flat left-facing bite; it must not look like another hook.
+        form("V8 compact translating crescent jaw",
+             [(.002,.082),(.030,.081),(.043,.095),(.049,.112),
+              (.048,.140),(.040,.156),(.025,.156),
+              (.019,.147),(.020,.132),(.020,.116),(.010,.103)],
+             .0175,m["forged"],z,.0013)
+        # Visible small polished contact facets make the opposing flats legible.
+        form("V8 fixed parallel gripping flat",
+             [(-.038,.126),(-.035,.128),(-.022,.157),(-.025,.160)],
+             .0013,m["edge"],z+.0095,.0001)
+        form("V8 sliding jaw vertical gripping flat",
+             [(.018,.118),(.021,.118),(.021,.146),(.018,.147)],
+             .0013,m["edge"],z+.0095,.0001)
+        # Lowered bridge under the jaws: recess wheel into metal body.
+        form("V8 machined enclosed worm housing",
+             [(-.010,.075),(.032,.075),(.035,.101),(-.013,.101)],
+             .010,m["forged"],z-.006,.0006)
+        # Steel thumbwheel top face is above housing for a realistic cylinder
+        # with a few shallow knurl marks. No detached bottom blob.
+        tube("V8 inset adjustment thumbwheel",
+             (.016,.088,.044),(.016,.088,.054),.010,.010,m["edge"],24)
+        for i in range(8):
+            angle=math.tau*i/8
+            x=.016+.0090*math.cos(angle)
+            y=.088+.0090*math.sin(angle)
+            tube("V8 subtle thumbwheel notch %02d"%i,
+                 (x,y,.054),(x,y,.055),.0011,.0011,m["oxide"],8)
+        # Short steel-rubbed flat on handle instead of multiple scratches.
+        form("V8 forged handle contact wear",
+             [(-.004,-.072),(.002,-.072),(.002,.027),(-.004,.027)],
+             .0006,m["edge"],z+.008,.0001)
     elif kind == "saw":
         # Main saw body: tapered plate with 24 integrated real tooth notches,
         # instead of many disconnected polygonlets intersecting the blade.
@@ -79,9 +83,11 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
              .008,m["forged"],z,.0006)
         # Full D-loop and broad cheek bridge make an actual tool handle,
         # not an isolated floating wood ring.
-        loop=[(-.065,-.223,z),(-.029,-.239,z),(.006,-.233,z),
-              (.034,-.211,z),(.039,-.179,z),(.031,-.143,z),
-              (-.022,-.118,z),(-.066,-.139,z),(-.082,-.185,z)]
+        # Flatter D shape with a straighter rear palm rest, not a round donut.
+        loop=[(-.077,-.211,z),(-.066,-.230,z),(-.014,-.235,z),
+              (.019,-.224,z),(.038,-.197,z),(.034,-.161,z),
+              (.018,-.136,z),(-.039,-.117,z),(-.074,-.141,z),
+              (-.084,-.182,z)]
         closed_sweep("V5 continuous wooden D-grip",loop,m["wood"],.014,20)
         form("V5 solid wooden thumb cheek connected to blade",
              [(-.062,-.155),(-.030,-.130),(.022,-.132),
