@@ -59,33 +59,44 @@ def material_maps(recipe,size):
     wear=np.zeros((size,size),dtype=np.float32)
     local_ao=np.zeros((size,size),dtype=np.float32)
     if family=="painted_metal":
-        orange=.035*(fine-.5)+.018*(mid-.5)
-        # Fine micro-scuff source mask only: per-object exposed-edge wear is applied in Blender.
-        scuff=np.clip((fine-.66)*1.5,0,.25)
-        wear=np.clip(.08*mid+.16*scuff,0,1)
-        variation=orange-.07*wear
-        height=.48+.04*(fine-.5)+.025*(low-.5)
-        rough=np.clip(recipe["roughness"]+.07*(low-.5)+.12*scuff,0,1)
-        metal=np.full((size,size),recipe["metallic"],dtype=np.float32)
+        # Clustered primer exposure, not an indiscriminate bright rust speckle.
+        chip_field=.48*low+.35*mid+.17*fine
+        chips=np.clip((chip_field-.64)*13,0,1)**1.5
+        scuff=np.clip((fine-.61)*1.8,0,.30)
+        wear=np.clip(chips+.10*scuff,0,1)
+        variation=.035*(fine-.5)+.027*(mid-.5)-.11*wear
+        height=np.clip(.52+.024*(fine-.5)+.018*(mid-.5)-.13*chips,0,1)
+        rough=np.clip(recipe["roughness"]+.085*(low-.5)+.19*chips+.10*scuff,0,1)
+        metal=np.clip(recipe["metallic"]*(1-chips)+.24*chips,0,1)
     elif family=="wood":
-        # Periodic wood fibers oriented lengthwise in X. Use UV axis control on each real board.
-        warped=y+.018*np.sin(2*np.pi*x*3)+.032*(low-.5)
-        bands=np.sin(2*np.pi*(warped*24+2.1*mid))
-        fibers=np.sin(2*np.pi*(warped*65+.7*fine))
-        pores=np.maximum(0,mid-.55)
-        variation=.22*bands+.08*fibers+.17*(low-.5)-.08*pores
-        height=np.clip(.5+.14*bands+.045*fibers+.08*(fine-.5),0,1)
-        wear=np.clip(.12*pores+.15*np.maximum(0,(.39-mid)),0,1)
-        rough=np.clip(recipe["roughness"]+.12*(fine-.5)+.10*pores,0,1)
+        # Longitudinal fibers with wandering growth boundaries and sparse knots.
+        # X is along the board. Object-specific board rotation remains a UV task.
+        knot_x=.24;knot_y=.62
+        dx=np.minimum(abs(x-knot_x),1-abs(x-knot_x))
+        dy=np.minimum(abs(y-knot_y),1-abs(y-knot_y))
+        knot=np.exp(-((dx/.105)**2+(dy/.085)**2)*2.0)
+        flow=y+.035*(low-.5)+.025*(mid-.5)+.025*knot*np.sin(2*np.pi*dx/.21)
+        rings=flow*21+1.2*(mid-.5)+.28*(fine-.5)
+        phase=np.abs((rings%1)-.5)*2
+        grain=np.clip((phase-.28)*1.9,0,1)**1.7
+        fibers=np.clip((np.abs(((flow*93+.5*fine)%1)-.5)*2-.48)*2.2,0,1)
+        pores=np.clip((fine-.62)*3,0,1)
+        variation=-.25*grain-.065*fibers+.15*(low-.5)-.14*knot-.08*pores
+        height=np.clip(.54-.15*grain-.035*fibers+.06*(fine-.5)-.045*knot,0,1)
+        wear=np.clip(.11*pores+.10*(1-grain)*np.maximum(0,.48-mid),0,1)
+        rough=np.clip(recipe["roughness"]+.11*(fine-.5)+.09*pores+.055*knot,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="fabric":
-        # Very fine periodic warp/weft kept mostly in normal map, broad shading in albedo.
-        warp=np.sin(2*np.pi*x*96);weft=np.sin(2*np.pi*y*96)
-        weave=(warp+weft)*.5
-        variation=.11*(low-.5)+.035*weave+.05*(mid-.5)
-        height=np.clip(.5+.10*weave+.04*(fine-.5),0,1)
-        wear=np.clip(.14*mid+.04*(1-weave)/2,0,1)
-        rough=np.clip(recipe["roughness"]+.03*(low-.5),0,1)
+        # Alternating warp and weft yarns; low-frequency compression source is
+        # intentionally subtle until object-specific seams and folds are supplied.
+        warp=np.sin(2*np.pi*(x*82+.003*mid))
+        weft=np.sin(2*np.pi*(y*78+.003*fine))
+        weave=.5*(warp+weft)+.24*warp*weft
+        compression=np.clip((.44-low)*2.3,0,.35)
+        variation=.11*(low-.5)+.018*weave+.035*(mid-.5)-.10*compression
+        height=np.clip(.51+.085*weave+.027*(fine-.5)-.06*compression,0,1)
+        wear=np.clip(.10*mid+.20*compression,0,1)
+        rough=np.clip(recipe["roughness"]+.06*(low-.5)-.11*compression+.025*weave,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="plastic":
         mild=.07*(low-.5)+.025*(fine-.5)
@@ -113,7 +124,9 @@ def material_maps(recipe,size):
         rust_rgb=np.array([.42,.225,.115],dtype=np.float32)
         color=color*(1-wear[:,:,None]) + rust_rgb[None,None,:]*wear[:,:,None]
     if family=="painted_metal":
-        # slight warm age patina only; keep enamel read
+        # Exposed muted primer and oxidized undercoat, not chrome chips.
+        primer=np.array([.30,.31,.29],dtype=np.float32)
+        color=color*(1-chips[:,:,None])+primer[None,None,:]*chips[:,:,None]
         color[:,:,0]=np.clip(color[:,:,0]+.014*low,0,1)
     # local mask is a texture cavity proxy, NOT mesh ambient occlusion.
     local_ao=np.clip(1-.16*np.maximum(0,.49-height)*2,0,1)
