@@ -100,6 +100,18 @@ class FullFidelityV2(unittest.TestCase):
         self.assertIn("scene.camera.data.ortho_scale=hero.ORTHO",render)
         self.assertIn("choices=(4,8,16),default=16",render)
         self.assertIn("LL_SOURCE_TO_2_5D_PASS 18",workflow)
+        self.assertIn("inventory_previews",render)
+        self.assertIn("INVENTORY_CLOSEUP_REVIEW_NOT_WORLD_SCALE_OR_GOLDEN_APPROVED",render)
+
+    def test_hatchback_source_requires_real_open_wheel_wells(self):
+        source=(ROOT/"tools/geometry_first/refine_v2.py").read_text()
+        inspector=(ROOT/"tools/geometry_first/verify_refinement_v2.py").read_text()
+        for part in ("hatchback actual cutout fender side",
+                     "hatchback aligned windshield","hatchback aligned rear hatch glass",
+                     "hatchback hood crown","front dark ventilated grille"):
+            self.assertIn(part,source)
+            self.assertIn(part,inspector)
+        self.assertIn("LL_HATCHBACK_TRUE_FENDER_CUTOUT_PASS",inspector)
 
     def test_refinement_evidence_must_match_original_and_have_unique_ids(self):
         original={"glb_sha256":"a"*64,"recipe_hash":"e"*64}
