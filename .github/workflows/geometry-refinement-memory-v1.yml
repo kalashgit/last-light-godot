@@ -1,0 +1,38 @@
+name: LAST LIGHT Refinement Memory and Transfer Gates
+on:
+  push:
+    branches: [codex/last-light-geometry-reconstruction-v1-20261108]
+    paths:
+      - 'tools/geometry_first/refinement_*'
+      - 'docs/GEOMETRY_REFINEMENT_MEMORY_STANDARD_V1.md'
+      - '.github/workflows/geometry-refinement-memory-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-refinement-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify full census and non-inflated source refinement claims
+        run: |
+          python tests/geometry_first_v1.py
+          python tools/geometry_first/refinement_memory.py --output build/geometry_first/refinement_work_orders.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("build/geometry_first/refinement_work_orders.json").read_text())
+          assert p["source_count"]==360
+          assert p["geometry_refinements_claimed"]==0
+          assert p["validated_family_recipes"]==0
+          assert p["family_counts"]=={"actor":5,"catalog":300,"furniture":3,"golden40":40,"vehicle":12}
+          print("LL_REFINEMENT_TRANSFER_COVERAGE_PASS",p["source_count"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-light-360-refinement-work-orders-v1
+          path: build/geometry_first/refinement_work_orders.json
+          retention-days: 30
