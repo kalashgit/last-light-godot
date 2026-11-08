@@ -161,7 +161,21 @@ for clip,(frames,duration) in clips.items():
         chest.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
         head.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
     action.use_fake_user=True
-rig.animation_data.action=bpy.data.actions['F05_CAL_idle']
+
+# Store every provisional action in a named NLA track. A fake-user action alone
+# is not evidence that the glTF exporter will include it.
+rig.animation_data.action = None
+for clip, (frames, duration) in clips.items():
+    track = rig.animation_data.nla_tracks.new()
+    track.name = 'F05_CAL_' + clip
+    strip = track.strips.new('F05_CAL_' + clip, 1, bpy.data.actions['F05_CAL_' + clip])
+    strip.action_frame_start = 1
+    strip.action_frame_end = frames
+    strip.mute = False
+    track.mute = False
+# Keep only idle visible for the still render; NLA tracks remain available to export.
+for track in rig.animation_data.nla_tracks:
+    track.mute = track.name != 'F05_CAL_idle'
 
 world=bpy.context.scene.world
 world.color=(.15,.15,.15)
@@ -198,7 +212,7 @@ for ob in bpy.data.objects:
 bpy.context.view_layer.objects.active=rig
 glb_error = None
 try:
-    bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True)
+    bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
 manifest={'status':'CALIBRATION_ONLY','canonical_master_id':None,'rig_version':'F05_CAL_0.1',
