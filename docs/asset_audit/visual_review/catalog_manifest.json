@@ -1,0 +1,9 @@
+{
+  "schema": "A00_VISUAL_CATALOG_V1",
+  "archive_count": 21025,
+  "r02_count": 6072,
+  "snapshot": "89d3633af5cb61fbced334e2edfdc1dfd29be23bd0581db7a45d8aa1da76484f",
+  "catalog_sha256": "b78e12ac40cd65a6ea718ce0961e7c2d98310bf09c8e878ef1eda588a81f8d65",
+  "compressed_sha256": "f8df323061842f4683c4fddfc29bcce204c0f939bb64a6da967a85aeb9b598a8",
+  "compressed_bytes": 755992
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111518">
+  <title>LAST LIGHT / Asset Review Desk</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brandmark">LL<span>·</span></div><div><strong>LAST LIGHT</strong><small>ASSET INTELLIGENCE / A00</small></div></div>
+    <div class="top-actions"><span class="save-status" id="save-status">Loading review ledger…</span><button class="button subtle" id="import-button">Import decisions</button><button class="button primary" id="export-button">Export decisions <span aria-hidden="true">↗</span></button></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div class="eyebrow"><span class="pulse"></span> RESEARCH EVIDENCE / CLASSIFICATION QA</div>
+      <h1>Visual asset catalog<span class="dot">.</span></h1>
+      <p>Inspect source references, verify proposed relationships and record classification decisions. Original art remains research-only; a classification approval is <strong>not</strong> Golden approval.</p>
+      <div class="metric-row">
+        <div class="metric"><b id="total-count">—</b><span>Source records</span></div>
+        <div class="metric"><b id="flagged-count">—</b><span>Second-pass cases</span></div>
+        <div class="metric"><b id="reviewed-count">0</b><span>Your decisions</span></div>
+        <div class="metric"><b id="remaining-count">—</b><span>Unreviewed in scope</span></div>
+      </div>
+    </section>
+    <section class="workspace" aria-label="Reference catalog">
+      <aside class="filters">
+        <h2>Explore</h2>
+        <label class="field-label" for="search">Search records</label>
+        <div class="searchbox"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Name, ID, master, family…" autocomplete="off"></div>
+        <label class="field-label" for="scope">Coverage</label>
+        <select id="scope"><option value="r02">6,072 second-pass cases</option><option value="all">All 21,025 references</option></select>
+        <label class="field-label" for="classification">Proposed classification</label>
+        <select id="classification"><option value="all">All classifications</option></select>
+        <label class="field-label" for="family">Production family</label>
+        <select id="family"><option value="all">All F01–F12 families</option></select>
+        <label class="field-label" for="review-state">Your review status</label>
+        <select id="review-state"><option value="all">Any status</option><option value="unreviewed">Not reviewed</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="needs_evidence">Needs evidence</option></select>
+        <label class="checkrow"><input id="has-parent" type="checkbox"> Has proposed parent</label>
+        <label class="checkrow"><input id="has-model" type="checkbox"> Matches existing 360 model</label>
+        <div class="filter-footer"><button class="link-button" id="reset-filters">Clear filters</button><p>All source images are third-party research. No source images are copied into the game.</p></div>
+      </aside>
+      <div class="results">
+        <div class="results-header"><div><span class="eyebrow">CATALOG</span><h2 id="result-title">Loading…</h2></div><div class="results-tools"><span id="result-summary">—</span><select id="sort" aria-label="Sort records"><option value="id">Source ID</option><option value="name">Name A–Z</option><option value="confidence">Lowest confidence first</option></select></div></div>
+        <div id="cards" class="cards" aria-live="polite"></div>
+        <div class="pagination"><button class="button subtle" id="load-more">Load more references</button><span id="loaded-count"></span></div>
+      </div>
+    </section>
+  </main>
+  <div class="modal-backdrop hidden" id="dialog" role="presentation">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <div class="modal-heading"><div class="eyebrow" id="detail-meta">SOURCE REFERENCE</div><button id="close-detail" class="close-button" aria-label="Close">×</button></div>
+      <div class="modal-grid">
+        <div class="media-panel"><div class="detail-image-wrap"><img id="detail-image" alt="Research-only source preview"><div id="image-failed" class="image-failed hidden">Thumbnail unavailable from source host.<br>Open the original file page below.</div></div><a id="original-link" target="_blank" rel="noopener noreferrer">View original source page ↗</a><p>Reference only · Do not copy source artwork into LAST LIGHT.</p></div>
+        <div class="detail-panel"><h2 id="detail-title"></h2><div class="statusline"><span class="pill" id="detail-class"></span><span class="pill muted" id="detail-family"></span></div><dl class="facts" id="detail-facts"></dl><div class="decision-form"><h3>Your classification decision</h3><label class="field-label" for="reviewer">Reviewer identifier</label><input id="reviewer" placeholder="Your name or review ID" maxlength="80"><label class="field-label" for="override">Correct classification</label><select id="override"></select><label class="field-label" for="notes">Evidence / reason</label><textarea id="notes" rows="3" maxlength="2000" placeholder="Explain any correction, merge or rejection…"></textarea><div class="decision-actions"><button class="button accept" id="accept">✓ Accept classification</button><button class="button reject" id="reject">✕ Reject classification</button><button class="button subtle" id="needs-evidence">? Needs evidence</button></div><p class="fineprint">Saved on this device until exported. Machine workers consume exported decisions only after validation and GitHub review. No action changes Notion Golden approval.</p><div class="decision-message" id="decision-message" role="status"></div></div></div>
+      </div>
+      <div class="modal-navigation"><button class="link-button" id="previous">← Previous</button><span id="detail-position"></span><button class="link-button" id="next">Next →</button></div>
+    </section>
+  </div>
+  <input type="file" accept=".jsonl,.ndjson,.json,text/plain" id="import-file" hidden>
+  <script src="catalog_embed.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
