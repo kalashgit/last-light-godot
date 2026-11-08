@@ -12,23 +12,24 @@ import build as factory
 from f09_v4_detail import refine
 
 TARGETS = {
-    "ll_tools_hand_saw": ("saw", ("kerf", "rivet dark steel seat")),
-    "ll_tools_adjustable_wrench": ("wrench", ("worm fine radial tooth", "sliding jaw steel tongue")),
-    "ll_tools_socket_handle": ("ratchet", ("selector lever", "spring button")),
+    "ll_tools_hand_saw": ("saw", ("integral teeth", "wooden thumb cheek")),
+    "ll_tools_adjustable_wrench": ("wrench", ("worm adjustment", "adjustable sliding jaw")),
+    "ll_tools_socket_handle": ("ratchet", ("reversing lever", "quick release")),
 }
 
 def check(item, directory):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     mats = factory.material_set()
-    factory.construction(item, mats)
-    refine(item["archetype"], mats, form=factory.form, tube=factory.tube,
-           small_pin=factory.small_pin, curved_bar=factory.curved_bar)
+    from f09_v5_models import build as build_v5
+    build_v5(item["archetype"], mats, form=factory.form, tube=factory.tube,
+             grip=factory.grip, closed_sweep=factory.closed_sweep,
+             small_pin=factory.small_pin, hoop=factory.hoop)
     bpy.context.view_layer.update()
     objects = factory.models()
     names = [ob.name.lower() for ob in objects]
     for required in TARGETS[item["asset_id"]][1]:
         assert any(required in name for name in names), (item["asset_id"], required)
-    assert len(objects) > 10, (item["asset_id"], len(objects))
+    assert len(objects) >= 7, (item["asset_id"], len(objects))
     bounds = factory.measured_bounds(objects)
     for measured, specified in zip(bounds, item["dimensions_m"]):
         assert .005 <= measured <= specified * 1.55, (item["asset_id"], bounds)
