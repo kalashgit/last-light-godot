@@ -34,7 +34,12 @@ import geometry as item_geometry
 from catalog import registry as catalog_registry
 from fleet_catalog import PROFILES,PALETTE
 from fleet_render import build_vehicle
-import render as actor_render
+import importlib.util
+# Several factories contain a file named render.py; bind the actor version explicitly.
+actor_module_path=ROOT/"tools/actor_factory/render.py"
+actor_spec=importlib.util.spec_from_file_location("ll_actor_source_render",actor_module_path)
+actor_render=importlib.util.module_from_spec(actor_spec)
+actor_spec.loader.exec_module(actor_render)
 from golden40_mesh import build as build_golden
 
 MODEL_TYPES={"MESH","CURVE","FONT","SURFACE"}
