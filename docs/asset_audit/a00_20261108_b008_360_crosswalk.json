@@ -1,0 +1,101 @@
+{
+  "batch_id": "A00-20261108-B008",
+  "method": "Strict lexically normalized archive filename with model-view suffix removed versus 360 geometry IDs. Matching names do not establish visual rights, original-art QA or approved dimensions.",
+  "model_manifest": "https://github.com/kalashgit/last-light-godot/blob/codex/last-light-geometry-reconstruction-v1-20261108/preview/geometry-first-all-360/batch_report.json",
+  "geometry_manifest_total": 360,
+  "source_records_examined": 4925,
+  "strict_name_matches": 6,
+  "unique_geometry_ids_matched": 5,
+  "links": [
+    {
+      "source_page_id": 175891,
+      "source_title": "File:Matchbox Model.png",
+      "source_url": "https://pzwiki.net/wiki/File:Matchbox_Model.png",
+      "geometry_asset_id": "ll_household_match_box",
+      "geometry_bounds_m": [
+        0.209,
+        0.0936,
+        0.2541
+      ],
+      "existing_model_sha": "c774a0753facaaddf4ef6a25938009c0a67c44aac5f7d97f443299ec80c7b8fe",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "PREEXISTING_NOTION_MASTER",
+      "notion_page_url": null
+    },
+    {
+      "source_page_id": 176173,
+      "source_title": "File:DentalFloss Model.png",
+      "source_url": "https://pzwiki.net/wiki/File:DentalFloss_Model.png",
+      "geometry_asset_id": "ll_medical_dental_floss",
+      "geometry_bounds_m": [
+        0.252,
+        0.16709,
+        0.10612
+      ],
+      "existing_model_sha": "4cb3784671171dd2ccb1cf5164bbca7398d7ae2c35b26ae27dc4c103050898d3",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "SEMANTIC_ADMISSION_UNRESOLVED",
+      "notion_page_url": null
+    },
+    {
+      "source_page_id": 177759,
+      "source_title": "File:DentalFloss.png",
+      "source_url": "https://pzwiki.net/wiki/File:DentalFloss.png",
+      "geometry_asset_id": "ll_medical_dental_floss",
+      "geometry_bounds_m": [
+        0.252,
+        0.16709,
+        0.10612
+      ],
+      "existing_model_sha": "4cb3784671171dd2ccb1cf5164bbca7398d7ae2c35b26ae27dc4c103050898d3",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "SEMANTIC_ADMISSION_UNRESOLVED",
+      "notion_page_url": null
+    },
+    {
+      "source_page_id": 181131,
+      "source_title": "File:BoneClub Model.png",
+      "source_url": "https://pzwiki.net/wiki/File:BoneClub_Model.png",
+      "geometry_asset_id": "ll_golden_bone_club",
+      "geometry_bounds_m": [
+        0.09345,
+        0.084,
+        0.52
+      ],
+      "existing_model_sha": "ff2dd7a0be1e9aee258402ed560e93e990f4640e9b116dd4095b46a6d4a9babc",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "B008_CANONICAL_VERIFIED",
+      "notion_page_url": "https://app.notion.com/p/412f639e237381509662cb9717cb9843"
+    },
+    {
+      "source_page_id": 181171,
+      "source_title": "File:Firewood Model.png",
+      "source_url": "https://pzwiki.net/wiki/File:Firewood_Model.png",
+      "geometry_asset_id": "ll_crafting_firewood",
+      "geometry_bounds_m": [
+        0.55,
+        0.23094,
+        0.1599
+      ],
+      "existing_model_sha": "918d854258a08fe020d878d5684250d853b361018f2b9f9ed8a0b64436bfa5dd",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "B008_CANONICAL_VERIFIED",
+      "notion_page_url": "https://app.notion.com/p/412f639e237381e4a485dafb2c8eaed2"
+    },
+    {
+      "source_page_id": 182135,
+      "source_title": "File:Shoebox Model.png",
+      "source_url": "https://pzwiki.net/wiki/File:Shoebox_Model.png",
+      "geometry_asset_id": "ll_household_shoe_box",
+      "geometry_bounds_m": [
+        0.19,
+        0.09,
+        0.2646
+      ],
+      "existing_model_sha": "7dfea158c127683b683eafcc5d6865d4a1527d31b0b510c13ac4d668f78a9832",
+      "match_method": "STRICT_NORMALIZED_FILENAME_TO_GEOMETRY_STEM",
+      "semantic_status": "PREEXISTING_NOTION_MASTER",
+      "notion_page_url": null
+    }
+  ]
+}
