@@ -1,0 +1,58 @@
+name: F12 Calibrated Blender 3D to 2.5D Pilot
+
+on:
+  pull_request:
+    branches:
+      - claude/last-light-production-director
+    paths:
+      - "tools/f12/run_blender_calibration.py"
+      - "tools/f12/package_calibration.py"
+      - ".github/workflows/f12-blender-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout isolated F12 review branch
+        uses: actions/checkout@v4
+      - name: Checkout original 3D geometry factory
+        uses: actions/checkout@v4
+        with:
+          ref: codex/last-light-geometry-reconstruction-v1-20261108
+          path: source_3d
+          persist-credentials: false
+      - name: Checkout original F07 cow procedural rig
+        uses: actions/checkout@v4
+        with:
+          ref: chatgpt/f07-animal-factory-calibration
+          path: source_animal
+          persist-credentials: false
+      - name: Install headless Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install image QA
+        run: python -m pip install "Pillow>=10,<12"
+      - name: Render original Blender calibration suite
+        run: |
+          mkdir -p build/f12
+          blender -b -t 2 --python tools/f12/run_blender_calibration.py -- "$GITHUB_WORKSPACE/build/f12" "$GITHUB_WORKSPACE/source_3d" "$GITHUB_WORKSPACE/source_animal"
+      - name: Package native preview and frame QA
+        run: python tools/f12/package_calibration.py build/f12
+      - name: Publish calibration evidence (not Golden/game ready)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-real-blender-pilot-candidate
+          path: build/f12/
+          retention-days: 14
+          if-no-files-found: warn
