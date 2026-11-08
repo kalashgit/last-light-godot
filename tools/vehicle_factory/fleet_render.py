@@ -95,13 +95,67 @@ def faces(name,vertices,material):
     solid.thickness=.015
     return ob
 
+def shaped_cabin(m,L,W,H,profile):
+    """Four-pillar greenhouse with raked ends and individually inset glazing.
+
+    Coordinates are authored from chassis proportions, not sampled from an
+    existing car. In particular, a sedan has a short rear deck whereas the
+    hatchback roof flows toward its near-vertical liftgate.
+    """
+    if profile == "sedan":
+        roof_front,roof_back=.105*L,-.235*L
+        sill_front,sill_back=.290*L,-.335*L
+        b_pillar=-.075*L
+    else:
+        roof_front,roof_back=.105*L,-.325*L
+        sill_front,sill_back=.275*L,-.420*L
+        b_pillar=-.100*L
+    roof_z=H-.065
+    shoulder_z=.855 if profile=="sedan" else .865
+    roof_half=W*.335
+    shoulder_half=W*.445
+    # Four-sided upper roof panel; bevel-softened, but no massive cuboid cabin.
+    faces("LL FLEET sculpted roof skin",[
+        (roof_back,-roof_half,roof_z),(roof_front,-roof_half,roof_z),
+        (roof_front,roof_half,roof_z),(roof_back,roof_half,roof_z)],m["roof"])
+    for side in (-1,1):
+        yr=side*roof_half
+        ys=side*shoulder_half
+        # Narrow physical frame members, allowing real empty window openings.
+        for name,a,b,rad in (
+            ("A pillar",(roof_front,yr,roof_z),(sill_front,ys,shoulder_z),.032),
+            ("B pillar",(b_pillar,yr,roof_z),(b_pillar,ys,shoulder_z),.033),
+            ("C pillar",(roof_back,yr,roof_z),(sill_back,ys,shoulder_z),.036),
+            ("window sill",(sill_back,ys,shoulder_z),(sill_front,ys,shoulder_z),.023),
+            ("roof rail",(roof_back,yr,roof_z),(roof_front,yr,roof_z),.022)):
+            pipe(name,[a,b],rad,m["body"])
+        inset=side*.011
+        for name,xf0,xf1,xb0,xb1,mat in (
+            ("front door window",b_pillar+.035,roof_front-.040,b_pillar+.037,sill_front-.060,m["glass"]),
+            ("rear door window",roof_back+.047,b_pillar-.039,sill_back+.055,b_pillar-.038,m["black_glass"])):
+            faces("LL FLEET "+name,[
+                (xf0,yr-inset,roof_z-.035),(xf1,yr-inset,roof_z-.035),
+                (xb1,ys-inset,shoulder_z+.042),(xb0,ys-inset,shoulder_z+.042)],mat)
+    faces("LL FLEET raked windshield",[
+        (roof_front,-roof_half,roof_z-.028),(roof_front,roof_half,roof_z-.028),
+        (sill_front,shoulder_half,shoulder_z+.034),
+        (sill_front,-shoulder_half,shoulder_z+.034)],m["glass"])
+    faces("LL FLEET rear windshield",[
+        (roof_back,-roof_half,roof_z-.028),(roof_back,roof_half,roof_z-.028),
+        (sill_back,shoulder_half,shoulder_z+.034),
+        (sill_back,-shoulder_half,shoulder_z+.034)],m["black_glass"])
+    pipe("windshield lower seal",[(sill_front,-shoulder_half,shoulder_z+.025),
+                                   (sill_front,shoulder_half,shoulder_z+.025)],.016,m["trim"])
+
 def cabin(m,L,W,H,profile):
     """Custom cabin geometry for each original vehicle family (x front-positive).
 
     Compact front cabins, sedans and truck hoods differ in glass/roof position.
     Full-height panel vans and buses have separate massive body volumes.
     """
-    if profile in ("bus","van","box_truck"):
+    if profile in ("sedan","hatchback"):
+        shaped_cabin(m,L,W,H,profile)
+    elif profile in ("bus","van","box_truck"):
         # Tall flat-sided coach/van body, separate stamped side windows.
         cabin_start= -L*.40 if profile=="bus" else -L*.16
         cabin_end=L*.42
@@ -241,11 +295,15 @@ def render_job(job,output,samples=12):
     L,W,H=profile["dimensions_m"]
     job_dir=output/job["job_id"];job_dir.mkdir(parents=True,exist_ok=True)
     records=[]
+    glb_exported=False
     # Camera framing depends on vehicle length but scale metadata stays explicit.
     ortho=max(8.0,L*1.28,W*3.25,H*2.80)
     for direction in range(DIR_COUNT):
         scene=base.setup()
         scene.cycles.samples=samples
+        # Headless distributions may lack OpenImageDenoiser entirely.
+        scene.cycles.use_denoising=False
+        bpy.context.view_layer.cycles.use_denoising=False
         scene.render.resolution_x=CANVAS
         scene.render.resolution_y=CANVAS
         scene.render.resolution_percentage=100
@@ -254,6 +312,20 @@ def render_job(job,output,samples=12):
         scene.camera.data.ortho_scale=ortho
         build_vehicle(job)
         bpy.context.view_layer.update()
+        if direction == 0:
+            # Preserve the editable noncanonical calibration source as evidence.
+            bpy.ops.wm.save_as_mainfile(filepath=str((job_dir/"source_calibration.blend").resolve()))
+            bpy.ops.object.select_all(action="DESELECT")
+            for source_ob in bpy.context.scene.objects:
+                if source_ob.type in ("MESH","CURVE"):
+                    source_ob.select_set(True)
+            try:
+                bpy.ops.export_scene.gltf(filepath=str((job_dir/"source_calibration.glb").resolve()),
+                                          export_format="GLB",use_selection=True)
+                glb_exported=True
+            except (RuntimeError,ImportError) as exc:
+                print("LL_FLEET_GLB_EXPORT_UNAVAILABLE",str(exc)[:200],flush=True)
+            bpy.ops.object.select_all(action="DESELECT")
         root=bpy.data.objects.new("LL_FLEET_root",None)
         bpy.context.collection.objects.link(root)
         for ob in list(bpy.context.scene.objects):
@@ -278,6 +350,8 @@ def render_job(job,output,samples=12):
         wheelbase_m=profile["wheelbase_m"],ortho_scale=ortho,
         source_canvas_px=[CANVAS,CANVAS],
         status="RENDERED_CANDIDATE_NOT_GOLDEN_APPROVED",
+        editable_blend="source_calibration.blend",
+        portable_glb="source_calibration.glb" if glb_exported else None,
         frames=records)
     (job_dir/"manifest.json").write_text(json.dumps(source,indent=2)+"\n")
     print("LL_FLEET_RENDER_DONE",job["job_id"],DIR_COUNT,flush=True)
