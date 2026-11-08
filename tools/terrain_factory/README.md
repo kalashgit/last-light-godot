@@ -55,6 +55,25 @@ on every tile edge; each corner-mask edge is determined only by its two shared
 corner bits. Tests compare every valid adjacent mask pair and colors on both
 axes. This **proves recipe boundary math**, not visual seam acceptance in Godot.
 
+## Reference-driven material refinement (8 November 2026)
+
+The first reviewed Blender output was too pale and had directional banding.
+The material correction converts original sRGB recipe colors into Blender's
+linear vertex color space before shading; this is not a change of camera or
+light rig. The next original-surface pass replaces synchronized sine-wave
+relief with low-amplitude seamless 2D value-noise relief, independently scaled
+for asphalt, paving, grass, gravel and fine indoor floors. Randomized interior
+patterns are windowed to zero value/slope on cell edges, so neighboring
+tile-material borders remain deterministic even when variants differ.
+
+Original material features stay semantic rather than generic grunge:
+grouped grass/dry patches, small localized asphalt cracks and fine aggregate,
+uneven soil, discrete gravel clusters, realistic timber plank joints and
+occasional knots, ceramic grout, and irregular concrete staining. Roughness
+remains surface-family-specific; damage/season/wetness are *not* silently
+treated as cosmetic replacements for game state. Repeat seams must be judged
+on the assembled 4×4 native-pixel visual sheet as well as math tests.
+
 ## Separate quality gates
 
 1. **G:** original editable `.blend`/GLB source, physical 1m square, hashes;

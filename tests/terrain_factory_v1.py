@@ -70,6 +70,25 @@ class TerrainFactoryV1(unittest.TestCase):
                 # Approximate derivative: no raised cliff at an adjacent tile.
                 self.assertLess(abs(recipe.height(.00001, t, variant)), 1e-9)
 
+    def test_distinct_original_materials_and_seeded_interiors(self):
+        self.assertEqual(len(recipe.RELIEF_AMPLITUDE_M), 8)
+        for name, surface in self.surfaces.items():
+            self.assertIn(surface["material"], recipe.RELIEF_AMPLITUDE_M)
+            amplitude = recipe.RELIEF_AMPLITUDE_M[surface["material"]]
+            self.assertGreater(amplitude, 0)
+            self.assertLess(amplitude, .004)
+            pixels = [recipe.surface_rgb(surface, i / 20, j / 20, 17)
+                      for i in range(21) for j in range(21)]
+            self.assertTrue(all(0 <= v <= 1 for rgb in pixels for v in rgb), name)
+            self.assertGreater(max(rgb[0] for rgb in pixels) -
+                               min(rgb[0] for rgb in pixels), .01, name)
+            a = recipe.surface_rgb(surface, .42, .37, 17)
+            b = recipe.surface_rgb(surface, .42, .37, 817)
+            self.assertGreater(max(abs(x - y) for x, y in zip(a, b)), .001, name)
+            for y in (0.0, 1.0):
+                self.assertEqual(recipe.surface_rgb(surface, .25, y, 17),
+                                 recipe.surface_rgb(surface, .25, y, 817))
+
     def test_source_compiles_without_blender(self):
         ast.parse((HERE / "build.py").read_text())
         self.assertIn("no third-party pixels", self.p["rights"].lower())

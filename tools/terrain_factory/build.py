@@ -40,6 +40,10 @@ def digest(path):
 def tile_mesh(job, surfaces):
     n = MESH_STEPS
     variant = recipe.stable_seed(job["asset_id"])
+    relief_a = recipe.RELIEF_AMPLITUDE_M[surfaces[job["a"]]["material"]]
+    relief_b = (recipe.RELIEF_AMPLITUDE_M[surfaces[job["b"]]["material"]]
+                if job["b"] else relief_a)
+    relief = max(relief_a, relief_b)
     verts = []
     rgba = []
     faces = []
@@ -47,7 +51,7 @@ def tile_mesh(job, surfaces):
         v = j / n
         for i in range(n + 1):
             u = i / n
-            verts.append((u - .5, v - .5, recipe.height(u, v, variant)))
+            verts.append((u - .5, v - .5, recipe.height(u, v, variant, relief)))
             # Blender color attributes are linear. Feeding sRGB channel values
             # directly makes earth/wood/grass nearly white after display transform.
             rgba.append((*[srgb_to_linear(c) for c in recipe.color(

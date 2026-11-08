@@ -105,42 +105,68 @@ def hex_rgb(value):
     return tuple(int(value[i:i + 2], 16) / 255.0 for i in (1, 3, 5))
 
 
+def segment_distance(u, v, a, b):
+    """Distance to a short natural surface fracture (not a traced image)."""
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t = clamp(((u - a[0]) * dx + (v - a[1]) * dy) / (dx * dx + dy * dy))
+    return math.hypot(u - a[0] - t * dx, v - a[1] - t * dy)
+
+
 def surface_rgb(surface, u, v, variant=0):
     """Original periodic material patterns, with interior-only controlled variation."""
     kind = surface["material"]
     broad = periodic_noise(u, v, 2, 47)
     mid = periodic_noise(u, v, 7, 83)
     micro = periodic_noise(u, v, 18, 133)
-    interior = window(u, v) * .11 * math.sin(
-        TAU * (u * 7 + v * 9) + (variant % 113) * .29)
-    intensity = broad * .090 + mid * .038 + micro * .024 + interior
+    # Seed-dependent patches vanish at cell borders; shared outer pigment remains
+    # phase-aligned across arbitrary neighbours (no visible per-tile border line).
+    interior = window(u, v) * (
+        .20 * periodic_noise(u, v, 4, (variant % 997) + 101) +
+        .065 * periodic_noise(u, v, 11, (variant % 919) + 307))
+    intensity = broad * .077 + mid * .034 + micro * .016 + interior
+    tint = (0.0, 0.0, 0.0)
     if kind == "ground_grass":
-        # Distinct patches and grouped fine cover, not a copy-pasted grass comb.
-        blades = periodic_noise(u, v, 12, 233)
-        intensity += .095 * blades + .045 * periodic_noise(u, v, 22, 238)
+        # Masses of sparse low ground-cover with occasional dry/thin patches.
+        tufts = periodic_noise(u, v, 12, 233)
+        dry = smoothstep(.14, .64, periodic_noise(u, v, 3, 411))
+        intensity += .095 * tufts + .034 * periodic_noise(u, v, 23, 238)
+        tint = (.030 * dry, -.018 * dry, -.013 * dry)
     elif kind == "asphalt":
-        intensity += .042 * periodic_noise(u, v, 19, 448)
-        fracture = abs(math.sin(TAU * (2*u + .17*math.sin(TAU*v))))
-        intensity -= .075 * (1 - smoothstep(.015, .085, fracture))
+        # Fine embedded aggregate and a limited, discontinuous original crack.
+        intensity += .068 * periodic_noise(u, v, 19, 448)
+        offset = .08 * math.sin((variant % 63) * .103)
+        fracture = min(
+            segment_distance(u, v, (.17, .26 + offset), (.48, .40 + offset)),
+            segment_distance(u, v, (.48, .40 + offset), (.75, .49 + offset)))
+        intensity -= .19 * window(u, v) * (1 - smoothstep(.015, .055, fracture))
     elif kind == "pavers":
         seam = min(abs(math.sin(math.pi * 4 * u)), abs(math.sin(math.pi * 4 * v)))
-        intensity -= .23 * (1 - smoothstep(.03, .135, seam))
+        intensity -= .21 * (1 - smoothstep(.03, .135, seam))
+        intensity += .040 * periodic_noise(u, v, 8, 719)
     elif kind == "earth":
-        intensity += .10 * periodic_noise(u, v, 5, 437)
+        intensity += .125 * periodic_noise(u, v, 5, 437)
+        intensity -= .042 * smoothstep(.23, .62, periodic_noise(u, v, 12, 709))
     elif kind == "gravel":
-        intensity += .14 * periodic_noise(u, v, 20, 567)
+        intensity += .17 * periodic_noise(u, v, 18, 567)
+        tint = (.018 * periodic_noise(u, v, 13, 682), 0, -.008 * micro)
     elif kind == "timber_floor":
         seam = abs(math.sin(math.pi * 4 * v))
-        intensity -= .27 * (1 - smoothstep(.035, .145, seam))
-        intensity += .095 * periodic_noise(u, v, 7, 773)
+        intensity -= .24 * (1 - smoothstep(.035, .145, seam))
+        intensity += .085 * periodic_noise(u, v, 7, 773)
+        knot = math.exp(-((u-.64)/.075)**2 - ((v-.39)/.035)**2)
+        intensity -= .14 * window(u, v) * knot
     elif kind == "ceramic_floor":
         seam = min(abs(math.sin(math.pi * 3 * u)), abs(math.sin(math.pi * 3 * v)))
-        intensity -= .19 * (1 - smoothstep(.03, .125, seam))
+        intensity -= .21 * (1 - smoothstep(.035, .125, seam))
+        intensity += .019 * periodic_noise(u, v, 6, 981)
     elif kind == "concrete_floor":
-        intensity += .12 * periodic_noise(u, v, 3, 998)
+        stain = smoothstep(.05, .6, periodic_noise(u, v, 3, 998))
+        intensity -= .21 * stain
+        intensity += .027 * periodic_noise(u, v, 16, 999)
     else:
         raise ValueError("unknown material type: " + kind)
-    return tuple(clamp(c * (1 + intensity)) for c in hex_rgb(surface["base_hex"]))
+    return tuple(clamp(c * (1 + intensity) + tint[i])
+                 for i, c in enumerate(hex_rgb(surface["base_hex"])))
 
 
 def color(job, surfaces, u, v, variant=0):
@@ -152,10 +178,19 @@ def color(job, surfaces, u, v, variant=0):
     return tuple(a[i] * (1 - t) + b[i] * t for i in range(3))
 
 
-def height(u, v, variant=0):
-    # Millimetre-scale ground relief; exact zero and flat normals at seams.
-    return .004 * window(u, v) * (
-        .65 * phase(u, v, 5) + .35 * math.sin(TAU * (u * 8 + v * 6) + variant * .01))
+RELIEF_AMPLITUDE_M = {
+    "ground_grass": .0022, "earth": .0017, "gravel": .0030,
+    "asphalt": .0007, "pavers": .0011, "timber_floor": .00035,
+    "ceramic_floor": .0002, "concrete_floor": .00075,
+}
+
+
+def height(u, v, variant=0, amplitude_m=.002):
+    # Non-directional, bounded sub-centimetre 3D relief with ZERO edge slopes.
+    # Replaces the old aligned 5/8-cycle waves that striped every material.
+    return amplitude_m * window(u, v) * (
+        .76 * periodic_noise(u, v, 5, 751) +
+        .34 * periodic_noise(u, v, 11, (variant % 299) + 43))
 
 
 def recipe_sha():

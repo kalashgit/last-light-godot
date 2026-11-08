@@ -5,13 +5,13 @@
   "camera_authority": "tools/blender_factory/render_v3_recovery.py::setup",
   "surfaces": [
     {"id": "grass_sparse", "material": "ground_grass", "base_hex": "#59694A", "roughness": 0.96, "registry_status": "existing_reference"},
-    {"id": "asphalt_worn", "material": "asphalt", "base_hex": "#555854", "roughness": 0.89, "registry_status": "existing_reference"},
-    {"id": "paver_gray", "material": "pavers", "base_hex": "#8A8981", "roughness": 0.86, "registry_status": "existing_reference"},
+    {"id": "asphalt_worn", "material": "asphalt", "base_hex": "#4C504E", "roughness": 0.89, "registry_status": "existing_reference"},
+    {"id": "paver_gray", "material": "pavers", "base_hex": "#818179", "roughness": 0.86, "registry_status": "existing_reference"},
     {"id": "soil_brown", "material": "earth", "base_hex": "#6D5945", "roughness": 0.97, "registry_status": "proposed_not_installed"},
     {"id": "gravel_ash", "material": "gravel", "base_hex": "#7A796F", "roughness": 0.94, "registry_status": "proposed_not_installed"},
     {"id": "wood_oak", "material": "timber_floor", "base_hex": "#84674B", "roughness": 0.74, "registry_status": "existing_reference"},
-    {"id": "tile_ceramic", "material": "ceramic_floor", "base_hex": "#A6A39C", "roughness": 0.53, "registry_status": "existing_reference"},
-    {"id": "concrete_stained", "material": "concrete_floor", "base_hex": "#868681", "roughness": 0.87, "registry_status": "existing_reference"}
+    {"id": "tile_ceramic", "material": "ceramic_floor", "base_hex": "#97958E", "roughness": 0.53, "registry_status": "existing_reference"},
+    {"id": "concrete_stained", "material": "concrete_floor", "base_hex": "#82817D", "roughness": 0.87, "registry_status": "existing_reference"}
   ],
   "transitions": [
     ["grass_sparse", "asphalt_worn"],
