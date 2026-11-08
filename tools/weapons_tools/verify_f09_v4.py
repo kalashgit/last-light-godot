@@ -14,7 +14,7 @@ from f09_v4_detail import refine
 
 TARGETS = {
     "ll_tools_hand_saw": ("saw", ("integral teeth", "shaped hardwood cheek")),
-    "ll_tools_adjustable_wrench": ("wrench", ("inset adjustment thumbwheel", "compact translating crescent jaw")),
+    "ll_tools_adjustable_wrench": ("wrench", ("worm-wheel steel knurled barrel", "translating lower jaw")),
     "ll_tools_socket_handle": ("ratchet", ("reversing lever", "quick release")),
 }
 
@@ -48,8 +48,8 @@ def check(item, directory):
         assert len(bm.verts)-len(bm.edges)+len(bm.faces)==0, "grip opening not real"
         bm.free()
     elif item["archetype"]=="wrench":
-        assert any("v8 offset fixed head" in n for n in names) and any(
-            "v8 compact translating" in n for n in names), "wrench lost separate jaws"
+        assert any("v11 fixed crescent upper jaw" in n for n in names) and any(
+            "v11 translating lower jaw" in n for n in names), "wrench lost separate jaws"
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
