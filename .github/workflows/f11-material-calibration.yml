@@ -1,0 +1,55 @@
+name: F11 isolated material calibration QA
+on:
+  push:
+    branches:
+      - chatgpt/f11-material-calibration-20261109
+    paths:
+      - 'tools/material_factory/**'
+      - '.github/workflows/f11-material-calibration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  f11-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install generator and Blender
+        run: |
+          python -m pip install 'numpy>=1.24,<3' 'Pillow>=10,<15'
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+      - name: Generate and validate all five registered materials
+        run: |
+          python tools/material_factory/generate.py --size 512 --out build/f11/materials
+          python tools/material_factory/validate.py build/f11/materials
+      - name: Export portable test swatches and validate GLB channels
+        run: |
+          blender -b --factory-startup -t 2 --python tools/material_factory/export_glb_swatches.py -- --material-root build/f11/materials --output build/f11/f11-swatches.glb
+          python tools/material_factory/validate_glb_swatches.py build/f11/f11-swatches.glb
+      - name: Render the three calibrated hero models
+        run: |
+          blender -b --factory-startup -t 2 --python tools/material_factory/render_hero_materials.py -- --material-root build/f11/materials --output build/f11/heroes
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('build/f11/heroes')
+          assert {p.stem for p in root.glob('*.png')}=={'refrigerator','cabinet','sofa'}
+          assert len(json.loads((root/'manifest.json').read_text())['entries'])==3
+          print('LL_F11_HERO_RENDER_PASS 3')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f11-unapproved-calibration
+          path: |
+            build/f11/materials/contact-sheet.png
+            build/f11/materials/manifest.json
+            build/f11/f11-swatches.glb
+            build/f11/heroes/*.png
+            build/f11/heroes/manifest.json
+          retention-days: 14
+          if-no-files-found: error
