@@ -140,6 +140,26 @@ for clip,(frames,duration) in clips.items():
             arm_bone.rotation_mode='XYZ'
             arm_bone.rotation_euler=(-math.sin(angle)*sign*(.19 if clip in ('walk','run') else 0),0,0)
             arm_bone.keyframe_insert(data_path='rotation_euler',frame=frame+1)
+    # Non-locomotion clips must not silently duplicate the idle animation.
+    # These are procedural calibration poses, not approved W07 gameplay motions.
+    amplitudes = {'idle': .015, 'walk': .025, 'run': .055,
+                  'sneak': -.10, 'interact': .20, 'attack': .40,
+                  'hurt': -.25, 'death': -1.10}
+    chest = rig.pose.bones['chest']
+    chest.rotation_mode = 'XYZ'
+    head = rig.pose.bones['head']
+    head.rotation_mode = 'XYZ'
+    for frame in range(frames):
+        phase = frame / max(1, frames - 1)
+        wave = math.sin(2 * math.pi * phase)
+        chest.rotation_euler = (
+            amplitudes[clip] * (phase if clip in ('death', 'hurt', 'attack', 'interact') else wave),
+            0, 0)
+        head.rotation_euler = (
+            (.08 if clip == 'hurt' else .02) * wave,
+            0, 0)
+        chest.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
+        head.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
     action.use_fake_user=True
 rig.animation_data.action=bpy.data.actions['F05_CAL_idle']
 
@@ -194,3 +214,6 @@ for name in ('calibration.png','f05_noncanonical_calibration.blend','f05_noncano
     if p.exists(): manifest.setdefault('sha256',{})[name]=hashlib.sha256(p.read_bytes()).hexdigest()
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('F05_CALIBRATION_COMPLETE',out)
+if glb_error:
+    print('F05_GLTF_EXPORT_FAILED', glb_error, file=sys.stderr)
+    sys.exit(2)
