@@ -31,6 +31,9 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.path = Path(self.temp.name)
         self.manifest = {
             "status": "CALIBRATION_ONLY",
+            "physique": "lean",
+            "body_width_factor": 1.0,
+            "limb_width_factor": 1.0,
             "canonical_master_id": None,
             "bones": sorted(validator.EXPECTED_BONES),
             "sockets": sorted(validator.EXPECTED_SOCKETS),
@@ -71,6 +74,16 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.assertIn("GLB missing skinned armature", errors)
         self.assertIn("GLB missing exported animation", errors)
         self.assertIn("GLB missing mesh geometry", errors)
+
+    def test_broad_physique_passes(self):
+        self.manifest.update(physique="broad", body_width_factor=1.18, limb_width_factor=1.12)
+        self.save()
+        self.assertEqual(validator.validate(self.path), [])
+
+    def test_inconsistent_physique_fails(self):
+        self.manifest["physique"] = "broad"
+        self.save()
+        self.assertIn("Physique dimensions do not match calibration contract", validator.validate(self.path))
 
     def test_missing_glb_fails(self):
         (self.path / "f05_noncanonical_calibration.glb").unlink()
