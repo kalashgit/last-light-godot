@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT / "tools" / "blender_factory"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import render_v3_recovery as rig
 import recipe
+import pixel_finish
 
 RENDER_SIZE = 1024
 MESH_STEPS = 40
@@ -107,7 +108,7 @@ def export_glb(obj, dest):
         raise RuntimeError("empty 3D source export")
 
 
-def finish_raw(raw, dest, origin):
+def finish_raw(raw, dest, origin, job, surfaces):
     from PIL import Image
     # Rig calibration: at 1024 source px one 1m diamond is 320x160.
     # Native 80x40 is 4x BOX reduction from actual Blender surface rendering.
@@ -129,6 +130,7 @@ def finish_raw(raw, dest, origin):
             else:
                 r, g, b, _alpha = pixels[x, y]
                 pixels[x, y] = (r, g, b, 255)
+    native = pixel_finish.finish_tile(native, job, surfaces)
     native.save(dest)
     return [40, 20]
 
@@ -138,6 +140,9 @@ def build_one(job, surfaces, out, samples, render):
     folder.mkdir(parents=True, exist_ok=True)
     scene = rig.setup()  # Existing exact 30-degree camera and upper-left rig.
     scene.cycles.samples = samples
+    # Cycles' spatial denoiser smears grass, gravel and joints at six samples;
+    # moderate extra samples plus the native pixel finisher preserve definition.
+    scene.cycles.use_denoising = False
     obj = tile_mesh(job, surfaces)
     bpy.context.view_layer.update()
     projected = world_to_camera_view(scene, scene.camera, Vector((0, 0, 0)))
@@ -153,7 +158,7 @@ def build_one(job, surfaces, out, samples, render):
         raw = folder / "raw.png"
         scene.render.filepath = str(raw.resolve())
         bpy.ops.render.render(write_still=True)
-        anchor = finish_raw(raw, folder / "world.png", pivot)
+        anchor = finish_raw(raw, folder / "world.png", pivot, job, surfaces)
         files.update(raw="raw.png", world="world.png")
     metadata = {
         "schema": 1, "asset_id": job["asset_id"], "family": "terrain_tile",
@@ -167,6 +172,7 @@ def build_one(job, surfaces, out, samples, render):
         "render_raw_px": [RENDER_SIZE, RENDER_SIZE], "raw_center_px": pivot,
         "native_anchor_px": anchor, "source_recipe_sha256": recipe.recipe_sha(),
         "build_source_sha256": digest(__file__),
+        "pixel_finish_source_sha256": digest(pixel_finish.__file__),
         "files": {k: {"path": v, "sha256": digest(folder / v)} for k, v in files.items()},
         "rights": "Original LAST LIGHT procedural meshes/patterns; no source sprites",
         "geometry_status": "SOURCE_EXPORTED_NEEDS_VISUAL_REVIEW",

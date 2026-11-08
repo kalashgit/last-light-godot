@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT / "tools" / "terrain_factory"
 sys.path.insert(0, str(HERE))
 import recipe
+import pixel_finish
 
 
 class TerrainFactoryV1(unittest.TestCase):
@@ -91,8 +92,40 @@ class TerrainFactoryV1(unittest.TestCase):
 
     def test_source_compiles_without_blender(self):
         ast.parse((HERE / "build.py").read_text())
+        ast.parse((HERE / "pixel_finish.py").read_text())
         self.assertIn("no third-party pixels", self.p["rights"].lower())
         self.assertEqual(len(recipe.recipe_sha()), 64)
+
+    def test_pixel_finish_preserves_alpha_and_adds_native_definition(self):
+        from PIL import Image
+        image = Image.new("RGBA", (80, 40), (0, 0, 0, 0))
+        for y in range(40):
+            for x in range(80):
+                if pixel_finish.inside(x, y):
+                    image.putpixel((x, y), (117, 130, 112, 255))
+        jobs = (self.p["jobs"][0],
+                next(j for j in self.p["jobs"] if j["kind"] == "corner_transition"))
+        for job in jobs:
+            finished = pixel_finish.finish_tile(image, job, self.surfaces)
+            self.assertEqual(finished.size, (80, 40))
+            self.assertEqual(finished.tobytes(),
+                             pixel_finish.finish_tile(image, job, self.surfaces).tobytes())
+            self.assertEqual(image.getpixel((40, 20)), (117, 130, 112, 255))
+            delta = 0
+            for y in range(40):
+                for x in range(80):
+                    old, new = image.getpixel((x, y)), finished.getpixel((x, y))
+                    self.assertEqual(old[3], new[3])
+                    delta += abs(old[0] - new[0])
+            self.assertGreater(delta, 500)
+
+    def test_native_pixel_inverse_geometry_and_edge_guard(self):
+        self.assertEqual(pixel_finish.uv_from_pixel(39.5, -.5), (.0, 1.0))
+        self.assertEqual(pixel_finish.uv_from_pixel(79.5, 19.5), (1.0, 1.0))
+        self.assertEqual(pixel_finish.uv_from_pixel(39.5, 39.5), (1.0, .0))
+        self.assertEqual(pixel_finish.uv_from_pixel(-.5, 19.5), (.0, .0))
+        self.assertEqual(pixel_finish.contrast_weight(39, 0), 0)
+        self.assertEqual(pixel_finish.contrast_weight(0, 19), 0)
 
 
 if __name__ == "__main__":

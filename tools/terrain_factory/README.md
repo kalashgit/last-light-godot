@@ -74,6 +74,26 @@ remains surface-family-specific; damage/season/wetness are *not* silently
 treated as cosmetic replacements for game state. Repeat seams must be judged
 on the assembled 4×4 native-pixel visual sheet as well as math tests.
 
+## Native-pixel sharpness fix (8 November 2026)
+
+The first two Blender-rendered passes suffered from soft pigment and grout at
+80×40: the CPU Cycles render used low-sample denoising followed by a 4× BOX
+reduction. Terrain-specific rendering now disables the spatial denoiser and
+uses 14 samples in CI. The Blender model, camera, light geometry, tile scale,
+raw master and native anchor stay unchanged.
+
+After downsampling, `pixel_finish.py` performs a deterministic, alpha-safe
+80×40 finish on the *actual rendered pixels*: limited local unsharp contrast,
+light stepped material pigment, and narrow original mortar/plank seams.
+Ceramics get no grain; grass, dirt, gravel and asphalt have restrained,
+material-aware contrast. A 1.25–3.25 native-pixel diamond-border guard fades the
+local enhancement out toward open cell edges to prevent tile-join halos. The
+per-job `asset.json` records the finishing source hash for reproducibility.
+
+This is not a full reskin, noise overlay or a substitute for geometry/Blender
+source work. Inspect native, enlarged-nearest, and 4×4 outputs for painterly
+softness **and** excessive grain before granting a Golden visual signoff.
+
 ## Separate quality gates
 
 1. **G:** original editable `.blend`/GLB source, physical 1m square, hashes;
