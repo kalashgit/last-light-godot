@@ -97,7 +97,7 @@ class IntegrationV2Tests(unittest.TestCase):
 
     def test_unapproved_candidate_cannot_promote(self):
         self.write()
-        with self.assertRaisesRegex(GateError, "protected"):
+        with self.assertRaisesRegex(GateError, "branch protection"):
             check_gate(self.package, self.path, self.ledger,
                        "APPROVED_TEMPLATE", False)
 
