@@ -67,8 +67,10 @@ def world_set(imgs, dirout):
 
 
 def contact_sheet(items,output):
-    count=len(items); cols=5; tw,th=280,300
-    canvas=Image.new("RGB",(tw*cols,th*math.ceil(count/cols)),(39,43,43))
+    count=len(items); cols=4; tw,th=280,300
+    # Warm daylight inspection board makes forged-black silhouette defects and
+    # subtle wooden grain observable; prior charcoal board hid dark materials.
+    canvas=Image.new("RGB",(tw*cols,th*math.ceil(count/cols)),(45,46,44))
     dr=ImageDraw.Draw(canvas)
     for i,rec in enumerate(items):
         x=(i%cols)*tw; y=(i//cols)*th
@@ -77,19 +79,19 @@ def contact_sheet(items,output):
         bbox=raw.getchannel("A").getbbox()
         raw=raw.crop(bbox)
         raw.thumbnail((260,175),Image.Resampling.BOX)
-        tile=Image.new("RGBA",(268,182),(74,78,77,255))
+        tile=Image.new("RGBA",(268,182),(176,172,163,255))
         tile.alpha_composite(raw,((268-raw.width)//2,(182-raw.height)//2))
         canvas.paste(tile.convert("RGB"),(x+6,y+5))
         native=Image.open(path/"icon_64.png").convert("RGBA")
         zoom=native.resize((128,128),Image.Resampling.NEAREST)
-        sample=Image.new("RGBA",(135,128),(85,88,88,255))
+        sample=Image.new("RGBA",(135,128),(138,136,130,255))
         sample.alpha_composite(zoom,(3,0))
         canvas.paste(sample.convert("RGB"),(x+5,y+170))
         dr.text((x+143,y+183),rec["asset_id"].removeprefix("ll_tools_")[:18],fill=(241,233,218))
         dr.text((x+143,y+207),f"{rec['model_parts']} editable parts",fill=(180,200,193))
         dr.text((x+143,y+225),"64px original icon",fill=(180,200,193))
         dr.text((x+143,y+252),"2.5D CANDIDATE",fill=(243,192,100))
-    dest=output/"weapons_tools_10_contact_sheet.png"
+    dest=output/f"weapons_tools_{len(items)}_contact_sheet.png"
     canvas.save(dest,optimize=True)
     return dest
 
@@ -121,7 +123,7 @@ def process(directory,archive):
         (folder/"production_manifest.json").write_text(json.dumps(record,indent=2)+"\n")
         records.append(record)
     if len(records)!=len(recipe["assets"]) or len({r["asset_id"] for r in records})!=len(records):
-        raise ValueError("pilot must preserve all ten unique registry IDs")
+        raise ValueError("pilot must preserve every selected unique registry ID")
     preview=contact_sheet(records,directory)
     manifest={"schema":1,"unique_3d_masters":len(records),"world_rgba_frames":len(records)*4,
               "original_inventory_icons":len(records)*4,
