@@ -1,0 +1,2226 @@
+diff --git a/data/gameplay_rules.json b/data/gameplay_rules.json
+new file mode 100644
+index 0000000..c65c5ed
+--- /dev/null
++++ b/data/gameplay_rules.json
+@@ -0,0 +1,80 @@
++{
++	"schema": 1,
++	"note": "LAST LIGHT original balance candidates (Worker 02). Not approved final balance. Rates are per second of simulated time.",
++	"vitals": {
++		"hunger_rate": 0.025,
++		"thirst_rate": 0.045,
++		"starving_threshold": 85.0,
++		"starving_damage": 0.35,
++		"dehydrated_threshold": 85.0,
++		"dehydrated_damage": 0.5,
++		"fatigue_idle_recovery": 1.5,
++		"fatigue_walk_rate": 0.02,
++		"fatigue_sprint_rate": 0.6,
++		"fatigue_attack_cost": 1.2,
++		"fatigue_regen_penalty_start": 40.0,
++		"natural_heal_rate": 0.15,
++		"natural_heal_max_need": 60.0,
++		"wound_heal_seconds": 90.0,
++		"max_wounds": 12
++	},
++	"wounds": {
++		"scratch": {
++			"bleed": 0.25,
++			"chance": 0.3
++		},
++		"laceration": {
++			"bleed": 0.6,
++			"chance": 0.14
++		},
++		"bite": {
++			"bleed": 0.9,
++			"chance": 0.06
++		}
++	},
++	"load": {
++		"heavy_fraction": 0.75,
++		"heavy_speed": 0.85,
++		"overloaded_fraction": 0.9,
++		"overloaded_speed": 0.7,
++		"heavy_sprint_drain": 1.25
++	},
++	"combat": {
++		"bare_hands": {
++			"damage": 1,
++			"reach": 1.25,
++			"stamina": 8.0,
++			"cooldown": 0.5
++		},
++		"default_weapon_cooldown": 0.5,
++		"tired_stamina": 25.0,
++		"tired_cooldown_multiplier": 1.6,
++		"wear_per_hit": 1.0,
++		"default_weapon_durability": 30.0,
++		"zombie_attack_range": 0.62,
++		"zombie_attack_windup": 0.4,
++		"zombie_attack_recovery": 0.8,
++		"zombie_attack_damage": 7.0
++	},
++	"zombie_loot": [
++		{
++			"id": "ll_food_bean_tin",
++			"count": 1,
++			"chance": 0.5
++		},
++		{
++			"id": "ll_medical_sterile_bandage",
++			"count": 1,
++			"chance": 0.35
++		}
++	],
++	"item_effects": {
++		"ll_medical_sterile_bandage": {
++			"bandage": 1
++		},
++		"ll_medical_first_aid_case": {
++			"bandage": 12,
++			"disinfect": 12
++		}
++	}
++}
+diff --git a/data/recipes.json b/data/recipes.json
+new file mode 100644
+index 0000000..3ccb484
+--- /dev/null
++++ b/data/recipes.json
+@@ -0,0 +1,14 @@
++{
++	"schema": 1,
++	"note": "Worker 02 item-action recipes. Every input, tool and output is an existing catalog ID. Cooking is intentionally absent until Worker 05 exposes a heat-source capability.",
++	"recipes": [
++		{"id": "repair_claw_hammer_handle", "kind": "repair", "verb": "Repair", "name": "Refit hammer handle", "inputs": [{"id": "ll_crafting_pine_plank", "count": 1}], "tools": [], "target": "ll_tools_claw_hammer", "repair_amount": 30.0},
++		{"id": "repair_hatchet_handle", "kind": "repair", "verb": "Repair", "name": "Refit hatchet handle", "inputs": [{"id": "ll_crafting_pine_plank", "count": 1}], "tools": ["ll_tools_claw_hammer"], "target": "ll_tools_hatchet", "repair_amount": 25.0},
++		{"id": "tape_wrap_equipped_weapon", "kind": "repair", "verb": "Repair", "name": "Tape-wrap equipped weapon", "inputs": [{"id": "ll_golden_air_filter_tape", "count": 1}], "tools": [], "target": "@equipped", "repair_amount": 10.0},
++		{"id": "disinfect_with_wipes", "kind": "treat", "verb": "Disinfect", "name": "Clean wound with alcohol wipes", "inputs": [{"id": "ll_golden_alcohol_wipes", "count": 1}], "tools": [], "effect": {"disinfect": 1}},
++		{"id": "disinfect_with_old_wipes", "kind": "treat", "verb": "Disinfect", "name": "Clean wound with old wipes", "inputs": [{"id": "ll_golden_alcohol_wipes_old", "count": 1}], "tools": [], "effect": {"disinfect": 1}},
++		{"id": "disinfect_with_isopropyl", "kind": "treat", "verb": "Disinfect", "name": "Clean wounds with isopropyl alcohol", "inputs": [{"id": "ll_golden_isopropyl_alcohol", "count": 1}], "tools": [], "effect": {"disinfect": 2}},
++		{"id": "reinforce_baseball_bat", "kind": "craft", "verb": "Craft", "name": "Reinforce baseball bat with scrap", "inputs": [{"id": "ll_golden_baseball_bat", "count": 1}, {"id": "ll_golden_aluminum_scrap", "count": 2}], "tools": ["ll_tools_claw_hammer"], "outputs": [{"id": "ll_golden_reinforced_baseball_bat", "count": 1}]},
++		{"id": "dismantle_air_filter_panel", "kind": "dismantle", "verb": "Dismantle", "name": "Strip filter panel frame", "inputs": [{"id": "ll_golden_air_filter_panel", "count": 1}], "tools": ["ll_tools_claw_hammer"], "outputs": [{"id": "ll_golden_aluminum_scrap", "count": 2}]}
++	]
++}
+diff --git a/data/survival_items.json b/data/survival_items.json
+index 157a4a3..44d2b4f 100644
+--- a/data/survival_items.json
++++ b/data/survival_items.json
+@@ -6,8 +6,8 @@
+     {"id": "ll_food_water_bottle", "art_id": "ll_food_water_bottle", "name": "Water bottle", "category": "Drink", "kind": "drink", "weight_kg": 0.55, "stack_max": 20, "amount": 35.0},
+     {"id": "ll_medical_sterile_bandage", "art_id": "ll_medical_sterile_bandage", "name": "Sterile bandage", "category": "Medical", "kind": "heal", "weight_kg": 0.04, "stack_max": 20, "amount": 22.0, "action": "Bandage"},
+     {"id": "ll_medical_first_aid_case", "art_id": "ll_medical_first_aid_case", "name": "First aid case", "category": "Medical", "kind": "heal", "weight_kg": 0.65, "stack_max": 5, "amount": 45.0, "action": "Heal"},
+-    {"id": "ll_tools_claw_hammer", "art_id": "ll_tools_claw_hammer", "name": "Claw hammer", "category": "Tools", "kind": "weapon", "weight_kg": 0.8, "stack_max": 2, "damage": 2.0, "reach": 1.55, "stamina": 12.0},
+-    {"id": "ll_tools_hatchet", "art_id": "ll_tools_hatchet", "name": "Hatchet", "category": "Tools", "kind": "weapon", "weight_kg": 0.95, "stack_max": 2, "damage": 2.0, "reach": 1.65, "stamina": 15.0},
++    {"id": "ll_tools_claw_hammer", "art_id": "ll_tools_claw_hammer", "name": "Claw hammer", "category": "Tools", "kind": "weapon", "weight_kg": 0.8, "stack_max": 2, "damage": 2.0, "reach": 1.55, "stamina": 12.0, "durability": 60.0},
++    {"id": "ll_tools_hatchet", "art_id": "ll_tools_hatchet", "name": "Hatchet", "category": "Tools", "kind": "weapon", "weight_kg": 0.95, "stack_max": 2, "damage": 2.0, "reach": 1.65, "stamina": 15.0, "durability": 45.0},
+     {"id": "ll_household_flashlight", "art_id": "ll_household_flashlight", "name": "Flashlight", "category": "Utility", "kind": "utility", "weight_kg": 0.2, "stack_max": 4},
+     {"id": "ll_crafting_pine_plank", "art_id": "ll_crafting_pine_plank", "name": "Pine plank", "category": "Materials", "kind": "material", "weight_kg": 1.5, "stack_max": 10}
+   ]
+diff --git a/docs/gameplay/GAMEPLAY_API.md b/docs/gameplay/GAMEPLAY_API.md
+new file mode 100644
+index 0000000..9bad898
+--- /dev/null
++++ b/docs/gameplay/GAMEPLAY_API.md
+@@ -0,0 +1,114 @@
++# LAST LIGHT — Gameplay Systems API (Worker 02)
++
++Branch `claude/worker-02-gameplay-systems-743b97`. Baseline: `codex/world-art-integration-20261107` @ `f17b35b` (PR #26 → #25 → #10 stack). Entry scene unchanged: `res://main.tscn`.
++
++Status: implemented and passing headless Godot 4.6.3 tests. **iPhone/Xogot behaviour, touch feel and performance are UNVERIFIED.** Balance numbers are candidates, not approved.
++
++## Modules
++
++| File | Owns | Depends on |
++|---|---|---|
++| `scripts/gameplay/vitals.gd` | health, stamina, hunger, thirst, fatigue, wounds, bleeding, healing, death | `data/gameplay_rules.json` |
++| `scripts/gameplay/crafting.gd` | recipe validation + atomic execution (craft/repair/dismantle/treat) | `data/recipes.json`, item catalog |
++| `scripts/survival_state.gd` | inventory stacks, weight, equip, **instance IDs + condition** for durable items | `data/survival_items.json`, `data/golden40_items.json` |
++| `scripts/house.gd` | scene integration: movement, combat resolution, containers, save/load | all of the above |
++
++All three model files are `RefCounted`, have no rendering/input/file-writing code and can be unit-tested without a scene.
++
++## Data files
++
++- `data/gameplay_rules.json` — rates, wound table, load bands, combat numbers, zombie kill loot, per-item treatment effects.
++- `data/recipes.json` — 8 recipes. Every input, tool and output is an existing catalog ID; recipes referencing unknown IDs are rejected at load (`crafting.load_errors`).
++- `data/survival_items.json` — added `durability` to claw hammer (60) and hatchet (45). Other weapons use `combat.default_weapon_durability` (30). Golden 40 catalog is untouched.
++
++## Stable calls for other workers
++
++```gdscript
++# Damage into the player (Worker 03). Returns {"damage", "wound", "died"}.
++game.receive_attack({"damage": 7.0, "source": "zombie_0", "can_wound": true, "contaminated": true})
++
++# Container transfer (Worker 05 furniture / Worker 08 UI). Range + capacity checked; saves on success.
++game.store_in_container("house.kitchen.counter", "ll_food_bean_tin", 1) -> bool
++game.take_from_container("house.kitchen.counter", "ll_food_bean_tin", 1) -> bool
++game.container_contents   # {container_id: {item_id: count}}
++
++# Inventory model
++game.survival.add(id, count, carried_instances := [])
++game.survival.take(id, count) -> Array     # removed instance records (durable) or placeholders
++game.survival.condition(id) / max_condition(id) / wear(id, amount) / repair(id, amount)
++
++# Recipes
++game.crafting.check(recipe_id, game.survival, game.vitals) -> {"ok", "reason"}
++game.crafting.execute(recipe_id, game.survival, game.vitals) -> {"ok", "reason", "outputs", "repaired", "treated"}
++
++# HUD helpers (Worker 08)
++game._status_line()          # "BLEEDING ×1 · DIRTY WOUND · TIRED · HEAVY LOAD" or ""
++game.vitals.status_text()    # vitals part only
++```
++
++`health`, `stamina`, `hunger`, `thirst`, `fatigue` on the scene are properties that read/write `game.vitals` and clamp to 0..100, so old callers keep working.
++
++## Gameplay events
++
++`signal gameplay_event(event: Dictionary)` on the main scene. Every event has `type` and `time` (seconds of simulated play). The last 64 are kept in `game.event_log`.
++
++| type | fields | emitted when |
++|---|---|---|
++| `attack` | weapon, hits | any swing (hit or miss) |
++| `zombie_damaged` | target, amount, weapon, remaining | melee hit |
++| `zombie_killed` | target, position | zombie health reaches 0 |
++| `zombie_shoved` | target | shove connects |
++| `loot_dropped` | item_id, count, source | kill loot spawned |
++| `player_damaged` | amount, source, wound | `receive_attack` resolved |
++| `player_died` | — | health reaches 0 |
++| `wound_healed` | wound_id, kind | bandaged clean wound finishes healing |
++| `item_broken` | item_id, uid | weapon condition reaches 0 |
++| `item_consumed` / `item_dropped` / `item_picked_up` / `equipped` | item_id … | inventory actions |
++| `container_taken` / `container_stored` | container, item_id/count, emptied | container transfers |
++| `recipe_completed` | recipe, outputs, repaired, treated | recipe success |
++
++Worker 07 can key animation on `attack`/`player_damaged`/`zombie_killed`; there is no wind-up/active-frame split on the player swing yet (damage is instant on press).
++
++## Rules implemented
++
++- **Locomotion:** walk 2.2, sprint 3.6, sneak 0.95 m/s (unchanged). Load ≥75% of 20 kg → ×0.85 speed and ×1.25 sprint drain; ≥90% → ×0.7. 1/60 s substeps keep 30/60/120 fps identical.
++- **Stamina/fatigue:** fatigue rises while sprinting (0.6/s), walking (0.02/s) and per swing/shove (1.2); falls 1.5/s while idle. Above 40 fatigue, stamina regen drops linearly to 40%.
++- **Needs:** hunger 0.025/s, thirst 0.045/s (unchanged). ≥85 hunger: −0.35 hp/s; ≥85 thirst: −0.5 hp/s.
++- **Healing:** +0.15 hp/s only when nothing bleeds, no wound is contaminated, and hunger/thirst < 60.
++- **Wounds:** each zombie strike rolls once (deterministic persisted LCG): bite 6%, laceration 14%, scratch 30%. Bleed 0.9/0.6/0.25 hp/s until bandaged. Zombie wounds are contaminated: they stop bleeding when bandaged but never close (and block healing) until disinfected. Clean bandaged wounds close after 90 s. Max 12 stored wounds.
++- **Treatment:** bandage = +22 hp and bandages 1 wound; first-aid case = +45 hp, bandages and disinfects all. Bandages are usable at full health if something bleeds. Alcohol wipes / isopropyl disinfect via recipes.
++- **Death:** health 0 is terminal — vitals refuse every mutation and the scene stops simulating until restart.
++- **Zombie attacks:** discrete — 0.4 s wind-up in reach (0.62 m, line of sight), 7 damage, 0.8 s recovery. A hit or shove resets the wind-up.
++- **Melee:** range/facing/obstruction/cooldown unchanged. Low stamina (<25) multiplies recovery ×1.6. Each swing that hits wears the weapon 1 point; at 0 it breaks, is removed and unequipped. Inventory shows condition %.
++- **Kill loot:** 50% bean tin, 35% bandage, placed on clear ground.
++- **Containers:** contents persist per container. Searching moves items one at a time until the pack is full; leftovers stay. Storing durable items is refused (containers don't persist condition yet).
++- **Item actions:** inventory USE button runs the first valid recipe for materials/utility items (shows REPAIR / DISINFECT / CRAFT / DISMANTLE). If none is valid, the reason is shown and nothing is consumed.
++
++## Save schema 3
++
++File path unchanged: `user://last_light_survival_v2.json`. Version 3 adds:
++
++```json
++"survival": {"inventory": {...}, "equipped": "...", "instances": {"ll_tools_claw_hammer": [{"uid": "it_1", "condition": 42.0}]}, "next_uid": 2},
++"vitals": {"fatigue": 0.0, "wounds": [{"id": 1, "kind": "scratch", "bleed": 0.25, "bandaged": true, "contaminated": false, "age": 3.5}], "next_wound_id": 2, "rng_state": 12345},
++"container_contents": {"house.kitchen.counter": {"ll_food_bean_tin": 1}, ...},
++"drops": [{"id": "...", "count": 1, "x": 0, "y": 0, "instances": [...]}]   // instances only for durable items
++```
++
++Top-level `health/stamina/hunger/thirst` stay where they were (the `vitals` block must not repeat them).
++
++Migration: v1 and v2 load as before; durable items get fresh full-condition instances; container flags become contents (searched = empty, unsearched = default loot). The first time a v2 file is overwritten, its exact bytes are kept in `.schema2.bak` (never overwritten afterwards). Saves now use full float precision. Every new field is validated before any state changes; invalid files are rejected atomically.
++
++## Tests
++
++`tests/gameplay_systems.gd` (120 checks) is in `tests/run.sh`, which CI runs. It uses a real schema-2 fixture (`tests/fixtures/house_v2.json`) written by the untouched baseline build. `tests/capture_gameplay.gd` renders evidence screenshots under xvfb.
++
++## Not implemented / blocked
++
++- Cooking — needs a heat-source capability from Worker 05.
++- Containers storing durable items with condition.
++- Clothing, body regions, infection progression, panic, skills/XP.
++- Firearms — golden shotgun/rifle remain `utility`; nothing fires.
++- Player swing wind-up/active frames (Worker 07 timing contract).
++- Golden 40 items needed by recipes (wipes, tape, scrap, bat, filter panel) are only obtainable via the debug loot builder; no container loot table includes them yet (LAB B/E loot profiles).
++- Zombie attack cadence lives in `house.gd` as a stand-in until Worker 03 calls `receive_attack` from its own AI.
+diff --git a/docs/gameplay/screenshots/gameplay-inventory-repair.png b/docs/gameplay/screenshots/gameplay-inventory-repair.png
+new file mode 100644
+index 0000000..2ac9813
+Binary files /dev/null and b/docs/gameplay/screenshots/gameplay-inventory-repair.png differ
+diff --git a/docs/gameplay/screenshots/gameplay-wounded-hud.png b/docs/gameplay/screenshots/gameplay-wounded-hud.png
+new file mode 100644
+index 0000000..f3a8b77
+Binary files /dev/null and b/docs/gameplay/screenshots/gameplay-wounded-hud.png differ
+diff --git a/scripts/gameplay/crafting.gd b/scripts/gameplay/crafting.gd
+new file mode 100644
+index 0000000..09bc056
+--- /dev/null
++++ b/scripts/gameplay/crafting.gd
+@@ -0,0 +1,154 @@
++extends RefCounted
++## Data-driven item actions: craft, repair, dismantle and wound treatment.
++## Recipes live in res://data/recipes.json and may reference only catalog item IDs.
++## execute() is atomic: on any failure inventory and vitals are unchanged, and inputs
++## are consumed exactly once on success.
++
++const RECIPES_PATH := "res://data/recipes.json"
++const KINDS := ["craft", "repair", "dismantle", "treat"]
++
++var recipes: Dictionary = {}
++var order: Array[String] = []
++var load_errors: Array[String] = []
++
++
++## `definitions` is the survival item catalog; recipes referencing unknown IDs are rejected.
++func _init(definitions: Dictionary = {}) -> void:
++	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RECIPES_PATH))
++	if not parsed is Dictionary or parsed.get("schema") != 1 or not parsed.get("recipes") is Array:
++		load_errors.append("invalid recipe file")
++		return
++	for raw: Variant in parsed["recipes"]:
++		var problem := _check(raw, definitions)
++		if not problem.is_empty():
++			load_errors.append(problem)
++			continue
++		recipes[raw["id"]] = raw.duplicate(true)
++		order.append(raw["id"])
++	for problem: String in load_errors:
++		push_error("Recipe rejected: " + problem)
++
++
++func _check(raw: Variant, definitions: Dictionary) -> String:
++	if not raw is Dictionary or not raw.get("id") is String or recipes.has(raw.get("id")):
++		return "missing or duplicate id"
++	var id: String = raw["id"]
++	if not raw.get("kind") in KINDS or not raw.get("inputs") is Array or raw["inputs"].is_empty() or not raw.get("tools") is Array:
++		return id + ": kind/inputs/tools"
++	var references: Array = []
++	for entry: Variant in raw["inputs"]:
++		if not entry is Dictionary or not entry.get("id") is String or int(entry.get("count", 0)) < 1:
++			return id + ": malformed input"
++		references.append(entry["id"])
++	references.append_array(raw["tools"])
++	for entry: Variant in raw.get("outputs", []):
++		if not entry is Dictionary or not entry.get("id") is String or int(entry.get("count", 0)) < 1:
++			return id + ": malformed output"
++		references.append(entry["id"])
++	if raw["kind"] == "repair":
++		if not raw.get("target") is String or float(raw.get("repair_amount", 0.0)) <= 0.0:
++			return id + ": repair needs target and amount"
++		if raw["target"] != "@equipped":
++			references.append(raw["target"])
++	if raw["kind"] in ["craft", "dismantle"] and raw.get("outputs", []).is_empty():
++		return id + ": needs outputs"
++	if raw["kind"] == "treat" and not raw.get("effect") is Dictionary:
++		return id + ": treat needs effect"
++	if not definitions.is_empty():
++		for ref: Variant in references:
++			if not definitions.has(ref):
++				return id + ": unknown item " + str(ref)
++	return ""
++
++
++## Returns {"ok": bool, "reason": String}. Never mutates state.
++func check(recipe_id: String, survival, vitals) -> Dictionary:
++	if not recipes.has(recipe_id):
++		return {"ok": false, "reason": "Unknown recipe"}
++	var recipe: Dictionary = recipes[recipe_id]
++	if vitals != null and vitals.is_dead():
++		return {"ok": false, "reason": "Cannot act"}
++	for entry: Dictionary in recipe["inputs"]:
++		if int(survival.inventory.get(entry["id"], 0)) < int(entry["count"]):
++			return {"ok": false, "reason": "Missing " + survival.name_for(entry["id"])}
++	for tool: String in recipe["tools"]:
++		if not survival.inventory.has(tool):
++			return {"ok": false, "reason": "Needs " + survival.name_for(tool)}
++	match recipe["kind"]:
++		"repair":
++			var target := _target(recipe, survival)
++			if target.is_empty():
++				return {"ok": false, "reason": "Nothing to repair"}
++			if survival.condition(target) >= survival.max_condition(target):
++				return {"ok": false, "reason": survival.name_for(target) + " is already in full condition"}
++		"treat":
++			var effect: Dictionary = recipe["effect"]
++			var useful := false
++			if effect.has("disinfect") and vitals != null and vitals.contaminated_wound_count() > 0:
++				useful = true
++			if effect.has("bandage") and vitals != null and vitals.open_wound_count() > 0:
++				useful = true
++			if not useful:
++				return {"ok": false, "reason": "No wound needs this"}
++	return {"ok": true, "reason": ""}
++
++
++## Runs a recipe. Returns {"ok", "reason", "recipe", "outputs", "repaired", "treated"}.
++func execute(recipe_id: String, survival, vitals) -> Dictionary:
++	var verdict := check(recipe_id, survival, vitals)
++	if not verdict.ok:
++		return verdict
++	var recipe: Dictionary = recipes[recipe_id]
++	var before: Dictionary = survival.snapshot()
++	var result := {"ok": true, "reason": "", "recipe": recipe_id, "outputs": [], "repaired": 0.0, "treated": 0}
++	# Repair target must be resolved before inputs are removed (an input could be the target).
++	var target := _target(recipe, survival) if recipe["kind"] == "repair" else ""
++	for entry: Dictionary in recipe["inputs"]:
++		if not survival.remove(entry["id"], int(entry["count"])):
++			survival.restore(before)
++			return {"ok": false, "reason": "Could not use " + survival.name_for(entry["id"])}
++	match recipe["kind"]:
++		"repair":
++			result.repaired = survival.repair(target, float(recipe["repair_amount"]))
++			if result.repaired <= 0.0:
++				survival.restore(before)
++				return {"ok": false, "reason": "Repair failed"}
++		"treat":
++			var effect: Dictionary = recipe["effect"]
++			if effect.has("disinfect"):
++				result.treated += vitals.disinfect(int(effect["disinfect"]))
++			if effect.has("bandage"):
++				result.treated += vitals.bandage(int(effect["bandage"]))
++		"craft", "dismantle":
++			for entry: Dictionary in recipe["outputs"]:
++				if not survival.add(entry["id"], int(entry["count"])):
++					survival.restore(before)
++					return {"ok": false, "reason": "No room for " + survival.name_for(entry["id"])}
++				result.outputs.append(entry.duplicate())
++	return result
++
++
++## Recipe IDs whose first input is `item_id`, in file order (drives the inventory Use button).
++func recipes_using(item_id: String) -> Array[String]:
++	var found: Array[String] = []
++	for recipe_id: String in order:
++		if recipes[recipe_id]["inputs"][0]["id"] == item_id:
++			found.append(recipe_id)
++	return found
++
++
++## First recipe started from `item_id` that can run now, or "".
++func first_available(item_id: String, survival, vitals) -> String:
++	for recipe_id: String in recipes_using(item_id):
++		if check(recipe_id, survival, vitals).ok:
++			return recipe_id
++	return ""
++
++
++func _target(recipe: Dictionary, survival) -> String:
++	var target: String = recipe.get("target", "")
++	if target == "@equipped":
++		target = survival.equipped
++	if target.is_empty() or not survival.inventory.has(target) or not survival.is_durable(target):
++		return ""
++	return target
+diff --git a/scripts/gameplay/crafting.gd.uid b/scripts/gameplay/crafting.gd.uid
+new file mode 100644
+index 0000000..3b5825d
+--- /dev/null
++++ b/scripts/gameplay/crafting.gd.uid
+@@ -0,0 +1 @@
++uid://drtrtvp8vjnsi
+diff --git a/scripts/gameplay/vitals.gd b/scripts/gameplay/vitals.gd
+new file mode 100644
+index 0000000..1215f8a
+--- /dev/null
++++ b/scripts/gameplay/vitals.gd
+@@ -0,0 +1,301 @@
++extends RefCounted
++## Player vitals: health, stamina, hunger, thirst, fatigue and wounds.
++## Pure simulation state with no rendering, input or file I/O. Every mutator clamps
++## to 0..100 and is a no-op once the player is dead (terminal state).
++## Deterministic: wound rolls use a persisted 31-bit LCG, never global randomness.
++
++const RULES_PATH := "res://data/gameplay_rules.json"
++const WOUND_KINDS := ["scratch", "laceration", "bite"]
++const SNAPSHOT_KEYS := ["health", "stamina", "hunger", "thirst", "fatigue", "wounds", "next_wound_id", "rng_state"]
++
++var rules: Dictionary = {}
++var wound_rules: Dictionary = {}
++var health := 100.0
++var stamina := 100.0
++var hunger := 0.0
++var thirst := 0.0
++var fatigue := 0.0
++## Each wound: {"id": int, "kind": String, "bleed": float, "bandaged": bool, "contaminated": bool, "age": float}
++var wounds: Array = []
++var next_wound_id := 1
++var rng_state := 12345
++
++
++func _init() -> void:
++	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RULES_PATH))
++	if not parsed is Dictionary or parsed.get("schema") != 1:
++		push_error("Invalid gameplay rules: " + RULES_PATH)
++		return
++	rules = parsed["vitals"]
++	wound_rules = parsed["wounds"]
++
++
++func reset() -> void:
++	health = 100.0
++	stamina = 100.0
++	hunger = 0.0
++	thirst = 0.0
++	fatigue = 0.0
++	wounds = []
++	next_wound_id = 1
++	rng_state = 12345
++
++
++func is_dead() -> bool:
++	return health <= 0.0
++
++
++## Advances needs, bleeding, fatigue and healing. activity: "idle", "walk" or "sprint".
++## Returns a list of event dictionaries (e.g. starving, bleeding, wound_healed, died).
++func tick(dt: float, activity: String = "idle") -> Array:
++	var events: Array = []
++	if is_dead() or dt <= 0.0 or not is_finite(dt):
++		return events
++	hunger = minf(100.0, hunger + float(rules.hunger_rate) * dt)
++	thirst = minf(100.0, thirst + float(rules.thirst_rate) * dt)
++	match activity:
++		"sprint": fatigue = minf(100.0, fatigue + float(rules.fatigue_sprint_rate) * dt)
++		"walk": fatigue = minf(100.0, fatigue + float(rules.fatigue_walk_rate) * dt)
++		_: fatigue = maxf(0.0, fatigue - float(rules.fatigue_idle_recovery) * dt)
++	var loss := bleeding_rate() * dt
++	if hunger >= float(rules.starving_threshold):
++		loss += float(rules.starving_damage) * dt
++	if thirst >= float(rules.dehydrated_threshold):
++		loss += float(rules.dehydrated_damage) * dt
++	if loss > 0.0:
++		health = maxf(0.0, health - loss)
++	elif can_heal_naturally():
++		health = minf(100.0, health + float(rules.natural_heal_rate) * dt)
++	var remaining: Array = []
++	for wound: Dictionary in wounds:
++		if wound.bandaged and not wound.contaminated:
++			wound.age += dt
++			if wound.age >= float(rules.wound_heal_seconds):
++				events.append({"type": "wound_healed", "wound_id": wound.id, "kind": wound.kind})
++				continue
++		remaining.append(wound)
++	wounds = remaining
++	if is_dead():
++		events.append({"type": "died", "cause": "bleeding" if bleeding_rate() > 0.0 else "starvation"})
++	return events
++
++
++func bleeding_rate() -> float:
++	var rate := 0.0
++	for wound: Dictionary in wounds:
++		if not wound.bandaged:
++			rate += float(wound.bleed)
++	return rate
++
++
++func can_heal_naturally() -> bool:
++	if is_dead() or bleeding_rate() > 0.0:
++		return false
++	for wound: Dictionary in wounds:
++		if wound.contaminated:
++			return false
++	var limit := float(rules.natural_heal_max_need)
++	return hunger < limit and thirst < limit
++
++
++## Stamina recovery multiplier: fatigue above the threshold slows regeneration to 40%.
++func stamina_regen_multiplier() -> float:
++	var start := float(rules.fatigue_regen_penalty_start)
++	if fatigue <= start:
++		return 1.0
++	return lerpf(1.0, 0.4, clampf((fatigue - start) / (100.0 - start), 0.0, 1.0))
++
++
++func exert(amount: float) -> void:
++	if is_dead() or amount <= 0.0:
++		return
++	fatigue = minf(100.0, fatigue + amount * float(rules.fatigue_attack_cost))
++
++
++func spend_stamina(amount: float) -> bool:
++	if is_dead() or amount < 0.0 or stamina < amount:
++		return false
++	stamina -= amount
++	return true
++
++
++func recover_stamina(amount: float) -> void:
++	if is_dead() or amount <= 0.0:
++		return
++	stamina = minf(100.0, stamina + amount)
++
++
++func damage(amount: float) -> float:
++	if is_dead() or amount <= 0.0 or not is_finite(amount):
++		return 0.0
++	var applied := minf(health, amount)
++	health -= applied
++	return applied
++
++
++func heal(amount: float) -> float:
++	if is_dead() or amount <= 0.0 or not is_finite(amount):
++		return 0.0
++	var applied := minf(100.0 - health, amount)
++	health += applied
++	return applied
++
++
++## Resolve one incoming attack: {"damage": float, "source": String, "can_wound": bool,
++## "contaminated": bool}. Returns {"damage": applied, "wound": wound-or-empty, "died": bool}.
++func receive_attack(attack: Dictionary) -> Dictionary:
++	var result := {"damage": 0.0, "wound": {}, "died": false}
++	if is_dead():
++		return result
++	result.damage = damage(float(attack.get("damage", 0.0)))
++	if attack.get("can_wound", true) and not is_dead():
++		var roll := _roll()
++		var threshold := 0.0
++		# Severe first: a single roll selects at most one wound class.
++		for kind: String in ["bite", "laceration", "scratch"]:
++			threshold += float(wound_rules[kind].chance)
++			if roll < threshold:
++				result.wound = add_wound(kind, bool(attack.get("contaminated", true)))
++				break
++	result.died = is_dead()
++	return result
++
++
++func add_wound(kind: String, contaminated: bool = false) -> Dictionary:
++	if is_dead() or not wound_rules.has(kind):
++		return {}
++	if wounds.size() >= int(rules.max_wounds):
++		# Cap stored instances; deepen the most recent wound instead of growing the array.
++		var last: Dictionary = wounds[wounds.size() - 1]
++		last.bleed = minf(3.0, float(last.bleed) + float(wound_rules[kind].bleed))
++		last.bandaged = false
++		return last
++	var wound := {"id": next_wound_id, "kind": kind, "bleed": float(wound_rules[kind].bleed), "bandaged": false, "contaminated": contaminated, "age": 0.0}
++	next_wound_id += 1
++	wounds.append(wound)
++	return wound
++
++
++## Bandage up to `count` bleeding wounds, most severe first. Returns wounds bandaged.
++func bandage(count: int = 1) -> int:
++	if is_dead():
++		return 0
++	var open: Array = []
++	for wound: Dictionary in wounds:
++		if not wound.bandaged:
++			open.append(wound)
++	open.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.bleed) > float(b.bleed))
++	var done := 0
++	for wound: Dictionary in open:
++		if done >= count:
++			break
++		wound.bandaged = true
++		done += 1
++	return done
++
++
++## Clean up to `count` contaminated wounds. Returns wounds disinfected.
++func disinfect(count: int = 1) -> int:
++	if is_dead():
++		return 0
++	var done := 0
++	for wound: Dictionary in wounds:
++		if done >= count:
++			break
++		if wound.contaminated:
++			wound.contaminated = false
++			done += 1
++	return done
++
++
++func open_wound_count() -> int:
++	var count := 0
++	for wound: Dictionary in wounds:
++		if not wound.bandaged:
++			count += 1
++	return count
++
++
++func contaminated_wound_count() -> int:
++	var count := 0
++	for wound: Dictionary in wounds:
++		if wound.contaminated:
++			count += 1
++	return count
++
++
++## Short human-readable status for HUD/feedback; empty when nothing is wrong.
++func status_text() -> String:
++	var parts: PackedStringArray = []
++	if open_wound_count() > 0:
++		parts.append("BLEEDING ×%d" % open_wound_count())
++	if contaminated_wound_count() > 0:
++		parts.append("DIRTY WOUND")
++	if hunger >= float(rules.starving_threshold):
++		parts.append("STARVING")
++	if thirst >= float(rules.dehydrated_threshold):
++		parts.append("DEHYDRATED")
++	if fatigue >= float(rules.fatigue_regen_penalty_start):
++		parts.append("TIRED")
++	return " · ".join(parts)
++
++
++func snapshot() -> Dictionary:
++	return {"health": health, "stamina": stamina, "hunger": hunger, "thirst": thirst, "fatigue": fatigue,
++		"wounds": wounds.duplicate(true), "next_wound_id": next_wound_id, "rng_state": rng_state}
++
++
++func validate(data: Variant) -> bool:
++	if not data is Dictionary or data.size() != SNAPSHOT_KEYS.size():
++		return false
++	for key: String in SNAPSHOT_KEYS:
++		if not data.has(key):
++			return false
++	for key: String in ["health", "stamina", "hunger", "thirst", "fatigue"]:
++		if not _number(data[key], 0.0, 100.0):
++			return false
++	if not _integer(data.next_wound_id, 1, 1000000000) or not _integer(data.rng_state, 0, 2147483647):
++		return false
++	if not data.wounds is Array or data.wounds.size() > int(rules.get("max_wounds", 12)):
++		return false
++	var seen: Dictionary = {}
++	for wound: Variant in data.wounds:
++		if not wound is Dictionary or wound.size() != 6:
++			return false
++		if not _integer(wound.get("id"), 1, int(data.next_wound_id) - 1) or seen.has(int(wound.id)):
++			return false
++		seen[int(wound.id)] = true
++		if not wound.get("kind") in WOUND_KINDS or not wound.get("bandaged") is bool or not wound.get("contaminated") is bool:
++			return false
++		if not _number(wound.get("bleed"), 0.0, 3.0) or not _number(wound.get("age"), 0.0, 100000.0):
++			return false
++	return true
++
++
++func restore(data: Variant) -> bool:
++	if not validate(data):
++		return false
++	health = float(data.health)
++	stamina = float(data.stamina)
++	hunger = float(data.hunger)
++	thirst = float(data.thirst)
++	fatigue = float(data.fatigue)
++	wounds = []
++	for wound: Dictionary in data.wounds:
++		wounds.append({"id": int(wound.id), "kind": str(wound.kind), "bleed": float(wound.bleed), "bandaged": wound.bandaged, "contaminated": wound.contaminated, "age": float(wound.age)})
++	next_wound_id = int(data.next_wound_id)
++	rng_state = int(data.rng_state)
++	return true
++
++
++func _roll() -> float:
++	rng_state = (rng_state * 1103515245 + 12345) % 2147483648
++	return float(rng_state) / 2147483648.0
++
++
++func _number(value: Variant, low: float, high: float) -> bool:
++	return (typeof(value) == TYPE_FLOAT or typeof(value) == TYPE_INT) and is_finite(float(value)) and float(value) >= low and float(value) <= high
++
++
++func _integer(value: Variant, low: int, high: int) -> bool:
++	return _number(value, low, high) and floorf(float(value)) == float(value)
+diff --git a/scripts/gameplay/vitals.gd.uid b/scripts/gameplay/vitals.gd.uid
+new file mode 100644
+index 0000000..994e2fe
+--- /dev/null
++++ b/scripts/gameplay/vitals.gd.uid
+@@ -0,0 +1 @@
++uid://di2ddsk8qlch1
+diff --git a/scripts/house.gd b/scripts/house.gd
+index 84e1ca2..c40c1ca 100644
+--- a/scripts/house.gd
++++ b/scripts/house.gd
+@@ -24,9 +24,37 @@ var world_art_debug := false
+ const MobileHUD := preload("res://scripts/mobile_hud.gd")
+ var hud := MobileHUD.new()
+ var control_rects: Dictionary = {}
+-var stamina := 100.0
+-var hunger := 0.0
+-var thirst := 0.0
++## Gameplay systems (Worker 02). Vitals own health/stamina/needs/wounds; house.gd keeps
++## the old field names as properties so existing callers and tests keep working.
++const Vitals := preload("res://scripts/gameplay/vitals.gd")
++const Crafting := preload("res://scripts/gameplay/crafting.gd")
++const RULES_PATH := "res://data/gameplay_rules.json"
++var vitals := Vitals.new()
++var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RULES_PATH))
++var crafting: RefCounted
++## Every gameplay outcome is emitted here as a Dictionary with a "type" key; see
++## docs/gameplay/GAMEPLAY_API.md. event_log keeps the most recent 64 for tests/QA.
++signal gameplay_event(event: Dictionary)
++var event_log: Array = []
++var zombie_attack_time := [0.0, 0.0]
++var container_contents: Dictionary = {}
++var bleed_notice_time := 0.0
++const CONTAINER_CAPACITY_KG := 40.0
++var stamina: float:
++ get: return vitals.stamina
++ set(value): vitals.stamina = clampf(value, 0.0, 100.0)
++var hunger: float:
++ get: return vitals.hunger
++ set(value): vitals.hunger = clampf(value, 0.0, 100.0)
++var thirst: float:
++ get: return vitals.thirst
++ set(value): vitals.thirst = clampf(value, 0.0, 100.0)
++var health: float:
++ get: return vitals.health
++ set(value): vitals.health = clampf(value, 0.0, 100.0)
++var fatigue: float:
++ get: return vitals.fatigue
++ set(value): vitals.fatigue = clampf(value, 0.0, 100.0)
+ var inventory_open := false
+ var inventory_page := 0
+ var sprint_held := false
+@@ -58,9 +86,7 @@ var save_blocked := false
+ var recovery_available := false
+ var exhausted := false
+ var last_save_error: Error = OK
+-const SAVE_VERSION := 2
+-const HUNGER_RATE := .025
+-const THIRST_RATE := .045
++const SAVE_VERSION := 3
+ const CONTAINER_LOOT := {
+  "house.kitchen.counter": {"ll_food_bean_tin":2,"ll_food_water_bottle":2},
+  "house.bedroom.bed": {"ll_medical_sterile_bandage":1,"ll_household_flashlight":1},
+@@ -76,7 +102,6 @@ const SNEAK_SPEED := .95
+ const STAMINA_DRAIN := 18.0
+ const STAMINA_REGEN := 12.0
+ var player := Vector2(4.9, 9.35)
+-var health := 100.0
+ var god_mode := false
+ var supplies := 0
+ var infected := [Vector2(-1.9, 7.9), Vector2(11.6, 7.2)]
+@@ -105,6 +130,7 @@ var attack_cooldown := 0.0
+ func _ready() -> void:
+  texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
+  if lab_mode: _setup_lab()
++ crafting = Crafting.new(survival.definitions)
+  art.setup(self)
+  _load_controls()
+  _make_house()
+@@ -160,6 +186,9 @@ func _make_house() -> void:
+   for entry in list: entry.building = 0
+  buildings = [{"id": "house.h01", "rect": HOME}]
+  if lab_mode: _add_lab_buildings()
++ container_contents.clear()
++ for item in items:
++  if item.get("container",false): container_contents[item.id]=item.get("loot",CONTAINER_LOOT.get(item.id,{})).duplicate(true)
+  navigation.rebuild(self)
+ 
+ func _setup_lab() -> void:
+@@ -200,9 +229,11 @@ func _reset_infected() -> void:
+  infected = _initial_infected()
+  zombie_health = []
+  zombies_hit_time = []
++ zombie_attack_time = []
+  for i in range(infected.size()):
+   zombie_health.append(3)
+   zombies_hit_time.append(0.0)
++  zombie_attack_time.append(0.0)
+ 
+ ## Capture points for tests/capture_integration.gd (empty outside the lab).
+ func capture_views() -> Array:
+@@ -277,21 +308,20 @@ func _interact() -> void:
+   _toggle_door(target.index)
+  elif target.kind=="container":
+   var item: Dictionary=items[target.index]
+-  var loot: Dictionary=item.get("loot",CONTAINER_LOOT.get(item.id,{}))
+-  var previous:=survival.snapshot()
+-  for id in loot:
+-   if not survival.add(id,loot[id]):
+-    survival.restore(previous)
+-    _announce("Make room in your pack before searching")
+-    return
+-  item.searched=true
+-  supplies+=1
+-  _announce("Collected supplies from "+String(item.name).capitalize())
++  var moved:=_take_all_from_container(target.index)
++  if moved==0:
++   _announce("Make room in your pack before searching")
++   return
++  if item.searched:
++   supplies+=1
++   _announce("Collected supplies from "+String(item.name).capitalize())
++  else: _announce("Pack full — items left in "+String(item.name).capitalize())
+  elif target.kind=="drop":
+   var drop: Dictionary=drops[target.index]
+-  if not survival.add(drop.id,drop.count):
++  if not survival.add(drop.id,drop.count,drop.get("instances",[])):
+    _announce("Pack is full")
+    return
++  _emit({"type":"item_picked_up","item_id":drop.id,"count":drop.count})
+   _announce("Picked up "+survival.name_for(drop.id))
+   drops.remove_at(target.index)
+  selected_target={}
+@@ -314,27 +344,69 @@ func _toggle_door(i: int) -> void:
+  _announce(door.label + (" door OPEN" if door.open else " door CLOSED"))
+ 
+ func _weapon_stats() -> Dictionary:
+- if survival.equipped.is_empty(): return {"damage":1,"reach":1.25,"stamina":8.0}
++ if survival.equipped.is_empty(): return rules.combat.bare_hands
+  return survival.definitions[survival.equipped]
+ 
++func _emit(event: Dictionary) -> void:
++ event["time"]=elapsed
++ event_log.append(event)
++ if event_log.size()>64: event_log.pop_front()
++ gameplay_event.emit(event)
++
+ func _attack() -> void:
+  if health<=0 or paused or attack_cooldown>0: return
+  var stats:=_weapon_stats()
+  if stamina<float(stats.stamina):
+   _announce("Too exhausted to strike")
+   return
++ var tired: bool=stamina<float(rules.combat.tired_stamina)
+  stamina-=float(stats.stamina)
++ vitals.exert(1.0)
+  recovery_delay=.85
+- attack_cooldown=.5
+- var hit:=false
++ attack_cooldown=float(stats.get("cooldown",rules.combat.default_weapon_cooldown))*(float(rules.combat.tired_cooldown_multiplier) if tired else 1.0)
++ var weapon: String=survival.equipped
++ var hits:=0
+  for i in range(infected.size()):
+   var offset: Vector2=infected[i]-player
+   if zombie_health[i]>0 and offset.length()<float(stats.reach) and facing.dot(offset.normalized())>=.25 and not _line_blocked(player,infected[i]):
+-   zombie_health[i]=maxi(0,int(zombie_health[i])-int(stats.damage))
++   var dealt:=mini(int(zombie_health[i]),int(stats.damage))
++   zombie_health[i]=int(zombie_health[i])-dealt
+    zombies_hit_time[i]=.32
++   zombie_attack_time[i]=0.0
+    infected[i]=_try_move(infected[i],offset.normalized()*.12,.17)
+-   hit=true
+- _announce("Strike landed" if hit else "Miss — face the infected and move closer")
++   hits+=1
++   _emit({"type":"zombie_damaged","target":i,"amount":dealt,"weapon":weapon,"remaining":zombie_health[i]})
++   if zombie_health[i]<=0: _on_zombie_killed(i)
++ _emit({"type":"attack","weapon":weapon,"hits":hits})
++ if hits>0 and not weapon.is_empty():
++  var worn:=survival.wear(weapon,float(rules.combat.wear_per_hit))
++  if worn.get("broken",false):
++   _emit({"type":"item_broken","item_id":weapon,"uid":worn.uid})
++   _announce(survival.name_for(weapon)+" broke!")
++   return
++ _announce("Strike landed" if hits>0 else "Miss — face the infected and move closer")
++
++func _on_zombie_killed(i: int) -> void:
++ _emit({"type":"zombie_killed","target":i,"position":infected[i]})
++ for entry: Dictionary in rules.zombie_loot:
++  if vitals._roll()<float(entry.chance) and drops.size()<128 and survival.definitions.has(entry.id):
++   drops.append({"id":entry.id,"count":int(entry.count),"pos":_clear_saved_position(infected[i])})
++   if not String(entry.id).begins_with("ll_golden_"): art._cache(survival.definitions[entry.id].art_id)
++   _emit({"type":"loot_dropped","item_id":entry.id,"count":int(entry.count),"source":"zombie"})
++
++## Player-side damage resolution. Worker 03 can call this directly with its own attack
++## timing: {"damage": float, "source": String, "can_wound": bool, "contaminated": bool}.
++func receive_attack(attack: Dictionary) -> Dictionary:
++ if god_mode or health<=0: return {"damage":0.0,"wound":{},"died":false}
++ var result: Dictionary=vitals.receive_attack(attack)
++ _emit({"type":"player_damaged","amount":result.damage,"source":attack.get("source","unknown"),"wound":result.wound.duplicate()})
++ if not result.wound.is_empty():
++  _announce("%s — bleeding! Bandage it" % String(result.wound.kind).capitalize())
++  bleed_notice_time=8.0
++ return result
++
++func _zombie_strike(i: int) -> void:
++ receive_attack({"damage":float(rules.combat.zombie_attack_damage),"source":"zombie_%d"%i,"can_wound":true,"contaminated":true})
+ 
+ func _shove() -> void:
+  if health<=0 or paused or shove_cooldown>0: return
+@@ -342,6 +414,7 @@ func _shove() -> void:
+   _announce("Too exhausted to shove")
+   return
+  stamina-=12
++ vitals.exert(1.0)
+  recovery_delay=.85
+  shove_cooldown=.8
+  var hit:=false
+@@ -350,7 +423,9 @@ func _shove() -> void:
+   if zombie_health[i]>0 and offset.length()<1.15 and facing.dot(offset.normalized())>=.15 and not _line_blocked(player,infected[i]):
+    infected[i]=_try_move(infected[i],offset.normalized()*.65,.17)
+    zombies_hit_time[i]=.7
++   zombie_attack_time[i]=0.0
+    hit=true
++   _emit({"type":"zombie_shoved","target":i})
+  _announce("Pushed back — make space" if hit else "Shove missed")
+ 
+ func _process(delta: float) -> void:
+@@ -371,8 +446,6 @@ func _step(dt: float) -> void:
+  if autosave_time>=15:
+   autosave_time=0
+   _save_game()
+- hunger=minf(100,hunger+HUNGER_RATE*dt)
+- thirst=minf(100,thirst+THIRST_RATE*dt)
+  elapsed+=dt
+  message_time=maxf(0,message_time-dt)
+  attack_cooldown=maxf(0,attack_cooldown-dt)
+@@ -385,12 +458,20 @@ func _step(dt: float) -> void:
+  if stamina<=.01: exhausted=true
+  if stamina>=20: exhausted=false
+  sprinting=not exhausted and (sprint_held or keyboard_sprint) and not sneaking and direction.length()>.01 and stamina>0
+- var speed:=SPRINT_SPEED if sprinting else SNEAK_SPEED if sneaking else WALK_SPEED
++ var speed:=(SPRINT_SPEED if sprinting else SNEAK_SPEED if sneaking else WALK_SPEED)*_load_speed_multiplier()
+  if sprinting:
+-  stamina=maxf(0,stamina-STAMINA_DRAIN*dt)
++  stamina=maxf(0,stamina-STAMINA_DRAIN*dt*_load_sprint_drain())
+   recovery_delay=.5
+  elif recovery_delay<=0:
+-  stamina=minf(100,stamina+STAMINA_REGEN*dt)
++  stamina=minf(100,stamina+STAMINA_REGEN*dt*vitals.stamina_regen_multiplier())
++ var activity:="sprint" if sprinting else "walk" if direction.length()>.01 else "idle"
++ for event in vitals.tick(dt,activity):
++  _emit(event)
++  if event.type=="wound_healed": _announce(String(event.kind).capitalize()+" healed")
++ bleed_notice_time=maxf(0,bleed_notice_time-dt)
++ if bleed_notice_time<=0 and message_time<=0 and vitals.open_wound_count()>0:
++  _announce("Bleeding — apply a bandage")
++  bleed_notice_time=10.0
+  if direction.length()>.01:
+   facing=_screen_direction_to_world(direction)
+   player=_try_move(player,facing*speed*dt*minf(1,direction.length()),PLAYER_RADIUS)
+@@ -409,11 +490,19 @@ func _step(dt: float) -> void:
+      if door.health<=0:
+       door.open=true
+       _announce("BREACH! An infected broke a door")
+-  if infected[i].distance_to(player)<.62 and not god_mode and not _line_blocked(infected[i],player):
+-   health=maxf(0,health-dt*9)
++  # Discrete attacks: wind-up while in reach, strike, then recovery. Shove/hit interrupts.
++  if zombie_attack_time[i]<0:
++   zombie_attack_time[i]=minf(0,zombie_attack_time[i]+dt)
++  elif infected[i].distance_to(player)<float(rules.combat.zombie_attack_range) and not god_mode and not _line_blocked(infected[i],player):
++   zombie_attack_time[i]+=dt
++   if zombie_attack_time[i]>=float(rules.combat.zombie_attack_windup):
++    zombie_attack_time[i]=-float(rules.combat.zombie_attack_recovery)
++    _zombie_strike(i)
++  else: zombie_attack_time[i]=0.0
+  if health<=0:
+   _clear_pointers()
+   _announce("You did not survive — begin again")
++  _emit({"type":"player_died"})
+   _save_game()
+ 
+ func _iso(p: Vector2, height: float = 0) -> Vector2:
+@@ -700,7 +789,10 @@ func _restart_game() -> void:
+  pending_spawn_id = ""
+  if loot_builder != null: loot_builder.set_open(false)
+  survival.restore({"inventory":{},"equipped":""})
+- stamina=100; hunger=0; thirst=0
++ vitals.reset()
++ zombie_attack_time=[]; zombie_attack_time.resize(infected.size()); zombie_attack_time.fill(0.0)
++ bleed_notice_time=0.0
++ event_log.clear()
+  inventory_open=false; sneaking=false
+  selected_target={}; drops.clear()
+  shove_cooldown=0; recovery_delay=0
+@@ -725,6 +817,7 @@ func _save_game(path: String = "") -> Error:
+  if save_blocked and path==save_path:
+   last_save_error=ERR_INVALID_DATA
+   return last_save_error
++ _sync_container_flags()
+  var door_states: Array=[]
+  for door in doors: door_states.append({"open":door.open,"health":door.health})
+  var searched: Array=[]
+@@ -735,8 +828,13 @@ func _save_game(path: String = "") -> Error:
+  var enemies: Array=[]
+  for i in range(infected.size()): enemies.append({"x":infected[i].x,"y":infected[i].y,"health":zombie_health[i]})
+  var ground: Array=[]
+- for drop in drops: ground.append({"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y})
+- var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground}
++ for drop in drops:
++  var entry: Dictionary={"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y}
++  if not drop.get("instances",[]).is_empty(): entry.instances=drop.instances.duplicate(true)
++  ground.append(entry)
++ var extras: Dictionary=vitals.snapshot()
++ for key in ["health","stamina","hunger","thirst"]: extras.erase(key)
++ var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground,"vitals":extras,"container_contents":container_contents.duplicate(true)}
+  if lab_mode: data.lab_world = lab_digest
+  # Never overwrite unknown/corrupt prior data, including a future schema.
+  if FileAccess.file_exists(path):
+@@ -745,6 +843,12 @@ func _save_game(path: String = "") -> Error:
+    last_save_error=ERR_INVALID_DATA
+    return last_save_error
+   var old: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
++  # Keep one untouched copy of the first schema-2 file this build upgrades.
++  if old.version==2 and not FileAccess.file_exists(path+".schema2.bak"):
++   var archive_error:=DirAccess.copy_absolute(path,path+".schema2.bak")
++   if archive_error!=OK:
++    last_save_error=archive_error
++    return archive_error
+   var archived: String=path+".schema1.bak" if old.version==1 else path+".bak"
+   if old.version!=1 or not FileAccess.file_exists(archived):
+    var backup_error:=DirAccess.copy_absolute(path,archived)
+@@ -755,7 +859,8 @@ func _save_game(path: String = "") -> Error:
+  if file==null:
+   last_save_error=FileAccess.get_open_error()
+   return last_save_error
+- file.store_string(JSON.stringify(data))
++ # Full precision so float vitals/positions survive a round trip bit-for-bit.
++ file.store_string(JSON.stringify(data,"",true,true))
+  file.flush()
+  var error:=file.get_error()
+  file.close()
+@@ -779,7 +884,7 @@ func _load_game(path: String = "", validate_only: bool = false) -> Error:
+  var parser:=JSON.new()
+  if parser.parse(file.get_as_text())!=OK: return ERR_INVALID_DATA
+  var data: Variant=parser.data
+- if not data is Dictionary or not _integer(data.get("version"),1,2): return ERR_INVALID_DATA
++ if not data is Dictionary or not _integer(data.get("version"),1,3): return ERR_INVALID_DATA
+  # A lab save only loads into the exact generated world it was written for.
+  if lab_mode and data.get("lab_world") != lab_digest: return ERR_INVALID_DATA
+  var position: Variant=data.get("player")
+@@ -804,7 +909,9 @@ func _load_game(path: String = "", validate_only: bool = false) -> Error:
+   if not survival.validate(inventory_state): return ERR_INVALID_DATA
+  var ground: Array[Dictionary]=[]
+  var flags: Dictionary={}
+- if data.version==2:
++ var vitals_state: Dictionary=Vitals.new().snapshot()
++ var contents: Dictionary={}
++ if data.version>=2:
+   for key in ["stamina","hunger","thirst"]:
+    if not _valid_number(data.get(key),0,100): return ERR_INVALID_DATA
+   if not survival.validate(data.get("survival")): return ERR_INVALID_DATA
+@@ -824,19 +931,48 @@ func _load_game(path: String = "", validate_only: bool = false) -> Error:
+   for drop in raw_drops:
+    if not drop is Dictionary or not drop.get("id") is String or not survival.definitions.has(drop.id): return ERR_INVALID_DATA
+    if not _integer(drop.get("count"),1,int(survival.definitions[drop.id].stack_max)) or not _valid_number(drop.get("x"),-100,100) or not _valid_number(drop.get("y"),-100,100): return ERR_INVALID_DATA
+-   ground.append({"id":drop.id,"count":int(drop.count),"pos":Vector2(drop.x,drop.y)})
++   var carried: Array=[]
++   if drop.has("instances"):
++    if data.version<3 or drop.size()!=5 or not survival.is_durable(drop.id) or not survival.valid_instances(drop.id,drop.instances,int(drop.count)): return ERR_INVALID_DATA
++    carried=drop.instances.duplicate(true)
++   elif drop.size()!=4: return ERR_INVALID_DATA
++   var restored_drop: Dictionary={"id":drop.id,"count":int(drop.count),"pos":Vector2(drop.x,drop.y)}
++   if not carried.is_empty(): restored_drop.instances=carried
++   ground.append(restored_drop)
++ for item in items:
++  if item.get("container",false): contents[item.id]={} if (flags.get(item.id,false) if data.version>=2 else false) else CONTAINER_LOOT.get(item.id,{}).duplicate(true)
++ if data.version==1:
++  for i in range(4):
++   if items[i].get("container",false) and searched[i]: contents[items[i].id]={}
++ if data.version==3:
++  var extras: Variant=data.get("vitals")
++  if not extras is Dictionary: return ERR_INVALID_DATA
++  var merged: Dictionary=extras.duplicate(true)
++  for key in ["health","stamina","hunger","thirst"]:
++   if merged.has(key): return ERR_INVALID_DATA
++   merged[key]=data[key]
++  if not vitals.validate(merged): return ERR_INVALID_DATA
++  vitals_state=merged
++  var saved_contents: Variant=data.get("container_contents")
++  if not _valid_container_contents(saved_contents,flags): return ERR_INVALID_DATA
++  contents=saved_contents.duplicate(true)
++ else:
++  vitals_state.health=float(data.health)
++  if data.version==2:
++   for key in ["stamina","hunger","thirst"]: vitals_state[key]=float(data[key])
+  if validate_only: return OK
+  # Apply only after every legacy and extended value has passed validation.
+  survival.restore(inventory_state)
++ vitals.restore(vitals_state)
++ container_contents=contents
++ for id in container_contents:
++  for item_id in container_contents[id]: container_contents[id][item_id]=int(container_contents[id][item_id])
++ zombie_attack_time=[]; zombie_attack_time.resize(infected.size()); zombie_attack_time.fill(0.0)
+  player=Vector2(position[0],position[1])
+  if _blocked_static(player):
+   player=_clear_saved_position(player)
+   _announce("Saved location obstructed — moved to nearby clear ground")
+- health=float(data.health)
+  supplies=int(data.supplies)
+- stamina=float(data.stamina) if data.version==2 else 100.0
+- hunger=float(data.hunger) if data.version==2 else 0.0
+- thirst=float(data.thirst) if data.version==2 else 0.0
+  for i in range(doors.size()):
+   doors[i].open=door_states[i].open
+   doors[i].health=float(door_states[i].health)
+@@ -922,7 +1058,12 @@ func _inventory_rows() -> Array:
+  var page: Array=rows.slice(inventory_page*6,inventory_page*6+6)
+  for row in page:
+   var definition: Dictionary=survival.definitions[row.id]
+-  row.detail="%s · %.2f kg%s" % [definition.category,float(definition.weight_kg)*int(row.count)," · equipped" if survival.equipped==row.id else ""]
++  var condition_text:=""
++  if survival.is_durable(row.id): condition_text=" · %d%%" % roundi(100.0*survival.condition(row.id)/survival.max_condition(row.id))
++  row.detail="%s · %.2f kg%s%s" % [definition.category,float(definition.weight_kg)*int(row.count),condition_text," · equipped" if survival.equipped==row.id else ""]
++  if row.action=="Inspect":
++   var recipe_id: String=crafting.first_available(row.id,survival,vitals)
++   if not recipe_id.is_empty(): row.action=str(crafting.recipes[recipe_id].verb)
+  return page
+ 
+ func _first_item(kind: String) -> String:
+@@ -957,20 +1098,39 @@ func _use_item(id: String) -> bool:
+  var kind: String=definition.kind
+  if kind=="weapon":
+   survival.equip("" if survival.equipped==id else id)
++  _emit({"type":"equipped","item_id":survival.equipped})
+   _announce("Hands ready" if survival.equipped.is_empty() else "Equipped "+survival.name_for(id))
+  elif kind in ["food","drink","heal"]:
+-  if (kind=="food" and hunger<=0) or (kind=="drink" and thirst<=0) or (kind=="heal" and health>=100):
++  var treatment: Dictionary=rules.get("item_effects",{}).get(id,{})
++  var wound_need: bool=(treatment.has("bandage") and vitals.open_wound_count()>0) or (treatment.has("disinfect") and vitals.contaminated_wound_count()>0)
++  if (kind=="food" and hunger<=0) or (kind=="drink" and thirst<=0) or (kind=="heal" and health>=100 and not wound_need):
+    _announce("No need to use this yet")
+    return false
+   var effect:=survival.consume(id)
+   if effect.is_empty(): return false
+   if kind=="food": hunger=maxf(0,hunger-effect.amount)
+   elif kind=="drink": thirst=maxf(0,thirst-effect.amount)
+-  else: health=minf(100,health+effect.amount)
++  else:
++   vitals.heal(effect.amount)
++   vitals.bandage(int(treatment.get("bandage",0)))
++   vitals.disinfect(int(treatment.get("disinfect",0)))
++  _emit({"type":"item_consumed","item_id":id,"kind":kind})
+   _announce(("Ate " if kind=="food" else "Drank " if kind=="drink" else "Applied ")+survival.name_for(id))
+  else:
+-  _announce(survival.name_for(id)+" — carry or drop")
+-  return true
++  var recipe_id: String=crafting.first_available(id,survival,vitals)
++  if recipe_id.is_empty():
++   var options: Array=crafting.recipes_using(id)
++   if options.is_empty():
++    _announce(survival.name_for(id)+" — carry or drop")
++    return true
++   _announce(survival.name_for(id)+" — "+str(crafting.check(options[0],survival,vitals).reason))
++   return false
++  var result: Dictionary=crafting.execute(recipe_id,survival,vitals)
++  if not result.ok:
++   _announce(result.reason)
++   return false
++  _emit({"type":"recipe_completed","recipe":recipe_id,"outputs":result.outputs,"repaired":result.repaired,"treated":result.treated})
++  _announce(str(crafting.recipes[recipe_id].name)+" — done")
+  _save_game()
+  queue_redraw()
+  return true
+@@ -988,8 +1148,12 @@ func _drop_item(id: String) -> bool:
+  if not found:
+   _announce("No clear ground for this item")
+   return false
+- if not survival.remove(id): return false
+- drops.append({"id":id,"count":1,"pos":position})
++ var removed:=survival.take(id)
++ if removed.is_empty(): return false
++ var dropped: Dictionary={"id":id,"count":1,"pos":position}
++ if survival.is_durable(id): dropped.instances=removed
++ drops.append(dropped)
++ _emit({"type":"item_dropped","item_id":id,"count":1})
+  if not id.begins_with("ll_golden_"):
+   art._cache(survival.definitions[id].art_id)
+  selected_target={}
+@@ -1148,6 +1312,112 @@ func _set_dead_zone(value: float) -> void:
+  _save_controls()
+  queue_redraw()
+ 
++## ---- Worker 02 gameplay helpers ----
++
++func _load_fraction() -> float:
++ return survival.total_weight()/maxf(survival.capacity_kg,.001)
++
++func _load_speed_multiplier() -> float:
++ var load:=_load_fraction()
++ if load>=float(rules.load.overloaded_fraction): return float(rules.load.overloaded_speed)
++ if load>=float(rules.load.heavy_fraction): return float(rules.load.heavy_speed)
++ return 1.0
++
++func _load_sprint_drain() -> float:
++ return float(rules.load.heavy_sprint_drain) if _load_fraction()>=float(rules.load.heavy_fraction) else 1.0
++
++## One short status line for the HUD (wounds, starvation, fatigue, load); empty when fine.
++func _status_line() -> String:
++ var text: String=vitals.status_text()
++ if _load_fraction()>=float(rules.load.heavy_fraction):
++  text+=(" · " if not text.is_empty() else "")+("OVERLOADED" if _load_fraction()>=float(rules.load.overloaded_fraction) else "HEAVY LOAD")
++ return text
++
++## The legacy `searched` flag is still written by older code/tests. Reconcile before
++## saving: a searched container is empty; an empty container counts as searched.
++func _sync_container_flags() -> void:
++ for item in items:
++  if not item.get("container",false): continue
++  if item.searched: container_contents[item.id]={}
++  elif container_contents.get(item.id,{}).is_empty(): item.searched=true
++
++func _container_index(id: String) -> int:
++ for i in range(items.size()):
++  if items[i].id==id and items[i].get("container",false): return i
++ return -1
++
++func _container_in_reach(index: int) -> bool:
++ if index<0 or index>=items.size() or not items[index].get("container",false): return false
++ var rect := Rect2(items[index].pos,items[index].size)
++ var point:=player.clamp(rect.position,rect.end)
++ return player.distance_to(point)<=1.6 and not _line_blocked(player,point.move_toward(player,.05),false)
++
++func _container_weight(id: String) -> float:
++ var total:=0.0
++ for item_id in container_contents.get(id,{}):
++  total+=float(survival.definitions[item_id].weight_kg)*int(container_contents[id][item_id])
++ return total
++
++## Move one container's contents into the pack, item by item, as far as capacity allows.
++## Returns the number of units moved. Remaining items stay in the container.
++func _take_all_from_container(index: int) -> int:
++ var id: String=items[index].id
++ var contents: Dictionary=container_contents.get(id,{})
++ var moved:=0
++ var keys: Array=contents.keys()
++ keys.sort()
++ for item_id in keys:
++  while int(contents.get(item_id,0))>0 and survival.add(item_id,1):
++   contents[item_id]=int(contents[item_id])-1
++   moved+=1
++  if int(contents.get(item_id,0))<=0: contents.erase(item_id)
++ items[index].searched=contents.is_empty()
++ if moved>0: _emit({"type":"container_taken","container":id,"count":moved,"emptied":contents.is_empty()})
++ return moved
++
++## Container transfer API (pack → container). Durable items (weapons/tools) are
++## rejected for now: containers do not yet persist per-instance condition.
++func store_in_container(container_id: String, item_id: String, count: int = 1) -> bool:
++ var index:=_container_index(container_id)
++ if health<=0 or index<0 or not _container_in_reach(index) or count<1: return false
++ if not survival.inventory.has(item_id) or survival.is_durable(item_id): return false
++ if int(survival.inventory[item_id])<count: return false
++ var current: int=int(container_contents[container_id].get(item_id,0))
++ if current+count>int(survival.definitions[item_id].stack_max): return false
++ if _container_weight(container_id)+float(survival.definitions[item_id].weight_kg)*count>CONTAINER_CAPACITY_KG: return false
++ if not survival.remove(item_id,count): return false
++ container_contents[container_id][item_id]=current+count
++ items[index].searched=false
++ _emit({"type":"container_stored","container":container_id,"item_id":item_id,"count":count})
++ _save_game()
++ return true
++
++## Container transfer API (container → pack) for one item type.
++func take_from_container(container_id: String, item_id: String, count: int = 1) -> bool:
++ var index:=_container_index(container_id)
++ if health<=0 or index<0 or not _container_in_reach(index) or count<1: return false
++ var current: int=int(container_contents[container_id].get(item_id,0))
++ if current<count or not survival.add(item_id,count): return false
++ if current==count: container_contents[container_id].erase(item_id)
++ else: container_contents[container_id][item_id]=current-count
++ items[index].searched=container_contents[container_id].is_empty()
++ _emit({"type":"container_taken","container":container_id,"count":count,"emptied":items[index].searched})
++ _save_game()
++ return true
++
++func _valid_container_contents(value: Variant, flags: Dictionary) -> bool:
++ if not value is Dictionary or value.size()!=flags.size(): return false
++ for id in flags:
++  if not value.get(id) is Dictionary or value[id].size()>64: return false
++  if flags[id]!=value[id].is_empty(): return false
++  var weight:=0.0
++  for item_id in value[id]:
++   if not item_id is String or not survival.definitions.has(item_id): return false
++   if not _integer(value[id][item_id],1,int(survival.definitions[item_id].stack_max)): return false
++   weight+=float(survival.definitions[item_id].weight_kg)*float(value[id][item_id])
++  if weight>CONTAINER_CAPACITY_KG+.001: return false
++ return true
++
+ func _interaction_distance(target: Dictionary) -> float:
+  if target.kind=="door": return _segment_distance(player,doors[target.index].a,doors[target.index].b)
+  if target.kind=="container":
+diff --git a/scripts/mobile_hud.gd b/scripts/mobile_hud.gd
+index a68e4f2..242af14 100644
+--- a/scripts/mobile_hud.gd
++++ b/scripts/mobile_hud.gd
+@@ -151,6 +151,9 @@ func draw(game) -> void:
+  _status(game, Rect2(status.position + Vector2(28 + cell_width, 10), Vector2(cell_width, 28)), "STAMINA", game.stamina, STAMINA)
+  _status(game, Rect2(status.position + Vector2(14, 52), Vector2(cell_width, 28)), "HUNGER", game.hunger, FOOD)
+  _status(game, Rect2(status.position + Vector2(28 + cell_width, 52), Vector2(cell_width, 28)), "THIRST", game.thirst, WATER)
++ var condition_line: String = game._status_line()
++ if not condition_line.is_empty():
++  game._text(_fit(condition_line, status_width, 13), status.position + Vector2(4, status.size.y + 16), 13, Color("e0916f"))
+  _button(game, controls.inventory, "INVENTORY", game.inventory_open)
+  _button(game, controls.pause, "II", game.paused)
+  if not game.inventory_open and not game.paused and game.health>0:
+diff --git a/scripts/survival_state.gd b/scripts/survival_state.gd
+index ff46eb3..118725d 100644
+--- a/scripts/survival_state.gd
++++ b/scripts/survival_state.gd
+@@ -1,13 +1,20 @@
+ extends RefCounted
+ ## Pure inventory state. Health, hunger, thirst and save-file I/O belong to the game.
+ ## Art identity is independent of inventory identity: saves contain stable item IDs only.
++## Durable items (weapons/tools) additionally carry per-instance condition with stable
++## instance IDs ("it_<n>"). instances[id] always has exactly inventory[id] entries; the
++## equipped instance is instances[id][0]. Stackable consumables have no instance records.
+ 
+ const DEFINITIONS_PATH := "res://data/survival_items.json"
++const RULES_PATH := "res://data/gameplay_rules.json"
+ 
+ var definitions: Dictionary = {}
+ var inventory: Dictionary = {}
+ var equipped: String = ""
+ var capacity_kg: float = 20.0
++var instances: Dictionary = {}
++var next_uid: int = 1
++var default_weapon_durability: float = 30.0
+ 
+ 
+ func _init() -> void:
+@@ -27,9 +34,29 @@ func _init() -> void:
+ 			return
+ 		definitions[id] = raw.duplicate(true)
+ 	_load_golden40()
++	var rules: Variant = JSON.parse_string(FileAccess.get_file_as_string(RULES_PATH))
++	if rules is Dictionary and rules.get("combat") is Dictionary:
++		default_weapon_durability = float(rules["combat"].get("default_weapon_durability", 30.0))
+ 
+ 
+-func add(id: String, count: Variant = 1) -> bool:
++## Maximum condition for a durable definition; 0 means the item has no condition.
++func max_condition(id: String) -> float:
++	if not definitions.has(id):
++		return 0.0
++	var definition: Dictionary = definitions[id]
++	if definition.has("durability"):
++		return float(definition["durability"])
++	return default_weapon_durability if definition.get("kind") == "weapon" else 0.0
++
++
++func is_durable(id: String) -> bool:
++	return max_condition(id) > 0.0
++
++
++## Add items. For durable items, `carried` may supply existing instance records
++## (e.g. from a world drop) so condition survives pickup; otherwise new full-condition
++## instances are created.
++func add(id: String, count: Variant = 1, carried: Array = []) -> bool:
+ 	if not definitions.has(id) or not _valid_count(count):
+ 		return false
+ 	var next_count: int = int(inventory.get(id, 0)) + int(count)
+@@ -37,13 +64,41 @@ func add(id: String, count: Variant = 1) -> bool:
+ 		return false
+ 	if total_weight() + float(definitions[id]["weight_kg"]) * float(count) > capacity_kg + 0.00001:
+ 		return false
++	if is_durable(id):
++		if not carried.is_empty() and not _valid_instances(id, carried, int(count)):
++			return false
++		var list: Array = instances.get(id, [])
++		for i in range(int(count)):
++			if carried.is_empty():
++				list.append({"uid": "it_%d" % next_uid, "condition": max_condition(id)})
++				next_uid += 1
++			else:
++				list.append({"uid": str(carried[i]["uid"]), "condition": float(carried[i]["condition"])})
++		instances[id] = list
+ 	inventory[id] = next_count
+ 	return true
+ 
+ 
+ func remove(id: String, count: Variant = 1) -> bool:
++	return not take(id, count).is_empty()
++
++
++## Remove items and return removed instance records (durable) or [{}...] placeholders
++## for stackables. Returns [] on failure. Durable removals come from the end so the
++## equipped instance (index 0) is the last to go.
++func take(id: String, count: Variant = 1) -> Array:
+ 	if not inventory.has(id) or not _valid_count(count) or int(count) > int(inventory[id]):
+-		return false
++		return []
++	var removed: Array = []
++	if is_durable(id):
++		var list: Array = instances.get(id, [])
++		for i in range(int(count)):
++			removed.append(list.pop_back())
++		if list.is_empty():
++			instances.erase(id)
++	else:
++		for i in range(int(count)):
++			removed.append({})
+ 	var remaining: int = int(inventory[id]) - int(count)
+ 	if remaining == 0:
+ 		inventory.erase(id)
+@@ -51,7 +106,46 @@ func remove(id: String, count: Variant = 1) -> bool:
+ 			equipped = ""
+ 	else:
+ 		inventory[id] = remaining
+-	return true
++	return removed
++
++
++## Condition of the active (index 0) instance; -1 when the item has no condition.
++func condition(id: String) -> float:
++	if not is_durable(id) or not instances.has(id):
++		return -1.0
++	return float(instances[id][0]["condition"])
++
++
++## Wear the active instance. Returns {"condition": float, "broken": bool}. A broken
++## instance is removed; if it was the last one, the item is unequipped.
++func wear(id: String, amount: float) -> Dictionary:
++	if not is_durable(id) or not instances.has(id) or amount <= 0.0 or not is_finite(amount):
++		return {}
++	var active: Dictionary = instances[id][0]
++	active["condition"] = maxf(0.0, float(active["condition"]) - amount)
++	if active["condition"] > 0.0:
++		return {"condition": active["condition"], "broken": false, "uid": active["uid"]}
++	var list: Array = instances[id]
++	list.remove_at(0)
++	var remaining: int = int(inventory[id]) - 1
++	if remaining == 0:
++		inventory.erase(id)
++		instances.erase(id)
++		if equipped == id:
++			equipped = ""
++	else:
++		inventory[id] = remaining
++	return {"condition": 0.0, "broken": true, "uid": active["uid"]}
++
++
++## Restore condition on the active instance, clamped to the maximum. Returns amount restored.
++func repair(id: String, amount: float) -> float:
++	if not is_durable(id) or not instances.has(id) or amount <= 0.0 or not is_finite(amount):
++		return 0.0
++	var active: Dictionary = instances[id][0]
++	var restored := minf(max_condition(id) - float(active["condition"]), amount)
++	active["condition"] = float(active["condition"]) + restored
++	return restored
+ 
+ 
+ func equip(id: String) -> bool:
+@@ -109,11 +203,18 @@ func total_weight() -> float:
+ 
+ 
+ func snapshot() -> Dictionary:
+-	return {"inventory": inventory.duplicate(true), "equipped": equipped}
++	return {"inventory": inventory.duplicate(true), "equipped": equipped, "instances": instances.duplicate(true), "next_uid": next_uid}
+ 
+ 
++## Accepts the schema-2 two-key form (no conditions; durable items restore at full
++## condition) or the schema-3 four-key form with instance records.
+ func validate(data: Variant) -> bool:
+-	if not data is Dictionary or data.size() != 2 or not data.has("inventory") or not data.has("equipped"):
++	if not data is Dictionary or not data.has("inventory") or not data.has("equipped"):
++		return false
++	if data.size() == 4:
++		if not data.has("instances") or not data.has("next_uid") or not _valid_instance_map(data):
++			return false
++	elif data.size() != 2:
+ 		return false
+ 	if not data["inventory"] is Dictionary or not data["equipped"] is String:
+ 		return false
+@@ -135,13 +236,82 @@ func restore(data: Variant) -> bool:
+ 	if not validate(data):
+ 		return false
+ 	var restored: Dictionary = {}
++	var restored_instances: Dictionary = {}
++	var uid_counter: int = int(data["next_uid"]) if data.size() == 4 else 1
+ 	for id: String in data["inventory"]:
+ 		restored[id] = int(data["inventory"][id])
++		if not is_durable(id):
++			continue
++		var list: Array = []
++		if data.size() == 4:
++			for record: Dictionary in data["instances"][id]:
++				list.append({"uid": str(record["uid"]), "condition": float(record["condition"])})
++		else:
++			for i in range(restored[id]):
++				list.append({"uid": "it_%d" % uid_counter, "condition": max_condition(id)})
++				uid_counter += 1
++		restored_instances[id] = list
+ 	inventory = restored
++	instances = restored_instances
++	next_uid = uid_counter
+ 	equipped = data["equipped"]
+ 	return true
+ 
+ 
++func _valid_instance_map(data: Dictionary) -> bool:
++	var counter: Variant = data["next_uid"]
++	if not _valid_uid_counter(counter) or not data["instances"] is Dictionary or not data["inventory"] is Dictionary:
++		return false
++	var map: Dictionary = data["instances"]
++	var seen: Dictionary = {}
++	for id: Variant in data["inventory"]:
++		if not id is String or not definitions.has(id):
++			return false
++		if is_durable(id) != map.has(id):
++			return false
++	for id: Variant in map:
++		if not id is String or not data["inventory"].has(id) or not _valid_count(data["inventory"][id]):
++			return false
++		if not _valid_instances(id, map[id], int(data["inventory"][id])):
++			return false
++		for record: Dictionary in map[id]:
++			var number: int = int(str(record["uid"]).substr(3))
++			if seen.has(record["uid"]) or number >= int(counter):
++				return false
++			seen[record["uid"]] = true
++	return true
++
++
++func _valid_instances(id: String, list: Variant, count: int) -> bool:
++	if not list is Array or list.size() != count:
++		return false
++	var limit := max_condition(id)
++	var seen: Dictionary = {}
++	for record: Variant in list:
++		if not record is Dictionary or record.size() != 2 or not record.get("uid") is String:
++			return false
++		var uid: String = record["uid"]
++		if not uid.begins_with("it_") or not uid.substr(3).is_valid_int() or int(uid.substr(3)) < 1 or seen.has(uid):
++			return false
++		seen[uid] = true
++		var value: Variant = record.get("condition")
++		if (typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT) or not is_finite(float(value)) or float(value) <= 0.0 or float(value) > limit:
++			return false
++	return true
++
++
++## Public check used by save loading for dropped durable items.
++func valid_instances(id: String, list: Variant, count: int) -> bool:
++	return is_durable(id) and _valid_instances(id, list, count)
++
++
++func _valid_uid_counter(value: Variant) -> bool:
++	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
++		return false
++	var number: float = float(value)
++	return is_finite(number) and number >= 1.0 and number <= 1000000000.0 and floor(number) == number
++
++
+ func _valid_count(value: Variant) -> bool:
+ 	# JSON numbers arrive as floats; reject booleans, NaN, fractions and unbounded conversions.
+ 	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+diff --git a/tests/capture_gameplay.gd b/tests/capture_gameplay.gd
+new file mode 100644
+index 0000000..af21029
+--- /dev/null
++++ b/tests/capture_gameplay.gd
+@@ -0,0 +1,57 @@
++extends SceneTree
++## Renders the real main scene with Worker 02 gameplay state (wounds, worn weapon,
++## recipe action) for visual evidence. Desktop emulation only, not iPhone evidence.
++## Usage: xvfb-run godot --path . --script tests/capture_gameplay.gd -- --output-dir=DIR
++
++var output_dir := "/tmp/last-light-gameplay-captures"
++
++
++func _initialize() -> void:
++	for argument: String in OS.get_cmdline_user_args():
++		if argument.begins_with("--output-dir="):
++			output_dir = argument.trim_prefix("--output-dir=")
++	call_deferred("capture")
++
++
++func shot(name: String) -> void:
++	for i in range(4):
++		await process_frame
++	await RenderingServer.frame_post_draw
++	var image := root.get_texture().get_image()
++	image.save_png(output_dir.path_join(name))
++	print("CAPTURE: ", output_dir.path_join(name), " ", image.get_size())
++
++
++func capture() -> void:
++	if DisplayServer.get_name() == "headless":
++		printerr("CAPTURE: requires a graphical display")
++		quit(1)
++		return
++	DirAccess.make_dir_recursive_absolute(output_dir)
++	root.size = Vector2i(1152, 720)
++	var game = load("res://main.tscn").instantiate()
++	root.add_child(game)
++	game.set_process(false)
++	game._restart_game()
++	game.set_process(false)
++	for door: Dictionary in game.doors:
++		door.open = true
++	game.player = Vector2(1.8, 5.95)
++	game.zombie_health[1] = 0
++	game.infected[0] = Vector2(2.6, 5.9)
++	game.survival.add("ll_tools_claw_hammer")
++	game.survival.equip("ll_tools_claw_hammer")
++	game.survival.instances["ll_tools_claw_hammer"][0].condition = 21.0
++	game.survival.add("ll_crafting_pine_plank", 2)
++	game.survival.add("ll_medical_sterile_bandage", 2)
++	game.vitals.add_wound("laceration", true)
++	game.health = 64.0
++	game.fatigue = 55.0
++	game._announce("Laceration — bleeding! Bandage it")
++	game.queue_redraw()
++	await shot("gameplay-wounded-hud.png")
++	game._set_inventory(true)
++	game.queue_redraw()
++	await shot("gameplay-inventory-repair.png")
++	game.free()
++	quit()
+diff --git a/tests/capture_gameplay.gd.uid b/tests/capture_gameplay.gd.uid
+new file mode 100644
+index 0000000..327833d
+--- /dev/null
++++ b/tests/capture_gameplay.gd.uid
+@@ -0,0 +1 @@
++uid://1ohrvawgo53o
+diff --git a/tests/fixtures/house_v2.json b/tests/fixtures/house_v2.json
+new file mode 100644
+index 0000000..e3f692e
+--- /dev/null
++++ b/tests/fixtures/house_v2.json
+@@ -0,0 +1 @@
++{"containers":{"house.bathroom.medicine":false,"house.bedroom.bed":false,"house.bedroom.chest":false,"house.kitchen.counter":true,"house.living.sofa":false},"doors":[{"health":45.0,"open":false},{"health":45.0,"open":false},{"health":45.0,"open":false},{"health":45.0,"open":false},{"health":45.0,"open":false}],"drops":[{"count":1,"id":"ll_crafting_pine_plank","x":3.29999995231628,"y":1.89999997615814}],"enemies":[{"health":0,"x":-1.89999997615814,"y":7.90000009536743},{"health":3,"x":11.6000003814697,"y":7.19999980926514}],"health":61.5,"hunger":33.0,"player":[2.79999995231628,1.89999997615814],"searched":[true,false,false,false],"stamina":40.0,"supplies":1,"survival":{"equipped":"ll_tools_claw_hammer","inventory":{"ll_crafting_pine_plank":1,"ll_food_bean_tin":2,"ll_food_water_bottle":2,"ll_tools_claw_hammer":1}},"thirst":44.0,"version":2}
+\ No newline at end of file
+diff --git a/tests/gameplay_systems.gd b/tests/gameplay_systems.gd
+new file mode 100644
+index 0000000..f6bdfb5
+--- /dev/null
++++ b/tests/gameplay_systems.gd
+@@ -0,0 +1,506 @@
++extends SceneTree
++## Worker 02 gameplay-systems regression: locomotion load, stamina/fatigue, wounds,
++## healing, combat durability, crafting, containers, persistence and migration.
++## Runs against the real main scene; synthetic input only, not device evidence.
++
++const BEANS := "ll_food_bean_tin"
++const WATER := "ll_food_water_bottle"
++const BANDAGE := "ll_medical_sterile_bandage"
++const AID := "ll_medical_first_aid_case"
++const HAMMER := "ll_tools_claw_hammer"
++const HATCHET := "ll_tools_hatchet"
++const PLANK := "ll_crafting_pine_plank"
++const WIPES := "ll_golden_alcohol_wipes"
++const TAPE := "ll_golden_air_filter_tape"
++const BAT := "ll_golden_baseball_bat"
++const REINFORCED := "ll_golden_reinforced_baseball_bat"
++const SCRAP := "ll_golden_aluminum_scrap"
++const Vitals := preload("res://scripts/gameplay/vitals.gd")
++
++var checks := 0
++var failures: Array[String] = []
++var game
++
++
++func _initialize() -> void:
++	call_deferred("run")
++
++
++func check(condition: bool, label: String) -> void:
++	checks += 1
++	if not condition:
++		failures.append(label)
++		printerr("FAIL: " + label)
++
++
++func simulate(seconds: float, fps: int = 60) -> void:
++	for frame in range(roundi(seconds * fps)):
++		game._process(1.0 / float(fps))
++
++
++func fresh() -> void:
++	game._restart_game()
++	game.set_process(false)
++	game.player = Vector2(-4, -4)
++	for index in range(game.zombie_health.size()):
++		game.zombie_health[index] = 0
++	game._layout_controls()
++
++
++func events_of(kind: String) -> Array:
++	var found: Array = []
++	for event: Dictionary in game.event_log:
++		if event.type == kind:
++			found.append(event)
++	return found
++
++
++func write_json(path: String, data: Variant) -> void:
++	var file := FileAccess.open(path, FileAccess.WRITE)
++	file.store_string(JSON.stringify(data))
++	file.close()
++
++
++func test_locomotion_and_load() -> void:
++	var distances: Array[float] = []
++	for fps in [30, 60, 120]:
++		fresh()
++		game.survival.add(PLANK, 10)  # 15 kg of 20 kg: heavy band
++		game.player = Vector2(-4, 2)
++		game.joystick_touch = 1
++		game.joystick_vector = Vector2.RIGHT
++		var start: Vector2 = game.player
++		simulate(2, fps)
++		distances.append(game.player.distance_to(start))
++	check(absf(distances[0] - distances[2]) < .01, "loaded walking is frame-rate independent")
++	check(absf(distances[1] - 2.2 * 2 * .85) < .05, "heavy load slows walking to 85%")
++	fresh()
++	game.survival.add(PLANK, 10)
++	game.survival.add(WATER, 6)  # 18.3 kg: overloaded band
++	check(is_equal_approx(game._load_speed_multiplier(), .7), "overload reduces speed to 70%")
++	check("OVERLOADED" in game._status_line(), "HUD status reports overload")
++	fresh()
++	check(game._load_speed_multiplier() == 1.0 and game._status_line().is_empty(), "empty pack has no penalty or status")
++	game.joystick_touch = -1
++
++
++func test_stamina_and_fatigue() -> void:
++	fresh()
++	game.player = Vector2(-5, -5)
++	game.joystick_touch = 1
++	game.joystick_vector = Vector2.RIGHT
++	game.sprint_held = true
++	var emptied := false
++	for frame in range(420):
++		game._process(1.0 / 60.0)
++		if game.stamina <= .01:
++			emptied = true
++	check(emptied and game.exhausted and not game.sprinting and game.stamina < 20, "sprinting exhausts stamina and blocks sprint until recovery threshold")
++	var peak_fatigue: float = game.fatigue
++	check(peak_fatigue > 2.0, "sprinting builds fatigue")
++	game.joystick_vector = Vector2.ZERO
++	game.joystick_touch = -1
++	game.sprint_held = false
++	simulate(3)
++	check(game.stamina > 20 and not game.exhausted, "stamina recovers and exhaustion clears at threshold")
++	var rested := Vitals.new()
++	rested.fatigue = 0.0
++	var tired := Vitals.new()
++	tired.fatigue = 100.0
++	check(rested.stamina_regen_multiplier() == 1.0 and is_equal_approx(tired.stamina_regen_multiplier(), .4), "fatigue slows stamina regeneration")
++	check(game.fatigue < peak_fatigue, "fatigue recovers while idle")
++
++
++func test_needs_and_healing() -> void:
++	var v := Vitals.new()
++	v.health = 50.0
++	v.tick(10.0, "idle")
++	check(v.health > 50.0 and v.health < 52.0, "fed and watered player heals slowly")
++	v.hunger = 90.0
++	var h := v.health
++	v.tick(10.0, "idle")
++	check(v.health < h, "starvation damages health")
++	v.hunger = 10.0
++	v.thirst = 95.0
++	h = v.health
++	v.tick(10.0, "idle")
++	check(v.health < h, "dehydration damages health")
++	check("DEHYDRATED" in v.status_text(), "dehydration status visible")
++	v.reset()
++	v.add_wound("laceration", false)
++	h = v.health
++	v.tick(10.0, "idle")
++	check(v.health < h - 5.0 and v.bleeding_rate() > 0.0, "open wound bleeds")
++	check(v.bandage() == 1 and v.bleeding_rate() == 0.0, "bandage stops bleeding")
++	h = v.health
++	v.tick(10.0, "idle")
++	check(v.health > h, "bandaged clean wound allows healing")
++	v.tick(100.0, "idle")
++	check(v.wounds.is_empty(), "bandaged clean wound heals and is removed")
++	v.add_wound("bite", true)
++	v.bandage()
++	h = v.health
++	v.tick(200.0, "idle")
++	check(v.health == h and v.wounds.size() == 1, "contaminated wound blocks healing and never closes")
++	check(v.disinfect() == 1 and v.can_heal_naturally(), "disinfecting allows recovery")
++	v.health = 1.0
++	v.add_wound("bite", true)
++	var events: Array = v.tick(10.0, "idle")
++	check(v.is_dead() and v.health == 0.0, "untreated bleeding can kill")
++	check(events.any(func(e: Dictionary) -> bool: return e.type == "died"), "death event emitted")
++	check(v.heal(50) == 0.0 and v.damage(5) == 0.0 and v.bandage() == 0 and v.add_wound("scratch").is_empty(), "dead state is terminal")
++	check(v.tick(10.0, "sprint").is_empty() and v.hunger < 100.0 and v.health == 0.0, "dead state does not tick")
++	var bounded := Vitals.new()
++	bounded.tick(100000.0, "sprint")
++	check(bounded.hunger == 100.0 and bounded.thirst == 100.0 and bounded.fatigue == 100.0 and bounded.health >= 0.0, "needs stay bounded")
++	check(bounded.tick(NAN).is_empty() and bounded.damage(INF) == 0.0 and bounded.heal(-5) == 0.0, "invalid numeric input rejected")
++	# Integrated item treatment.
++	fresh()
++	game.survival.add(BANDAGE, 2)
++	game.vitals.add_wound("scratch", false)
++	check(game.health == 100.0 and game._use_item(BANDAGE), "bandage usable at full health when a wound bleeds")
++	check(game.vitals.open_wound_count() == 0 and game.survival.inventory[BANDAGE] == 1, "bandage item treats wound and is consumed once")
++	check(not game._use_item(BANDAGE), "bandage refused with no wound at full health")
++	game.survival.add(AID)
++	game.vitals.add_wound("bite", true)
++	game.vitals.add_wound("scratch", true)
++	game.health = 60.0
++	check(game._use_item(AID) and game.vitals.open_wound_count() == 0 and game.vitals.contaminated_wound_count() == 0 and game.health > 60, "first aid case bandages, disinfects and heals")
++
++
++func test_combat() -> void:
++	fresh()
++	game.survival.add(HAMMER)
++	game.survival.equip(HAMMER)
++	var full: float = game.survival.condition(HAMMER)
++	game.facing = Vector2.RIGHT
++	game.infected[0] = game.player + Vector2(.8, 0)
++	game.zombie_health[0] = 3
++	game._attack()
++	check(game.zombie_health[0] == 1 and game.survival.condition(HAMMER) == full - 1.0, "hammer hit deals 2 and wears 1 condition")
++	check(events_of("zombie_damaged").size() == 1 and events_of("zombie_damaged")[0].weapon == HAMMER, "damage event names weapon")
++	game.attack_cooldown = 0
++	game.infected[0] = game.player + Vector2(3, 0)
++	game._attack()
++	check(game.survival.condition(HAMMER) == full - 1.0, "a miss causes no wear")
++	game.attack_cooldown = 0
++	game.infected[0] = game.player + Vector2(.8, 0)
++	game._attack()
++	check(game.zombie_health[0] == 0 and events_of("zombie_killed").size() == 1, "kill emits zombie_killed")
++	game.attack_cooldown = 0
++	var life_check: int = game.zombie_health[0]
++	game._attack()
++	check(game.zombie_health[0] == life_check and life_check == 0, "dead zombie cannot take further damage")
++	# Breaking.
++	fresh()
++	game.survival.add(HAMMER)
++	game.survival.equip(HAMMER)
++	game.survival.instances[HAMMER][0].condition = 1.0
++	game.facing = Vector2.RIGHT
++	game.infected[0] = game.player + Vector2(.8, 0)
++	game.zombie_health[0] = 3
++	game._attack()
++	check(not game.survival.inventory.has(HAMMER) and game.survival.equipped == "", "worn-out weapon breaks and unequips")
++	check(events_of("item_broken").size() == 1, "break event emitted")
++	# Tired swing recovers slower.
++	fresh()
++	game.stamina = 100
++	game._attack()
++	var rested_cd: float = game.attack_cooldown
++	fresh()
++	game.stamina = 20
++	game._attack()
++	check(game.attack_cooldown > rested_cd * 1.5, "low stamina lengthens attack recovery")
++	# Discrete zombie strike, wind-up, shove interrupt.
++	fresh()
++	game.infected[0] = game.player + Vector2(.4, 0)
++	game.zombie_health[0] = 3
++	simulate(.3)
++	check(game.health == 100.0, "no damage during zombie wind-up")
++	game.facing = Vector2.RIGHT
++	game._shove()
++	simulate(.2)
++	check(game.health == 100.0, "shove interrupts zombie wind-up")
++	game.infected[0] = game.player + Vector2(.4, 0)
++	game.zombies_hit_time[0] = 0
++	simulate(.5)
++	var strikes: Array = events_of("player_damaged")
++	check(strikes.size() == 1 and strikes[0].amount == 7.0 and game.health < 93.5 and game.health > 92.0, "one discrete 7-point zombie strike lands")
++	simulate(.5)
++	check(events_of("player_damaged").size() == 1, "zombie recovers before next strike")
++	fresh()
++	game.god_mode = true
++	check(game.receive_attack({"damage": 50.0}).damage == 0.0 and game.health == 100.0, "god mode ignores attacks")
++	game.god_mode = false
++	var hit: Dictionary = game.receive_attack({"damage": 150.0, "source": "test"})
++	check(hit.died and game.health == 0.0, "lethal damage kills the player")
++	simulate(1)
++	check(game.health == 0.0, "simulation halts after death")
++	# Kill loot is deterministic for a given RNG state.
++	var outcomes: Array = []
++	for attempt in range(2):
++		fresh()
++		game.vitals.rng_state = 777
++		game.infected[0] = Vector2(-3.2, -4)
++		game.zombie_health[0] = 1
++		game.facing = Vector2.RIGHT
++		game._attack()
++		var ids: Array = []
++		for drop: Dictionary in game.drops:
++			ids.append(drop.id)
++			check(not game._blocked(drop.pos, .1), "kill loot placed on clear ground")
++		outcomes.append(ids)
++	check(outcomes[0] == outcomes[1], "kill loot deterministic for same RNG state")
++	# Wound roll determinism.
++	var a := Vitals.new()
++	var b := Vitals.new()
++	var seq_a: Array = []
++	var seq_b: Array = []
++	for i in range(20):
++		seq_a.append(a.receive_attack({"damage": 1.0}).wound.get("kind", ""))
++		seq_b.append(b.receive_attack({"damage": 1.0}).wound.get("kind", ""))
++	check(seq_a == seq_b and seq_a.count("") < 20 and seq_a.count("") > 0, "wound rolls are deterministic and mixed")
++
++
++func test_inventory_and_containers() -> void:
++	fresh()
++	# Durable condition survives drop and pickup.
++	game.survival.add(HATCHET)
++	game.survival.instances[HATCHET][0].condition = 17.0
++	var uid: String = game.survival.instances[HATCHET][0].uid
++	check(game._drop_item(HATCHET) and not game.survival.inventory.has(HATCHET), "drop durable item")
++	game.selected_target = {"kind": "drop", "index": game.drops.size() - 1}
++	game._interact()
++	check(game.survival.condition(HATCHET) == 17.0 and game.survival.instances[HATCHET][0].uid == uid, "pickup preserves condition and instance ID")
++	check(game.survival.equip(HATCHET) and game.survival.equip("") and game.survival.equipped == "", "equip and unequip")
++	# Partial take from a container when the pack is nearly full.
++	fresh()
++	for door: Dictionary in game.doors:
++		door.open = true
++	game.survival.add(PLANK, 10)
++	game.survival.add(WATER, 8)
++	game.player = Vector2(1.5, 2.2)
++	var counter: int = game._container_index("house.kitchen.counter")
++	game.selected_target = {"kind": "container", "index": counter}
++	game._interact()
++	check(not game.items[counter].searched and not game.container_contents["house.kitchen.counter"].is_empty(), "full pack leaves remaining items in container")
++	var left: Dictionary = game.container_contents["house.kitchen.counter"].duplicate()
++	var total_before := 0
++	for id: String in left:
++		total_before += int(left[id])
++	check(total_before < 4, "some items moved before pack filled")
++	game.survival.remove(PLANK, 10)
++	game.selected_target = {"kind": "container", "index": counter}
++	game._interact()
++	check(game.items[counter].searched and game.container_contents["house.kitchen.counter"].is_empty(), "second search empties container")
++	check(game.survival.inventory[BEANS] == 2 and game.survival.inventory[WATER] == 10, "no duplication across partial searches")
++	# Store / take API.
++	check(game.store_in_container("house.kitchen.counter", BEANS, 1), "store item in reachable container")
++	check(not game.items[counter].searched and game.container_contents["house.kitchen.counter"][BEANS] == 1 and game.survival.inventory[BEANS] == 1, "store moves exactly one item")
++	check(not game.store_in_container("house.kitchen.counter", BEANS, 5), "cannot store more than carried")
++	game.survival.add(HAMMER)
++	check(not game.store_in_container("house.kitchen.counter", HAMMER, 1) and game.survival.inventory.has(HAMMER), "durable item storage rejected without data loss")
++	check(not game.store_in_container("house.bathroom.medicine", BEANS, 1), "out-of-reach container rejected")
++	check(not game.store_in_container("house.nonexistent", BEANS, 1), "unknown container rejected")
++	check(game.take_from_container("house.kitchen.counter", BEANS, 1) and game.items[counter].searched and game.survival.inventory[BEANS] == 2, "take back empties container again")
++	check(not game.take_from_container("house.kitchen.counter", BEANS, 1), "cannot take from empty container")
++
++
++func test_crafting() -> void:
++	fresh()
++	check(game.crafting.load_errors.is_empty() and game.crafting.recipes.size() == 8, "all recipes reference real catalog IDs")
++	var before: Dictionary = game.survival.snapshot()
++	check(not game.crafting.execute("repair_claw_hammer_handle", game.survival, game.vitals).ok and game.survival.snapshot() == before, "missing input fails without mutation")
++	game.survival.add(PLANK)
++	game.survival.add(HAMMER)
++	check(game.crafting.check("repair_claw_hammer_handle", game.survival, game.vitals).reason.contains("full condition"), "full-condition repair rejected")
++	game.survival.instances[HAMMER][0].condition = 20.0
++	check(game._inventory_rows().any(func(r: Dictionary) -> bool: return r.id == PLANK and r.action == "Repair"), "inventory shows real Repair action on plank")
++	check(game._use_item(PLANK) and game.survival.condition(HAMMER) == 50.0 and not game.survival.inventory.has(PLANK), "repair consumes one plank and restores condition")
++	check(events_of("recipe_completed").size() == 1, "recipe event emitted")
++	game.survival.add(PLANK)
++	game.survival.add(HATCHET)
++	game.survival.remove(HAMMER)
++	game.survival.instances[HATCHET][0].condition = 5.0
++	check(game.crafting.check("repair_hatchet_handle", game.survival, game.vitals).reason.contains("Needs"), "tool requirement enforced")
++	game.survival.add(HAMMER)
++	var hammer_condition: float = game.survival.condition(HAMMER)
++	check(game.crafting.execute("repair_hatchet_handle", game.survival, game.vitals).ok and game.survival.condition(HATCHET) == 30.0 and game.survival.condition(HAMMER) == hammer_condition, "tool not consumed or worn")
++	# Equipped-target repair with tape.
++	game.survival.add(TAPE)
++	game.survival.equip(HATCHET)
++	check(game.crafting.execute("tape_wrap_equipped_weapon", game.survival, game.vitals).ok and game.survival.condition(HATCHET) == 40.0, "tape repairs equipped weapon")
++	# Treatment.
++	game.survival.add(WIPES)
++	check(not game._use_item(WIPES) and game.survival.inventory[WIPES] == 1, "wipes refused without dirty wound")
++	game.vitals.add_wound("scratch", true)
++	check(game._use_item(WIPES) and game.vitals.contaminated_wound_count() == 0 and not game.survival.inventory.has(WIPES), "wipes disinfect wound once")
++	# Craft + dismantle with outputs.
++	game.survival.add(BAT)
++	game.survival.add(SCRAP, 2)
++	check(game.crafting.execute("reinforce_baseball_bat", game.survival, game.vitals).ok and game.survival.inventory.has(REINFORCED) and not game.survival.inventory.has(BAT) and not game.survival.inventory.has(SCRAP), "craft consumes inputs and creates output")
++	check(game.survival.condition(REINFORCED) == game.survival.max_condition(REINFORCED), "crafted weapon starts at full condition")
++	# Output overflow rolls back atomically.
++	fresh()
++	game.survival.add(HAMMER)
++	game.survival.add(SCRAP, 9)
++	game.survival.add("ll_golden_air_filter_panel")
++	var snap: Dictionary = game.survival.snapshot()
++	var result: Dictionary = game.crafting.execute("dismantle_air_filter_panel", game.survival, game.vitals)
++	check(not result.ok and game.survival.snapshot() == snap, "stack overflow on output rolls back")
++
++
++func roundtrip_state() -> Dictionary:
++	return {"vitals": game.vitals.snapshot(), "survival": game.survival.snapshot(), "contents": game.container_contents.duplicate(true),
++		"drops": game.drops.duplicate(true), "player": game.player}
++
++
++func test_persistence() -> void:
++	fresh()
++	for door: Dictionary in game.doors:
++		door.open = true
++	game.vitals.add_wound("laceration", true)
++	game.vitals.add_wound("scratch", false)
++	game.vitals.bandage()
++	game.fatigue = 33.0
++	game.vitals.rng_state = 4242
++	game.survival.add(HAMMER, 2)
++	game.survival.instances[HAMMER][0].condition = 12.5
++	game.survival.equip(HAMMER)
++	game.survival.add(HATCHET)
++	game.survival.instances[HATCHET][0].condition = 9.0
++	game._drop_item(HATCHET)
++	game.player = Vector2(1.5, 2.2)
++	game.survival.add(BANDAGE, 3)
++	game.store_in_container("house.kitchen.counter", BANDAGE, 2)
++	var saved := roundtrip_state()
++	var path := "user://gameplay-roundtrip.json"
++	check(game._save_game(path) == OK, "schema-3 save succeeds")
++	var payload: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
++	check(payload.version == 3 and payload.has("vitals") and payload.has("container_contents"), "schema-3 fields written")
++	game._restart_game()
++	check(game._load_game(path) == OK, "schema-3 load succeeds")
++	check(roundtrip_state() == saved, "round trip preserves wounds, fatigue, RNG, conditions, instance IDs, container contents and durable drops")
++	# Invalid schema-3 data is rejected atomically.
++	var invalids: Array = []
++	var bad: Dictionary
++	bad = payload.duplicate(true); bad.vitals.wounds[0].kind = "gunshot"; invalids.append(bad)
++	bad = payload.duplicate(true); bad.vitals.wounds[0].bleed = -1; invalids.append(bad)
++	bad = payload.duplicate(true); bad.vitals.wounds[1].id = bad.vitals.wounds[0].id; invalids.append(bad)
++	bad = payload.duplicate(true); bad.vitals.fatigue = 101; invalids.append(bad)
++	bad = payload.duplicate(true); bad.vitals.health = 50; invalids.append(bad)
++	bad = payload.duplicate(true); bad.erase("vitals"); invalids.append(bad)
++	bad = payload.duplicate(true); bad.survival.instances[HAMMER][0].condition = 999; invalids.append(bad)
++	bad = payload.duplicate(true); bad.survival.instances[HAMMER][1].uid = bad.survival.instances[HAMMER][0].uid; invalids.append(bad)
++	bad = payload.duplicate(true); bad.survival.instances[HAMMER].pop_back(); invalids.append(bad)
++	bad = payload.duplicate(true); bad.survival.next_uid = 1; invalids.append(bad)
++	bad = payload.duplicate(true); bad.container_contents["house.kitchen.counter"] = {}; invalids.append(bad)
++	bad = payload.duplicate(true); bad.container_contents["house.kitchen.counter"]["unknown"] = 1; invalids.append(bad)
++	bad = payload.duplicate(true); bad.container_contents["house.kitchen.counter"][BANDAGE] = 1.5; invalids.append(bad)
++	bad = payload.duplicate(true); bad.drops[0].instances[0].condition = 0; invalids.append(bad)
++	bad = payload.duplicate(true); bad.drops[0].extra = 1; invalids.append(bad)
++	var invalid_path := "user://gameplay-invalid.json"
++	for index in range(invalids.size()):
++		write_json(invalid_path, invalids[index])
++		check(game._load_game(invalid_path) != OK and roundtrip_state() == saved, "invalid schema-3 save rejected atomically: case %d" % index)
++	for filename: String in [path, path + ".bak", invalid_path]:
++		DirAccess.remove_absolute(ProjectSettings.globalize_path(filename))
++
++
++func test_migration() -> void:
++	fresh()
++	var source := FileAccess.get_file_as_string("res://tests/fixtures/house_v2.json")
++	var path := "user://gameplay-v2.json"
++	var file := FileAccess.open(path, FileAccess.WRITE)
++	file.store_string(source)
++	file.close()
++	check(game._load_game(path) == OK, "real schema-2 save (written by baseline f17b35b) loads")
++	check(game.health == 61.5 and game.stamina == 40.0 and game.hunger == 33.0 and game.thirst == 44.0, "schema-2 vitals preserved")
++	check(game.fatigue == 0.0 and game.vitals.wounds.is_empty(), "schema-2 gets safe vitals defaults")
++	check(game.survival.equipped == HAMMER and game.survival.condition(HAMMER) == game.survival.max_condition(HAMMER), "schema-2 weapon migrates at full condition with an instance ID")
++	check(game.container_contents["house.kitchen.counter"].is_empty() and game.container_contents["house.living.sofa"].size() == 2, "schema-2 container flags become contents")
++	check(game.drops.size() == 1 and game.drops[0].id == PLANK, "schema-2 drops preserved")
++	check(game._save_game(path) == OK and FileAccess.get_file_as_string(path + ".schema2.bak") == source, "upgrade keeps exact schema-2 bytes in .schema2.bak")
++	check(JSON.parse_string(FileAccess.get_file_as_string(path)).version == 3, "upgraded file is schema 3")
++	check(game._save_game(path) == OK and FileAccess.get_file_as_string(path + ".schema2.bak") == source, "schema-2 archive is never overwritten")
++	# Schema-1 still loads through the same path.
++	check(game._load_game("res://tests/fixtures/house_v1.json") == OK and game.health == 73, "schema-1 fixture still loads")
++	# A schema-2 file must not contain schema-3-only drop instances.
++	var hybrid: Dictionary = JSON.parse_string(source)
++	hybrid.drops[0].instances = [{"uid": "it_1", "condition": 5.0}]
++	write_json(path, hybrid)
++	check(game._load_game(path) != OK, "schema-2 file with schema-3 fields rejected")
++	for filename: String in [path, path + ".bak", path + ".schema2.bak"]:
++		DirAccess.remove_absolute(ProjectSettings.globalize_path(filename))
++
++
++## Sprint priorities 2+3 as one scenario: search, pick up, equip, fight, get hurt,
++## treat, save, reload, with no loss or duplication.
++func test_full_loop() -> void:
++	fresh()
++	for door: Dictionary in game.doors:
++		door.open = true
++	game.player = Vector2(1.8, 5.95)
++	var sofa: int = game._container_index("house.living.sofa")
++	game.selected_target = {"kind": "container", "index": sofa}
++	game._interact()
++	check(game.survival.inventory.has(HAMMER) and game.items[sofa].searched, "loop: searched sofa yields hammer")
++	check(game._use_item(HAMMER) and game.survival.equipped == HAMMER, "loop: hammer equipped")
++	game.player = Vector2(1.5, 2.2)
++	var medicine: int = game._container_index("house.bathroom.medicine")
++	game.player = Vector2(6.7, 6.7)
++	game.selected_target = {"kind": "container", "index": medicine}
++	game._interact()
++	check(game.survival.inventory.get(BANDAGE, 0) == 3, "loop: bandages collected")
++	game.player = Vector2(-4, -4)
++	game.facing = Vector2.RIGHT
++	game.infected[0] = game.player + Vector2(.45, 0)
++	game.zombie_health[0] = 3
++	simulate(.5)
++	var took_hit: bool = game.health < 100.0
++	for frame in range(240):
++		game._process(1.0 / 60.0)
++		if game.attack_cooldown <= 0 and game.zombie_health[0] > 0:
++			game.facing = (game.infected[0] - game.player).normalized()
++			game._attack()
++	check(took_hit and game.health > 0, "loop: player takes damage and survives")
++	check(game.zombie_health[0] == 0, "loop: zombie killed with hammer")
++	check(game.survival.condition(HAMMER) < game.survival.max_condition(HAMMER), "loop: hammer wore from use")
++	game.vitals.add_wound("scratch", false)
++	check(game._use_item(BANDAGE) and game.vitals.open_wound_count() == 0, "loop: bandage treats wound")
++	var expected := roundtrip_state()
++	var path := "user://gameplay-loop.json"
++	check(game._save_game(path) == OK, "loop: save")
++	game._restart_game()
++	var loaded_ok: bool = game._load_game(path) == OK
++	var actual := roundtrip_state()
++	for key: String in expected:
++		if expected[key] != actual[key]:
++			printerr("loop mismatch ", key, ": ", expected[key], " vs ", actual[key])
++	check(loaded_ok and actual == expected, "loop: reload restores everything exactly")
++	game.player = Vector2(1.8, 5.95)
++	game.selected_target = {"kind": "container", "index": sofa}
++	var after_reload: Dictionary = game.survival.snapshot()
++	game._interact()
++	check(game.survival.snapshot() == after_reload, "loop: emptied container cannot be re-looted after reload")
++	for filename: String in [path, path + ".bak"]:
++		DirAccess.remove_absolute(ProjectSettings.globalize_path(filename))
++
++
++func run() -> void:
++	root.size = Vector2i(1152, 720)
++	game = load("res://main.tscn").instantiate()
++	root.add_child(game)
++	game.set_process(false)
++	test_locomotion_and_load()
++	test_stamina_and_fatigue()
++	test_needs_and_healing()
++	test_combat()
++	test_inventory_and_containers()
++	test_crafting()
++	test_persistence()
++	test_migration()
++	test_full_loop()
++	print("GAMEPLAY SYSTEMS: %d checks, %d failures (headless synthetic input; iPhone/Xogot UNVERIFIED)" % [checks, failures.size()])
++	game.free()
++	quit(0 if failures.is_empty() else 1)
+diff --git a/tests/gameplay_systems.gd.uid b/tests/gameplay_systems.gd.uid
+new file mode 100644
+index 0000000..5fa93aa
+--- /dev/null
++++ b/tests/gameplay_systems.gd.uid
+@@ -0,0 +1 @@
++uid://x6l0remjatf0
+diff --git a/tests/house_survival.gd b/tests/house_survival.gd
+index dde6f86..7f8e0e2 100644
+--- a/tests/house_survival.gd
++++ b/tests/house_survival.gd
+@@ -377,9 +377,9 @@ func test_saves() -> void:
+ 	var saved := state()
+ 	var path := "user://house-survival-roundtrip.json"
+ 	var invalid_path := "user://house-survival-invalid.json"
+-	check(game._save_game(path) == OK, "version-two atomic save succeeds")
++	check(game._save_game(path) == OK, "version-three atomic save succeeds")
+ 	var payload: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+-	check(payload.version == 2, "save has explicit schema-two version")
++	check(payload.version == 3, "save has explicit schema-three version")
+ 	game._restart_game()
+ 	check(game._load_game(path) == OK and state() == saved, "schema-two round trip restores survival, inventory, drops and legacy world")
+ 	var invalids: Array[Dictionary] = []
+diff --git a/tests/run.sh b/tests/run.sh
+index 506ec23..741a7eb 100755
+--- a/tests/run.sh
++++ b/tests/run.sh
+@@ -39,3 +39,4 @@ run_checked --headless --path . --script tests/world_art.gd
+ run_checked --headless --path . --script tests/integration_hud.gd
+ run_checked --headless --path . --script tests/lab_neighborhood.gd
+ run_checked --headless --path . --quit-after 120 res://lab.tscn
++run_checked --headless --path . --script tests/gameplay_systems.gd
+diff --git a/tests/save_isolation.gd b/tests/save_isolation.gd
+index f4b193c..2c55c42 100644
+--- a/tests/save_isolation.gd
++++ b/tests/save_isolation.gd
+@@ -12,8 +12,8 @@ func run()->void:
+  assert(game.health==73 and game.supplies==2)
+  game._set_paused(true)
+  assert(FileAccess.get_file_as_string("user://last_light_v04.json")==source)
+- assert(JSON.parse_string(FileAccess.get_file_as_string(game.SAVE_PATH)).version==2)
++ assert(JSON.parse_string(FileAccess.get_file_as_string(game.SAVE_PATH)).version==3)
+  assert(FileAccess.get_file_as_string(game.SAVE_PATH+".schema1.bak")==source)
+- print("SAVE ISOLATION: candidate imports legacy progress, writes separate v2 file, legacy bytes unchanged PASS")
++ print("SAVE ISOLATION: candidate imports legacy progress, writes separate v2-path file at schema 3, legacy bytes unchanged PASS")
+  game.free()
+  quit()

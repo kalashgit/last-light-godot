@@ -1,0 +1,17 @@
+{
+  "schema": "last-light.worker-status.v1",
+  "updated_at": "2026-11-08T23:45:00Z",
+  "note": "States derived from GitHub branches/PRs and session transcripts only. A launched session is not an implemented task.",
+  "workers": [
+    {"id": "W01", "role": "Master Integration", "session": "session_01C8bxoNKnJ9vdV3GGHQ7X4U", "branch": "claude/last-light-godot-integration-mfylkq", "head": "2700d64", "pr": 38, "state": "DRAFT_PR_READY", "tests": "reported by worker; not re-run", "blocking": [], "next": "LL-W01-002 choose one candidate (#37 vs #38), apply W02 trial resolution, own claude/last-light-integration-candidate"},
+    {"id": "W02", "role": "Gameplay Systems", "session": "session_01C8bxoM8nDVuwh7DKYz5t8E", "branch": "claude/worker-02-gameplay-systems-743b97", "head": "0edf345", "pr": 36, "state": "DRAFT_PR_READY", "tests": "Director trial merge onto #37: all suites PASS incl. GAMEPLAY SYSTEMS 120 checks", "blocking": [], "next": "LL-W02-002 adopt per-zombie array sizing fix; no new house.gd edits outside contract"},
+    {"id": "W03", "role": "Zombie AI", "session": "session_01C8bxoMR7V2yDqbTEQYBCT5", "branch": "claude/worker-03-zombie-ai-h6ty9i", "head": "67d9f55", "pr": 39, "state": "DRAFT_PR_READY", "tests": "reported 123 fixture checks; not re-run", "blocking": ["based on #10 not #26; conflicts with #36/#37"], "next": "LL-W03-002 rebase onto integration candidate; support N infected and lab buildings"},
+    {"id": "W04", "role": "World Generation", "session": "session_01C8bxoKBxuX8UY2sCBTaTvK", "branch": null, "head": null, "pr": null, "state": "BLOCKED", "tests": "none pushed", "blocking": ["usage limit hit 18:43Z after 36 min; nothing pushed"], "next": "resume: commit+push existing work, open draft PR"},
+    {"id": "W05", "role": "World Simulation", "session": "session_01C8bxoMV7bQHTNC8GJhK4x6", "branch": null, "head": null, "pr": null, "state": "BLOCKED", "tests": "none pushed", "blocking": ["usage limit after 19 min; nothing pushed"], "next": "resume: commit+push existing work, open draft PR"},
+    {"id": "W06", "role": "Blender Asset Factory", "session": "session_01C8bxoLMqkwHSJ6TzPr7Vrv", "branch": null, "head": null, "pr": null, "state": "BLOCKED", "tests": "none pushed", "blocking": ["usage limit after 10 min"], "next": "resume: push audit findings"},
+    {"id": "W07", "role": "Animation Factory", "session": "session_01C8bxoJHP4ZnZaZJnfQwCsQ", "branch": null, "head": null, "pr": null, "state": "NOT_STARTED", "tests": "none", "blocking": ["usage limit at launch"], "next": "wave 2 relaunch"},
+    {"id": "W08", "role": "iPhone UI & Performance", "session": "session_01C8bxoNE31VdoywdoFEFfAq", "branch": null, "head": null, "pr": null, "state": "NOT_STARTED", "tests": "none", "blocking": ["usage limit at launch"], "next": "wave 2 relaunch"},
+    {"id": "W09", "role": "Independent QA", "session": "session_01C8bxoKTFfduXakCe244b4H", "branch": null, "head": null, "pr": null, "state": "NOT_STARTED", "tests": "none", "blocking": ["usage limit at launch"], "next": "wave 1 relaunch: independent re-run of #36/#37/#38/#39"},
+    {"id": "W10", "role": "Build & Release", "session": "session_01C8bxoNdHzRhotySUj2JBmd", "branch": null, "head": null, "pr": null, "state": "NOT_STARTED", "tests": "none", "blocking": ["usage limit at launch"], "next": "wave 2 relaunch"}
+  ]
+}

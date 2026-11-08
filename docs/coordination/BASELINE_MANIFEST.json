@@ -1,0 +1,27 @@
+{
+  "schema": "last-light.baseline-manifest.v1",
+  "recorded_at": "2026-11-08T23:45:00Z",
+  "recorded_by": "Production Director session session_01C8bxoLuPK5TJjaWtHD3W5h",
+  "default_branch": {"name": "main", "sha": "6a1bc3c"},
+  "godot": {"ci_image": "barichello/godot-ci:4.6.3", "verified_local": "4.6.3.stable.official.7d41c59c4", "xogot": "4.x on iPhone (exact version unverified)"},
+  "playable_baseline": {
+    "lineage": ["#10 codex/house-survival-v05-v06@86bff44", "Golden40 codex/last-light-golden-40@6506241", "#25 codex/house-golden40-loot-builder-20261107@23b8ddd", "#26 codex/world-art-integration-20261107@f17b35b"],
+    "known_good_sha": "f17b35b",
+    "default_scene": "res://main.tscn",
+    "tests": "bash tests/run.sh: 13 Godot suites PASS on 4.6.3 (2026-11-08)"
+  },
+  "integration_candidates": [
+    {"pr": 37, "branch": "claude/last-light-director-setup-pe8ffl", "head": "4d5987a", "base": "f17b35b", "adds": "PR #18 port + lab.tscn generated neighborhood", "tests": "15 Godot suites PASS incl. lab_neighborhood (2006 checks)"},
+    {"pr": 38, "branch": "claude/last-light-godot-integration-mfylkq", "head": "2700d64", "base": "f17b35b", "adds": "PR #19 UCF street + PR #18 port", "tests": "per its PR; not re-run by Director"}
+  ],
+  "worker_prs": [
+    {"worker": "W02", "pr": 36, "head": "0edf345", "base": "f17b35b", "trial_merge_onto_37": "PASS after 6 mechanical conflicts + zombie_attack_time sizing fix (docs/coordination/trials)"},
+    {"worker": "W03", "pr": 39, "head": "67d9f55", "base": "86bff44 (#10, NOT #26)", "trial_merge_onto_37_plus_36": "CONFLICT in house.gd (7), house_art.gd, tests/run.sh; needs rebase"}
+  ],
+  "save_schema": {"main": "version 2 at user://last_light_survival_v2.json (W02 proposes version 3)", "lab": "version 2 + lab_world digest at user://last_light_lab_v1.json", "legacy": "user://last_light_v04.json (v1) migrated read-only"},
+  "projection": {"tile_px": [80, 40], "screen_x": "40*(x-y)", "screen_y": "20*(x+y)"},
+  "asset_manifests": ["assets/generated/factory/manifest.json (300 objects, CC0 original)", "data/world_art_manifest.json (85 world-art records)", "Golden 40 icons via #25"],
+  "art_status": "No founder Golden approval recorded for any family; Blender pilots in PRs #27-#34 unapproved",
+  "device_status": "No iPhone/Xogot evidence for any candidate",
+  "missing_dependencies": ["Blender not available in Director container", "No GPU (llvmpipe only)", "Account 5-hour usage limit: 10 parallel workers exhausted it in ~40 min on 2026-11-08"]
+}
