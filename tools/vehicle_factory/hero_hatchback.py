@@ -27,11 +27,7 @@ R=.340
 
 
 def glass_material(name,dark=False):
-    """Original camera-angle-dependent reflective glazing for Blender source.
-
-    Procedural reflection ramps must be baked or simplified for portable GLB;
-    this art-calibration material is not an F11-approved production texture.
-    """
+    """Simple uniform dark glazing for stable isometric directional readability."""
     material=bpy.data.materials.new(name)
     material.diffuse_color=(.055,.105,.132,1) if dark else (.105,.193,.239,1)
     material.use_nodes=True
@@ -44,17 +40,7 @@ def glass_material(name,dark=False):
     # Blender 4.x naming; only set clearcoat on versions that support it.
     coat=principled.inputs.get("Coat Weight") or principled.inputs.get("Clearcoat")
     if coat:coat.default_value=.34
-    layer=nt.nodes.new("ShaderNodeLayerWeight")
-    layer.inputs["Blend"].default_value=.30
-    ramp=nt.nodes.new("ShaderNodeValToRGB")
-    if dark:
-        ramp.color_ramp.elements[0].color=(.013,.027,.037,1)
-        ramp.color_ramp.elements[1].color=(.091,.137,.161,1)
-    else:
-        ramp.color_ramp.elements[0].color=(.033,.069,.092,1)
-        ramp.color_ramp.elements[1].color=(.172,.254,.285,1)
-    nt.links.new(layer.outputs["Facing"],ramp.inputs[0])
-    nt.links.new(ramp.outputs[0],principled.inputs["Base Color"])
+    principled.inputs["Base Color"].default_value=(.035,.069,.084,1) if dark else (.064,.115,.141,1)
     nt.links.new(principled.outputs[0],output.inputs["Surface"])
     return material
 
@@ -114,8 +100,8 @@ def body_shell(m):
             q=taper(x)
             b=shoulder_bulge(x)
             verts.extend(((x,side*.709*q,arch(x)),
-                          (x,side*(.770*q+b*.45),.615),
-                          (x,side*(.767*q+b),.798),
+                          (x,side*(.770*q+b*.45),.790),
+                          (x,side*(.767*q+b),.865),
                           (x,side*(.721*q+b*.70),shoulder(x))))
         faces_idx=[];material_idx=[]
         for i in range(steps):
@@ -123,7 +109,7 @@ def body_shell(m):
             for j in range(3):
                 p=(a+j,a+j+4,a+j+5,a+j+1)
                 faces_idx.append(p if side==1 else tuple(reversed(p)))
-                material_idx.append(1 if j==0 else 0)
+                material_idx.append(0)
         mesh_object("F10 HERO continuous sculpted side",verts,faces_idx,
                     [m["body"],m["dark"]],material_idx)
     # Crown rather than flat box: 7 longitudinal points for each station.
@@ -176,9 +162,9 @@ def greenhouse(m):
     xrear,xfront=-1.36,.42
     zr,zf=1.475,1.475
     roof_verts=[]
-    for x,z in ((xrear,zr),(xrear+.23,1.505),(.13,1.505),(xfront,zf)):
-        roof_verts.extend(((x,-.573,z-.016),(x,-.34,z+.024),
-                           (x,0,z+.041),(x,.34,z+.024),(x,.573,z-.016)))
+    for x,z in ((xrear,zr),(xrear+.23,1.487),(.13,1.487),(xfront,zf)):
+        roof_verts.extend(((x,-.573,z-.016),(x,-.34,z+.013),
+                           (x,0,z+.024),(x,.34,z+.013),(x,.573,z-.016)))
     polys=[]
     for i in range(3):
         for j in range(4):
