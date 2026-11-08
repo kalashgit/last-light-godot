@@ -18,6 +18,9 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
     assert m['status']=='CALIBRATION_ONLY' and m['canonical_master_id'] is None
     assert m['contact_metadata']['time_ms']==285
     assert m['contact_metadata']['frame_1_based']==3
+    if m.get('render_profile')=='f12_cal01':
+        if m['camera_measurement']['residual_px']>=.001 or m['pivot_px']!=[128,128]:
+            failures.append(f'F12 projection residual/pivot failed {folder}')
     assert m['qa']['glb_export']=='PASS',f'{folder.name}: GLB export failed'
     assert (folder/'editable_noncanonical.blend').exists()
     assert (folder/'noncanonical.glb').exists()
@@ -43,14 +46,15 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
         path=folder/f['file']
         if not path.exists(): failures.append(f'missing {path}');continue
         with Image.open(path) as image:
-            if image.mode!='RGBA' or image.size!=(256,192):
+            expected_size=tuple(m['frame_canvas_px'])
+            if image.mode!='RGBA' or image.size!=expected_size:
                 failures.append(f'bad format/canvas {path}')
             alpha=image.getchannel('A')
             bb=alpha.getbbox()
             if not bb: failures.append(f'empty sprite {path}')
             else:
                 bboxes.setdefault((f['clip'],f['direction']),[]).append(bb)
-                if bb[0]<=0 or bb[2]>=256 or bb[1]<=0 or bb[3]>=192:
+                if bb[0]<=0 or bb[2]>=expected_size[0] or bb[1]<=0 or bb[3]>=expected_size[1]:
                     failures.append(f'edge crop {path}: {bb}')
         digest=hashlib.sha256(path.read_bytes()).hexdigest()
         if digest!=m['sha256'][f['file']]: failures.append(f'hash mismatch {path}')
