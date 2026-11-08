@@ -70,6 +70,29 @@ def main():
                 raise RuntimeError("unrefined box roof remains: "+aid)
             if len([s for s in names if "LL FLEET tire" in s])<4:
                 raise RuntimeError("actual old wheels not preserved: "+aid)
+            if aid=="ll_master_vehicle_compact_hatchback":
+                for tag in ("hatchback aligned windshield","hatchback aligned rear hatch glass",
+                            "front dark ventilated grille","sculpted contoured bonnet hatchback hood crown"):
+                    if not any(tag in name for name in names):
+                        raise RuntimeError("hatchback missing real assembly "+tag)
+                for obsolete in ("rear passenger volume","short hatch tail","frontal glass",
+                                 "rear glass","pressed waist seam"):
+                    if any(name.startswith("LL FLEET "+obsolete) for name in names):
+                        raise RuntimeError("hatchback retained overlapping solid part: "+obsolete)
+                panels=[o for o in meshes if "hatchback actual cutout fender side" in o.name]
+                if len(panels)!=2:
+                    raise RuntimeError("hatchback requires two actual cutout fender side skins")
+                wheelbase=float(panels[0]["wheelbase_m"])
+                for panel in panels:
+                    radius=float(panel["wheel_arch_radius_m"])
+                    axle_z=float(panel["wheel_axle_z_m"])
+                    if len(panel.data.vertices)<40:
+                        raise RuntimeError("fender is not a detailed concave opening")
+                    for wheel_x in (-wheelbase*.5,wheelbase*.5):
+                        arch=[v.co.z for v in panel.data.vertices if abs(v.co.x-wheel_x)<.0005]
+                        if not arch or max(arch)<axle_z+radius-.01:
+                            raise RuntimeError("no physical wheel clearance at "+str(wheel_x))
+                print("LL_HATCHBACK_TRUE_FENDER_CUTOUT_PASS",round(wheelbase,3),flush=True)
         else:
             for tag in ("functional steel shaft","reusable ergonomic molded handle"):
                 if aid != "ll_tools_crowbar" and not any(tag in s for s in names):
