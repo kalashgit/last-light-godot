@@ -78,4 +78,15 @@ def material_fidelity(key,m):
     for slot,material_id in BIND.get(key,{}).items():
         bind_pbr(m[slot],material_id,slot)
 v3.material_fidelity_v3=material_fidelity
+# Some distro Blender builds omit OpenImageDenoiser; retain Cycles and the
+# shared camera/light profile while disabling unsupported denoising only.
+original_setup=v3.setup
+def compatible_setup():
+    scene=original_setup()
+    scene.cycles.use_denoising=False
+    for layer in scene.view_layers:
+        if hasattr(layer,"cycles"):
+            layer.cycles.use_denoising=False
+    return scene
+v3.setup=compatible_setup
 v3.main()
