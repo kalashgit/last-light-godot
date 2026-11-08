@@ -37,7 +37,7 @@ jobs:
           grep -q 'LL_TERRAIN_BATCH_PASS 12 106' build/terrain_v1/blender.log
       - name: Verify hashes, alpha masks and rendered preview contact sheet
         run: |
-          python tools/terrain_factory/qa.py --sources build/terrain_v1 --expected 12 --sheet build/terrain_v1/terrain_2_5d_review.png
+          python tools/terrain_factory/qa.py --sources build/terrain_v1 --expected 12 --sheet build/terrain_v1/terrain_2_5d_review.png --seam-sheet build/terrain_v1/terrain_4x4_seam_review.png
       - uses: actions/upload-artifact@v4
         if: always()
         with:
