@@ -81,7 +81,9 @@ def verify(output: Path):
         with zipfile.ZipFile(archives, "w", compression=zipfile.ZIP_DEFLATED,
                              compresslevel=6) as archive:
             for p in sorted(output.rglob("*")):
-                if p.is_file() and p != archives:
+                # Blender's .blend1 rolling backups duplicate source content and
+                # must never inflate the reproducible calibration archive.
+                if p.is_file() and p != archives and p.suffix != ".blend1":
                     archive.write(p, p.relative_to(output))
         qa["archive"] = {"file": archives.name, "sha256": hash_file(archives)}
         (output / "qa_report.json").write_text(json.dumps(qa, indent=2)+"\n")
