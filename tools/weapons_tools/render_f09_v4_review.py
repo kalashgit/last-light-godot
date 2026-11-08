@@ -43,6 +43,8 @@ def main():
             continue
         scene = factory.hero.setup()
         mats = factory.material_set()
+        from f09_v6_materials import refine_materials
+        refine_materials(mats)
         from f09_v5_models import build as build_v5
         build_v5(item["archetype"], mats, form=factory.form, tube=factory.tube,
                  grip=factory.grip, closed_sweep=factory.closed_sweep,
