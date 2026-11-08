@@ -1,0 +1,14 @@
+{
+	"schema": 1,
+	"note": "Worker 02 item-action recipes. Every input, tool and output is an existing catalog ID. Cooking is intentionally absent until Worker 05 exposes a heat-source capability.",
+	"recipes": [
+		{"id": "repair_claw_hammer_handle", "kind": "repair", "verb": "Repair", "name": "Refit hammer handle", "inputs": [{"id": "ll_crafting_pine_plank", "count": 1}], "tools": [], "target": "ll_tools_claw_hammer", "repair_amount": 30.0},
+		{"id": "repair_hatchet_handle", "kind": "repair", "verb": "Repair", "name": "Refit hatchet handle", "inputs": [{"id": "ll_crafting_pine_plank", "count": 1}], "tools": ["ll_tools_claw_hammer"], "target": "ll_tools_hatchet", "repair_amount": 25.0},
+		{"id": "tape_wrap_equipped_weapon", "kind": "repair", "verb": "Repair", "name": "Tape-wrap equipped weapon", "inputs": [{"id": "ll_golden_air_filter_tape", "count": 1}], "tools": [], "target": "@equipped", "repair_amount": 10.0},
+		{"id": "disinfect_with_wipes", "kind": "treat", "verb": "Disinfect", "name": "Clean wound with alcohol wipes", "inputs": [{"id": "ll_golden_alcohol_wipes", "count": 1}], "tools": [], "effect": {"disinfect": 1}},
+		{"id": "disinfect_with_old_wipes", "kind": "treat", "verb": "Disinfect", "name": "Clean wound with old wipes", "inputs": [{"id": "ll_golden_alcohol_wipes_old", "count": 1}], "tools": [], "effect": {"disinfect": 1}},
+		{"id": "disinfect_with_isopropyl", "kind": "treat", "verb": "Disinfect", "name": "Clean wounds with isopropyl alcohol", "inputs": [{"id": "ll_golden_isopropyl_alcohol", "count": 1}], "tools": [], "effect": {"disinfect": 2}},
+		{"id": "reinforce_baseball_bat", "kind": "craft", "verb": "Craft", "name": "Reinforce baseball bat with scrap", "inputs": [{"id": "ll_golden_baseball_bat", "count": 1}, {"id": "ll_golden_aluminum_scrap", "count": 2}], "tools": ["ll_tools_claw_hammer"], "outputs": [{"id": "ll_golden_reinforced_baseball_bat", "count": 1}]},
+		{"id": "dismantle_air_filter_panel", "kind": "dismantle", "verb": "Dismantle", "name": "Strip filter panel frame", "inputs": [{"id": "ll_golden_air_filter_panel", "count": 1}], "tools": ["ll_tools_claw_hammer"], "outputs": [{"id": "ll_golden_aluminum_scrap", "count": 2}]}
+	]
+}
