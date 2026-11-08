@@ -73,15 +73,36 @@ class FullFidelityV2(unittest.TestCase):
             self.assertIn(aid,workflow)
         self.assertIn("BATCH_COUNT: 11",workflow)
 
+    def test_ledger_reports_rebuilt_archive_hash_divergence_without_promotion(self):
+        archive=json.loads((ROOT/"preview/geometry-first-all-360/batch_report.json").read_text())
+        first=archive["items"][0]
+        evidence=dict(asset_id=first["asset_id"],original_sha256="d"*64,
+                      glb_sha256="e"*64,rebuilt_source_recipe_sha256=first["recipe_hash"],
+                      refinement_applied=True,geometry_source_verified=True,
+                      recipe_sha256="f"*64,repair_parts=["source mesh repair"])
+        with tempfile.TemporaryDirectory() as folder:
+            report=Path(folder)/"report.json"
+            report.write_text(json.dumps({"source_count":1,"items":[evidence]}))
+            ledger=create(refined_report=report)
+        row=next(x for x in ledger["records"] if x["asset_id"]==first["asset_id"])
+        self.assertTrue(row["release_gates"]["refined_geometry"])
+        self.assertFalse(row["comparison_v1_glb_matches_immutable_archive"])
+        self.assertEqual(row["comparison_rebuilt_v1_glb_sha256"],"d"*64)
+        self.assertFalse(row["release_gates"]["founder_golden_approved"])
+
     def test_refinement_evidence_must_match_original_and_have_unique_ids(self):
-        original={"glb_sha256":"a"*64}
+        original={"glb_sha256":"a"*64,"recipe_hash":"e"*64}
         evidence=dict(asset_id="sample",refinement_applied=True,
             geometry_source_verified=True,original_sha256="a"*64,
             glb_sha256="b"*64,recipe_sha256="c"*64,
+            rebuilt_source_recipe_sha256="e"*64,
             repair_parts=["true curved shell"])
         self.assertTrue(verified_refinement(evidence,original))
         self.assertFalse(verified_refinement(None,original))
-        for change in ({"original_sha256":"d"*64},
+        # A byte-different V1 reconstruction is legitimate if the matching
+        # immutable semantic recipe is verified and its hash is preserved.
+        self.assertTrue(verified_refinement({**evidence,"original_sha256":"d"*64},original))
+        for change in ({"rebuilt_source_recipe_sha256":"f"*64},
                        {"glb_sha256":"a"*64}, {"repair_parts":[]}):
             with self.subTest(change=change),self.assertRaises(ValueError):
                 verified_refinement({**evidence,**change},original)
