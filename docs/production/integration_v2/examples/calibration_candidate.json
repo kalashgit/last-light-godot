@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "package_id": "F12-CALIBRATION-CUBE-EXAMPLE-NOT-A-GAME-ASSET",
+  "family": "F01",
+  "stage": "CALIBRATION",
+  "source": {
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "archive_uri": "private://NOT-PROVISIONED/example-cube.blend",
+    "builder_commit": "0000000000000000000000000000000000000000"
+  },
+  "renderer": {
+    "commit": "0000000000000000000000000000000000000000",
+    "profile": "F12-2to1-PROPOSED",
+    "directions": 1,
+    "logical_tile_px": [
+      80,
+      40
+    ]
+  },
+  "material_recipe_ids": [],
+  "artifacts": [],
+  "notes": "Documentation-only schema example; no file hashes reflect an actual object. Cannot promote."
+}
