@@ -29,6 +29,7 @@ const MAX_ZOOM := 3.25
 const ZOOM_STEP := 0.25
 var camera_zoom := 1.0
 var zoom_adjust := 0.0
+var factory_icon_textures: Dictionary = {}
 var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
 var drops: Array[Dictionary] = []
@@ -936,6 +937,24 @@ func _golden_icon(id: String) -> Texture2D:
   var path: String = str(survival.definitions[id].get("icon_path", ""))
   golden_textures[id] = load("res://" + path) if not path.is_empty() else null
  return golden_textures[id]
+
+## Inventory thumbnail adapter: Golden 40 icon first, then the original factory
+## "icon" frame for legacy survival items (ported from PR #18). Cached; null is safe.
+func _item_icon(id: String) -> Texture2D:
+ var golden := _golden_icon(id)
+ if golden != null: return golden
+ if factory_icon_textures.has(id): return factory_icon_textures[id]
+ var icon: Texture2D = null
+ var definition: Dictionary = survival.definitions.get(id, {})
+ var art_id := str(definition.get("art_id", id))
+ if art.catalog.has(art_id):
+  for frame in art.catalog[art_id].get("frames", []):
+   if str(frame.get("mode", "")) == "icon":
+    var path := "res://assets/generated/factory/" + str(frame.get("file", ""))
+    if ResourceLoader.exists(path): icon = load(path) as Texture2D
+    break
+ factory_icon_textures[id] = icon
+ return icon
 
 func _spawn_golden_item(id: String, position: Vector2, count: int = 1) -> bool:
  if builder_open or paused or inventory_open or save_blocked or health<=0: return false

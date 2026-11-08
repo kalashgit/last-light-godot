@@ -40,7 +40,11 @@ func layout(game) -> Dictionary:
  var portrait: bool = safe.size.y > safe.size.x
  var compact: bool = safe.size.x < 760.0
  var stick_radius: float = 58.0 if compact else 78.0
+ # Portrait: founder-marked road-side thumb position from PR #18 (red X on device
+ # screenshot). Landscape keeps the PR #25 compact corner placement.
  var stick_center := Vector2(left + (78.0 if compact else 110.0), bottom - (98.0 if compact else 112.0))
+ if portrait:
+  stick_center = Vector2(left + 215.0, bottom - 345.0)
  var slot_size: float = 48.0 if compact else 64.0
  var slot_gap: float = 7.0 if compact else 10.0
  var slots_width: float = 4.0 * slot_size + 3.0 * slot_gap
@@ -89,6 +93,11 @@ func layout(game) -> Dictionary:
   var row_y := rows_top+i*row_height
   controls["modal_use_%d" % i] = Rect2(Vector2(modal.end.x-180,row_y+2),Vector2(100,maxf(48,row_height-4)))
   controls["modal_drop_%d" % i] = Rect2(Vector2(modal.end.x-72,row_y+2),Vector2(52,maxf(48,row_height-4)))
+ # Context prompt (label only). Portrait sits below the quick slots so it never
+ # covers the founder-marked joystick; landscape keeps its original position.
+ var prompt_width := minf(330.0, safe.size.x - 24.0)
+ var prompt_y: float = slots_y + slot_size + 10.0 if portrait else bottom - 190.0
+ controls["context_prompt"] = Rect2(Vector2(safe.get_center().x - prompt_width * .5, prompt_y), Vector2(prompt_width, 38))
  game.stick_center=stick_center
  game.stick_radius=stick_radius
  return controls
@@ -160,8 +169,7 @@ func draw(game) -> void:
   _draw_play_controls(game, controls)
   var prompt: String = game._context_prompt()
   if not prompt.is_empty():
-   var prompt_width := minf(330, safe.size.x - 24)
-   var prompt_rect := Rect2(Vector2(safe.get_center().x - prompt_width * 0.5, safe.end.y - (190 if landscape else 316)), Vector2(prompt_width, 38))
+   var prompt_rect: Rect2 = controls.context_prompt
    _panel(game, prompt_rect, Color(0.05, 0.08, 0.07, 0.86), Color(0.46, 0.50, 0.39, 0.65), 8)
    _center_text(game, prompt, prompt_rect, 15, ACCENT)
   if game.message_time > 0:
@@ -218,7 +226,7 @@ func _draw_inventory(game, controls: Dictionary) -> void:
   var row_rect := Rect2(panel.position + Vector2(16, 82 + i * row_height), Vector2(panel.size.x - 32, row_height))
   if i % 2 == 0:
    game.draw_rect(row_rect, Color(0.12, 0.18, 0.15, 0.65))
-  var golden_icon: Texture2D = game._golden_icon(str(row.id))
+  var golden_icon: Texture2D = game._item_icon(str(row.id))
   var label_offset := 50.0 if golden_icon != null else 8.0
   if golden_icon != null:
    game.draw_texture_rect(golden_icon, Rect2(row_rect.position + Vector2(8, 6), Vector2(36, 36)), false)
