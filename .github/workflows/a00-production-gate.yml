@@ -1,0 +1,42 @@
+name: A00 R04 production admission gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/asset_audit/production_admission/**'
+      - '.github/workflows/a00-production-gate.yml'
+  push:
+    branches:
+      - 'codex/a00-production-gate-r04-20261109'
+    paths:
+      - 'docs/asset_audit/production_admission/**'
+      - '.github/workflows/a00-production-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  a00-machine-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check gate syntax and adversarial cases
+        run: |
+          python -m py_compile docs/asset_audit/production_admission/r04_20261109/gate_v2.py
+          python -m unittest discover -s docs/asset_audit/production_admission/r04_20261109 -p 'test_gate_v2.py' -v
+      - name: Obtain the exact preserved geometry manifest
+        run: |
+          mkdir -p /tmp/a00
+          git fetch --no-tags origin refs/heads/codex/last-light-geometry-reconstruction-v1-20261108:refs/remotes/origin/codex/last-light-geometry-reconstruction-v1-20261108
+          git show origin/codex/last-light-geometry-reconstruction-v1-20261108:preview/geometry-first-all-360/batch_report.json > /tmp/a00/geometry-360.json
+      - name: Validate 15 original-refinement contracts (no release approval)
+        run: |
+          python docs/asset_audit/production_admission/r04_20261109/gate_v2.py \
+            --queue docs/asset_audit/production_admission/r03_20261109/admitted_refinement_queue.json \
+            --geometry /tmp/a00/geometry-360.json \
+            --handoff docs/asset_audit/production_admission/r03_20261109/f01_f12_family_handoff.jsonl
