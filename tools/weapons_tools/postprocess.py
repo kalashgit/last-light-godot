@@ -67,7 +67,7 @@ def world_set(imgs, dirout):
 
 
 def contact_sheet(items,output):
-    count=len(items); cols=5; tw,th=280,300
+    count=len(items); cols=4; tw,th=280,300
     canvas=Image.new("RGB",(tw*cols,th*math.ceil(count/cols)),(39,43,43))
     dr=ImageDraw.Draw(canvas)
     for i,rec in enumerate(items):

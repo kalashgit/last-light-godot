@@ -248,20 +248,21 @@ def construction(item, m):
              (.011,.065),(.025,.090),(-.024,.090),(-.011,.065)],.018,m["forged"])
         hoop("real through-hole at wrench handle",0,-.124,.040,.010,.005,m["forged"])
         # True crescent with an open upper gap and asymmetrical sliding jaw.
-        form("curved fixed wrench jaw",[(-.025,.070),(-.046,.084),(-.058,.117),
-             (-.056,.148),(-.041,.156),(-.029,.144),(-.025,.129),
-             (-.011,.118),(-.005,.094)],.019,m["edge"],.040,.0015)
+        form("curved fixed wrench jaw",[(-.025,.070),(-.045,.084),(-.054,.112),
+             (-.050,.145),(-.037,.153),(-.026,.143),(-.025,.126),
+             (-.011,.114),(-.005,.094)],.019,m["forged"],.040,.0015)
         form("floating movable wrench jaw",[(.008,.089),(.029,.095),
              (.052,.119),(.049,.146),(.035,.151),(.025,.137),
              (.021,.122),(.010,.116)],.018,m["forged"],.040,.0015)
         form("jaw rail at worm wheel",[(-.012,.080),(.040,.080),
              (.038,.102),(-.012,.102)],.018,m["forged"],.037,.001)
-        tube("steel exposed thumbwheel spindle",(.018,.084,.040),
-             (.018,.105,.040),.013,.013,m["edge"],24)
-        for i in range(7):
-            a=math.tau*i/7
-            small_pin("machined wheel knurl",.018+.012*math.cos(a),
-                      .095+.012*math.sin(a),m["oxide"],.054,.0025)
+        tube("compact enclosed worm thumbwheel",(.016,.088,.039),
+             (.016,.102,.039),.010,.010,m["edge"],28)
+        # Fine radial grooves remain nearly flush; the first v2 trial had
+        # cartoonishly projecting studs here, which are explicitly rejected.
+        for x in (.010,.016,.022):
+            form("flush knurl wheel mark",[(x-.001,.093),(x+.001,.093),
+                 (x+.001,.098),(x-.001,.098)],.0008,m["oxide"],.050,.0001)
         form("flat polished shank wear line",[(-.003,-.063),(.001,-.063),
              (.001,.045),(-.003,.045)],.001,m["edge"],.051,.0002)
     elif kind=="ratchet":
@@ -275,16 +276,16 @@ def construction(item, m):
                  (0,y+.0013,.040),.0182,.0182,m["red"],18)
         tube("polished shaft from rubber neck",(0,-.049,.040),
              (0,.096,.040),.010,.010,m["edge"],18)
-        tube("ratchet circular steel head",(0,.120,.025),
-             (0,.120,.057),.030,.030,m["forged"],32)
-        tube("ratchet reversible head side cap",(0,.120,.058),
-             (0,.120,.061),.023,.023,m["edge"],32)
-        tube("direction selector cap",(-.013,.120,.060),
-             (-.013,.120,.066),.008,.008,m["oxide"],16)
+        tube("ratchet circular steel head",(0,.120,.026),
+             (0,.120,.056),.027,.027,m["forged"],32)
+        tube("ratchet reversible head side cap",(0,.120,.057),
+             (0,.120,.059),.023,.023,m["edge"],32)
+        tube("direction selector cap",(-.013,.120,.058),
+             (-.013,.120,.063),.006,.006,m["oxide"],16)
         # Square drive appears as a genuinely solid four-sided geometry.
-        form("outward socket square drive",[(-.008,.112),(.008,.112),
-             (.008,.128),(-.008,.128)],.019,m["edge"],.074,.001)
-        small_pin("ratchet round quick-release button",0,.120,m["brass"],.087,.005)
+        form("outward socket square drive",[(-.007,.113),(.007,.113),
+             (.007,.127),(-.007,.127)],.017,m["edge"],.072,.001)
+        small_pin("low-profile ratchet quick-release",0,.120,m["oxide"],.083,.003)
     elif kind=="saw":
         # 48 controlled teeth, each physically cut into the solid steel edge.
         # The former 16 exaggerated teeth were cartoon-sized at full render.
@@ -298,7 +299,8 @@ def construction(item, m):
              (-.044,.209),(-.021,-.075)],.005,m["forged"],.044,.0004)
         # True through-opening in a five-segment hardwood D frame; the old
         # source was a filled cuboid with a fake hole painted on the surface.
-        loop=[(-.064,-.228),(.027,-.226),(.046,-.116),(-.029,-.081),(-.070,-.124)]
+        loop=[(-.067,-.227),(.008,-.234),(.044,-.218),(.052,-.176),
+              (.044,-.123),(-.028,-.085),(-.062,-.119),(-.076,-.166),(-.075,-.208)]
         for k in range(len(loop)):
             x1,y1=loop[k];x2,y2=loop[(k+1)%len(loop)]
             tube("saw open D handle shaped wood frame",(x1,y1,.040),
