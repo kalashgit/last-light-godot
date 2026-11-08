@@ -16,25 +16,27 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
               (.020,.095),(-.020,.095),(-.021,.071),(-.012,.049)],
              .014,m["forged"],z,.0020)
         hoop("V5 handle hanging eye",0,-.121,z,.0060,.0030,m["edge"])
-        # A flat C-jaw profile with a deliberately empty throat.
-        # All three structures connect to the neck; gap remains unfilled.
-        form("V5 fixed jaw with continuous solid heel",
-             [(-.020,.075),(-.040,.087),(-.051,.114),(-.047,.140),
-              (-.035,.151),(-.023,.146),(-.021,.134),(-.030,.122),
-              (-.027,.105),(-.004,.091),(.005,.078)],
-             .019,m["forged"],z,.0015)
-        # Movable jaw is one connected sliding piece; flat gripping face
-        # faces left and forms a clean negative-space opening with fixed jaw.
-        form("V5 adjustable sliding jaw and throat",
-             # The movable jaw points inward toward its fixed counterpart;
-             # avoid the old rectangular stub protruding sideways.
-             [(.009,.082),(.031,.086),(.045,.103),(.052,.124),
-              (.049,.142),(.039,.154),(.023,.153),(.020,.143),
-              (.029,.133),(.031,.123),(.025,.111),(.011,.100)],
-             .018,m["forged"],z,.0020)
-        form("V6 sliding jaw polished contact face",
-             [(.022,.140),(.025,.144),(.039,.150),(.034,.153)],
-             .0012,m["edge"],z+.010,.0001)
+        # V7: real crescent geometry uses opposing PARALLEL planar grip faces.
+        # The open throat is a negative-space channel, not two inward-curved hooks.
+        form("V7 fixed crescent jaw continuous forged head",
+             [(-.020,.072),(-.038,.080),(-.050,.105),(-.052,.132),
+              (-.046,.156),(-.034,.170),(-.021,.170),(-.013,.160),
+              (-.015,.146),(-.023,.137),(-.026,.113),(-.018,.097),
+              (.001,.087)],
+             .019,m["forged"],z,.0018)
+        # Independent moving jaw: parallel contact face x=.013 .. .018
+        # engages the same flat above the worm slider and leaves a real gap.
+        form("V7 sliding jaw forged moving half",
+             [(.002,.080),(.026,.081),(.039,.098),(.045,.117),
+              (.044,.144),(.035,.155),(.023,.154),(.015,.144),
+              (.016,.132),(.022,.121),(.017,.107),(.006,.097)],
+             .018,m["forged"],z,.0018)
+        form("V7 fixed jaw bright flat contact",
+             [(-.014,.147),(-.012,.146),(-.011,.159),(-.014,.161)],
+             .0011,m["edge"],z+.010,.0001)
+        form("V7 moving jaw bright flat contact",
+             [(.015,.132),(.018,.132),(.018,.143),(.015,.145)],
+             .0011,m["edge"],z+.010,.0001)
         form("V5 worm-guide bridge beneath throat",
              [(-.006,.078),(.026,.078),(.026,.093),(-.006,.093)],
              .010,m["oxide"],z-.008,.0006)
@@ -54,14 +56,15 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
     elif kind == "saw":
         # Main saw body: tapered plate with 24 integrated real tooth notches,
         # instead of many disconnected polygonlets intersecting the blade.
-        teeth=18
+        teeth=15
         outline=[(-.046,-.099),(-.050,.205),(-.029,.231)]
         for i in range(teeth,-1,-1):
             t=i/teeth
             y=-.087+t*.290
             x=.043-.031*t
-            outline.append((x,y+.0030))
-            if i: outline.append((x+.004,y-.0020))
+            # 15 integral alternating rake tips, shaped in the steel itself.
+            outline.append((x-.0020,y+.0045))
+            if i: outline.append((x+.0075,y-.0040))
         form("V5 continuous tapered saw blade with integral teeth",
              outline,.0055,m["forged"],z,.0004)
         form("V5 honed narrow cutting strip",
@@ -114,7 +117,7 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
              [(-.016,.129),(-.010,.127),(-.011,.150),(-.017,.154)],
              .003,m["oxide"],.065,.0004)
         small_pin("V5 reversing lever pivot",
-                  -.014,.129,m["brass"],z=.068,rad=.003)
+                  -.014,.129,m["oxide"],z=.068,rad=.0025)
         # A true square-drive peg, unambiguously separate from circular lid.
         form("V5 raised square socket drive",
              [(-.007,.118),(.007,.118),(.007,.132),(-.007,.132)],
