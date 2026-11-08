@@ -1,0 +1,26 @@
+name: F12 Render Manifest Validation
+
+on:
+  pull_request:
+    branches:
+      - claude/last-light-production-director
+    paths:
+      - "tools/f12/**"
+      - "tests/f12/**"
+      - ".github/workflows/f12-render-manifest-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run F12 validator regressions
+        run: python -m unittest discover -s tests/f12 -p 'test_*.py' -v
