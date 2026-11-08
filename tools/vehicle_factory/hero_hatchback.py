@@ -89,10 +89,17 @@ def body_shell(m):
     axles=(-WB/2,WB/2)
     def shoulder(x):
         n=x/(L/2)
-        return .948-.043*max(0,n-.42)-.027*max(0,-n-.53)
+        # Stamped belt line gently drops over nose/tail and rises around the
+        # doors, avoiding a constant-height slab along the entire wheelbase.
+        return (.923+.038*math.exp(-(x/.96)**2)
+                -.046*max(0,n-.48)-.038*max(0,-n-.59))
     def taper(x):
         v=abs(x)/(L/2)
         return 1-.13*max(0,(v-.68)/.32)**1.5
+    def shoulder_bulge(x):
+        # Fenders are fuller above each axle; the door skins tuck inward.
+        around_wheels=sum(math.exp(-((x-a)/.39)**2) for a in axles)
+        return .023*around_wheels-.017*math.exp(-(x/.68)**2)
     def arch(x):
         bottom=.245
         for a in axles:
@@ -105,10 +112,11 @@ def body_shell(m):
         verts=[]
         for x in xs:
             q=taper(x)
-            verts.extend(((x,side*.715*q,arch(x)),
-                          (x,side*.785*q,.615),
-                          (x,side*.773*q,.798),
-                          (x,side*.724*q,shoulder(x))))
+            b=shoulder_bulge(x)
+            verts.extend(((x,side*.709*q,arch(x)),
+                          (x,side*(.770*q+b*.45),.615),
+                          (x,side*(.767*q+b),.798),
+                          (x,side*(.721*q+b*.70),shoulder(x))))
         faces_idx=[];material_idx=[]
         for i in range(steps):
             a=i*4
@@ -121,22 +129,38 @@ def body_shell(m):
     # Crown rather than flat box: 7 longitudinal points for each station.
     verts=[]
     for x in xs:
-        y=.724*taper(x)
+        y=.721*taper(x)+shoulder_bulge(x)*.70
         z=shoulder(x)
         for q,extra in ((-1,0),(-.84,.027),(-.52,.052),(0,.070),
                         (.52,.052),(.84,.027),(1,0)):
-            verts.append((x,q*y,z+extra))
+            camber=1+.15*math.exp(-(x/.87)**2)
+            verts.append((x,q*y,z+extra*camber))
     polys=[]
     for i in range(steps):
         for j in range(6):
             a=7*i+j
             polys.append((a,a+7,a+8,a+1))
     mesh_object("F10 HERO continuous body crown",verts,polys,[m["body"]])
-    # Chamfered ends fitted to body shell; avoid the original huge flat bumper.
+    # Curved original front/rear panel instead of a pasted rectangular block.
     for x,sign in ((L*.485,1),(-L*.485,-1)):
-        cube("integrated fascia lip",(x,0,.689),(.055,W*.830,.508),m["body"],.057)
-        cube("subtle rubber impact strip",(x+sign*.024,0,.420),
-             (.055,W*.795,.080),m["trim"],.026)
+        v=[]
+        count=12
+        for i in range(count+1):
+            t=-1+2*i/count
+            y=t*W*.416
+            curve=.067*abs(t)**2
+            xx=x-sign*curve
+            v.extend(((xx,y,.437),(xx,y,.689),(xx,y,.938-.035*abs(t))))
+        polys=[]
+        for i in range(count):
+            a=3*i
+            for j in range(2):
+                face=(a+j,a+j+3,a+j+4,a+j+1)
+                polys.append(face if sign==1 else tuple(reversed(face)))
+        mesh_object("F10 HERO sculpted frontal stamp" if sign==1 else
+                    "F10 HERO sculpted rear panel",v,polys,[m["body"]])
+        cube("subtle rubber impact strip",(x+sign*.014,0,.418),
+             (.050,W*.757,.073),m["trim"],.025)
     cube("underbody recessed",(0,0,.295),(L*.90,W*.70,.145),m["dark"],.06)
     # Wheel arch lip follows the true wheel openings rather than a glued-on disk.
     for side in (-1,1):
