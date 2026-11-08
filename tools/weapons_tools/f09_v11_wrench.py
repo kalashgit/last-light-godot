@@ -6,6 +6,40 @@ Y aligns with handle; the jaw gap is along Y, opening toward negative X.
 import math
 import bpy
 
+def forged_loft(name, profile, depths, material, *, z=.040):
+    """Closed editable 3D jaw with hand-forged taper across the outline."""
+    if len(profile)<3 or len(profile)!=len(depths) or min(depths)<.006:
+        raise ValueError("invalid forge loft")
+    n=len(profile)
+    verts=([(x,y,z-d*.5) for (x,y),d in zip(profile,depths)]+
+           [(x,y,z+d*.5) for (x,y),d in zip(profile,depths)])
+    faces=[tuple(reversed(range(n))),tuple(range(n,2*n))]
+    faces.extend((i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n))
+    mesh=bpy.data.meshes.new("LL physically tapered forged wrench jaw")
+    mesh.from_pydata(verts,[],faces)
+    mesh.update()
+    ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
+    bpy.context.collection.objects.link(ob)
+    mesh.materials.append(material)
+    uv=mesh.uv_layers.new(name="F09_FORGED_JAW_UV")
+    minx=min(p[0] for p in profile); maxx=max(p[0] for p in profile)
+    miny=min(p[1] for p in profile); maxy=max(p[1] for p in profile)
+    for polygon in mesh.polygons:
+        for li in polygon.loop_indices:
+            co=mesh.vertices[mesh.loops[li].vertex_index].co
+            uv.data[li].uv=((co.x-minx)/max(.001,maxx-minx),
+                            (co.y-miny)/max(.001,maxy-miny))
+    if hasattr(mesh,"use_auto_smooth"):
+        mesh.use_auto_smooth=True
+    bevel=ob.modifiers.new("V15 rounded forging perimeter","BEVEL")
+    bevel.width=.0011
+    bevel.segments=2
+    ob.modifiers.new("V15 coherent forged normals","WEIGHTED_NORMAL")
+    ob["F09_VARIABLE_JAW_THICKNESS"]=True
+    ob["F09_THICKNESS_RANGE_M"]=[round(min(depths),4),round(max(depths),4)]
+    return ob
+
+
 def build(m, *, form, tube, hoop, z=.040):
     # Central forged handle, swept flared shoulders and offset broad head.
     handle=form("V13 forged tapered crescent wrench handle with true eye",
@@ -30,20 +64,24 @@ def build(m, *, form, tube, hoop, z=.040):
     handle["F09_TRUE_THROUGH_HOLE"]=True
     # Stationary upper jaw curls outward from the right-hand head.
     # Its bottom contact surface runs along Y=.142 and opens LEFT.
-    form("V11 fixed crescent upper jaw broad forged arm",
+    forged_loft("V15 fixed crescent upper jaw forged taper",
          [(.014,.075),(.038,.085),(.055,.105),(.054,.140),
           (.045,.160),(.024,.175),(-.016,.179),
           (-.043,.172),(-.066,.159),(-.070,.148),
           (-.061,.140),(-.045,.139),(-.014,.143),
           (.010,.143),(.018,.122),(.015,.103)],
-         .020,m["forged"],z,.0020)
+         [.022,.023,.025,.026,.022,.019,.017,.014,
+          .011,.010,.009,.010,.015,.018,.024,.025],
+         m["forged"],z=z)
     # Lower sliding jaw: a distinct, angular lower limb below upper contact.
     # Its top contact is Y=.117. Negative-space open throat is 22-25mm.
-    form("V11 translating lower jaw and integral sliding rack",
+    forged_loft("V15 translating lower jaw tapered sliding rack",
          [(.012,.070),(-.012,.076),(-.045,.084),(-.067,.094),
           (-.074,.105),(-.077,.117),(-.071,.127),(-.055,.128),
           (-.043,.118),(-.013,.115),(.011,.116),(.035,.103),(.031,.083)],
-         .018,m["edge"],z-.001,.0016)
+         [.019,.018,.016,.014,.012,.011,.011,
+          .012,.015,.017,.019,.020,.020],
+         m["edge"],z=z-.001)
     # Two *horizontal* faces bite a hex fastener; no hook-on-hook geometry.
     form("V11 fixed upper polished jaw flat",
          [(-.062,.139),(-.020,.141),(-.020,.143),(-.062,.142)],
