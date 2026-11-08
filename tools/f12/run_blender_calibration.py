@@ -11,7 +11,7 @@ import json
 import math
 import sys
 from pathlib import Path
-from mathutils import Vector
+from mathutils import Vector, Matrix
 from bpy_extras.object_utils import world_to_camera_view
 
 out = Path(sys.argv[sys.argv.index("--") + 1]).resolve()
@@ -125,36 +125,54 @@ def vehicle():
 def fridge():
     scene=setup()
     hero.fridge_v3(hero.materials("refrigerator"))
-    # The existing source has hollow cavities and separate top/bottom doors,
-    # but its art source lacks animated parent grouping. Do not fake a whole
-    # cabinet rotation: group only top door panel, trim/seals and handle.
+    # Original hollow refrigerator source: isolate only upper freezer door and
+    # rotate its meshes about the REAL left hinge using source-space matrices.
+    # Direct matrix transforms avoid Blender parent-inverse translation bugs.
     top_z=1.405
-    hinge_x=-.341
-    hinge_y=-.378
+    hinge_point=Vector((-.341,-.378,top_z))
     door_names=("Individual pressed convex door","Door aged left/right seam",
                 "Door rubber seal","Bent chromed pull")
-    hinge=bpy.data.objects.new("F12_TOP_FREEZER_DOOR_HINGE",None)
-    scene.collection.objects.link(hinge)
-    hinge.location=(hinge_x,hinge_y,top_z)
-    moved=0
+    bpy.context.view_layer.update()
+    parts=[]
     for ob in list(scene.objects):
         if ob.type not in {"MESH","CURVE"} or not ob.name.startswith(door_names):
             continue
-        if abs(ob.matrix_world.translation.z-top_z)>.26:
+        if abs(ob.matrix_world.translation.z-top_z)>.36:
             continue
-        world=ob.matrix_world.copy()
-        ob.parent=hinge
-        ob.matrix_world=world
-        moved+=1
-    if moved<4:
-        raise AssertionError("Top door has too few isolated parts: "+str(moved))
+        parts.append(ob)
+    if len(parts)<4:
+        raise AssertionError("Top door has too few isolated parts: "+str(len(parts)))
+    primary=next((ob for ob in parts if ob.name.startswith("Individual pressed convex door")
+                  and abs(ob.matrix_world.translation.z-top_z)<.05),None)
+    if primary is None:
+        raise AssertionError("Freezer panel could not be isolated")
     root=group_roots()
+    bpy.context.view_layer.update()
+    originals={ob.name:ob.matrix_world.copy() for ob in parts}
+    source_center=primary.matrix_world.translation.copy()
+    if (source_center-hinge_point).length>.55:
+        raise AssertionError("Closed freezer door is displaced from its real hinge")
     src=save_source(scene,"fridge")
+    hinge_px=xy(scene,hinge_point)
+    max_projected_center_dist_px=0.0
     for i in range(7):
-        hinge.rotation_euler.z=math.radians(-85)*i/6
+        angle=math.radians(-85)*i/6
+        rotate=(Matrix.Translation(hinge_point)
+                @ Matrix.Rotation(angle,4,"Z")
+                @ Matrix.Translation(-hinge_point))
+        for ob in parts:
+            ob.matrix_world=rotate @ originals[ob.name]
+        bpy.context.view_layer.update()
+        center_px=xy(scene,primary.matrix_world.translation)
+        distance=math.dist(center_px,hinge_px)
+        max_projected_center_dist_px=max(distance,max_projected_center_dist_px)
+        if distance>35:
+            raise AssertionError("Freezer panel visibly detached from hinge: "+
+                                 str((i,distance,center_px,hinge_px)))
         render(scene,"fridge",0,i+1,"freezer_open",root)
-    return {"source_sha":sha(src),"moving_door_parts":moved,
-            "frames":7,"status":"A00_ID_VERIFIED_SOURCE_RECONSTRUCTION_UNAPPROVED"}
+    return {"source_sha":sha(src),"moving_door_parts":len(parts),
+            "frames":7,"max_hinge_screen_distance_px":round(max_projected_center_dist_px,5),
+            "status":"A00_ID_VERIFIED_SOURCE_RECONSTRUCTION_UNAPPROVED"}
 
 def cow():
     # Reuse F07's actual original procedural rig-building code instead of
