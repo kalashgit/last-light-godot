@@ -1,0 +1,29 @@
+{
+  "batch_id": "A00-20261108-B005",
+  "actual_fetched": 3000,
+  "classified": 3000,
+  "source_first": 12852,
+  "source_last": 29847,
+  "primary_classes": {
+    "CANONICAL_MASTER_CANDIDATE": 995,
+    "UI_ICON_ONLY": 170,
+    "COMPOSITION_REFERENCE": 1493,
+    "MEANINGFUL_VARIANT": 59,
+    "NEEDS_MANUAL_REVIEW": 219,
+    "STATE_OR_DIRECTION": 62,
+    "OUT_OF_SCOPE": 2
+  },
+  "provisional_parent_source_links": 461,
+  "unresolved_parent_stems": 345,
+  "model_view_references": 685,
+  "verified_semantic_identifications": 2,
+  "metadata_only_not_approved": 2998,
+  "source_snapshot_sha256": "aff90ebeb28c65a1c25da49d7d4b709d41f57114a06e9c2711a8d5f05cbd92d9",
+  "ledger_sha256": "c74ada4496a93f464b28c4844cc9e890882ffa4ebc48e2bf4fb520662c1ba271",
+  "next_cursor": {
+    "offset": 5100,
+    "source_page_id_after": 29847
+  },
+  "remaining_after_batch": 15925,
+  "golden_visual_approved_in_batch": 0
+}
