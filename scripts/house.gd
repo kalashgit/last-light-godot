@@ -32,6 +32,8 @@ const ZombieDirector := preload("res://scripts/zombie/zombie_director.gd")
 const ZombieRenderer := preload("res://scripts/zombie/zombie_renderer.gd")
 var zombies := ZombieDirector.new()
 const ZOMBIE_WORLD_SEED := 1107
+## Noise radii (m) heard by zombies. Worker 03 tuning; documented in docs/zombie.
+const NOISE_FOOTSTEP := {"sneak":1.0,"walk":3.5,"sprint":7.5}
 var zombie_grab := -1
 var footstep_distance := 0.0
 var save_blocked := false
@@ -319,7 +321,7 @@ func _step(dt: float) -> void:
  footstep_distance+=moved
  if footstep_distance>=.6:
   footstep_distance=0
-  zombies.emit_noise(player,7.5 if sprinting else 1.0 if sneaking else 3.5,"footstep")
+  zombies.emit_noise(player,NOISE_FOOTSTEP.sprint if sprinting else NOISE_FOOTSTEP.sneak if sneaking else NOISE_FOOTSTEP.walk,"footstep")
  for i in range(zombies_hit_time.size()): zombies_hit_time[i]=maxf(0,zombies_hit_time[i]-dt)
  _update_zombies(dt,moved/maxf(dt,.0001))
  if health<=0:

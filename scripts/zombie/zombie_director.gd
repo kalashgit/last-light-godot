@@ -242,6 +242,7 @@ func update(dt: float) -> void:
 	time += dt
 	stats.ticks += 1
 	_process_noises()
+	_rebuild_cells()
 	var order: Array = []
 	for i in range(agents.size()):
 		var a: Dictionary = agents[i]
@@ -372,9 +373,11 @@ func _sense(a: Dictionary, dt: float) -> void:
 		if a.sense_timer <= 0.0:
 			a.sense_timer = interval
 		a.sees = can_see(a)
+		if a.sees:
+			# Only a real sight check refreshes knowledge of where the target is.
+			a.last_known = target.pos
+			a.last_vel = target.vel
 	if a.sees:
-		a.last_known = target.pos
-		a.last_vel = target.vel
 		a.memory_time = 0.0
 	else:
 		a.memory_time += dt
@@ -432,7 +435,9 @@ func _turn_toward(a: Dictionary, dir: Vector2, dt: float) -> void:
 func _move(i: int, goal: Vector2, speed: float, dt: float) -> float:
 	var a: Dictionary = agents[i]
 	var radius: float = a.profile.radius
-	var forced: bool = a.stuck_time > .6 and a.side_time <= 0.0
+	# Blocked at a closed door: keep pushing (breach) instead of sidestepping away.
+	var door: int = world.zw_closed_door_near(a.pos, .55)
+	var forced: bool = a.stuck_time > .6 and a.side_time <= 0.0 and door < 0
 	var dir := nav.direction(a.nav, a.pos, goal, radius, dt, forced)
 	if forced:
 		a.side_time = .5
@@ -449,7 +454,7 @@ func _move(i: int, goal: Vector2, speed: float, dt: float) -> float:
 	_turn_toward(a, dir, dt)
 	if moved < speed * dt * .3 and a.pos.distance_to(goal) > .35:
 		a.stuck_time += dt
-		var door: int = world.zw_closed_door_near(a.pos, .55)
+		door = world.zw_closed_door_near(a.pos, .55)
 		if door >= 0 and a.stuck_time > .15:
 			events.append({"type": "door_breach", "zombie": i, "door": door, "amount": float(a.profile.breach_rate) * dt})
 			a.bang_timer -= dt
@@ -462,19 +467,37 @@ func _move(i: int, goal: Vector2, speed: float, dt: float) -> float:
 	return moved
 
 
+## Spatial hash of living agents (0.5 m cells), rebuilt once per update().
+var _cells: Dictionary = {}
+
+
+func _hash_key(p: Vector2) -> Vector2i:
+	return Vector2i(floori(p.x * 2.0), floori(p.y * 2.0))
+
+
+func _rebuild_cells() -> void:
+	_cells.clear()
+	for j in range(agents.size()):
+		if agents[j].hp > 0:
+			var key := _hash_key(agents[j].pos)
+			if not _cells.has(key):
+				_cells[key] = []
+			_cells[key].append(j)
+
+
 func _separation(i: int) -> Vector2:
 	var a: Dictionary = agents[i]
 	var push := Vector2.ZERO
-	for j in range(agents.size()):
-		if j == i:
-			continue
-		var b: Dictionary = agents[j]
-		if b.hp <= 0:
-			continue
-		var off: Vector2 = a.pos - b.pos
-		var d2 := off.length_squared()
-		if d2 < .16 and d2 > .000001:
-			push += off / sqrt(d2) * (.4 - sqrt(d2)) / .4
+	var base := _hash_key(a.pos)
+	for y in range(-1, 2):
+		for x in range(-1, 2):
+			for j in _cells.get(base + Vector2i(x, y), []):
+				if j == i:
+					continue
+				var off: Vector2 = a.pos - agents[j].pos
+				var d2 := off.length_squared()
+				if d2 < .16 and d2 > .000001:
+					push += off / sqrt(d2) * (.4 - sqrt(d2)) / .4
 	return push
 
 
@@ -610,7 +633,7 @@ func _update_pursue(i: int, dt: float) -> void:
 	if a.memory_time > float(p.memory):
 		_set_state(i, "search")
 		return
-	var goal: Vector2 = a.last_known
+	var goal: Vector2 = target.pos if a.sees else a.last_known
 	if not a.sees:
 		goal += a.last_vel.limit_length(1.0) * minf(a.memory_time, 1.0)
 		if a.pos.distance_to(goal) < .4:
