@@ -78,6 +78,12 @@ class RenderManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(RenderValidationError, "basis differs"):
             validate_manifest(self.doc, self.root)
 
+    def test_submillipixel_projection_rounding(self):
+        self.doc["projection"]["max_axis_error_px"] = 0.0
+        self.doc["projection"]["grid_basis_x_px"] = [39.99999, 20.0]
+        self.doc["projection"]["grid_basis_y_px"] = [-40.00001, 20.0]
+        self.assertEqual(validate_manifest(self.doc, self.root)["direction_count"], 4)
+
     def test_wrong_heading_order(self):
         self.doc["heading_degrees"][1] = 45
         with self.assertRaisesRegex(RenderValidationError, "wrong order"):
