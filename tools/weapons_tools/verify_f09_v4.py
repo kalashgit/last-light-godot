@@ -48,8 +48,8 @@ def check(item, directory):
         assert len(bm.verts)-len(bm.edges)+len(bm.faces)==0, "grip opening not real"
         bm.free()
     elif item["archetype"]=="wrench":
-        assert any("V8 offset fixed head" in n for n in names) and any(
-            "V8 compact translating" in n for n in names), "wrench lost separate jaws"
+        assert any("v8 offset fixed head" in n for n in names) and any(
+            "v8 compact translating" in n for n in names), "wrench lost separate jaws"
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
