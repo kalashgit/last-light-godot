@@ -16,6 +16,7 @@ from pathlib import Path
 
 import bpy
 from mathutils import Vector
+from bpy_extras.object_utils import world_to_camera_view
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -59,6 +60,14 @@ def main():
         raise ValueError("missing exact root object: "+opts.object)
     if root.type=="CAMERA":
         raise ValueError("camera cannot be asset root")
+    if root.hide_render:
+        raise ValueError('root is hidden from rendering')
+    if root.location.length > 0.0001:
+        raise ValueError('root origin must be at world origin for locked F12 camera')
+    descendants = [obj for obj in bpy.data.objects if obj == root or root in obj.parent_recursive]
+    geometry = [obj for obj in descendants if obj.type == 'MESH' and not obj.hide_render]
+    if not geometry:
+        raise ValueError('root has no renderable mesh descendants')
     # Existing scene lights and materials are preserved; camera is replaced.
     setup_camera(scene,opts.width,opts.height)
     scene.render.engine="CYCLES"
@@ -84,6 +93,15 @@ def main():
         root.rotation_euler=original.copy()
         root.rotation_euler.z+=2*math.pi*heading/opts.headings
         bpy.context.view_layer.update()
+        # Fail before rendering a clipped direction: bounding-box corners are
+        # measured in the same orthographic camera used for the PNG output.
+        projected = []
+        for mesh in geometry:
+            for corner in mesh.bound_box:
+                world = mesh.matrix_world @ Vector(corner)
+                projected.append(world_to_camera_view(scene, scene.camera, world))
+        if not projected or any(p.z <= 0 or p.x < 0.02 or p.x > 0.98 or p.y < 0.02 or p.y > 0.98 for p in projected):
+            raise ValueError('heading %d geometry exceeds camera safe frame' % heading)
         filename="heading_%02d.png"%heading
         path=out/filename
         scene.render.filepath=str(path)
