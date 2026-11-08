@@ -1,0 +1,243 @@
+{
+  "aliases": {
+    "ll_tile_grass_sparse_to_asphalt_worn_c00": "ll_tile_grass_sparse",
+    "ll_tile_grass_sparse_to_asphalt_worn_c15": "ll_tile_asphalt_worn",
+    "ll_tile_grass_sparse_to_paver_gray_c00": "ll_tile_grass_sparse",
+    "ll_tile_grass_sparse_to_paver_gray_c15": "ll_tile_paver_gray",
+    "ll_tile_grass_sparse_to_soil_brown_c00": "ll_tile_grass_sparse",
+    "ll_tile_grass_sparse_to_soil_brown_c15": "ll_tile_soil_brown",
+    "ll_tile_soil_brown_to_gravel_ash_c00": "ll_tile_soil_brown",
+    "ll_tile_soil_brown_to_gravel_ash_c15": "ll_tile_gravel_ash",
+    "ll_tile_tile_ceramic_to_concrete_stained_c00": "ll_tile_tile_ceramic",
+    "ll_tile_tile_ceramic_to_concrete_stained_c15": "ll_tile_concrete_stained",
+    "ll_tile_wood_oak_to_concrete_stained_c00": "ll_tile_wood_oak",
+    "ll_tile_wood_oak_to_concrete_stained_c15": "ll_tile_concrete_stained",
+    "ll_tile_wood_oak_to_tile_ceramic_c00": "ll_tile_wood_oak",
+    "ll_tile_wood_oak_to_tile_ceramic_c15": "ll_tile_tile_ceramic"
+  },
+  "anchor_px": [
+    40,
+    20
+  ],
+  "build_source_sha256": "82d9bc68434e959fd4b78f68d3a3be03e0d2aa99152c721703491853ef5e90e2",
+  "family": "terrain_tile",
+  "founder_golden_approved": false,
+  "full_recipe_count": 106,
+  "installed_count": 12,
+  "iphone_verified": false,
+  "pixel_finish_source_sha256": "0f1c1a443ef225e1b5d46e108eaa4b694250cfd15f83004297f515a4c843c390",
+  "preview_scene_only": true,
+  "schema": 1,
+  "source_recipe_sha256": "4631dddf7eef7bf19fe25795a8d404d90cf0a9a85f08672fc368b08814f75e66",
+  "status": "TECHNICAL_CANDIDATE",
+  "tile_px": [
+    80,
+    40
+  ],
+  "tiles": [
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_grass_sparse",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "grass_sparse",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_grass_sparse.png",
+      "texture_sha256": "db60dcbda6d28ee33ccbc18c475a1bcc8109064e2d6aece3373403e4a04ea444",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_asphalt_worn",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "asphalt_worn",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_asphalt_worn.png",
+      "texture_sha256": "995e4311885d021786ca6e0ead8b8ce1d062510c9411f0f2c735eadfb9d693ae",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_paver_gray",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "paver_gray",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_paver_gray.png",
+      "texture_sha256": "62ac47fad5f704fb71197ec4c3a4056410c6f51df6c632d524568696b27352a5",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_soil_brown",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "soil_brown",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_soil_brown.png",
+      "texture_sha256": "5c315f365d9e8c2ebe83f31099efb09dec73f9c000dbce12305ecc670038e0ca",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_gravel_ash",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "gravel_ash",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_gravel_ash.png",
+      "texture_sha256": "5e44a47b74337b84f1b39c03626c9dc21f3fd45156f749f74429daabf4145d82",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_wood_oak",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "wood_oak",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_wood_oak.png",
+      "texture_sha256": "cd2e1d923bfbca2d63b4e78a3daf7020e7395805b4ceb30690fef11775959579",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_tile_ceramic",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "tile_ceramic",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_tile_ceramic.png",
+      "texture_sha256": "db56e8d93b388b32938b5ebf3b018db220dbc4577ec4b04d85ae2c9b19f7bca0",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_concrete_stained",
+      "corner_mask": 0,
+      "kind": "center",
+      "material_a": "concrete_stained",
+      "material_b": null,
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_concrete_stained.png",
+      "texture_sha256": "0a0ebc00a1bc83867a8b346a82daad34d913913145f2e698b52fcc9984ba4c75",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_grass_sparse_to_asphalt_worn_c01",
+      "corner_mask": 1,
+      "kind": "corner_transition",
+      "material_a": "grass_sparse",
+      "material_b": "asphalt_worn",
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_grass_sparse_to_asphalt_worn_c01.png",
+      "texture_sha256": "01c55c3f4b2a450d5f5e63702415ef324d068d14edafe88f6045b083833120fb",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_grass_sparse_to_asphalt_worn_c02",
+      "corner_mask": 2,
+      "kind": "corner_transition",
+      "material_a": "grass_sparse",
+      "material_b": "asphalt_worn",
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_grass_sparse_to_asphalt_worn_c02.png",
+      "texture_sha256": "49513fc0fe5cfa5d649de0bd4ba07d88347a121582c386de8eb6a56d555db4fb",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_grass_sparse_to_asphalt_worn_c03",
+      "corner_mask": 3,
+      "kind": "corner_transition",
+      "material_a": "grass_sparse",
+      "material_b": "asphalt_worn",
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_grass_sparse_to_asphalt_worn_c03.png",
+      "texture_sha256": "6547251684d601b0b63d32d08dea87f8c5ed4799e4d49b9b598824dcd7aed4a0",
+      "tile_px": [
+        80,
+        40
+      ]
+    },
+    {
+      "anchor_px": [
+        40,
+        20
+      ],
+      "asset_id": "ll_tile_grass_sparse_to_asphalt_worn_c04",
+      "corner_mask": 4,
+      "kind": "corner_transition",
+      "material_a": "grass_sparse",
+      "material_b": "asphalt_worn",
+      "texture": "res://assets/last_light/terrain/v1/sprites/ll_tile_grass_sparse_to_asphalt_worn_c04.png",
+      "texture_sha256": "c46a87ba2526dcf4cbedad260ac81392e00abe82f41db1ea14d7f662ca8a930c",
+      "tile_px": [
+        80,
+        40
+      ]
+    }
+  ]
+}

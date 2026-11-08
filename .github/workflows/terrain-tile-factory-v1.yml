@@ -1,0 +1,48 @@
+name: LAST LIGHT Original Terrain and Tile Kit V1
+on:
+  push:
+    branches:
+      - codex/last-light-terrain-tile-factory-v1-20261108
+    paths:
+      - "tools/terrain_factory/**"
+      - "tests/terrain_factory_v1.py"
+      - ".github/workflows/terrain-tile-factory-v1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ll-terrain-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  terrain-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install native-pixel regression dependency
+        run: python -m pip install "Pillow>=10,<15"
+      - name: Validate all 106 canonical recipe IDs and edge/corner math
+        run: python tests/terrain_factory_v1.py
+      - name: Install CPU Blender and Pillow for headless original tile render
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-pil python3-numpy
+          python -m pip install "Pillow>=10,<15"
+      - name: Create editable original 3D masters and native 2.5D tiles
+        run: |
+          set -o pipefail
+          mkdir -p build/terrain_v1
+          blender -b --factory-startup -t 2 --python tools/terrain_factory/build.py -- --out build/terrain_v1 --limit 12 --samples 14 2>&1 | tee build/terrain_v1/blender.log
+          grep -q 'LL_TERRAIN_BATCH_PASS 12 106' build/terrain_v1/blender.log
+      - name: Verify hashes, alpha masks and rendered preview contact sheet
+        run: |
+          python tools/terrain_factory/qa.py --sources build/terrain_v1 --expected 12 --sheet build/terrain_v1/terrain_2_5d_review.png --seam-sheet build/terrain_v1/terrain_4x4_seam_review.png
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: last-light-terrain-3d-to-2-5d-first-12
+          path: build/terrain_v1/
+          retention-days: 14

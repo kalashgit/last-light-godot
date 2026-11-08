@@ -17,3 +17,4 @@ jobs:
       - run: pip install 'Pillow>=10,<15'
       - run: python tools/asset_factory/validate.py assets/generated/factory
       - run: python tests/factory_validation.py
+      - run: python tests/terrain_game_import.py
