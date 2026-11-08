@@ -1,0 +1,57 @@
+name: LAST LIGHT Collect All Existing Art, Animations and Source V1
+on:
+  push:
+    branches:
+      - codex/last-light-master-import-scale-v1-20261107
+    paths:
+      - "tools/unified_factory/collect_review_assets.py"
+      - "docs/LAST_LIGHT_COLLECTED_ASSET_GALLERY_V1.md"
+      - ".github/workflows/last-light-asset-collection-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: last-light-asset-collection-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  collect-verified-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout all authored assets on the isolated branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Package Golden 40, vehicles, actors, animations, furniture and textures
+        run: |
+          python tools/unified_factory/collect_review_assets.py --output build/asset_collection | tee asset_collection.log
+          grep -q LAST_LIGHT_COLLECTED_ASSETS_PASS asset_collection.log
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path("build/asset_collection")
+          m=json.loads((root/"collection_index.json").read_text())
+          assert m["categories"]["golden40_icons"]==40
+          assert m["categories"]["existing_item_factory_entries"]==300
+          assert m["categories"]["actor_variants"]==5
+          assert m["categories"]["original_hatchback_directions"]==16
+          assert m["categories"]["furniture_animation_frames"]==27
+          for entry in m["archives"]:
+              assert (root/entry["filename"]).stat().st_size>1000
+          print("LL_EXISTING_ASSET_COLLECTION_QA_PASS",len(m["archives"]))
+          PY
+      - name: Publish ZIP collection as downloadable GitHub Actions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-complete-existing-asset-collection-v1
+          path: |
+            build/asset_collection/Last_Light_Collected_Visual_Assets_V1.zip
+            build/asset_collection/Last_Light_Factory_Source_And_Godot_V1.zip
+            build/asset_collection/collection_index.json
+          retention-days: 30
+          if-no-files-found: error
