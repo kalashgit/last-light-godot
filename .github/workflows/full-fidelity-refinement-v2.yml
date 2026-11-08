@@ -17,6 +17,9 @@ jobs:
   original-source-geometry-review:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      BATCH_ASSET_IDS: ll_master_vehicle_compact_hatchback,ll_master_vehicle_city_sedan,ll_master_vehicle_family_wagon,ll_master_vehicle_compact_suv,ll_master_vehicle_work_pickup,ll_master_vehicle_sport_coupe,ll_master_vehicle_service_security,ll_tools_awl,ll_tools_cross_screwdriver,ll_tools_flat_screwdriver,ll_tools_crowbar
+      BATCH_COUNT: 11
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,7 +29,7 @@ jobs:
         run: |
           python tests/refinement_contract_v2.py
           mkdir -p build/refinement_v2
-          python tools/geometry_first/plan.py --asset-ids ll_master_vehicle_compact_hatchback,ll_master_vehicle_city_sedan,ll_tools_awl,ll_tools_cross_screwdriver,ll_tools_flat_screwdriver,ll_tools_crowbar --output build/refinement_v2/plan.json
+          python tools/geometry_first/plan.py --asset-ids "$BATCH_ASSET_IDS" --output build/refinement_v2/plan.json
       - name: Install Blender and PNG verification tools
         run: |
           python -m pip install "Pillow>=10,<15"
@@ -35,22 +38,22 @@ jobs:
       - name: Reconstruct BASELINE V1 3D geometry without overwriting original archive
         run: |
           set -o pipefail
-          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/baseline_models --max-jobs 6 --preview-every 1 --refinement-profile v1 2>&1 | tee build/refinement_v2/baseline.log
-          grep -q 'LL_GEOMETRY_BATCH_PASS 6 6' build/refinement_v2/baseline.log
-      - name: Build 6 genuine V2 geometry refineries with versioned source recipes
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/baseline_models --max-jobs "$BATCH_COUNT" --preview-every 1 --refinement-profile v1 2>&1 | tee build/refinement_v2/baseline.log
+          grep -q "LL_GEOMETRY_BATCH_PASS $BATCH_COUNT $BATCH_COUNT" build/refinement_v2/baseline.log
+      - name: Build 11 genuine V2 geometry refinements with versioned source recipes
         run: |
           set -o pipefail
-          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/refined_models --max-jobs 6 --preview-every 1 --refinement-profile v2 2>&1 | tee build/refinement_v2/refined.log
-          grep -q 'LL_GEOMETRY_BATCH_PASS 6 6' build/refinement_v2/refined.log
+          blender -b --factory-startup -t 2 --python tools/geometry_first/export.py -- --plan build/refinement_v2/plan.json --output build/refinement_v2/refined_models --max-jobs "$BATCH_COUNT" --preview-every 1 --refinement-profile v2 2>&1 | tee build/refinement_v2/refined.log
+          grep -q "LL_GEOMETRY_BATCH_PASS $BATCH_COUNT $BATCH_COUNT" build/refinement_v2/refined.log
       - name: Reopen Blender files and assert actual new roof panes and tool shaft geometry
         run: |
           set -o pipefail
-          blender -b --factory-startup -t 2 --python tools/geometry_first/verify_refinement_v2.py -- --sources build/refinement_v2/refined_models --asset-ids ll_master_vehicle_compact_hatchback,ll_master_vehicle_city_sedan,ll_tools_awl,ll_tools_cross_screwdriver,ll_tools_flat_screwdriver,ll_tools_crowbar 2>&1 | tee build/refinement_v2/blender_inspection.log
-          grep -q 'LL_REFINEMENT_BLENDER_ALL_PASS 6' build/refinement_v2/blender_inspection.log
+          blender -b --factory-startup -t 2 --python tools/geometry_first/verify_refinement_v2.py -- --sources build/refinement_v2/refined_models --asset-ids "$BATCH_ASSET_IDS" 2>&1 | tee build/refinement_v2/blender_inspection.log
+          grep -q "LL_REFINEMENT_BLENDER_ALL_PASS $BATCH_COUNT" build/refinement_v2/blender_inspection.log
       - name: Compare before versus after and package editable mesh files
         run: |
-          python tools/geometry_first/qa.py --sources build/refinement_v2/refined_models --expected 6 --sheet build/refinement_v2/refined_geometry_sheet.png --zip build/refinement_v2/Last_Light_Refined_3D_Masters_V2_First_Six.zip
-          python tools/geometry_first/compare_v2.py --baseline build/refinement_v2/baseline_models --refined build/refinement_v2/refined_models --expected 6 --out build/refinement_v2/before_after_geometry.png --report build/refinement_v2/refined_report.json
+          python tools/geometry_first/qa.py --sources build/refinement_v2/refined_models --expected "$BATCH_COUNT" --sheet build/refinement_v2/refined_geometry_sheet.png --zip build/refinement_v2/Last_Light_Refined_3D_Masters_V2_Batch_11.zip
+          python tools/geometry_first/compare_v2.py --baseline build/refinement_v2/baseline_models --refined build/refinement_v2/refined_models --expected "$BATCH_COUNT" --out build/refinement_v2/before_after_geometry.png --report build/refinement_v2/refined_report.json
           python tools/geometry_first/refinement_ledger_v2.py --refined-report build/refinement_v2/refined_report.json --out build/refinement_v2/geometry_refinement_ledger_v2.json
           python - <<'PY'
           import json
@@ -58,10 +61,10 @@ jobs:
           root=Path("build/refinement_v2")
           x=json.loads((root/"geometry_refinement_ledger_v2.json").read_text())
           assert x["counts"]["source_models"]==360
-          assert x["counts"]["refined_geometry_verified"]==6
-          assert x["counts"]["remaining_refinements"]==354
+          assert x["counts"]["refined_geometry_verified"]==11
+          assert x["counts"]["remaining_refinements"]==349
           assert x["counts"]["golden_visual_approved"]==0
-          print("LL_REFINEMENT_COVERAGE_QA_PASS 6 of 360 geometries, 0 Golden approvals")
+          print("LL_REFINEMENT_COVERAGE_QA_PASS 11 of 360 geometries, 0 Golden approvals")
           PY
       - name: Render real updated 3D models back into fixed camera 2.5D
         run: |
@@ -120,9 +123,9 @@ jobs:
           exit 1
       - uses: actions/upload-artifact@v4
         with:
-          name: last-light-v2-source-refinement-six-models-and-2_5d
+          name: last-light-v2-source-refinement-11-models-and-2_5d
           path: |
-            build/refinement_v2/Last_Light_Refined_3D_Masters_V2_First_Six.zip
+            build/refinement_v2/Last_Light_Refined_3D_Masters_V2_Batch_11.zip
             build/refinement_v2/*.png
             build/refinement_v2/*.json
             build/refinement_v2/*.log
