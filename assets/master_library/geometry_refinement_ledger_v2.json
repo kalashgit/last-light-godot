@@ -15383,7 +15383,7 @@
       "asset_id": "ll_tools_crowbar",
       "stable_source_recipe_hash": "27ed42d3bf1eea4578b646f2b75495ce550d529c419eaa98531226f4381bcea6",
       "source_glb_sha256": "60c52dadc6c871f039157bd48d47325e36b31a7fd6fa8ad25ac1fc9b5bfb6c64",
-      "comparison_rebuilt_v1_glb_sha256": "f81e810a564f81a16f8bf1aaa07d1b2dfd2f2e7cf61a17883b8486f2025be1e4",
+      "comparison_rebuilt_v1_glb_sha256": "56e28f35383148a7cb7b26c62ff90851a88d6636cd0fa0500917ce77e3c6ceff",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "catalog",
@@ -20497,7 +20497,7 @@
       "asset_id": "ll_master_vehicle_city_sedan",
       "stable_source_recipe_hash": "4148c9018e42fdcb6430ee0e9046cf9f44288dd11a68aa1f7cb24e9b0182e28c",
       "source_glb_sha256": "a826b573c5f7048d84727688a361bd5f4d00cb7e3b74ee0569cbd88463627a0d",
-      "comparison_rebuilt_v1_glb_sha256": "654254e084bd77c576646b5752eb72fb0adc7c7e88fcb43bde41edcf3add39d5",
+      "comparison_rebuilt_v1_glb_sha256": "2c8e8bca307b3b47195934fd5c77570bd142ca46592f50de12720d3c6f3a2faa",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -20550,7 +20550,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "f8ed06dbdc8f8cd6d8434ffc9d3b2c7cc104c5c5eaade1b2de1fccfd39b53d49",
+      "v2_geometry_source_sha256": "3441578f90b183e1ed11aa7405270634440f95bf1ebd0018ba89bf1772d23bb5",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -20558,7 +20558,7 @@
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "stable_source_recipe_hash": "717347aff2a2113066e34b210eec6160bbde4c97c29bc53ede7c64ad287c62c1",
       "source_glb_sha256": "688ed3ae4000821221194a22a97765fe5719b7f9e0e069a95911b9a13cf127f1",
-      "comparison_rebuilt_v1_glb_sha256": "dd660e44d116f9fafeaf966523ba427f6a0b80585930895d07fdf40fe70a6976",
+      "comparison_rebuilt_v1_glb_sha256": "edf9f9b33bb819d4a18085d0ff89cd8f30077c96c889dd5f6e216452e3a62049",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -20611,7 +20611,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "e51536af468fa25bcb6aae44bdaff96431c1e5467776983eb661944e65094e76",
+      "v2_geometry_source_sha256": "95523058354d220018f790f26acd7b9b8eac791445368ba1bcd29da762a52f0e",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -20619,7 +20619,7 @@
       "asset_id": "ll_master_vehicle_compact_suv",
       "stable_source_recipe_hash": "75d42d30403bd250c106250a910324af4000628d0392b651c28918c5d04b34d4",
       "source_glb_sha256": "d9474a70db4195a2346c5b02c74020ed1898c608653aaad6e9897bad031d4882",
-      "comparison_rebuilt_v1_glb_sha256": "f432d362c043b3e25ed903813a5e6684e58a3a343ff9dc60429fbbf3209009e9",
+      "comparison_rebuilt_v1_glb_sha256": "d213a021df9e3b404ada5967e9d3abf27a5efa08ce80ed58c3e69677bf45df5b",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -20672,7 +20672,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "a1c28aee10821057640a4234a9e21aa923cc9d53d92645b74be9002b15b73042",
+      "v2_geometry_source_sha256": "d0268ccdac6d2f3f6c7496e82cd4c5c850d327805932f5e1e889bffba77241d1",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -20741,7 +20741,7 @@
       "asset_id": "ll_master_vehicle_family_wagon",
       "stable_source_recipe_hash": "0fb5801a1359d2110f55d900aca39b219d707c0386272c82c5dcd9bbef59a4fb",
       "source_glb_sha256": "435bc597af57426a7972e7c73729466479728309750b36b076ea820c1d7eecc2",
-      "comparison_rebuilt_v1_glb_sha256": "3d47cb80b595d13836d6b4467d9e5ddf6361a6465a494193b8daf1b889cf3a5a",
+      "comparison_rebuilt_v1_glb_sha256": "f3b28d6c439ee1e45a9aa8ae25c5848d2b402f6eb39b6dde334fb7742c481e10",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -20794,7 +20794,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "9b343f10db1d1e6c3701293372c1441084a4108ac33188503be93d9ca1a0dbb1",
+      "v2_geometry_source_sha256": "da64aed98c3e3eec676f58c1e7d6b5824979e9634d149fbd2c55957c5fc22c55",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -20924,7 +20924,7 @@
       "asset_id": "ll_master_vehicle_service_security",
       "stable_source_recipe_hash": "40e6f06422a4b0c08a55030b4f2dc09bc89c049a7e7da1276d37acf12c12f639",
       "source_glb_sha256": "8b50dc04c1ed02342c54ee99d23d7e543eb5353ce8228716b1f72301c17f559b",
-      "comparison_rebuilt_v1_glb_sha256": "e1cd0cdd72dd88e6208a1754b080b9b00efcf9b9b9c1b794f401516fb9870645",
+      "comparison_rebuilt_v1_glb_sha256": "fcde6745e095c4d6fe4a8c6ea58579d73b4864cccb9ef24a4346ec13e298f24a",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -20977,7 +20977,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "722f0b6a7299729ad12221b6ba17afa0ccd369d56937eaaa8269582f5e01cf69",
+      "v2_geometry_source_sha256": "fe170b68032df79dd65f7aed82f48d0e9889bd199e2e3084b54772cebd52d891",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -20985,7 +20985,7 @@
       "asset_id": "ll_master_vehicle_sport_coupe",
       "stable_source_recipe_hash": "12b1193027f54e6e1698cfaf1ac885fe1f264d63b636ab946bd06551ae40b6c7",
       "source_glb_sha256": "2ea91c550ca97287e0523d0d56b3700a4bd589d694bc1eaa2b9e8a1fd495ccc5",
-      "comparison_rebuilt_v1_glb_sha256": "1cd9ba395a590e216c34fb400e42c39eb51b280f6fff7796727d494ede818205",
+      "comparison_rebuilt_v1_glb_sha256": "5553b9f40cc3839f6119e5d85aca68bec19f40fc0e91f7b5404199df3850fd56",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -21038,7 +21038,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "a546df22c94ebdffc332f58d5cf1f5299353e2bba293d319dca1c58be3301610",
+      "v2_geometry_source_sha256": "a4338e22a36e8ff3c09881fb8765db9ee5a1d78640daf8dafd1f961f54d82d99",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -21046,7 +21046,7 @@
       "asset_id": "ll_master_vehicle_work_pickup",
       "stable_source_recipe_hash": "8975febad9e3d517490556cef2ad728644c2769855e5174443638cbc2973e749",
       "source_glb_sha256": "c5ed8177dbc4f9640c1e5c67cb6bbaed969a0f28b77f2230b28c75093edd2709",
-      "comparison_rebuilt_v1_glb_sha256": "f3226cf120ed697ac84226baa26d80cf00dbee016570b4670f819184d862efb1",
+      "comparison_rebuilt_v1_glb_sha256": "6be0fb3d82ad46a463a313214df9d0481704233abf2a3bbc939221beff6f2d4e",
       "comparison_v1_glb_matches_immutable_archive": false,
       "original_geometry_source_archive": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
       "master_3d_source_category": "vehicle",
@@ -21099,7 +21099,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "e95a4d6611137716a513523e7eb99612dbf2b23dc3c029a9335c6f237e9635ec",
+      "v2_geometry_source_sha256": "37ef56636e37b4f4f354f564ac0db207c1c34597e9fafc37d69179406e92fe1c",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     }
