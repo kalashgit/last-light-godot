@@ -59,6 +59,14 @@ def check(item, directory):
         lower_max=max(v.co.y for v in moving[0].data.vertices)
         jaw_gap_m=upper_min-lower_max
         assert .014 <= jaw_gap_m <= .040, ("invalid wrench jaw aperture",jaw_gap_m)
+        handles=[ob for ob in objects if ob.get("F09_TRUE_THROUGH_HOLE") is True]
+        assert len(handles)==1, "missing editable wrench through-drilled handle"
+        # An actual drilled hole must transmit a ray, while adjacent handle
+        # steel still blocks it. This rejects a painted or torus-only fake.
+        hole_mesh=handles[0]
+        empty=hole_mesh.ray_cast((0,-.117,.10),(0,0,-1))[0]
+        solid=hole_mesh.ray_cast((.008,-.117,.10),(0,0,-1))[0]
+        assert not empty and solid, "wrench hanging eye is not a real cutout"
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
