@@ -172,12 +172,12 @@ def construction(item, m):
     elif kind=="hammer":
         wooden_handle(.33,m,bottom=-.169,top=.137)
         tube("hammer reinforced collar",(0,.115,.040),(0,.146,.040),.017,.017,m["endwood"])
-        tube("forged hammer crosshead",(-.073,.132,.040),(.066,.132,.040),.024,.018,m["forged"],20)
-        tube("striking face freshly polished",(-.074,.132,.040),(-.066,.132,.040),.024,.024,m["edge"],20)
+        tube("forged hammer crosshead",(-.066,.132,.040),(.052,.132,.040),.018,.015,m["forged"],20)
+        tube("striking face freshly polished",(-.072,.132,.040),(-.064,.132,.040),.020,.020,m["edge"],20)
         # V-shaped forked claw protrudes from back, separated at the tips.
         for zoff in (-.012,.012):
-            tube("split claw root",(.042,.132,.040+zoff*.4),(.067,.144,.040+zoff),.009,.007,m["forged"])
-            tube("curved claw tine",(.067,.144,.040+zoff),(.092,.115,.033+zoff),.007,.004,m["forged"])
+            tube("split claw root",(.050,.132,.040+zoff*.4),(.069,.149,.040+zoff),.009,.006,m["forged"])
+            tube("curved claw tine",(.069,.149,.040+zoff),(.097,.119,.031+zoff),.006,.003,m["forged"])
     elif kind=="hatchet":
         wooden_handle(.43,m,bottom=-.218,top=.165)
         tube("forged eye socket",(0,.156,.040),(0,.205,.040),.029,.028,m["forged"],20)
@@ -214,12 +214,15 @@ def construction(item, m):
             x=.056 if k%2 else .044
             poly.append((x,y))
         form("tapered steel saw blade with real tooth relief",poly,.008,m["edge"],.040,.0006)
-        form("dark timber D-handle upper grip",[(-.065,-.236),(.031,-.229),
-             (.050,-.109),(-.029,-.076),(-.073,-.124)],.026,m["wood"],.040,.005)
-        # Handle aperture is geometrically empty, built by separated solid rails.
-        for x in (-.044,.018):
-            tube("saw handle aperture side",(x,-.216,.040),(x,-.145,.040),.009,.009,m["endwood"])
-        tube("saw handle aperture top",(-.044,-.145,.040),(.018,-.145,.040),.009,.009,m["endwood"])
+        # True through-opening in a five-segment hardwood D frame; the old
+        # source was a filled cuboid with a fake hole painted on the surface.
+        loop=[(-.064,-.228),(.027,-.226),(.046,-.116),(-.029,-.081),(-.070,-.124)]
+        for k in range(len(loop)):
+            x1,y1=loop[k];x2,y2=loop[(k+1)%len(loop)]
+            tube("saw open D handle shaped wood frame",(x1,y1,.040),
+                 (x2,y2,.040),.012,.012,m["wood"],12)
+        tube("thumb saddle at saw heel",(-.064,-.127,.040),
+             (-.029,-.084,.040),.014,.012,m["endwood"])
         for x in (-.018,.021):small_pin("blade fastening rivet",x,-.102,m["brass"],.054,.004)
     elif kind=="knife":
         grip("full tang knife handle",[(-.153,.011,.011),(-.146,.016,.012),
@@ -243,8 +246,9 @@ def construction(item, m):
         form("forward-weighted machete steel",[(-.017,-.132),(-.031,.059),
              (-.041,.213),(-.018,.282),(.027,.266),(.041,.151),
              (.028,-.134)],.008,m["forged"],.040,.0015)
+        # Raised above the forged face to avoid coplanar z-fighting at the tip.
         form("machete sharpening strip",[(-.041,.213),(-.018,.282),
-             (.027,.266),(.031,.238),(-.010,.261)],.004,m["edge"],.042,.0005)
+             (.027,.266),(.022,.247),(-.011,.258)],.003,m["edge"],.0465,.0005)
         for y in (-.253,-.167):small_pin("brass scale rivet",0,y,m["brass"],.056,.005)
     else:
         raise ValueError("unknown silhouette archetype: "+kind)
