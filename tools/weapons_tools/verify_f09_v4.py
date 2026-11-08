@@ -48,8 +48,8 @@ def check(item, directory):
         assert len(bm.verts)-len(bm.edges)+len(bm.faces)==0, "grip opening not real"
         bm.free()
     elif item["archetype"]=="wrench":
-        assert any("v11 fixed crescent upper jaw" in n for n in names) and any(
-            "v11 translating lower jaw" in n for n in names), "wrench lost separate jaws"
+        assert any("v15 fixed crescent upper jaw" in n for n in names) and any(
+            "v15 translating lower jaw" in n for n in names), "wrench lost separate jaws"
         fixed=[o for o in objects if "v11 fixed upper polished jaw flat" in o.name.lower()]
         moving=[o for o in objects if "v11 moving lower polished jaw flat" in o.name.lower()]
         assert len(fixed)==len(moving)==1, "opposing machined flats missing"
@@ -59,6 +59,17 @@ def check(item, directory):
         lower_max=max(v.co.y for v in moving[0].data.vertices)
         jaw_gap_m=upper_min-lower_max
         assert .014 <= jaw_gap_m <= .040, ("invalid wrench jaw aperture",jaw_gap_m)
+        tapered=[o for o in objects if o.get("F09_VARIABLE_JAW_THICKNESS") is True]
+        assert len(tapered)==2, "both jaws must be authored as 3D forging lofts"
+        for jaw in tapered:
+            thickness=jaw.get("F09_THICKNESS_RANGE_M")
+            assert thickness and thickness[1]-thickness[0] >= .005, (
+                "fake slab instead of tapered jaw",jaw.name,thickness)
+            mesh=jaw.data
+            bm=bmesh.new()
+            bm.from_mesh(mesh)
+            assert all(edge.is_manifold for edge in bm.edges), "nonmanifold jaw"
+            bm.free()
         handles=[ob for ob in objects if ob.get("F09_TRUE_THROUGH_HOLE") is True]
         assert len(handles)==1, "missing editable wrench through-drilled handle"
         # An actual drilled hole must transmit a ray, while adjacent handle
