@@ -5,6 +5,20 @@
 
 Source branch: `codex/last-light-master-import-scale-v1-20261107`. Work on a new isolated branch. Do NOT merge, deploy, overwrite Golden reference assets, or corrupt save states without explicit founder approval.
 
+## Geometry-first production doctrine — authoritative founder decision (2026-11-08)
+
+**The source 3D model is the permanent reusable master; the 2.5D sprite is a generated view of that master, not a second 3D model.** Cover every applicable asset in the canonical census. **Geometry may be accepted as complete for its own stage even when surface materials, animation or rendering still require work.** Keep it and advance it; never discard correctly proportioned work because textures are incomplete.
+
+**Stage G — original 3D geometry:** For every applicable unique morphology, create reproducible Blender `bpy` geometry or editable `.blend/.glb` sources with true physical dimensions, accurate silhouette, source parameters, UV/semantic material zones, world origin, attachment sockets, collision proxies, hollow storage interiors, articulated parts and rig/bone pivots. Variation recipes reuse shared master families. Validate proportions, watertightness where appropriate, geometry and clearance. Assign independent status `GEOMETRY_VALIDATED_MATERIALS_PENDING` if surfaces are unfinished. 2D-only content (GUI icons, simple flat markings, certain tile overlays/VFX) may bypass 3D when original 2D source is objectively more appropriate; log that exception.
+
+**Stage M — reusable materials/textures:** Apply the right family-specific procedural maps, tint/UV/normal/roughness, wear/condition level (0..3), and independent damage/soiling masks. Validate material quality separately. Retain geometry source regardless of later texture rejection; fix shaders and masks instead of recreating geometry. Advance to `MATERIALS_VALIDATED_RENDER_PENDING`.
+
+**Stage R — 3D to 2.5D:** Use the existing locked 80×40 world projection and upper-left lighting in headless Blender. Render directions appropriate to each object (4/8 actor views, 16 cars, semantic furniture directions), interactions and required animation clips; retain identical world pivot, scale, alpha and consistent layer visibility. Pixel-finish, inspect at native/220%/325%, pack atlas and generate game-facing manifests. Advance to `RENDERED_2_5D_TECHNICAL_CANDIDATE`. A screenshot of a concept or arbitrary 2D illustration is **not** proof the Blender source exists.
+
+**Stage E — engine and gameplay:** Generate validated Godot SpriteFrames/TileSets/scenes through `tools/unified_factory/import_godot.py`, then connect correct collision, world footprint, sight/sound, inventory storage/contents visibility, damage, timed interaction, equipment, animation, persistence and AI behaviors. Stage `ENGINE_IMPORT_VALIDATED` is distinct from `GAMEPLAY_INTEGRATED_TESTED` and `FOUNDER_GOLDEN_VISUAL_APPROVED`.
+
+The census ledger must include **separate, non-regressing stage columns** `geometry_source_path`, `geometry_recipe_hash`, `geometry_validated`, `material_recipe_hash`, `materials_validated`, `render_atlas_path`, `render_validated`, `godot_resource_path`, `godot_import_validated`, `gameplay_integrated`, `golden_visual_approved`. Never overwrite a geometry-pass status just because the next stage failed. During the two-hour sprint maximize the count of **correct reusable original geometry sources** plus progressive material/render integration, reporting each tier separately. Do not claim 20,000 fully textured or game-ready objects from 20,000 geometry placeholders.
+
 ## 0. Definitions and constraints
 
 - **The complete asset universe is discovered, never guessed from an illustrative checklist.** Start with Notion's entire sprite/asset/tile/material/animation reference census, prior 21,025-record research snapshot where relevant, original master sprite bible, Golden 40, actual Godot scenes and existing GitHub catalogs. Count **unique original game assets** separately from source research records, original geometry templates, material variants, damage/condition states, directional frames, animation frames and final atlases.
