@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import bpy
+import bmesh
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "weapons_tools"))
@@ -37,6 +38,18 @@ def check(item, directory):
         assert .005 <= measured <= specified * 1.55, (item["asset_id"], bounds)
     assert all(ob.data.materials for ob in objects if ob.type == "MESH"), item["asset_id"]
     assert all(ob.type != "MESH" or len(ob.data.polygons) > 0 for ob in objects)
+    if item["archetype"] == "saw":
+        handles=[o for o in objects if "V9 solid wooden D grip" in o.name]
+        assert len(handles)==1, "missing actual solid through-cut grip"
+        bm=bmesh.new()
+        bm.from_mesh(handles[0].data)
+        assert bm.verts and all(edge.is_manifold for edge in bm.edges), "grip non-manifold"
+        # Closed ring with one through-aperture has genus 1 / Euler characteristic 0.
+        assert len(bm.verts)-len(bm.edges)+len(bm.faces)==0, "grip opening not real"
+        bm.free()
+    elif item["archetype"]=="wrench":
+        assert any("V8 offset fixed head" in n for n in names) and any(
+            "V8 compact translating" in n for n in names), "wrench lost separate jaws"
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
