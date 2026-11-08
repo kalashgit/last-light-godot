@@ -47,6 +47,11 @@ jobs:
         run: |
           blender -b --factory-startup -t 2 --python tools/material_factory/export_hero_glb.py -- --material-root build/f11/materials --output build/f11/heroes_glb
           python tools/material_factory/validate_hero_glb.py build/f11/heroes_glb
+          blender -b --factory-startup -t 2 --python tools/material_factory/roundtrip_hero_glb.py -- --input build/f11/heroes_glb
+      - name: Produce native-scale visual inspection candidates
+        run: |
+          python tools/blender_factory/package_v3_recovery.py --input build/f11/heroes --output build/f11/hero_ready --baseline preview/v2/last-light-v2-10-sprite-preview.zip
+          python tools/material_factory/native_scale_review.py --source build/f11/hero_ready --out build/f11/native-scale-review.png
       - uses: actions/upload-artifact@v4
         with:
           name: f11-unapproved-calibration
@@ -58,5 +63,7 @@ jobs:
             build/f11/heroes/manifest.json
             build/f11/heroes_glb/*.glb
             build/f11/heroes_glb/manifest.json
+            build/f11/heroes_glb/roundtrip-report.json
+            build/f11/native-scale-review.png
           retention-days: 14
           if-no-files-found: error
