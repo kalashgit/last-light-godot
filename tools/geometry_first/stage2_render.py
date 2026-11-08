@@ -35,6 +35,7 @@ def main():
         raise ValueError("choose unique 3D source asset IDs")
     a.output.mkdir(parents=True,exist_ok=True)
     report=[]
+    inventory_previews=[]
     for name in names:
         folder=a.sources/name
         source=folder/"model.blend"
@@ -81,8 +82,21 @@ def main():
                 world_projection="30deg_elevation_80x40_tile",
                 stage="RENDERED_SOURCE_3D_TO_2_5D_CANDIDATE"))
             print("LL_SOURCE_TO_ISO_RENDER",name,index,flush=True)
+        if not name.startswith("ll_master_vehicle"):
+            # Keep the true metre-scale world sprite intact. A second close-up
+            # makes a physically small tool inspectable for inventory-icon QA.
+            scale=max(.34,max(info["requested_dimensions_m"])*1.6)
+            scene.camera.data.ortho_scale=scale
+            closeup=base/"inventory_closeup.png"
+            scene.render.filepath=str(closeup.resolve())
+            bpy.ops.render.render(write_still=True)
+            inventory_previews.append(dict(asset_id=name,
+                path=str(closeup.relative_to(a.output)),camera_scale=scale,
+                stage="INVENTORY_CLOSEUP_REVIEW_NOT_WORLD_SCALE_OR_GOLDEN_APPROVED"))
+            scene.camera.data.ortho_scale=hero.ORTHO
     (a.output/"render_report.json").write_text(json.dumps(dict(
-       schema=1,frames=report,status="NATIVE_ISO_RENDERED_CANDIDATES_NOT_GOLDEN_APPROVED"),indent=2)+"\n")
+       schema=1,frames=report,inventory_previews=inventory_previews,
+       status="NATIVE_ISO_RENDERED_CANDIDATES_NOT_GOLDEN_APPROVED"),indent=2)+"\n")
     print("LL_SOURCE_TO_2_5D_PASS",len(report),flush=True)
 
 if __name__=="__main__":
