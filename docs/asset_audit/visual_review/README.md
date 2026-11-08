@@ -21,6 +21,20 @@ One searchable visual catalog for the existing **21,025** external file-page ref
 
 ## Machine-consumable handoff
 
+The R03 evidence queue is a *review priority list*, not an approved asset list.
+The branch stores `a00_r03_evidence_groups.jsonl.gz.base64` as base64-encoded gzip
+to keep the 5,173 provisional groups compact. Reconstruct locally with:
+
+```bash
+base64 -d docs/asset_audit/a00_r03_evidence_groups.jsonl.gz.base64 | gzip -d > a00_r03_evidence_groups.jsonl
+```
+
+Compare the reconstructed JSONL SHA-256 against
+`a00_r03_evidence_summary.json` before consuming it. The file includes every
+R02 source ID in a provisional family/root group and records evidence gaps;
+it does not clear visual evidence, game necessity, intellectual-property rights
+or canonical admission.
+
 Validate each exported file:
 
 ```bash
