@@ -80,6 +80,23 @@ def validate(directory):
             errors.append("GLB magic header invalid")
         elif struct.unpack("<I", data[8:12])[0] != len(data):
             errors.append("GLB declared length does not match file")
+        elif len(data) < 20:
+            errors.append("GLB missing JSON chunk")
+        else:
+            chunk_length, chunk_type = struct.unpack("<I4s", data[12:20])
+            if chunk_type != b"JSON" or 20 + chunk_length > len(data):
+                errors.append("GLB JSON chunk invalid")
+            else:
+                try:
+                    scene = json.loads(data[20:20 + chunk_length])
+                    if not scene.get("skins"):
+                        errors.append("GLB missing skinned armature")
+                    if not scene.get("animations"):
+                        errors.append("GLB missing exported animation")
+                    if not scene.get("meshes"):
+                        errors.append("GLB missing mesh geometry")
+                except (UnicodeDecodeError, ValueError):
+                    errors.append("GLB JSON chunk cannot be decoded")
     qa = manifest.get("qa", {})
     if qa.get("glb_export") != "PASS":
         errors.append("GLB export did not pass")
