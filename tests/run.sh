@@ -36,3 +36,4 @@ run_checked --headless --path . --script tests/save_migration_edges.gd
 run_checked --headless --path . --script tests/save_isolation.gd
 
 run_checked --headless --path . --script tests/world_art.gd
+run_checked --headless --path . --script tests/gameplay_systems.gd

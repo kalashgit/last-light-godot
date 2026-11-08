@@ -6,8 +6,8 @@
     {"id": "ll_food_water_bottle", "art_id": "ll_food_water_bottle", "name": "Water bottle", "category": "Drink", "kind": "drink", "weight_kg": 0.55, "stack_max": 20, "amount": 35.0},
     {"id": "ll_medical_sterile_bandage", "art_id": "ll_medical_sterile_bandage", "name": "Sterile bandage", "category": "Medical", "kind": "heal", "weight_kg": 0.04, "stack_max": 20, "amount": 22.0, "action": "Bandage"},
     {"id": "ll_medical_first_aid_case", "art_id": "ll_medical_first_aid_case", "name": "First aid case", "category": "Medical", "kind": "heal", "weight_kg": 0.65, "stack_max": 5, "amount": 45.0, "action": "Heal"},
-    {"id": "ll_tools_claw_hammer", "art_id": "ll_tools_claw_hammer", "name": "Claw hammer", "category": "Tools", "kind": "weapon", "weight_kg": 0.8, "stack_max": 2, "damage": 2.0, "reach": 1.55, "stamina": 12.0},
-    {"id": "ll_tools_hatchet", "art_id": "ll_tools_hatchet", "name": "Hatchet", "category": "Tools", "kind": "weapon", "weight_kg": 0.95, "stack_max": 2, "damage": 2.0, "reach": 1.65, "stamina": 15.0},
+    {"id": "ll_tools_claw_hammer", "art_id": "ll_tools_claw_hammer", "name": "Claw hammer", "category": "Tools", "kind": "weapon", "weight_kg": 0.8, "stack_max": 2, "damage": 2.0, "reach": 1.55, "stamina": 12.0, "durability": 60.0},
+    {"id": "ll_tools_hatchet", "art_id": "ll_tools_hatchet", "name": "Hatchet", "category": "Tools", "kind": "weapon", "weight_kg": 0.95, "stack_max": 2, "damage": 2.0, "reach": 1.65, "stamina": 15.0, "durability": 45.0},
     {"id": "ll_household_flashlight", "art_id": "ll_household_flashlight", "name": "Flashlight", "category": "Utility", "kind": "utility", "weight_kg": 0.2, "stack_max": 4},
     {"id": "ll_crafting_pine_plank", "art_id": "ll_crafting_pine_plank", "name": "Pine plank", "category": "Materials", "kind": "material", "weight_kg": 1.5, "stack_max": 10}
   ]

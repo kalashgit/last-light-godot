@@ -778,7 +778,8 @@ func _save_game(path: String = SAVE_PATH) -> Error:
  if file==null:
   last_save_error=FileAccess.get_open_error()
   return last_save_error
- file.store_string(JSON.stringify(data))
+ # Full precision so float vitals/positions survive a round trip bit-for-bit.
+ file.store_string(JSON.stringify(data,"",true,true))
  file.flush()
  var error:=file.get_error()
  file.close()
