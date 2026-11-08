@@ -56,3 +56,16 @@ The submitted CI only exports raw transparent frames, simple contact sheets and 
 - **W01/W09:** build standalone Godot import and independent QA fixture without modifying playable release.
 
 **No merge, deploy or founder signoff is authorized by this report.**
+
+
+## 5. Verified corrective rerender — freezer hinge
+
+**Completed real GitHub Actions run:** https://github.com/kalashgit/last-light-godot/actions/runs/42533683097
+
+**Artifact:** https://github.com/kalashgit/last-light-godot/actions/runs/42533683097/artifacts/13638880512
+
+After inspecting the original detached-top-door contact sheet, the F12 freezer animation was revised to rotate each original door submesh about the source-space hinge using explicit matrix transforms. The corrected run produced 40 actual Blender frames, passed its full PNG-level QA and four standard asset manifests, and retained editable Blender sources. The freezer door contains 7 identified moved subparts and the measured maximum projected panel-center-to-hinge distance is 15.22319 px against the 35 px rejection threshold.
+
+**Independent visual check of the corrected `fridge_native_review_sheet.png`:** all seven frames show the top door connected at the cabinet hinge; it no longer floats detached above the refrigerator. Mark **ATTACHMENT_VISUAL_CORRECTION: PASS (technical calibration)**. Do not mark Golden art or W01/W05 runtime gameplay passed. The cabinet still requires better material/geometry fidelity and a separate Godot door-collision/interaction/save-state test.
+
+The original failing review evidence is preserved above for regression comparison. This amendment supersedes only the earlier freezer-detachment failure; hatchback geometry and cow coat/anatomy defects remain open.
