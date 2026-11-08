@@ -1,8 +1,8 @@
-name: LAST LIGHT Weapons Tools Real Blender 3D to 2.5D Pilot
+name: LAST LIGHT Weapons Tools Refined 3D to 2.5D V2
 on:
   push:
     branches:
-      - codex/last-light-weapons-tools-pilot-20261108
+      - codex/last-light-weapons-tools-refinement-v2-20261108
     paths:
       - "tools/weapons_tools/**"
       - "tests/weapons_tools_v1.py"
@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: ll-weapons-tools-${{ github.ref }}
+  group: ll-weapons-tools-refinement-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -35,23 +35,23 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
-      - name: Build 10 editable 3D models and render locked-camera directions
+      - name: Build 11 refined editable 3D models and render locked-camera directions
         run: |
           mkdir -p build/weapons_tools
           set -o pipefail
           blender -b --factory-startup -t 2 --python tools/weapons_tools/build.py -- --output build/weapons_tools --samples 6 2>&1 | tee build/weapons_tools/blender.log
-          grep -q 'LL_WEAPONS_TOOLS_BLEND_GLTF_ISO_PASS 10' build/weapons_tools/blender.log
+          grep -q 'LL_WEAPONS_TOOLS_BLEND_GLTF_ISO_PASS 11' build/weapons_tools/blender.log
       - name: Validate source files and create native sprites, manifest and contact sheet
         run: |
-          python tools/weapons_tools/postprocess.py --sources build/weapons_tools --zip build/Last_Light_Weapons_Tools_Pilot_10.zip
+          python tools/weapons_tools/postprocess.py --sources build/weapons_tools --zip build/Last_Light_Weapons_Tools_Refined_11.zip
           python - <<'PY'
           import json
           from pathlib import Path
           from PIL import Image
           b=Path('build/weapons_tools')
           m=json.loads((b/'pilot_manifest.json').read_text())
-          assert m['unique_3d_masters']==10
-          assert m['world_rgba_frames']==40
+          assert m['unique_3d_masters']==11
+          assert m['world_rgba_frames']==44
           for x in m['items']:
               p=b/x['asset_id']
               assert len(x['world_frames'])==4
@@ -68,23 +68,23 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p preview/weapons-tools-v1
-          cp build/weapons_tools/weapons_tools_10_contact_sheet.png preview/weapons-tools-v1/
+          cp build/weapons_tools/weapons_tools_11_contact_sheet.png preview/weapons-tools-v1/
           cp build/weapons_tools/pilot_manifest.json preview/weapons-tools-v1/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add preview/weapons-tools-v1
           if ! git diff --cached --quiet; then
             git commit -m "Publish actual ten tool model and fixed-camera sprite candidate QA"
-            git pull --rebase origin codex/last-light-weapons-tools-pilot-20261108
-            git push origin HEAD:codex/last-light-weapons-tools-pilot-20261108
+            git pull --rebase origin codex/last-light-weapons-tools-refinement-v2-20261108
+            git push origin HEAD:codex/last-light-weapons-tools-refinement-v2-20261108
           fi
       - name: Upload all actual 3D sources and PNG candidates for review
         uses: actions/upload-artifact@v4
         with:
-          name: last-light-10-weapons-tools-editable-blend-glb-and-2-5d-v1
+          name: last-light-11-refined-weapons-tools-editable-blend-glb-and-2-5d-v2
           path: |
-            build/Last_Light_Weapons_Tools_Pilot_10.zip
-            build/weapons_tools/weapons_tools_10_contact_sheet.png
+            build/Last_Light_Weapons_Tools_Refined_11.zip
+            build/weapons_tools/weapons_tools_11_contact_sheet.png
             build/weapons_tools/pilot_manifest.json
             build/weapons_tools/blender.log
           retention-days: 30

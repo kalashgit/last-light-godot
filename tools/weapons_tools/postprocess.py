@@ -89,7 +89,7 @@ def contact_sheet(items,output):
         dr.text((x+143,y+207),f"{rec['model_parts']} editable parts",fill=(180,200,193))
         dr.text((x+143,y+225),"64px original icon",fill=(180,200,193))
         dr.text((x+143,y+252),"2.5D CANDIDATE",fill=(243,192,100))
-    dest=output/"weapons_tools_10_contact_sheet.png"
+    dest=output/f"weapons_tools_{len(items)}_contact_sheet.png"
     canvas.save(dest,optimize=True)
     return dest
 
@@ -121,7 +121,7 @@ def process(directory,archive):
         (folder/"production_manifest.json").write_text(json.dumps(record,indent=2)+"\n")
         records.append(record)
     if len(records)!=len(recipe["assets"]) or len({r["asset_id"] for r in records})!=len(records):
-        raise ValueError("pilot must preserve all ten unique registry IDs")
+        raise ValueError("pilot must preserve every selected unique registry ID")
     preview=contact_sheet(records,directory)
     manifest={"schema":1,"unique_3d_masters":len(records),"world_rgba_frames":len(records)*4,
               "original_inventory_icons":len(records)*4,
