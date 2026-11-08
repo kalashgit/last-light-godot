@@ -96,3 +96,9 @@ No merges, deployment, Godot scene or save changes were made.
 - Actual Blender geometry smoke **PASS**: 45 meshes, 24 spoke members, 3.906 × 1.897 × 1.546 m bounds. Rendered and packed **16/16 actual Cycles headings** into transparent 214 × 151 px cells with stable anchor. `test_f10_hero.py` **PASS**.
 - Exported the new editable `.blend` and portable `.glb`; Blender GLB re-import completed. The atlas visual review shows the silhouette remains excessively rectilinear: the roof station transitions, nose and tail corners, and wheelhouse thickness require a stronger artistic redesign.
 - **Manual F10 visual gate: FAIL.** This is a measured technical improvement, not founder-approved art and not a production-ready vehicle. A00 canonical verification and W09/W01/W05 validation remain blocked. No game files, merge or deployment touched.
+
+## Ninth refinement — founder-directed flat-body art language
+
+- Founder clarified that automotive contour detailing is optional; a clean, nearly flat body with protruding mirrors is preferable. Revised `hero_hatchback.py` accordingly: disabled cosmetic fender bulges, reduced bonnet crown, removed wheel-arch piping, side character creases, rocker mouldings and decorative bonnet shutlines. Retained discreet true door seams and simplified mirror protrusions.
+- Rendered **16/16 real Cycles directions** at eight samples; atlas packing and `test_f10_hero.py` **PASS**, preserving transparent 214×151px cells, stable anchor and metadata hashes. Actual `.blend` and GLB exported. Geometry smoke **PASS**.
+- Visual assessment: less busy panel treatment and a much cleaner side profile at native size. The simplified body remains stylized and angular by design; main outstanding quality issues are dark/ambiguous wheelhouse voids, hard roof-to-pillar transitions, and unbaked procedural glazing. **Not yet Golden or founder-approved**. No canonical IDs, game writes, merge or deployment.
