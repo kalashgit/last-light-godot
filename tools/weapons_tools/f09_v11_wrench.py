@@ -25,9 +25,9 @@ def build(m, *, form, tube, hoop, z=.040):
     # Lower sliding jaw: a distinct, angular lower limb below upper contact.
     # Its top contact is Y=.117. Negative-space open throat is 22-25mm.
     form("V11 translating lower jaw and integral sliding rack",
-         [(.012,.070),(-.012,.076),(-.045,.084),(-.071,.098),
-          (-.074,.112),(-.072,.123),(-.060,.129),
-          (-.040,.117),(-.013,.115),(.011,.116),(.035,.103),(.031,.083)],
+         [(.012,.070),(-.012,.076),(-.045,.084),(-.067,.094),
+          (-.074,.105),(-.077,.117),(-.071,.127),(-.055,.128),
+          (-.043,.118),(-.013,.115),(.011,.116),(.035,.103),(.031,.083)],
          .018,m["edge"],z-.001,.0016)
     # Two *horizontal* faces bite a hex fastener; no hook-on-hook geometry.
     form("V11 fixed upper polished jaw flat",
@@ -39,13 +39,13 @@ def build(m, *, form, tube, hoop, z=.040):
     # Recessed worm housing is below the inner neck, not a floating blob.
     form("V11 worm-wheel recessed socket dark pocket",
          [(.017,.079),(.052,.079),(.054,.105),(.016,.105)],
-         .002,m["oxide"],z+.011,.00015)
+         .0016,m["rubber"],z+.010,.00015)
     tube("V11 worm-wheel steel knurled barrel",
-         (.034,.087,.052),(.034,.098,.052),.010,.010,m["edge"],28)
+         (.034,.087,.053),(.034,.098,.053),.010,.010,m["edge"],28)
     for i in range(12):
         theta=math.tau*i/12
         x=.034+.0094*math.cos(theta)
-        zz=.052+.0094*math.sin(theta)
+        zz=.053+.0094*math.sin(theta)
         tube("V11 worm adjustment close knurl %02d"%i,
              (x,.086,zz),(x,.099,zz),.00040,.00040,m["oxide"],6)
     # Straight engraved setting ticks signal a translating steel jaw.
