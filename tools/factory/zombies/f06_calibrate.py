@@ -16,6 +16,9 @@ from pathlib import Path
 system_dynload = '/usr/lib/python3.12/lib-dynload'
 if system_dynload not in sys.path:
     sys.path.insert(0, system_dynload)
+system_packages = '/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages'
+if system_packages not in sys.path:
+    sys.path.append(system_packages)
 
 import bpy
 from mathutils import Vector
