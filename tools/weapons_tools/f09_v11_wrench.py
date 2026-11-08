@@ -11,8 +11,11 @@ def forged_loft(name, profile, depths, material, *, z=.040):
     if len(profile)<3 or len(profile)!=len(depths) or min(depths)<.006:
         raise ValueError("invalid forge loft")
     n=len(profile)
-    verts=([(x,y,z-d*.5) for (x,y),d in zip(profile,depths)]+
-           [(x,y,z+d*.5) for (x,y),d in zip(profile,depths)])
+    # One genuinely planar machined broad face; taper lives underneath.
+    # This removes diagonal triangulation creases on non-planar N-gons.
+    upper_z=z+max(depths)*.5
+    verts=([(x,y,upper_z-d) for (x,y),d in zip(profile,depths)]+
+           [(x,y,upper_z) for (x,y),d in zip(profile,depths)])
     faces=[tuple(reversed(range(n))),tuple(range(n,2*n))]
     faces.extend((i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n))
     mesh=bpy.data.meshes.new("LL physically tapered forged wrench jaw")
