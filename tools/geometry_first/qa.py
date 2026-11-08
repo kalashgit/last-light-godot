@@ -2,6 +2,7 @@
 from pathlib import Path
 import argparse
 import hashlib
+import gzip
 import json
 import zipfile
 from PIL import Image,ImageDraw,ImageFont
@@ -28,8 +29,20 @@ def validate(src,expected=None):
         blend=d/"model.blend"
         if not glb.exists() or glb.open("rb").read(4)!=b"glTF":
             raise ValueError("invalid source 3D GLB: "+item["asset_id"])
-        if not blend.exists() or blend.open("rb").read(7)!=b"BLENDER":
-            raise ValueError("invalid editable Blender source: "+item["asset_id"])
+        if not blend.exists():
+            raise ValueError("missing editable Blender source: "+item["asset_id"])
+        with blend.open("rb") as stream:
+            header=stream.read(7)
+        # Blender's save_as_mainfile(compress=True) stores a gzip-compressed
+        # .blend, whose on-disk first bytes are NOT the plain "BLENDER" magic.
+        if header != b"BLENDER":
+            try:
+                with gzip.open(blend,"rb") as stream:
+                    header=stream.read(7)
+            except (gzip.BadGzipFile, OSError, EOFError) as exc:
+                raise ValueError("invalid compressed Blender source: "+item["asset_id"]) from exc
+            if header != b"BLENDER":
+                raise ValueError("unrecognized Blender source file: "+item["asset_id"])
         if sha(glb)!=m["glb_sha256"] or sha(blend)!=m["editable_blend_sha256"]:
             raise ValueError("original geometry source hash mismatch: "+item["asset_id"])
         if not m["actual_bounds_m"] or not m["original_geometry"]:
