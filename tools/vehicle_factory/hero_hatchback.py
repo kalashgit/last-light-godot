@@ -97,9 +97,9 @@ def body_shell(m):
         v=abs(x)/(L/2)
         return 1-.13*max(0,(v-.68)/.32)**1.5
     def shoulder_bulge(x):
-        # Fenders are fuller above each axle; the door skins tuck inward.
-        around_wheels=sum(math.exp(-((x-a)/.39)**2) for a in axles)
-        return .023*around_wheels-.017*math.exp(-(x/.68)**2)
+        # Flat-sided production language: no cosmetic fender flare. The wheel
+        # aperture and taper alone carry the silhouette at gameplay scale.
+        return 0.0
     def arch(x):
         bottom=.245
         for a in axles:
@@ -131,9 +131,9 @@ def body_shell(m):
     for x in xs:
         y=.721*taper(x)+shoulder_bulge(x)*.70
         z=shoulder(x)
-        for q,extra in ((-1,0),(-.84,.027),(-.52,.052),(0,.070),
-                        (.52,.052),(.84,.027),(1,0)):
-            camber=1+.15*math.exp(-(x/.87)**2)
+        for q,extra in ((-1,0),(-.84,.013),(-.52,.025),(0,.032),
+                        (.52,.025),(.84,.013),(1,0)):
+            camber=1
             verts.append((x,q*y,z+extra*camber))
     polys=[]
     for i in range(steps):
@@ -162,22 +162,13 @@ def body_shell(m):
         cube("subtle rubber impact strip",(x+sign*.014,0,.418),
              (.050,W*.757,.073),m["trim"],.025)
     cube("underbody recessed",(0,0,.295),(L*.90,W*.70,.145),m["dark"],.06)
-    # Wheel arch lip follows the true wheel openings rather than a glued-on disk.
-    for side in (-1,1):
-        for a in axles:
-            arc=[(a+.393*math.cos(math.pi*i/24),side*W*.453,
-                  .357+.393*math.sin(math.pi*i/24)) for i in range(25)]
-            pipe("continuous pressed wheel arch",arc,.022,m["highlight"])
+    # Keep the true wheel opening but omit decorative outline piping. At 214 px
+    # cell scale it drew a noisy artificial halo around an otherwise flat car.
     for side in (-1,1):
         yy=side*W*.452
-        pipe("sculpted side character crease",[(-L*.44,yy,.798),
-             (-L*.16,yy*1.01,.818),(L*.17,yy*1.01,.822),(L*.43,yy,.790)],
-             .009,m["highlight"])
         for x in (-L*.095,L*.220):
             pipe("door full-height stamped shutline",[(x,yy,.394),(x,yy,.944)],
-                 .008,m["dark"])
-        pipe("lower door rocker moulding",[(-L*.25,yy,.397),(L*.22,yy,.397)],
-             .017,m["trim"])
+                 .006,m["dark"])
 
 
 def greenhouse(m):
@@ -266,19 +257,16 @@ def detailing(m):
         cube("small amber fender marker",(front-.12,side*W*.447,.833),
              (.073,.015,.035),m["orange"],.006)
         cube("body-colour mirror pedestal",(.62,side*W*.465,1.022),
-             (.16,.085,.05),m["body"],.023)
-        cube("dark mirror housing",(.62,side*W*.521,1.048),
-             (.152,.105,.077),m["trim"],.027)
+             (.105,.075,.039),m["body"],.016)
+        cube("dark protruding mirror housing",(.62,side*W*.521,1.045),
+             (.132,.112,.067),m["trim"],.021)
         for x in (-.47,.39):
             cube("recessed handle",(x,side*W*.447,.905),
                  (.125,.019,.023),m["trim"],.009)
     cube("front cooling lower inset",(front+.006,0,.473),(.019,W*.49,.058),m["trim"],.011)
     cube("rear plate pocket",(rear-.005,0,.647),(.012,W*.28,.089),m["trim"],.010)
     cube("unbranded rear plate",(rear-.015,0,.647),(.008,W*.235,.061),m["cream"],.005)
-    for side in (-1,1):
-        yy=side*.62
-        pipe("hood side shutline",[(1.065,yy,.988),(front-.065,yy*.97,.932)],
-             .011,m["dark"])
+    # No ornamental bonnet line: broad uninterrupted paint planes read cleaner.
 
 
 def build(paint="#364958"):
