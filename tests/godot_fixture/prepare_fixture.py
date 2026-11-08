@@ -88,6 +88,39 @@ def prepare(artifact_root, dest):
                                     "source_model_sha256": report["results"][subject]["source_sha"]}
     manifest = dest / "fixture_manifest.json"
     manifest.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
+    # Supply *actual hashed atlas assets* in the V2 intake shape for Claude.
+    # These remain CALIBRATION ONLY with no fabricated A00/Golden approvals.
+    v2_by_source = {"vehicle": "F10", "cow": "F07", "fridge": "F01"}
+    for subject, family in v2_by_source.items():
+        info = result["cases"][subject]
+        item = {
+            "schema_version": 2,
+            "package_id": f"LL-{family}-CALIBRATION-{subject.upper()}-RUN42533683097",
+            "family": family,
+            "stage": "CALIBRATION",
+            "source": {
+                "sha256": info["source_model_sha256"],
+                "archive_uri": "https://github.com/kalashgit/last-light-godot/actions/runs/42533683097/artifacts/13638880512",
+                "builder_commit": "08e75066ec3ecbb3c1b52a8fe28bf5b4dc229deb"
+            },
+            "renderer": {
+                "commit": "08e75066ec3ecbb3c1b52a8fe28bf5b4dc229deb",
+                "profile": "F12_REAL_2_TO_1_CALIBRATION_NOT_GOLDEN",
+                "directions": 16 if subject == "vehicle" else 8 if subject == "cow" else 1,
+                "logical_tile_px": [80, 40]
+            },
+            "material_recipe_ids": [],
+            "artifacts": [
+                {"kind": "atlas", "uri": "./" + info["atlas"],
+                 "sha256": info["atlas_sha256"]},
+                {"kind": "metadata", "uri": "./fixture_manifest.json",
+                 "sha256": sha256(manifest)}
+            ],
+            "approval_note": "NOT W09-reviewed, NOT founder Golden-approved; source archive is a temporary Actions artifact",
+            "mass_production_authorized": False
+        }
+        (dest / f"v2_{subject}_package.json").write_text(
+            json.dumps(item, sort_keys=True, indent=2) + "\n")
     print(json.dumps({"status": "PASS_REAL_SOURCE_TO_ATLAS",
                       "case_count": len(result["cases"]), "frame_count": len(frames),
                       "manifest_sha256": sha256(manifest)}, sort_keys=True))
