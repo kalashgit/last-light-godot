@@ -50,3 +50,11 @@ GitHub source and artifact index: `assets/master_library/README.md` and `registr
 - Pilot samples are a **style calibration stage only**. After calibration continue through ALL families and ALL required asset IDs. Preserve failed/blocked/pending IDs explicitly; do not silently shrink scope to meet the timebox.
 - Golden visual approval belongs to the founder; unreviewed render, even after engine import, is not approved. The aggressive two-hour target does not authorize hidden omissions or false release status.
 - Preserve existing working headless render and 311-resource Godot-import pipelines, camera/light rig and 80×40px/metre mapping. All work on an isolated branch, no merge/deployment without approval.
+
+## Geometry-first mastering (2026-11-08)
+
+**New mandatory order:** canonical census → original reusable source `bpy` 3D geometry (exact scale, silhouette, pivots, hollow/rigged parts) → material/texture recipe pass → fixed-camera 2.5D renders and pixel finishing → validated atlas → Godot import → real gameplay QA. For all applicable census objects. Flat UI/tile decals may use direct 2D recipes when more appropriate.
+
+**A completed geometry master counts as valid stage progress even if materials or 2.5D outputs are pending or visually inadequate.** Keep its editable source and content hash; never redo a correct mesh because the material pipeline failed. Record independent geometry/material/render/engine/gameplay/visual-approval states per asset, without conflating status or promising all finished in two hours. Reuse shared source meshes and material parameters to derive variants; don't independently sculpt every paint/wear/color variant.
+
+Authoritative detailed contract: `docs/CODEX_COMPLETE_CENSUS_MASTER_FACTORY_V2.md`, "Geometry-first production doctrine".
