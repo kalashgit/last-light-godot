@@ -535,7 +535,12 @@ def run_one(item, output, samples):
     folder=output/ident
     folder.mkdir(parents=True,exist_ok=True)
     scene=hero.setup()
-    construction(item,material_set())
+    mats=material_set()
+    construction(item,mats)
+    # Additive mechanical detailing; baseline V3 master construction remains intact.
+    from f09_v4_detail import refine
+    refine(item["archetype"],mats,form=form,tube=tube,
+           small_pin=small_pin,curved_bar=curved_bar)
     bpy.context.view_layer.update()
     obs=models()
     if len(obs)<3:
