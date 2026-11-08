@@ -24,6 +24,30 @@ for name in expected:
     action=bpy.data.actions[name]
     assert len(action.fcurves)>0,name
 weighted=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_WEIGHTED_JOINT')]
+continuous=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_V6_SKINNED')]
+if continuous:
+    assert len(continuous)==5,('expected torso plus four complete limbs',len(continuous))
+    assert not any(o.name.startswith(('V5 deforming ','upper sleeve ','forearm ',
+                                     'trouser leg ','lower trouser ',
+                                     'V3 anatomical torso garment'))
+                   for o in bpy.data.objects if o.type=='MESH'), 'duplicate rigid proxy shells'
+    for obj in continuous:
+        assert len(obj.vertex_groups)>=2,(obj.name,'not multiply skinned')
+        assert len(obj.data.vertices)>=120,(obj.name,'mesh too sparse')
+        mixed=sum(1 for vertex in obj.data.vertices
+                  if len(vertex.groups)>=2 and min(g.weight for g in vertex.groups)>.02)
+        assert mixed>=20,(obj.name,'no blended deformation rings',mixed)
+    rig.animation_data.action=bpy.data.actions['F06_V2_CAL_attack']
+    sample=[]
+    arm=next(o for o in continuous if o.name=='V6 skinned arm R')
+    for frame in (1,3):
+        bpy.context.scene.frame_set(frame)
+        evaluated=arm.evaluated_get(bpy.context.evaluated_depsgraph_get())
+        mesh=evaluated.to_mesh()
+        sample.append(tuple(mesh.vertices[0].co))
+        evaluated.to_mesh_clear()
+    assert sum((a-b)**2 for a,b in zip(*sample))>1e-5,('V6 arm did not deform',sample)
+    print('F06_V6_CONTINUOUS_SKINNING_PASS',len(continuous),'body meshes','attack deformation PASS')
 if weighted:
     assert len(weighted)>=6,('weighted joints missing',len(weighted))
     for obj in weighted:
@@ -58,4 +82,9 @@ if weighted:
     assert len(imported)>=6,('weighted sleeves not exported',len(imported))
     assert all(len(o.vertex_groups)>=2 for o in imported),'GLB skin weights lost'
     print('F06_V5_GLTF_SKINNING_PASS',len(imported),'dual-weight meshes')
+if continuous:
+    imported=[o for o in bpy.context.scene.objects if o.type=='MESH' and 'V6 skinned' in o.name or o.type=='MESH' and 'V6 continuous torso' in o.name]
+    assert len(imported)>=5,('V6 skinned meshes missing in GLB',len(imported))
+    assert all(len(o.vertex_groups)>=2 for o in imported),'V6 GLB skin groups missing'
+    print('F06_V6_GLTF_SKINNING_PASS',len(imported),'continuous skinned meshes')
 print('F06_V2_BLENDER_REOPEN_PASS',path,len(expected),'actions','GLB import PASS')
