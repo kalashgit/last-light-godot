@@ -172,6 +172,23 @@ def cow():
     for ob in list(scene.objects):
         if ob.type in {"MESH","ARMATURE"} and ob not in ns["cow_parts"]:
             bpy.data.objects.remove(ob,do_unlink=True)
+    # F07's source builder resets the Blender scene and removes the camera.
+    # Recreate exactly the shared locked F12 orthographic camera and key light.
+    camdata=bpy.data.cameras.new("F12_RESTORED_2_TO_1")
+    cam=bpy.data.objects.new("F12_RESTORED_2_TO_1",camdata)
+    scene.collection.objects.link(cam)
+    cam.location=(8/math.sqrt(2),-8/math.sqrt(2),8*math.tan(math.radians(30)))
+    cam.rotation_euler=(-cam.location).to_track_quat("-Z","Y").to_euler()
+    camdata.type="ORTHO"
+    scene.camera=cam
+    light=bpy.data.lights.new("F12_KEY","AREA")
+    source_light=bpy.data.objects.new("F12_KEY",light)
+    scene.collection.objects.link(source_light)
+    source_light.location=(-3.6,-4.5,7.5)
+    light.energy=850
+    light.size=3
+    configure(scene)
+    camera_report(scene)
     # F07 mesh still shares its original cow armature and walk action.
     arm=ns["cow_arm"]
     action=bpy.data.actions.get("CowRig_CAL_walk")
