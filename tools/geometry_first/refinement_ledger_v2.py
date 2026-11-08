@@ -24,9 +24,30 @@ REFINED_DEFAULT=ROOT/"preview/geometry-refinement-v2/refined_report.json"
 def load_outcomes(path):
     if not path.exists():return {}
     raw=json.loads(path.read_text())
-    if "items" not in raw:
+    if not isinstance(raw.get("items"),list):
         raise ValueError("refined report missing actual item list")
-    return {r["asset_id"]:r for r in raw["items"]}
+    outcomes={}
+    for record in raw["items"]:
+        key=record["asset_id"]
+        if key in outcomes:
+            raise ValueError("duplicate refinement evidence for "+key)
+        outcomes[key]=record
+    if raw.get("source_count") != len(outcomes):
+        raise ValueError("refined report source_count does not match unique evidence")
+    return outcomes
+
+def verified_refinement(record, original):
+    if not record or not record.get("refinement_applied") or not record.get("geometry_source_verified"):
+        return False
+    original_hash=record.get("original_sha256")
+    refined_hash=record.get("glb_sha256")
+    if original_hash != original["glb_sha256"]:
+        raise ValueError("refinement baseline hash mismatch: "+record["asset_id"])
+    if not isinstance(refined_hash,str) or len(refined_hash)!=64 or refined_hash==original_hash:
+        raise ValueError("missing or unchanged refined GLB hash: "+record["asset_id"])
+    if not record.get("repair_parts") or not record.get("recipe_sha256"):
+        raise ValueError("missing reproducible geometry repair evidence: "+record["asset_id"])
+    return True
 
 def create(refined_report=None):
     plan=build_plan()
@@ -44,8 +65,7 @@ def create(refined_report=None):
         key=job["asset_id"]
         prior=observed[key]
         r=refined.get(key)
-        refined_pass=bool(r and r.get("refinement_applied") and
-                          r.get("geometry_source_verified"))
+        refined_pass=verified_refinement(r,prior)
         category=job["category"]
         stage=dict(geometry_source=True,
             refined_geometry=refined_pass,
