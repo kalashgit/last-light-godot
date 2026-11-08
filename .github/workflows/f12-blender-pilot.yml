@@ -23,13 +23,13 @@ jobs:
       - name: Checkout original 3D geometry factory
         uses: actions/checkout@v4
         with:
-          ref: codex/last-light-geometry-reconstruction-v1-20261108
+          ref: c0bb2d0b41026a2f996baa1e52cef74994ac643f
           path: source_3d
           persist-credentials: false
       - name: Checkout original F07 cow procedural rig
         uses: actions/checkout@v4
         with:
-          ref: chatgpt/f07-animal-factory-calibration
+          ref: 8e689f4fc8a67bac4477308f7f186b4b9b5f5fe0
           path: source_animal
           persist-credentials: false
       - name: Install headless Blender
