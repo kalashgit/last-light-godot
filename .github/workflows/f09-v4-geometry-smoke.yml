@@ -17,11 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Blender
-        run: sudo apt-get update && sudo apt-get install -y blender
+        run: sudo apt-get update && sudo apt-get install -y blender python3-numpy
       - name: Canonical validation unit tests
         run: python3 -m unittest discover -s tests -p 'test_f09_canonical_gate.py' -v
       - name: Blender source geometry and GLB smoke test
-        run: blender -b --factory-startup -t 2 --python tools/weapons_tools/verify_f09_v4.py
+        run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/verify_f09_v4.py
       - name: Upload inspectable non-approved source candidates
         if: always()
         uses: actions/upload-artifact@v4
