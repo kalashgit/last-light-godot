@@ -571,7 +571,12 @@ def run_one(item, output, samples):
     blend=folder/"model.blend"
     glbfile=folder/"model.glb"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend.resolve()),compress=False)
-    glb(glbfile,obs)
+    if item["archetype"] in V5_TARGETS:
+        from f09_glb_material_bridge import export_with_preview, inspect_glb_preview
+        export_with_preview(glb, glbfile, obs)
+        inspect_glb_preview(glbfile)
+    else:
+        glb(glbfile,obs)
     matrices={o.name:o.matrix_world.copy() for o in obs}
     for head in range(4):
         rot=Matrix.Rotation(math.tau*head/4,4,"Z")
