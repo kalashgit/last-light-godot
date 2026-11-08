@@ -8,6 +8,9 @@ def verify(folder):
     data=json.loads((folder/"manifest.json").read_text())
     assert data["canonical_master_id"] is None
     assert data["status"]=="PANEL_OVERLAY_CALIBRATION_NOT_GOLDEN_NOT_GODOT_INTEGRATED"
+    assert data["visual_qa"]=="REQUIRES_MANUAL_REVIEW_NOT_AUTOMATICALLY_PASSED"
+    assert set(data["aperture_faces_removed"])=={"door","hood","rear"}
+    assert all(n>0 for n in data["aperture_faces_removed"].values())
     expected={"front_left_door_open":64,"hood_open":-48,"trunk_open":58}
     assert len(data["clips"])==len(expected)
     for item in data["clips"]:
