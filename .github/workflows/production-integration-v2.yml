@@ -1,0 +1,35 @@
+name: LAST LIGHT Production Integration V2 Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - "docs/production/integration_v2/**"
+      - "docs/production/CLAUDE_CHATGPT_INTEGRATION_V2.md"
+      - "tools/production_integration_v2/**"
+      - "tests/production_integration_v2/**"
+      - ".github/workflows/production-integration-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run fail-closed V2 validation tests
+        run: python -m unittest discover -s tests/production_integration_v2 -p 'test_*.py' -v
+      - name: Validate initial calibration-only example
+        run: python tools/production_integration_v2/validate_package.py docs/production/integration_v2/examples/calibration_candidate.json
+      - name: Verify empty approval ledger cannot authorize mass production
+        run: |
+          if python tools/production_integration_v2/validate_package.py docs/production/integration_v2/examples/calibration_candidate.json --ledger docs/production/integration_v2/approval_ledger.json --target-stage MASS_100; then
+            echo "ERROR: unapproved package wrongly permitted mass production"
+            exit 1
+          fi
+          echo "PASS: mass production authorization blocked by default"
