@@ -90,5 +90,17 @@ class CalibrationOutputs(unittest.TestCase):
                 self.assertGreaterEqual(data["mesh_count"],minimum)
                 self.assertFalse(data.get("founder_approved",False))
 
+    def test_v6_glb_preserves_real_hinge_animation(self):
+        path=BASE/"refrigerator_v6b/refrigerator_refined_calibration.glb"
+        data=path.read_bytes()
+        json_size=struct.unpack_from("<I",data,12)[0]
+        gltf=json.loads(data[20:20+json_size])
+        self.assertEqual(len(gltf.get("animations",[])),1)
+        self.assertGreaterEqual(len(gltf["animations"][0]["channels"]),1)
+        self.assertTrue(any("hinge_local.main_door" in n.get("name","") for n in gltf["nodes"]))
+        report=json.loads((path.parent/"calibration_report.json").read_text())
+        self.assertEqual(report["glb_animation_clips"],1)
+        self.assertTrue(report["glb_hinge_pivot_exported"])
+
 
 if __name__=="__main__":unittest.main()
