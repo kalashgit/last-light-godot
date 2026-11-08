@@ -1,0 +1,231 @@
+{
+  "schema_version": 2,
+  "status": "VALIDATED_SOURCE_REFINEMENT_NOT_VISUAL_GOLDEN_APPROVED",
+  "source_count": 6,
+  "original_source_models_preserved": true,
+  "counts": {
+    "refined": 6,
+    "founder_approved": 0,
+    "gameplay_integrated": 0
+  },
+  "items": [
+    {
+      "asset_id": "ll_master_vehicle_city_sedan",
+      "refinement_applied": true,
+      "original_sha256": "f09cbacab4eefd702b5d3df14cdfcc0496543811922599928b911f3455b027ce",
+      "glb_sha256": "9e512482284558d5e2d04d11d45a8ac5047339846181fc95bcf7c1c20ff47b5b",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        4.7936,
+        2.0812,
+        1.42
+      ],
+      "original_bounds_m": [
+        4.7936,
+        2.0812,
+        1.3725
+      ],
+      "original_geometry_skills": [
+        "LL-083",
+        "LL-084",
+        "LL-085",
+        "LL-086",
+        "LL-087",
+        "LL-091",
+        "LL-104"
+      ],
+      "repair_parts": [
+        "curved_roof_shell",
+        "segmented_glass",
+        "wheel_arches",
+        "door_parting_lines"
+      ],
+      "silhouette_overlap_diagnostic": 0.9956,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    },
+    {
+      "asset_id": "ll_master_vehicle_compact_hatchback",
+      "refinement_applied": true,
+      "original_sha256": "4768330fdd53fe6b92db2ba159ba6cd2e9a7507b6fac018872b92ffced133850",
+      "glb_sha256": "f090e9b3b6b42df15627e9a0e0ba7b9f4ad946c876b04bf55ed196c5938c7886",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        3.89596,
+        2.0028,
+        1.45
+      ],
+      "original_bounds_m": [
+        3.89596,
+        2.0028,
+        1.4025
+      ],
+      "original_geometry_skills": [
+        "LL-083",
+        "LL-084",
+        "LL-085",
+        "LL-086",
+        "LL-087",
+        "LL-091",
+        "LL-104"
+      ],
+      "repair_parts": [
+        "curved_roof_shell",
+        "segmented_glass",
+        "wheel_arches",
+        "door_parting_lines"
+      ],
+      "silhouette_overlap_diagnostic": 0.9926,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    },
+    {
+      "asset_id": "ll_tools_awl",
+      "refinement_applied": true,
+      "original_sha256": "53a002d735fc5192532367200d2ef08bda6414a8f2ef95da4ce0ea53acefb25e",
+      "glb_sha256": "b2c117dc21ae4b9aea978d00b52ecda1bb6fbe62f11aae7147be524cf7076b00",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        0.02646,
+        0.20525,
+        0.02646
+      ],
+      "original_bounds_m": [
+        0.00599,
+        0.20525,
+        0.02646
+      ],
+      "original_geometry_skills": [
+        "LL-082",
+        "LL-084",
+        "LL-086",
+        "LL-087",
+        "LL-090",
+        "LL-110"
+      ],
+      "repair_parts": [
+        "real_Y_axis_physical_dimensions",
+        "semantic_grip",
+        "tapered_shaft",
+        "functional_tool_head"
+      ],
+      "silhouette_overlap_diagnostic": 0.4,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    },
+    {
+      "asset_id": "ll_tools_cross_screwdriver",
+      "refinement_applied": true,
+      "original_sha256": "7b336e8259a4918fa04759cc0044e58b081f95e3fec2378ea5985148628d5fa2",
+      "glb_sha256": "f335b49d36e101d674a12ba24ea7f9c673c20c943583e3a1a85fee9d0f7fa7ab",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        0.02822,
+        0.23202,
+        0.02822
+      ],
+      "original_bounds_m": [
+        0.00732,
+        0.23202,
+        0.02352
+      ],
+      "original_geometry_skills": [
+        "LL-082",
+        "LL-084",
+        "LL-086",
+        "LL-087",
+        "LL-090",
+        "LL-110"
+      ],
+      "repair_parts": [
+        "real_Y_axis_physical_dimensions",
+        "semantic_grip",
+        "tapered_shaft",
+        "functional_tool_head"
+      ],
+      "silhouette_overlap_diagnostic": 0.5,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    },
+    {
+      "asset_id": "ll_tools_crowbar",
+      "refinement_applied": true,
+      "original_sha256": "56e28f35383148a7cb7b26c62ff90851a88d6636cd0fa0500917ce77e3c6ceff",
+      "glb_sha256": "d524fe469d9bba3c1b819d6213b5904a8f16692a7e6b6f309157a3c04e1fe3f8",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        0.07651,
+        0.6791,
+        0.02332
+      ],
+      "original_bounds_m": [
+        0.0536,
+        0.6984,
+        0.0308
+      ],
+      "original_geometry_skills": [
+        "LL-082",
+        "LL-084",
+        "LL-086",
+        "LL-087",
+        "LL-090",
+        "LL-110"
+      ],
+      "repair_parts": [
+        "real_Y_axis_physical_dimensions",
+        "semantic_grip",
+        "tapered_shaft",
+        "functional_tool_head"
+      ],
+      "silhouette_overlap_diagnostic": 0.4643,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    },
+    {
+      "asset_id": "ll_tools_flat_screwdriver",
+      "refinement_applied": true,
+      "original_sha256": "3dd6f65ef5f894ff4f9975a4e418bfd61ec6b264997996544c474894b208ef02",
+      "glb_sha256": "8b4cce077d185e8faa1145c842940bec36365d7cd47b3d048584d520d7d96fd0",
+      "recipe_sha256": "ce6cfe82ef7aac8e2b80016e3b819d35c260608a827408bd34c19490c1dfbd47",
+      "actual_bounds_m": [
+        0.03091,
+        0.21476,
+        0.03091
+      ],
+      "original_bounds_m": [
+        0.01781,
+        0.21849,
+        0.02576
+      ],
+      "original_geometry_skills": [
+        "LL-082",
+        "LL-084",
+        "LL-086",
+        "LL-087",
+        "LL-090",
+        "LL-110"
+      ],
+      "repair_parts": [
+        "real_Y_axis_physical_dimensions",
+        "semantic_grip",
+        "tapered_shaft",
+        "functional_tool_head"
+      ],
+      "silhouette_overlap_diagnostic": 0.3333,
+      "geometry_source_verified": true,
+      "visual_quality_approved": false,
+      "source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
+      "status": "REFINED_SOURCE_QA_ONLY_GOLDEN_VISUAL_REVIEW_PENDING"
+    }
+  ]
+}
