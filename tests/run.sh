@@ -27,3 +27,7 @@ run_checked --headless --path . --script tests/control_settings.gd
 run_checked --headless --path . --script tests/loot_loop.gd
 run_checked --headless --path . --script tests/save_migration_edges.gd
 run_checked --headless --path . --script tests/save_isolation.gd
+
+# Worker 03 zombie AI fixtures and population timing.
+run_checked --headless --path . --script tests/zombie/zombie_ai.gd
+run_checked --headless --path . --script tests/zombie/zombie_perf.gd

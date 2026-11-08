@@ -235,7 +235,19 @@ func test_combat_and_zombies() -> void:
 	game.player = Vector2(5.4, 7.2)
 	game.infected[0] = Vector2(5.4, 8.65)
 	game.zombie_health[0] = 3
+	# Worker 03: zombies no longer sense a silent player through a closed door.
+	# Silent case first (negative), then the player slams the door shut (noise stimulus).
 	game.doors[0].open = false
+	simulate(6)
+	check(not game.doors[0].open and game.doors[0].health == 45.0, "silent player behind closed door is not detected (no breach)")
+	fresh()
+	game.god_mode = true
+	game.player = Vector2(5.4, 7.2)
+	game.infected[0] = Vector2(5.4, 8.65)
+	game.zombie_health[0] = 3
+	game.doors[0].open = true
+	game._toggle_door(0)
+	check(not game.doors[0].open, "fixture closes the front door from inside")
 	simulate(12)
 	check(game.doors[0].open and game.doors[0].health <= 0, "pursuing zombie breaches closed front door")
 	check(game.infected[0].y < 8, "zombie crosses doorway after breaching")

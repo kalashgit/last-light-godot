@@ -1,0 +1,4 @@
+CAPTURE: docs/zombie/screenshots/zombie-pursue-1152x720.png states=["pursue/shamble/standing", "pursue/shamble/standing"]
+CAPTURE: docs/zombie/screenshots/zombie-knockdown-stagger-1152x720.png states=["knockdown/down/standing", "pursue/shamble/standing"]
+CAPTURE: docs/zombie/screenshots/zombie-crawler-corpse-1152x720.png states=["crawl/crawl/crawling", "corpse/corpse/standing"]
+CAPTURE: docs/zombie/screenshots/zombie-door-breach-1152x720.png states=["investigate/investigate/standing", "corpse/corpse/standing"]
