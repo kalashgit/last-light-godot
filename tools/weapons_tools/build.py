@@ -549,11 +549,15 @@ def run_one(item, output, samples):
     folder.mkdir(parents=True,exist_ok=True)
     scene=hero.setup()
     mats=material_set()
-    construction(item,mats)
-    # Additive mechanical detailing; baseline V3 master construction remains intact.
-    from f09_v4_detail import refine
-    refine(item["archetype"],mats,form=form,tube=tube,
-           small_pin=small_pin,curved_bar=curved_bar)
+    from f09_v5_models import TARGETS as V5_TARGETS, build as build_v5
+    if item["archetype"] in V5_TARGETS:
+        build_v5(item["archetype"],mats,form=form,tube=tube,
+                 grip=grip,closed_sweep=closed_sweep,small_pin=small_pin,hoop=hoop)
+    else:
+        construction(item,mats)
+        from f09_v4_detail import refine
+        refine(item["archetype"],mats,form=form,tube=tube,
+               small_pin=small_pin,curved_bar=curved_bar)
     bpy.context.view_layer.update()
     obs=models()
     if len(obs)<3:
