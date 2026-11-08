@@ -1,6 +1,8 @@
 """LAST LIGHT full-fidelity V2 provenance, complete 360 ledger and stage QA."""
 import ast
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -8,7 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools/geometry_first"))
 from plan import build_plan
 from refine_spec_v2 import FAMILY_RULES,STAGES,required_skills,defects_for
-from refinement_ledger_v2 import create
+from refinement_ledger_v2 import create,load_outcomes,verified_refinement
 
 class FullFidelityV2(unittest.TestCase):
     def test_full_existing_geometry_coverage_and_quality_gate(self):
@@ -56,6 +58,24 @@ class FullFidelityV2(unittest.TestCase):
             self.assertIn(aid,plans)
         self.assertNotEqual(plans["ll_master_vehicle_compact_hatchback"]["dimensions_m"],
                             plans["ll_master_vehicle_city_sedan"]["dimensions_m"])
+
+    def test_refinement_evidence_must_match_original_and_have_unique_ids(self):
+        original={"glb_sha256":"a"*64}
+        evidence=dict(asset_id="sample",refinement_applied=True,
+            geometry_source_verified=True,original_sha256="a"*64,
+            glb_sha256="b"*64,recipe_sha256="c"*64,
+            repair_parts=["true curved shell"])
+        self.assertTrue(verified_refinement(evidence,original))
+        self.assertFalse(verified_refinement(None,original))
+        for change in ({"original_sha256":"d"*64},
+                       {"glb_sha256":"a"*64}, {"repair_parts":[]}):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                verified_refinement({**evidence,**change},original)
+        with tempfile.TemporaryDirectory() as folder:
+            report=Path(folder)/"report.json"
+            report.write_text(json.dumps({"source_count":2,"items":[evidence,evidence]}))
+            with self.assertRaisesRegex(ValueError,"duplicate"):
+                load_outcomes(report)
 
 if __name__=="__main__":
     unittest.main()
