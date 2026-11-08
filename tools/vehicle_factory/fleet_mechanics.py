@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import bpy
+import bmesh
 from mathutils import Vector
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -46,6 +47,44 @@ def join_to_hinge(hinge,part):
     return part
 
 
+def cut_mechanical_apertures(L,W,model):
+    """Remove real surface faces where a mechanical panel must open.
+
+    The chassis remains a thin-shell source study; door jambs and inner wells
+    are provisional and require collision/clearance QA before release.
+    """
+    count={"door":0,"hood":0,"rear":0}
+    for ob in list(bpy.context.scene.objects):
+        if ob.type!="MESH":continue
+        if "continuous fender shell" in ob.name:
+            mesh=ob.data
+            bm=bmesh.new();bm.from_mesh(mesh)
+            side=sum(v.co.y for v in bm.verts)/max(1,len(bm.verts))
+            if side<0:
+                remove=[f for f in bm.faces if -.052*L<f.calc_center_median().x<.270*L]
+                count["door"]+=len(remove)
+                bmesh.ops.delete(bm,geom=remove,context="FACES")
+            bm.to_mesh(mesh);bm.free();mesh.update()
+        elif "curved continuous upper body" in ob.name:
+            mesh=ob.data
+            bm=bmesh.new();bm.from_mesh(mesh)
+            remove=[]
+            for f in bm.faces:
+                x=f.calc_center_median().x
+                if x>L*.309:
+                    count["hood"]+=1;remove.append(f)
+                elif x<-(L*.372 if model=="compact_hatchback" else L*.369):
+                    count["rear"]+=1;remove.append(f)
+            bmesh.ops.delete(bm,geom=remove,context="FACES")
+            bm.to_mesh(mesh);bm.free();mesh.update()
+        elif model=="compact_hatchback" and any(name in ob.name for name in (
+                "rear windshield","hatch rear wiper","hatch top weatherstrip")):
+            bpy.data.objects.remove(ob,do_unlink=True)
+    if not all(count.values()):
+        raise RuntimeError("failed to create real door/hood/rear body apertures: "+str(count))
+    return count
+
+
 def build_mechanical_scene(model):
     if model not in ("compact_hatchback","city_sedan"):
         raise ValueError("only calibrated passenger bodies supported")
@@ -57,10 +96,17 @@ def build_mechanical_scene(model):
     job=dict(model=model,paint_hex=PALETTE["olive_green"],condition_level=1)
     build_vehicle(job)
     m=make_materials(job["paint_hex"],job["condition_level"])
+    cuts=cut_mechanical_apertures(L,W,model)
+    bpy.context.scene["F10_mechanical_aperture_faces_removed"]=json.dumps(cuts)
+    print("F10_BODY_APERTURES_CUT",model,cuts,flush=True)
+    # Dark, inset mechanical wells become visible when their covers open.
+    cube("inner engine bay",(L*.397,0,.720),(L*.19,W*.72,.085),m["dark"],.015)
+    cube("inner cargo floor",(-L*.407,0,.610),(L*.14,W*.73,.09),m["dark"],.015)
+    cube("door inner cabin trim",(L*.105,-W*.32,.632),(L*.313,.025,.34),m["trim"],.012)
     hinges={}
     hinges["front_left_door_open"]=hinge_panel(
         "front_left_door",(L*.275,-W*.461,.83),
-        (L*.112,-W*.469,.656),(L*.321,.029,.435),m["body"])
+        (L*.112,-W*.469,.666),(L*.321,.029,.542),m["body"])
     # Glass rises with the door instead of remaining a detached static decal.
     door_glass=faces("LL F10 left front door glass overlay",[
         (L*.105,-W*.337,H-.105),(L*.270,-W*.335,H-.13),
@@ -85,8 +131,8 @@ def build_mechanical_scene(model):
             ("hatch lower frame",[(sill_back,-W*.445,.893),(sill_back,W*.445,.893)])):
             frame=pipe(name,coords,.034,m["body"])
             join_to_hinge(pivot,frame)
-        lower=cube("hatch lower lid",(-L*.470,0,.741),
-                   (L*.031,W*.82,.255),m["body"],.018)
+        lower=cube("hatch lower lid",(-L*.470,0,.689),
+                   (L*.047,W*.85,.409),m["body"],.018)
         join_to_hinge(pivot,lower)
         hinges["trunk_open"]=(pivot,lower)
     else:
@@ -147,7 +193,10 @@ def run(model,out_dir,render):
         print("F10_MECHANICAL_CLIP_CALIBRATED",model,clip,round(angle,3),flush=True)
     manifest=dict(schema_version=1,model=model,canonical_master_id=None,
         status="PANEL_OVERLAY_CALIBRATION_NOT_GOLDEN_NOT_GODOT_INTEGRATED",
-        limits=["No cutout doors or physically empty cabin", "No engine or cargo cavities",
+        aperture_faces_removed=json.loads(bpy.context.scene["F10_mechanical_aperture_faces_removed"]),
+        visual_qa="REQUIRES_MANUAL_REVIEW_NOT_AUTOMATICALLY_PASSED",
+        limits=["Face-cut apertures only, no watertight jambs or interior cabin",
+                "Dark mechanical wells are placeholders, no modeled engine or cargo cavities",
                 "No swept collision validation", "Clip events are W05/W07 proposals"],
         clips=results)
     (out_dir/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
