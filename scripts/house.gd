@@ -37,6 +37,7 @@ var loot_builder: CanvasLayer
 var builder_open := false
 var pending_spawn_id := ""
 var golden_textures: Dictionary = {}
+var icon_sprites: Dictionary = {}
 const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
 const HouseNavigation := preload("res://scripts/house_navigation.gd")
@@ -936,6 +937,22 @@ func _golden_icon(id: String) -> Texture2D:
   var path: String = str(survival.definitions[id].get("icon_path", ""))
   golden_textures[id] = load("res://" + path) if not path.is_empty() else null
  return golden_textures[id]
+
+## Inventory thumbnail: Golden 40 icon first, then the item's factory icon frame (PR #18).
+func _item_icon(id: String) -> Texture2D:
+ var golden := _golden_icon(id)
+ if golden != null or not survival.definitions.has(id): return golden
+ if not icon_sprites.has(id):
+  var icon: Texture2D = null
+  var art_id: String = str(survival.definitions[id].get("art_id", id))
+  if art.catalog.has(art_id):
+   for frame in art.catalog[art_id].frames:
+    if frame.mode == "icon":
+     var path: String = art.FACTORY + str(frame.file)
+     if ResourceLoader.exists(path): icon = load(path) as Texture2D
+     break
+  icon_sprites[id] = icon
+ return icon_sprites[id] as Texture2D
 
 func _spawn_golden_item(id: String, position: Vector2, count: int = 1) -> bool:
  if builder_open or paused or inventory_open or save_blocked or health<=0: return false
