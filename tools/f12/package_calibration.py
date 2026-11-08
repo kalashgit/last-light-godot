@@ -112,12 +112,12 @@ for slug, count in expected.items():
         "atlases":[]
     }
     manifest_file=root/(slug+"_f12_render_manifest.json")
-    manifest_file.write_text(json.dumps(payload,indent=2)+"\\n")
+    manifest_file.write_text(json.dumps(payload,indent=2)+"\n")
     validation=validate_manifest(payload,root)
     if validation["frame_count"]!=count:
         raise RuntimeError("independent manifest validation frame mismatch")
     checks[slug]["f12_manifest"]=manifest_file.name
     checks[slug]["f12_manifest_validation"]=validation["status"]
 report["image_qa"]=checks
-report_path.write_text(json.dumps(report,indent=2)+"\\n")
+report_path.write_text(json.dumps(report,indent=2)+"\n")
 print("F12_STANDARD_MANIFESTS_VALIDATED",len(expected),flush=True)
