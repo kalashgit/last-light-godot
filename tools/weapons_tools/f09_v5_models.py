@@ -51,6 +51,8 @@ def shaped_wooden_d_handle(material, z=.040):
 def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
     z = .040
     if kind == "wrench":
+        from f09_v11_wrench import build as build_v11
+        return build_v11(m,form=form,tube=tube,hoop=hoop,z=z)
         # One solid shank with a broad, asymmetric forged neck. No floating jaw.
         form("V5 adjustable wrench forged tapered shank",
              [(-.012,-.125),(.012,-.125),(.012,.049),(.022,.073),
