@@ -19848,7 +19848,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "8ce2a3f6823445a19876e140172f80788d0e543d5b307d07c6dd20d47a1fca0d",
+      "v2_geometry_source_sha256": "e10beb9e8ba838546a8c11da2c7d72bd69b79005dca39520c421cf4830299db5",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },
@@ -19907,7 +19907,7 @@
         "iphone_device_qa": false
       },
       "v2_refinement_source_archive": "GitHub Action artifact of isolated V2 refinement smoke run",
-      "v2_geometry_source_sha256": "5ea99976c6c0a0048c83b08f51ce39aa024398d8d6c631668bb77efc7c17c812",
+      "v2_geometry_source_sha256": "a070fc1e506c4f7330572af3217a0c65ea7557ccc528037edc686b0ca2b3d423",
       "latest_geometry_review_status": "V2_SOURCE_TECHNICALLY_VERIFIED_VISUAL_REVIEW_PENDING",
       "next_action": "LL-111 founder shape/visual comparison then UV/material pass"
     },

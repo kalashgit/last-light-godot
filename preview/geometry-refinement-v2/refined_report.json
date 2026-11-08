@@ -12,8 +12,8 @@
     {
       "asset_id": "ll_master_vehicle_city_sedan",
       "refinement_applied": true,
-      "original_sha256": "cb24095b986135cb6a7ee94a723889f8e5513e2f5c91af23c46895657dc5a079",
-      "glb_sha256": "8ce2a3f6823445a19876e140172f80788d0e543d5b307d07c6dd20d47a1fca0d",
+      "original_sha256": "84cfff519cb700b4aa5d72e720a5afbb161513e3a94b941d5f0519bcec2aa2ff",
+      "glb_sha256": "e10beb9e8ba838546a8c11da2c7d72bd69b79005dca39520c421cf4830299db5",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         4.7936,
@@ -50,8 +50,8 @@
     {
       "asset_id": "ll_master_vehicle_compact_hatchback",
       "refinement_applied": true,
-      "original_sha256": "623dbb31e4f08b2cc32bb0fa3aa70a8a7b0685dc6f1b6514e83a7b3476e4d99f",
-      "glb_sha256": "5ea99976c6c0a0048c83b08f51ce39aa024398d8d6c631668bb77efc7c17c812",
+      "original_sha256": "233c1d8def00b1533dd8a6aec0e327e572c00d0d28f540fb6d97359da3298022",
+      "glb_sha256": "a070fc1e506c4f7330572af3217a0c65ea7557ccc528037edc686b0ca2b3d423",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
         3.89596,
@@ -160,7 +160,7 @@
     {
       "asset_id": "ll_tools_crowbar",
       "refinement_applied": true,
-      "original_sha256": "f81e810a564f81a16f8bf1aaa07d1b2dfd2f2e7cf61a17883b8486f2025be1e4",
+      "original_sha256": "56e28f35383148a7cb7b26c62ff90851a88d6636cd0fa0500917ce77e3c6ceff",
       "glb_sha256": "d524fe469d9bba3c1b819d6213b5904a8f16692a7e6b6f309157a3c04e1fe3f8",
       "recipe_sha256": "525a5c4b3ae840ffd888c528134228d3bd6a156855e14b338f138dc8a3cf68a5",
       "actual_bounds_m": [
