@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 parser=argparse.ArgumentParser()
 parser.add_argument('directory',type=Path)
@@ -82,7 +82,24 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
                    'clips':sorted(set(k[0] for k in bboxes)),'glb_export':m['qa']['glb_export'],
                    'geometry_profile':m.get('geometry_profile','v2_baseline'),
                    'idle_native_scale_footprint':footprint})
-result={'status':'PASS' if not failures else 'FAIL','profiles':report,'failures':failures}
+# Pixel-exact profile collision check: clothing states are not distinct A00 masters,
+# but a factory should not accidentally render identical outfits for every profile.
+separation=[]
+names=sorted(p.name for p in args.directory.iterdir() if p.is_dir())
+for i,first in enumerate(names):
+    for second in names[i+1:]:
+        for direction in ('S','W','N','E'):
+            a=args.directory/first/f'idle_{direction}_01.png'
+            b=args.directory/second/f'idle_{direction}_01.png'
+            if not a.exists() or not b.exists():continue
+            with Image.open(a) as im_a, Image.open(b) as im_b:
+                changed=ImageChops.difference(im_a.convert('RGBA'),im_b.convert('RGBA'))
+                bbox=changed.convert('RGB').getbbox()
+                separation.append({'a':first,'b':second,'direction':direction,
+                                   'pixel_exact_duplicate':bbox is None})
+                if bbox is None:failures.append(f'profile image collision: {first}/{second}/{direction}')
+result={'status':'PASS' if not failures else 'FAIL','profiles':report,
+        'profile_separation':separation,'failures':failures}
 (args.directory/'qa_result.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))
 if failures: raise SystemExit(1)
