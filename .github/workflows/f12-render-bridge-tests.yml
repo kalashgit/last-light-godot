@@ -1,0 +1,32 @@
+name: F12 Render Bridge Contracts
+
+on:
+  push:
+    branches:
+      - chatgpt/f12-render-bridge-calibration-20261109
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+  pull_request:
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image test dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Run F12 contract tests
+        run: python -m unittest discover -s tests/factory/render_bridge -v
