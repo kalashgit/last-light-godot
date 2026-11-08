@@ -23,15 +23,19 @@
         0.225,
         0.03151
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 4,
-      "model_blend_sha256": "d648b450004dc960d677bd84bd0e583962cddeced103ad59c91d19a3c00ec59f",
-      "model_glb_sha256": "50a9d447fba8eeaf897094e677130ce7055098eca2e8070950260d2cdaa9bef9",
+      "model_blend_sha256": "bcf02749baa4b19114d7b84a5e4961b4c6170627b1953eb76daf476b24a06c9d",
+      "model_glb_sha256": "938c3cfbbe93f940fe80e122eb523538f60275643381721a30413d409fd0cdad",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -40,7 +44,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "96fd85eb0ed1787ffb640e35bf1eb3e2a35464d65567218659805ec20c9b3bd8",
+          "rgba_sha256": "448a5ff29db32396e6b27b11163233147acfe40d009ba63b8a101a34d40f4732",
           "size_px": [
             15,
             10
@@ -53,7 +57,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "c33f81da76ae9f5ae7ae1acf8da2d3b3350d77687c945a03e138f3ae110c7ffa",
+          "rgba_sha256": "0ae2926b2f31ea4d44e348f7c90470b173f84ec34aced44ba3b4f4aae2390cb8",
           "size_px": [
             15,
             10
@@ -66,7 +70,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "a84b65de3d317e9a89c4a675388857c9805ca71bd7ffedd74a806e1bc2742e81",
+          "rgba_sha256": "a428382ee47ccd774f52190fd090f5202d1dc11109918f68170070849a8c08c8",
           "size_px": [
             15,
             10
@@ -79,7 +83,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "6fa1f82bffa4fb11511d13cd409c7ef8905c61c94f598ddcaeeec0ae14e98b41",
+          "rgba_sha256": "f5fe04f486543accd53f280e51d88f3b347574b67483790064267e2234c6f634",
           "size_px": [
             15,
             10
@@ -92,28 +96,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "e19aa82940b284071e2d69deb5c441a27d7f238a9bd2eb2fe64196e0c19d2012",
+          "sha256": "5c76c9d1549d8dfc48be9f7d93b425cac006b4c71e3403c11183c66d31884062",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "7a5758055e64fdf2df02421a40cf06a0d4169982283623ca2de6f04204542114",
+          "sha256": "d4ef5a3503d472caec40057f63d336fe499731a5b7586fb9ab7da5532583d83b",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "9f6b27a1a28263bf91dcf202a31082b4e0e2c897415f28dc2104b1e9b325de40",
+          "sha256": "52349b200c3a59a601c2333290cb969658c96e45ff0182cd5a2e38453fd4777d",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "023e0b33bc74badbf9836984c2b49b1b8e261bd4e068f8fda8773169cbcd6f43",
+          "sha256": "bd5d483f98a86f3760f77768c09ffa9428c5b31fdc33b04dee7908f4170379b7",
           "size_px": [
             128,
             128
@@ -138,15 +142,19 @@
         0.24,
         0.04
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 9,
-      "model_blend_sha256": "11abee42e81bc1e8e496fe968875f980ee20888c55b7d01f6067ce68d37fd857",
-      "model_glb_sha256": "8b0ca86c7a5c0afc0f3c1f968f7c6073e60a5a6ef1cf394b7873cf5b12614f6e",
+      "model_blend_sha256": "7bb177dd8385cffbcaaba0e82accdcb5ea4d715b4b6d4b38ff4514921a38e165",
+      "model_glb_sha256": "0f32da42e2b69e566f1881aec61bf82f3655cbf14d7643178ce37ae065542293",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -155,7 +163,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "61a194ba166b2f3c1df5110039f69132b131373c6b2e828789bb941ddfd41090",
+          "rgba_sha256": "aabf6b53194d4ff3544644543b28f595fae1c1a6977bd5c907f571e945989b21",
           "size_px": [
             15,
             11
@@ -168,7 +176,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "16c43ebc7febcadc6fb1fc3b2c9a50f4ed4c65d56bd09f0115072466423f1a58",
+          "rgba_sha256": "ada03f9e8ce72657adcf93d1480ccd21fc3dbb7eb4f61e16eabd9a69f5e9c4ae",
           "size_px": [
             15,
             11
@@ -181,7 +189,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "4b475afa73a9aaa8be5f7c84e58f768396a7f622678dd3a29f233559ccdf82e7",
+          "rgba_sha256": "753e677053906571ef64b09e641775094acd0dd7dc3f5c3e71327d379fbaf7ed",
           "size_px": [
             15,
             11
@@ -194,7 +202,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "722167d0b75e7062e2273b3e24e6da63049adafaa3adbad150fa360ce376f82c",
+          "rgba_sha256": "d5ae5a9a004868c767c7668d962271b838cbd4d53e6f199f2e9a53406dd7e7e3",
           "size_px": [
             15,
             11
@@ -207,28 +215,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "8f1026795ee046c0d5400de880025e185699aac17f37716d1136066a4b357a01",
+          "sha256": "02779787359b64efd8055479b070ba5f09830a9e354ec66b3bba86eb963bdbf0",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "f139f744546220b3591f07b13dfa5adc645f71913c6be578ff7a6fd9ea8964f7",
+          "sha256": "c421077582997f0822c503b70d40e62ad89d6fae8316692dbc81f6a549831c76",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "057d146e27a1a92fc375c02cddec0bbe2fb0ac0d57f88def80c2161546e73940",
+          "sha256": "daf611328dc04d1495a9e2c2fdf68835e9d6120e1b862db23fff97828316d0db",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "039dfa5f756aaa78e75065d09270e09df40e9995b4748db5fe1fbccb34a6f676",
+          "sha256": "95602b53942374a986180fe7b8c508842ab1d9a2c9aef617e3afc2de417e6810",
           "size_px": [
             128,
             128
@@ -253,15 +261,19 @@
         0.32423,
         0.04386
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 9,
-      "model_blend_sha256": "d954a99cdfa15cc2268c7152882d87c0630957cd11fb3be5821b35ab0641b872",
-      "model_glb_sha256": "6b5801204af87f3f52d8be23ab7fd3b10eef1ffddf6f0abb2908c1dd537f6cdd",
+      "model_blend_sha256": "36f87757e63c97e725537f7a6fa6394683dda067d5a8cd76023e29f513bc8bdd",
+      "model_glb_sha256": "5dc94a3a9cf3b68c4a2428a0bed8690d1c308b4c647fca8b531239af47a89beb",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -270,7 +282,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "64918f32c15296b7f1c6a50398fefa41a23055a1e66d0806d20d5e1b58f7ccf6",
+          "rgba_sha256": "08c84f61769021b230e557ca281f4e643d061689a0ef2366c6c1c468889fe4b6",
           "size_px": [
             23,
             15
@@ -283,7 +295,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "ed54b141b8e899d7f93b17d54ae15cce86dd03d55dd9d0e2d27d8bd17a76110e",
+          "rgba_sha256": "3fbd06dd049ef792ee79900fee1dc93895fd63e414c11cb8acf4b427cf1b3019",
           "size_px": [
             23,
             15
@@ -296,7 +308,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "4fa827e07b734101a38f098c658c729fd2f7e1f84910077201b4d87d19c8e45e",
+          "rgba_sha256": "0dbb516f775807059dd1fa6006544809506e6c07759d94dceda49c9a0ed9e5ca",
           "size_px": [
             23,
             15
@@ -309,7 +321,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "f2ff9196ef688c97f7b59a9c10b20e0e5949592d90ae2d4f317a93887a2cc086",
+          "rgba_sha256": "66c876bb42f8f91a43fd4d911c0dd3c52e086ee60b00b1756dd4fb9d37ac9c86",
           "size_px": [
             23,
             15
@@ -322,28 +334,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "e8429e411498200261901a7b6f6764d6532bcecd301402ebb4b2f099a06e16d0",
+          "sha256": "a4575b7705a7bc32420cde77288f2273962c3b2c6f05d45ea9d8ff45204c5665",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "2912fc5d2a2ed8758d2f368c83dac4251e5be7ea6878e381cf8b4e7abef62612",
+          "sha256": "b736fae7f3535b97dad38e118383f5e43e255330496c7060c2af577a417c3c07",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "d87881b75c41cc6dd9bc2d87e50b27986789ea8b5d6fb896fb79653c614b3088",
+          "sha256": "109ee4e60fd16b99adaa368c24dce8d6d485153fc9effa52972e30a1b40ac8b5",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "e969fa1bbc477583df40d8db7bbe26fe6f901bdd6454634302b0f4493611b5ab",
+          "sha256": "ec221c58d8f10eae63f1f1a13729ce5327e653a413b16f0c39ac88dbd89b41fd",
           "size_px": [
             128,
             128
@@ -368,15 +380,19 @@
         0.44472,
         0.054
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 6,
-      "model_blend_sha256": "9e503c0fd01173d7f91c9fdb9ae225cee96304cde621767e6278497821087475",
-      "model_glb_sha256": "508a74d1eb92031d6d0dc764eed2887feec34f8571c326f8207345cb88c672bb",
+      "model_parts": 10,
+      "model_blend_sha256": "71209a5b640f7b2f89daff554c207842499f6f4027f6166bad0f2b6b415be018",
+      "model_glb_sha256": "6e59cd3298f0f3b288a3650a56daeb7308220f9d3c1ecdbcb1dd42434f9b623d",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -385,7 +401,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "9d40676d9d3e68d3af3bb71eb94460299d432456d898b9ee1e366b3957bc29c0",
+          "rgba_sha256": "043a9a75371022283e015a054e81b7609d5780a70355c4d8c4e6ae3129ef948c",
           "size_px": [
             38,
             23
@@ -398,7 +414,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "69f9b83f15ddfe7bab137d1f8c0e43106b8056d07874e15e34291a654d175fa0",
+          "rgba_sha256": "72d3df61332fd97e40a8670e27d9fbd70eaaf3dad714b8f23959a0f3b678482e",
           "size_px": [
             38,
             23
@@ -411,7 +427,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "5d700a79ed627c2f755cffca91366eabea2ebd591398a245f97a98c360c5ad97",
+          "rgba_sha256": "171adfadfb614b064e68d1641542a38d3dae827f610f91cb08967aae43594c7f",
           "size_px": [
             38,
             23
@@ -424,7 +440,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "7920736b1eaefe890add5bff6cc71b32cff8b556bf1ed0c7f33407b6cbe31b52",
+          "rgba_sha256": "1a3ebc07b8d845acc3bab3ba53a8ee59544d40c1228911f6f6ee19c3465a42d6",
           "size_px": [
             38,
             23
@@ -437,28 +453,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "ddd747c3f08514dac7c06ab63f0ae2881c9b38eea215adbaed030f6603909fee",
+          "sha256": "1336ef60dfa0f80adabe332ce1ebd858c4954e3d922b21d268f158f51c815f7f",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "c0305395d8eeab49d066718a6cb8cc68382c9642fa3f491dc7e36048ee026804",
+          "sha256": "9fb8cd3ccb60c6444924ee39d52cf4597b58d03e6180a1d5f17e1ae833222cbc",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "03850a273cf1f700afc6e2c229a3a5ecacd58e280bdca9cf35a4bb6356a72ab7",
+          "sha256": "756fe32e7c3856911753cd86fcbcc771622c05929a189defe5eaf0a166657d53",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "64f0d7b9c17bde07eb24f6effcaca6c1d1605f82ac2518df05eb3b4f7628e211",
+          "sha256": "c518c2dbd7b8a8982f30413fdd4bf45be95378a97cb33a6326d28bd7e0e40c6b",
           "size_px": [
             128,
             128
@@ -483,15 +499,19 @@
         0.72078,
         0.03763
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
       "model_parts": 6,
-      "model_blend_sha256": "92abd98a62aba068b6332ba3d94231065efa6d2089c66ef7fa2ba86691b27730",
-      "model_glb_sha256": "c6a1cb53d75abc42b9ef8c9ea417006a787e4a156e6301de85a8a0d0db43ecd2",
+      "model_blend_sha256": "c3de7788f995a0ea2acfdba9977b352f9a7dba08c7455ab7fd2c0fe5ec95e6a3",
+      "model_glb_sha256": "ec963cb9c013044da811d6a8b907e7c8bec49e815c762aef58ac2284f47753fa",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -500,7 +520,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "18b38445c23f15faf0c6a26ea8cf326ad7e0a0c93c19d2983e1ff70c2a7250b9",
+          "rgba_sha256": "1afd6d1329d958d5520d426427a8094c78a73f2fd7d2b16f225be5c5754013e7",
           "size_px": [
             39,
             23
@@ -513,7 +533,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "e956e9050fd11489a678990422ed14c05baf7dbad2cc085e991a433a1b686f1a",
+          "rgba_sha256": "fa409e0877a9e497b1327a1eaab58ba9a3c3b162a6690a0783da90ca9d978c56",
           "size_px": [
             39,
             23
@@ -526,7 +546,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "a12190816e89c45d12a972b079c5248662563051dd3bc1f6145e1092e0227ec4",
+          "rgba_sha256": "b00283640fafbcdffb83d8d99eafdb61fa3bb120fa284171d89faf864d5eddcd",
           "size_px": [
             39,
             23
@@ -539,7 +559,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "3b827b3feba56146c4e3b144f6bb6ffeabe5c0f7f9c3b86b4767ca195f7b99bf",
+          "rgba_sha256": "c5cecbde651a3a697324cb459cc40e0424cce78d9147eef62e4538d9451dde34",
           "size_px": [
             39,
             23
@@ -552,28 +572,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "934bacfc63fce9575edd14fe7358930d5c5efda8010b869d5d9e2c10b70835ba",
+          "sha256": "715fb1f9de6f355a33c43a9346ac4e25f7525c2864700347de8b923d8734b294",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "49c3582aefc2cbc2ce94cad8f740c60a77636f16de5bfe5b67091980d345e722",
+          "sha256": "7d33c618fddf6090e571685df36aeb2d350c63c68441092f016c312458edf1fc",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "db2baba8a8cc9f63fd143a72a45ddc14617d2ec076d54804eae037c18db2ddb6",
+          "sha256": "6a2cd3e27b50ba3329a641cb91897836504c5e404fe2522c7495852aa12c15a1",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "d92c7452fe31ac382bfe3755052ebec0d448980814360dd9dd186159a93e1db1",
+          "sha256": "fe34fe07486076c2869381c57b4a0d0b9feb43cc71fd7177ecf19d4f6f89ca50",
           "size_px": [
             128,
             128
@@ -598,15 +618,19 @@
         0.29149,
         0.0235
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 10,
-      "model_blend_sha256": "93314d8fd6cece3c72ae2b8f7a2561a551286adee266651a825e2acd69c46cba",
-      "model_glb_sha256": "0157ad23f73d341743f90b567f4a5496b852ea85662436bf4594d9ff86096fd9",
+      "model_parts": 13,
+      "model_blend_sha256": "eb5b45089d59c0e344ebeacdf7fcdef35faa6c11583aac53663c9a0bbd5a05d0",
+      "model_glb_sha256": "b42eb098d0b0c3db73381d2f20236f4fc33e832ba5b327f717a2852c6c2ba5e3",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -615,7 +639,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "de9b33e545c4d33a78e3cb92e8a5f5710ba074189bf4c34a024d86b06bebd9a6",
+          "rgba_sha256": "74f4013a192868595e9c0a4acf74d76e6f36b295d4d598762caaf6f558bb6df6",
           "size_px": [
             20,
             13
@@ -628,7 +652,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "186d91fb59272670c3245a8e1cbae56d5dcf60bb284303fe8d7915c2f4126be3",
+          "rgba_sha256": "bf15b2b8d12a098b90bb4ab47284d3b0519b9fcdea564550f0f50338d5860156",
           "size_px": [
             20,
             13
@@ -641,7 +665,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "64bdcbbcb5982b769b75d652a4fcf086a11cda6646d243f50f36d5bd1c48a4d1",
+          "rgba_sha256": "6cf62926089237ee9730408777d64c73f854fd9a665e9a7d878f97f1eb95ab21",
           "size_px": [
             20,
             13
@@ -654,7 +678,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "1aedc89e9f4a342eca077a19de30e6cf91caf93f50f863b4691e9f906c022b0e",
+          "rgba_sha256": "a31b36617ed4bb08706597128d47e69fc6da8e7df9914a6bda2a890cc091305f",
           "size_px": [
             20,
             13
@@ -667,28 +691,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "2f27b0653f779da03c2311d8f9ed5809eff467a7c260020dc59bd0f951b19238",
+          "sha256": "026c3fa9ef056d75c6ae6ad36b9f1f1b9ece11af2d2d84028fe5988b6b9ca755",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "8bf899e2f7a7588a7b6a2c81ad81595e436d56327b73cff0c98d3830ea8a0350",
+          "sha256": "40f7a74f67b82a0d135defa3b92518807d5b74abbc5fad3e61debadcf203e696",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "e41d4a7c5da6c963913297db3fb62e3f4fc0c41f836c438daf8861c3a38e65da",
+          "sha256": "6881ba495a2385a225cffd2eaf207091d8a10aca53a4806a54d11dcca9fc5669",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "f29edc7e2669da08e3d63a465c5131b1da1cfa28e9caa284ab2cc076195451d4",
+          "sha256": "9d6be286740ece6219faac3540bc3c9978ae209ecbcb907dbcba856888bbf7cb",
           "size_px": [
             128,
             128
@@ -713,15 +737,19 @@
         0.301,
         0.0632
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 12,
-      "model_blend_sha256": "e30b80d9c1197ca50463c5ad73bd25c9115489d73153fe417ba815771241cff5",
-      "model_glb_sha256": "21bd73f6cb100c1e34df193aa9d212cc143277bc3ebfd41b1122ecf5ab332888",
+      "model_parts": 13,
+      "model_blend_sha256": "195d1d8d92b2306796b9f4c857fe99a1b0fec74afe9973176171334d7802986d",
+      "model_glb_sha256": "ede0f4fa13c43b7e8075a70c66b3dcf096dacd2f335cbb19a4dbea7f8865dbb8",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -730,7 +758,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "41561e86c892967a85e3c364710c562dadd458a37367f9bdfc02aa3ffc8650d5",
+          "rgba_sha256": "8650aaaf0030b95cf4e2db614b7ba30ecd5f3fb89424ebf6ce3328713a49fa47",
           "size_px": [
             18,
             13
@@ -743,7 +771,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "af91c49a928f32a647dc86da620f7f9a05bb8833309f183ed2ce32d7b95ff219",
+          "rgba_sha256": "78a3af72e619aabb3b075e2edfe609ce0816b440a779f00ce511053f25bc5bca",
           "size_px": [
             18,
             13
@@ -756,7 +784,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "d9a567c9ad9ec411005de0d94615ef43c46cf1a53fe1aec1c58b2a7f13e441b5",
+          "rgba_sha256": "32220fbeb2cc0b9e8ed649424e61370c0614b7cd225dd493e6c482cb576cef84",
           "size_px": [
             18,
             13
@@ -769,7 +797,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "24b839608ba92ad503d10d4c8bfd66e33c15a13d33030ca004b3f0a39b298cb2",
+          "rgba_sha256": "7f79cb5d07532bfdfdb572787b03216bf8fa951a099919036b7d6b1c45c82ed0",
           "size_px": [
             18,
             13
@@ -782,28 +810,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "ce8ceb4d98ce550f5fc1c41847635b63b34527cad4ffccf0806cd8c927f33e09",
+          "sha256": "6d8d6cc811972305aa8d4a0a9a817c423a946ff07bd5f1313e6f7ccaaceb4a31",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "491a6b77a95f10f7a47fe345295ce012f157ace39f23875064748a9d3968485f",
+          "sha256": "df5fc469d9b265a44761ad3dd48de8f420dd751e2a843ca374db8e3db2f01f90",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "46c6a06fac8fa1a85c9c596a5df4e33171ee4205b8ceb2273014a5d142062246",
+          "sha256": "9ee21e8574156298c424b3cfffb2e6c6d91f0946adbcac2dd0781d4a2c246652",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "c1f1393829ccf144c4a8ce446bb2dbed0ccb39b1b7cd1017d764c0f22482047a",
+          "sha256": "ca121d637f1bb56d2d12015cd34299600588d8ec7598e7ecc875d096e73b078e",
           "size_px": [
             128,
             128
@@ -824,19 +852,23 @@
         0.035
       ],
       "actual_bounds_m": [
-        0.15524,
-        0.47693,
-        0.02993
+        0.14697,
+        0.48419,
+        0.02987
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 15,
-      "model_blend_sha256": "aea87187feb0ddce7b7c4e888f5cef08bb0d7ae1862bafd003213d0544f5d9ed",
-      "model_glb_sha256": "c02cb8d0443769b70bddbd77bed2c93f950ffe4f824bb8e3f2952e711a450f66",
+      "model_parts": 11,
+      "model_blend_sha256": "4dd647dfc8e6869537b8b2f2387841ec6709658e90a7c7e98c2bc8c716088380",
+      "model_glb_sha256": "8efcef26ef1a4d47b3e9fc51e1a4ee555f5ec9a5d89f385e0bc1139daf8d33ab",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -845,80 +877,80 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "84bf1a3e81a292ff53e978e6c3611f6506a6b76aa6a0778d0fa68fad3236742f",
+          "rgba_sha256": "58482a5dbfea97e018f06c15addf94d55b5b69f60060730276632d5534a31127",
           "size_px": [
             29,
-            18
+            17
           ],
           "ground_anchor_px": [
-            14.5,
-            10.75
+            14.25,
+            10.5
           ]
         },
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "e21e8f936ff516f7a299d259927cc57e7f034fb684999f20a3b3cf15a051b63d",
+          "rgba_sha256": "78f98ca9685f2d372950d620dcba9760956ade85d99ec5c85d453eaedc291710",
           "size_px": [
             29,
-            18
+            17
           ],
           "ground_anchor_px": [
-            14.5,
-            10.75
+            14.25,
+            10.5
           ]
         },
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "abc9049d75e108f5317af1a9fbb2017fa287d64db2ef59bd2043bde8287030cc",
+          "rgba_sha256": "8dce2545f12e037d8f38b409415d5edb86bbfc10b27213c4a64fa7847989b420",
           "size_px": [
             29,
-            18
+            17
           ],
           "ground_anchor_px": [
-            14.5,
-            10.75
+            14.25,
+            10.5
           ]
         },
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "9e394562b3c28fed9daa8b84c109fc075ce6ce26b1f4f22a1dc8599b51aa1bae",
+          "rgba_sha256": "68d3263543e36fae50548ecf92afdf8a6cd48d9714650b4735c237ec9a768b81",
           "size_px": [
             29,
-            18
+            17
           ],
           "ground_anchor_px": [
-            14.5,
-            10.75
+            14.25,
+            10.5
           ]
         }
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "3071e62a913812b8c25657b4b55a9fa7326337186e9b1992d1182e5ba62971d5",
+          "sha256": "a850226977d4ef01326722c8abc5b442860f789f50de9ab46c4f4348d6538bef",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "2090bfe6cd4d007c3291666390569a16a8aa910b6cbb92dd055a5495966ec912",
+          "sha256": "4b325d8ff1b5a28e9cf2d2be5d54b53f12781fff1611019425a64e05935271a3",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "f96bfc49b5e0c1ed39e550581afe322adf4bc6ba4929d86077c64c48392b76e5",
+          "sha256": "5534b93cd661e225be6603f65663a07c32f9a5a3ff867546d0685bfbea7341d3",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "c7f5d471f47928cfc0a3d5af75e192eea4a480a0249a7046b3c0a4a9ebad410d",
+          "sha256": "9b99e6af65a90f21cbe60ada1b955815cd7fd11257d500baf98fce97230cf8dd",
           "size_px": [
             128,
             128
@@ -943,15 +975,19 @@
         0.30184,
         0.031
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 6,
-      "model_blend_sha256": "7b909d75090fc99787f5ac31c046fb64b4393d4263d1215338bfbbc150a7bb6e",
-      "model_glb_sha256": "9bf136b2d2a2245e7c6caa1e1ef27297ace705cdbfeb03f1a5dbf70aa9edf292",
+      "model_parts": 8,
+      "model_blend_sha256": "f0ab9d76519f9acbdeed9a114f6fb64f1acfc2cb80195701c393d60fa47d8bcf",
+      "model_glb_sha256": "844bedd5a5850dd15517140686aa5a2288c462ee870eccbb6f0a3126fb00aa13",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -960,7 +996,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "eeade7f5662411523dbb99f826a97d3acfdea1365286e06e78a40f057e1b3d5f",
+          "rgba_sha256": "e9ea7d2328e3da23cc7a31f759643aec9300abd98299e6b25acc77c18ac1fe34",
           "size_px": [
             18,
             12
@@ -973,7 +1009,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "4845f33d62d7729f75e5f2f6e32e7fdba6c08a6fcd53d254db4845d8486eebd4",
+          "rgba_sha256": "b86ba208dfae877f5db80383e9367e227c2185090098b8b40b5ddb7750569f58",
           "size_px": [
             18,
             12
@@ -986,7 +1022,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "6d054f7a7eee0ddeb48e7e4ee3fdf60e2ac9ee981dc87b0b336b684791a440d1",
+          "rgba_sha256": "2690c655a1053e1560eee5e15bcb5fa91dec364bc6eb0801e4539fb38ea09804",
           "size_px": [
             18,
             12
@@ -999,7 +1035,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "a6acf967ed76ba69b59ce823f3827f2c7e67aab8bb6163b3619ca0684a165407",
+          "rgba_sha256": "c1167b160665e3a12053bb5e785bb7696250eccc038d4b8a5d031f5f753a6a46",
           "size_px": [
             18,
             12
@@ -1012,28 +1048,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "e2f6edbca38a7ed720f39e5c7eaa7ee31b440eb035f1436b5abd23f4885ca435",
+          "sha256": "599ddee65c1c7ed2ca5d43e106e2d10921db0a3f9664d45ef9dae8bc6aed2767",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "caef8dec0583cbcf22b0a67cdeafd3bf12a6efdd406bcd10dcaad2f99629d847",
+          "sha256": "5364ebd0385a6ea52c38e70d36cff6029c61ab7308aac4fd259ce734d50fdc4e",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "7c35fce5a3f8c19f8bc2eb49ae78d5b428c781a16fd7cc1a303975b4ad43d3ca",
+          "sha256": "527505d79f91b422d3cdfe2fe2da814984d947c70243d6e1b241424d65da5803",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "c27c0c26358d4cf977ccc4c93d8f97e6a169a4f7a45ca66b9c53e0c15dc486a0",
+          "sha256": "1b998d3a93c33f7f3615d7cbf5390afe433ce166001f6e46ecd899549670846f",
           "size_px": [
             128,
             128
@@ -1058,15 +1094,19 @@
         1.02879,
         0.036
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 7,
-      "model_blend_sha256": "467dc43e373057a4eabfc2b08530d9008aff29ef93aba5fcfadac9f76575c51f",
-      "model_glb_sha256": "0953ccb2289714822d5eff68d6b115e22fe5f29d61f202351276bd8521a6de4a",
+      "model_parts": 10,
+      "model_blend_sha256": "2b0ab3deee2d17e0d42316a66ddb64fdeda90902ad69fc0b09a203b59ac4940c",
+      "model_glb_sha256": "b3e1b6ab629983039bac726a7934547a807b10ee9e68455ee7e01f47c96d4232",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -1075,7 +1115,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "1efa11d91a2ae34b3f78566cb6f1579681dba87d474c094caa665ab8343e25e7",
+          "rgba_sha256": "1a8fd9d94ecc8f861b52b8eb9799e2cecb1aa016bb5482ffc96c2ebba6bb6a87",
           "size_px": [
             50,
             28
@@ -1088,7 +1128,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "5c61c4c4e547d9b9f987da0ab8c37400a4ba7017403c277a1c33d2623a081a7e",
+          "rgba_sha256": "d800ec341b1eba6d4c7c97a929b7ca482569c9952db63269908849e8c9d9d5d2",
           "size_px": [
             50,
             28
@@ -1101,7 +1141,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "ef2420e92d26c291d29ae1c2d1db0b1b62bfe752b29703fada71c07c329157ca",
+          "rgba_sha256": "36d8415ed7a28961580ed4a039b4ef9a6320fb50f58743b266650b7f4c3a69a9",
           "size_px": [
             50,
             28
@@ -1114,7 +1154,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "b35799908f8977460848404806b68246449d0f4317571ea3fc268486b503646c",
+          "rgba_sha256": "efc664f926e6d6c6e0d9a37ad7a062c3c9c571d738137e6754cf9c4550ce752c",
           "size_px": [
             50,
             28
@@ -1127,28 +1167,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "1f8df1a89506570889fb7f868b8b07250e65daf0539381045c1835fc584f7940",
+          "sha256": "96534f42e21e01c6998b2b863e699987dce5422b9bc5ef7d5270a495ff8c3014",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "5e944b70692242248bb4c96a0f921f4a23a1f10f6bca41e5ce3a622011fc9aa5",
+          "sha256": "d202151d004f79e9ad4944db69c63d0ae4b7c86b2d6131818527f049323b59b8",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "857b0579756a813ccfa42ac7eca431c83be803cf5b6f8c7bf38a97beba1b18b7",
+          "sha256": "410c24f6cfa5cffc49c820b106b184a3235de86f4be193efc4fde844891fb100",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "16b999efa8af61c9c9591cfce0bafafffe29aa0eaca39fd60fbbd238cf1e323c",
+          "sha256": "1ee278fc3f8c7336cdb7652402defe82b3a974ffddf24b8413105d513d252421",
           "size_px": [
             128,
             128
@@ -1173,15 +1213,19 @@
         0.56183,
         0.03376
       ],
-      "source_recipe_sha256": "8d0c7eeb8a9c2a844415ebeb39c83980a91242314f23bb8cf1db4096237f41fd",
+      "source_recipe_sha256": "f8f8d90171fd6bec98b1241b2b1f5cdbc7f9c26b857aa5911706577823f51b12",
+      "source_builder_sha256": "aac5196c58d9956363ac17d5bf1e01501c81913ff3d7ea03d0337f1a735a5e47",
       "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "material_status": "RUGGED_PROCEDURAL_PBR_CANDIDATE_NOT_FOUNDER_APPROVED",
+      "material_recipe": "WORN_FORGED_IRON_GROUND_EDGE_AXIAL_HARDWOOD_CHIPPED_ENAMEL_V3",
+      "art_reference": "2026-11-08 founder-supplied rugged hand-tool concept image (visual brief only; no texture sampling)",
       "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
       "founder_golden_approved": false,
       "godot_integrated": false,
       "iphone_tested": false,
-      "model_parts": 6,
-      "model_blend_sha256": "6e3da8b296d43c3d1b6e3fd7add9c220d72bd4300daee92733caf3c6e84f9640",
-      "model_glb_sha256": "48432caf3bbaccc483843809be7a7c7dc020ca66da06375b6e6e30cec386c43e",
+      "model_parts": 9,
+      "model_blend_sha256": "2ab79a34cd63e42b9bbb26e1ae19dee24368a3cb6529a3d4defdfb4317b7ca66",
+      "model_glb_sha256": "f29cf8948c5e4f90e9b3ae419c412bac0b81903915ebfe90db4eea73e9c50e2c",
       "world_camera_ortho": 4.525483399593904,
       "world_camera_pixel_source": 1024,
       "render_samples": 6,
@@ -1190,7 +1234,7 @@
         {
           "angle_index": 0,
           "path": "ground_00.png",
-          "rgba_sha256": "de22bd7d66e1183036e0778d60f82df5d45482f122d2f294f19ab83b134628d7",
+          "rgba_sha256": "e501f57fd879fe3ece3b59f7d0a2c3b44ce3c73afa0b3d447c622867a017f1d7",
           "size_px": [
             29,
             17
@@ -1203,7 +1247,7 @@
         {
           "angle_index": 1,
           "path": "ground_01.png",
-          "rgba_sha256": "134bfb478017ffb029187075c2b0cc1a1e65e13f80351aea4f3cc42c5d5400b5",
+          "rgba_sha256": "ba8a0cf609ada985505c71e75c8f2d96cc5fe70cee24b9ecdb5d99a822d2a541",
           "size_px": [
             29,
             17
@@ -1216,7 +1260,7 @@
         {
           "angle_index": 2,
           "path": "ground_02.png",
-          "rgba_sha256": "3c9a95bcbc6c846d95d439802a7a91e5f36eaf9968ca2b6f603173ddf48c16a1",
+          "rgba_sha256": "ad041e7f08b8b01354f5236c9167041290c9a509b9ae4f04d11a3fa8b7fd4811",
           "size_px": [
             29,
             17
@@ -1229,7 +1273,7 @@
         {
           "angle_index": 3,
           "path": "ground_03.png",
-          "rgba_sha256": "840d4f3e208bcc479ccfc949b49ee77c76f792f6955e3370b46acd3774b81a23",
+          "rgba_sha256": "032229ad20a8545c81d96e1089329090dda00f86a58407927f5f477a803434df",
           "size_px": [
             29,
             17
@@ -1242,28 +1286,28 @@
       ],
       "inventory_icons": {
         "32": {
-          "sha256": "89069f02b06d3764ba75a79ff7d59141afb1436ffedfa6cb0c41071e3fca85f0",
+          "sha256": "3b63b3042c950ccf0f5fa374e18bcc5bf53fec05a761e540c5452d861ff933db",
           "size_px": [
             32,
             32
           ]
         },
         "48": {
-          "sha256": "aaa02b75f41ca7c67364c97aebb4f497aa55e5257179245fc0858769d9ba7c12",
+          "sha256": "08bb1587dc30b0ee28290294ed6932679237f7f3a28f16094868388c49a6c854",
           "size_px": [
             48,
             48
           ]
         },
         "64": {
-          "sha256": "5606e947ad13c454d35cdb31db321c915959e42dca14688730ad945b72309f53",
+          "sha256": "5784799c0879bcf18e8eedc94dffea75345bc7d691a379f760b4176044d09ba4",
           "size_px": [
             64,
             64
           ]
         },
         "128": {
-          "sha256": "88fdfad32d1f072247f154a137a4d68c6b64fc29d32a96d86156b45ced93ad0b",
+          "sha256": "32b2cb9bc04cabe6ade6f1a921291a3b379ccfa9d7d39c5591765fc20feb64ed",
           "size_px": [
             128,
             128
