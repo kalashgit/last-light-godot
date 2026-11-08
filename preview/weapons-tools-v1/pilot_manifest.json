@@ -1,0 +1,1163 @@
+{
+  "schema": 1,
+  "unique_3d_masters": 10,
+  "world_rgba_frames": 40,
+  "original_inventory_icons": 40,
+  "founder_approved": 0,
+  "godot_integrated": 0,
+  "iphone_tested": 0,
+  "art_standard": "LAST_LIGHT_GROUNDED_PIXEL_REALISM_CANDIDATE",
+  "preview": "weapons_tools_10_contact_sheet.png",
+  "items": [
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_awl",
+      "archetype": "awl",
+      "physical_spec_m": [
+        0.035,
+        0.23,
+        0.038
+      ],
+      "actual_bounds_m": [
+        0.034,
+        0.225,
+        0.03151
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 3,
+      "model_blend_sha256": "88e1b89e58aa5093f9b3d8a5ee2c2fcf7273314687b34571d15ab186e5c7bcfc",
+      "model_glb_sha256": "250957a58db6c866e2a4291f0209749f3b7fb0510223ce9f3e62fc6b9fe07df7",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "5271c996087818bd7c1426fdf66d923738d421c3b0ef8c05019998e2b9ae2e00",
+          "size_px": [
+            15,
+            10
+          ],
+          "ground_anchor_px": [
+            7.25,
+            7.0
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "9badcb1bd104609a8dab52a20874397e6278261ad0f56250bf0dfad02d39e517",
+          "size_px": [
+            15,
+            10
+          ],
+          "ground_anchor_px": [
+            7.25,
+            7.0
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "4fa725f3415d45f3bc60b2c26641db5abb763ac3c4c07cbdc7f048ac238d8c31",
+          "size_px": [
+            15,
+            10
+          ],
+          "ground_anchor_px": [
+            7.25,
+            7.0
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "be2796fc635d62d8a9f9487d839959a231b200e937390396585d6571e52f4155",
+          "size_px": [
+            15,
+            10
+          ],
+          "ground_anchor_px": [
+            7.25,
+            7.0
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "fdb8d06e5ea44be6f7f817817fd2b44b58d2766f3e47b1be32c5fe6cb13bb9ec",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "55fcca95a4784eeb7152f2bddc7dc1164a08c6eb15df7347c563206548a57fb1",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "a89a3f2201222f8900f4a14b18c7be5f51da5ab5be2cdbbfb158a08804bf03d2",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "f7f4e28d53008557076008e527f3b772fefd9d0496568d716f883eab6f7f013c",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_cross_screwdriver",
+      "archetype": "screwdriver",
+      "physical_spec_m": [
+        0.042,
+        0.24,
+        0.038
+      ],
+      "actual_bounds_m": [
+        0.04,
+        0.24,
+        0.04
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 6,
+      "model_blend_sha256": "fd5138df0e2404c4c92ba1771caddadf219596918101e2c6dc121ad1ecb41765",
+      "model_glb_sha256": "71215f035f37d080ebeb4250efa99c330ac2f506962e7bb4f6d705a3e9f4fedb",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "db591da63a6340ef102968b99c339fec3684bb4743e11e507a1c451d021f6a06",
+          "size_px": [
+            15,
+            11
+          ],
+          "ground_anchor_px": [
+            7.5,
+            7.25
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "e7ce12a8b59f194a3faa313510caf60b16df6f054379aabec4d0dbcf06222f2c",
+          "size_px": [
+            15,
+            11
+          ],
+          "ground_anchor_px": [
+            7.5,
+            7.25
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "2ab1e91609b2a1a26f2dbb48d08957b3f244d685a803958b25058a0dc0ccda67",
+          "size_px": [
+            15,
+            11
+          ],
+          "ground_anchor_px": [
+            7.5,
+            7.25
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "e17207309bd168d89ef90efadb697f6d8d29c16925baa7acb1c35bf3f914f9dd",
+          "size_px": [
+            15,
+            11
+          ],
+          "ground_anchor_px": [
+            7.5,
+            7.25
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "c6898b374414d855135c5a2556182a83bd93084af9bbc62f33448eae46d38a82",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "fe54a1394bfa7a86d012cf581e81a87acc8dcc2cd86826295e735c24db2116a1",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "21d77eb80afa228014a79b4654ef06f9eb02c1ff738dc69cc90cf03dfc68e7d4",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "e265e7785e16b82df2ef43f3b29564c43f938870902ed3f4d7c3eca4c8c53638",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_claw_hammer",
+      "archetype": "hammer",
+      "physical_spec_m": [
+        0.14,
+        0.34,
+        0.055
+      ],
+      "actual_bounds_m": [
+        0.17103,
+        0.32423,
+        0.04386
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 9,
+      "model_blend_sha256": "8b6b3832b3d1fe57a2115cd0d87836e59cc259c697dcc41c4f825c9d9962ff64",
+      "model_glb_sha256": "d77b74f441304b53ca8a37496f8fd9a8cc3bc23cf5e1177e34aa8b70a21cac3c",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "64918f32c15296b7f1c6a50398fefa41a23055a1e66d0806d20d5e1b58f7ccf6",
+          "size_px": [
+            23,
+            15
+          ],
+          "ground_anchor_px": [
+            11.25,
+            9.25
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "ed54b141b8e899d7f93b17d54ae15cce86dd03d55dd9d0e2d27d8bd17a76110e",
+          "size_px": [
+            23,
+            15
+          ],
+          "ground_anchor_px": [
+            11.25,
+            9.25
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "4fa827e07b734101a38f098c658c729fd2f7e1f84910077201b4d87d19c8e45e",
+          "size_px": [
+            23,
+            15
+          ],
+          "ground_anchor_px": [
+            11.25,
+            9.25
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "f2ff9196ef688c97f7b59a9c10b20e0e5949592d90ae2d4f317a93887a2cc086",
+          "size_px": [
+            23,
+            15
+          ],
+          "ground_anchor_px": [
+            11.25,
+            9.25
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "e8429e411498200261901a7b6f6764d6532bcecd301402ebb4b2f099a06e16d0",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "2912fc5d2a2ed8758d2f368c83dac4251e5be7ea6878e381cf8b4e7abef62612",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "d87881b75c41cc6dd9bc2d87e50b27986789ea8b5d6fb896fb79653c614b3088",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "e969fa1bbc477583df40d8db7bbe26fe6f901bdd6454634302b0f4493611b5ab",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_hatchet",
+      "archetype": "hatchet",
+      "physical_spec_m": [
+        0.25,
+        0.43,
+        0.065
+      ],
+      "actual_bounds_m": [
+        0.25397,
+        0.444,
+        0.05793
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 6,
+      "model_blend_sha256": "a7d8aa25ec0e45f205a9add6201f2e66376aa9bf2def55272e41b71a8c82f74e",
+      "model_glb_sha256": "c50502dfa29f5db87dc029c7b55e4655bd731b7d3a1da34ff3f41b55c6d8de31",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "266f77c7e791e3a0f17be687496c6a81c626f19548c0a4825d1ceaa3930eaca1",
+          "size_px": [
+            39,
+            23
+          ],
+          "ground_anchor_px": [
+            19.25,
+            13.25
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "311b5e3b0ee6bfa3ad087b94f5b1e02f624f2a63091f31ff722c33aa99575cb0",
+          "size_px": [
+            39,
+            23
+          ],
+          "ground_anchor_px": [
+            19.25,
+            13.25
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "637b8e0daef1b22b9d395a5e00b8ee189eaa052b7312010b30ddd1ff5b5a054d",
+          "size_px": [
+            39,
+            23
+          ],
+          "ground_anchor_px": [
+            19.25,
+            13.25
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "fdcf5df2b2025354652e089732894e113c7df265a27bfb09f03013308c750e86",
+          "size_px": [
+            39,
+            23
+          ],
+          "ground_anchor_px": [
+            19.25,
+            13.25
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "920cdc93d0c1442eea687ce849008d025a536b4e626a9844604efede573877d9",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "2385938c2323eb9324c63f3b5e28cbcec64af28c6ddd1a802d771b8fc2953f49",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "dc6d95c2185599e30b06cb7da3c2bc266d4330a089a37d9b9d0ef06131ccfcd0",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "794567b08a8d82b604367b1891ea397fadde18f750de4a44d37be9c918de4c7a",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_crowbar",
+      "archetype": "crowbar",
+      "physical_spec_m": [
+        0.11,
+        0.72,
+        0.045
+      ],
+      "actual_bounds_m": [
+        0.13573,
+        0.72299,
+        0.03697
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 6,
+      "model_blend_sha256": "4202c377d302fe03bac06144638467082bf3b2d4016e3569a6c8ee5fd9731804",
+      "model_glb_sha256": "7448bd4adc9b9c30dcf5cfc042505a708f6f81c8cdecfa53297026f4632f3067",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "e1d8927c09d4a70caedfddf2cc5a644787e48fafaa5c5fe14a4d87df88f9db34",
+          "size_px": [
+            38,
+            23
+          ],
+          "ground_anchor_px": [
+            19.0,
+            12.75
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "ee35577bbe090e95292eb356c233e600e314c06cd69520b20653e3d3e0337658",
+          "size_px": [
+            38,
+            23
+          ],
+          "ground_anchor_px": [
+            19.0,
+            12.75
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "c10bf35de7808105ae7a01e0c8a117a7643a4a65a57433fe77bc4f42a2512d5f",
+          "size_px": [
+            38,
+            23
+          ],
+          "ground_anchor_px": [
+            19.0,
+            12.75
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "e5e511ee44b18fbbf3252e8e5ba34f733f0ad134db95446c5112092917d7b887",
+          "size_px": [
+            38,
+            23
+          ],
+          "ground_anchor_px": [
+            19.0,
+            12.75
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "86f08c14c9086c10247e98304fc12af73d7333924a954f7b10ad2e641254a7fe",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "05b14e73c4f2dcdba83368c7cb4d96770639db744287052946cd40c4b5dc132a",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "5fbe4687a7730be32b19d4a7d16c1147900b5c05ef794e4a44c29dcf810ac26b",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "58407ff54cca5a557410946f0302cfe4917dff9360c1ae8d53bedd0fd98529dd",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_adjustable_wrench",
+      "archetype": "wrench",
+      "physical_spec_m": [
+        0.09,
+        0.27,
+        0.026
+      ],
+      "actual_bounds_m": [
+        0.12326,
+        0.28574,
+        0.036
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 6,
+      "model_blend_sha256": "da49021f6db6fb1469c022c75a5644ca94b76ca1dd82513dd2963c6f8d4151c9",
+      "model_glb_sha256": "dbf4d26a3947b67bbbb22df11c7dc86e19f955347477daa9e94a0833755ca821",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "dc5d50cbf69bdc621c15ada62edcfc93912b1e40b9d7a1e35b87428a4539563b",
+          "size_px": [
+            21,
+            14
+          ],
+          "ground_anchor_px": [
+            10.25,
+            8.5
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "0209793227749d58abb02034f1e5d394119db75b36d240bc27ed3d8f936fc017",
+          "size_px": [
+            21,
+            14
+          ],
+          "ground_anchor_px": [
+            10.25,
+            8.5
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "bf4e7d955c2f4cf67398b0205b7b10225834d94a7cc465efd6fb26aad2cf9c11",
+          "size_px": [
+            21,
+            14
+          ],
+          "ground_anchor_px": [
+            10.25,
+            8.5
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "dc797548ab1d8223d0e90d635be18f60a1a172036dd0f83b8d1e20a2405ab692",
+          "size_px": [
+            21,
+            14
+          ],
+          "ground_anchor_px": [
+            10.25,
+            8.5
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "f537635caf3ffbc8e5653cec4b9ee70fbc0b02325680e3af4130b4614f102537",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "a3b543e2d6f0e7897c013047c6d53ee92b3d844c28573be3e8f7098b8a0975cd",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "a54024a4c283f278e6560e1deddf065d8f8f4335f3deb10f4d838a3cf0510f83",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "747179d9f7ce7a63e876bd37c785eac9ef89fcec246b894de1e75f732a0aee22",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_hand_saw",
+      "archetype": "saw",
+      "physical_spec_m": [
+        0.13,
+        0.47,
+        0.035
+      ],
+      "actual_bounds_m": [
+        0.13907,
+        0.47977,
+        0.02987
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 9,
+      "model_blend_sha256": "d00a01b48a0c3a5008389fc7506594d371426b78c4036aad78966d1759dc0dc1",
+      "model_glb_sha256": "4a6118cbde9a811d6b7e80908f69e07a4f217525ff628519498e6c2e48f30f3c",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "8b54ea3aff82152a91d66088ffc7f2c5c3468324ed71b3c47e00bfe06466d6db",
+          "size_px": [
+            29,
+            18
+          ],
+          "ground_anchor_px": [
+            14.25,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "b1851782753a52b91d0f11989b70ba14385afe9bf5b963d078077bb3103ad5f0",
+          "size_px": [
+            29,
+            18
+          ],
+          "ground_anchor_px": [
+            14.25,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "47c491e5fafcdfc595437ccff68730d624b8a8dffa593552d40ba368c3683611",
+          "size_px": [
+            29,
+            18
+          ],
+          "ground_anchor_px": [
+            14.25,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "3aa591b295881084b5e0e6e367282464801784cf9b7bc54d80cf28701d07a422",
+          "size_px": [
+            29,
+            18
+          ],
+          "ground_anchor_px": [
+            14.25,
+            10.5
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "467e2f211d0def03501dcd29b6c33ccb178485010b2fc782e362b90b6dc9c4b7",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "e5ed490e699b4497a8b85e21b87de3f3505c2aec3b97ffedcc0ac056b5bbcde2",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "14b2199d32051fee9191053fe106736b868098eea6b3f07c4e247788d61d3c24",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "d5d989c504d1ad243b238bdc2adf65ca0cf394ae9513d8eb165b54811ab404c9",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_kitchen_knife",
+      "archetype": "knife",
+      "physical_spec_m": [
+        0.052,
+        0.3,
+        0.026
+      ],
+      "actual_bounds_m": [
+        0.06796,
+        0.30184,
+        0.0298
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 5,
+      "model_blend_sha256": "69b374474e7d5ae5984aa0e67df086bb1c271e699f38c50c218bd705af25de31",
+      "model_glb_sha256": "338bdd993a210e11136144daa2dc1eb5cf9585d587d3f0f29f386b166831a80f",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "f63efeb6e354b944f2b3cac0ce1924fb1dc1f789f6e9a27d353046302bbd61b4",
+          "size_px": [
+            18,
+            12
+          ],
+          "ground_anchor_px": [
+            9.0,
+            7.75
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "954dfae20264585e634ea0f0b991520e763aa7b0fc59d6e272a1112c7266ec3d",
+          "size_px": [
+            18,
+            12
+          ],
+          "ground_anchor_px": [
+            9.0,
+            7.75
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "12f36785f2a48ea407d2cfeb79eddbb78873a3c77ce911633a89dc3842c1b77a",
+          "size_px": [
+            18,
+            12
+          ],
+          "ground_anchor_px": [
+            9.0,
+            7.75
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "17ed36595e610133b88315456f2a7687edbb96776e31c93e0afb6eca06d6b7f2",
+          "size_px": [
+            18,
+            12
+          ],
+          "ground_anchor_px": [
+            9.0,
+            7.75
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "a389aef5fde48a3b06ca06158d7c3d0d312129b59c0d0b575cadf5d9f3d74335",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "a1617c8b0603bd2b0db0e006e9afc5222958fae91579a8c59303017a5ce68219",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "7059a7cfe515ebca6047dc0d11377a118512aedf3e188ec975d8accf68a04f80",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "8e62027c82fbb9cd9fd246fb6f8a95cd91e7f084647aeda033145dab9124970d",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_shovel",
+      "archetype": "shovel",
+      "physical_spec_m": [
+        0.235,
+        1.02,
+        0.08
+      ],
+      "actual_bounds_m": [
+        0.22865,
+        1.02879,
+        0.036
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 5,
+      "model_blend_sha256": "04d90962c7623b5ba2238c0715134709ffc4cff99757b95f66ac4cb79b656651",
+      "model_glb_sha256": "0ce3d9c6fe236983097b5a0f50f92b40d7a21080b5307773524601d179d1020e",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "f547862ecf6b81e74aaf86d7be9cf99380025826959ba118995db681d68e2e95",
+          "size_px": [
+            50,
+            28
+          ],
+          "ground_anchor_px": [
+            25.0,
+            16.25
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "24ef65e2b2469fd377edf966fc34010ef68b3d67b95922c351bd2fe1d869faa2",
+          "size_px": [
+            50,
+            28
+          ],
+          "ground_anchor_px": [
+            25.0,
+            16.25
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "2b16f1d871e088cb9083bfb236ea4e76866011680329f7017a9bc2c6a4fbf66f",
+          "size_px": [
+            50,
+            28
+          ],
+          "ground_anchor_px": [
+            25.0,
+            16.25
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "5fca1a4b9c6120a2469715eda204270b6a559951acb3437e9e2dc45f9d558791",
+          "size_px": [
+            50,
+            28
+          ],
+          "ground_anchor_px": [
+            25.0,
+            16.25
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "ed0a3a8aee9ac24c46b9440a81456670e859369a5b5e83da1bc22efce8280011",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "e75a2e45f80ee96c9a0a4d3c85f81661912ce538e3a39f6ee5d112a936882db1",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "f3f1fe14d430a06638f79afadf9db70a541badaa14f18f4dd349eead0584f1e9",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "33114d595aa52caceeac5df3bf36145a89aa449879337bfa1e0a4cce88939ae7",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    },
+    {
+      "schema": 1,
+      "asset_id": "ll_tools_machete",
+      "archetype": "machete",
+      "physical_spec_m": [
+        0.083,
+        0.56,
+        0.03
+      ],
+      "actual_bounds_m": [
+        0.082,
+        0.56183,
+        0.03376
+      ],
+      "source_recipe_sha256": "cd2e751fac198cb9bb4c88d1c5f209e0ae2b682c74b35299e1caa330502c7040",
+      "source_geometry_status": "REFINED_EDITABLE_SOURCE_CANDIDATE",
+      "render_status": "FIXED_ISO_4_HEADINGS_PLUS_INVENTORY_CANDIDATE",
+      "founder_golden_approved": false,
+      "godot_integrated": false,
+      "iphone_tested": false,
+      "model_parts": 5,
+      "model_blend_sha256": "8750f946468f1259027e61c5e7d2c93b58b9efe82895efab89bae52dacd87e30",
+      "model_glb_sha256": "c931487bdfe2b3ad02616f0f84bc848c3cfebf9c09ed59f15ba65541dd7cdd70",
+      "world_camera_ortho": 4.525483399593904,
+      "world_camera_pixel_source": 1024,
+      "render_samples": 6,
+      "rights": "100% original Blender construction",
+      "world_frames": [
+        {
+          "angle_index": 0,
+          "path": "ground_00.png",
+          "rgba_sha256": "47a2220cba993540b5cd55575c5a1f417637b9d9deb2c065becede961102cec4",
+          "size_px": [
+            29,
+            17
+          ],
+          "ground_anchor_px": [
+            14.0,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 1,
+          "path": "ground_01.png",
+          "rgba_sha256": "9ead38e9ebfae71ff1848accc6d70784143902df7cc40760d0c597ca871b3c6b",
+          "size_px": [
+            29,
+            17
+          ],
+          "ground_anchor_px": [
+            14.0,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 2,
+          "path": "ground_02.png",
+          "rgba_sha256": "c947db511cdd0f6a4687199e16dfb0a9352e9b1c5aac158721651bc0b663d0ee",
+          "size_px": [
+            29,
+            17
+          ],
+          "ground_anchor_px": [
+            14.0,
+            10.5
+          ]
+        },
+        {
+          "angle_index": 3,
+          "path": "ground_03.png",
+          "rgba_sha256": "0c8a2532accae43fc9fe9906971b5740f6a6d6e669284b35e108a2ce6e4cd330",
+          "size_px": [
+            29,
+            17
+          ],
+          "ground_anchor_px": [
+            14.0,
+            10.5
+          ]
+        }
+      ],
+      "inventory_icons": {
+        "32": {
+          "sha256": "660076040d58feb540c14cef9bb638bc560952bdc77c2610e8fa8d9ccf016bf5",
+          "size_px": [
+            32,
+            32
+          ]
+        },
+        "48": {
+          "sha256": "e86e2dfc82d606e458bb6366b07d5b28a594d1c7a473a9c847a59d14bf9f1baa",
+          "size_px": [
+            48,
+            48
+          ]
+        },
+        "64": {
+          "sha256": "d00661a012a3697c786ac68521ce68808ecd2eb6b732a3a1d20dbae8c47c6e79",
+          "size_px": [
+            64,
+            64
+          ]
+        },
+        "128": {
+          "sha256": "3ab0ee3d27ed6c5cb79cc398521723b79b30b0dbfecab6d0ea5885b073742269",
+          "size_px": [
+            128,
+            128
+          ]
+        }
+      },
+      "technical_status": "SOURCE_AND_RGBA_VALIDATION_PASSED",
+      "visual_status": "AWAITING_FOUNDER_GOLDEN40_REVIEW",
+      "in_engine_status": "NOT_GODOT_INTEGRATED"
+    }
+  ]
+}
