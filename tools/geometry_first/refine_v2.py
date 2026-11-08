@@ -116,35 +116,37 @@ def add_roof_shell(L,W,H,roof_len,center,material):
     ob.modifiers.new("Roof weighted normals","WEIGHTED_NORMAL")
     return ob
 
-def roof_window_split(name,front_x,rear_x,sill_front,sill_back,roof_z,W,m):
-    # Two independently shaped side windows per side. This repairs the
-    # original single flat glass quadrilateral with semantic frame boundaries.
-    mid=(front_x+rear_x)*.5
+def roof_window_split(name,front_x,rear_x,front_sill_x,back_sill_x,roof_z,sill_z,W,m):
+    # Vehicle coordinates are x=length, y=width, z=physical height.
+    # IMPORTANT: windscreen "front_sill_x" and "back_sill_x" are longitudinal
+    # X coordinates, not vertical Z. LL-084 scale gate catches misuse.
+    roof_mid=(front_x+rear_x)*.5
+    sill_mid=(front_sill_x+back_sill_x)*.5
     zmid=roof_z+.035
     for sign in (-1,1):
         gutter=sign*W*.392
         lower=sign*W*.474
         for section in (0,1):
             if section==0:
-                x1,x2=rear_x,mid
-                bottom1,bottom2=sill_back,(sill_back+sill_front)*.5
+                x1,x2=rear_x,roof_mid
+                low_x1,low_x2=back_sill_x,sill_mid
                 top1,top2=roof_z,zmid
                 material=m["black_glass"]
             else:
-                x1,x2=mid,front_x
-                bottom1,bottom2=(sill_back+sill_front)*.5,sill_front
+                x1,x2=roof_mid,front_x
+                low_x1,low_x2=sill_mid,front_sill_x
                 top1,top2=zmid,roof_z
                 material=m["glass"]
-            # Front/rear tapered panes are real sheet meshes with thickness.
-            surface("%s side %s pane %d"%(name, "left" if sign<0 else "right", section),
+            # Four genuine 3D vertices; window bottom is at sill_z.
+            surface("%s side %s pane %d"%(name,"left" if sign<0 else "right",section),
                 [(x1,gutter,top1),(x2,gutter,top2),
-                 (x2,lower,bottom2),(x1,lower,bottom1)],material,.012)
+                 (low_x2,lower,sill_z),(low_x1,lower,sill_z)],material,.012)
         from render_v3_recovery import pipe
         pipe("LL REFINE window lower weather seal",
-             [(rear_x,lower,sill_back),(mid,lower,(sill_back+sill_front)*.5),
-              (front_x,lower,sill_front)],.014,m["trim"])
+             [(back_sill_x,lower,sill_z),(sill_mid,lower,sill_z),
+              (front_sill_x,lower,sill_z)],.014,m["trim"])
         pipe("LL REFINE central B pillar lower",
-             [(mid,gutter,zmid),(mid,lower,(sill_back+sill_front)*.5)],
+             [(roof_mid,gutter,zmid),(sill_mid,lower,sill_z)],
              .025,m["body"])
 
 def refine_vehicle(job):
@@ -167,7 +169,7 @@ def refine_vehicle(job):
     sill_z=min(.94,H*.62)
     front_sill=min(L*.40,front+.25)
     back_sill=max(-L*.43,rear-.25)
-    roof_window_split("refined cabin",front,rear,front_sill,back_sill,H-.08,W,m)
+    roof_window_split("refined cabin",front,rear,front_sill,back_sill,H-.08,sill_z,W,m)
     from render_v3_recovery import pipe
     # Actual curved wheel arches, grounded on the four wheel centers.
     if typ in ("hatchback","sedan","wagon","suv","coupe","pickup"):
