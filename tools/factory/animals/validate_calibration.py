@@ -33,5 +33,11 @@ for name in ('CowRig_CAL','BirdRig_CAL'):
     ob=bpy.data.objects[name]
     report['armatures'][name]={'bone_count':len(ob.data.bones),'walk_action_exists':bool(bpy.data.actions.get(name+'_walk')),
                                'idle_action_exists':bool(bpy.data.actions.get(name+'_idle'))}
+for name in ('Original warm dairy cattle coat CAL','Original buff feather mass CAL'):
+    mat=bpy.data.materials[name]
+    report.setdefault('procedural_materials',{})[name]={
+        'noise_node_present':any(n.bl_idname=='ShaderNodeTexNoise' for n in mat.node_tree.nodes),
+        'color_ramp_present':any(n.bl_idname=='ShaderNodeValToRGB' for n in mat.node_tree.nodes),
+    }
 print('F07_SOURCE_QA',json.dumps(report))
 sys.exit(0 if all(m['connected_components']==1 and m['normalized_vertex_weights'] and m['armature_modifier'] for m in report['meshes'].values()) else 2)
