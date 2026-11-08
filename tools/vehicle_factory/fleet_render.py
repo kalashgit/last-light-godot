@@ -73,15 +73,16 @@ def tires(model,m,L,W,H,WB):
     elif model in ("suv","pickup","van"):
         positions=[(-WB*.5,W*.48,.39,.36),(WB*.5,W*.48,.39,.36)]
     else:
-        positions=[(-WB*.5,W*.48,.34,.315),(WB*.5,W*.48,.34,.315)]
+        # Set tires inside the shoulder plane rather than outside the fender.
+        positions=[(-WB*.5,W*.405,.34,.315),(WB*.5,W*.405,.34,.315)]
     for x,y,z,r in positions:
         for side in (-1,1):
             lat=side*y
             base.cyl("LL FLEET tire",(x,lat,z),r,.175,m["rubber"],24,
                      rotation=(math.pi/2,0,0))
-            base.cyl("LL FLEET rim",(x,lat+side*.095,z),r*.58,.032,
+            base.cyl("LL FLEET rim",(x,lat+side*.105,z),r*.58,.032,
                      m["rim"],20,rotation=(math.pi/2,0,0))
-            base.cyl("LL FLEET center cap",(x,lat+side*.115,z),r*.16,.04,
+            base.cyl("LL FLEET center cap",(x,lat+side*.127,z),r*.16,.04,
                      m["steel"],12,rotation=(math.pi/2,0,0))
 
 def faces(name,vertices,material):
@@ -146,6 +147,73 @@ def shaped_cabin(m,L,W,H,profile):
         (sill_back,-shoulder_half,shoulder_z+.034)],m["black_glass"])
     pipe("windshield lower seal",[(sill_front,-shoulder_half,shoulder_z+.025),
                                    (sill_front,shoulder_half,shoulder_z+.025)],.016,m["trim"])
+
+def shaped_body(m,L,W,WB,profile):
+    """Single continuous body-shell envelope with wheel-opening side contours.
+
+    Unlike the old UV ovoid plus interpenetrating cuboids, the rocker/fender
+    surface follows an explicit semicircular clearance around each axle. The
+    top deck and shoulder are swept from the same sampled profile.
+    """
+    segments=96
+    lo,hi=-L*.487,L*.487
+    half=W*.453
+    axle=(-WB*.5,WB*.5)
+    wheel_opening=.354
+    def shoulder(x):
+        t=x/L
+        # Short rear luggage deck and a gently tapered bonnet.
+        return .845 + .035*max(0,1-abs(t)/.42) - .052*max(0,(t-.29)/.20)
+    def rocker(x):
+        z=.32
+        for a in axle:
+            d=abs(x-a)
+            if d<wheel_opening:
+                z=max(z,.34+math.sqrt(wheel_opening**2-d*d)+.016)
+        return z
+    xs=[lo+(hi-lo)*i/segments for i in range(segments+1)]
+    # Each strip has its own continuous normal-friendly quad topology.
+    for side in (-1,1):
+        verts=[]
+        for x in xs:
+            taper=1-.060*max(0,(abs(x)/L-.39)/.10)
+            y=side*half*taper
+            verts.extend(((x,y,rocker(x)),(x,y,shoulder(x))))
+        faces_idx=[]
+        for i in range(segments):
+            a=2*i
+            quad=(a,a+2,a+3,a+1)
+            faces_idx.append(quad if side==1 else tuple(reversed(quad)))
+        mesh=bpy.data.meshes.new("LL FLEET continuous fender side mesh")
+        mesh.from_pydata(verts,[],faces_idx);mesh.update()
+        ob=bpy.data.objects.new("LL FLEET continuous fender shell",mesh)
+        bpy.context.collection.objects.link(ob);mesh.materials.append(m["body"])
+    verts=[]
+    for x in xs:
+        y=half*(1-.060*max(0,(abs(x)/L-.39)/.10))
+        z=shoulder(x)
+        # A slight central crown catches light instead of flat box faces.
+        verts.extend(((x,-y,z),(x,0,z+.027),(x,y,z)))
+    roof_faces=[]
+    for i in range(segments):
+        a=3*i
+        roof_faces.extend(((a,a+3,a+4,a+1),(a+1,a+4,a+5,a+2)))
+    mesh=bpy.data.meshes.new("LL FLEET continuous bonnet/deck mesh")
+    mesh.from_pydata(verts,[],roof_faces);mesh.update()
+    ob=bpy.data.objects.new("LL FLEET curved continuous upper body",mesh)
+    bpy.context.collection.objects.link(ob);mesh.materials.append(m["body"])
+    for x,tag in ((lo,"rear"),(hi,"front")):
+        cube(tag+" integrated fascia",(x,0,.592),(.043,W*.856,.49),m["body"],.035)
+    # Stamped panel boundaries are marks on the continuous skin, not boxes.
+    for side in (-1,1):
+        sy=side*half*1.009
+        for x in (-L*.19,L*.105):
+            pipe("door shutline",[(x,sy,.715),(x,sy,.857)],.008,m["dark"])
+        for a in axle:
+            arc=[(a+wheel_opening*math.cos(math.pi*i/16),sy,
+                  .34+wheel_opening*math.sin(math.pi*i/16)+.018)
+                 for i in range(17)]
+            pipe("fender arch rolled lip",arc,.014,m["highlight"])
 
 def cabin(m,L,W,H,profile):
     """Custom cabin geometry for each original vehicle family (x front-positive).
@@ -252,6 +320,8 @@ def body(m,L,W,H,WB,profile):
         cube("tractor seat base",(-L*.19,0,.95),(.67,.67,.30),m["dark"],.05)
         cube("tractor driver cabin",(-L*.27,0,H*.55),(L*.34,W*.74,H*.62),m["body"],.065)
         cube("rear mounting hitch",(-L*.49,0,.49),(.22,.55,.18),m["steel"],.024)
+    elif profile in ("sedan","hatchback"):
+        shaped_body(m,L,W,WB,profile)
     else:
         base.uv("LL FLEET body nose",(.18*L,0,.74),(L*.56,W*.90,.59),m["body"])
         cube("rear passenger volume",(-L*.23,0,.70),(L*.48,W*.96,.53),m["body"],.06)
@@ -320,6 +390,20 @@ def render_job(job,output,samples=12):
                 if source_ob.type in ("MESH","CURVE"):
                     source_ob.select_set(True)
             try:
+                # Some Blender distributions omit the inherited runtime's
+                # site-packages and compiled ctypes extension from sys.path.
+                # Restore the matching interpreter paths before glTF export.
+                runtime_packages=(Path(sys.prefix)/"lib"/
+                    f"python{sys.version_info.major}.{sys.version_info.minor}"/"site-packages")
+                if runtime_packages.is_dir() and str(runtime_packages) not in sys.path:
+                    sys.path.insert(0,str(runtime_packages))
+                try:
+                    import ctypes
+                except ModuleNotFoundError:
+                    native_lib=Path(f"/usr/lib/python{sys.version_info.major}.{sys.version_info.minor}/lib-dynload")
+                    if native_lib.is_dir():
+                        sys.path.insert(0,str(native_lib))
+                    import ctypes
                 bpy.ops.export_scene.gltf(filepath=str((job_dir/"source_calibration.glb").resolve()),
                                           export_format="GLB",use_selection=True)
                 glb_exported=True
