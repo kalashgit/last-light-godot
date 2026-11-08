@@ -43,6 +43,11 @@ for folder in sorted(p for p in args.directory.iterdir() if p.is_dir()):
                         failures.append(f'atlas pixels disagree {folder}/{entry["name"]}')
     bboxes={}
     for f in m['frames']:
+        if m.get('render_profile')=='f12_cal01':
+            if max(abs(f['projected_ground_px'][i]-m['pivot_px'][i]) for i in (0,1))>.02:
+                failures.append(f'ground anchor drift {folder}/{f["file"]}')
+        if f['clip']=='attack' and f['frame_1_based']==3 and f.get('attack_contact_socket_px') is None:
+            failures.append(f'missing visual contact socket {folder}/{f["file"]}')
         path=folder/f['file']
         if not path.exists(): failures.append(f'missing {path}');continue
         with Image.open(path) as image:
