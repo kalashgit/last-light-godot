@@ -25,6 +25,12 @@ def render_png(scene, path, *, scale, samples):
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.filepath = str(path.resolve())
     scene.cycles.samples = samples
+    # Ubuntu Blender package may be compiled without OpenImageDenoiser.
+    if hasattr(scene.cycles, "use_denoising"):
+        scene.cycles.use_denoising = False
+    for layer in scene.view_layers:
+        if hasattr(layer, "cycles") and hasattr(layer.cycles, "use_denoising"):
+            layer.cycles.use_denoising = False
     bpy.ops.render.render(write_still=True)
     assert path.exists() and path.stat().st_size > 1000, path
 
