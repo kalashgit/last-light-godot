@@ -17,16 +17,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Blender
-        run: sudo apt-get update && sudo apt-get install -y blender python3-numpy
+        run: sudo apt-get update && sudo apt-get install -y blender python3-numpy python3-pil
       - name: Canonical validation unit tests
         run: python3 -m unittest discover -s tests -p 'test_f09_canonical_gate.py' -v
       - name: Blender source geometry and GLB smoke test
         run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/verify_f09_v4.py
+      - name: Render 15 isolated visual review views
+        run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/render_f09_v4_review.py
+      - name: Validate alpha and assemble review board
+        run: python3 tools/weapons_tools/f09_visual_board.py
       - name: Upload inspectable non-approved source candidates
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: f09-v4-blender-geometry-smoke
-          path: build/f09_v4_geometry_smoke/
+          path: |
+            build/f09_v4_geometry_smoke/
+            build/f09_v4_visual_review/
           if-no-files-found: ignore
           retention-days: 14
