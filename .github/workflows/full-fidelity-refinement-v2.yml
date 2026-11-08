@@ -10,6 +10,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: ll-full-fidelity-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   original-source-geometry-review:
     runs-on: ubuntu-latest
@@ -89,24 +92,32 @@ jobs:
       - name: Publish evidence and exact census accounting on isolated branch
         run: |
           set -euo pipefail
-          mkdir -p preview/geometry-refinement-v2
-          cp build/refinement_v2/before_after_geometry.png preview/geometry-refinement-v2/
-          cp build/refinement_v2/refined_geometry_sheet.png preview/geometry-refinement-v2/
-          cp build/refinement_v2/2_5d_render_review.png preview/geometry-refinement-v2/
-          cp build/refinement_v2/refined_report.json preview/geometry-refinement-v2/
-          cp build/refinement_v2/geometry_refinement_ledger_v2.json assets/master_library/geometry_refinement_ledger_v2.json
+          # GitHub runs may overlap. Publish on TOP of the CURRENT remote
+          # branch, not by rebasing old binary previews into new binary previews.
+          stage="$(mktemp -d)"
+          cp build/refinement_v2/before_after_geometry.png "$stage/"
+          cp build/refinement_v2/refined_geometry_sheet.png "$stage/"
+          cp build/refinement_v2/2_5d_render_review.png "$stage/"
+          cp build/refinement_v2/refined_report.json "$stage/"
+          cp build/refinement_v2/geometry_refinement_ledger_v2.json "$stage/"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add preview/geometry-refinement-v2 assets/master_library/geometry_refinement_ledger_v2.json
-          if ! git diff --cached --quiet; then
-            git commit -m "Publish V2 geometry correction models, 360 coverage ledger and comparison"
-            for retry in 1 2 3; do
-              git fetch origin codex/last-light-full-fidelity-refinement-v2-20261108
-              git rebase origin/codex/last-light-full-fidelity-refinement-v2-20261108
-              if git push origin HEAD:codex/last-light-full-fidelity-refinement-v2-20261108; then exit 0; fi
-            done
-            exit 1
-          fi
+          for attempt in 1 2 3; do
+            git fetch --no-tags origin codex/last-light-full-fidelity-refinement-v2-20261108
+            git reset --hard origin/codex/last-light-full-fidelity-refinement-v2-20261108
+            mkdir -p preview/geometry-refinement-v2
+            cp "$stage/before_after_geometry.png" preview/geometry-refinement-v2/
+            cp "$stage/refined_geometry_sheet.png" preview/geometry-refinement-v2/
+            cp "$stage/2_5d_render_review.png" preview/geometry-refinement-v2/
+            cp "$stage/refined_report.json" preview/geometry-refinement-v2/
+            cp "$stage/geometry_refinement_ledger_v2.json" assets/master_library/geometry_refinement_ledger_v2.json
+            git add preview/geometry-refinement-v2 assets/master_library/geometry_refinement_ledger_v2.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Publish latest source geometry refinements, 360 ledger and comparisons"
+            if git push origin HEAD:codex/last-light-full-fidelity-refinement-v2-20261108; then exit 0; fi
+          done
+          echo "Refinement preview could not publish after three safe retries" >&2
+          exit 1
       - uses: actions/upload-artifact@v4
         with:
           name: last-light-v2-source-refinement-six-models-and-2_5d
