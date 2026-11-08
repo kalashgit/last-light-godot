@@ -19,8 +19,9 @@ spec.loader.exec_module(validator)
 class F05ArtifactGateTests(unittest.TestCase):
     @staticmethod
     def make_glb():
-        scene = json.dumps({"asset": {"version": "2.0"}, "skins": [{}],
-                            "animations": [{}], "meshes": [{}]}).encode()
+        scene = json.dumps({"asset": {"version": "2.0"}, "skins": [{"joints": [0]}],
+                            "animations": [{"channels": [{"sampler": 0, "target": {"node": 0, "path": "rotation"}}], "samplers": [{}]}],
+                            "meshes": [{"primitives": [{"attributes": {"POSITION": 0}}]}]}).encode()
         scene += b" " * (-len(scene) % 4)
         return b"glTF" + struct.pack("<II", 2, 20 + len(scene)) + struct.pack("<I4s", len(scene), b"JSON") + scene
 
@@ -57,6 +58,19 @@ class F05ArtifactGateTests(unittest.TestCase):
 
     def test_valid_fixture_passes_integrity_only(self):
         self.assertEqual(validator.validate(self.path), [])
+
+    def test_empty_glb_structures_fail(self):
+        scene = json.dumps({"asset": {"version": "2.0"}, "skins": [{}],
+                            "animations": [{}], "meshes": [{}]}).encode()
+        scene += b" " * (-len(scene) % 4)
+        payload = b"glTF" + struct.pack("<II", 2, 20 + len(scene)) + struct.pack("<I4s", len(scene), b"JSON") + scene
+        (self.path / "f05_noncanonical_calibration.glb").write_bytes(payload)
+        self.manifest["sha256"]["f05_noncanonical_calibration.glb"] = hashlib.sha256(payload).hexdigest()
+        self.save()
+        errors = validator.validate(self.path)
+        self.assertIn("GLB missing skinned armature", errors)
+        self.assertIn("GLB missing exported animation", errors)
+        self.assertIn("GLB missing mesh geometry", errors)
 
     def test_missing_glb_fails(self):
         (self.path / "f05_noncanonical_calibration.glb").unlink()
