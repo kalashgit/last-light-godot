@@ -76,7 +76,10 @@ jobs:
           from pathlib import Path
           from PIL import Image,ImageDraw
           root=Path("build/refinement_v2/isometric")
-          frames=json.loads((root/"render_report.json").read_text())["frames"]
+          report=json.loads((root/"render_report.json").read_text())
+          frames=report["frames"]
+          closeups={p["asset_id"]:p["path"] for p in report["inventory_previews"]}
+          assert set(closeups)=={"ll_tools_awl","ll_tools_crowbar"}
           assert len(frames)==18
           vehicle=[x for x in frames if x["asset_id"]=="ll_master_vehicle_compact_hatchback"]
           assert len(vehicle)==16
@@ -84,7 +87,9 @@ jobs:
           dst=Image.new("RGB",(6*210,3*232),(55,57,53))
           pen=ImageDraw.Draw(dst)
           for i,frame in enumerate(frames):
-              img=Image.open(root/frame["path"]).convert("RGBA")
+              # The source world-size sprite remains in frames. The review
+              # sheet shows a second independent enlarged tool-only image.
+              img=Image.open(root/closeups.get(frame["asset_id"],frame["path"])).convert("RGBA")
               assert img.getchannel("A").getbbox()
               img.thumbnail((204,204))
               background=Image.new("RGBA",(204,205),(87,91,88,255))
@@ -93,7 +98,7 @@ jobs:
               dst.paste(background.convert("RGB"),(x+3,y+3))
               pen.text((x+3,y+210),frame["asset_id"][-22:]+" "+str(frame["heading_deg"]),fill=(230,231,222))
           dst.save("build/refinement_v2/2_5d_render_review.png")
-          print("LL_REFINED_ISO_REPLAY_QA_PASS 18 frames, 16 vehicle headings")
+          print("LL_REFINED_ISO_REPLAY_QA_PASS 18 world frames, 16 vehicle headings, 2 tool closeups")
           PY
       - name: Publish evidence and exact census accounting on isolated branch
         run: |
