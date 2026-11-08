@@ -43,7 +43,7 @@ class F05ArtifactGateTests(unittest.TestCase):
         # Minimal integrity fixtures; tests only validate container headers,
         # not Blender geometry or successful Godot imports.
         files = {
-            "calibration.png": b"\\x89PNG\\r\\n\\x1a\\n" + struct.pack(">I", 13) +
+            "calibration.png": bytes((137, 80, 78, 71, 13, 10, 26, 10)) + struct.pack(">I", 13) +
                 b"IHDR" + struct.pack(">IIBBBBB", 2, 2, 8, 6, 0, 0, 0) + b"0" * 24,
             "f05_noncanonical_calibration.blend": b"BLENDER-v400" + b"0" * 32,
             "f05_noncanonical_calibration.glb": self.make_glb(),
