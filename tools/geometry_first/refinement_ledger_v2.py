@@ -41,8 +41,14 @@ def verified_refinement(record, original):
         return False
     original_hash=record.get("original_sha256")
     refined_hash=record.get("glb_sha256")
-    if original_hash != original["glb_sha256"]:
-        raise ValueError("refinement baseline hash mismatch: "+record["asset_id"])
+    # The 360 immutable archive was exported on an earlier Blender/run version.
+    # A fresh V1 comparison reconstruction may be byte-different while still
+    # using the same canonical source recipe. Never mislabel the fresh V1 hash
+    # as the archived GLB hash; report both distinctly below.
+    if not isinstance(original_hash,str) or len(original_hash)!=64:
+        raise ValueError("missing reconstructed V1 baseline hash: "+record["asset_id"])
+    if record.get("rebuilt_source_recipe_sha256")!=original["recipe_hash"]:
+        raise ValueError("canonical recipe differs in reconstructed V1 baseline: "+record["asset_id"])
     if not isinstance(refined_hash,str) or len(refined_hash)!=64 or refined_hash==original_hash:
         raise ValueError("missing or unchanged refined GLB hash: "+record["asset_id"])
     if not record.get("repair_parts") or not record.get("recipe_sha256"):
@@ -79,6 +85,9 @@ def create(refined_report=None):
             asset_id=key,
             stable_source_recipe_hash=prior["recipe_hash"],
             source_glb_sha256=prior["glb_sha256"],
+            comparison_rebuilt_v1_glb_sha256=(r.get("original_sha256") if r else None),
+            comparison_v1_glb_matches_immutable_archive=(
+                r.get("original_sha256")==prior["glb_sha256"] if r else None),
             original_geometry_source_archive="https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
             master_3d_source_category=category,
             semantic_geometry_family=job["geometry_family"],
