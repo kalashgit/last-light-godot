@@ -1,0 +1,197 @@
+{
+  "report_id": "A00-20261108-ALL-21025",
+  "conclusion": "FULL_METADATA_REFERENCE_CLASSIFICATION_COMPLETE_SEMANTIC_VISUAL_REVIEW_NOT_COMPLETE",
+  "archive_count": 21025,
+  "classified_count": 21025,
+  "unique_source_page_ids": 21025,
+  "missing_archive_records": 0,
+  "duplicate_source_record_ids": 0,
+  "source_id_title_url_rights_alignment_verified": true,
+  "classification_and_reason_nonempty_for_every_reference": true,
+  "source_archive_sha256": "aff90ebeb28c65a1c25da49d7d4b709d41f57114a06e9c2711a8d5f05cbd92d9",
+  "global_concat_ledger_sha256": "12a806dffd3816acc9b2344140692867eff1b693d2f680af7df1b9ee5f2fc81d",
+  "primary_class_counts": {
+    "ANIMATION_FRAME_REFERENCE": 2,
+    "CANONICAL_MASTER_CANDIDATE": 4396,
+    "COMPOSITION_REFERENCE": 11197,
+    "DUPLICATE_ALIAS": 2,
+    "MATERIAL_TEXTURE": 28,
+    "MEANINGFUL_VARIANT": 532,
+    "NEEDS_MANUAL_REVIEW": 1676,
+    "OUT_OF_SCOPE": 577,
+    "STATE_OR_DIRECTION": 1913,
+    "UI_ICON_ONLY": 702
+  },
+  "verified_semantic_identities_to_date": 22,
+  "verified_semantic_master_ids": [
+    "ll_crafting_firewood",
+    "ll_crafting_glass_pane",
+    "ll_crafting_nail_box",
+    "ll_crafting_screw_box",
+    "ll_crafting_steel_wool",
+    "ll_food_bread_loaf",
+    "ll_furniture_bookcase",
+    "ll_furniture_mattress",
+    "ll_furniture_refrigerator",
+    "ll_golden_bone_club",
+    "ll_household_bucket",
+    "ll_household_fire_extinguisher",
+    "ll_household_match_box",
+    "ll_household_photo_album",
+    "ll_household_propane_bottle",
+    "ll_household_rolling_pin",
+    "ll_medical_medical_gloves",
+    "ll_medical_splint",
+    "ll_medical_tweezers",
+    "ll_tools_crowbar",
+    "ll_tools_hand_drill",
+    "ll_tools_hand_saw"
+  ],
+  "source_linked_master_ids_including_historical_links": 23,
+  "candidate_source_rows_not_unique_masters": 4396,
+  "manual_review_required_rows": 1676,
+  "all_source_art_research_only": true,
+  "visual_asset_approvals_from_this_audit": 0,
+  "notion_master_rows_post_batch_008": 60,
+  "a00_new_notion_rows_cumulative": 19,
+  "a00_preexisting_notion_rows_reconciled": 3,
+  "github_branch": "codex/a00-asset-audit-b001-20261108",
+  "no_game_changes_merge_or_deploy": true,
+  "next_archive_offset": null,
+  "remaining_archive_rows": 0,
+  "batch_provenance": [
+    {
+      "batch_id": "A00-20261108-B001",
+      "filename": "a00_batch_0001_300.jsonl",
+      "archive_offset_start": 0,
+      "archive_offset_end_exclusive": 300,
+      "row_count": 300,
+      "source_first": 183,
+      "source_last": 4543,
+      "sha256": "add56096aac84305a2f882078b8fc6911633f508435f2407a27712f0b5a8cf1b"
+    },
+    {
+      "batch_id": "A00-20261108-B002",
+      "filename": "a00_batch_0002_300.jsonl",
+      "archive_offset_start": 300,
+      "archive_offset_end_exclusive": 600,
+      "row_count": 300,
+      "source_first": 4544,
+      "source_last": 8163,
+      "sha256": "f79aaa6c88974f9a9fc51c1d15dcd15f0bcf94402561398ddd5acac3b91ff8f4"
+    },
+    {
+      "batch_id": "A00-20261108-B003",
+      "filename": "a00_batch_0003_500.jsonl",
+      "archive_offset_start": 600,
+      "archive_offset_end_exclusive": 1100,
+      "row_count": 500,
+      "source_first": 8164,
+      "source_last": 9949,
+      "sha256": "d5b0d571a83d52b2c12b76f25939c53ece64f00e8edec55b20f7754bd6e3a7d7"
+    },
+    {
+      "batch_id": "A00-20261108-B004",
+      "filename": "a00_batch_0004_1000.jsonl",
+      "archive_offset_start": 1100,
+      "archive_offset_end_exclusive": 2100,
+      "row_count": 1000,
+      "source_first": 9959,
+      "source_last": 12851,
+      "sha256": "d886da61ee56c3e25d473d7777c21ffc178c2359ce581b8890b559002c1c4d87"
+    },
+    {
+      "batch_id": "A00-20261108-B005",
+      "filename": "a00_batch_0005_3000.jsonl",
+      "archive_offset_start": 2100,
+      "archive_offset_end_exclusive": 5100,
+      "row_count": 3000,
+      "source_first": 12852,
+      "source_last": 29847,
+      "sha256": "c74ada4496a93f464b28c4844cc9e890882ffa4ebc48e2bf4fb520662c1ba271"
+    },
+    {
+      "batch_id": "A00-20261108-B006",
+      "filename": "a00_batch_0006_3000.jsonl",
+      "archive_offset_start": 5100,
+      "archive_offset_end_exclusive": 8100,
+      "row_count": 3000,
+      "source_first": 29849,
+      "source_last": 95487,
+      "sha256": "ec61298e4277423015bbaf0f127e92214af49336d2c7a8fa60d7dbf50a8db15b"
+    },
+    {
+      "batch_id": "A00-20261108-B007",
+      "filename": "a00_batch_0007_8000.jsonl",
+      "archive_offset_start": 8100,
+      "archive_offset_end_exclusive": 16100,
+      "row_count": 8000,
+      "source_first": 95489,
+      "source_last": 163719,
+      "sha256": "f678175ac8a808a3469444c7291ab13af71acf4768d177c025eaf39299f99556"
+    },
+    {
+      "batch_id": "A00-20261108-B008",
+      "filename": "a00_batch_0008_4925.jsonl",
+      "archive_offset_start": 16100,
+      "archive_offset_end_exclusive": 21025,
+      "row_count": 4925,
+      "source_first": 163721,
+      "source_last": 637297,
+      "sha256": "8aae4dc5e32d9965e79d65177305234fb40bf6e3bae078c0dac1730c928a2ad3"
+    }
+  ],
+  "final_batch_shards": [
+    {
+      "part": "a",
+      "path": "docs/asset_audit/a00_20261108_b008_4925_part_a.jsonl",
+      "row_count": 1000,
+      "source_first": 163721,
+      "source_last": 166999,
+      "bytes": 831757,
+      "sha256": "250d8733fc10fdde4ba286fbd58100fc06ea5dbde154a84b6163055d8a519be8"
+    },
+    {
+      "part": "b",
+      "path": "docs/asset_audit/a00_20261108_b008_4925_part_b.jsonl",
+      "row_count": 1000,
+      "source_first": 167001,
+      "source_last": 172781,
+      "bytes": 875502,
+      "sha256": "a4810f76c40eb57e04e02e964deda4d9f3ab2cdf6a5dcf618eece6608dd49d62"
+    },
+    {
+      "part": "c",
+      "path": "docs/asset_audit/a00_20261108_b008_4925_part_c.jsonl",
+      "row_count": 1000,
+      "source_first": 172783,
+      "source_last": 174781,
+      "bytes": 906594,
+      "sha256": "a89312a922f49fb60e51591356848f8530712e79d9965d46b9d14026fdef3c0a"
+    },
+    {
+      "part": "d",
+      "path": "docs/asset_audit/a00_20261108_b008_4925_part_d.jsonl",
+      "row_count": 1000,
+      "source_first": 174783,
+      "source_last": 180607,
+      "bytes": 826558,
+      "sha256": "b97907c0b50718bef2ce4707e967d40c97822af3ea9c665d8265e3e792ef6961"
+    },
+    {
+      "part": "e",
+      "path": "docs/asset_audit/a00_20261108_b008_4925_part_e.jsonl",
+      "row_count": 925,
+      "source_first": 180609,
+      "source_last": 637297,
+      "bytes": 791276,
+      "sha256": "c13a0a7dc5dcceaec28bcc58da4db120579c09aed3302a55c4a77cb33d6c855e"
+    }
+  ],
+  "caveats": [
+    "A label of CANONICAL_MASTER_CANDIDATE is a source-image lead, not a unique or approved Blender master.",
+    "Provisional parent references, UI tiles, animation frames and redirects still require semantic/visual reconciliation where ambiguous.",
+    "Indie Stone/PZwiki content is retained only as reference evidence; no game use rights have been granted.",
+    "The 360 source GLBs are first-pass geometry, not Golden-standard art or engine-tested content."
+  ]
+}
