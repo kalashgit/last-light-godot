@@ -69,28 +69,31 @@ jobs:
       - name: Render real updated 3D models back into fixed camera 2.5D
         run: |
           set -o pipefail
-          blender -b --factory-startup -t 2 --python tools/geometry_first/stage2_render.py -- --sources build/refinement_v2/refined_models --output build/refinement_v2/isometric --asset-ids ll_master_vehicle_compact_hatchback,ll_tools_awl,ll_tools_crowbar --samples 8 2>&1 | tee build/refinement_v2/isometric.log
-          grep -q 'LL_SOURCE_TO_2_5D_PASS 6' build/refinement_v2/isometric.log
+          blender -b --factory-startup -t 2 --python tools/geometry_first/stage2_render.py -- --sources build/refinement_v2/refined_models --output build/refinement_v2/isometric --asset-ids ll_master_vehicle_compact_hatchback,ll_tools_awl,ll_tools_crowbar --vehicle-headings 16 --samples 8 2>&1 | tee build/refinement_v2/isometric.log
+          grep -q 'LL_SOURCE_TO_2_5D_PASS 18' build/refinement_v2/isometric.log
           python - <<'PY'
           import json
           from pathlib import Path
           from PIL import Image,ImageDraw
           root=Path("build/refinement_v2/isometric")
           frames=json.loads((root/"render_report.json").read_text())["frames"]
-          assert len(frames)==6
-          dst=Image.new("RGB",(750,564),(55,57,53))
+          assert len(frames)==18
+          vehicle=[x for x in frames if x["asset_id"]=="ll_master_vehicle_compact_hatchback"]
+          assert len(vehicle)==16
+          assert [x["heading_deg"] for x in vehicle]==[i*22.5 for i in range(16)]
+          dst=Image.new("RGB",(6*210,3*232),(55,57,53))
           pen=ImageDraw.Draw(dst)
           for i,frame in enumerate(frames):
               img=Image.open(root/frame["path"]).convert("RGBA")
               assert img.getchannel("A").getbbox()
-              img.thumbnail((238,238))
-              background=Image.new("RGBA",(244,245),(87,91,88,255))
-              background.alpha_composite(img,((244-img.width)//2,(245-img.height)//2))
-              x=i%3*250;y=i//3*282
+              img.thumbnail((204,204))
+              background=Image.new("RGBA",(204,205),(87,91,88,255))
+              background.alpha_composite(img,((204-img.width)//2,(205-img.height)//2))
+              x=i%6*210;y=i//6*232
               dst.paste(background.convert("RGB"),(x+3,y+3))
-              pen.text((x+3,y+255),frame["asset_id"][:30],fill=(230,231,222))
+              pen.text((x+3,y+210),frame["asset_id"][-22:]+" "+str(frame["heading_deg"]),fill=(230,231,222))
           dst.save("build/refinement_v2/2_5d_render_review.png")
-          print("LL_REFINED_ISO_REPLAY_QA_PASS 6")
+          print("LL_REFINED_ISO_REPLAY_QA_PASS 18 frames, 16 vehicle headings")
           PY
       - name: Publish evidence and exact census accounting on isolated branch
         run: |
