@@ -42,14 +42,17 @@ def check(item, directory):
     blend_path = out / "source_geometry.blend"
     glb_path = out / "source_geometry.glb"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path.resolve()))
-    factory.glb(glb_path, objects)
+    from f09_glb_material_bridge import export_with_preview, inspect_glb_preview
+    export_with_preview(factory.glb, glb_path, objects)
+    preview_materials = inspect_glb_preview(glb_path)
     assert blend_path.read_bytes()[:7] == b"BLENDER"
     assert glb_path.read_bytes()[:4] == b"glTF"
     result = {"source_asset_id": item["asset_id"], "parts": len(objects),
               "measured_bounds_m": bounds,
               "blend_sha256": hashlib.sha256(blend_path.read_bytes()).hexdigest(),
               "glb_sha256": hashlib.sha256(glb_path.read_bytes()).hexdigest(),
-              "status": "GEOMETRY_EXPORT_SMOKE_TEST_ONLY"}
+              "status": "GEOMETRY_EXPORT_SMOKE_TEST_ONLY",
+              "material_preview": preview_materials}
     (out / "geometry_qa.json").write_text(json.dumps(result, indent=2) + "\n")
     print("F09_V4_GEOMETRY_QA_PASS", result, flush=True)
 
