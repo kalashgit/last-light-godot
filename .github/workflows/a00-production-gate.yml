@@ -24,7 +24,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
       - name: Check gate syntax and adversarial cases
         run: |
           python -m py_compile docs/asset_audit/production_admission/r04_20261109/gate_v2.py
