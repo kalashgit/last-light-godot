@@ -39,6 +39,9 @@ def make_sheet(baseline,refined,dest,count):
     for row,key in enumerate(sorted(originals)):
         prior=originals[key]
         cur=fresh[key]
+        if (not prior.get("source_recipe_sha256") or
+                prior["source_recipe_sha256"]!=cur.get("source_recipe_sha256")):
+            raise ValueError("V1 and V2 were built from different source recipes: "+key)
         current=cur.get("refinement",{})
         if cur.get("refinement_profile")!="v2" or not current.get("applied"):
             raise ValueError("not a real applied V2 geometry repair: "+key)
@@ -73,6 +76,7 @@ def make_sheet(baseline,refined,dest,count):
         result.append(dict(
             asset_id=key,refinement_applied=True,
             original_sha256=prior["glb_sha256"],
+            rebuilt_source_recipe_sha256=prior["source_recipe_sha256"],
             glb_sha256=cur["glb_sha256"],
             recipe_sha256=cur["refinement_code_sha256"],
             actual_bounds_m=cur["actual_bounds_m"],
