@@ -188,6 +188,7 @@ def cow():
     light.energy=850
     light.size=3
     configure(scene)
+    bpy.context.view_layer.update()
     camera_report(scene)
     # F07 mesh still shares its original cow armature and walk action.
     arm=ns["cow_arm"]
