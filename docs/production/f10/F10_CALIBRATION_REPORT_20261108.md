@@ -88,3 +88,11 @@ No merges, deployment, Godot scene or save changes were made.
 - Actual **16/16 new directional renders**, RGBA atlas, alpha-preservation, source hash, stable ground anchor and `test_f10_hero.py` **PASS** at 214×151px cropped cells.
 - Saved original `.blend`, exported `.glb`, and performed a real Blender GLB re-import: **104 mesh objects, 98 with UV layers**. This proves geometric portability, not exact procedural glass/PBR equivalence.
 - Visual review: glass has more useful contrast and trim structure is clearer. However roof/hood shapes are still angular and surface variation lacks true Golden 40 sophistication. **Not visually approved; no gameplay integration or mass-production authorization.**
+
+## Eighth refinement — fender shoulder sculpt and fascia continuity
+
+- Modified the isolated original `hero_hatchback.py` surface generator: longitudinal shoulder camber now changes through the central cabin and fades toward the extremities, while axle-centered fender bulges rise relative to the pinched door skin.
+- Replaced the front/rear pasted slab fascia with twelve-segment curved stamped panel skins and reduced the visual prominence of the rubber bumper strip. This remains a surface-based prototype, not watertight automotive topology.
+- Actual Blender geometry smoke **PASS**: 45 meshes, 24 spoke members, 3.906 × 1.897 × 1.546 m bounds. Rendered and packed **16/16 actual Cycles headings** into transparent 214 × 151 px cells with stable anchor. `test_f10_hero.py` **PASS**.
+- Exported the new editable `.blend` and portable `.glb`; Blender GLB re-import completed. The atlas visual review shows the silhouette remains excessively rectilinear: the roof station transitions, nose and tail corners, and wheelhouse thickness require a stronger artistic redesign.
+- **Manual F10 visual gate: FAIL.** This is a measured technical improvement, not founder-approved art and not a production-ready vehicle. A00 canonical verification and W09/W01/W05 validation remain blocked. No game files, merge or deployment touched.
