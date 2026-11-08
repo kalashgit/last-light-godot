@@ -50,6 +50,15 @@ def check(item, directory):
     elif item["archetype"]=="wrench":
         assert any("v11 fixed crescent upper jaw" in n for n in names) and any(
             "v11 translating lower jaw" in n for n in names), "wrench lost separate jaws"
+        fixed=[o for o in objects if "v11 fixed upper polished jaw flat" in o.name.lower()]
+        moving=[o for o in objects if "v11 moving lower polished jaw flat" in o.name.lower()]
+        assert len(fixed)==len(moving)==1, "opposing machined flats missing"
+        # In the head XY plane, jaw opening must be physically clear rather
+        # than two coincident/crossed shapes that only look separate in renders.
+        upper_min=min(v.co.y for v in fixed[0].data.vertices)
+        lower_max=max(v.co.y for v in moving[0].data.vertices)
+        jaw_gap_m=upper_min-lower_max
+        assert .014 <= jaw_gap_m <= .040, ("invalid wrench jaw aperture",jaw_gap_m)
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
