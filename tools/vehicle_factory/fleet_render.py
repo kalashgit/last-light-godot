@@ -108,8 +108,10 @@ def shaped_cabin(m,L,W,H,profile):
         sill_front,sill_back=.290*L,-.335*L
         b_pillar=-.075*L
     else:
-        roof_front,roof_back=.105*L,-.325*L
-        sill_front,sill_back=.275*L,-.420*L
+        # Distinct five-door liftgate: roof continues rearward and glass drops
+        # steeply to the tail, unlike a sedan's recessed boot deck.
+        roof_front,roof_back=.105*L,-.383*L
+        sill_front,sill_back=.275*L,-.460*L
         b_pillar=-.100*L
     roof_z=H-.065
     shoulder_z=.855 if profile=="sedan" else .865
@@ -147,6 +149,52 @@ def shaped_cabin(m,L,W,H,profile):
         (sill_back,-shoulder_half,shoulder_z+.034)],m["black_glass"])
     pipe("windshield lower seal",[(sill_front,-shoulder_half,shoulder_z+.025),
                                    (sill_front,shoulder_half,shoulder_z+.025)],.016,m["trim"])
+    if profile=="hatchback":
+        # Liftgate upper lip and a short wiper, deliberately unbranded.
+        pipe("hatch top weatherstrip",[(roof_back,-roof_half,roof_z+.004),
+                                       (roof_back,roof_half,roof_z+.004)],.019,m["trim"])
+        pipe("hatch rear wiper",[(sill_back,-W*.17,shoulder_z+.12),
+                                 (sill_back,W*.12,shoulder_z+.17)],.012,m["trim"])
+    else:
+        pipe("rear deck lid shutline",[(-L*.42,-W*.42,.851),
+                                       (-L*.42,W*.42,.851)],.012,m["dark"])
+
+def original_fascia(m,L,W,profile):
+    """Fictional, restrained fascia and lamps integrated into the body envelope."""
+    front=L*.494
+    rear=-L*.494
+    # Dark grille recessed between shallow paint-matched left/right surfaces.
+    cube("front grille recess",(front+.004,0,.625),(.014,W*.47,.135),m["trim"],.012)
+    for z in (.588,.634,.680):
+        pipe("thin front grille slat",[(front+.018,-W*.215,z),
+                                       (front+.018,W*.215,z)],.008,m["steel"])
+    for side in (-1,1):
+        yy=side*W*.347
+        if profile=="hatchback":
+            light_size=(.020,.215,.095)
+            tail_size=(.019,.135,.255)
+            tail_z=.750
+        else:
+            light_size=(.020,.255,.080)
+            tail_size=(.019,.235,.105)
+            tail_z=.724
+        # Shallow lamps: no markers suspended ahead of the bodywork.
+        cube("flush front headlamp",(front+.004,yy,.754),light_size,m["front_light"],.012)
+        cube("flush rear tail lens",(rear-.004,yy,tail_z),tail_size,m["rear_light"],.012)
+        cube("front corner indicator",(front+.003,side*W*.447,.711),
+             (.012,.060,.037),m["orange"],.006)
+    cube("front intake under grille",(front+.010,0,.437),
+         (.016,W*.56,.066),m["dark"],.009)
+    cube("rear recessed plate pocket",(rear-.010,0,.592),
+         (.016,W*.285,.087),m["trim"],.010)
+    cube("rear blank registration plate",(rear-.019,0,.592),
+         (.009,W*.230,.061),m["cream"],.005)
+    # Central hood stamping, intentionally distinct from the roof skin.
+    hood_base=.300*L
+    pipe("bonnet left seam",[(hood_base,-W*.39,.873),
+                             (front,-W*.39,.822)],.009,m["dark"])
+    pipe("bonnet right seam",[(hood_base,W*.39,.873),
+                              (front,W*.39,.822)],.009,m["dark"])
 
 def shaped_body(m,L,W,WB,profile):
     """Single continuous body-shell envelope with wheel-opening side contours.
@@ -343,14 +391,17 @@ def body(m,L,W,H,WB,profile):
         pipe("pressed waist seam",[(-L*.44,sy,.79),(L*.43,sy,.79)],.012,m["highlight"])
         cube("external mirror",(L*.22,side*W*.56,min(H*.68,1.04)),
              (.20,.11,.09),m["trim"],.028)
-        cube("front light",(L*.485,side*W*.35,.66),(.03,.24,.11),m["front_light"],.024)
-        cube("rear tail light",(-L*.49,side*W*.35,.68),(.03,.23,.14),m["rear_light"],.025)
+        if profile not in ("sedan","hatchback"):
+            cube("front light",(L*.485,side*W*.35,.66),(.03,.24,.11),m["front_light"],.024)
+            cube("rear tail light",(-L*.49,side*W*.35,.68),(.03,.23,.14),m["rear_light"],.025)
         if profile not in ("bus","box_truck","tractor"):
             for x in (-L*.08,L*.20):
                 cube("door handle",(x,sy+side*.009,.81),(.15,.025,.025),m["trim"],.008)
     cube("front bumper",(L*.493,0,.40),(.09,W*.90,.16),m["dark"],.022)
     cube("rear bumper",(-L*.493,0,.40),(.09,W*.90,.16),m["dark"],.022)
     cube("front unbranded plate",(L*.50,0,.43),(.02,.37,.09),m["cream"],.008)
+    if profile in ("sedan","hatchback"):
+        original_fascia(m,L,W,profile)
     cabin(m,L,W,H,profile)
 
 def build_vehicle(job):
