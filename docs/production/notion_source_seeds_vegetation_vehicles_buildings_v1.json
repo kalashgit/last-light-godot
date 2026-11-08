@@ -4,7 +4,7 @@
   "counts": {
     "vegetation": 170,
     "vehicles": 160,
-    "building_archetypes": 36
+    "building_archetypes": 60
   },
   "deduplication": "PENDING",
   "record_status": "PROVISIONAL_SOURCE_METADATA_ONLY",
@@ -3970,6 +3970,61 @@
       "rights_status": "THIRD_PARTY_REFERENCE_ONLY"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-house_small",
+      "canonical_candidate_id": "house_small",
+      "description": "Small single-family house",
+      "modules": "entry, living, kitchen, bedroom, bath",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-house_large",
+      "canonical_candidate_id": "house_large",
+      "description": "Large single-family house",
+      "modules": "entry, living, kitchen, bedrooms, bath, utility",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-apartment_block",
+      "canonical_candidate_id": "apartment_block",
+      "description": "Apartment block / flats",
+      "modules": "lobby, corridor, stair, repeated flat",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-trailer_park",
+      "canonical_candidate_id": "trailer_park",
+      "description": "Trailer park environment",
+      "modules": "lot, lane, power pedestal, shared utilities",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-mobile_home",
+      "canonical_candidate_id": "mobile_home",
+      "description": "Mobile home / trailer",
+      "modules": "compact living/kitchen, sleep, bath",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-garage",
       "canonical_candidate_id": "garage",
       "description": "Detached garage",
@@ -4014,10 +4069,32 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-grocery_store",
+      "canonical_candidate_id": "grocery_store",
+      "description": "Grocery / convenience store",
+      "modules": "sales floor, cashier, stock",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-supermarket",
       "canonical_candidate_id": "supermarket",
       "description": "Supermarket",
       "modules": "aisles, cold case, loading, stock",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-gas_station",
+      "canonical_candidate_id": "gas_station",
+      "description": "Gas station",
+      "modules": "sales, storage, forecourt/pumps",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4058,6 +4135,50 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-bar_pub",
+      "canonical_candidate_id": "bar_pub",
+      "description": "Bar / pub",
+      "modules": "bar counter, seating, storage",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-clothing_store",
+      "canonical_candidate_id": "clothing_store",
+      "description": "Clothing store",
+      "modules": "displays, fitting, stock",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-department_store",
+      "canonical_candidate_id": "department_store",
+      "description": "Department store",
+      "modules": "multiple retail zones, receiving",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-hardware_store",
+      "canonical_candidate_id": "hardware_store",
+      "description": "Hardware / DIY",
+      "modules": "heavy shelving, trade counter, yard",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-pharmacy",
       "canonical_candidate_id": "pharmacy",
       "description": "Pharmacy",
@@ -4073,6 +4194,17 @@
       "canonical_candidate_id": "clinic",
       "description": "Local clinic",
       "modules": "waiting, exam, reception",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-hair_salon",
+      "canonical_candidate_id": "hair_salon",
+      "description": "Barber / hair salon",
+      "modules": "stations, wash area, reception",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4102,10 +4234,76 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-police_station",
+      "canonical_candidate_id": "police_station",
+      "description": "Police station",
+      "modules": "reception, offices, evidence, holding",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-fire_station",
+      "canonical_candidate_id": "fire_station",
+      "description": "Fire station",
+      "modules": "vehicle bays, dorm, kitchen, equipment",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-hospital",
       "canonical_candidate_id": "hospital",
       "description": "Hospital",
       "modules": "triage, wards, treatment, pharmacy, service",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-medical_center",
+      "canonical_candidate_id": "medical_center",
+      "description": "Medical center",
+      "modules": "waiting, consultation, treatment",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-elementary_school",
+      "canonical_candidate_id": "elementary_school",
+      "description": "Elementary school",
+      "modules": "classrooms, admin, cafeteria, playground",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-high_school",
+      "canonical_candidate_id": "high_school",
+      "description": "High school",
+      "modules": "classrooms, labs, gym, cafeteria",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-college_building",
+      "canonical_candidate_id": "college_building",
+      "description": "College building",
+      "modules": "lecture, lab, office, hall",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4124,6 +4322,17 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-community_center",
+      "canonical_candidate_id": "community_center",
+      "description": "Community center",
+      "modules": "multi-use hall, office, kitchen",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-library",
       "canonical_candidate_id": "library",
       "description": "Library",
@@ -4135,10 +4344,32 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-post_office",
+      "canonical_candidate_id": "post_office",
+      "description": "Post office",
+      "modules": "public counter, sorting, loading",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-prison",
       "canonical_candidate_id": "prison",
       "description": "Prison",
       "modules": "secure perimeter, cells, control, support",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-detention_facility",
+      "canonical_candidate_id": "detention_facility",
+      "description": "Detention / holding",
+      "modules": "booking, short-term cells, control",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4201,10 +4432,98 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-mechanic_shop",
+      "canonical_candidate_id": "mechanic_shop",
+      "description": "Mechanic garage",
+      "modules": "lifts, service bays, parts, office",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-power_station",
+      "canonical_candidate_id": "power_station",
+      "description": "Power station/substation",
+      "modules": "control, transformers, fenced utility",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-water_treatment",
+      "canonical_candidate_id": "water_treatment",
+      "description": "Water treatment works",
+      "modules": "plant hall, tanks, pumps, control",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-construction_site",
+      "canonical_candidate_id": "construction_site",
+      "description": "Construction site",
+      "modules": "unfinished structure, materials, hazards",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-storage_yard",
+      "canonical_candidate_id": "storage_yard",
+      "description": "Storage yard",
+      "modules": "fence, containers, equipment, gate",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-gym",
       "canonical_candidate_id": "gym",
       "description": "Fitness center",
       "modules": "exercise floor, changing, reception",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-bowling_alley",
+      "canonical_candidate_id": "bowling_alley",
+      "description": "Bowling alley",
+      "modules": "lanes, seating, back service",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-movie_theater",
+      "canonical_candidate_id": "movie_theater",
+      "description": "Movie theater",
+      "modules": "lobby, ticket, auditorium, projection",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-sports_field",
+      "canonical_candidate_id": "sports_field",
+      "description": "Sports field",
+      "modules": "field, fence, stands/storage",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4245,10 +4564,43 @@
       "rights_status": "PROJECT_ORIGINAL_RECIPE"
     },
     {
+      "record_id": "BUILDING-ARCHETYPE-military_base",
+      "canonical_candidate_id": "military_base",
+      "description": "Military base",
+      "modules": "barracks, mess, supply, perimeter",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
       "record_id": "BUILDING-ARCHETYPE-checkpoint",
       "canonical_candidate_id": "checkpoint",
       "description": "Security checkpoint",
       "modules": "gate, barriers, guard shelter",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-radio_station",
+      "canonical_candidate_id": "radio_station",
+      "description": "Radio station",
+      "modules": "studio, office, transmitter",
+      "queue_candidate": "F02",
+      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
+      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
+      "rights_status": "PROJECT_ORIGINAL_RECIPE"
+    },
+    {
+      "record_id": "BUILDING-ARCHETYPE-tv_station",
+      "canonical_candidate_id": "tv_station",
+      "description": "TV station",
+      "modules": "studio, control, support",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
@@ -4271,94 +4623,6 @@
       "canonical_candidate_id": "motel",
       "description": "Motel",
       "modules": "exterior room entries, parking, reception",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-suburban",
-      "canonical_candidate_id": "suburban",
-      "description": "houses, duplexes, motels",
-      "modules": "timber, plaster, brick; timber/ceramic floors; shingle/metal roofs",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-multiunit",
-      "canonical_candidate_id": "multiunit",
-      "description": "apartments, hotels, schools",
-      "modules": "masonry/brick/plaster; concrete/vinyl; flat roof",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-retail",
-      "canonical_candidate_id": "retail",
-      "description": "shops, pharmacy, cafes",
-      "modules": "brick/block/glass; vinyl/tile; membrane roof",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-service",
-      "canonical_candidate_id": "service",
-      "description": "garages, fire bays, mechanic shops",
-      "modules": "concrete block/steel; stained concrete; metal roof",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-civic",
-      "canonical_candidate_id": "civic",
-      "description": "police, schools, hospitals, libraries",
-      "modules": "masonry, block, glazing; tile/vinyl; membrane roof",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-industrial",
-      "canonical_candidate_id": "industrial",
-      "description": "factories, storage, utilities",
-      "modules": "steel/concrete/block; industrial slabs; metal roof",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-rural",
-      "canonical_candidate_id": "rural",
-      "description": "barns, farms, trailers, camping",
-      "modules": "timber, metal; dirt/wood; corrugated roofs",
-      "queue_candidate": "F02",
-      "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
-      "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
-      "review_status": "SPECIFIED_NOT_IMPLEMENTED",
-      "rights_status": "PROJECT_ORIGINAL_RECIPE"
-    },
-    {
-      "record_id": "BUILDING-ARCHETYPE-fortified",
-      "canonical_candidate_id": "fortified",
-      "description": "checkpoint, prison, military site",
-      "modules": "reinforced concrete/metal/fence; concrete; metal/membrane",
       "queue_candidate": "F02",
       "source_page_url": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
       "record_class_candidate": "ARCHETYPE_RECIPE_PROPOSED",
