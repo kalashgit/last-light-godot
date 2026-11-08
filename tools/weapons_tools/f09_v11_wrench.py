@@ -31,11 +31,11 @@ def build(m, *, form, tube, hoop, z=.040):
     # Stationary upper jaw curls outward from the right-hand head.
     # Its bottom contact surface runs along Y=.142 and opens LEFT.
     form("V11 fixed crescent upper jaw broad forged arm",
-         [(.014,.075),(.039,.085),(.060,.110),(.061,.147),
-          (.049,.173),(.022,.188),(-.015,.190),
-          (-.045,.181),(-.068,.167),(-.072,.154),
-          (-.062,.141),(-.045,.139),(-.016,.143),
-          (.011,.143),(.018,.128),(.015,.105)],
+         [(.014,.075),(.038,.085),(.055,.105),(.054,.140),
+          (.045,.160),(.024,.175),(-.016,.179),
+          (-.043,.172),(-.066,.159),(-.070,.148),
+          (-.061,.140),(-.045,.139),(-.014,.143),
+          (.010,.143),(.018,.122),(.015,.103)],
          .020,m["forged"],z,.0020)
     # Lower sliding jaw: a distinct, angular lower limb below upper contact.
     # Its top contact is Y=.117. Negative-space open throat is 22-25mm.
