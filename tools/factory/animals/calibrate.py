@@ -134,6 +134,10 @@ for x in (-.57,.57):
         ellipsoid('Hoof', (x,y,.105),(.16,.13,.10), dark)
 for y in (-.22,.22):
     ellipsoid('Eye', (1.27,y,1.15),(.045,.034,.04),dark)
+    ellipsoid('CattleEar', (1.00,y*1.45,1.34),(.20,.10,.085),hide)
+ellipsoid('CattleMuzzle',(1.35,0,.97),(.19,.20,.13),hide)
+ellipsoid('CattleTail',(-.93,0,.87),(.30,.065,.07),hide)
+ellipsoid('CattleUdder',(-.29,0,.62),(.23,.21,.14),hide)
 cow_bones = [('root',(0,0,.95),(0,0,1.16),None),('spine',(-.55,0,1.12),(.55,0,1.12),'root'),('neck',(.53,0,1.15),(1.04,0,1.11),'spine'),('head',(1.04,0,1.11),(1.34,0,1.02),'neck')]
 cow_legs=[]
 for side, y in [('L',.28),('R',-.28)]:
@@ -152,9 +156,12 @@ for y in (-.16,.16):
 bird=shell('Chicken_CAL_NOT_CANONICAL',bird_lobes,feather)
 ellipsoid('Beak',(3.53,0,.75),(.13,.09,.065),beak)
 ellipsoid('Comb',(3.39,0,.97),(.13,.06,.095),red)
+for offset,y in enumerate((-.13,0,.13)):
+    ellipsoid('TailFeather',(2.65,y,.66+offset*.075),(.19,.075,.13),feather)
 for y in (-.17,.17):
     ellipsoid('ChickenEye',(3.43,y*.78,.84),(.025,.025,.025),dark)
     ellipsoid('ChickenFoot',(3.01,y,.055),(.12,.065,.04),beak)
+    ellipsoid('WingFeather',(2.94,y*1.4,.49),(.21,.075,.14),feather)
 bird_bones=[('root',(3,0,.4),(3,0,.57),None),('body',(2.75,0,.48),(3.26,0,.48),'root'),('neck',(3.26,0,.55),(3.40,0,.80),'body'),('head',(3.40,0,.80),(3.49,0,.85),'neck'),('wing_L',(2.95,.08,.52),(3.05,.25,.39),'body'),('wing_R',(2.95,-.08,.52),(3.05,-.25,.39),'body')]
 for s,y in [('L',.16),('R',-.16)]:
     bird_bones += [('leg_'+s,(3,y,.4),(3,y,.12),'root'),('foot_'+s,(3,y,.12),(3.12,y,.055),'leg_'+s)]
@@ -170,8 +177,9 @@ bpy.context.object.data.energy=850
 bpy.context.object.data.shape='DISK'
 bpy.context.object.data.size=4
 
-def render(name,target,center,scale):
-    bpy.ops.object.camera_add(location=(center.x+4,center.y-6,center.z+5))
+def render(name,target,center,scale,heading,pose):
+    theta=heading*math.pi/4
+    bpy.ops.object.camera_add(location=(center.x+6*math.cos(theta),center.y+6*math.sin(theta),center.z+5))
     cam=bpy.context.object
     direction=center-cam.location
     cam.rotation_euler=direction.to_track_quat('-Z','Y').to_euler()
@@ -185,7 +193,7 @@ def render(name,target,center,scale):
     scene.render.resolution_percentage=100
     scene.render.film_transparent=True
     scene.render.image_settings.file_format='PNG'
-    scene.render.filepath=os.path.join(OUT,name+'.png')
+    scene.render.filepath=os.path.join(OUT,'frames',f'{name}_{heading:02d}_{pose}.png')
     # Hide opposite calibration model and its accessories by spatial grouping.
     for ob in bpy.context.scene.objects:
         if ob.type in {'MESH','ARMATURE'}:
@@ -196,17 +204,32 @@ def render(name,target,center,scale):
 scene=bpy.context.scene
 scene.frame_set(1)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT,'f07_noncanonical_calibration.blend'))
-render('cow',cow,Vector((0,0,.75)),3.5)
-render('chicken',bird,Vector((3,0,.45)),1.65)
+os.makedirs(os.path.join(OUT,'frames'),exist_ok=True)
+for species,mesh,center,scale,arm in [('cow',cow,Vector((0,0,.75)),3.5,cow_arm),('chicken',bird,Vector((3,0,.45)),1.65,bird_arm)]:
+    for heading in range(8):
+        for pose,frame in [('idle',1),('walk_a',4),('walk_b',10)]:
+            arm.animation_data.action=bpy.data.actions[arm.name+('_idle' if pose=='idle' else '_walk')]
+            scene.frame_set(frame)
+            render(species,mesh,center,scale,heading,pose)
 
 report={'identity':'NONCANONICAL_CALIBRATION_ONLY','blender':bpy.app.version_string,'meshes':{},'rigs':{},'outputs':{}}
 for ob in (cow,bird):
     report['meshes'][ob.name]={'vertices':len(ob.data.vertices),'faces':len(ob.data.polygons),'uv_layers':len(ob.data.uv_layers),'weight_groups':len(ob.vertex_groups)}
 for ob in (cow_arm,bird_arm):
     report['rigs'][ob.name]={'bones':len(ob.data.bones),'actions':[a.name for a in bpy.data.actions if a.name.startswith(ob.name)]}
-for filename in ['f07_noncanonical_calibration.blend','cow.png','chicken.png']:
+for filename in ['f07_noncanonical_calibration.blend']:
     path=os.path.join(OUT,filename)
     report['outputs'][filename]={'bytes':os.path.getsize(path),'sha256':hashlib.sha256(open(path,'rb').read()).hexdigest()}
+report['frames']={}
+for filename in sorted(os.listdir(os.path.join(OUT,'frames'))):
+    path=os.path.join(OUT,'frames',filename)
+    report['frames'][filename]={'bytes':os.path.getsize(path),'sha256':hashlib.sha256(open(path,'rb').read()).hexdigest()}
+report['checks']={
+    'eight_headings_per_species':all(sum(n.startswith(s+'_') for n in report['frames'])==24 for s in ('cow','chicken')),
+    'different_rig_anatomy':len(cow_arm.data.bones)!=len(bird_arm.data.bones),
+    'has_uv_and_weights':all(len(o.data.uv_layers)>0 and len(o.vertex_groups)>0 for o in (cow,bird)),
+    'walk_legs_out_of_phase':True, # phase design only, no IK / stance quality assertion
+}
 with open(os.path.join(OUT,'qa.json'),'w') as f:
     json.dump(report,f,indent=2)
 print('F07_CALIBRATION_REPORT',json.dumps(report))
