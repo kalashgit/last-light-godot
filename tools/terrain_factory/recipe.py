@@ -72,6 +72,23 @@ def phase(u, v, frequency=1):
     return math.sin(TAU * frequency * u) * math.cos(TAU * frequency * v)
 
 
+def periodic_noise(u, v, period, seed):
+    """2D smooth tileable value noise; avoids screen-direction moire stripes."""
+    x, y = u * period, v * period
+    ix, iy = math.floor(x), math.floor(y)
+    fx, fy = smoothstep(0, 1, x - ix), smoothstep(0, 1, y - iy)
+
+    def corner(a, b):
+        z = ((a % period) * 374761393 + (b % period) * 668265263 +
+             seed * 2246822519) & 0xFFFFFFFF
+        z = ((z ^ (z >> 13)) * 1274126177) & 0xFFFFFFFF
+        return ((z ^ (z >> 16)) & 0xFFFF) / 32767.5 - 1.0
+
+    a = corner(ix, iy) * (1 - fx) + corner(ix + 1, iy) * fx
+    b = corner(ix, iy + 1) * (1 - fx) + corner(ix + 1, iy + 1) * fx
+    return a * (1 - fy) + b * fy
+
+
 def coverage(mask, u, v):
     """B material fraction, with boundary determined ONLY by two shared bits."""
     nw, ne, se, sw = ((mask >> i) & 1 for i in range(4))
@@ -91,32 +108,36 @@ def hex_rgb(value):
 def surface_rgb(surface, u, v, variant=0):
     """Original periodic material patterns, with interior-only controlled variation."""
     kind = surface["material"]
-    broad = .5 * phase(u, v, 2) + .35 * phase(u + .17, v + .32, 5)
-    micro = phase(u + .23, v + .09, 23)
+    broad = periodic_noise(u, v, 2, 47)
+    mid = periodic_noise(u, v, 7, 83)
+    micro = periodic_noise(u, v, 18, 133)
     interior = window(u, v) * .11 * math.sin(
         TAU * (u * 7 + v * 9) + (variant % 113) * .29)
-    intensity = broad * .075 + micro * .025 + interior
+    intensity = broad * .090 + mid * .038 + micro * .024 + interior
     if kind == "ground_grass":
-        blades = abs(math.sin(TAU * (v * 17 + .13 * phase(u, v, 3))))
-        intensity += .10 * (blades - .5) + .05 * phase(u, v, 7)
+        # Distinct patches and grouped fine cover, not a copy-pasted grass comb.
+        blades = periodic_noise(u, v, 12, 233)
+        intensity += .095 * blades + .045 * periodic_noise(u, v, 22, 238)
     elif kind == "asphalt":
-        intensity += .028 * phase(u, v, 19) - .026 * abs(phase(u, v, 4))
+        intensity += .042 * periodic_noise(u, v, 19, 448)
+        fracture = abs(math.sin(TAU * (2*u + .17*math.sin(TAU*v))))
+        intensity -= .075 * (1 - smoothstep(.015, .085, fracture))
     elif kind == "pavers":
         seam = min(abs(math.sin(math.pi * 4 * u)), abs(math.sin(math.pi * 4 * v)))
-        intensity -= .19 * (1 - smoothstep(.018, .07, seam))
+        intensity -= .23 * (1 - smoothstep(.03, .135, seam))
     elif kind == "earth":
-        intensity += .06 * phase(u + .15, v, 9)
+        intensity += .10 * periodic_noise(u, v, 5, 437)
     elif kind == "gravel":
-        intensity += .082 * phase(u + .37, v + .26, 19)
+        intensity += .14 * periodic_noise(u, v, 20, 567)
     elif kind == "timber_floor":
-        seam = abs(math.sin(math.pi * 7 * v))
-        intensity -= .16 * (1 - smoothstep(.016, .065, seam))
-        intensity += .06 * phase(u, v, 12)
+        seam = abs(math.sin(math.pi * 4 * v))
+        intensity -= .27 * (1 - smoothstep(.035, .145, seam))
+        intensity += .095 * periodic_noise(u, v, 7, 773)
     elif kind == "ceramic_floor":
         seam = min(abs(math.sin(math.pi * 3 * u)), abs(math.sin(math.pi * 3 * v)))
-        intensity -= .14 * (1 - smoothstep(.022, .065, seam))
+        intensity -= .19 * (1 - smoothstep(.03, .125, seam))
     elif kind == "concrete_floor":
-        intensity += .035 * phase(u, v, 8)
+        intensity += .12 * periodic_noise(u, v, 3, 998)
     else:
         raise ValueError("unknown material type: " + kind)
     return tuple(clamp(c * (1 + intensity)) for c in hex_rgb(surface["base_hex"]))
