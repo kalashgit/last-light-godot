@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "standard": "docs/GEOMETRY_REFINEMENT_MEMORY_STANDARD_V1.md",
+  "state": "INITIAL_REFINEMENT_RULES_NOT_YET_GEOMETRY_REPAIRS",
+  "baseline_360_run": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
+  "families": [
+    {
+      "category": "vehicle",
+      "recipe_id": "ll_refine_vehicle_v1",
+      "version": 1,
+      "status": "DRAFT_NEEDS_CLAY_AND_TRANSFER_VALIDATION",
+      "lead_skill": "LL-091",
+      "checks": [
+        "body_silhouette",
+        "roofline",
+        "windshield_rake",
+        "wheel_arches",
+        "track_and_wheelbase",
+        "door_pivots"
+      ],
+      "transfer_extremes": [
+        "compact_hatchback",
+        "sedan",
+        "van"
+      ],
+      "parameters": {},
+      "known_failures": [],
+      "accepted_source_hashes": [],
+      "verified_outputs": [],
+      "founder_golden_approved": false
+    },
+    {
+      "category": "actor",
+      "recipe_id": "ll_refine_actor_v1",
+      "version": 1,
+      "status": "DRAFT_NEEDS_CLAY_AND_TRANSFER_VALIDATION",
+      "lead_skill": "LL-092",
+      "checks": [
+        "torso_pelvis_anatomy",
+        "joint_placement",
+        "armature_weights",
+        "clothing_clearance",
+        "pose_silhouette"
+      ],
+      "transfer_extremes": [
+        "short_human",
+        "tall_human",
+        "zombie"
+      ],
+      "parameters": {},
+      "known_failures": [],
+      "accepted_source_hashes": [],
+      "verified_outputs": [],
+      "founder_golden_approved": false
+    },
+    {
+      "category": "furniture",
+      "recipe_id": "ll_refine_furniture_v1",
+      "version": 1,
+      "status": "DRAFT_NEEDS_CLAY_AND_TRANSFER_VALIDATION",
+      "lead_skill": "LL-089",
+      "checks": [
+        "hollow_interior",
+        "hinge_axis",
+        "door_clearance",
+        "cushion_volume",
+        "contact_geometry"
+      ],
+      "transfer_extremes": [
+        "narrow_cabinet",
+        "wide_cabinet",
+        "sofa"
+      ],
+      "parameters": {},
+      "known_failures": [],
+      "accepted_source_hashes": [],
+      "verified_outputs": [],
+      "founder_golden_approved": false
+    },
+    {
+      "category": "golden40",
+      "recipe_id": "ll_refine_golden40_v1",
+      "version": 1,
+      "status": "DRAFT_NEEDS_CLAY_AND_TRANSFER_VALIDATION",
+      "lead_skill": "LL-090",
+      "checks": [
+        "reference_silhouette",
+        "handle_to_head_ratio",
+        "part_segmentation",
+        "world_scale",
+        "native_pixel_readability"
+      ],
+      "transfer_extremes": [
+        "small_prop",
+        "long_tool",
+        "container"
+      ],
+      "parameters": {},
+      "known_failures": [],
+      "accepted_source_hashes": [],
+      "verified_outputs": [],
+      "founder_golden_approved": false
+    },
+    {
+      "category": "catalog",
+      "recipe_id": "ll_refine_catalog_v1",
+      "version": 1,
+      "status": "DRAFT_NEEDS_CLAY_AND_TRANSFER_VALIDATION",
+      "lead_skill": "LL-086",
+      "checks": [
+        "semantic_shape_family",
+        "source_bounds",
+        "unique_silhouette",
+        "component_reuse",
+        "variant_parameter_ranges"
+      ],
+      "transfer_extremes": [
+        "small",
+        "large",
+        "structural_outlier"
+      ],
+      "parameters": {},
+      "known_failures": [],
+      "accepted_source_hashes": [],
+      "verified_outputs": [],
+      "founder_golden_approved": false
+    }
+  ]
+}
