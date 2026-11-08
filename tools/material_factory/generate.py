@@ -194,7 +194,12 @@ def generate(out,size):
           "uv_scale_m":recipe["uv_scale_m"],"wear_semantics":recipe["wear_semantics"],
           "shader_note":"wear_source is ONLY source noise; combine with geometry-specific exposed-edge/handling masks",
           "ao_note":"cavity_proxy is NOT ray-traced/geometry-derived ambient occlusion",
-          "sha256_albedo":hashlib.sha256((target/"albedo.png").read_bytes()).hexdigest()})
+          "sha256_albedo":hashlib.sha256((target/"albedo.png").read_bytes()).hexdigest(),
+          "channel_sha256":{key:hashlib.sha256((target/(key+".png")).read_bytes()).hexdigest()
+                            for key in sorted(maps)},
+          "channel_color_space":{key:("sRGB" if key=="albedo" else "Non-Color") for key in maps},
+          "normal_convention":"OpenGL tangent-space +Y",
+          "physical_asset_master_ids":[]})
         print("LL_MAT_GENERATED",name,flush=True)
     make_contact_sheet(cards,out)
     data={"schema":1,"projection":"world texture source maps; independent of 2:1 camera",
