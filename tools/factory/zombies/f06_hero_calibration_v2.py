@@ -279,9 +279,10 @@ def export_variant(profile_name,profile):
     scene.view_settings.view_transform='Standard'
     scene.camera.data.type='ORTHO'
     # Entire prone-to-standing envelope must fit the same canvas in every facing.
-    scene.camera.data.ortho_scale=3.5
+    scene.camera.data.ortho_scale=4.2 if args.directions==8 else 3.5
     scene.camera.location=(3.5,-3.5,3.25)
-    scene.camera.rotation_euler=(Vector((0,0,.77))-scene.camera.location).to_track_quat('-Z','Y').to_euler()
+    look_height=.72 if args.directions==8 else .77
+    scene.camera.rotation_euler=(Vector((0,0,look_height))-scene.camera.location).to_track_quat('-Z','Y').to_euler()
     scene.world.color=(.12,.12,.12)
     for o in bpy.data.objects:
         if o.type=='LIGHT':
@@ -292,7 +293,8 @@ def export_variant(profile_name,profile):
     image_frames=[]
     folder=out/profile_name
     folder.mkdir(parents=True,exist_ok=True)
-    clip_selection=({'shamble':(3,),'attack':(3,),'corpse':(1,),'idle':(1,)}
+    clip_selection=({'shamble':(3,),'attack':(3,),'corpse':(1,),
+                     'idle':(1,),'death':(7,)}
                     if args.validate_crops else
                     {'idle':(1,),'corpse':(1,)} if args.preview_only else SELECTED)
     for clip,frames in clip_selection.items():
