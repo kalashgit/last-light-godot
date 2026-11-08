@@ -32,3 +32,14 @@ The new sedan greenhouse improves on the single continuous flat side window with
 5. Independently review native-size appearance (W09 and founder) before engine (W01/W05) or device QA.
 
 No merges, deployment, Godot scene or save changes were made.
+
+## Follow-up geometry calibration — 2026-11-09
+
+- Replaced the sedan/hatchback's interpenetrating UV nose/rear cuboids with sampled continuous upper body/shoulder and fender-side meshes. Each side has a curved wheel opening derived from the axle location and tire radius; the shell is a visual calibration, not yet manifold production topology.
+- Moved narrow-car tires inward and then restored visible wheel-rim faces while keeping the tire outer edges near the body line.
+- Re-ran Blender 4.0.2 geometry smoke: **12/12 PASS**.
+- Rendered **two actual noncanonical jobs** (`compact_hatchback`, `city_sedan`), eight Cycles samples per heading, **32 headings total**. Both packed successfully with 16-frame, 4×4 RGBA atlases. Current cropped sprite cells: hatchback 212×140px; sedan 240×145px.
+- Both jobs have editable `.blend` and `.glb` exported. System Python paths were restored for glTF dependency compatibility, then the hatchback GLB was successfully re-imported with **60 meshes**. The initial render run flagged a missing `numpy` dependency, so its manifest's `portable_glb` null field reflects that earlier attempt; the separately rerun exports are present and verified by the artifact audit.
+- `tests/factory/vehicles/test_f10_pilot.py` checks 16 heading order and angle, fixed anchor, Blender and GLB source presence, RGBA atlas-alpha equivalence after pixel refinement, every frame and atlas SHA-256. **2/2 pilot jobs PASS**.
+- Visual improvement: wheels no longer float outside the side body, and the bonnet/deck now read as continuous forms across headings. **Still not Golden-approved**: fender depth, original headlamp/grille detailing, material finish, hatchback-vs-sedan differentiation, doors and hinges need further work.
+- No verified A00 IDs have been supplied. Neither candidate can be admitted to the canonical fleet or game release by this technical audit.
