@@ -29,6 +29,10 @@ RENDER_SIZE = 1024
 MESH_STEPS = 40
 
 
+def srgb_to_linear(c):
+    return c / 12.92 if c <= .04045 else ((c + .055) / 1.055) ** 2.4
+
+
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -44,7 +48,10 @@ def tile_mesh(job, surfaces):
         for i in range(n + 1):
             u = i / n
             verts.append((u - .5, v - .5, recipe.height(u, v, variant)))
-            rgba.append((*recipe.color(job, surfaces, u, v, variant), 1.0))
+            # Blender color attributes are linear. Feeding sRGB channel values
+            # directly makes earth/wood/grass nearly white after display transform.
+            rgba.append((*[srgb_to_linear(c) for c in recipe.color(
+                job, surfaces, u, v, variant)], 1.0))
     for j in range(n):
         for i in range(n):
             q = j * (n + 1) + i
@@ -67,7 +74,9 @@ def tile_mesh(job, surfaces):
     nodes.clear()
     out = nodes.new("ShaderNodeOutputMaterial")
     shader = nodes.new("ShaderNodeBsdfPrincipled")
-    shader.inputs["Roughness"].default_value = .88
+    rough_a = surfaces[job["a"]]["roughness"]
+    rough_b = surfaces[job["b"]]["roughness"] if job["b"] else rough_a
+    shader.inputs["Roughness"].default_value = (rough_a + rough_b) * .5
     shader.inputs["Metallic"].default_value = 0
     color = nodes.new("ShaderNodeAttribute")
     color.attribute_name = "LL_Terrain_Color"
