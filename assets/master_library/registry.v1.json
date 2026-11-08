@@ -90,6 +90,17 @@
       "source": "tools/unified_factory/run_parallel.py",
       "previews": "preview/parallel-factory-v1",
       "state": "four_item_two_worker_technical_smoke_pass_golden_visual_review_pending"
+    },
+    {
+      "id": "geometry_first_3d_masters",
+      "source": "tools/geometry_first",
+      "preview": "preview/geometry-first-v1",
+      "geometry_census": "preview/geometry-first-all-360/batch_report.json",
+      "source_artifacts": "https://github.com/kalashgit/last-light-godot/actions/runs/42460745955",
+      "state": "360_REAL_EDITABLE_BLENDER_GLB_GEOMETRY_SOURCES_TECHNICALLY_VERIFIED_VISUAL_AND_MATERIAL_QA_PENDING",
+      "verified_3d_models": 360,
+      "flagged_shape_warnings": 2,
+      "source_to_2_5d_preview_frames": 9
     }
   ],
   "catalog_baseline": {
@@ -106,7 +117,11 @@
     "godot_importable_candidate_resources": 311,
     "godot_resource_scene_files": 622,
     "godot_frames_parsed": 1192,
-    "integrated_lab_map_instances": 11
+    "integrated_lab_map_instances": 11,
+    "generated_geometry_master_sources_3d": 360,
+    "golden_40_reference_3d_approximations": 40,
+    "geometry_source_warnings": 2,
+    "new_2_5d_preview_frames_from_actual_3d": 9
   },
   "approval_policy": [
     "technical_qa",
