@@ -1,0 +1,31 @@
+{
+  "schema": "last-light.world-item-refs.v1",
+  "note": "Interface stub. Worker 02 owns the item registry. IDs marked source=worker02 already exist in data/survival_items.json on PR #10/#25 or in the asset-factory registry; IDs marked source=proposed must be registered by Worker 02 before shipping. World simulation only needs weight for container capacity.",
+  "items": [
+    {"id": "ll_food_bean_tin", "weight_kg": 0.4, "source": "worker02"},
+    {"id": "ll_food_water_bottle", "weight_kg": 0.55, "source": "worker02"},
+    {"id": "ll_medical_sterile_bandage", "weight_kg": 0.04, "source": "worker02"},
+    {"id": "ll_medical_first_aid_case", "weight_kg": 0.65, "source": "worker02"},
+    {"id": "ll_tools_claw_hammer", "weight_kg": 0.8, "source": "worker02"},
+    {"id": "ll_tools_hatchet", "weight_kg": 0.95, "source": "worker02"},
+    {"id": "ll_household_flashlight", "weight_kg": 0.2, "source": "worker02"},
+    {"id": "ll_crafting_pine_plank", "weight_kg": 1.5, "source": "worker02"},
+    {"id": "ll_crafting_nail_box", "weight_kg": 0.3, "source": "asset_factory_registry"},
+    {"id": "ll_tools_crowbar", "weight_kg": 1.6, "source": "asset_factory_registry"},
+    {"id": "ll_tools_adjustable_wrench", "weight_kg": 0.5, "source": "asset_factory_registry"},
+    {"id": "ll_household_bucket", "weight_kg": 0.9, "source": "asset_factory_registry"},
+    {"id": "ll_household_fuel_can", "weight_kg": 8.5, "source": "asset_factory_registry", "note": "full 10 L can"},
+    {"id": "ll_food_milk_carton", "weight_kg": 1.05, "source": "asset_factory_registry"},
+    {"id": "ll_food_evaporated_milk", "weight_kg": 0.42, "source": "asset_factory_registry"},
+    {"id": "ll_medical_pain_tablets", "weight_kg": 0.05, "source": "asset_factory_registry"},
+    {"id": "ll_world_bucket_water", "weight_kg": 10.9, "source": "proposed", "note": "bucket holding 10 L clean water"},
+    {"id": "ll_world_bucket_water_tainted", "weight_kg": 10.9, "source": "proposed"},
+    {"id": "ll_world_bottle_empty", "weight_kg": 0.05, "source": "proposed", "note": "empty water bottle"},
+    {"id": "ll_world_water_bottle_tainted", "weight_kg": 0.55, "source": "proposed"},
+    {"id": "ll_world_fuel_can_empty", "weight_kg": 1.0, "source": "proposed"},
+    {"id": "ll_world_purification_tablets", "weight_kg": 0.03, "source": "proposed"},
+    {"id": "ll_world_frozen_meat", "weight_kg": 1.0, "source": "proposed"},
+    {"id": "ll_world_key_lab_front", "weight_kg": 0.02, "source": "proposed", "note": "key for lab front door"},
+    {"id": "ll_world_key_lab_locker", "weight_kg": 0.02, "source": "proposed"}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "last-light.world-layout.v1",
+  "layout_id": "lab_house_01",
+  "note": "Worker 05 simulation lab fixture. Building geometry here is a test fixture only; production layouts come from Worker 04. Tile units match scripts/house.gd (1.0 = one 80x40 iso tile).",
+  "bounds": [-2, -2, 17, 14],
+  "globals": {"grid_power": false, "water_mains": true, "ambient_c": 21.0, "raining": false},
+  "rooms": {"kitchen": [0, 0, 5, 4], "bathroom": [5, 0, 5, 4], "living": [0, 4, 10, 4]},
+  "walls": [
+    [0, 0, 10, 0], [0, 0, 0, 5.5], [0, 6.5, 0, 8], [10, 0, 10, 8],
+    [0, 8, 4.5, 8], [5.5, 8, 10, 8],
+    [0, 4, 2, 4], [3, 4, 10, 4],
+    [5, 0, 5, 1.5], [5, 2.5, 5, 4]
+  ],
+  "objects": [
+    {"id": "door.front", "def": "ll.fixture.door.exterior_wood", "pos": [5, 8], "rot": 0, "state": {"locked": true, "key_id": "ll_world_key_lab_front", "inside_side": -1}},
+    {"id": "door.kitchen", "def": "ll.fixture.door.interior_wood", "pos": [2.5, 4], "rot": 0},
+    {"id": "door.bathroom", "def": "ll.fixture.door.interior_wood", "pos": [5, 2], "rot": 1},
+    {"id": "window.west", "def": "ll.fixture.window.single_glass", "pos": [0, 6], "rot": 1},
+    {"id": "kitchen.fridge", "def": "ll.appliance.refrigerator", "pos": [0.25, 0.2], "room": "kitchen", "state": {"circuit": "lab_house_01/living.panel:kitchen"}},
+    {"id": "kitchen.cabinet", "def": "ll.furniture.kitchen_cabinet_pair", "pos": [1.25, 0.2], "room": "kitchen"},
+    {"id": "kitchen.sink", "def": "ll.fixture.kitchen_sink", "pos": [2.45, 0.2], "room": "kitchen"},
+    {"id": "kitchen.stove", "def": "ll.appliance.electric_stove", "pos": [3.6, 0.2], "room": "kitchen", "state": {"circuit": "lab_house_01/living.panel:kitchen"}},
+    {"id": "kitchen.light", "def": "ll.fixture.ceiling_light", "pos": [2.35, 1.9], "room": "kitchen", "state": {"circuit": "lab_house_01/living.panel:lights"}},
+    {"id": "bathroom.toilet", "def": "ll.fixture.toilet", "pos": [9.2, 0.3], "room": "bathroom"},
+    {"id": "bathroom.shower", "def": "ll.fixture.shower", "pos": [8.9, 2.9], "room": "bathroom"},
+    {"id": "bathroom.cabinet", "def": "ll.furniture.drawer_dresser", "pos": [6.2, 0.2], "room": "bathroom"},
+    {"id": "living.panel", "def": "ll.utility.breaker_panel", "pos": [9.5, 4.1], "room": "living"},
+    {"id": "living.sofa", "def": "ll.furniture.sofa_two_seat", "pos": [0.9, 6.9], "room": "living"},
+    {"id": "living.shelf", "def": "ll.furniture.shelf_open", "pos": [5.6, 4.1], "room": "living"},
+    {"id": "living.wardrobe", "def": "ll.furniture.wardrobe", "pos": [7.2, 4.1], "room": "living"},
+    {"id": "living.heater", "def": "ll.appliance.space_heater", "pos": [3.6, 4.6], "room": "living", "state": {"circuit": "lab_house_01/living.panel:general"}},
+    {"id": "living.light", "def": "ll.fixture.ceiling_light", "pos": [6.0, 6.0], "room": "living", "state": {"circuit": "lab_house_01/living.panel:lights"}},
+    {"id": "living.chair", "def": "ll.furniture.dining_chair", "pos": [3.4, 6.6], "room": "living"},
+    {"id": "living.toolbox", "def": "ll.container.toolbox", "pos": [8.4, 7.4], "room": "living"},
+    {"id": "living.locker", "def": "ll.furniture.metal_locker", "pos": [9.3, 6.6], "room": "living", "state": {"locked": true, "key_id": "ll_world_key_lab_locker"}},
+    {"id": "yard.generator", "def": "ll.machine.generator_portable", "pos": [11.4, 6.0]},
+    {"id": "yard.fuel_drum", "def": "ll.storage.fuel_drum", "pos": [12.6, 6.0], "state": {"fuel_l": 40.0}},
+    {"id": "yard.rain_barrel", "def": "ll.storage.rain_barrel", "pos": [11.2, 3.2], "state": {"water_l": 60.0}},
+    {"id": "yard.crate", "def": "ll.container.wooden_crate", "pos": [2.0, 9.6]},
+    {"id": "yard.car_trunk", "def": "ll.storage.vehicle_trunk", "pos": [7.0, 10.6]}
+  ]
+}

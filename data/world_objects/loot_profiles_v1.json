@@ -1,0 +1,42 @@
+{
+  "schema": "last-light.world-loot-profiles.v1",
+  "note": "Starter development profiles only (balance_status=proposed). Seeded per instance: seed = hash(world_seed:instance_id). Rolled exactly once on first access.",
+  "profiles": {
+    "kitchen_cabinet": {"rolls": [1, 3], "entries": [
+      {"item": "ll_food_bean_tin", "weight": 5, "count": [1, 3]},
+      {"item": "ll_food_evaporated_milk", "weight": 2, "count": [1, 2]},
+      {"item": "ll_world_bottle_empty", "weight": 3, "count": [1, 2]}
+    ]},
+    "refrigerator": {"rolls": [1, 2], "entries": [
+      {"item": "ll_food_milk_carton", "weight": 4, "count": [1, 1]},
+      {"item": "ll_food_water_bottle", "weight": 3, "count": [1, 2]}
+    ]},
+    "freezer": {"rolls": [1, 2], "entries": [
+      {"item": "ll_world_frozen_meat", "weight": 1, "count": [1, 2]}
+    ]},
+    "bedroom": {"rolls": [0, 2], "entries": [
+      {"item": "ll_household_flashlight", "weight": 2, "count": [1, 1]},
+      {"item": "ll_medical_pain_tablets", "weight": 3, "count": [1, 1]}
+    ]},
+    "bathroom": {"rolls": [1, 2], "entries": [
+      {"item": "ll_medical_sterile_bandage", "weight": 4, "count": [1, 3]},
+      {"item": "ll_medical_first_aid_case", "weight": 1, "count": [1, 1]},
+      {"item": "ll_world_purification_tablets", "weight": 2, "count": [1, 1]}
+    ]},
+    "tools": {"rolls": [1, 3], "entries": [
+      {"item": "ll_tools_claw_hammer", "weight": 2, "count": [1, 1]},
+      {"item": "ll_crafting_nail_box", "weight": 4, "count": [1, 2]},
+      {"item": "ll_tools_crowbar", "weight": 1, "count": [1, 1]},
+      {"item": "ll_tools_adjustable_wrench", "weight": 2, "count": [1, 1]}
+    ]},
+    "crate": {"rolls": [1, 2], "entries": [
+      {"item": "ll_crafting_pine_plank", "weight": 4, "count": [1, 3]},
+      {"item": "ll_food_bean_tin", "weight": 2, "count": [1, 2]}
+    ]},
+    "living_room": {"rolls": [0, 1], "entries": [
+      {"item": "ll_food_bean_tin", "weight": 1, "count": [1, 1]},
+      {"item": "ll_household_flashlight", "weight": 1, "count": [1, 1]}
+    ]},
+    "empty": {"rolls": [0, 0], "entries": []}
+  }
+}

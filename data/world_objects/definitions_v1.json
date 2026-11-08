@@ -1,0 +1,365 @@
+{
+  "schema": "last-light.world-object-definitions.v1",
+  "schema_version": 1,
+  "status": "worker05_runtime_v1",
+  "note": "Immutable archetypes. Instances (position, rotation, mutable state) live in layouts and save deltas, never here. Numbers are starter design values (balance_status=proposed). Every action listed here is implemented in game/world_interactions/interaction_system.gd and validated at load.",
+  "definitions": [
+    {
+      "definition_id": "ll.fixture.door.exterior_wood", "canonical_name": "Exterior wooden door", "family": "door",
+      "template_ref": "ll_template_door_barricadable_v1", "asset_id": null,
+      "footprint": {"kind": "edge", "size": [1.0, 0.0]}, "sight": "opaque", "sound_material": "wood",
+      "capabilities": ["openable", "lockable", "barricadable", "destructible"],
+      "actions": ["open", "close", "lock", "unlock", "barricade", "unbarricade", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 3.0},
+        "lockable": {"inside_thumbturn": true},
+        "barricadable": {"max_layers": 4, "layer_hp": 25.0},
+        "destructible": {"max_hp": 60.0, "lock_fails_below": 0.5, "on_break": "breach"}
+      },
+      "visual": {"set": "door", "placeholder": {"shape": "edge", "h": 52, "color": "875d43"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.door.interior_wood", "canonical_name": "Interior wooden door", "family": "door",
+      "template_ref": "ll_template_door_barricadable_v1", "asset_id": null,
+      "footprint": {"kind": "edge", "size": [1.0, 0.0]}, "sight": "opaque", "sound_material": "wood",
+      "capabilities": ["openable", "barricadable", "destructible"],
+      "actions": ["open", "close", "barricade", "unbarricade", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 2.0},
+        "barricadable": {"max_layers": 3, "layer_hp": 25.0},
+        "destructible": {"max_hp": 35.0, "on_break": "breach"}
+      },
+      "visual": {"set": "door", "placeholder": {"shape": "edge", "h": 46, "color": "9a6b4c"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.window.single_glass", "canonical_name": "Single glazed window", "family": "window",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "edge", "size": [1.0, 0.0]}, "sight": "transparent", "sound_material": "glass",
+      "capabilities": ["openable", "glass", "barricadable", "destructible"],
+      "actions": ["open", "close", "smash", "barricade", "unbarricade", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 2.0},
+        "glass": {"smash_noise_radius": 14.0},
+        "barricadable": {"max_layers": 4, "layer_hp": 25.0},
+        "destructible": {"max_hp": 8.0, "on_break": "shatter"}
+      },
+      "visual": {"set": "window", "placeholder": {"shape": "window", "h": 40, "color": "9fc3cf"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.kitchen_cabinet_pair", "canonical_name": "Kitchen cabinet (two door)", "family": "cabinet",
+      "template_ref": "ll_template_cabinet_hollow_v1", "asset_id": "ll_furniture_kitchen_counter",
+      "footprint": {"kind": "cells", "size": [1.0, 0.6]}, "sight": "opaque", "sound_material": "wood",
+      "capabilities": ["openable", "storage", "movable", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "move", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.0},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "kitchen_cabinet",
+                    "compartments": [{"id": "upper", "slots": 6, "capacity_kg": 12.0}, {"id": "lower", "slots": 6, "capacity_kg": 18.0}]},
+        "movable": {"mass_kg": 35.0, "max_step_tiles": 2.0},
+        "destructible": {"max_hp": 40.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "cabinet_hollow", "sprites": {"closed": "res://assets/world_objects/candidates/cabinet_pair_open_frame_00.png", "open": "res://assets/world_objects/candidates/cabinet_pair_open_frame_08.png"}, "anchor_px": [61, 94], "sprite_status": "candidate_not_golden",
+                 "placeholder": {"shape": "box", "h": 34, "color": "a68a64"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "transformed", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.appliance.refrigerator", "canonical_name": "Refrigerator with freezer", "family": "refrigerator",
+      "template_ref": "ll_template_refrigerator_hollow_v1", "asset_id": "ll_furniture_refrigerator",
+      "footprint": {"kind": "cells", "size": [0.8, 0.75]}, "sight": "opaque", "sound_material": "painted_metal",
+      "capabilities": ["openable", "storage", "power_consumer", "thermal", "movable", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "connect", "disconnect", "move", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.0},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "refrigerator",
+                    "compartments": [{"id": "fridge", "slots": 16, "capacity_kg": 35.0, "thermal_zone": "fridge", "loot_profile": "refrigerator"},
+                                     {"id": "freezer", "slots": 6, "capacity_kg": 12.0, "thermal_zone": "freezer", "loot_profile": "freezer"}]},
+        "power_consumer": {"demand_w": 150.0, "always_on": true, "flood_sensitive": true},
+        "thermal": {"mode": "cooler", "zones": {"fridge": 3.0, "freezer": -18.0}, "tau_powered_s": 1800.0, "tau_unpowered_closed_s": 14400.0, "tau_open_s": 900.0},
+        "movable": {"mass_kg": 65.0, "max_step_tiles": 1.0, "requires_disconnect": true},
+        "destructible": {"max_hp": 110.0, "on_break": "disable"}
+      },
+      "visual": {"set": "refrigerator_hollow", "sprites": {"closed": "res://assets/world_objects/candidates/refrigerator_main_open_frame_00.png", "open": "res://assets/world_objects/candidates/refrigerator_main_open_frame_08.png"}, "anchor_px": [68, 105], "sprite_status": "candidate_not_golden",
+                 "placeholder": {"shape": "box", "h": 70, "color": "d8dcd6"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "transformed", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.appliance.chest_freezer", "canonical_name": "Chest freezer", "family": "freezer",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [1.2, 0.7]}, "sight": "partial", "sound_material": "painted_metal",
+      "capabilities": ["openable", "storage", "power_consumer", "thermal", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "connect", "disconnect", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.0},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "freezer",
+                    "compartments": [{"id": "main", "slots": 12, "capacity_kg": 40.0, "thermal_zone": "freezer"}]},
+        "power_consumer": {"demand_w": 200.0, "always_on": true, "flood_sensitive": true},
+        "thermal": {"mode": "cooler", "zones": {"freezer": -18.0}, "tau_powered_s": 2400.0, "tau_unpowered_closed_s": 21600.0, "tau_open_s": 1200.0},
+        "destructible": {"max_hp": 90.0, "on_break": "disable"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 30, "color": "e2e6e2"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.wardrobe", "canonical_name": "Wardrobe", "family": "wardrobe",
+      "template_ref": null, "asset_id": "ll_furniture_wardrobe",
+      "footprint": {"kind": "cells", "size": [1.2, 0.6]}, "sight": "opaque", "sound_material": "wood",
+      "capabilities": ["openable", "storage", "movable", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "move", "repair", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.0},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "bedroom", "compartments": [{"id": "rail", "slots": 10, "capacity_kg": 30.0}, {"id": "shelf", "slots": 4, "capacity_kg": 10.0}]},
+        "movable": {"mass_kg": 50.0, "max_step_tiles": 1.5},
+        "destructible": {"max_hp": 60.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 72, "color": "7a5a3e"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.drawer_dresser", "canonical_name": "Three-drawer dresser", "family": "drawers",
+      "template_ref": null, "asset_id": "ll_furniture_nightstand",
+      "footprint": {"kind": "cells", "size": [1.0, 0.5]}, "sight": "partial", "sound_material": "wood",
+      "capabilities": ["openable", "storage", "movable", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "move", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 0.5},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "bedroom", "compartments": [{"id": "drawer_1", "slots": 3, "capacity_kg": 5.0}, {"id": "drawer_2", "slots": 3, "capacity_kg": 5.0}, {"id": "drawer_3", "slots": 3, "capacity_kg": 5.0}]},
+        "movable": {"mass_kg": 25.0, "max_step_tiles": 2.0},
+        "destructible": {"max_hp": 30.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 30, "color": "8d6a4a"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.shelf_open", "canonical_name": "Open shelving unit", "family": "shelf",
+      "template_ref": null, "asset_id": "ll_furniture_bookcase",
+      "footprint": {"kind": "cells", "size": [1.0, 0.4]}, "sight": "partial", "sound_material": "wood",
+      "capabilities": ["storage", "movable", "destructible"],
+      "actions": ["search", "take", "put", "move", "inspect"],
+      "components": {
+        "storage": {"hollow": true, "door_gated": false, "loot_profile": "living_room", "compartments": [{"id": "shelves", "slots": 8, "capacity_kg": 25.0}]},
+        "movable": {"mass_kg": 20.0, "max_step_tiles": 2.0},
+        "destructible": {"max_hp": 25.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "shelf", "h": 60, "color": "9b7b55"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.container.toolbox", "canonical_name": "Metal toolbox", "family": "toolbox",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.5, 0.3]}, "sight": "transparent", "sound_material": "metal",
+      "capabilities": ["openable", "storage", "movable"],
+      "actions": ["open", "close", "search", "take", "put", "move", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.0},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "tools", "compartments": [{"id": "tray", "slots": 4, "capacity_kg": 4.0}, {"id": "box", "slots": 4, "capacity_kg": 8.0}]},
+        "movable": {"mass_kg": 4.0, "max_step_tiles": 3.0}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 12, "color": "b03a2e"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.container.wooden_crate", "canonical_name": "Wooden crate", "family": "crate",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.8, 0.8]}, "sight": "partial", "sound_material": "wood",
+      "capabilities": ["openable", "storage", "movable", "destructible"],
+      "actions": ["open", "close", "search", "take", "put", "move", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 1.5},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "crate", "compartments": [{"id": "main", "slots": 8, "capacity_kg": 40.0}]},
+        "movable": {"mass_kg": 12.0, "max_step_tiles": 2.0},
+        "destructible": {"max_hp": 20.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 26, "color": "a07a48"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.metal_locker", "canonical_name": "Metal locker", "family": "locker",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.5, 0.5]}, "sight": "opaque", "sound_material": "metal",
+      "capabilities": ["openable", "lockable", "storage", "destructible"],
+      "actions": ["open", "close", "lock", "unlock", "search", "take", "put", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 2.0},
+        "lockable": {"inside_thumbturn": false},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "tools", "compartments": [{"id": "main", "slots": 6, "capacity_kg": 20.0}]},
+        "destructible": {"max_hp": 120.0, "lock_fails_below": 0.5, "on_break": "breach"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 74, "color": "6f7f86"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.storage.vehicle_trunk", "canonical_name": "Vehicle trunk storage interface", "family": "vehicle_storage",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [1.4, 0.6]}, "sight": "partial", "sound_material": "metal",
+      "capabilities": ["openable", "lockable", "storage"],
+      "actions": ["open", "close", "lock", "unlock", "search", "take", "put", "inspect"],
+      "components": {
+        "openable": {"noise_radius": 3.0},
+        "lockable": {"inside_thumbturn": false},
+        "storage": {"hollow": true, "door_gated": true, "loot_profile": "tools", "compartments": [{"id": "trunk", "slots": 12, "capacity_kg": 50.0}]}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 22, "color": "4b5f78"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved", "note": "Storage interface only; vehicles are not implemented."}
+    },
+    {
+      "definition_id": "ll.furniture.sofa_two_seat", "canonical_name": "Two-seat sofa", "family": "sofa",
+      "template_ref": null, "asset_id": "ll_furniture_two_seat_sofa",
+      "footprint": {"kind": "cells", "size": [1.6, 0.75]}, "sight": "partial", "sound_material": "fabric",
+      "capabilities": ["storage", "movable", "destructible"],
+      "actions": ["search", "take", "put", "move", "inspect"],
+      "components": {
+        "storage": {"hollow": false, "door_gated": false, "loot_profile": "living_room", "compartments": [{"id": "cushions", "slots": 2, "capacity_kg": 2.0}]},
+        "movable": {"mass_kg": 45.0, "max_step_tiles": 1.5},
+        "destructible": {"max_hp": 50.0, "on_break": "destroy_spill"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 22, "color": "796557"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.furniture.dining_chair", "canonical_name": "Dining chair", "family": "chair",
+      "template_ref": null, "asset_id": "ll_furniture_dining_chair",
+      "footprint": {"kind": "cells", "size": [0.5, 0.5]}, "sight": "transparent", "sound_material": "wood",
+      "capabilities": ["movable", "destructible"],
+      "actions": ["move", "inspect"],
+      "components": {
+        "movable": {"mass_kg": 6.0, "max_step_tiles": 3.0},
+        "destructible": {"max_hp": 15.0, "on_break": "destroy"}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 24, "color": "8a6a50"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.utility.breaker_panel", "canonical_name": "Breaker / distribution panel", "family": "breaker_panel",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.4, 0.15]}, "sight": "transparent", "sound_material": "metal",
+      "capabilities": ["breaker_panel"],
+      "actions": ["toggle_breaker", "inspect"],
+      "components": {"breaker_panel": {"circuits": ["lights", "kitchen", "general"]}},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 40, "color": "56606a"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.machine.generator_portable", "canonical_name": "Portable petrol generator", "family": "generator",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.8, 0.6]}, "sight": "transparent", "sound_material": "metal",
+      "capabilities": ["generator", "movable", "destructible"],
+      "actions": ["start", "stop", "refuel", "connect", "disconnect", "move", "repair", "inspect"],
+      "components": {
+        "generator": {"capacity_w": 3000.0, "fuel_capacity_l": 20.0, "base_lph": 0.4, "per_kw_lph": 0.35, "noise_radius": 20.0, "flood_sensitive": true, "connect_range": 6.0},
+        "movable": {"mass_kg": 60.0, "max_step_tiles": 1.0, "requires_disconnect": true},
+        "destructible": {"max_hp": 80.0, "on_break": "disable"}
+      },
+      "machine": {"inputs": ["fuel_l"], "outputs": ["electricity_w"], "simulation": "analytic_fuel + scheduled fuel_out event"},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 26, "color": "c9a227"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.storage.fuel_drum", "canonical_name": "Fuel drum", "family": "fuel_storage",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.6, 0.6]}, "sight": "partial", "sound_material": "metal",
+      "capabilities": ["fuel_storage", "destructible"],
+      "actions": ["inspect"],
+      "components": {"fuel_storage": {"capacity_l": 100.0}, "destructible": {"max_hp": 70.0, "on_break": "disable"}},
+      "machine": {"inputs": [], "outputs": ["fuel_l"], "simulation": "event only (drawn by generator refuel)"},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 30, "color": "a33a2a"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.ceiling_light", "canonical_name": "Ceiling light", "family": "light",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.3, 0.3]}, "sight": "transparent", "sound_material": "glass", "passable": true,
+      "capabilities": ["power_consumer", "power_switch"],
+      "actions": ["switch_on", "switch_off", "inspect"],
+      "components": {"power_consumer": {"demand_w": 60.0, "light_radius": 4.0, "flood_sensitive": true}, "power_switch": {}},
+      "visual": {"set": "light", "placeholder": {"shape": "light", "h": 60, "color": "f4e3a1"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.appliance.electric_stove", "canonical_name": "Electric stove / oven", "family": "stove",
+      "template_ref": null, "asset_id": "ll_furniture_cooking_stove",
+      "footprint": {"kind": "cells", "size": [0.8, 0.7]}, "sight": "opaque", "sound_material": "painted_metal",
+      "capabilities": ["power_consumer", "power_switch", "thermal", "movable"],
+      "actions": ["switch_on", "switch_off", "connect", "disconnect", "move", "inspect"],
+      "components": {
+        "power_consumer": {"demand_w": 2000.0, "flood_sensitive": true}, "power_switch": {},
+        "thermal": {"mode": "heater", "zones": {"oven": 200.0}, "tau_powered_s": 300.0, "tau_unpowered_closed_s": 1200.0, "tau_open_s": 1200.0},
+        "movable": {"mass_kg": 55.0, "max_step_tiles": 1.0, "requires_disconnect": true}
+      },
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 36, "color": "e8e4dc"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.appliance.space_heater", "canonical_name": "Electric space heater", "family": "heater",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.4, 0.3]}, "sight": "transparent", "sound_material": "metal",
+      "capabilities": ["power_consumer", "power_switch", "room_climate", "movable"],
+      "actions": ["switch_on", "switch_off", "connect", "disconnect", "move", "inspect"],
+      "components": {"power_consumer": {"demand_w": 1500.0, "flood_sensitive": true}, "power_switch": {}, "room_climate": {"delta_c": 8.0}, "movable": {"mass_kg": 4.0, "max_step_tiles": 3.0}},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 18, "color": "c46a3a"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.appliance.window_air_conditioner", "canonical_name": "Window air conditioner", "family": "air_conditioner",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.6, 0.3]}, "sight": "partial", "sound_material": "metal",
+      "capabilities": ["power_consumer", "power_switch", "room_climate"],
+      "actions": ["switch_on", "switch_off", "inspect"],
+      "components": {"power_consumer": {"demand_w": 900.0, "flood_sensitive": true}, "power_switch": {}, "room_climate": {"delta_c": -6.0}},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 20, "color": "c9d3d6"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.kitchen_sink", "canonical_name": "Kitchen sink with tap", "family": "sink",
+      "template_ref": null, "asset_id": "ll_furniture_sink_cabinet",
+      "footprint": {"kind": "cells", "size": [1.0, 0.6]}, "sight": "partial", "sound_material": "metal",
+      "capabilities": ["water_fixture"],
+      "actions": ["fill", "drink", "use", "inspect"],
+      "components": {"water_fixture": {"use_l": 2.0, "drink_l": 0.25, "use_verb": "wash"}},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 30, "color": "b8c0c4"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.shower", "canonical_name": "Shower", "family": "shower",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.9, 0.9]}, "sight": "partial", "sound_material": "ceramic",
+      "capabilities": ["water_fixture"],
+      "actions": ["fill", "use", "inspect"],
+      "components": {"water_fixture": {"use_l": 30.0, "drink_l": 0.25, "use_verb": "shower"}},
+      "visual": {"set": "box", "placeholder": {"shape": "flat", "h": 4, "color": "c8d4d8"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.fixture.toilet", "canonical_name": "Toilet", "family": "toilet",
+      "template_ref": null, "asset_id": "ll_furniture_toilet",
+      "footprint": {"kind": "cells", "size": [0.5, 0.7]}, "sight": "transparent", "sound_material": "ceramic",
+      "capabilities": ["water_fixture"],
+      "actions": ["use", "inspect"],
+      "components": {"water_fixture": {"use_l": 0.0, "drink_l": 0.0, "use_verb": "flush", "cistern_l": 6.0}},
+      "visual": {"set": "box", "placeholder": {"shape": "box", "h": 22, "color": "eef0ee"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.storage.rain_barrel", "canonical_name": "Rain barrel (200 L)", "family": "water_tank",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.7, 0.7]}, "sight": "partial", "sound_material": "plastic",
+      "capabilities": ["water_storage", "destructible"],
+      "actions": ["fill", "drink", "pour", "drain", "treat", "inspect"],
+      "components": {"water_storage": {"capacity_l": 200.0, "drink_l": 0.25, "rain_lph": 2.0, "default_contaminated": true}, "destructible": {"max_hp": 40.0, "on_break": "disable"}},
+      "visual": {"set": "tank", "placeholder": {"shape": "box", "h": 34, "color": "3d6b8c"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    },
+    {
+      "definition_id": "ll.world.ground_pile", "canonical_name": "Items on the ground", "family": "ground_pile",
+      "template_ref": null, "asset_id": null,
+      "footprint": {"kind": "cells", "size": [0.5, 0.5]}, "sight": "transparent", "sound_material": "none", "passable": true,
+      "capabilities": ["storage"],
+      "actions": ["search", "take", "put", "inspect"],
+      "components": {"storage": {"hollow": false, "door_gated": false, "loot_profile": "empty", "remove_when_empty": true, "compartments": [{"id": "ground", "slots": 32, "capacity_kg": 500.0}]}},
+      "visual": {"set": "pile", "placeholder": {"shape": "pile", "h": 6, "color": "c2a36b"}},
+      "status": {"implementation_status": "runtime_tested", "media_status": "missing", "rights_status": "original_approved"}
+    }
+  ]
+}
