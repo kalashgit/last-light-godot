@@ -4,15 +4,30 @@ Reference-informed original procedural reconstruction. No borrowed mesh/texture.
 Y aligns with handle; the jaw gap is along Y, opening toward negative X.
 """
 import math
+import bpy
 
 def build(m, *, form, tube, hoop, z=.040):
     # Central forged handle, swept flared shoulders and offset broad head.
-    form("V11 forged tapered crescent wrench handle",
+    handle=form("V13 forged tapered crescent wrench handle with true eye",
          [(-.012,-.125),(.014,-.125),(.015,-.110),(.013,-.032),
           (.018,.025),(.031,.055),(.034,.088),(.012,.096),
           (-.016,.089),(-.026,.051),(-.015,.020)],
          .016,m["forged"],z,.0022)
-    hoop("V11 hollow steel lanyard eye",0,-.124,z,.0055,.0028,m["edge"])
+    # Drill actual through-geometry; the previous floating torus was cosmetic.
+    bpy.ops.mesh.primitive_cylinder_add(
+        vertices=24,radius=.0035,depth=.075,location=(0,-.117,z))
+    cutter=bpy.context.object
+    cutter.name="F09 temporary lanyard hole cutter"
+    bpy.ops.object.select_all(action="DESELECT")
+    handle.select_set(True)
+    bpy.context.view_layer.objects.active=handle
+    hole=handle.modifiers.new("V13 actual through-drilled handle eye","BOOLEAN")
+    hole.operation="DIFFERENCE"
+    hole.object=cutter
+    hole.solver="EXACT"
+    bpy.ops.object.modifier_apply(modifier=hole.name)
+    bpy.data.objects.remove(cutter,do_unlink=True)
+    handle["F09_TRUE_THROUGH_HOLE"]=True
     # Stationary upper jaw curls outward from the right-hand head.
     # Its bottom contact surface runs along Y=.142 and opens LEFT.
     form("V11 fixed crescent upper jaw broad forged arm",
