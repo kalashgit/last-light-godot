@@ -43,10 +43,10 @@ def main():
             continue
         scene = factory.hero.setup()
         mats = factory.material_set()
-        factory.construction(item, mats)
-        refine(item["archetype"], mats, form=factory.form,
-               tube=factory.tube, small_pin=factory.small_pin,
-               curved_bar=factory.curved_bar)
+        from f09_v5_models import build as build_v5
+        build_v5(item["archetype"], mats, form=factory.form, tube=factory.tube,
+                 grip=factory.grip, closed_sweep=factory.closed_sweep,
+                 small_pin=factory.small_pin, hoop=factory.hoop)
         bpy.context.view_layer.update()
         objects = factory.models()
         transforms = {o.name: o.matrix_world.copy() for o in objects}
