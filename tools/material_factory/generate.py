@@ -61,10 +61,10 @@ def material_maps(recipe,size):
     if family=="painted_metal":
         # Clustered primer exposure, not an indiscriminate bright rust speckle.
         chip_field=.48*low+.35*mid+.17*fine
-        chips=np.clip((chip_field-.64)*13,0,1)**1.5
+        chips=np.clip((chip_field-.60)*12,0,1)**1.8
         scuff=np.clip((fine-.61)*1.8,0,.30)
         wear=np.clip(chips+.10*scuff,0,1)
-        variation=.035*(fine-.5)+.027*(mid-.5)-.11*wear
+        variation=.035*(fine-.5)+.027*(mid-.5)-.12*wear
         height=np.clip(.52+.024*(fine-.5)+.018*(mid-.5)-.13*chips,0,1)
         rough=np.clip(recipe["roughness"]+.085*(low-.5)+.19*chips+.10*scuff,0,1)
         metal=np.clip(recipe["metallic"]*(1-chips)+.24*chips,0,1)
@@ -75,14 +75,15 @@ def material_maps(recipe,size):
         dx=np.minimum(abs(x-knot_x),1-abs(x-knot_x))
         dy=np.minimum(abs(y-knot_y),1-abs(y-knot_y))
         knot=np.exp(-((dx/.105)**2+(dy/.085)**2)*2.0)
-        flow=y+.035*(low-.5)+.025*(mid-.5)+.025*knot*np.sin(2*np.pi*dx/.21)
-        rings=flow*21+1.2*(mid-.5)+.28*(fine-.5)
+        flow=y+.12*(low-.5)+.075*(mid-.5)+.035*knot*np.sin(2*np.pi*dx/.21)
+        rings=flow*8.5+.65*(mid-.5)+.20*(fine-.5)
         phase=np.abs((rings%1)-.5)*2
-        grain=np.clip((phase-.28)*1.9,0,1)**1.7
-        fibers=np.clip((np.abs(((flow*93+.5*fine)%1)-.5)*2-.48)*2.2,0,1)
+        grain=np.clip((phase-.43)*2.1,0,1)**2.3
+        fibers=np.clip((np.abs(((flow*57+.7*fine)%1)-.5)*2-.52)*2.0,0,1)
         pores=np.clip((fine-.62)*3,0,1)
-        variation=-.25*grain-.065*fibers+.15*(low-.5)-.14*knot-.08*pores
-        height=np.clip(.54-.15*grain-.035*fibers+.06*(fine-.5)-.045*knot,0,1)
+        heartwood=np.clip(.56*low+.44*mid,0,1)
+        variation=-.17*grain-.045*fibers+.23*(heartwood-.5)-.16*knot-.075*pores
+        height=np.clip(.54-.11*grain-.025*fibers+.055*(fine-.5)-.045*knot,0,1)
         wear=np.clip(.11*pores+.10*(1-grain)*np.maximum(0,.48-mid),0,1)
         rough=np.clip(recipe["roughness"]+.11*(fine-.5)+.09*pores+.055*knot,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
@@ -92,11 +93,12 @@ def material_maps(recipe,size):
         warp=np.sin(2*np.pi*(x*82+.003*mid))
         weft=np.sin(2*np.pi*(y*78+.003*fine))
         weave=.5*(warp+weft)+.24*warp*weft
-        compression=np.clip((.44-low)*2.3,0,.35)
-        variation=.11*(low-.5)+.018*weave+.035*(mid-.5)-.10*compression
-        height=np.clip(.51+.085*weave+.027*(fine-.5)-.06*compression,0,1)
-        wear=np.clip(.10*mid+.20*compression,0,1)
-        rough=np.clip(recipe["roughness"]+.06*(low-.5)-.11*compression+.025*weave,0,1)
+        compression=np.clip((.49-low)*2.7,0,.48)
+        slub=np.clip((mid-.59)*3.4,0,.45)
+        variation=.17*(low-.5)+.025*weave+.075*(mid-.5)-.19*compression+.035*slub
+        height=np.clip(.51+.09*weave+.032*(fine-.5)-.085*compression+.025*slub,0,1)
+        wear=np.clip(.11*mid+.24*compression,0,1)
+        rough=np.clip(recipe["roughness"]+.075*(low-.5)-.15*compression+.025*weave,0,1)
         metal=np.zeros((size,size),dtype=np.float32)
     elif family=="plastic":
         mild=.07*(low-.5)+.025*(fine-.5)
