@@ -122,7 +122,7 @@ Reject hoof floating, all quadruped legs phase-locked, wrong rabbit/chicken gait
 
 W01/W04/W05/W09 separately test actual ground/collider/z-sort and pens/fence navigation; eight facings aligned to movement; walk/flee/graze/peck/drink/rest visual synchronization and interruptions; food/water reach; chicken hutch and optional egg ownership if approved; calf/chick carrying as one persistent entity; corpse/loot state; save/load without duplicate animals/items or time-skips twice; visible species silhouettes at real iPhone/Xogot zoom; sprite atlas memory and rendering. Require actual tests and output logs, not inference from Blender screenshot or source notes. F07 may provide fixture assets but may not certify unrun runtime behavior.
 
-## 26 — First pilot, status reporting, complete deliverables
+## 26 — First pilot and complete deliverables
 
 Candidate calibration labels from Notion (NOT verified canonical IDs): LL-F07-CAL-01 V8 adult cow, CAL-02 calf, CAL-03 chicken, CAL-04 pig, CAL-05 rabbit. The existing queue also contains six provisional reference icon records, NOT six approved master animals. Reconcile existing animal.cattle and animal.chicken original-design entries with A00; they currently have no evidence of semantic approval, Golden art or game/device test.
 
@@ -130,4 +130,22 @@ First sprint: review V8 cow real source and SHA; query A00 verified F07 IDs; pre
 
 Required output per approved master: canonical Notion link & rights, editable .blend, applicable .glb, UV/albedo/roughness/normal original materials, species-specific skinned rig, meaningful breed/age variants, approved animation clips/directions/events, alpha PNGs, packed atlas JSON, feet/ground pivots, feeding/carry sockets, collider/nav proposal, native-size QA contact sheets, actual CI run links, hash manifest and permanent archive instructions.
 
-Every status report must contain: actual A00 IDs and verified row URLs; catalog SHA; source cow/checkpoint inspected; GitHub branch/PR; generated editable sources vs derived variants; rig versions; original materials; actual clips, directions and frame counts; QA PASS/FAIL/NOT RUN; Golden founder decision; Godot/iPhone actual test evidence; CI run/artifact hashes, blocker list and next verified IDs. Do not claim accomplished work from drafted recipes.
+## 27 — Mandatory reporting, source integrity and final production gates
+
+At every checkpoint, deliver a traceable status document with **explicit PASS / FAIL / NOT RUN** for each technical and integration gate. Use this report format:
+
+- Canonical A00 F07 master IDs and their verified Notion URLs, rights and approval revision.
+- Pinned A00 snapshot SHA and queue work-order revision.
+- Existing V8 cow source .blend/.glb and exact files/hashes actually opened and validated (or NOT FOUND).
+- The status of existing animal.cattle and animal.chicken proposal pages; do not silently change their identity.
+- Species-specific rig template and actual tested mesh, material and animation outputs (separating unique masters from variants/frames).
+- Per-species gait and footfall tests; idle/walk/flee/graze/peck/alert/rest clip directions, counts, timings and event coverage.
+- Coat textures and UV provenance; native 2.5D frame/pivot/alpha/atlas checks; W09 independent QA verdict.
+- W05/W07 animal movement behavior visual contract, attachment and state handoff.
+- Founder Golden 40 appearance review, Godot scene integration results and actual Xogot/iPhone performance status—each separately evidenced.
+- Isolated GitHub branch/PR, real GitHub Actions/Blender workflow run, source and output SHA-256, archive location/retention and cost if measured.
+- Precisely identified failures, unverified assumptions, blocking ID rights/revisions and next five A00-verified work orders.
+
+**Status gates:** `SOURCE_REVIEWED` → `A00_ID_VERIFIED` → `GEOMETRY_AND_RIG` → `COAT_MATERIALS` → `ANIMATION` → `2_5D_SPRITES` → `AUTOMATED_QA` → `INDEPENDENT_QA` → `FOUNDER_GOLDEN_APPROVAL` → `GODOT_INTEGRATION` → `REAL_DEVICE_QA`. Never equate the stages. Invalid identity or source rights blocks canonical publishing, but does not prevent clearly labeled noncanonical calibration tests. The playable Godot scene must remain intact and no merges/deployments occur without founder authorization.
+
+**Begin now:** inspect actual A00 records and the V8 cow source, run honest available technical calibration, and report evidence rather than implied progress.
