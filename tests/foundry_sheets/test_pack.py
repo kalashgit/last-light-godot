@@ -104,9 +104,68 @@ class SheetTests(unittest.TestCase):
         for size in (512, 4096):
             with self.assertRaises(ValueError):
                 pack(self.source, self.path / f"bad_{size}", page_size=size)
-        for count in (0, 9):
+        for count in (0, 81):
             with self.assertRaises(ValueError):
                 pack(self.source, self.path / f"bad_{count}", batch_size=count)
+        with self.assertRaisesRegex(ValueError, "minimum"):
+            pack(self.source, self.path / "bad_min", batch_size=4, min_batch_size=40)
+        with self.assertRaisesRegex(ValueError, "cannot fill"):
+            pack(self.source, self.path / "bad_inventory", batch_size=8,
+                 inventory_page_items=40)
+
+    def test_mass_80_assets_produce_two_genuine_40_item_pages(self):
+        for i in range(78):
+            candidate(self.source, f"ll_catalog_item_{i:03d}")
+        output = self.path / "mass"
+        report = pack(self.source, output, batch_size=80, min_batch_size=40,
+                      inventory_page_items=40, page_size=2048, run_id="333")
+        self.assertEqual(report["batch_count"], 80)
+        self.assertEqual(report["frame_count"], 1280)
+        self.assertEqual(report["inventory_page_count"], 2)
+        self.assertEqual(report["status"], "PACKED")
+        manifest = json.loads((output / "inventory_sheet_manifest.json").read_text())
+        self.assertEqual([p["asset_count"] for p in manifest["pages"]], [40, 40])
+        self.assertEqual(len(manifest["entries"]), 80)
+        self.assertEqual(len({entry["asset_id"] for entry in manifest["entries"]}), 80)
+        self.assertFalse(manifest["golden_approved"])
+        for entry in manifest["entries"]:
+            with Image.open(output / manifest["pages"][entry["page"]]["file"]) as page:
+                x, y, w, h = entry["region"]
+                icon = page.crop((x, y, x + w, y + h))
+            with Image.open(self.source / entry["asset_id"] / "atlas_16_headings.png") as source:
+                heading = entry["heading"]
+                col, row = heading % 4, heading // 4
+                size = entry["source_size"][0]
+                raw = source.crop((4 + col * (size + 4), 4 + row * (size + 4),
+                                   4 + col * (size + 4) + size,
+                                   4 + row * (size + 4) + size))
+            ox, oy = entry["trim_offset"]
+            self.assertEqual(icon.tobytes(), raw.crop((ox, oy, ox + w, oy + h)).tobytes())
+        self.assertEqual(stage(output, self.path / "persist"), 80)
+        with Image.open(output / "inventory_sheet_0000.png") as original:
+            altered = original.copy()
+        altered.putpixel((0, 0), (18, 91, 47, 255))
+        altered.save(output / "inventory_sheet_0000.png")
+        with self.assertRaisesRegex(ValueError, "digest mismatch"):
+            stage(output, self.path / "tampered")
+
+    def test_mass_waits_for_40_distinct_assets_without_advancing_cursor(self):
+        for i in range(37):
+            candidate(self.source, f"ll_wait_item_{i:03d}")
+        output = self.path / "waiting"
+        first = pack(self.source, output, batch_size=40, min_batch_size=40,
+                     inventory_page_items=40, page_size=2048, run_id="101")
+        self.assertEqual(first["batch_count"], 0)
+        self.assertEqual(first["held_for_full_page"], 39)
+        self.assertEqual(first["status"], "WAITING_FOR_COMPLETE_INVENTORY_PAGE")
+        self.assertFalse((output / "inventory_sheet_0000.png").exists())
+        self.assertEqual(json.loads((output / "next_state.json").read_text())["completed"], [])
+        candidate(self.source, "ll_wait_item_999")
+        second = pack(self.source, self.path / "ready", batch_size=40,
+                      min_batch_size=40, inventory_page_items=40,
+                      page_size=2048, run_id="102")
+        self.assertEqual(second["batch_count"], 40)
+        self.assertEqual(second["inventory_page_count"], 1)
 
     def test_publish_rejects_modified_sheet_bytes(self):
         first = self.path / "first"
