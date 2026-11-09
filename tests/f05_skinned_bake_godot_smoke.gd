@@ -91,7 +91,7 @@ func _run() -> void:
         quit(2)
         return
 
-    var original: Node2D = actors[0]
+    var original = actors[0]
     check(original.layer("shirt").visible, "weighted shirt visible")
     check(original.layer("backpack").visible, "back attachment visible")
     check(original.layer("body").position == Vector2(
