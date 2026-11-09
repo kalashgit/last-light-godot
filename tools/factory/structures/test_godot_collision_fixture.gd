@@ -42,4 +42,5 @@ func _verify(fixture: Node3D) -> void:
         quit(1)
         return
     print("F02 transform regression PASS (not a full gameplay test)")
+    fixture.free() # Avoid leaking PhysicsServer RIDs in the isolated test.
     quit(0)
