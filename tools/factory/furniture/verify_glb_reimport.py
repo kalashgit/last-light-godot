@@ -28,13 +28,16 @@ def main():
         verts=sum(len(o.data.vertices) for o in mesh)
         assert mesh and verts>50,(path,verts)
         assert all(o.dimensions.length>0 for o in mesh),(path,"empty object")
-        if any(tag in str(path) for tag in ("refrigerator_v6","refrigerator_v8","refrigerator_v9")):
+        if any(tag in str(path) for tag in ("refrigerator_v6","refrigerator_v8","refrigerator_v9","refrigerator_v10")):
             assert hinges,(path,"hinge pivot not imported")
             assert actions,(path,"hinge action not imported")
         crisper=[o for o in bpy.context.scene.objects if "slide_local.crisper_drawer" in o.name]
-        if "refrigerator_v8" in str(path) or "refrigerator_v9" in str(path):
+        if any(tag in str(path) for tag in ("refrigerator_v8","refrigerator_v9","refrigerator_v10")):
             assert crisper,(path,"crisper sliding origin not imported")
             assert sum(o.parent==crisper[0] and o.type=="MESH" for o in bpy.context.scene.objects)==7
+        if "refrigerator_v10" in str(path):
+            assert len(actions)>=2,(path,"independent clips collapsed on Blender reimport")
+            assert any("freezer_flap" in o.name for o in bpy.context.scene.objects)
         reports.append({"file":path.name,"mesh_count":len(mesh),"vertex_count":verts,
                         "hinge_pivot_count":len(hinges),"crisper_pivot_count":len(crisper),
                         "imported_action_count":len(actions),
