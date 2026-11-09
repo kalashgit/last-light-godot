@@ -150,7 +150,8 @@ def main():
         "status":"F12_VISUAL_CANDIDATE_NOT_APPROVED",
         "native_px":[96,96],"scale_factor":1.0,
         "contour_width_px":1,"source_model_unmodified":True,
-        "pivot_fixed_all_headings_px":[48,48],\n        "previous_v19_comparison_frames":48,
+        "pivot_fixed_all_headings_px":[48,48],
+        "previous_v19_comparison_frames":48,
         "headings":evidence},indent=2)+"\n")
     print("F09_F12_CONTOUR_AND_CONTACT_ANCHORS_PASS 48",flush=True)
 
