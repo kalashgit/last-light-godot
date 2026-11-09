@@ -16,6 +16,22 @@ def shaped_wooden_d_handle(material, z=.040):
     inner=[(-.064,-.182),(-.054,-.210),(-.042,-.219),(-.010,-.218),
            (.011,-.204),(.018,-.181),(.008,-.164),(-.006,-.155),
            (-.030,-.147),(-.052,-.157)]
+    # Round the hard ten-point cutout into a manufactured palm contour.
+    # Chaikin subdivision preserves the opening and yields editable watertight
+    # 40-point inner/outer rings instead of a blocky decagon.
+    def soften(points):
+        for _ in range(2):
+            refined=[]
+            for k,p in enumerate(points):
+                q=points[(k+1)%len(points)]
+                refined.extend((
+                    (.75*p[0]+.25*q[0], .75*p[1]+.25*q[1]),
+                    (.25*p[0]+.75*q[0], .25*p[1]+.75*q[1]),
+                ))
+            points=refined
+        return points
+    outer=soften(outer)
+    inner=soften(inner)
     n=len(outer)
     top=z+.011;bot=z-.011
     verts=([(x,y,top) for x,y in outer]+
@@ -53,53 +69,6 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
     if kind == "wrench":
         from f09_v11_wrench import build as build_v11
         return build_v11(m,form=form,tube=tube,hoop=hoop,z=z)
-        # One solid shank with a broad, asymmetric forged neck. No floating jaw.
-        form("V5 adjustable wrench forged tapered shank",
-             [(-.012,-.125),(.012,-.125),(.012,.049),(.022,.073),
-              (.020,.095),(-.020,.095),(-.021,.071),(-.012,.049)],
-             .014,m["forged"],z,.0020)
-        hoop("V5 handle hanging eye",0,-.121,z,.0060,.0030,m["edge"])
-        # V8: crescent head is deliberately OFFSET from the shank axis.
-        # Larger forged fixed jaw, shorter blunt slider, and nearly planar
-        # gripping faces. The adjuster is *inside* the neck, not dangling.
-        form("V8 offset fixed head with long angled fixed jaw",
-             [(-.023,.070),(-.040,.078),(-.060,.099),(-.071,.125),
-              (-.070,.145),(-.058,.164),(-.035,.173),(-.023,.171),
-              (-.022,.158),(-.029,.150),(-.037,.140),(-.040,.125),
-              (-.033,.110),(-.015,.099),(.005,.092)],
-             .018,m["forged"],z,.0015)
-        # The movable jaw is shorter, with a broad angled back and
-        # a flat left-facing bite; it must not look like another hook.
-        form("V8 compact translating crescent jaw",
-             [(.002,.082),(.030,.081),(.043,.095),(.049,.112),
-              (.048,.140),(.040,.156),(.025,.156),
-              (.019,.147),(.020,.132),(.020,.116),(.010,.103)],
-             .0175,m["edge"],z,.0013)
-        # Visible small polished contact facets make the opposing flats legible.
-        form("V8 fixed parallel gripping flat",
-             [(-.038,.126),(-.035,.128),(-.022,.157),(-.025,.160)],
-             .0013,m["edge"],z+.0095,.0001)
-        form("V8 sliding jaw vertical gripping flat",
-             [(.018,.118),(.021,.118),(.021,.146),(.018,.147)],
-             .0013,m["edge"],z+.0095,.0001)
-        # Lowered bridge under the jaws: recess wheel into metal body.
-        form("V8 machined enclosed worm housing",
-             [(-.010,.075),(.032,.075),(.035,.101),(-.013,.101)],
-             .010,m["forged"],z-.006,.0006)
-        # Steel thumbwheel top face is above housing for a realistic cylinder
-        # with a few shallow knurl marks. No detached bottom blob.
-        tube("V8 inset adjustment thumbwheel",
-             (.016,.088,.044),(.016,.088,.054),.010,.010,m["edge"],24)
-        for i in range(8):
-            angle=math.tau*i/8
-            x=.016+.0090*math.cos(angle)
-            y=.088+.0090*math.sin(angle)
-            tube("V8 subtle thumbwheel notch %02d"%i,
-                 (x,y,.054),(x,y,.055),.0011,.0011,m["oxide"],8)
-        # Short steel-rubbed flat on handle instead of multiple scratches.
-        form("V8 forged handle contact wear",
-             [(-.004,-.072),(.002,-.072),(.002,.027),(-.004,.027)],
-             .0006,m["edge"],z+.008,.0001)
     elif kind == "saw":
         # Main saw body: tapered plate with 24 integrated real tooth notches,
         # instead of many disconnected polygonlets intersecting the blade.
