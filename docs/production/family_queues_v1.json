@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "program": "LAST LIGHT Unified Asset Production V1",
+  "status": "QUEUES_CREATED_NO_ASSET_CATALOG_AUDIT_COMPLETED",
+  "source_audit_issue": 41,
+  "production_manager": "Unified Production Manager",
+  "engineering_integration_manager": "W01",
+  "independent_qa": "W09",
+  "release_builds": "W10",
+  "required_asset_stages": [
+    "CANONICAL_CLASSIFIED",
+    "GEOMETRY_SOURCE",
+    "GEOMETRY_REFINED",
+    "MATERIALS",
+    "RIG_OR_STATES_IF_APPLICABLE",
+    "SPRITE_RENDER",
+    "ATLAS_METADATA",
+    "TECHNICAL_QA",
+    "FOUNDER_VISUAL_REVIEW",
+    "GODOT_TEST",
+    "DEVICE_TEST_IF_APPLICABLE"
+  ],
+  "queues": [
+    {
+      "queue_id": "F01",
+      "name": "Furniture, Containers & Appliances",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W05",
+        "W07"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F02",
+      "name": "Buildings & Structures",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W04",
+        "W05"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F03",
+      "name": "Terrain & Tile Kits",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W04"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F04",
+      "name": "Vegetation",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W04",
+        "W07"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F05",
+      "name": "Characters",
+      "technical_lead": "W07",
+      "interfaces": [
+        "W06",
+        "W02"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F06",
+      "name": "Zombies",
+      "technical_lead": "W07",
+      "interfaces": [
+        "W03",
+        "W06"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F07",
+      "name": "Animals",
+      "technical_lead": "W07",
+      "interfaces": [
+        "W03",
+        "W04",
+        "W06"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F08",
+      "name": "World Machinery",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W05",
+        "W07"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F09",
+      "name": "Weapons & Tools",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W02",
+        "W07"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F10",
+      "name": "Vehicles",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W05",
+        "W07"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F11",
+      "name": "Shared Materials & Textures",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W09"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    },
+    {
+      "queue_id": "F12",
+      "name": "3D-to-2.5D Rendering & Export",
+      "technical_lead": "W06",
+      "interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "audit_status": "NOT_STARTED",
+      "raw_reference_count": null,
+      "canonical_master_count": null,
+      "ready_to_model": 0,
+      "calibration_status": "NOT_STARTED",
+      "batch_size_initial": 20,
+      "work_order_file": null
+    }
+  ]
+}

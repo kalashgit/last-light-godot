@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "queue_id": "F01",
+  "queue_name": "Furniture, Containers & Appliances",
+  "primary_owner": "W06",
+  "engineering_interfaces": [
+    "W05",
+    "W07"
+  ],
+  "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+  "reference_archetypes": [
+    "chair",
+    "sofa",
+    "bed",
+    "table",
+    "cabinet",
+    "drawer",
+    "refrigerator",
+    "freezer",
+    "cooker",
+    "locker",
+    "shelf",
+    "crate",
+    "washer",
+    "sink"
+  ],
+  "calibration_work_orders": [
+    {
+      "work_order_id": "LL-F01-CAL-01",
+      "candidate_name": "Refrigerator",
+      "candidate_key": "f01:refrigerator",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W05",
+        "W07"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F01-CAL-02",
+      "candidate_name": "cabinet",
+      "candidate_key": "f01:cabinet",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W05",
+        "W07"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F01-CAL-03",
+      "candidate_name": "sofa",
+      "candidate_key": "f01:sofa",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W05",
+        "W07"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F01-CAL-04",
+      "candidate_name": "single bed",
+      "candidate_key": "f01:single-bed",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W05",
+        "W07"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F01-CAL-05",
+      "candidate_name": "kitchen drawer",
+      "candidate_key": "f01:kitchen-drawer",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W05",
+        "W07"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    }
+  ],
+  "imported_reference_record_count": 0,
+  "imported_reference_record_ids": [],
+  "reference_status": "NOTION_METADATA_REQUIRES_SEMANTIC_QA",
+  "target_stage": "HERO_CALIBRATION",
+  "first_batch_limit": 20,
+  "automatic_scale_up": false,
+  "requirements": [
+    "Do not confuse reference IDs with canonical assets",
+    "No unapproved third-party art redistribution",
+    "Independent visual review before Golden status",
+    "Keep game runtime intact"
+  ],
+  "status": "READY_FOR_REVIEW_NOT_EXECUTED"
+}

@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "queue_id": "F11",
+  "queue_name": "Shared Materials & Textures",
+  "primary_owner": "W06",
+  "engineering_interfaces": [
+    "W09"
+  ],
+  "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+  "reference_archetypes": [
+    "painted metal",
+    "steel",
+    "wood",
+    "plastic",
+    "glass",
+    "ceramic",
+    "stone",
+    "brick",
+    "concrete",
+    "fabric",
+    "leather",
+    "hair/fur",
+    "foliage",
+    "soil and water"
+  ],
+  "calibration_work_orders": [
+    {
+      "work_order_id": "LL-F11-CAL-01",
+      "candidate_name": "Painted metal",
+      "candidate_key": "f11:painted-metal",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W09"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F11-CAL-02",
+      "candidate_name": "old timber",
+      "candidate_key": "f11:old-timber",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W09"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F11-CAL-03",
+      "candidate_name": "ceramic",
+      "candidate_key": "f11:ceramic",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W09"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F11-CAL-04",
+      "candidate_name": "fabric",
+      "candidate_key": "f11:fabric",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W09"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F11-CAL-05",
+      "candidate_name": "grass/asphalt",
+      "candidate_key": "f11:grass-asphalt",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W09"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    }
+  ],
+  "imported_reference_record_count": 11,
+  "imported_reference_record_ids": [
+    "PZWIKI-ICON-0016",
+    "PZWIKI-ICON-0017",
+    "PZWIKI-ICON-0018",
+    "PZWIKI-ICON-0019",
+    "PZWIKI-ICON-0055",
+    "PZWIKI-ICON-0060",
+    "PZWIKI-ICON-0082",
+    "PZWIKI-ICON-0083",
+    "PZWIKI-ICON-0128",
+    "PZWIKI-ICON-0159",
+    "PZWIKI-ICON-0176"
+  ],
+  "reference_status": "NOTION_METADATA_REQUIRES_SEMANTIC_QA",
+  "target_stage": "HERO_CALIBRATION",
+  "first_batch_limit": 20,
+  "automatic_scale_up": false,
+  "requirements": [
+    "Do not confuse reference IDs with canonical assets",
+    "No unapproved third-party art redistribution",
+    "Independent visual review before Golden status",
+    "Keep game runtime intact"
+  ],
+  "status": "READY_FOR_REVIEW_NOT_EXECUTED"
+}

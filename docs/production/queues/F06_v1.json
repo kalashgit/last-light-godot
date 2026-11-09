@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "queue_id": "F06",
+  "queue_name": "Zombies",
+  "primary_owner": "W07",
+  "engineering_interfaces": [
+    "W03",
+    "W06"
+  ],
+  "source_notion_recipe": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+  "reference_archetypes": [
+    "civilian",
+    "worker",
+    "medical",
+    "security",
+    "police",
+    "fire rescue",
+    "elderly",
+    "weak",
+    "wounded and crawling actor variants"
+  ],
+  "calibration_work_orders": [
+    {
+      "work_order_id": "LL-F06-CAL-01",
+      "candidate_name": "Civilian",
+      "candidate_key": "f06:civilian",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F06-CAL-02",
+      "candidate_name": "hospital orderly",
+      "candidate_key": "f06:hospital-orderly",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F06-CAL-03",
+      "candidate_name": "security",
+      "candidate_key": "f06:security",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F06-CAL-04",
+      "candidate_name": "injured crawler",
+      "candidate_key": "f06:injured-crawler",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "ART_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W07",
+      "engineering_interfaces": [
+        "W03",
+        "W06"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    }
+  ],
+  "imported_reference_record_count": 0,
+  "imported_reference_record_ids": [],
+  "reference_status": "NOTION_METADATA_REQUIRES_SEMANTIC_QA",
+  "target_stage": "HERO_CALIBRATION",
+  "first_batch_limit": 20,
+  "automatic_scale_up": false,
+  "requirements": [
+    "Do not confuse reference IDs with canonical assets",
+    "No unapproved third-party art redistribution",
+    "Independent visual review before Golden status",
+    "Keep game runtime intact"
+  ],
+  "status": "READY_FOR_REVIEW_NOT_EXECUTED"
+}

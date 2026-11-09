@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "queue_id": "F12",
+  "queue_name": "3D-to-2.5D Rendering & Export",
+  "primary_owner": "W06",
+  "engineering_interfaces": [
+    "W07",
+    "W08",
+    "W10"
+  ],
+  "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+  "reference_archetypes": [
+    "All geometry and animation families",
+    "world items",
+    "actors",
+    "tiles and buildings"
+  ],
+  "calibration_work_orders": [
+    {
+      "work_order_id": "LL-F12-CAL-01",
+      "candidate_name": "Calibration cube",
+      "candidate_key": "f12:calibration-cube",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "PIPELINE_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F12-CAL-02",
+      "candidate_name": "hatchback 16 angles",
+      "candidate_key": "f12:hatchback-16-angles",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "PIPELINE_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F12-CAL-03",
+      "candidate_name": "cow 8",
+      "candidate_key": "f12:cow-8",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "PIPELINE_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F12-CAL-04",
+      "candidate_name": "hollow fridge animation",
+      "candidate_key": "f12:hollow-fridge-animation",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "PIPELINE_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    },
+    {
+      "work_order_id": "LL-F12-CAL-05",
+      "candidate_name": "grass-asphalt seam",
+      "candidate_key": "f12:grass-asphalt-seam",
+      "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+      "task_kind": "PIPELINE_CALIBRATION",
+      "workflow_status": "QUEUED_NOT_STARTED",
+      "source_notion_recipe": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "base_model_id": null,
+      "required_pipeline_stages": [
+        "GEOMETRY_OR_PIPELINE_INPUT",
+        "MATERIAL_OR_RENDER_SETUP",
+        "ANIMATION_WHEN_REQUIRED",
+        "2_5D_OUTPUT",
+        "TECHNICAL_QA",
+        "FOUNDER_VISUAL_GATE",
+        "GODOT_INTEGRATION_IF_APPLICABLE"
+      ],
+      "work_owner": "W06",
+      "engineering_interfaces": [
+        "W07",
+        "W08",
+        "W10"
+      ],
+      "source_references_reviewed": false,
+      "quality_approval": false,
+      "asset_package": null,
+      "tests": null,
+      "github_artifact_url": null
+    }
+  ],
+  "imported_reference_record_count": 0,
+  "imported_reference_record_ids": [],
+  "reference_status": "NOTION_METADATA_REQUIRES_SEMANTIC_QA",
+  "target_stage": "HERO_CALIBRATION",
+  "first_batch_limit": 20,
+  "automatic_scale_up": false,
+  "requirements": [
+    "Do not confuse reference IDs with canonical assets",
+    "No unapproved third-party art redistribution",
+    "Independent visual review before Golden status",
+    "Keep game runtime intact"
+  ],
+  "status": "READY_FOR_REVIEW_NOT_EXECUTED"
+}

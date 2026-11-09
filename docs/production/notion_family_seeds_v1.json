@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "snapshot": "2026-11-08",
+  "kind": "real_notion_family_recipe_seed",
+  "total_families": 12,
+  "source_pages_read": 12,
+  "queues": [
+    {
+      "queue_id": "F01",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381a19aa3c0574ca8c12b",
+      "reference_archetypes": [
+        "chair",
+        "sofa",
+        "bed",
+        "table",
+        "cabinet",
+        "drawer",
+        "refrigerator",
+        "freezer",
+        "cooker",
+        "locker",
+        "shelf",
+        "crate",
+        "washer",
+        "sink"
+      ],
+      "calibration_candidates": [
+        "Refrigerator",
+        "cabinet",
+        "sofa",
+        "single bed",
+        "kitchen drawer"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F02",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381649e1df03d6395f0a3",
+      "reference_archetypes": [
+        "walls",
+        "corners",
+        "floors",
+        "doors",
+        "windows",
+        "stairs",
+        "rooftops",
+        "fences",
+        "gates; 60 building archetype compositions"
+      ],
+      "calibration_candidates": [
+        "Small house",
+        "garage",
+        "shopfront",
+        "door/window",
+        "roof corner"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F03",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381ecb088c4b7eb674ff7",
+      "reference_archetypes": [
+        "asphalt",
+        "roads",
+        "sidewalks",
+        "grass",
+        "dirt",
+        "mud",
+        "gravel",
+        "sand",
+        "water",
+        "snow",
+        "potholes",
+        "puddles",
+        "curbs and transitions"
+      ],
+      "calibration_candidates": [
+        "Grass",
+        "asphalt",
+        "dirt",
+        "asphalt-to-grass",
+        "shoreline"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F04",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381ee8d1efc2d714b0637",
+      "reference_archetypes": [
+        "deciduous tree",
+        "pine",
+        "sapling",
+        "dead tree",
+        "hedge",
+        "bush",
+        "crop",
+        "weed",
+        "reed",
+        "vine",
+        "stump",
+        "flowers"
+      ],
+      "calibration_candidates": [
+        "Oak",
+        "pine",
+        "hedge",
+        "berry bush",
+        "wheat"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F05",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381ac8005ece20c4dc6c7",
+      "reference_archetypes": [
+        "human bodies",
+        "physique morphs",
+        "hair",
+        "clothing layers",
+        "footwear",
+        "bags and equipped items"
+      ],
+      "calibration_candidates": [
+        "Neutral underwear character",
+        "two morphs",
+        "backpack",
+        "hair",
+        "held tool"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F06",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381d88650e6114a741562",
+      "reference_archetypes": [
+        "civilian",
+        "worker",
+        "medical",
+        "security",
+        "police",
+        "fire rescue",
+        "elderly",
+        "weak",
+        "wounded and crawling actor variants"
+      ],
+      "calibration_candidates": [
+        "Civilian",
+        "hospital orderly",
+        "security",
+        "injured crawler"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F07",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e23738141bd50de52738bcc14",
+      "reference_archetypes": [
+        "cattle",
+        "chicken",
+        "pig",
+        "sheep",
+        "turkey",
+        "deer",
+        "mouse",
+        "rabbit",
+        "raccoon",
+        "rat from founder-supplied species reference; canonical catalog to be reconciled"
+      ],
+      "calibration_candidates": [
+        "V8 adult cow",
+        "calf",
+        "chicken",
+        "pig",
+        "rabbit"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F08",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381788804e3836cad776e",
+      "reference_archetypes": [
+        "generator",
+        "compressor",
+        "water pump",
+        "conveyor",
+        "press",
+        "forklift",
+        "motor",
+        "furnace",
+        "washer",
+        "air conditioner"
+      ],
+      "calibration_candidates": [
+        "Portable generator",
+        "compressor",
+        "water pump",
+        "conveyor segment"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F09",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e23738183b2dfd9cdaadce805",
+      "reference_archetypes": [
+        "screwdriver",
+        "awl",
+        "crowbar",
+        "hammer",
+        "hatchet",
+        "axe",
+        "knife",
+        "cleaver",
+        "machete",
+        "wrench",
+        "saw",
+        "shovel",
+        "pitchfork",
+        "original firearm exterior props"
+      ],
+      "calibration_candidates": [
+        "Awl",
+        "cross screwdriver",
+        "crowbar",
+        "cleaver",
+        "hatchet"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F10",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e2373819f8922cadf21d5416a",
+      "reference_archetypes": [
+        "hatchback",
+        "sedan",
+        "wagon",
+        "SUV",
+        "pickup",
+        "coupe",
+        "van",
+        "truck",
+        "ambulance",
+        "bus",
+        "tractor",
+        "wreck"
+      ],
+      "calibration_candidates": [
+        "V6.1-inspired compact hatchback",
+        "sedan",
+        "pickup",
+        "van"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F11",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381749608f388aaf0f938",
+      "reference_archetypes": [
+        "painted metal",
+        "steel",
+        "wood",
+        "plastic",
+        "glass",
+        "ceramic",
+        "stone",
+        "brick",
+        "concrete",
+        "fabric",
+        "leather",
+        "hair/fur",
+        "foliage",
+        "soil and water"
+      ],
+      "calibration_candidates": [
+        "Painted metal",
+        "old timber",
+        "ceramic",
+        "fabric",
+        "grass/asphalt"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    },
+    {
+      "queue_id": "F12",
+      "notion_recipe_url": "https://app.notion.com/p/412f639e237381a287e1f6318d99d15a",
+      "reference_archetypes": [
+        "All geometry and animation families",
+        "world items",
+        "actors",
+        "tiles and buildings"
+      ],
+      "calibration_candidates": [
+        "Calibration cube",
+        "hatchback 16 angles",
+        "cow 8",
+        "hollow fridge animation",
+        "grass-asphalt seam"
+      ],
+      "status": "NOT_STARTED_NOT_APPROVED",
+      "classification": "SPECIFICATION_SEED_NOT_VERIFIED_MODEL",
+      "qa_requirements": [
+        "GEOMETRY",
+        "MATERIALS",
+        "SPRITE",
+        "ANIMATION_IF_REQUIRED",
+        "GODOT_IF_GAME_OBJECT",
+        "FOUNDER_VISUAL_APPROVAL"
+      ]
+    }
+  ]
+}
