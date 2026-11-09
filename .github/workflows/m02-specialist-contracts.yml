@@ -1,4 +1,5 @@
 name: M02 Pinned F05 F06 F07 F09 Specialist Contracts
+# Source-level admission only; animation and gameplay approvals remain separate.
 
 on:
   push:
