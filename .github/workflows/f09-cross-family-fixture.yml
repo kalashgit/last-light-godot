@@ -1,0 +1,119 @@
+name: F09 isolated F11 F12 Godot candidate integration
+on:
+  pull_request:
+    paths:
+      - 'tools/weapons_tools/f09_integration_fixture.py'
+      - 'tools/weapons_tools/f09_bake_pbr_maps.py'
+      - 'tools/weapons_tools/f09_world_sprite_pack.py'
+      - 'tools/weapons_tools/f09_readability_grade.py'
+      - 'tools/weapons_tools/f09_pack_atlas.py'
+      - 'tools/weapons_tools/f09_main_game_fixture.gd'
+      - 'tools/weapons_tools/f09_real_pickup_fixture.gd'
+      - 'tools/weapons_tools/f09_graphical_house_fixture.gd'
+      - 'tools/weapons_tools/f09_occlusion_zoom_fixture.gd'
+      - 'tools/weapons_tools/f09_verify_occlusion_zoom.py'
+      - 'tools/weapons_tools/f09_verify_screenshots.py'
+      - 'tools/weapons_tools/f09_godot_fixture.gd'
+      - 'tools/weapons_tools/f09_stage_godot.py'
+      - 'tools/weapons_tools/f09_verify_cross_family.py'
+      - 'tools/weapons_tools/f09_glb_mesh_quality.py'
+      - 'tools/weapons_tools/build.py'
+      - '.github/workflows/f09-cross-family-fixture.yml'
+      - 'tools/weapons_tools/f09_v5_models.py'
+      - 'tools/weapons_tools/f09_v11_wrench.py'
+      - 'tools/weapons_tools/f09_v6_materials.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  f09-isolated-fixture:
+    name: Blender bake, native sprites and Godot 4 QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install open-source Blender and image validation
+        run: sudo apt-get update && sudo apt-get install -y blender python3-numpy python3-pil unzip
+      - name: Build material-baked Blender and fixed-world source candidates
+        run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/f09_integration_fixture.py
+      - name: Pack and validate native 96px 16-heading sprites
+        run: python3 tools/weapons_tools/f09_world_sprite_pack.py
+      - name: Pack F12-style pixel-exact 16-heading atlas and anchor manifest
+        run: python3 tools/weapons_tools/f09_pack_atlas.py
+      - name: Calibrate F12 candidate 1px contour and ground anchors
+        run: python3 tools/weapons_tools/f09_readability_grade.py
+      - name: Pack isolated Godot candidate project
+        run: python3 tools/weapons_tools/f09_stage_godot.py
+      - name: Verify baked GLB texture embed, atlas coverage and staged sprites
+        run: python3 tools/weapons_tools/f09_verify_cross_family.py
+      - name: Reject degenerate GLB triangles and invalid normals
+        run: python3 tools/weapons_tools/f09_glb_mesh_quality.py
+      - name: Install Godot 4.3 (project compatibility)
+        run: |
+          curl --fail --location --retry 3 --silent --show-error \
+            -o /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --version
+      - name: Import all generated Godot candidates
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --editor --import
+      - name: Exercise F09 gameplay Sprite2D scene fixture
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://fixture.gd
+      - name: Exercise candidate atlas inside actual LAST LIGHT house gameplay scene
+        run: |
+          set -o pipefail
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://main_game_fixture.gd 2>&1 | tee /tmp/f09-main-game.log
+          grep -q F09_MAIN_GAME_RUNTIME_PASS /tmp/f09-main-game.log
+          if grep -E 'ERROR: Resource file not found|SCRIPT ERROR:|Parse Error:' /tmp/f09-main-game.log; then
+            echo "F09 main-game fixture emitted missing-resource or script errors"
+            exit 1
+          fi
+      - name: Validate actual item drop, pickup, inventory and save/reload
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-pickup-save \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage \
+              --script res://real_pickup_fixture.gd 2>&1 | tee /tmp/f09-pickup.log
+          grep -q F09_REAL_HOUSE_INVENTORY_SAVE_RELOAD_PASS /tmp/f09-pickup.log
+          test "$(grep -c F09_REAL_ITEM_PICKUP_PASS /tmp/f09-pickup.log)" -eq 3
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_INTERACTION_FAIL:' /tmp/f09-pickup.log; then exit 1; fi
+      - name: Install virtual display and OpenGL software driver
+        run: sudo apt-get install -y xvfb mesa-utils libgl1-mesa-dri
+      - name: Capture actual rendered game screenshots via Godot OpenGL
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-graphical-save \
+          xvfb-run -a -s '-screen 0 1280x720x24' \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --path build/f09_godot_stage \
+              --rendering-driver opengl3 --resolution 1280x720 \
+              --script res://graphical_house_fixture.gd \
+              2>&1 | tee /tmp/f09-graphical.log
+          grep -q F09_REAL_OPENGL_GAMEPLAY_SCREENSHOTS_PASS /tmp/f09-graphical.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_VISUAL_' /tmp/f09-graphical.log; then exit 1; fi
+      - name: Validate screenshots nonblank and visually distinct
+        run: python3 tools/weapons_tools/f09_verify_screenshots.py
+      - name: Render F12 vegetation/furniture/player overlap at gameplay zooms
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-zoom-occlusion \
+          xvfb-run -a -s '-screen 0 1280x720x24' \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --path build/f09_godot_stage \
+              --rendering-driver opengl3 --resolution 1280x720 \
+              --script res://occlusion_zoom_fixture.gd 2>&1 | tee /tmp/f09-occlusion.log
+          grep -q F09_OCCLUSION_ZOOM_SCREENSHOTS_PASS /tmp/f09-occlusion.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_OCCLUSION_FAIL:' /tmp/f09-occlusion.log; then exit 1; fi
+      - name: Verify real native-scale F12 occlusion screenshots
+        run: python3 tools/weapons_tools/f09_verify_occlusion_zoom.py
+      - name: Upload unapproved F09 F11 F12 integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f09-unapproved-cross-family-fixture
+          path: |
+            build/f09_integration_fixture/
+            build/f09_godot_stage/
+          if-no-files-found: warn
+          retention-days: 14

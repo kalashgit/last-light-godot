@@ -21,6 +21,7 @@ from mathutils import Vector, Matrix
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "blender_factory"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import render_v3_recovery as hero
 
 RECIPE_FILE = Path(__file__).with_name("recipes.json")
@@ -140,10 +141,18 @@ def material_set():
     }
 
 
+def mesh_smoothing_compat(ob):
+    """Enable weighted normals on Blender 4.0 while keeping newer builds safe."""
+    if ob.type == "MESH" and hasattr(ob.data, "use_auto_smooth"):
+        ob.data.use_auto_smooth = True
+    return ob
+
+
 def named(ob, name, mat):
     ob.name = "LL TOOL | " + name
     if mat:
         ob.data.materials.append(mat)
+    mesh_smoothing_compat(ob)
     return ob
 
 
@@ -159,7 +168,9 @@ def tube(name, start, end, r0, r1, mat, vertices=16):
     ob.rotation_euler = Vector((0, 0, 1)).rotation_difference(v).to_euler()
     named(ob, name, mat)
     bevel = ob.modifiers.new("Real edge roll", "BEVEL")
-    bevel.width = min(.0017, r0*.15, r1*.15)
+    # A shallow cap must not receive a bevel wider than its half-depth:
+    # otherwise Blender collapses adjacent faces into zero-area triangles.
+    bevel.width = min(.0017, r0*.15, r1*.15, v.length*.18)
     bevel.segments = 2
     ob.modifiers.new("Stable face normals", "WEIGHTED_NORMAL")
     return ob
@@ -191,6 +202,7 @@ def curved_bar(name, path, material, sides=14):
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(material)
+    mesh_smoothing_compat(ob)
     for f in mesh.polygons:f.use_smooth=True
     ob.modifiers.new("Sweep smoothing", "WEIGHTED_NORMAL")
     return ob
@@ -218,6 +230,7 @@ def closed_sweep(name, ring, material, radius=.012, sides=18):
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(material)
+    mesh_smoothing_compat(ob)
     for poly in mesh.polygons:poly.use_smooth=True
     ob.modifiers.new("Contour smoothing","WEIGHTED_NORMAL")
     return ob
@@ -256,6 +269,7 @@ def form(name, xy_points, thickness, mat, z=.040, bevel=.0014):
     ob = bpy.data.objects.new("LL TOOL | "+name, mesh)
     bpy.context.collection.objects.link(ob)
     mesh.materials.append(mat)
+    mesh_smoothing_compat(ob)
     if bevel:
         m = ob.modifiers.new("Soft machined edge", "BEVEL")
         m.width = min(bevel, thickness*.25); m.segments = 2
@@ -291,6 +305,7 @@ def grip(name, points, mat, z=.040, segments=18):
                                   (co.y-points[0][0])/length)
     ob=bpy.data.objects.new("LL TOOL | "+name,mesh)
     bpy.context.collection.objects.link(ob);mesh.materials.append(mat)
+    mesh_smoothing_compat(ob)
     for poly in mesh.polygons:poly.use_smooth=True
     ob.modifiers.new("Smooth cross-section transitions", "WEIGHTED_NORMAL")
     return ob
@@ -535,7 +550,18 @@ def run_one(item, output, samples):
     folder=output/ident
     folder.mkdir(parents=True,exist_ok=True)
     scene=hero.setup()
-    construction(item,material_set())
+    mats=material_set()
+    from f09_v6_materials import refine_materials
+    refine_materials(mats)
+    from f09_v5_models import TARGETS as V5_TARGETS, build as build_v5
+    if item["archetype"] in V5_TARGETS:
+        build_v5(item["archetype"],mats,form=form,tube=tube,
+                 grip=grip,closed_sweep=closed_sweep,small_pin=small_pin,hoop=hoop)
+    else:
+        construction(item,mats)
+        from f09_v4_detail import refine
+        refine(item["archetype"],mats,form=form,tube=tube,
+               small_pin=small_pin,curved_bar=curved_bar)
     bpy.context.view_layer.update()
     obs=models()
     if len(obs)<3:
@@ -547,7 +573,12 @@ def run_one(item, output, samples):
     blend=folder/"model.blend"
     glbfile=folder/"model.glb"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend.resolve()),compress=False)
-    glb(glbfile,obs)
+    if item["archetype"] in V5_TARGETS:
+        from f09_glb_material_bridge import export_with_preview, inspect_glb_preview
+        export_with_preview(glb, glbfile, obs)
+        inspect_glb_preview(glbfile)
+    else:
+        glb(glbfile,obs)
     matrices={o.name:o.matrix_world.copy() for o in obs}
     for head in range(4):
         rot=Matrix.Rotation(math.tau*head/4,4,"Z")
