@@ -19,6 +19,12 @@ def main():
     shutil.copytree(ROOT/"scripts",DST/"scripts",dirs_exist_ok=True)
     shutil.copytree(ROOT/"data",DST/"data",dirs_exist_ok=True)
     shutil.copyfile(ROOT/"main.tscn",DST/"main.tscn")
+    # Real in-game lookup tables refer to these canonical Golden 40 icons.
+    # Copy actual repository files; never fabricate placeholder art.
+    golden=ROOT/"assets"/"last_light"/"golden40"
+    assert golden.is_dir(),"Golden 40 assets not present in repo"
+    shutil.copytree(golden,DST/"assets"/"last_light"/"golden40",
+                    dirs_exist_ok=True)
     (DST/"main_game_fixture.gd").write_text(
         (ROOT/"tools"/"weapons_tools"/"f09_main_game_fixture.gd").read_text())
     (DST/"f09_candidate_16_heading_atlas.png").write_bytes(
