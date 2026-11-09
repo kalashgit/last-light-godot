@@ -13,8 +13,8 @@ import build as factory
 from f09_v4_detail import refine
 
 TARGETS = {
-    "ll_tools_hand_saw": ("saw", ("integral teeth", "shaped hardwood cheek")),
-    "ll_tools_adjustable_wrench": ("wrench", ("worm-wheel steel knurled barrel", "translating lower jaw")),
+    "ll_tools_hand_saw": ("saw", ("12 integral teeth", "shaped hardwood cheek")),
+    "ll_tools_adjustable_wrench": ("wrench", ("inset worm wheel machined drum", "translating lower jaw")),
     "ll_tools_socket_handle": ("ratchet", ("reversing lever", "quick release")),
 }
 
@@ -42,6 +42,10 @@ def check(item, directory):
         handles=[o for o in objects if "V9 solid wooden D grip" in o.name]
         assert len(handles)==1, "missing actual solid through-cut grip"
         assert len(handles[0].data.vertices) == 160, "saw grip was not profile-smoothed"
+        blade=[o for o in objects if "v18 continuous tapered saw blade" in o.name.lower()]
+        assert len(blade)==1, "missing manufactured toothed blade"
+        # Profile has 12 raked tips and tooth roots, plus blade heel/spine.
+        assert len(blade[0].data.vertices)>=50, "missing silhouette teeth"
         bm=bmesh.new()
         bm.from_mesh(handles[0].data)
         assert bm.verts and all(edge.is_manifold for edge in bm.edges), "grip non-manifold"
@@ -82,6 +86,12 @@ def check(item, directory):
         empty=hole_mesh.ray_cast((0,-.117,.10),(0,0,-1))[0]
         solid=hole_mesh.ray_cast((.008,-.117,.10),(0,0,-1))[0]
         assert not empty and solid, "wrench hanging eye is not a real cutout"
+    elif item["archetype"]=="ratchet":
+        names_of_materials={slot.material.name for ob in objects if ob.type=="MESH"
+                            for slot in ob.material_slots if slot.material}
+        assert any("brushed silver drive shaft" in n for n in names_of_materials)
+        assert any("dark gunmetal ratchet gearbox" in n for n in names_of_materials)
+        assert any("granular dark graphite grip" in n for n in names_of_materials)
     out = directory / item["asset_id"]
     out.mkdir(parents=True, exist_ok=True)
     blend_path = out / "source_geometry.blend"
