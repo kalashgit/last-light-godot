@@ -103,7 +103,14 @@ func _test() -> void:
     if not scene.looted_objects.is_empty():
         _fail("new run did not reset searched objects")
         return
-    if not scene.load_game() or scene._snapshot() != original:
+    if not scene.load_game():
+        _fail("save/load refused a previously written pilot snapshot: " + str(scene.message))
+        return
+    var actual: Dictionary = scene._snapshot()
+    if actual != original:
+        for field in original.keys():
+            if actual.get(field) != original[field]:
+                print("SAVE_FIELD_DIFFERENCE ", field, " before=", JSON.stringify(original[field]), " after=", JSON.stringify(actual.get(field)))
         _fail("save/load changed world inventory, stats or zombie states")
         return
     var before_invalid: Dictionary = scene._snapshot()
