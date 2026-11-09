@@ -63,10 +63,20 @@ jobs:
       - name: Create isolated Godot test project
         run: |
           mkdir -p build/f02_godot/tools/factory/structures
-          printf 'config_version=5\n\n[application]\nconfig/name="F02 Isolated Physics Calibration"\n' > build/f02_godot/project.godot
+          printf 'config_version=5
+
+[application]
+config/name="F02 Isolated Physics Calibration"
+' > build/f02_godot/project.godot
           cp tools/factory/structures/godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
-          cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/\n          cp tools/factory/structures/test_godot_door_physics.gd build/f02_godot/tools/factory/structures/\n          python tools/factory/structures/collision_contract.py small_house --output build/f02_godot/tools/factory/structures/small_house.json
+          cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_door_physics.gd build/f02_godot/tools/factory/structures/
+          python tools/factory/structures/collision_contract.py small_house --output build/f02_godot/tools/factory/structures/small_house.json
       - name: Parse and execute GDScript transform QA
         run: |
           /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
-            --script res://tools/factory/structures/test_godot_collision_fixture.gd\n      - name: Execute Godot door physics closed-open-closed check\n        run: |\n          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \\\n            --script res://tools/factory/structures/test_godot_door_physics.gd
+            --script res://tools/factory/structures/test_godot_collision_fixture.gd
+      - name: Execute Godot door physics closed-open-closed check
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \\
+            --script res://tools/factory/structures/test_godot_door_physics.gd
