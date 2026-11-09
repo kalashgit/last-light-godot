@@ -1,0 +1,119 @@
+name: LAST LIGHT F05 single skinned source to 2D sprites (non-Golden)
+
+on:
+  pull_request:
+    paths:
+      - 'tools/actor_factory/bake_skinned_sprites.py'
+      - 'tools/actor_factory/validate_skinned_bake.py'
+      - 'tests/f05_skinned_bake_godot_smoke.gd'
+      - '.github/workflows/f05-skinned-sprite-bake.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f05-skinned-bake-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-rig-to-pixel-atlases:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: kalashgit/last-light-godot
+          ref: 8d63443a23f583c0dc560daed1ca98740934cc41
+          path: build/pinned-paperdoll-runtime
+          persist-credentials: false
+      - name: Install open-source Blender and headless 3D renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy python3-pil xvfb libegl1 libgl1 libgl1-mesa-dri libglx-mesa0 libopengl0 libgles2
+          blender --version
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare image QA
+        run: python -m pip install 'Pillow>=10,<15'
+      - name: Generate original armature and real NLA clips once
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          set -euo pipefail
+          mkdir -p build/skinned-rig
+          xvfb-run -a blender -b --factory-startup -t 2 \
+            --python tools/actor_factory/f05_rig_calibration.py -- \
+            --output build/skinned-rig --physique lean 2>&1 | tee build/skinned-rig.log
+          python3 tools/actor_factory/f05_validate.py build/skinned-rig
+          test -s build/skinned-rig/f05_noncanonical_calibration.blend
+          test -s build/skinned-rig/f05_noncanonical_calibration.glb
+      - name: Bake actual shared armature animation and weighted clothing into RGBA layers
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          set -euo pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 \
+            --python tools/actor_factory/bake_skinned_sprites.py -- \
+            --source build/skinned-rig/f05_noncanonical_calibration.blend \
+            --source-glb build/skinned-rig/f05_noncanonical_calibration.glb \
+            --output build/skinned-sprites \
+            2>&1 | tee build/skinned-bake.log
+          grep -q 'LL_SKINNED_SOURCE_BAKE_COMPLETE 240 RGBA frames' build/skinned-bake.log
+      - name: Independent proof of real skinning, source hashes, complete PNG frames and GLB animation
+        run: |
+          set -euo pipefail
+          python tools/actor_factory/validate_skinned_bake.py --source build/skinned-sprites
+      - name: Package genuine skinned source frames with immutable 2D paperdoll bridge
+        run: |
+          python build/pinned-paperdoll-runtime/tools/paperdoll_pack/pack.py \
+            --source build/skinned-sprites \
+            --output build/pinned-paperdoll-runtime/build/paperdoll_package
+          python build/pinned-paperdoll-runtime/tools/paperdoll_pack/pack.py \
+            --verify --output build/pinned-paperdoll-runtime/build/paperdoll_package
+      - name: Install fixed Godot engine for real runtime test
+        run: |
+          curl -fSL --retry 3 -o /tmp/godot.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Import one original skinned GLB and 2D atlas family to real Godot
+        run: |
+          mkdir -p build/pinned-paperdoll-runtime/tests/fixtures
+          cp build/skinned-sprites/editable/skinned_master.glb \
+            build/pinned-paperdoll-runtime/tests/fixtures/f05_single_skinned_master.glb
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime --editor --import --quit
+      - name: Require skinned GLB skeleton import and manifest-driven 100 actor gameplay
+        run: |
+          set -euo pipefail
+          cp tests/f05_skinned_bake_godot_smoke.gd \
+            build/pinned-paperdoll-runtime/tests/f05_skinned_bake_godot_smoke.gd
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime \
+            --script res://tests/f05_skinned_bake_godot_smoke.gd \
+            2>&1 | tee build/skinned-100actors.log
+          grep -q 'LL_SKINNED_GODOT_PASS actors=100' build/skinned-100actors.log
+      - name: Archive editable rig, original transparent frames and QA logs — never Golden
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-f05-one-real-skinned-master-${{ github.run_id }}
+          path: |
+            build/skinned-rig/
+            build/skinned-sprites/
+            build/pinned-paperdoll-runtime/build/paperdoll_package/
+            build/skinned-*.log
+          if-no-files-found: warn
+          retention-days: 14

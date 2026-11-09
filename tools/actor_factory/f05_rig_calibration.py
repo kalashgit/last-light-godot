@@ -15,10 +15,12 @@ from mathutils import Vector, Matrix
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections, torso_sections, collar_sections
 from f05_gait import gait_pose, torso_pose, LOCOMOTION
+from f05_face_variants import build_face, HAIR_STYLES
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
 parser.add_argument('--physique', choices=('lean', 'broad'), default='lean', help='Noncanonical body-width calibration variant')
+parser.add_argument('--head-style', choices=HAIR_STYLES, default='short_sidepart', help='Original rig-compatible hairstyle silhouette')
 args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else [])
 out = Path(args.output).resolve()
 out.mkdir(parents=True, exist_ok=True)
@@ -41,7 +43,11 @@ underwear = material('F05 test underwear', (.18, .20, .22))
 fabric = material('F05 test canvas', (.16, .24, .20))
 shirt = material('F05 test shirt cotton', (.28, .34, .39))
 seam = material('F05 test seam', (.11, .14, .17))
-hair = material('F05 test hair', (.14, .09, .06))
+hair = material('F05 test hair', (.19, .125, .079))
+hair_shade = material('F05 original hair depth', (.135, .085, .050))
+face_sclera = material('F05 soft nonwhite sclera', (.70, .65, .55), .63)
+face_iris = material('F05 original eye iris', (.18, .22, .20), .62)
+face_lip = material('F05 natural lip variation', (.45, .255, .215))
 steel = material('F05 test tool', (.28, .32, .33), .43)
 
 arm = bpy.data.armatures.new('F05 humanoid skeleton v0.1')
@@ -100,7 +106,9 @@ def limb(name, a, b, radius, bone, mat):
 loft_chain('torso skin', torso_sections(body_width), 'chest', 'spine', skin)
 ellipsoid('underwear actual geometry', (0,0,.96),(.21*body_width,.155*body_width,.14),'pelvis',underwear)
 ellipsoid('head', (0,-.015,1.64),(.119,.111,.149),'head',skin)
-ellipsoid('hair cap test', (0,.012,1.76),(.121,.113,.061),'head',hair)
+ellipsoid('hair cap test', (0,.012,1.76),(.121,.113,.054),'head',hair)
+face_source_meshes = build_face(ellipsoid, skin, hair, hair_shade, face_sclera,
+                                face_iris, face_lip, args.head_style)
 for side, sign in [('L',1),('R',-1)]:
     loft_chain('arm_skin_'+side, arm_sections(sign, limb_width),
                'upper_arm_'+side, 'forearm_'+side, skin)
@@ -325,7 +333,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.8','proportion_profile':'F05_ADULT_CALIBRATION_V1','gait_contract':'F05_COUNTERROTATION_V1','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'original_face_style':args.head_style,'original_face_meshes':face_source_meshes,'face_mesh_count':len(face_source_meshes),'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.8','proportion_profile':'F05_ADULT_CALIBRATION_V1','gait_contract':'F05_COUNTERROTATION_V1','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
