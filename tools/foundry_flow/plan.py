@@ -120,10 +120,15 @@ def plan(snapshot: dict, admission: dict, archive: Path, output: Path,
             blend_name = f"{ident}/model.blend"
             if any(name not in source.namelist() for name in (manifest_name, glb_name, blend_name)):
                 raise ValueError(f"Incomplete editable geometry source: {ident}")
-            # R03 hashes the editable geometry manifest, so its selection cannot
-            # silently change when a source archive is replaced.
-            if _sha(source.read(manifest_name)) != order["geometry_source_manifest_sha256"]:
-                raise ValueError(f"R03/geometry manifest drift: {ident}")
+            # R03's historic field is named geometry_source_manifest_sha256,
+            # but its value is the original GLB SHA-256, as verified against
+            # the preserved geometry reconstruction batch report. Compare the
+            # actual source bytes; never weaken or ignore the R03 fingerprint.
+            if archived[ident]["glb_sha256"] != order["geometry_source_manifest_sha256"]:
+                raise ValueError(f"R03/source GLB fingerprint drift: {ident}")
+            source_manifest = json.loads(source.read(manifest_name))
+            if not isinstance(source_manifest, dict):
+                raise ValueError(f"Invalid source geometry manifest: {ident}")
             info = source.getinfo(glb_name)
             if not 20 <= info.file_size <= 10 * 1024 * 1024:
                 raise ValueError(f"Unsafe GLB size: {ident}")
