@@ -28,7 +28,12 @@ func _run() -> void:
 	actor.position = Vector2(150, 190)
 	environment.add_child(actor)
 	var equip := {"body": "base", "pants": "jeans", "shirt": "green_shirt", "backpack": "pack"}
-	check(LOADER.install_package(actor, FOLDER, equip), "verified atlas install")
+	var installed: bool = LOADER.install_package(actor, FOLDER, equip)
+	check(installed, "verified atlas install")
+	if not installed:
+		print("LL_PAPERDOLL_PACKAGE_E2E_ABORT: catalog installation rejected before any layer exists")
+		quit(2)
+		return
 	actor.set_process(false)
 	check(actor.equipped_id("body") == "base", "original body ID")
 	check(actor.equipped_id("shirt") == "green_shirt", "original shirt ID")
