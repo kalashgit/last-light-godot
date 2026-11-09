@@ -17,9 +17,9 @@ func _begin() -> void:
         push_error("NEIGHBORHOOD_CAPTURE_FAIL invalid layout")
         quit(1)
         return
-    world.set("player", Vector2(43, 18))
+    world.set("player", Vector2(39, 18))
     world.set("overview", true)
-    world.set("zoom", 0.33)
+    world.set("zoom", 0.27)
     world.set("message_timer", 0.0)
     world.queue_redraw()
     await process_frame
