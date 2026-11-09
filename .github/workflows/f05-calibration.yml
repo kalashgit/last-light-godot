@@ -27,16 +27,22 @@ jobs:
         physique: [lean, broad]
     steps:
       - uses: actions/checkout@v4
-      - name: Install Blender from Ubuntu packages
+      - name: Install Blender and headless OpenGL/EGL software dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get install -y --no-install-recommends blender libegl1 libgl1 libgl1-mesa-dri libglx-mesa0 libopengl0 libgles2 mesa-utils xvfb libxrender1 libxi6 libxrandr2 libxfixes3 libxcursor1
           blender --version
+          ldconfig -p | grep -E 'libEGL.so.1|libGL.so.1'
+          test -f /usr/lib/x86_64-linux-gnu/libEGL.so.1
       - name: Generate noncanonical source, render and GLB
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
         run: |
           mkdir -p build/f05-cal
           set -o pipefail
-          blender -b --factory-startup --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
       - name: Validate artifact integrity (fails on missing GLB)
         run: python3 tools/actor_factory/f05_validate.py build/f05-cal
       - name: Archive calibration evidence even on failure
