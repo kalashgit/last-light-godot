@@ -106,7 +106,7 @@ for clip, frames in clips.items():
                 defects.append({"clip": clip, "frame": frame, "subframe": sub,
                                 "type": "surface_intersection", "objects": [inner, outer],
                                 "triangle_pairs": intersections})
-            if inner.startswith(("leg_skin", "arm_skin")):
+            if inner == "torso skin" or inner.startswith(("leg_skin", "arm_skin")):
                 margin = radial_margin(iv, ov)
                 min_radial = min(min_radial, margin)
                 if margin < 0.004:
