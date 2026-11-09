@@ -239,6 +239,42 @@ for clip, (frames, duration) in clips.items():
 for track in rig.animation_data.nla_tracks:
     track.mute = track.name != 'F05_CAL_idle'
 
+# Align the finished NLA-evaluated character to the ground, not merely
+# the source Action's pose. This calibrates the same evaluated foot geometry
+# used by exhaustive F05 joint QA, including half-frame interpolation.
+rig.location.z = 0.0
+lowest_raw_sole = float('inf')
+highest_raw_sole = float('-inf')
+for contact_clip in ('idle', 'walk', 'run', 'sneak'):
+    for track in rig.animation_data.nla_tracks:
+        track.mute = track.name != 'F05_CAL_' + contact_clip
+    sample_points = [(f, 0.0) for f in range(1, clips[contact_clip][0] + 1)]
+    sample_points += [(f, .5) for f in range(1, clips[contact_clip][0])]
+    for frame, subframe in sample_points:
+        bpy.context.scene.frame_set(frame, subframe=subframe)
+        graph = bpy.context.evaluated_depsgraph_get()
+        floor = float('inf')
+        for side in ('L', 'R'):
+            evaluated = bpy.data.objects['foot '+side].evaluated_get(graph)
+            mesh = evaluated.to_mesh()
+            try:
+                floor = min(floor, *( (evaluated.matrix_world @ v.co).z for v in mesh.vertices ))
+            finally:
+                evaluated.to_mesh_clear()
+        lowest_raw_sole = min(lowest_raw_sole, floor)
+        highest_raw_sole = max(highest_raw_sole, floor)
+floor_origin_adjustment = max(0.0, .002 - lowest_raw_sole)
+if highest_raw_sole + floor_origin_adjustment > .025:
+    raise RuntimeError('F05 floor pose range exceeds 25mm contact window: ' +
+                       repr((lowest_raw_sole, highest_raw_sole)))
+rig.location.z = floor_origin_adjustment
+for track in rig.animation_data.nla_tracks:
+    track.mute = track.name != 'F05_CAL_idle'
+bpy.context.scene.frame_set(1, subframe=0.0)
+print('F05_NLA_FLOOR_ALIGNMENT', 'raw_min', round(lowest_raw_sole,5),
+      'raw_max', round(highest_raw_sole,5),
+      'rig_shift', round(floor_origin_adjustment,5))
+
 world=bpy.context.scene.world
 world.color=(.15,.15,.15)
 camera_data=bpy.data.cameras.new('F05 orthographic iso')
@@ -280,7 +316,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.4','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION',
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.4','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
