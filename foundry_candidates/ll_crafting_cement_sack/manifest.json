@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_cement_sack",
+  "source_glb_sha256": "703e6ffd69586c04b5090c15e0e0532cb6f667702b508f0ac1992a7754a38132",
+  "atlas_sha256": "cfc1381ddbc7491fa99b548807e35af4635acf38a2db3348425aec0257eed941",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2642607,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

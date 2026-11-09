@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_canvas_roll",
+  "source_glb_sha256": "0c6b7b28ff9244387d46d58be082ea33d801ddea096932177aea4d9882b7923f",
+  "atlas_sha256": "fa7bb82b24dabd79e92d91d7efcfde4b3bf8041ed6b88eadc39949a98e73a6d5",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2569414,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
