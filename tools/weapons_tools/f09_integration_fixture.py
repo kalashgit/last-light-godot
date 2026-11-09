@@ -80,6 +80,8 @@ def bake_atlas(objects, folder, item):
     image.file_format="PNG"
     image.save()
     assert (folder/"albedo_baked.png").stat().st_size>4000
+    from f09_bake_pbr_maps import bake_auxiliary
+    additional_maps=bake_auxiliary(ob,folder)
     # As a candidate, attach baked albedo to a simple Principled GLB shader.
     # Metallic and roughness remain per-material factors; NOT full F11 PBR.
     for mat in ob.data.materials:
@@ -94,7 +96,7 @@ def bake_atlas(objects, folder, item):
     assert glb.stat().st_size>4000
     return {"albedo_png":"albedo_baked.png","glb":"preview_albedo_baked.glb",
             "uv_atlas_px":[512,512],"material_mode":"CANDIDATE_BAKED_ALBEDO_AND_PBR_FACTORS",
-            "pbr_maps_complete":False}
+            "pbr_maps_complete":True,**additional_maps}
 
 def world_sprites(scene, objects, folder):
     # Explicit source-canonical camera scale: no per-object auto-fit.
