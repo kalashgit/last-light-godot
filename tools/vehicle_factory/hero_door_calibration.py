@@ -16,7 +16,7 @@ from bpy_extras.object_utils import world_to_camera_view
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "blender_factory"))
 import render_v3_recovery as base
-from hero_hatchback import build,DOOR_HINGE_X
+from hero_hatchback import build,DOOR_HINGE_X,DOOR_HINGE_Y
 
 
 def author_blender_door_action(scene,hinge):
@@ -99,7 +99,7 @@ def run(output, samples=8, heading_deg=0):
         scene.render.filepath=str((output/filename).resolve())
         bpy.ops.render.render(write_still=True)
         frames.append({"index":index,"angle_deg":angle,"duration_ms":100,
-                       "png":filename,"pivot_xyz_m":[DOOR_HINGE_X,-.717,.94],
+                       "png":filename,"pivot_xyz_m":[DOOR_HINGE_X,DOOR_HINGE_Y,.94],
                        "fixed_world_pivot_px":[round(uv.x*768,4),round((1-uv.y)*768,4)]})
         print("F10_DOOR_FRAME",index,angle,flush=True)
     (output/"manifest.json").write_text(json.dumps({
