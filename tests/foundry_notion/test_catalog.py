@@ -105,6 +105,29 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(result["orders"], [])
         self.assertEqual(result["queue_status"], "NO_ADMITTED_WORK")
 
+    def test_deferred_candidate_is_not_falsely_completed(self):
+        result = catalog.plan(sample(), deferred=["ll_bookcase"])
+        self.assertEqual(result["orders"], [])
+        self.assertEqual(result["deferred_not_completed"], ["ll_bookcase"])
+        self.assertFalse(result["golden_approved"])
+        self.assertEqual(catalog.plan(sample())["orders"][0]["content_id"], "ll_bookcase")
+
+    def test_deferred_candidate_preserves_next_notion_priority(self):
+        doc = sample()
+        doc["production_masters"][1].update({
+            "content_id": "ll_mattress", "semantic_verification": "Canonical Verified",
+            "priority": "P0", "queue": "F01", "work_order": "A00-B002-F01-mattress-r1",
+        })
+        doc["production_masters"][0]["work_order"] = "A00-B001-F01-bookcase-r1"
+        result = catalog.plan(doc, deferred=["ll_bookcase"])
+        self.assertEqual([o["content_id"] for o in result["orders"]], ["ll_mattress"])
+
+    def test_rejects_unknown_duplicate_or_completed_deferred(self):
+        for deferred, done in [(["ll_fake"], None), (["ll_bookcase", "ll_bookcase"], None),
+                               (["ll_bookcase"], ["ll_bookcase"])]:
+            with self.subTest(deferred=deferred, completed=done), self.assertRaises(ValueError):
+                catalog.plan(sample(), completed=done, deferred=deferred)
+
     def test_rejects_forged_completion(self):
         with self.assertRaises(ValueError):
             catalog.plan(sample(), completed=["ll_fake"])
@@ -124,6 +147,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(result["reference_records_not_assets"], 50)
         self.assertEqual(len(result["orders"]), 4)
         self.assertTrue(all(not x["founder_visual_approved"] for x in result["orders"]))
+
+    def test_workflow_uses_deferred_candidate_ledger(self):
+        workflow = (ROOT / ".github/workflows/foundry-notion-master-queue.yml").read_text()
+        self.assertIn("--deferred data/foundry/deferred_candidates_v1.json", workflow)
+        self.assertIn("- 'data/foundry/deferred_candidates_v1.json'", workflow)
 
 
 if __name__ == "__main__":
