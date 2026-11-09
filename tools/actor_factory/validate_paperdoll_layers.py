@@ -111,28 +111,30 @@ def verify(root: Path, contact: bool = True) -> dict:
         "golden_approved": False,
     }
     if contact:
-        # Preview-only composited contact sheet; never becomes production art.
+        # Preview-only composited contact sheets; never become production art.
+        # Two independent original shirt geometry variants must both receive
+        # eight-direction human visual QA, not merely API/sheet-size checks.
         w, h, scale = 128, 160, 2
-        contact_sheet = Image.new("RGB", (4 * w * scale, 2 * (h * scale + 24)), (58, 61, 62))
-        draw = ImageDraw.Draw(contact_sheet)
-        for i, heading in enumerate(HEADING_ORDER):
-            composed = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-            # Direction-aware compositor: the rear pack renders UNDER the torso
-            # in frontal views and OVER it from behind. Synthetic preview and
-            # the real Godot runtime must use the same relative layer ordering.
-            order = ((ITEMS[4], ITEMS[0], ITEMS[1], ITEMS[2])
-                     if heading in ("front", "front_right", "front_left")
-                     else (ITEMS[0], ITEMS[1], ITEMS[2], ITEMS[4]))
-            for slot, item in order:
-                with Image.open(entries[(slot, item, "idle", heading, 0)]) as frame:
-                    composed.alpha_composite(frame)
-            bg = Image.new("RGBA", (w, h), (78, 80, 79, 255))
-            bg.alpha_composite(composed)
-            x = (i % 4) * w * scale
-            y = (i // 4) * (h * scale + 24)
-            contact_sheet.paste(bg.convert("RGB").resize((w*scale, h*scale), Image.Resampling.NEAREST), (x, y))
-            draw.text((x + 4, y + h * scale + 3), heading, fill=(240, 234, 220))
-        contact_sheet.save(root / "qa_contact_8directions.png")
+        for garment in (ITEMS[2], ITEMS[3]):
+            contact_sheet = Image.new("RGB", (4*w*scale, 2*(h*scale + 24)), (58, 61, 62))
+            draw = ImageDraw.Draw(contact_sheet)
+            for i, heading in enumerate(HEADING_ORDER):
+                composed = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+                # Match native Godot front/back backpack depth order.
+                order = ((ITEMS[4], ITEMS[0], ITEMS[1], garment)
+                         if heading in ("front", "front_right", "front_left")
+                         else (ITEMS[0], ITEMS[1], garment, ITEMS[4]))
+                for slot, item in order:
+                    with Image.open(entries[(slot, item, "idle", heading, 0)]) as layer:
+                        composed.alpha_composite(layer)
+                bg = Image.new("RGBA", (w, h), (78, 80, 79, 255))
+                bg.alpha_composite(composed)
+                x = (i % 4)*w*scale
+                y = (i // 4)*(h*scale + 24)
+                contact_sheet.paste(bg.convert("RGB").resize((w*scale,h*scale), Image.Resampling.NEAREST), (x,y))
+                draw.text((x+4, y+h*scale+3), heading, fill=(240, 234, 220))
+            label = "qa_contact_8directions.png" if garment[1] == "green_shirt" else "qa_contact_blue_shirt_8directions.png"
+            contact_sheet.save(root / label)
     (root / "qa_report.json").write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
     print("LL_F05_ORIGINAL_LAYERS_QA_PASS", json.dumps(report, sort_keys=True))
     return report
