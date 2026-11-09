@@ -34,6 +34,28 @@ def main():
    draw_colored_polygon(oval,Color(0.03,0.04,0.04,0.29))
   art._sprite(self,id,drop.pos)'''
     house_script.write_text(house_source.replace(original_drop,candidate_drop))
+    # Keep draw sorting intact. A tiny two-tick pickup cue may be drawn *after*
+    # the player/furniture layer only for an explicitly selected nearby drop.
+    # This is contextual interaction feedback, not permanently glowing art.
+    art_script=DST/"scripts"/"house_art.gd"
+    art_source=art_script.read_text()
+    art_anchor=' if not inside:\n  _roof(g)'
+    assert art_source.count(art_anchor)==1,"house compositor contract changed"
+    art_overlay=''' if not inside:
+  _roof(g)
+ # V20: two delicate ticks at a selected, usable F09 drop; no full halo.
+ var active: Dictionary = g.selected_target
+ if active.get("kind","")=="drop" and g._target_valid(active):
+  var index: int=int(active.index)
+  if index>=0 and index<g.drops.size():
+   var item_id: String=str(g.drops[index].id)
+   if item_id in ["ll_tools_adjustable_wrench","ll_tools_socket_handle","ll_tools_hand_saw"]:
+    var p: Vector2=g._screen(g.drops[index].pos,13)
+    var tint:=Color(0.86,0.82,0.67,0.66)
+    g.draw_line(p+Vector2(-8,-3),p+Vector2(-5,-6),tint,1.0,true)
+    g.draw_line(p+Vector2(5,-6),p+Vector2(8,-3),tint,1.0,true)'''
+    art_script.write_text(art_source.replace(art_anchor,art_overlay))
+
     shutil.copytree(ROOT/"data",DST/"data",dirs_exist_ok=True)
     shutil.copyfile(ROOT/"main.tscn",DST/"main.tscn")
     # Real in-game lookup tables refer to these canonical Golden 40 icons.
