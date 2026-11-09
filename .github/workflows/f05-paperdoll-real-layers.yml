@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: kalashgit/last-light-godot
-          ref: f280d828d387701e1f68cb8084b3e5b3e30d5a54
+          ref: 8d63443a23f583c0dc560daed1ca98740934cc41
           path: build/pinned-paperdoll-runtime
           persist-credentials: false
       - name: Install Blender CPU and image inspector
@@ -92,6 +92,11 @@ jobs:
           /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
             --path build/pinned-paperdoll-runtime \
             --script res://tests/foundry_paperdoll_package_smoke.gd
+      - name: Exercise 100 actual Blender-layer actors inside playable LAST LIGHT scene
+        run: |
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime \
+            --script res://tests/foundry_paperdoll_world_smoke.gd
       - name: Archive non-Golden source, native renders and QA evidence
         if: always()
         uses: actions/upload-artifact@v4
