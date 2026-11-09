@@ -12,6 +12,8 @@ from pathlib import Path
 
 import bpy
 from mathutils import Vector, Matrix
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from f05_geometry import loft_chain, leg_sections, arm_sections
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -99,12 +101,14 @@ ellipsoid('underwear actual geometry', (0,0,.96),(.21*body_width,.155*body_width
 ellipsoid('head', (0,-.015,1.64),(.125,.117,.16),'head',skin)
 ellipsoid('hair cap test', (0,.012,1.76),(.127,.118,.065),'head',hair)
 for side, sign in [('L',1),('R',-1)]:
-    limb('upper arm '+side,(sign*.25,0,1.43),(sign*.34,0,1.17),.071*limb_width,'upper_arm_'+side,skin)
-    limb('forearm '+side,(sign*.34,0,1.17),(sign*.37,0,.94),.055*limb_width,'forearm_'+side,skin)
-    ellipsoid('hand '+side,(sign*.37,0,.88),(.057*limb_width,.048*limb_width,.087),'hand_'+side,skin)
-    limb('thigh '+side,(sign*.115,0,.91),(sign*.12,0,.55),.102*limb_width,'thigh_'+side,skin)
-    limb('shin '+side,(sign*.12,0,.55),(sign*.12,0,.14),.075*limb_width,'shin_'+side,skin)
-    ellipsoid('foot '+side,(sign*.12,-.105,.08),(.09*limb_width,.17,.08),'foot_'+side,underwear)
+    loft_chain('arm_skin_'+side, arm_sections(sign, limb_width),
+               'upper_arm_'+side, 'forearm_'+side, skin)
+    loft_chain('leg_skin_'+side, leg_sections(sign, 1.0, limb_width),
+               'thigh_'+side, 'shin_'+side, skin)
+    ellipsoid('hand '+side,(sign*.37,0,.88),
+              (.057*limb_width,.048*limb_width,.087),'hand_'+side,skin)
+    ellipsoid('foot '+side,(sign*.12,-.105,.08),
+              (.09*limb_width,.17,.08),'foot_'+side,underwear)
 
 # Separate outer garments: fit envelopes scale with the selected physique.
 # Geometry remains rigid-weighted; shoulder/elbow deformation QA is not yet approved.
@@ -114,18 +118,9 @@ for side, sign in [('L',1),('R',-1)]:
     limb('wearable_shirt_sleeve_'+side,
          (sign*.25,0,1.43),(sign*.29,0,1.31),
          .084*limb_width,'upper_arm_'+side,shirt)
-    limb('wearable_pants_upper_'+side,
-         (sign*.115,0,.91),(sign*.12,0,.55),
-         .113*limb_width,'thigh_'+side,fabric)
-    limb('wearable_pants_lower_'+side,
-         (sign*.12,0,.55),(sign*.12,0,.14),
-         .087*limb_width,'shin_'+side,fabric)
-    # Articulated fabric bridge over the joint avoids an exposed gap when the
-    # shin rotates relative to the thigh.
-    ellipsoid('wearable_pants_knee_'+side,
-              (sign*.12,0,.55),
-              (.097*limb_width,.100*limb_width,.074),
-              'shin_'+side,fabric)
+    loft_chain('wearable_pants_'+side,
+               leg_sections(sign, 1.0, limb_width, garment=True),
+               'thigh_'+side, 'shin_'+side, fabric)
 # Contrasting belt visually distinguishes torso and pelvis in 2.5D preview.
 ellipsoid('wearable_waist_band', (0,0,1.035),
           (.218*body_width,.164*body_width,.025),'pelvis',seam)
@@ -204,6 +199,32 @@ for clip,(frames,duration) in clips.items():
         head.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
     action.use_fake_user=True
 
+# Per-frame floor-contact solution in locomotion calibration clips. The
+# lowest evaluated foot sole rests ~2 mm above Z=0 without penetration.
+# This is a root-height-only calibration, not real planted-foot IK.
+for clip in ('idle', 'walk', 'run', 'sneak'):
+    rig.animation_data.action = bpy.data.actions['F05_CAL_' + clip]
+    root = rig.pose.bones['root']
+    root.rotation_mode = 'XYZ'
+    root.location = (0,0,0)
+    for frame in range(1, clips[clip][0] + 1):
+        bpy.context.scene.frame_set(frame)
+        root.location = (0,0,0)
+        bpy.context.view_layer.update()
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        floor = 1e8
+        for side in ('L','R'):
+            foot = bpy.data.objects['foot '+side].evaluated_get(depsgraph)
+            mesh = foot.to_mesh()
+            try:
+                matrix = foot.matrix_world
+                floor = min(floor, *( (matrix @ vert.co).z for vert in mesh.vertices ))
+            finally:
+                foot.to_mesh_clear()
+        root.location = (0,0, max(-.05, min(.30, .002 - floor)))
+        root.keyframe_insert(data_path='location',frame=frame)
+    root.location = (0,0,0)
+
 # Store every provisional action in a named NLA track. A fake-user action alone
 # is not evidence that the glTF exporter will include it.
 rig.animation_data.action = None
@@ -260,7 +281,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.2','wearable_layers':['shirt_body','shirt_sleeves','pants_upper','pants_lower','knee_bridges','waist_band'],
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.3','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION',
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
