@@ -51,7 +51,14 @@ jobs:
       - name: Exercise F09 gameplay Sprite2D scene fixture
         run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://fixture.gd
       - name: Exercise candidate atlas inside actual LAST LIGHT house gameplay scene
-        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://main_game_fixture.gd
+        run: |
+          set -o pipefail
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://main_game_fixture.gd 2>&1 | tee /tmp/f09-main-game.log
+          grep -q F09_MAIN_GAME_RUNTIME_PASS /tmp/f09-main-game.log
+          if grep -E 'ERROR: Resource file not found|SCRIPT ERROR:|Parse Error:' /tmp/f09-main-game.log; then
+            echo "F09 main-game fixture emitted missing-resource or script errors"
+            exit 1
+          fi
       - name: Upload unapproved F09 F11 F12 integration evidence
         if: always()
         uses: actions/upload-artifact@v4
