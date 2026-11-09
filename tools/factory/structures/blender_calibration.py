@@ -66,6 +66,29 @@ def build_materials(bpy, texture_dir: Path):
             tex = nodes.new("ShaderNodeTexImage")
             tex.image = bpy.data.images.load(str(path.resolve()), check_existing=True)
             mat.node_tree.links.new(tex.outputs["Color"], shader.inputs["Base Color"])
+        # Distinct non-colour channels keep F11 candidate data portable.
+        for channel, input_name in (("roughness", "Roughness"),
+                                    ("metallic", "Metallic")):
+            channel_path = texture_dir / f"{name}_{channel}.png"
+            if channel_path.is_file():
+                node = nodes.new("ShaderNodeTexImage")
+                node.image = bpy.data.images.load(str(channel_path.resolve()),
+                                                   check_existing=True)
+                node.image.colorspace_settings.name = "Non-Color"
+                mat.node_tree.links.new(node.outputs["Color"],
+                                        shader.inputs[input_name])
+        normal_path = texture_dir / f"{name}_normal.png"
+        if normal_path.is_file():
+            image_node = nodes.new("ShaderNodeTexImage")
+            image_node.image = bpy.data.images.load(str(normal_path.resolve()),
+                                                     check_existing=True)
+            image_node.image.colorspace_settings.name = "Non-Color"
+            normal_node = nodes.new("ShaderNodeNormalMap")
+            normal_node.inputs["Strength"].default_value = .28
+            mat.node_tree.links.new(image_node.outputs["Color"],
+                                    normal_node.inputs["Color"])
+            mat.node_tree.links.new(normal_node.outputs["Normal"],
+                                    shader.inputs["Normal"])
         mats[name] = mat
     return mats
 
