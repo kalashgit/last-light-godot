@@ -41,6 +41,16 @@ def generate(out):
             gaps.extend((y,x0,x1) for x0,x1 in zip(xs,xs[1:]) if x1-x0>1)
     if gaps:
         raise AssertionError("discontinuous rasterized seam: "+str(gaps[:3]))
+    # Audit actual raster alpha, not merely the mathematical tile masks.
+    # An accidental omitted pixel, merged opacity leak, or invisible island
+    # must fail even when the ideal geometric polygons still agree.
+    for image, mask, name in ((grass, masks[0], "grass"), (asphalt, masks[1], "asphalt"), (merged, union, "composite")):
+        observed = {(x,y) for y in range(SIZE[1]) for x in range(SIZE[0])
+                    if image.getpixel((x,y))[3] > 0}
+        if observed != mask:
+            raise AssertionError(name+" raster alpha mismatch with tile geometry")
+        if any(image.getpixel((x,y))[3] != 255 for x,y in observed):
+            raise AssertionError(name+" has partial-alpha pixels on pixel-exact tile")
     for name,img in [("grass.png",grass),("asphalt.png",asphalt),("seam_preview.png",merged)]:
         img.save(out/name)
     report={"fixture":"CAL-05","canonical_status":"NONCANONICAL_TILE_SEAM_ONLY",
@@ -48,6 +58,7 @@ def generate(out):
             "centers":[list(c) for c in CENTERS],
             "tile_alpha_coverage_pixels":[len(m) for m in masks],
             "overlap_pixels":0,"row_gap_count":len(gaps),
+            "raster_mask_matches_geometry":True,"all_filled_pixels_opaque":True,
             "files":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.glob("*.png"))}}
     (out/"report.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
     print("F12_CAL05_RASTER_SEAM_PASS",json.dumps(report))
