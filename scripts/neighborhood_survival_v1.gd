@@ -35,8 +35,7 @@ func restart_pilot() -> void:
     current_floor = 0
     roof_hidden = false
     overview = false
-    motion = Vector2.ZERO
-    touch_index = -1
+    _reset_pointers()
     player = _vec(lab["player_spawn"])
     inventory = {}
     for item_id in rules["items"].keys():
@@ -360,8 +359,7 @@ func _restore_snapshot(data: Dictionary) -> bool:
     zombies = old_zombies.duplicate(true)
     for zombie in zombies:
         zombie["attack_cooldown"] = maxf(0.0, float(zombie.get("attack_cooldown", 0.0)))
-    motion = Vector2.ZERO
-    touch_index = -1
+    _reset_pointers()
     message = "Loaded pilot world: items and searched furniture preserved"
     queue_redraw()
     return true
@@ -396,15 +394,17 @@ func _button_hit(point: Vector2, center: Vector2) -> bool:
     return point.distance_to(center) < 41.0
 
 func _game_button_center(index: int) -> Vector2:
-    var s: Vector2 = get_viewport_rect().size
+    var safe: Rect2 = _safe_rect()
+    var s: Vector2 = safe.end
+    var top: float = safe.position.y
     match index:
         0: return Vector2(s.x - 95, s.y - 377) # Attack
         1: return Vector2(s.x - 185, s.y - 377) # Food
         2: return Vector2(s.x - 275, s.y - 377) # Water
         3: return Vector2(s.x - 365, s.y - 377) # Bandage
-        4: return Vector2(s.x - 196, 150) # Save
-        5: return Vector2(s.x - 95, 150) # Load
-        _: return Vector2(s.x - 95, 238) # Restart
+        4: return Vector2(s.x - 196, top + 150) # Save
+        5: return Vector2(s.x - 95, top + 150) # Load
+        _: return Vector2(s.x - 95, top + 238) # Restart
 
 func _handle_game_button(p: Vector2) -> bool:
     for i in range(7):
@@ -421,21 +421,22 @@ func _handle_game_button(p: Vector2) -> bool:
         return true
     return false
 
-func _input(event: InputEvent) -> void:
-    if event is InputEventScreenTouch and event.pressed and _handle_game_button(event.position):
+## One routed tap (see scripts/input/touch_router.gd) -> exactly one action.
+func _tap(p: Vector2) -> void:
+    if _handle_game_button(p):
         return
-    if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _handle_game_button(event.position):
-        return
-    if event is InputEventKey and event.pressed and not event.echo:
-        match event.keycode:
-            KEY_J: attack()
-            KEY_1: consume("proto.food_tin")
-            KEY_2: consume("proto.water_bottle")
-            KEY_3: consume("proto.bandage")
-            KEY_K: save_game()
-            KEY_L: load_game()
-            KEY_N: request_restart()
-    super._input(event)
+    super._tap(p)
+
+func _key(keycode: int) -> void:
+    match keycode:
+        KEY_J: attack()
+        KEY_1: consume("proto.food_tin")
+        KEY_2: consume("proto.water_bottle")
+        KEY_3: consume("proto.bandage")
+        KEY_K: save_game()
+        KEY_L: load_game()
+        KEY_N: request_restart()
+        _: super._key(keycode)
 
 func _draw_hud() -> void:
     super._draw_hud()
