@@ -76,7 +76,7 @@ func _valid_spec(spec: Dictionary) -> bool:
     if not spec.get("slots") is Array or not spec.get("animations") is Dictionary:
         return false
     var slots: Array = spec["slots"]
-    if slots.is_empty() or slots.size() > ALLOWED_SLOTS.size():
+    if slots.is_empty() or slots.size() > ALLOWED_SLOTS.size() or not slots.has("body"):
         return false
     var seen := {}
     for slot in slots:
@@ -120,15 +120,13 @@ func _sheet_key(slot: String, item_id: String, anim: String) -> String:
     return JSON.stringify([slot, item_id, anim])
 
 func equip(slot: String, item_id: String) -> bool:
-    if not _sprites.has(slot):
+    if not _sprites.has(slot) or (slot == "body" and item_id.is_empty()):
         return false
-    if item_id != "":
-        var found := false
+    if not item_id.is_empty():
+        # A playable item must have every clip, or it would disappear on state change.
         for anim_id in _spec["animations"]:
-            if _sheets.has(_sheet_key(slot, item_id, anim_id)):
-                found = true
-        if not found:
-            return false
+            if not _sheets.has(_sheet_key(slot, item_id, anim_id)):
+                return false
     _equipped[slot] = item_id
     _apply_frame()
     return true
@@ -144,6 +142,7 @@ func play_anim(anim: String, direction: int, restart: bool = true) -> bool:
     animation = anim
     heading = direction
     playing = true
+    _apply_directional_layer_order()
     _apply_frame()
     return true
 
@@ -200,3 +199,92 @@ func equipped_id(slot: String) -> String:
 
 func layer(slot: String) -> Sprite2D:
     return _sprites.get(slot, null)
+
+func snapshot_state() -> Dictionary:
+    if _spec.is_empty():
+        return {}
+    return {
+        "schema": "last-light.paperdoll.state.v1",
+        "asset_id": _spec["asset_id"],
+        "equipped": _equipped.duplicate(true),
+        "animation": animation,
+        "heading": heading,
+        "frame": frame,
+        "playing": playing
+    }
+
+
+func restore_state(state: Dictionary) -> bool:
+    ## Atomic validation: a malicious or stale save must not strip clothing.
+    if _spec.is_empty() or state.get("schema", "") != "last-light.paperdoll.state.v1":
+        return false
+    if state.get("asset_id", "") != _spec["asset_id"]:
+        return false
+    if not state.get("equipped") is Dictionary:
+        return false
+    var choices: Dictionary = state["equipped"]
+    if choices.size() != _sprites.size():
+        return false
+    for slot in _sprites:
+        if not choices.has(slot) or not choices[slot] is String:
+            return false
+        var selected: String = choices[slot]
+        if slot == "body" and selected.is_empty():
+            return false
+        if not selected.is_empty():
+            for clip in _spec["animations"]:
+                if not _sheets.has(_sheet_key(slot, selected, clip)):
+                    return false
+    if not state.get("animation") is String:
+        return false
+    var clip: String = state["animation"]
+    if not _spec["animations"].has(clip):
+        return false
+    var raw_heading = state.get("heading", null)
+    var raw_frame = state.get("frame", null)
+    # Godot JSON.parse_string serializes int fields back as whole-number floats.
+    # Reject fractions and infinities; never silently truncate a saved state.
+    if not _exact_nonnegative_integer(raw_heading) or not _exact_nonnegative_integer(raw_frame):
+        return false
+    if not state.get("playing") is bool:
+        return false
+    var decoded_heading: int = int(raw_heading)
+    var decoded_frame: int = int(raw_frame)
+    if decoded_heading >= int(_spec["directions"]):
+        return false
+    if decoded_frame >= int(_spec["animations"][clip]["frames"]):
+        return false
+    _equipped = choices.duplicate(true)
+    animation = clip
+    heading = decoded_heading
+    frame = decoded_frame
+    playing = state["playing"]
+    _elapsed = 0.0
+    _apply_directional_layer_order()
+    _apply_frame()
+    return true
+
+func _apply_directional_layer_order() -> void:
+    # Native Y-sort handles actor roots; ordered paperdoll layers handle
+    # foreground/background body parts INSIDE each actor.
+    if not _sprites.has("backpack"):
+        return
+    var names = _spec.get("direction_names", [])
+    if not names is Array or names.size() != int(_spec.get("directions", 0)):
+        return # Legacy sheets without named headings retain old order.
+    var heading_name: String = str(names[heading])
+    var pack: Sprite2D = _sprites["backpack"]
+    if heading_name in ["front", "front_right", "front_left"]:
+        move_child(pack, 0) # Body and shirt occlude rear pack.
+    else:
+        move_child(pack, get_child_count() - 1)
+        if _sprites.has("effects"):
+            move_child(_sprites["effects"], get_child_count() - 1)
+    # Artistic refinement: future independent front straps/back shell masks.
+
+
+func _exact_nonnegative_integer(value: Variant) -> bool:
+    if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+        return false
+    var converted := float(value)
+    return is_finite(converted) and converted == floorf(converted) and converted >= 0.0 and converted <= 65536.0

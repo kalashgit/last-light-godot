@@ -63,8 +63,9 @@ func _run() -> void:
     check(not actor.register_sheet("body", "base", "walk", make_sheet(3, 8)), "mismatched frame count rejected")
     check(not actor.register_sheet("body", "base", "dance", make_sheet(4, 8)), "unknown animation rejected")
     for slot in ["body", "pants", "shirt", "backpack", "effects"]:
+        check(actor.register_sheet(slot, slot + "_v1", "idle", make_sheet(2, 8)), slot + " idle sheet accepted")
         check(actor.register_sheet(slot, slot + "_v1", "walk", make_sheet(4, 8)), slot + " walk sheet accepted")
-        check(actor.equip(slot, slot + "_v1"), slot + " item equipped")
+        check(actor.equip(slot, slot + "_v1"), slot + " complete item equipped")
     check(not actor.equip("shirt", "missing"), "unknown clothing item rejected")
     check(actor.play_anim("walk", 3), "walk heading selected")
     check(not actor.play_anim("walk", 8), "invalid compass heading rejected")
@@ -77,9 +78,31 @@ func _run() -> void:
     check(actor.seek_frame(3), "last frame accepted")
     actor.advance(0.125)
     check(actor.frame == 0, "all layers share one looping animation clock")
+    check(not actor.equip("body", ""), "mandatory body cannot be stripped")
     check(actor.equip("backpack", ""), "backpack can be removed")
     check(not actor.layer("backpack").visible, "removed equipment hides its layer")
     check(actor.layer("body").visible, "base body remains visible after unequip")
+    var captured: Dictionary = actor.snapshot_state()
+    check(captured.get("schema", "") == "last-light.paperdoll.state.v1", "snapshot export schema")
+    var invalid_save := captured.duplicate(true)
+    invalid_save["equipped"]["body"] = "unknown"
+    check(not actor.restore_state(invalid_save), "unknown body save rejected")
+    check(actor.equipped_id("body") == "body_v1", "rejected save left body intact")
+    check(actor.restore_state(captured), "valid snapshot restored")
+    # Model a Blender camera-based front and back view. Rear objects must never
+    # render over the body when the actor faces the camera.
+    var named_headings: Dictionary = spec.duplicate(true)
+    named_headings["direction_names"] = [
+        "front", "front_right", "right", "back_right",
+        "back", "back_left", "left", "front_left"
+    ]
+    check(actor.configure(named_headings), "named 8-heading source accepted")
+    check(actor.play_anim("idle", 0), "front heading valid")
+    check(actor.layer("backpack").get_index() < actor.layer("body").get_index(),
+          "front backpack occluded by torso")
+    check(actor.play_anim("idle", 4), "back heading valid")
+    check(actor.layer("backpack").get_index() > actor.layer("shirt").get_index(),
+          "back backpack visible over torso")
     var expected_checks := checks
     lab.queue_free()
     if failures.is_empty():
