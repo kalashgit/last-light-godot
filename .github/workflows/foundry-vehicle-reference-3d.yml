@@ -1,0 +1,102 @@
+name: LAST LIGHT eight distinct vehicle + kitchen original candidates (non-Golden)
+
+on:
+  pull_request:
+    paths:
+      - 'tools/foundry_601_650.py'
+      - 'tools/vehicle_seed_batch.py'
+      - 'tools/verify_vehicle_seed_batch.py'
+      - 'tools/convert_vehicle_glb_to_blend.py'
+      - 'tests/foundry_reference_sheets/test_reference_601_650.py'
+      - 'tests/foundry_reference_sheets/godot_vehicle_candidate_smoke.gd'
+      - '.github/workflows/foundry-vehicle-reference-3d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ll-vehicle-originals-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eight-original-models:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded pinned CPU dependencies
+        run: python -m pip install 'numpy==2.3.5' 'trimesh==4.11.1' 'Pillow==12.3.0'
+      - name: Fail-closed semantic source and permission-aware intake QA
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests/foundry_reference_sheets -p test_reference_601_650.py -v
+          python tools/foundry_601_650.py --output build/vehicle-batch/intake_601_650.json
+          test "$(sha256sum build/vehicle-batch/intake_601_650.json | cut -d' ' -f1)" = '3652ce320fe7e1111dc8195506af9547bbf6b8b97f3a11d38c154449a7e9d2ff'
+          echo LL_REFERENCE_601_650_PINNED_QUEUE_PASS
+      - name: Rebuild eight independent editable geometries and F12 sprites
+        run: |
+          set -euo pipefail
+          python tools/vehicle_seed_batch.py --output build/vehicle-batch
+          python tools/verify_vehicle_seed_batch.py build/vehicle-batch
+      - name: Install real Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
+      - name: Produce original editable Blender masters and test signatures
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup -t 2 --python tools/convert_vehicle_glb_to_blend.py -- \
+            --source build/vehicle-batch/models --output build/vehicle-batch/blend \
+            2>&1 | tee build/vehicle-blender.log
+          grep -q 'LL_VEHICLE_NATIVE_BATCH_PASS 8 native editable candidate sources' build/vehicle-blender.log
+          python - <<'PY'
+          from pathlib import Path
+          files=list(Path('build/vehicle-batch/blend').glob('*.blend'))
+          assert len(files)==8,files
+          assert all(f.stat().st_size>1000 and f.open('rb').read(7)==b'BLENDER' for f in files)
+          print('LL_VEHICLE_BLEND_SIGNATURE_8_PASS')
+          PY
+      - name: Install Godot 4.3 in isolated test fixture
+        run: |
+          set -euo pipefail
+          mkdir -p build/vehicle-godot/models build/vehicle-godot/tests
+          cp build/vehicle-batch/models/*.glb build/vehicle-godot/models/
+          cp tests/foundry_reference_sheets/godot_vehicle_candidate_smoke.gd build/vehicle-godot/tests/
+          printf 'config_version=5\n[application]\nconfig/name="LL VEHICLE CANDIDATE TEST"\n' > build/vehicle-godot/project.godot
+          curl -fL --retry 3 -o /tmp/ll-godot43.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q /tmp/ll-godot43.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+      - name: Import and instantiate each GLB with real Godot
+        run: |
+          set -euo pipefail
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/vehicle-godot --editor --import --quit \
+            2>&1 | tee build/vehicle-godot-import.log
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/vehicle-godot \
+            --script res://tests/godot_vehicle_candidate_smoke.gd \
+            2>&1 | tee build/vehicle-godot-smoke.log
+          grep -q 'LL_VEHICLE_GODOT_8_PASS models=8' build/vehicle-godot-smoke.log
+      - name: Archive candidate files and independent QA logs only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-distinct-vehicle-originals-8-${{ github.run_id }}
+          path: |
+            build/vehicle-batch/
+            build/vehicle-blender.log
+            build/vehicle-godot-import.log
+            build/vehicle-godot-smoke.log
+          retention-days: 14
+          if-no-files-found: warn
