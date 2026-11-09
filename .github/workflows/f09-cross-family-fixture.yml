@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'tools/weapons_tools/f09_integration_fixture.py'
+      - 'tools/weapons_tools/f09_bake_pbr_maps.py'
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
