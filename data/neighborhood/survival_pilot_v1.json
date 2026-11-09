@@ -1,0 +1,30 @@
+{
+  "schema": "last_light.neighborhood_survival_pilot.v1",
+  "status": "NONCANONICAL_GAMEPLAY_CALIBRATION_NOT_GOLDEN",
+  "seed": "LL-HOUSE-SURVIVAL-0001",
+  "authoritative_source": "https://app.notion.com/p/411f639e2373814f8286f9c05213ed53",
+  "notes": "Original prototype item definitions. These are not A00 IDs and cannot be published in the approved art/content registry.",
+  "items": {
+    "proto.food_tin": {"name": "Food tin", "kind": "food", "nutrition": 23.0, "hydration": 0.0, "healing": 0.0},
+    "proto.water_bottle": {"name": "Water bottle", "kind": "water", "nutrition": 0.0, "hydration": 30.0, "healing": 0.0},
+    "proto.bandage": {"name": "Bandage", "kind": "medical", "nutrition": 0.0, "hydration": 0.0, "healing": 18.0},
+    "proto.scrap": {"name": "Useful scrap", "kind": "material", "nutrition": 0.0, "hydration": 0.0, "healing": 0.0}
+  },
+  "loot_by_room": {
+    "kitchen": ["proto.food_tin", "proto.water_bottle", "proto.food_tin"],
+    "pantry": ["proto.food_tin", "proto.food_tin", "proto.water_bottle"],
+    "bathroom": ["proto.bandage", "proto.water_bottle", "proto.bandage"],
+    "bedroom": ["proto.bandage", "proto.scrap", "proto.food_tin"],
+    "living": ["proto.scrap", "proto.water_bottle", "proto.food_tin"],
+    "storage": ["proto.scrap", "proto.bandage", "proto.food_tin"],
+    "utility": ["proto.scrap", "proto.scrap", "proto.water_bottle"],
+    "generic": ["proto.food_tin", "proto.water_bottle", "proto.scrap"]
+  },
+  "inventory_capacity": 18,
+  "zombies": [
+    {"id": "pilot-z-01", "pos": [23.0, 24.5], "building_id": "", "floor": 0, "health": 3, "speed": 1.0},
+    {"id": "pilot-z-02", "pos": [57.5, 26.0], "building_id": "", "floor": 0, "health": 3, "speed": 0.85},
+    {"id": "pilot-z-03", "pos": [75.0, 25.0], "building_id": "", "floor": 0, "health": 3, "speed": 0.9},
+    {"id": "pilot-z-04", "pos": [9.0, 12.0], "building_id": "LAB-H01", "floor": 0, "health": 3, "speed": 0.65}
+  ]
+}
