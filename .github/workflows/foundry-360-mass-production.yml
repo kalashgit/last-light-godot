@@ -145,8 +145,15 @@ jobs:
           retention-days: 14
           if-no-files-found: error
   persist-candidates:
-    needs: [contracts, blender-batch]
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit')
+    needs: [preflight, contracts, blender-batch]
+    # 'contracts' intentionally skips scheduled runs. Without always(), that
+    # skipped prerequisite silently skips publication and loses the cursor.
+    if: >-
+      always() &&
+      needs.preflight.result == 'success' &&
+      needs.blender-batch.result == 'success' &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
