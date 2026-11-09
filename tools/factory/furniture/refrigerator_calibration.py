@@ -18,6 +18,9 @@ if system_extensions.is_dir() and str(system_extensions) not in sys.path:
 runtime_sites = Path(f"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
 if runtime_sites.is_dir() and str(runtime_sites) not in sys.path:
     sys.path.append(str(runtime_sites))
+ubuntu_dist_packages=Path("/usr/lib/python3/dist-packages")
+if ubuntu_dist_packages.is_dir() and str(ubuntu_dist_packages) not in sys.path:
+    sys.path.append(str(ubuntu_dist_packages))
 
 import bpy
 from mathutils import Vector
