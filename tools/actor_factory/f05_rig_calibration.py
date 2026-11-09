@@ -13,7 +13,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector, Matrix
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from f05_geometry import loft_chain, leg_sections, arm_sections
+from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -115,9 +115,8 @@ for side, sign in [('L',1),('R',-1)]:
 ellipsoid('wearable_shirt_body', (0,-.003,1.30),
           (.258*body_width,.158*body_width,.274),'chest',shirt)
 for side, sign in [('L',1),('R',-1)]:
-    limb('wearable_shirt_sleeve_'+side,
-         (sign*.25,0,1.43),(sign*.29,0,1.31),
-         .084*limb_width,'upper_arm_'+side,shirt)
+    loft_chain('wearable_shirt_sleeve_'+side, sleeve_sections(sign, limb_width),
+               'upper_arm_'+side, 'forearm_'+side, shirt)
     loft_chain('wearable_pants_'+side,
                leg_sections(sign, 1.0, limb_width, garment=True),
                'thigh_'+side, 'shin_'+side, fabric)
@@ -281,7 +280,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.3','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION',
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.4','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION',
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
