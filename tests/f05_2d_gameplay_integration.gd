@@ -13,7 +13,7 @@ func _test() -> void:
         push_error("F05_2D_GAMEPLAY_FAIL cannot load main.tscn")
         quit(2)
         return
-    var game := packed.instantiate() as Node2D
+    var game = packed.instantiate()
     get_root().add_child(game)
     game.set_process(false)
     game._restart_game()
@@ -38,7 +38,7 @@ func _test() -> void:
         failures.append("F05 Sprite2D failed 2.5D movement projection")
     if sprite.texture == null or not sprite.visible:
         failures.append("Imported calibration PNG is not a visible Sprite2D")
-    if not game.doors.size() >= 5:
+    if game.doors.size() < 5:
         failures.append("Main game door graph not initialized")
     else:
         var blocked: Vector2 = game._try_move(Vector2(5.4, 8.5), Vector2(0,-1), 0.19)
