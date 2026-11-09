@@ -227,3 +227,9 @@ jobs:
       - name: Exercise actual LAST LIGHT main.tscn with 16 imported sprite headings
         run: |
           godot --headless --path . --script res://tests/factory/render_bridge/godot_gameplay_probe.gd
+      - name: Repeat actual LAST LIGHT scene probe with reduced-memory grounded atlas
+        run: |
+          set -eu
+          cp build/f12-f10/trimmed_atlas/atlas.json build/f12-f10/atlas/atlas.json
+          cp build/f12-f10/trimmed_atlas/atlas_*.png build/f12-f10/atlas/
+          godot --headless --path . --script res://tests/factory/render_bridge/godot_gameplay_probe.gd
