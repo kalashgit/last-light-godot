@@ -30,8 +30,9 @@ jobs:
       - name: Install Blender and headless OpenGL/EGL software dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends blender libegl1 libgl1 libgl1-mesa-dri libglx-mesa0 libopengl0 libgles2 mesa-utils xvfb libxrender1 libxi6 libxrandr2 libxfixes3 libxcursor1
+          sudo apt-get install -y --no-install-recommends blender python3-numpy python3-pil libegl1 libgl1 libgl1-mesa-dri libglx-mesa0 libopengl0 libgles2 mesa-utils xvfb libxrender1 libxi6 libxrandr2 libxfixes3 libxcursor1
           blender --version
+          /usr/bin/python3 -c 'import numpy; print("system numpy", numpy.__version__)'
           ldconfig -p | grep -E 'libEGL.so.1|libGL.so.1'
           test -f /usr/lib/x86_64-linux-gnu/libEGL.so.1
       - name: Generate noncanonical source, render and GLB
