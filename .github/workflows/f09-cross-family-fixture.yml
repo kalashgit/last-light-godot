@@ -5,6 +5,7 @@ on:
       - 'tools/weapons_tools/f09_integration_fixture.py'
       - 'tools/weapons_tools/f09_bake_pbr_maps.py'
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
+      - 'tools/weapons_tools/f09_readability_grade.py'
       - 'tools/weapons_tools/f09_pack_atlas.py'
       - 'tools/weapons_tools/f09_main_game_fixture.gd'
       - 'tools/weapons_tools/f09_real_pickup_fixture.gd'
@@ -39,6 +40,8 @@ jobs:
         run: python3 tools/weapons_tools/f09_world_sprite_pack.py
       - name: Pack F12-style pixel-exact 16-heading atlas and anchor manifest
         run: python3 tools/weapons_tools/f09_pack_atlas.py
+      - name: Calibrate F12 candidate 1px contour and ground anchors
+        run: python3 tools/weapons_tools/f09_readability_grade.py
       - name: Pack isolated Godot candidate project
         run: python3 tools/weapons_tools/f09_stage_godot.py
       - name: Verify baked GLB texture embed, atlas coverage and staged sprites
