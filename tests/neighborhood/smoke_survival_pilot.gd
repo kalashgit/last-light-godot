@@ -59,6 +59,9 @@ func _test() -> void:
             _fail("duplicate loot from " + key)
             return
         searched += 1
+        if scene._houses_scavenged() != searched:
+            _fail("mission scavenging progress miscounted")
+            return
     # A pilot food/drink/medical item must produce a measurable and finite effect.
     scene.hunger = 40.0
     scene.thirst = 35.0
@@ -94,6 +97,12 @@ func _test() -> void:
     if int(zombie["health"]) != 2 or scene.stamina >= 100.0:
         _fail("melee did not reduce enemy health and stamina")
         return
+    scene.inside_id = ""
+    scene.player = scene._vec(scene.lab["player_spawn"])
+    scene._check_victory()
+    if not scene.escaped:
+        _fail("three-house extraction win condition failed")
+        return
     # Save/reload demonstrates durable world deltas; no existing production slot used.
     var original: Dictionary = scene._snapshot()
     if not scene.save_game():
@@ -123,6 +132,7 @@ func _test() -> void:
         return
     print("NEIGHBORHOOD_SURVIVAL_V5_PASS ", JSON.stringify({
         "houses_searched": searched, "zombie_damage": 1,
+        "extraction_win_condition": true,
         "inventory_and_consumption": true, "save_reload_exact": true,
         "incompatible_save_blocked": true, "golden_approved": false,
         "iphone_tested": false, "main_scene_changed": false}))

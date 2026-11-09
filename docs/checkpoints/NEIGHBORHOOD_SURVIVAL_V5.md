@@ -12,6 +12,7 @@ Run Godot 4.3 with scene `res://scenes/neighborhood_survival_v1.tscn`. For an iP
 - Every furnishing has a stable world-instance ID. Each interactive object rolls one deterministic prototype item and may only be looted once per run; search and transfer are atomic within this prototype.
 - Four prototype item definitions: food tin, water bottle, bandage and scrap. Capacity-limited backpack; one-tap consumables improve hunger, thirst or health. Hunger and thirst decline with time.
 - Four slow infected (three outside, one indoors) chase only in the appropriate floor/space. Walls and furniture block their movement and melee line-of-action. Player can swing using stamina and cooldown; infected can inflict damage; death enables fresh start.
+- Complete a short mission by searching at least one furnishing in each of the three homes and returning alive to the initial sidewalk. A visible progress counter and win/restart prompt make this a finite challenge.
 - Explicit save/load including player location/floor, status, items, searched fixtures, object states and infected. A separate versioned `user://` file is used; the default game's save is not touched. Incompatible seed/schema is rejected without mutation.
 
 ## Controls

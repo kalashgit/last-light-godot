@@ -17,6 +17,7 @@ var thirst: float = 100.0
 var world_seconds: float = 0.0
 var attack_cooldown: float = 0.0
 var facing: Vector2 = Vector2(0, -1)
+var escaped: bool = false
 
 func _ready() -> void:
     super._ready()
@@ -50,8 +51,26 @@ func restart_pilot() -> void:
     thirst = 100.0
     world_seconds = 0.0
     attack_cooldown = 0.0
-    message = "Find food and water. ENTER a house, USE furniture, defend yourself."
+    escaped = false
+    message = "MISSION: search Oak, Cedar and Birch, then return to your start point."
     queue_redraw()
+
+func _houses_scavenged() -> int:
+    var count: int = 0
+    for house_id in ["LAB-H01", "LAB-H02", "LAB-H03"]:
+        for fixture_id in looted_objects.keys():
+            if str(fixture_id).begins_with(house_id + "/"):
+                count += 1
+                break
+    return count
+
+func _check_victory() -> void:
+    if not escaped and health > 0.0 and mode == "lab" and inside_id.is_empty():
+        if _houses_scavenged() == 3 and player.distance_to(_vec(lab["player_spawn"])) < 2.5:
+            escaped = true
+            motion = Vector2.ZERO
+            message = "YOU SURVIVED! All three homes scavenged. Press N to replay."
+            queue_redraw()
 
 func _inventory_count() -> int:
     var count := 0
@@ -86,6 +105,8 @@ func _nearby_fixture() -> Dictionary:
     return closest
 
 func use_nearby_fixture() -> void:
+    if escaped or health <= 0.0:
+        return
     var fixture: Dictionary = _nearby_fixture()
     if fixture.is_empty():
         message = "Move beside a furnishing to search it (walls block interaction)"
@@ -164,7 +185,7 @@ func _line_clear(zombie: Dictionary, a: Vector2, b: Vector2) -> bool:
     return true
 
 func attack() -> void:
-    if health <= 0.0 or attack_cooldown > 0.0:
+    if health <= 0.0 or escaped or attack_cooldown > 0.0:
         return
     if stamina < 12.0:
         message = "Too exhausted to swing"
@@ -216,7 +237,7 @@ func _advance_zombies(dt: float) -> void:
 func _process(delta: float) -> void:
     if not validation_error.is_empty():
         return
-    if health <= 0.0:
+    if health <= 0.0 or escaped:
         motion = Vector2.ZERO
         queue_redraw()
         return
@@ -233,6 +254,7 @@ func _process(delta: float) -> void:
     if hunger <= 0.0 or thirst <= 0.0:
         health = maxf(0.0, health - dt * 1.5)
     _advance_zombies(dt)
+    _check_victory()
     if health <= 0.0:
         message = "YOU DID NOT SURVIVE — press N for a new run"
     queue_redraw()
@@ -243,6 +265,7 @@ func _snapshot() -> Dictionary:
         "player": [player.x, player.y], "inside_id": inside_id,
         "floor": current_floor, "world_seconds": world_seconds,
         "health": health, "hunger": hunger, "thirst": thirst, "stamina": stamina,
+        "escaped": escaped,
         "inventory": inventory.duplicate(true), "looted_objects": looted_objects.duplicate(true),
         "fixture_states": fixture_states.duplicate(true), "zombies": zombies.duplicate(true)
     }
@@ -319,6 +342,7 @@ func _restore_snapshot(data: Dictionary) -> bool:
     thirst = float(data["thirst"])
     stamina = float(data["stamina"])
     world_seconds = maxf(0.0, float(data.get("world_seconds", 0.0)))
+    escaped = bool(data.get("escaped", false))
     inventory = old_inventory.duplicate(true)
     looted_objects = old_loot.duplicate(true)
     fixture_states = old_states.duplicate(true)
@@ -417,6 +441,9 @@ func _draw_hud() -> void:
         HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("e4dcba"))
     draw_string(ThemeDB.fallback_font, Vector2(19, 205), "NONCANONICAL PILOT ART · iPhone QA required",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("d7a98c"))
+    var mission: String = "MISSION %d/3 houses — return to START once all searched" % _houses_scavenged()
+    draw_string(ThemeDB.fallback_font, Vector2(19, 222), mission,
+        HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("f0c998"))
     var labels := ["HIT", "EAT", "DRINK", "MED", "SAVE", "LOAD"]
     for i in range(labels.size()):
         var center: Vector2 = _game_button_center(i)
@@ -428,6 +455,10 @@ func _draw_hud() -> void:
         draw_rect(Rect2(s * Vector2(.11, .45), s * Vector2(.78, .12)), Color(0.1, 0.03, 0.03, .9))
         draw_string(ThemeDB.fallback_font, s * Vector2(.18, .51), "YOU DIED — press N to restart",
             HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("f0b4a6"))
+    elif escaped:
+        draw_rect(Rect2(s * Vector2(.11, .45), s * Vector2(.78, .12)), Color(0.03, 0.15, 0.11, .94))
+        draw_string(ThemeDB.fallback_font, s * Vector2(.18, .51), "YOU SURVIVED! — N to replay",
+            HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("b8e3be"))
 
 func _draw() -> void:
     super._draw()
