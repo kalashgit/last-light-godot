@@ -158,5 +158,35 @@ class CalibrationOutputs(unittest.TestCase):
         visual=json.loads((folder/"render_qa.json").read_text())
         self.assertGreaterEqual(min(visual["clear_margins_px"]),12)
 
+    def test_v10_independent_animations_and_full_material_portability(self):
+        folder=BASE/"refrigerator_v10"
+        manifest=json.loads((folder/"calibration_report.json").read_text())
+        self.assertEqual(manifest["crisper_frames"],7)
+        self.assertTrue(manifest["freezer_hinge_present"])
+        self.assertEqual(set(manifest["animation_clip_names"]),{"F01_Door_Open","F01_Crisper_Open"})
+        self.assertEqual(len(manifest["original_texture_images"]),18)
+        for name in manifest["original_texture_images"]:
+            with Image.open(folder/name) as pbr:
+                self.assertGreater(min(v[0] for v in pbr.convert("RGB").getextrema()),6)
+        glb=(folder/"refrigerator_refined_calibration.glb").read_bytes()
+        gltf=json.loads(glb[20:20+struct.unpack_from("<I",glb,12)[0]])
+        self.assertEqual({clip["name"] for clip in gltf["animations"]},
+                         {"F01_Door_Open","F01_Crisper_Open"})
+        self.assertGreaterEqual(len(gltf["images"]),18)
+        self.assertTrue(any(n.get("name")=="hinge_local.freezer_flap" for n in gltf["nodes"]))
+
+    def test_v10_crisper_frames_change_in_rgb_even_when_alpha_is_static(self):
+        from PIL import ImageChops
+        folder=BASE/"refrigerator_v10"
+        frames=[Image.open(folder/f"crisper_open_{i:02d}.png").convert("RGBA") for i in range(7)]
+        for left,right in zip(frames,frames[1:]):
+            self.assertIsNotNone(ImageChops.difference(left.convert("RGB"),right.convert("RGB")).getbbox())
+        report=json.loads((folder/"render_qa_crisper.json").read_text())
+        self.assertEqual(report["motion"],"crisper_open")
+        self.assertTrue(report["adjacent_frames_visibly_distinct"])
+        source=(Path(__file__).resolve().parent/"godot_fixture/verify_import.gd").read_text()
+        self.assertIn("F01_GODOT_INTERACTION_PASS",source)
+        self.assertIn("door_move_during_drawer",source)
+
 
 if __name__=="__main__":unittest.main()
