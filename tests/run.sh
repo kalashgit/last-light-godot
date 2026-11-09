@@ -39,6 +39,7 @@ run_checked --headless --path . --script tests/world_art.gd
 
 # W08 mobile input, HUD layout, touch targets and camera (engine-level only).
 run_checked --headless --path . --script tests/mobile/mobile_input.gd
+run_checked --headless --path . --script tests/mobile/v2_presentation.gd
 # Render parity of the draw-call batcher needs a real GL context.
 if command -v xvfb-run >/dev/null 2>&1; then
  parity=$(xvfb-run -a "$engine" --path . --rendering-driver opengl3 --script tests/mobile/render_batch_parity.gd 2>&1 || true)

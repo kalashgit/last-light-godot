@@ -1,0 +1,79 @@
+name: W08 mobile presentation of real F12 V2 fixture
+
+# Consumes the same immutable F12 Blender calibration run as W01's tested fixture
+# (PR #53) and W01's own prepare script, read-only. Nothing here approves assets,
+# edits main.tscn or touches the approval ledger. Results are CALIBRATION ONLY.
+on:
+  push:
+    branches:
+      - "claude/worker-08-**"
+    paths:
+      - "scripts/mobile/**"
+      - "tests/mobile/**"
+      - ".github/workflows/w08-v2-mobile-fixture.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  presentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out W01 fixture tools from PR #53 (read-only, outside the Godot project)
+        uses: actions/checkout@v4
+        with:
+          ref: chatgpt/godot-v2-import-fixture-20261109
+          path: _w01_ref
+      - name: Move W01 checkout out of the Godot project tree
+        run: mv _w01_ref "${{ runner.temp }}/w01"
+      - name: Download immutable F12 Blender calibration output (run 42533683097)
+        uses: actions/download-artifact@v4
+        with:
+          name: f12-real-blender-pilot-candidate
+          run-id: 42533683097
+          repository: kalashgit/last-light-godot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/f12_source
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install "Pillow>=10,<12"
+      - name: Build verified RGBA atlases with W01's unmodified prepare script
+        run: |
+          python "${{ runner.temp }}/w01/tests/godot_fixture/prepare_fixture.py" \
+            "${{ runner.temp }}/f12_source" --output tests/godot_fixture/generated
+          python "${{ runner.temp }}/w01/tests/godot_fixture/prepare_fixture.py" \
+            "${{ runner.temp }}/f12_source" --output "${{ runner.temp }}/w01/tests/godot_fixture/generated"
+      - name: Install Godot 4.3 (W01 fixture pin) and 4.6.3 (game CI engine)
+        run: |
+          for v in 4.3 4.6.3; do
+            curl --fail --location --silent --show-error --retry 3 \
+              "https://github.com/godotengine/godot/releases/download/${v}-stable/Godot_v${v}-stable_linux.x86_64.zip" -o "/tmp/g${v}.zip"
+            unzip -q "/tmp/g${v}.zip" -d "/tmp/g${v}"
+            chmod +x /tmp/g${v}/Godot_v${v}-stable_linux.x86_64
+          done
+      - name: W01 reference import still passes on the same run (Godot 4.3)
+        working-directory: ${{ runner.temp }}/w01
+        run: timeout 75s /tmp/g4.3/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/godot_fixture/smoke_import.gd
+      - name: W08 presentation on Godot 4.3
+        run: |
+          timeout 120s /tmp/g4.3/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/mobile/v2_presentation.gd | tee w08_v2_43.txt
+          grep -q "real F12 fixture: RUN" w08_v2_43.txt
+      - name: W08 presentation on Godot 4.6.3
+        run: |
+          timeout 120s /tmp/g4.6.3/Godot_v4.6.3-stable_linux.x86_64 --headless --path . --script res://tests/mobile/v2_presentation.gd | tee w08_v2_463.txt
+          grep -q "real F12 fixture: RUN" w08_v2_463.txt
+      - name: Upload W08 evidence (calibration only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w08-v2-mobile-presentation-calibration
+          path: |
+            w08_v2_*.txt
+            tests/godot_fixture/generated/fixture_manifest.json
+          retention-days: 14
+          if-no-files-found: warn

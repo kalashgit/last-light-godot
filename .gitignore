@@ -7,3 +7,6 @@ assets/generated/factory/sprites/**/*.png.import
 # Golden icons also use generated default import sidecars; source PNGs stay tracked.
 assets/last_light/golden40/**/*.png.import
 docs/checkpoints/world-art/*.png.import
+
+# Generated in CI from the F12 calibration artifact; never committed.
+tests/godot_fixture/generated/
