@@ -25,7 +25,7 @@ Run Godot 4.3 with scene `res://scenes/neighborhood_survival_v1.tscn`. For an iP
 | HIT touch / J | Melee attack |
 | EAT/DRINK/MED touch / 1/2/3 | Use consumable |
 | SAVE/LOAD touch / K/L | Save/load isolated pilot slot |
-| N | Restart survival run |
+| NEW touch / N | Restart after death/win; when alive, confirm with a second tap/press within 3 seconds |
 | F / R / M / Tab | Floor / roof / overview / city showcase |
 
 ## Evidence and non-goals

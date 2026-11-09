@@ -130,9 +130,18 @@ func _test() -> void:
     if scene._restore_snapshot(invalid) or scene._snapshot() != before_invalid:
         _fail("incompatible save was accepted or mutated game state")
         return
+    scene.request_restart()
+    if scene.escaped or not scene.looted_objects.is_empty() or scene._houses_scavenged() != 0:
+        _fail("touch restart failed to clear finished run")
+        return
+    scene.request_restart()
+    if not str(scene.message).begins_with("Tap NEW again"):
+        _fail("living player restart was not confirmation-gated")
+        return
     print("NEIGHBORHOOD_SURVIVAL_V5_PASS ", JSON.stringify({
         "houses_searched": searched, "zombie_damage": 1,
         "extraction_win_condition": true,
+        "touch_restart_guard": true,
         "inventory_and_consumption": true, "save_reload_exact": true,
         "incompatible_save_blocked": true, "golden_approved": false,
         "iphone_tested": false, "main_scene_changed": false}))

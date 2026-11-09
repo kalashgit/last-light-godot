@@ -18,6 +18,7 @@ var world_seconds: float = 0.0
 var attack_cooldown: float = 0.0
 var facing: Vector2 = Vector2(0, -1)
 var escaped: bool = false
+var restart_arm_until_ms: int = 0
 
 func _ready() -> void:
     super._ready()
@@ -52,7 +53,17 @@ func restart_pilot() -> void:
     world_seconds = 0.0
     attack_cooldown = 0.0
     escaped = false
+    restart_arm_until_ms = 0
     message = "MISSION: search Oak, Cedar and Birch, then return to your start point."
+    queue_redraw()
+
+func request_restart() -> void:
+    # On phone, guard live runs against an accidental reset.
+    if escaped or health <= 0.0 or Time.get_ticks_msec() < restart_arm_until_ms:
+        restart_pilot()
+        return
+    restart_arm_until_ms = Time.get_ticks_msec() + 3000
+    message = "Tap NEW again within 3 seconds to discard this run"
     queue_redraw()
 
 func _houses_scavenged() -> int:
@@ -392,10 +403,11 @@ func _game_button_center(index: int) -> Vector2:
         2: return Vector2(s.x - 275, s.y - 377) # Water
         3: return Vector2(s.x - 365, s.y - 377) # Bandage
         4: return Vector2(s.x - 196, 150) # Save
-        _: return Vector2(s.x - 95, 150) # Load
+        5: return Vector2(s.x - 95, 150) # Load
+        _: return Vector2(s.x - 95, 238) # Restart
 
 func _handle_game_button(p: Vector2) -> bool:
-    for i in range(6):
+    for i in range(7):
         if not _button_hit(p, _game_button_center(i)):
             continue
         match i:
@@ -405,6 +417,7 @@ func _handle_game_button(p: Vector2) -> bool:
             3: consume("proto.bandage")
             4: save_game()
             5: load_game()
+            6: request_restart()
         return true
     return false
 
@@ -421,7 +434,7 @@ func _input(event: InputEvent) -> void:
             KEY_3: consume("proto.bandage")
             KEY_K: save_game()
             KEY_L: load_game()
-            KEY_N: restart_pilot()
+            KEY_N: request_restart()
     super._input(event)
 
 func _draw_hud() -> void:
@@ -444,7 +457,7 @@ func _draw_hud() -> void:
     var mission: String = "MISSION %d/3 houses — return to START once all searched" % _houses_scavenged()
     draw_string(ThemeDB.fallback_font, Vector2(19, 222), mission,
         HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("f0c998"))
-    var labels := ["HIT", "EAT", "DRINK", "MED", "SAVE", "LOAD"]
+    var labels := ["HIT", "EAT", "DRINK", "MED", "SAVE", "LOAD", "NEW"]
     for i in range(labels.size()):
         var center: Vector2 = _game_button_center(i)
         draw_circle(center, 39.0, Color("8f5750") if i == 0 else Color("566f66"))
