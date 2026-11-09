@@ -25,6 +25,13 @@ def main():
                          "rgb_stddev":[round(x,2) for x in std]}
     difference=ImageChops.difference(imgs[0],imgs[1])
     assert difference.getbbox() is not None,"indoor/outdoor are identical"
+    metrics=json.loads((SCREEN/"f09_virtual_runner_telemetry.json").read_text())
+    assert metrics["device_class"]=="LINUX_XVFB_MESA_NOT_IPHONE"
+    assert metrics["platform"]=="Linux" and metrics["samples"]==120
+    assert metrics["mean_frame_ms"]>0
+    assert metrics["p95_frame_ms"]>0 and metrics["measured_sample_fps"]>0
+    assert not metrics["iphone_fps_verified"]
+    assert not metrics["iphone_memory_verified"]
     (SCREEN/"visual_capture_qa.json").write_text(json.dumps({
         "status":"REAL_OPENGL_SOFTWARE_RENDER_UNAPPROVED",
         "render_target":"Xvfb Mesa Godot 4.3 GL compatibility, NOT iPhone",
