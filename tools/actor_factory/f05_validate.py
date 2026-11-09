@@ -25,7 +25,7 @@ EXPECTED_CLIPS = {
     "idle", "walk", "run", "sneak", "interact", "attack", "hurt", "death"
 }
 EXPECTED_WEARABLES = {
-    "shirt_body", "shirt_sleeves", "pants_upper", "pants_lower", "waist_band"
+    "shirt_body", "shirt_sleeves", "pants_loft", "waist_band"
 }
 EXPECTED_FILES = (
     "calibration.png",
@@ -58,6 +58,10 @@ def validate(directory):
         errors.append("Missing required attachment sockets")
     if not EXPECTED_WEARABLES.issubset(set(manifest.get("wearable_layers", []))):
         errors.append("Missing required garment calibration layers")
+    if manifest.get("continuous_limb_shells") is not True:
+        errors.append("Continuous limb geometry contract missing")
+    if manifest.get("floor_contact") != "ROOT_HEIGHT_CALIBRATION":
+        errors.append("Foot contact calibration contract missing")
     clips = manifest.get("clips", {})
     if not EXPECTED_CLIPS.issubset(set(clips)):
         errors.append("Missing required calibration animation actions")
