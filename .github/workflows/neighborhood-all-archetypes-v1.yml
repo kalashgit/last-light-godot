@@ -1,0 +1,48 @@
+name: LAST LIGHT All 60 Archetypes Neighborhood Prototype
+
+on:
+  pull_request:
+    paths:
+      - "tools/neighborhood/**"
+      - "data/generated/all_archetypes_neighborhood_v1.json"
+      - "assets/buildings/building_archetypes_v1.json"
+      - "scripts/all_archetypes_neighborhood_v1.gd"
+      - "scenes/all_archetypes_neighborhood_v1.tscn"
+      - "tests/neighborhood/**"
+      - ".github/workflows/neighborhood-all-archetypes-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lastlight-neighborhood-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-neighborhood:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate catalog coverage, geometry, saved 3-house layouts
+        run: node --test tests/neighborhood/test_world.mjs
+      - name: Recompile exactly from pinned inputs and compare committed world
+        run: |
+          node tools/neighborhood/build_all_archetypes.mjs 20261109
+          git diff --exit-code -- data/generated/all_archetypes_neighborhood_v1.json
+      - name: Install pinned Godot 4.3 stable
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" \
+            --output /tmp/godot43.zip
+          unzip -q /tmp/godot43.zip -d /tmp/godot43
+          chmod +x /tmp/godot43/Godot_v4.3-stable_linux.x86_64
+          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Instantiate 63 buildings, six districts, three house entrances in actual Godot
+        run: |
+          timeout 75s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 \
+            --headless --path . --script res://tests/neighborhood/smoke_scene.gd
