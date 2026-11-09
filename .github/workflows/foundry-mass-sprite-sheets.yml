@@ -1,4 +1,4 @@
-name: Foundry bounded 2D sprite sheet packer (non-Golden)
+name: Foundry 40-item sprite pages + directional atlas (non-Golden)
 on:
   pull_request:
     paths:
@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       batch_size:
-        description: 'Existing technical atlases to pack per bounded run'
+        description: 'Distinct admitted assets to pack into complete 40-item sheets'
         type: choice
-        options: ['1', '2', '4', '8']
-        default: '4'
+        options: ['40', '80']
+        default: '40'
 
 permissions:
   contents: read
@@ -45,7 +45,7 @@ jobs:
     permissions:
       contents: write
     env:
-      BATCH_SIZE: ${{ inputs.batch_size || '4' }}
+      BATCH_SIZE: ${{ inputs.batch_size || '40' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -63,12 +63,12 @@ jobs:
             git fetch --no-tags origin refs/heads/foundry/sprite-sheets-v1:refs/remotes/origin/foundry/sprite-sheets-v1
             git show origin/foundry/sprite-sheets-v1:foundry_sheets/state.json > build/foundry_sheets/previous_state.json
           fi
-      - name: Pack deterministic transparent 2D sheets + Godot regions
+      - name: Pack complete 40-asset inventory PNGs and all 16 directional Godot frames
         run: |
           set -euo pipefail
           args=()
           if test -f build/foundry_sheets/previous_state.json; then args+=(--state build/foundry_sheets/previous_state.json); fi
-          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --page-size 1024 --run-id "$GITHUB_RUN_ID" "${args[@]}"
+          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --min-batch-size 40 --inventory-page-items 40 --page-size 2048 --run-id "$GITHUB_RUN_ID" "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:
           name: foundry-sprite-sheets-${{ github.run_id }}
@@ -79,7 +79,7 @@ jobs:
         run: |
           set -euo pipefail
           count=$(python -c "import json;print(json.load(open('build/foundry_sheets/batch/batch_report.json'))['batch_count'])")
-          if test "$count" -eq 0; then echo 'FOUNDRY_SHEETS_CAUGHT_UP'; exit 0; fi
+          if test "$count" -eq 0; then echo 'FOUNDRY_SHEETS_WAITING_FOR_40_OR_CAUGHT_UP'; exit 0; fi
           if git show-ref --quiet refs/remotes/origin/foundry/sprite-sheets-v1; then
             git worktree add -b "foundry-sheet-publish-$GITHUB_RUN_ID" /tmp/foundry-sheet-publish origin/foundry/sprite-sheets-v1
           else
