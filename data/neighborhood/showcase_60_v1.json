@@ -1,0 +1,1708 @@
+{
+  "schema": "last_light.neighborhood_60_prototype.v1",
+  "catalog_source": "https://app.notion.com/p/40ef639e237381e3aa21e11fe89428fe",
+  "provenance_branch": "feature/unified-factory-v2-research-neighborhood",
+  "seed": 601109,
+  "tile_pixel_basis": [
+    80,
+    40
+  ],
+  "status": "LAYOUT_PROTOTYPE_NO_GOLDEN_ART",
+  "three_house_street": [
+    "house_small",
+    "house_large",
+    "duplex"
+  ],
+  "world_bounds": [
+    0,
+    0,
+    240,
+    220
+  ],
+  "player_spawn": [
+    10,
+    20
+  ],
+  "zone_rows": [
+    {
+      "name": "Residential",
+      "first_row": 0,
+      "rows": 1,
+      "count": 9
+    },
+    {
+      "name": "Commercial",
+      "first_row": 1,
+      "rows": 2,
+      "count": 15
+    },
+    {
+      "name": "Civic / public",
+      "first_row": 3,
+      "rows": 2,
+      "count": 13
+    },
+    {
+      "name": "Industrial / utility / rural",
+      "first_row": 5,
+      "rows": 1,
+      "count": 10
+    },
+    {
+      "name": "Recreation",
+      "first_row": 6,
+      "rows": 1,
+      "count": 7
+    },
+    {
+      "name": "Special",
+      "first_row": 7,
+      "rows": 1,
+      "count": 6
+    }
+  ],
+  "buildings": [
+    {
+      "instance_id": "ll.district.prototype.house_small",
+      "archetype_id": "house_small",
+      "source_archetype_id": "ll.archetype.house_small",
+      "name": "Small single-family house",
+      "group": "Residential",
+      "footprint": [
+        5,
+        4,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        12
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "entry",
+        "living",
+        "kitchen",
+        "bedroom",
+        "bath"
+      ],
+      "roof_style": "gable",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.house_large",
+      "archetype_id": "house_large",
+      "source_archetype_id": "ll.archetype.house_large",
+      "name": "Large single-family house",
+      "group": "Residential",
+      "footprint": [
+        28,
+        4,
+        12,
+        11
+      ],
+      "front_door": [
+        34,
+        15
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "entry",
+        "living",
+        "kitchen",
+        "bedrooms",
+        "bath",
+        "utility"
+      ],
+      "roof_style": "hip",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.duplex",
+      "archetype_id": "duplex",
+      "source_archetype_id": "ll.archetype.duplex",
+      "name": "Two-unit duplex",
+      "group": "Residential",
+      "footprint": [
+        51,
+        4,
+        11,
+        10
+      ],
+      "front_door": [
+        56.5,
+        14
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "mirrored flat",
+        "shared boundary",
+        "dual entries"
+      ],
+      "roof_style": "duplex_split",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.apartment_block",
+      "archetype_id": "apartment_block",
+      "source_archetype_id": "ll.archetype.apartment_block",
+      "name": "Apartment block / flats",
+      "group": "Residential",
+      "footprint": [
+        74,
+        4,
+        12,
+        8
+      ],
+      "front_door": [
+        80,
+        12
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lobby",
+        "corridor",
+        "stair",
+        "repeated flat"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.trailer_park",
+      "archetype_id": "trailer_park",
+      "source_archetype_id": "ll.archetype.trailer_park",
+      "name": "Trailer park environment",
+      "group": "Residential",
+      "footprint": [
+        97,
+        4,
+        14,
+        10
+      ],
+      "front_door": [
+        104,
+        14
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "lot",
+        "lane",
+        "power pedestal",
+        "shared utilities"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.mobile_home",
+      "archetype_id": "mobile_home",
+      "source_archetype_id": "ll.archetype.mobile_home",
+      "name": "Mobile home / trailer",
+      "group": "Residential",
+      "footprint": [
+        120,
+        4,
+        10,
+        10
+      ],
+      "front_door": [
+        125,
+        14
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "compact living/kitchen",
+        "sleep",
+        "bath"
+      ],
+      "roof_style": "pitched",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.garage",
+      "archetype_id": "garage",
+      "source_archetype_id": "ll.archetype.garage",
+      "name": "Detached garage",
+      "group": "Residential",
+      "footprint": [
+        143,
+        4,
+        11,
+        8
+      ],
+      "front_door": [
+        148.5,
+        12
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "vehicle bay",
+        "shelving",
+        "tool bench"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.shed",
+      "archetype_id": "shed",
+      "source_archetype_id": "ll.archetype.shed",
+      "name": "Garden/tool shed",
+      "group": "Residential",
+      "footprint": [
+        166,
+        4,
+        12,
+        9
+      ],
+      "front_door": [
+        172,
+        13
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "storage",
+        "work surface"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.townhouse",
+      "archetype_id": "townhouse",
+      "source_archetype_id": "ll.archetype.townhouse",
+      "name": "Townhouse / row home",
+      "group": "Residential",
+      "footprint": [
+        189,
+        4,
+        9,
+        10
+      ],
+      "front_door": [
+        193.5,
+        14
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "narrow repeated floors",
+        "party walls"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.grocery_store",
+      "archetype_id": "grocery_store",
+      "source_archetype_id": "ll.archetype.grocery_store",
+      "name": "Grocery / convenience store",
+      "group": "Commercial",
+      "footprint": [
+        5,
+        31,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        39
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "sales floor",
+        "cashier",
+        "stock"
+      ],
+      "roof_style": "flat",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.supermarket",
+      "archetype_id": "supermarket",
+      "source_archetype_id": "ll.archetype.supermarket",
+      "name": "Supermarket",
+      "group": "Commercial",
+      "footprint": [
+        28,
+        31,
+        10,
+        9
+      ],
+      "front_door": [
+        33,
+        40
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "aisles",
+        "cold case",
+        "loading",
+        "stock"
+      ],
+      "roof_style": "flat",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.gas_station",
+      "archetype_id": "gas_station",
+      "source_archetype_id": "ll.archetype.gas_station",
+      "name": "Gas station",
+      "group": "Commercial",
+      "footprint": [
+        51,
+        31,
+        11,
+        10
+      ],
+      "front_door": [
+        56.5,
+        41
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "sales",
+        "storage",
+        "forecourt/pumps"
+      ],
+      "roof_style": "flat",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.restaurant",
+      "archetype_id": "restaurant",
+      "source_archetype_id": "ll.archetype.restaurant",
+      "name": "Restaurant",
+      "group": "Commercial",
+      "footprint": [
+        74,
+        31,
+        12,
+        8
+      ],
+      "front_door": [
+        80,
+        39
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "dining",
+        "commercial kitchen",
+        "storage",
+        "toilet"
+      ],
+      "roof_style": "flat",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.cafe",
+      "archetype_id": "cafe",
+      "source_archetype_id": "ll.archetype.cafe",
+      "name": "Cafe",
+      "group": "Commercial",
+      "footprint": [
+        97,
+        31,
+        9,
+        9
+      ],
+      "front_door": [
+        101.5,
+        40
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "counter",
+        "seating",
+        "kitchen"
+      ],
+      "roof_style": "flat",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.diner",
+      "archetype_id": "diner",
+      "source_archetype_id": "ll.archetype.diner",
+      "name": "Diner",
+      "group": "Commercial",
+      "footprint": [
+        120,
+        31,
+        10,
+        10
+      ],
+      "front_door": [
+        125,
+        41
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "booth dining",
+        "grill",
+        "storeroom"
+      ],
+      "roof_style": "flat",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.bar_pub",
+      "archetype_id": "bar_pub",
+      "source_archetype_id": "ll.archetype.bar_pub",
+      "name": "Bar / pub",
+      "group": "Commercial",
+      "footprint": [
+        143,
+        31,
+        11,
+        8
+      ],
+      "front_door": [
+        148.5,
+        39
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "bar counter",
+        "seating",
+        "storage"
+      ],
+      "roof_style": "flat",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.clothing_store",
+      "archetype_id": "clothing_store",
+      "source_archetype_id": "ll.archetype.clothing_store",
+      "name": "Clothing store",
+      "group": "Commercial",
+      "footprint": [
+        166,
+        31,
+        12,
+        9
+      ],
+      "front_door": [
+        172,
+        40
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "displays",
+        "fitting",
+        "stock"
+      ],
+      "roof_style": "flat",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.department_store",
+      "archetype_id": "department_store",
+      "source_archetype_id": "ll.archetype.department_store",
+      "name": "Department store",
+      "group": "Commercial",
+      "footprint": [
+        189,
+        31,
+        9,
+        10
+      ],
+      "front_door": [
+        193.5,
+        41
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "multiple retail zones",
+        "receiving"
+      ],
+      "roof_style": "flat",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.hardware_store",
+      "archetype_id": "hardware_store",
+      "source_archetype_id": "ll.archetype.hardware_store",
+      "name": "Hardware / DIY",
+      "group": "Commercial",
+      "footprint": [
+        212,
+        31,
+        10,
+        8
+      ],
+      "front_door": [
+        217,
+        39
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "heavy shelving",
+        "trade counter",
+        "yard"
+      ],
+      "roof_style": "flat",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.pharmacy",
+      "archetype_id": "pharmacy",
+      "source_archetype_id": "ll.archetype.pharmacy",
+      "name": "Pharmacy",
+      "group": "Commercial",
+      "footprint": [
+        5,
+        58,
+        11,
+        9
+      ],
+      "front_door": [
+        10.5,
+        67
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "retail",
+        "secured medicine counter",
+        "stock"
+      ],
+      "roof_style": "flat",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.clinic",
+      "archetype_id": "clinic",
+      "source_archetype_id": "ll.archetype.clinic",
+      "name": "Local clinic",
+      "group": "Commercial",
+      "footprint": [
+        28,
+        58,
+        12,
+        10
+      ],
+      "front_door": [
+        34,
+        68
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "waiting",
+        "exam",
+        "reception"
+      ],
+      "roof_style": "flat",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.hair_salon",
+      "archetype_id": "hair_salon",
+      "source_archetype_id": "ll.archetype.hair_salon",
+      "name": "Barber / hair salon",
+      "group": "Commercial",
+      "footprint": [
+        51,
+        58,
+        9,
+        8
+      ],
+      "front_door": [
+        55.5,
+        66
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "stations",
+        "wash area",
+        "reception"
+      ],
+      "roof_style": "flat",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.bank",
+      "archetype_id": "bank",
+      "source_archetype_id": "ll.archetype.bank",
+      "name": "Bank",
+      "group": "Commercial",
+      "footprint": [
+        74,
+        58,
+        10,
+        9
+      ],
+      "front_door": [
+        79,
+        67
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lobby",
+        "teller",
+        "offices",
+        "secure storage"
+      ],
+      "roof_style": "flat",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.office",
+      "archetype_id": "office",
+      "source_archetype_id": "ll.archetype.office",
+      "name": "Offices",
+      "group": "Commercial",
+      "footprint": [
+        97,
+        58,
+        11,
+        10
+      ],
+      "front_door": [
+        102.5,
+        68
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "desks",
+        "meeting",
+        "break room",
+        "records"
+      ],
+      "roof_style": "flat",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.police_station",
+      "archetype_id": "police_station",
+      "source_archetype_id": "ll.archetype.police_station",
+      "name": "Police station",
+      "group": "Civic / public",
+      "footprint": [
+        5,
+        85,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        93
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "reception",
+        "offices",
+        "evidence",
+        "holding"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.fire_station",
+      "archetype_id": "fire_station",
+      "source_archetype_id": "ll.archetype.fire_station",
+      "name": "Fire station",
+      "group": "Civic / public",
+      "footprint": [
+        28,
+        85,
+        10,
+        9
+      ],
+      "front_door": [
+        33,
+        94
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "vehicle bays",
+        "dorm",
+        "kitchen",
+        "equipment"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.hospital",
+      "archetype_id": "hospital",
+      "source_archetype_id": "ll.archetype.hospital",
+      "name": "Hospital",
+      "group": "Civic / public",
+      "footprint": [
+        51,
+        85,
+        11,
+        10
+      ],
+      "front_door": [
+        56.5,
+        95
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "triage",
+        "wards",
+        "treatment",
+        "pharmacy",
+        "service"
+      ],
+      "roof_style": "pitched",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.medical_center",
+      "archetype_id": "medical_center",
+      "source_archetype_id": "ll.archetype.medical_center",
+      "name": "Medical center",
+      "group": "Civic / public",
+      "footprint": [
+        74,
+        85,
+        12,
+        8
+      ],
+      "front_door": [
+        80,
+        93
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "waiting",
+        "consultation",
+        "treatment"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.elementary_school",
+      "archetype_id": "elementary_school",
+      "source_archetype_id": "ll.archetype.elementary_school",
+      "name": "Elementary school",
+      "group": "Civic / public",
+      "footprint": [
+        97,
+        85,
+        9,
+        9
+      ],
+      "front_door": [
+        101.5,
+        94
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "classrooms",
+        "admin",
+        "cafeteria",
+        "playground"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.high_school",
+      "archetype_id": "high_school",
+      "source_archetype_id": "ll.archetype.high_school",
+      "name": "High school",
+      "group": "Civic / public",
+      "footprint": [
+        120,
+        85,
+        10,
+        10
+      ],
+      "front_door": [
+        125,
+        95
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "classrooms",
+        "labs",
+        "gym",
+        "cafeteria"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.college_building",
+      "archetype_id": "college_building",
+      "source_archetype_id": "ll.archetype.college_building",
+      "name": "College building",
+      "group": "Civic / public",
+      "footprint": [
+        143,
+        85,
+        11,
+        8
+      ],
+      "front_door": [
+        148.5,
+        93
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lecture",
+        "lab",
+        "office",
+        "hall"
+      ],
+      "roof_style": "pitched",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.church",
+      "archetype_id": "church",
+      "source_archetype_id": "ll.archetype.church",
+      "name": "Church",
+      "group": "Civic / public",
+      "footprint": [
+        166,
+        85,
+        12,
+        9
+      ],
+      "front_door": [
+        172,
+        94
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "worship hall",
+        "vestry",
+        "storage"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.community_center",
+      "archetype_id": "community_center",
+      "source_archetype_id": "ll.archetype.community_center",
+      "name": "Community center",
+      "group": "Civic / public",
+      "footprint": [
+        189,
+        85,
+        9,
+        10
+      ],
+      "front_door": [
+        193.5,
+        95
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "multi-use hall",
+        "office",
+        "kitchen"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.library",
+      "archetype_id": "library",
+      "source_archetype_id": "ll.archetype.library",
+      "name": "Library",
+      "group": "Civic / public",
+      "footprint": [
+        212,
+        85,
+        10,
+        8
+      ],
+      "front_door": [
+        217,
+        93
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "stacks",
+        "reading",
+        "admin"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.post_office",
+      "archetype_id": "post_office",
+      "source_archetype_id": "ll.archetype.post_office",
+      "name": "Post office",
+      "group": "Civic / public",
+      "footprint": [
+        5,
+        112,
+        11,
+        9
+      ],
+      "front_door": [
+        10.5,
+        121
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "public counter",
+        "sorting",
+        "loading"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.prison",
+      "archetype_id": "prison",
+      "source_archetype_id": "ll.archetype.prison",
+      "name": "Prison",
+      "group": "Civic / public",
+      "footprint": [
+        28,
+        112,
+        12,
+        10
+      ],
+      "front_door": [
+        34,
+        122
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "secure perimeter",
+        "cells",
+        "control",
+        "support"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.detention_facility",
+      "archetype_id": "detention_facility",
+      "source_archetype_id": "ll.archetype.detention_facility",
+      "name": "Detention / holding",
+      "group": "Civic / public",
+      "footprint": [
+        51,
+        112,
+        9,
+        8
+      ],
+      "front_door": [
+        55.5,
+        120
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "booking",
+        "short-term cells",
+        "control"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.warehouse",
+      "archetype_id": "warehouse",
+      "source_archetype_id": "ll.archetype.warehouse",
+      "name": "Warehouse",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        5,
+        139,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        147
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "rack aisles",
+        "loading",
+        "office"
+      ],
+      "roof_style": "metal",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.factory",
+      "archetype_id": "factory",
+      "source_archetype_id": "ll.archetype.factory",
+      "name": "Factory",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        28,
+        139,
+        10,
+        9
+      ],
+      "front_door": [
+        33,
+        148
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "production bay",
+        "service",
+        "stock"
+      ],
+      "roof_style": "metal",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.farm",
+      "archetype_id": "farm",
+      "source_archetype_id": "ll.archetype.farm",
+      "name": "Farm / farmstead",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        51,
+        139,
+        14,
+        10
+      ],
+      "front_door": [
+        58,
+        149
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "house",
+        "field",
+        "utility paths"
+      ],
+      "roof_style": "metal",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.barn",
+      "archetype_id": "barn",
+      "source_archetype_id": "ll.archetype.barn",
+      "name": "Barn",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        74,
+        139,
+        12,
+        8
+      ],
+      "front_door": [
+        80,
+        147
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "animal/storage bays",
+        "loft"
+      ],
+      "roof_style": "metal",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.silo",
+      "archetype_id": "silo",
+      "source_archetype_id": "ll.archetype.silo",
+      "name": "Silo",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        97,
+        139,
+        9,
+        9
+      ],
+      "front_door": [
+        101.5,
+        148
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "cylindrical storage",
+        "ladder/service"
+      ],
+      "roof_style": "metal",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.mechanic_shop",
+      "archetype_id": "mechanic_shop",
+      "source_archetype_id": "ll.archetype.mechanic_shop",
+      "name": "Mechanic garage",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        120,
+        139,
+        10,
+        10
+      ],
+      "front_door": [
+        125,
+        149
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lifts",
+        "service bays",
+        "parts",
+        "office"
+      ],
+      "roof_style": "metal",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.power_station",
+      "archetype_id": "power_station",
+      "source_archetype_id": "ll.archetype.power_station",
+      "name": "Power station/substation",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        143,
+        139,
+        11,
+        8
+      ],
+      "front_door": [
+        148.5,
+        147
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "control",
+        "transformers",
+        "fenced utility"
+      ],
+      "roof_style": "metal",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.water_treatment",
+      "archetype_id": "water_treatment",
+      "source_archetype_id": "ll.archetype.water_treatment",
+      "name": "Water treatment works",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        166,
+        139,
+        12,
+        9
+      ],
+      "front_door": [
+        172,
+        148
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "plant hall",
+        "tanks",
+        "pumps",
+        "control"
+      ],
+      "roof_style": "metal",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.construction_site",
+      "archetype_id": "construction_site",
+      "source_archetype_id": "ll.archetype.construction_site",
+      "name": "Construction site",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        189,
+        139,
+        14,
+        10
+      ],
+      "front_door": [
+        196,
+        149
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "unfinished structure",
+        "materials",
+        "hazards"
+      ],
+      "roof_style": "metal",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.storage_yard",
+      "archetype_id": "storage_yard",
+      "source_archetype_id": "ll.archetype.storage_yard",
+      "name": "Storage yard",
+      "group": "Industrial / utility / rural",
+      "footprint": [
+        212,
+        139,
+        14,
+        10
+      ],
+      "front_door": [
+        219,
+        149
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "fence",
+        "containers",
+        "equipment",
+        "gate"
+      ],
+      "roof_style": "metal",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.gym",
+      "archetype_id": "gym",
+      "source_archetype_id": "ll.archetype.gym",
+      "name": "Fitness center",
+      "group": "Recreation",
+      "footprint": [
+        5,
+        166,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        174
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "exercise floor",
+        "changing",
+        "reception"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.bowling_alley",
+      "archetype_id": "bowling_alley",
+      "source_archetype_id": "ll.archetype.bowling_alley",
+      "name": "Bowling alley",
+      "group": "Recreation",
+      "footprint": [
+        28,
+        166,
+        10,
+        9
+      ],
+      "front_door": [
+        33,
+        175
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lanes",
+        "seating",
+        "back service"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.movie_theater",
+      "archetype_id": "movie_theater",
+      "source_archetype_id": "ll.archetype.movie_theater",
+      "name": "Movie theater",
+      "group": "Recreation",
+      "footprint": [
+        51,
+        166,
+        11,
+        10
+      ],
+      "front_door": [
+        56.5,
+        176
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lobby",
+        "ticket",
+        "auditorium",
+        "projection"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.sports_field",
+      "archetype_id": "sports_field",
+      "source_archetype_id": "ll.archetype.sports_field",
+      "name": "Sports field",
+      "group": "Recreation",
+      "footprint": [
+        74,
+        166,
+        14,
+        10
+      ],
+      "front_door": [
+        81,
+        176
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "field",
+        "fence",
+        "stands/storage"
+      ],
+      "roof_style": "pitched",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.stadium",
+      "archetype_id": "stadium",
+      "source_archetype_id": "ll.archetype.stadium",
+      "name": "Stadium",
+      "group": "Recreation",
+      "footprint": [
+        97,
+        166,
+        14,
+        10
+      ],
+      "front_door": [
+        104,
+        176
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "seating",
+        "concourse",
+        "service",
+        "field"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.park",
+      "archetype_id": "park",
+      "source_archetype_id": "ll.archetype.park",
+      "name": "Public park",
+      "group": "Recreation",
+      "footprint": [
+        120,
+        166,
+        14,
+        10
+      ],
+      "front_door": [
+        127,
+        176
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "paths",
+        "greenery",
+        "benches",
+        "amenity"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.campground",
+      "archetype_id": "campground",
+      "source_archetype_id": "ll.archetype.campground",
+      "name": "Campground",
+      "group": "Recreation",
+      "footprint": [
+        143,
+        166,
+        14,
+        10
+      ],
+      "front_door": [
+        150,
+        176
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "plots",
+        "restroom",
+        "water",
+        "shelter"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.military_base",
+      "archetype_id": "military_base",
+      "source_archetype_id": "ll.archetype.military_base",
+      "name": "Military base",
+      "group": "Special",
+      "footprint": [
+        5,
+        193,
+        9,
+        8
+      ],
+      "front_door": [
+        9.5,
+        201
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "barracks",
+        "mess",
+        "supply",
+        "perimeter"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.checkpoint",
+      "archetype_id": "checkpoint",
+      "source_archetype_id": "ll.archetype.checkpoint",
+      "name": "Security checkpoint",
+      "group": "Special",
+      "footprint": [
+        28,
+        193,
+        14,
+        10
+      ],
+      "front_door": [
+        35,
+        203
+      ],
+      "site_kind": "outdoor",
+      "room_modules": [
+        "gate",
+        "barriers",
+        "guard shelter"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.radio_station",
+      "archetype_id": "radio_station",
+      "source_archetype_id": "ll.archetype.radio_station",
+      "name": "Radio station",
+      "group": "Special",
+      "footprint": [
+        51,
+        193,
+        11,
+        10
+      ],
+      "front_door": [
+        56.5,
+        203
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "studio",
+        "office",
+        "transmitter"
+      ],
+      "roof_style": "pitched",
+      "condition": "damaged",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.tv_station",
+      "archetype_id": "tv_station",
+      "source_archetype_id": "ll.archetype.tv_station",
+      "name": "TV station",
+      "group": "Special",
+      "footprint": [
+        74,
+        193,
+        12,
+        8
+      ],
+      "front_door": [
+        80,
+        201
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "studio",
+        "control",
+        "support"
+      ],
+      "roof_style": "pitched",
+      "condition": "boarded",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.hotel",
+      "archetype_id": "hotel",
+      "source_archetype_id": "ll.archetype.hotel",
+      "name": "Hotel",
+      "group": "Special",
+      "footprint": [
+        97,
+        193,
+        9,
+        9
+      ],
+      "front_door": [
+        101.5,
+        202
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "lobby",
+        "corridor",
+        "repeated guest rooms"
+      ],
+      "roof_style": "pitched",
+      "condition": "weathered",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    },
+    {
+      "instance_id": "ll.district.prototype.motel",
+      "archetype_id": "motel",
+      "source_archetype_id": "ll.archetype.motel",
+      "name": "Motel",
+      "group": "Special",
+      "footprint": [
+        120,
+        193,
+        10,
+        10
+      ],
+      "front_door": [
+        125,
+        203
+      ],
+      "site_kind": "interior_shell",
+      "room_modules": [
+        "exterior room entries",
+        "parking",
+        "reception"
+      ],
+      "roof_style": "pitched",
+      "condition": "maintained",
+      "status": "CALIBRATION_LAYOUT_ONLY",
+      "asset_package": null
+    }
+  ]
+}
