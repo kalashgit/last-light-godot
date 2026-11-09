@@ -138,6 +138,19 @@ jobs:
           python tools/factory/render_bridge/verify_headings.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --headings 16
           python tools/factory/render_bridge/inspect_pngs.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames"
           python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/atlas" --page-size 2048 --padding 2
+      - name: Build native gameplay-size visual review and measure source pivot
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/gameplay_review.py --manifest "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/gameplay_review"
+          python - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-f10/gameplay_review/visual_review.json"
+          r=json.loads(p.read_text())
+          assert r["headings"]==16
+          assert r["max_world_pivot_drift_px"]<=0.001
+          assert r["min_silhouette_pixels"]>100
+          print("F12_GAMEPLAY_REVIEW_METRICS_PASS",r["max_world_pivot_drift_px"],r["min_silhouette_pixels"])
+          PY
       - name: Upload real F10 hatchback candidate evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4
