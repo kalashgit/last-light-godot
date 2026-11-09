@@ -70,6 +70,15 @@ jobs:
             F02)
               python -m unittest discover -s tests/factory/structures -p 'test_*.py' -v
               python tools/factory/structures/textures.py --output-dir build/m02-cross/textures
+              # Integration-only compatibility shim: Blender 5.0 renamed Eevee NEXT.
+              python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/factory/structures/blender_calibration.py')
+          s=p.read_text()
+          assert '"BLENDER_EEVEE_NEXT"' in s
+          p.write_text(s.replace('"BLENDER_EEVEE_NEXT"','"BLENDER_EEVEE"'))
+          Path('build/m02-cross/compatibility_shim.txt').write_text('Blender 5.0: BLENDER_EEVEE_NEXT -> BLENDER_EEVEE; source revision unchanged upstream\n')
+          PY
               blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/factory/structures/blender_calibration.py -- --subject all --output-dir build/m02-cross
               python tools/factory/structures/qa_package.py --output-dir build/m02-cross
               ;;
@@ -98,7 +107,7 @@ jobs:
           PY
               ;;
             F11)
-              python tools/material_factory/generate.py --size 128 --out build/m02-cross/materials
+              python tools/material_factory/generate.py --size 256 --out build/m02-cross/materials
               python tools/material_factory/validate.py build/m02-cross/materials
               ;;
             F12)

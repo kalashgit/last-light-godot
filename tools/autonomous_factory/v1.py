@@ -48,7 +48,11 @@ def inspect(root):
                 defects.append({"code": "MISSING_OR_UNSAFE_TEXTURE", "stage": "material", "file": name})
     blend = root / "refrigerator_refined_calibration.blend"
     glb = root / "refrigerator_refined_calibration.glb"
-    if not blend.exists() or blend.read_bytes()[:7] != b"BLENDER":
+    # Blender 5 may save zstd-compressed .blend files (magic 28 B5 2F FD)
+    # rather than the legacy uncompressed BLENDER header.
+    if not blend.exists() or blend.stat().st_size < 1024 or not (
+        blend.read_bytes()[:7] == b"BLENDER" or blend.read_bytes()[:4] == b"\x28\xb5\x2f\xfd"
+    ):
         defects.append({"code": "BLEND_SOURCE", "stage": "geometry"})
     if not glb.exists() or glb.read_bytes()[:4] != b"glTF":
         defects.append({"code": "GLB_SOURCE", "stage": "geometry"})

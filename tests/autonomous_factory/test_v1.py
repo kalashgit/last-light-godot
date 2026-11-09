@@ -45,6 +45,13 @@ class ContractTests(unittest.TestCase):
             self.assertFalse(candidate["canonical_promoted"])
             self.assertFalse(candidate["gameplay_integrated"])
 
+    def test_blender_five_zstd_header_is_valid_source_container(self):
+        with tempfile.TemporaryDirectory() as root:
+            Path(root, "refrigerator_refined_calibration.blend").write_bytes(b"\x28\xb5\x2f\xfd" + b"x" * 1100)
+            report = factory.inspect(root)
+            self.assertNotIn("BLEND_SOURCE", [d["code"] for d in report["defects"]])
+            self.assertEqual(report["status"], "BLOCKED")  # other required evidence absent
+
 
 if __name__ == "__main__":
     unittest.main()
