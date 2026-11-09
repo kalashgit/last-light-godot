@@ -169,7 +169,8 @@ jobs:
           new_rgba8=a["pages"]*a["page_size"]**2*4
           assert new_rgba8<old_rgba8, (old_rgba8,new_rgba8)
           report={"original_rgba8_bytes":old_rgba8,"trimmed_rgba8_bytes":new_rgba8,"trimmed_pages":a["pages"],"pixel_reduction":t["pixel_reduction_fraction"]}
-          (p/"atlas_memory_qa.json").write_text(json.dumps(report,indent=2)+"\\n")
+          (p/"atlas_memory_qa.json").write_text(json.dumps(report,indent=2)+"\n")
+          assert json.loads((p/"atlas_memory_qa.json").read_text()) == report
           print("F12_TRIMMED_IPHONE_MEMORY_PROXY_PASS",json.dumps(report))
           PY
       - name: Upload real F10 hatchback candidate evidence even on failure
