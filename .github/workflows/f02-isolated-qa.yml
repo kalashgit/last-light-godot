@@ -78,5 +78,5 @@ config/name="F02 Isolated Physics Calibration"
             --script res://tools/factory/structures/test_godot_collision_fixture.gd
       - name: Execute Godot door physics closed-open-closed check
         run: |
-          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \\
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
             --script res://tools/factory/structures/test_godot_door_physics.gd
