@@ -251,6 +251,12 @@ def make_plan(subject: str) -> Plan:
         wall(p, 3, 1, axis="y", material="plaster", prefix="partition")
         wall(p, 3, 2, axis="y", opening="door", material="plaster", prefix="partition")
         roof(p, 6, 5)
+        # Small, grounded entrance landing at the existing front-door socket.
+        # Decorative landing is not a portal collider; W04 owns nav bounds.
+        p.box("entry_stone_step", 2.5, 5.34, -0.015,
+              1.12, .60, .13, "concrete", "architecture_detail", "decor")
+        p.box("entry_door_header_trim", 2.5, 5.11, 2.16,
+              .91, .075, .10, "trim", "architecture_detail", "decor")
         for kind, x, y in (("kitchen_work_zone", 4.5, 1.5),
                            ("bed_clearance", 1.5, 2.5), ("living_area", 1.5, 1.5)):
             p.socket("furniture_socket", x, y, 0, suggested_role=kind)
@@ -260,6 +266,15 @@ def make_plan(subject: str) -> Plan:
         perimeter(p, 5, 4, door_at=(2, 4, "x"), door_type="garage",
                   windows=((0, 2, "y"),), material="concrete")
         roof(p, 5, 4, "gable", "metal_roof")
+        # Shutter ribs read at sprite scale and never obstruct structural void.
+        for n in range(1, 11):
+            p.box(f"garage_shutter_fold_{n:02}", 2.5, 4.055,
+                  n*.215, 2.67, .024, .026,
+                  "steel", "architecture_detail", "garage_gate")
+        p.box("garage_gate_guide_left", 1.055, 4.09, 1.20,
+              .045, .07, 2.40, "trim", "architecture_detail", "decor")
+        p.box("garage_gate_guide_right", 3.945, 4.09, 1.20,
+              .045, .07, 2.40, "trim", "architecture_detail", "decor")
         p.socket("furniture_socket", 1, 1, 0, suggested_role="workbench")
     elif subject == "shopfront":
         p = Plan(subject, (7, 4))
@@ -268,6 +283,14 @@ def make_plan(subject: str) -> Plan:
                   windows=((2, 0, "x"), (4, 0, "x"), (0, 2, "y")),
                   material="brick")
         roof(p, 7, 4, "flat")
+        # Storefront identity: blank weathered fascia, narrow apron canopy,
+        # and physical display-sill ledge. No copied signs or brands.
+        p.box("shopfront_sign_fascia", 3.5, 4.105, 2.46,
+              4.75, .13, .40, "trim", "architecture_detail", "decor")
+        p.box("shopfront_canopy", 3.5, 4.36, 2.28,
+              5.10, .56, .09, "metal_roof", "architecture_detail", "decor")
+        p.box("shopfront_display_sill", 3.5, 4.10, .92,
+              4.45, .17, .075, "concrete", "architecture_detail", "decor")
         p.socket("furniture_socket", 2, 1, 0, suggested_role="shelving")
     elif subject == "door_window":
         p = Plan(subject, (2, 1))
