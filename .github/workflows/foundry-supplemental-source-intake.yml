@@ -1,0 +1,43 @@
+name: LAST LIGHT founder supplemental 250-reference intake (non-Golden)
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-supplemental-source-intake.yml'
+      - 'tools/foundry_reference_sheets/supplemental_sheet_queue.py'
+      - 'tools/foundry_reference_sheets/verify_supplemental_queue.py'
+      - 'tests/foundry_reference_sheets/test_supplemental_queue.py'
+      - 'data/foundry_reference_catalog/supplement_20261110/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ll-supplemental-reference-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-provisional-visual-slots:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate pinned exact 250-slot snapshot and reject forged approvals
+        run: |
+          python -m unittest discover -s tests/foundry_reference_sheets -p test_supplemental_queue.py -v
+          python tools/foundry_reference_sheets/verify_supplemental_queue.py \
+            --queue data/foundry_reference_catalog/supplement_20261110/derived/supplemental_reference_queue.jsonl \
+            --report data/foundry_reference_catalog/supplement_20261110/derived/supplemental_intake_report.json
+      - name: Archive reference-only intake work order, not art
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-supplemental-notion-pending-${{ github.run_id }}
+          path: data/foundry_reference_catalog/supplement_20261110/derived/
+          retention-days: 7
+          if-no-files-found: error
