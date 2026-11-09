@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sys
 import tempfile
@@ -16,10 +17,11 @@ def candidate(root: Path, ident: str, size: int = 128):
     folder = root / ident
     folder.mkdir(parents=True)
     image = Image.new("RGBA", (4 * size + 20, 4 * size + 20))
+    variant = hashlib.sha256(ident.encode("utf-8")).digest()
     for i in range(16):
         col, row = i % 4, i // 4
         x, y = 4 + col * (size + 4), 4 + row * (size + 4)
-        color = ((i * 11) % 255, 30, 140, 255)
+        color = ((i * 11 + variant[0]) % 255, variant[1], variant[2], 255)
         ImageDraw.Draw(image).rectangle((x + 10, y + 15, x + 33, y + 45), fill=color)
     atlas = folder / "atlas_16_headings.png"
     image.save(atlas)
@@ -166,6 +168,21 @@ class SheetTests(unittest.TestCase):
                       page_size=2048, run_id="102")
         self.assertEqual(second["batch_count"], 40)
         self.assertEqual(second["inventory_page_count"], 1)
+
+    def test_mass_does_not_count_duplicated_visual_art_as_unique_items(self):
+        for i in range(38):
+            candidate(self.source, f"ll_dedupe_item_{i:03d}")
+        original = self.source / "ll_dedupe_item_000" / "atlas_16_headings.png"
+        duplicate = self.source / "ll_dedupe_item_001" / "atlas_16_headings.png"
+        duplicate.write_bytes(original.read_bytes())
+        manifest = self.source / "ll_dedupe_item_001" / "manifest.json"
+        data = json.loads(manifest.read_text())
+        data["atlas_sha256"] = sha(duplicate)
+        manifest.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "Duplicate visual sprite"):
+            pack(self.source, self.path / "dedupe", batch_size=40,
+                 min_batch_size=40, inventory_page_items=40,
+                 page_size=2048, run_id="103")
 
     def test_publish_rejects_modified_sheet_bytes(self):
         first = self.path / "first"
