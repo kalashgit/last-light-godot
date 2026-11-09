@@ -14,6 +14,7 @@ import bpy
 from mathutils import Vector, Matrix
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections, torso_sections, collar_sections
+from f05_gait import gait_pose, torso_pose, LOCOMOTION
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -156,48 +157,54 @@ for clip,(frames,duration) in clips.items():
     rig.animation_data_create()
     rig.animation_data.action=action
     for frame in range(frames):
-        angle=2*math.pi*frame/frames
-        for side,sign in [('L',1),('R',-1)]:
-            stride = math.sin(angle)*sign
-            hip_amplitude={'walk':.27,'run':.40,'sneak':.18}.get(clip,0)
-            knee_amplitude={'walk':.34,'run':.58,'sneak':.24}.get(clip,0)
-            upper=rig.pose.bones['thigh_'+side]
-            upper.rotation_mode='XYZ'
-            upper.rotation_euler=(stride*hip_amplitude,0,0)
-            upper.keyframe_insert(data_path='rotation_euler',frame=frame+1)
-            knee=rig.pose.bones['shin_'+side]
-            knee.rotation_mode='XYZ'
-            knee_bend=max(0,-stride)*knee_amplitude
-            knee.rotation_euler=(knee_bend,0,0)
-            knee.keyframe_insert(data_path='rotation_euler',frame=frame+1)
-            ankle=rig.pose.bones['foot_'+side]
-            ankle.rotation_mode='XYZ'
-            ankle.rotation_euler=(-.5*knee_bend,0,0)
-            ankle.keyframe_insert(data_path='rotation_euler',frame=frame+1)
-            arm_bone=rig.pose.bones['upper_arm_'+side]
-            arm_bone.rotation_mode='XYZ'
-            arm_bone.rotation_euler=(-math.sin(angle)*sign*(.19 if clip in ('walk','run') else 0),0,0)
-            arm_bone.keyframe_insert(data_path='rotation_euler',frame=frame+1)
-    # Non-locomotion clips must not silently duplicate the idle animation.
-    # These are procedural calibration poses, not approved W07 gameplay motions.
+        phase = frame / frames
+        for side, sign in [('L', 1), ('R', -1)]:
+            if clip not in LOCOMOTION:
+                continue
+            p = gait_pose(clip, phase, sign)
+            for bone_name, euler in (
+                ('thigh_'+side, (p["hip_x"], 0, 0)),
+                ('shin_'+side, (p["knee_x"], 0, 0)),
+                ('foot_'+side, (p["ankle_x"], 0, 0)),
+                ('shoulder_'+side, (p["shoulder_x"], 0, p["shoulder_z"])),
+                ('upper_arm_'+side, (p["arm_x"], 0, 0)),
+                ('forearm_'+side, (p["elbow_x"], 0, 0)),
+            ):
+                pose_bone = rig.pose.bones[bone_name]
+                pose_bone.rotation_mode = 'XYZ'
+                pose_bone.rotation_euler = euler
+                pose_bone.keyframe_insert(data_path='rotation_euler', frame=frame+1)
+
+    # Preserve explicit, provisional gesture poses for non-locomotion clips;
+    # locomotion adds opposed pelvic/thoracic yaw and neck stabilization.
     amplitudes = {'idle': .015, 'walk': .025, 'run': .055,
                   'sneak': -.10, 'interact': .20, 'attack': .40,
                   'hurt': -.25, 'death': -1.10}
     chest = rig.pose.bones['chest']
-    chest.rotation_mode = 'XYZ'
     head = rig.pose.bones['head']
-    head.rotation_mode = 'XYZ'
+    pelvis = rig.pose.bones['pelvis']
+    neck = rig.pose.bones['neck']
+    for bone in (chest, head, pelvis, neck):
+        bone.rotation_mode = 'XYZ'
     for frame in range(frames):
-        phase = frame / max(1, frames - 1)
+        phase = frame / frames
         wave = math.sin(2 * math.pi * phase)
-        chest.rotation_euler = (
-            amplitudes[clip] * (phase if clip in ('death', 'hurt', 'attack', 'interact') else wave),
-            0, 0)
-        head.rotation_euler = (
-            (.08 if clip == 'hurt' else .02) * wave,
-            0, 0)
-        chest.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
-        head.keyframe_insert(data_path='rotation_euler', frame=frame + 1)
+        if clip in LOCOMOTION:
+            p = torso_pose(clip, phase)
+            chest.rotation_euler = (p["chest_x"], 0, p["chest_z"])
+            pelvis.rotation_euler = (0, p["pelvis_y"], p["pelvis_z"])
+            neck.rotation_euler = (p["neck_x"], 0, p["neck_z"])
+            head.rotation_euler = (p["head_x"], 0, 0)
+            for bone in (pelvis, neck):
+                bone.keyframe_insert(data_path='rotation_euler', frame=frame+1)
+        else:
+            gesture_progress = frame / max(1, frames - 1)
+            chest.rotation_euler = (
+                amplitudes[clip] * (gesture_progress if clip in ('death', 'hurt', 'attack', 'interact') else wave),
+                0, 0)
+            head.rotation_euler = ((.08 if clip == 'hurt' else .02) * wave, 0, 0)
+        chest.keyframe_insert(data_path='rotation_euler', frame=frame+1)
+        head.keyframe_insert(data_path='rotation_euler', frame=frame+1)
     action.use_fake_user=True
 
 # Per-frame floor-contact solution in locomotion calibration clips. The
@@ -318,7 +325,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.6','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.7','gait_contract':'F05_COUNTERROTATION_V1','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
