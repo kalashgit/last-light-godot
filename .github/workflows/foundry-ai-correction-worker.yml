@@ -108,13 +108,11 @@ jobs:
           python-version: '3.11'
       - name: Verify worker contract
         run: python -m unittest discover -s tests/autonomous_factory -p test_foundry_ai_worker.py -v
-      - name: Queue deterministic correction issue; AI assignment disabled unless opted in
+      - name: Queue bounded correction issue; paid AI assignment not wired
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.run_id }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
-          FOUNDRY_ENABLE_COPILOT_ASSIGN: ${{ vars.FOUNDRY_ENABLE_COPILOT_ASSIGN }}
-          FOUNDRY_COPILOT_USER_TOKEN: ${{ secrets.FOUNDRY_COPILOT_USER_TOKEN }}
         run: |
           set -euo pipefail
           if [[ "$DRY_RUN" == 'true' ]]; then
