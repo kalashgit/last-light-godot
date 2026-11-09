@@ -20,10 +20,7 @@ sys.path.insert(0,str(ROOT/"tools"/"blender_factory"))
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import render_v3_recovery as base
 from fleet_render import make_materials,cube,pipe,faces
-
-L,W,H=3.90,1.72,1.52
-WB=2.54
-R=.340
+from hero_profile import L,W,H,WB,R
 
 
 def glass_material(name,dark=False):
@@ -266,15 +263,15 @@ def build(paint="#364958"):
     return m
 
 
-def render(out,samples):
+def render(out,samples,denoise=False):
     out.mkdir(parents=True,exist_ok=True)
     records=[]
     ortho=7.80
     for heading in range(16):
         scene=base.setup()
         scene.cycles.samples=samples
-        scene.cycles.use_denoising=False
-        bpy.context.view_layer.cycles.use_denoising=False
+        scene.cycles.use_denoising=denoise
+        bpy.context.view_layer.cycles.use_denoising=denoise
         scene.render.resolution_x=768
         scene.render.resolution_y=768
         scene.render.resolution_percentage=100
@@ -304,6 +301,7 @@ def render(out,samples):
         asset_id="NONCANONICAL_F10_HERO_HATCHBACK_V2",model="compact_hatchback",
         paint_hex="#364958",palette_id="dark_blue",condition_level=1,
         declared_dimensions_m=[L,W,H],wheelbase_m=WB,ortho_scale=ortho,
+        render_samples=samples,render_denoise=denoise,
         original_source="Original manual surface/station Blender generator",
         source_canvas_px=[768,768],canonical_master_id=None,
         status="NONCANONICAL_GEOMETRY_HERO_UNAPPROVED",frames=records)
@@ -314,7 +312,9 @@ def render(out,samples):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--out",required=True,type=Path)
-    p.add_argument("--samples",type=int,default=8)
+    p.add_argument("--samples",type=int,default=24)
+    p.add_argument("--denoise",action="store_true",
+        help="Requires a Blender build with OpenImageDenoiser; disabled on current runner")
     args=sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else []
     a=p.parse_args(args)
-    render(a.out,a.samples)
+    render(a.out,a.samples,denoise=a.denoise)
