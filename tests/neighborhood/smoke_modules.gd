@@ -32,6 +32,37 @@ func _test() -> void:
         _fail("bad or unapproved asset binding bypassed the gate")
         return
     var plan_map: Dictionary = scene.get("room_plans")
+    var all_fixture_ids: Dictionary = {}
+    for plan in plan_map.values():
+        var modules: Array = plan["rooms"]
+        if modules.is_empty():
+            _fail("empty module plan: " + str(plan["building_id"]))
+            return
+        var reached: Dictionary = {}
+        var frontier: Array = [str(modules[0]["id"])]
+        while not frontier.is_empty():
+            var from_id: String = str(frontier.pop_front())
+            if reached.has(from_id):
+                continue
+            reached[from_id] = true
+            for portal in plan["portals"]:
+                if str(portal["a"]) == from_id and not reached.has(str(portal["b"])):
+                    frontier.append(str(portal["b"]))
+                if str(portal["b"]) == from_id and not reached.has(str(portal["a"])):
+                    frontier.append(str(portal["a"]))
+        if reached.size() != modules.size():
+            _fail("unreachable room modules: " + str(plan["building_id"]) + "/" + str(plan["floor"]))
+            return
+        for room in modules:
+            for fixture in room["fixtures"]:
+                var fixture_id: String = str(fixture["id"])
+                if all_fixture_ids.has(fixture_id):
+                    _fail("duplicate stable fixture ID: " + fixture_id)
+                    return
+                all_fixture_ids[fixture_id] = true
+    if all_fixture_ids.size() != int(summary["fixture_count"]):
+        _fail("fixture manifest count is inconsistent")
+        return
     var labs: Array = scene.get("lab")["houses"]
     for house in labs:
         var base: Dictionary = plan_map[str(house["id"]) + "/0"]
