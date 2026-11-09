@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_master_actor_human_older",
+  "source_glb_sha256": "8ad72dea7834cc22c9cfaf326ac99161d4eda7edf26bfb7806816d3d1bc2b5d4",
+  "atlas_sha256": "56c8c1d23d66f93a61c9c499280c7e291f523e23269094e59f14c3ba0626dc09",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 1312944,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

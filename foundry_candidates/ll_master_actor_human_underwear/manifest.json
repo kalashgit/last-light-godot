@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_master_actor_human_underwear",
+  "source_glb_sha256": "de959599afe8235c01288c9d9c99058ed18ca5940a695c5bc518db2172ccfdbb",
+  "atlas_sha256": "ca2d43899dfba4c503bf59630f8c8f47dde9427a5ac45d09f04eebae19130a8b",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 1592340,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

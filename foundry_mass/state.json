@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "completed": [
+    "ll_master_actor_human_older",
+    "ll_master_actor_human_underwear"
+  ],
+  "last_run_id": "42654909446",
+  "golden_approved": false,
+  "remaining": 358
+}

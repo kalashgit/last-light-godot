@@ -1,0 +1,42 @@
+{
+  "run_id": "42654909446",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 2,
+  "remaining": 358,
+  "generated": [
+    {
+      "asset_id": "ll_master_actor_human_older",
+      "source_glb_sha256": "8ad72dea7834cc22c9cfaf326ac99161d4eda7edf26bfb7806816d3d1bc2b5d4",
+      "atlas_sha256": "56c8c1d23d66f93a61c9c499280c7e291f523e23269094e59f14c3ba0626dc09",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 1312944,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_master_actor_human_underwear",
+      "source_glb_sha256": "de959599afe8235c01288c9d9c99058ed18ca5940a695c5bc518db2172ccfdbb",
+      "atlas_sha256": "ca2d43899dfba4c503bf59630f8c8f47dde9427a5ac45d09f04eebae19130a8b",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 1592340,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
