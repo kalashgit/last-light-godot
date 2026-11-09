@@ -1,0 +1,70 @@
+name: LAST LIGHT GM00 sandbox (touch, world, God Mode, saves)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "scenes/**"
+      - "data/**"
+      - "tests/gm00/**"
+      - "tests/neighborhood/**"
+      - "tools/**"
+      - ".github/workflows/gm00-sandbox.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gm00-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gm00:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # 4.3 = pinned project baseline; 4.7 = newest engine (Xogot runs a newer Godot).
+        godot: ["4.3-stable", "4.7-stable"]
+    env:
+      GODOT: /tmp/godot/Godot_v${{ matrix.godot }}_linux.x86_64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Godot ${{ matrix.godot }} + Xvfb/Mesa for rendered screenshots
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1 libglx-mesa0 zip > /dev/null
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/${{ matrix.godot }}/Godot_v${{ matrix.godot }}_linux.x86_64.zip" \
+            --output /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          chmod +x "$GODOT"
+          "$GODOT" --headless --version
+      - name: Full regression (import parse check, python contracts, every Godot smoke)
+        run: tests/gm00/run_all.sh
+      - name: Render real Godot frames + rendered perf sample (CPU llvmpipe, not iPhone)
+        run: |
+          timeout 240 xvfb-run -a -s "-screen 0 720x1152x24" "$GODOT" \
+            --path . --rendering-driver opengl3 --script res://tests/gm00/capture_screens.gd | tee build/gm00/render.log
+          grep -q CAPTURE_DONE build/gm00/render.log
+      - name: Build Xogot test package (boots the sandbox scene; repo main.tscn untouched)
+        if: matrix.godot == '4.3-stable'
+        run: tools/make_xogot_package.sh
+      - uses: actions/upload-artifact@v4
+        if: matrix.godot == '4.3-stable'
+        with:
+          name: last-light-gm00-xogot-package
+          path: build/xogot/*.zip
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: last-light-gm00-test-evidence-${{ matrix.godot }}
+          path: |
+            build/gm00/*.log
+            build/gm00/screens/*.png
+          retention-days: 30

@@ -1,0 +1,42 @@
+{
+  "schema": "last_light.world_recipe.v1",
+  "recipe_id": "gm00.neighborhood.v1",
+  "name": "GM00 complete neighborhood (all 60 archetypes + H01-H03)",
+  "status": "PROVISIONAL_LAYOUT_NOT_GOLDEN",
+  "approval": "FOUNDER_REVIEW_REQUIRED",
+  "notes": "Deterministic composition recipe. Archetype IDs come only from showcase_60_v1.json; H01-H03 fixtures come only from house_lab_h01_h02_h03_v1.json. No A00 canonical IDs are minted here.",
+  "default_seed": 601109,
+  "catalog_source": "res://data/neighborhood/showcase_60_v1.json",
+  "lab_source": "res://data/neighborhood/house_lab_h01_h02_h03_v1.json",
+  "chunk_size": 32,
+  "street": {
+    "block_width": 252,
+    "margin": 6,
+    "road_width": 6,
+    "sidewalk": 1.5,
+    "front_setback": [2.0, 4.0],
+    "gap": [3, 6],
+    "back_gap": 5,
+    "cross_streets_x": [86, 172],
+    "cross_street_width": 6
+  },
+  "districts": [
+    {"id": "oak_lane", "name": "Oak Lane", "lab_houses": ["LAB-H01", "LAB-H02", "LAB-H03"],
+     "groups": ["Residential"],
+     "fillers": [{"archetype_id": "house_small", "count": 3}, {"archetype_id": "house_large", "count": 2},
+                 {"archetype_id": "duplex", "count": 2}, {"archetype_id": "townhouse", "count": 2},
+                 {"archetype_id": "garage", "count": 2}, {"archetype_id": "shed", "count": 2}]},
+    {"id": "market_street", "name": "Market Street", "groups": ["Commercial"], "fillers": []},
+    {"id": "civic_avenue", "name": "Civic Avenue", "groups": ["Civic / public"], "fillers": []},
+    {"id": "works_road", "name": "Works Road", "groups": ["Industrial / utility / rural"], "fillers": []},
+    {"id": "park_row", "name": "Park Row", "groups": ["Recreation", "Special"], "fillers": []}
+  ],
+  "stories_override": {
+    "apartment_block": 3, "hotel": 3, "townhouse": 2, "house_large": 2, "office": 2,
+    "hospital": 2, "department_store": 2, "high_school": 2, "college_building": 2,
+    "police_station": 2, "motel": 2, "tv_station": 2
+  },
+  "rotation_allowed": "catalog_and_fillers_only (lab fixtures stay 0 deg)",
+  "vegetation": {"street_tree_spacing": 9, "street_tree_chance": 0.7, "yard_tree_chance": 0.55, "bush_chance": 0.5},
+  "zombies": {"street_per_district": 5, "indoor_chance": 0.35, "health": 3, "speed": [0.6, 1.05]}
+}

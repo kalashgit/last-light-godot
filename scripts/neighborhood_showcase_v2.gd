@@ -6,6 +6,12 @@ const CITY_PATH := "res://data/neighborhood/showcase_60_v1.json"
 const LAB_PATH := "res://data/neighborhood/house_lab_h01_h02_h03_v1.json"
 const ROOM_FACTORY = preload("res://scripts/neighborhood_module_factory.gd")
 const APPROVED_ASSETS = preload("res://scripts/neighborhood_approved_asset_resolver.gd")
+const TOUCH_ROUTER = preload("res://scripts/input/touch_router.gd")
+## Minimum time between two door transitions, so a burst of taps can never
+## enter and immediately leave a building.
+const DOOR_COOLDOWN_MS := 450
+## Exits must be taken from beside the doorway (door obeys proximity).
+const EXIT_REACH := 2.6
 const TX := 40.0
 const TY := 20.0
 const WALK_SPEED := 5.4
@@ -27,6 +33,9 @@ var room_factory: Variant = ROOM_FACTORY.new()
 var approved_assets: Variant = APPROVED_ASSETS.new()
 var room_plans: Dictionary = {}
 var fixture_states: Dictionary = {} # Prototype-session-only. NOT the gameplay save schema.
+var touch: Variant = TOUCH_ROUTER.new()
+var door_lock_until_ms: int = 0
+var door_transitions: int = 0
 
 func _ready() -> void:
     city = _read_json(CITY_PATH)
@@ -164,6 +173,8 @@ func _can_walk(point: Vector2) -> bool:
 func _process(delta: float) -> void:
     if not validation_error.is_empty():
         return
+    touch.stick_center = _touch_stick_center()
+    motion = touch.motion
     if not overview:
         var direction: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
         if motion.length_squared() > 0.02:
@@ -171,12 +182,15 @@ func _process(delta: float) -> void:
         if direction.length_squared() > 0.01:
             # Screen-space input into the same logical world axes as the existing house.
             var world_dir := Vector2(direction.x + direction.y, direction.y - direction.x).normalized()
-            var step: Vector2 = world_dir * minf(delta, 0.05) * WALK_SPEED
+            var step: Vector2 = world_dir * minf(delta, 0.05) * _walk_speed()
             if _can_walk(player + Vector2(step.x, 0)):
                 player.x += step.x
             if _can_walk(player + Vector2(0, step.y)):
                 player.y += step.y
     queue_redraw()
+
+func _walk_speed() -> float:
+    return WALK_SPEED
 
 func switch_mode() -> void:
     mode = "city" if mode == "lab" else "lab"
@@ -205,13 +219,46 @@ func toggle_floor() -> void:
         message = "Upper floor preview is available inside LAB-H02"
     queue_redraw()
 
+func _now_ms() -> int:
+    return Time.get_ticks_msec()
+
+func _door_ready() -> bool:
+    if _now_ms() < door_lock_until_ms:
+        return false
+    return true
+
+func _lock_door() -> void:
+    door_lock_until_ms = _now_ms() + DOOR_COOLDOWN_MS
+    door_transitions += 1
+
+func _door_out(b: Dictionary) -> Vector2:
+    var out: Array = b.get("door_out", [0, 1])
+    return Vector2(float(out[0]), float(out[1]))
+
+func _reset_pointers() -> void:
+    touch.reset()
+    motion = Vector2.ZERO
+    touch_index = -1
+
+## Player-input path (tap / key). The cooldown lives here so scripted calls
+## and frozen regression tests keep calling interact() directly.
+func request_interact() -> void:
+    if not _door_ready():
+        message = "Door is still moving..."
+        return
+    interact()
+
 func interact() -> void:
     var selected: Dictionary = _selected_building()
     if not selected.is_empty():
-        player = _entry(selected) + Vector2(0, 1.5)
+        if player.distance_to(_entry(selected)) > EXIT_REACH:
+            message = "Walk to the doorway to leave " + str(selected.get("name", "building"))
+            return
+        player = _entry(selected) + _door_out(selected) * 1.5
         message = "Exited " + str(selected.get("name", "building"))
         inside_id = ""
         current_floor = 0
+        _lock_door()
         return
     var nearest: Dictionary = {}
     var distance := 3.5
@@ -226,7 +273,7 @@ func interact() -> void:
     if _is_outdoor(nearest):
         message = str(nearest["name"]) + " — outdoor site (schematic)"
         return
-    var inside_point: Vector2 = _entry(nearest) + Vector2(0, -1.5)
+    var inside_point: Vector2 = _entry(nearest) - _door_out(nearest) * 1.5
     if not _inside_footprint(nearest, inside_point):
         message = "Invalid doorway for " + str(nearest.get("name", "building"))
         return
@@ -234,6 +281,7 @@ func interact() -> void:
     inside_id = str(nearest.get("id", nearest.get("instance_id", "")))
     current_floor = 0
     message = "Entered " + str(nearest["name"]) + " / furnished modular rooms (provisional)"
+    _lock_door()
     queue_redraw()
 
 func use_nearby_fixture() -> void:
@@ -271,20 +319,43 @@ func use_nearby_fixture() -> void:
     message = ("Opened " if fixture_states[key] else "Closed ") + str(closest["role"]) + " (session-only demo state)"
     queue_redraw()
 
+## Visible, touchable area in viewport coordinates: the iPhone safe area
+## (notch / Dynamic Island / home indicator) mapped through the stretch
+## transform, clamped to the viewport. Desktop = full viewport.
+func _safe_rect() -> Rect2:
+    var full: Rect2 = get_viewport_rect()
+    if not is_inside_tree():
+        return full
+    var screen_safe: Rect2i = DisplayServer.get_display_safe_area()
+    var window_size: Vector2i = DisplayServer.window_get_size()
+    if screen_safe.size.x <= 0 or screen_safe.size.y <= 0 or window_size.x <= 0:
+        return full
+    var to_view: Transform2D = get_viewport().get_final_transform().affine_inverse()
+    var window_pos: Vector2 = Vector2(DisplayServer.window_get_position())
+    var a: Vector2 = to_view * (Vector2(screen_safe.position) - window_pos)
+    var b: Vector2 = to_view * (Vector2(screen_safe.end) - window_pos)
+    var mapped := Rect2(a, b - a).abs()
+    var clipped: Rect2 = full.intersection(mapped)
+    # Ignore nonsense (e.g. headless returns a 0 or full-screen rect).
+    if clipped.size.x < full.size.x * 0.6 or clipped.size.y < full.size.y * 0.6:
+        return full
+    return clipped
+
 func _touch_stick_center() -> Vector2:
-    var s: Vector2 = get_viewport_rect().size
-    return Vector2(98, s.y - 124)
+    var safe: Rect2 = _safe_rect()
+    return Vector2(safe.position.x + 98, safe.end.y - 124)
 
 func _enter_center() -> Vector2:
-    var s: Vector2 = get_viewport_rect().size
-    return Vector2(s.x - 92, s.y - 116)
+    var safe: Rect2 = _safe_rect()
+    return Vector2(safe.end.x - 92, safe.end.y - 116)
 
 func _use_center() -> Vector2:
     return _enter_center() + Vector2(0, -132)
 
 func _tap(p: Vector2) -> void:
-    var s: Vector2 = get_viewport_rect().size
-    if p.y < 69:
+    var safe: Rect2 = _safe_rect()
+    var s: Vector2 = Vector2(safe.end.x, safe.end.y)
+    if p.y < safe.position.y + 69:
         if p.x >= s.x - 112:
             switch_mode()
         elif p.x >= s.x - 220:
@@ -295,43 +366,38 @@ func _tap(p: Vector2) -> void:
             toggle_roof()
         return
     if p.distance_to(_enter_center()) < 68:
-        interact()
+        request_interact()
     elif p.distance_to(_use_center()) < 58:
         use_nearby_fixture()
 
-func _input(event: InputEvent) -> void:
-    if event is InputEventScreenTouch:
-        if event.pressed:
-            if event.position.distance_to(_touch_stick_center()) < 100 and touch_index < 0:
-                touch_index = event.index
-                motion = (event.position - _touch_stick_center()).limit_length(65.0) / 65.0
-            else:
-                _tap(event.position)
-        elif event.index == touch_index:
-            touch_index = -1
-            motion = Vector2.ZERO
-    elif event is InputEventScreenDrag and event.index == touch_index:
-        motion = (event.position - _touch_stick_center()).limit_length(65.0) / 65.0
-    elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-        if event.pressed:
-            if event.position.distance_to(_touch_stick_center()) < 100:
-                touch_index = 999
-                motion = (event.position - _touch_stick_center()).limit_length(65.0) / 65.0
-            else:
-                _tap(event.position)
-        elif touch_index == 999:
-            touch_index = -1
-            motion = Vector2.ZERO
-    elif event is InputEventMouseMotion and touch_index == 999:
-        motion = (event.position - _touch_stick_center()).limit_length(65.0) / 65.0
-    elif event is InputEventKey and event.pressed and not event.echo:
-        match event.keycode:
-            KEY_TAB: switch_mode()
-            KEY_M: toggle_overview()
-            KEY_R: toggle_roof()
-            KEY_F: toggle_floor()
-            KEY_E, KEY_SPACE: interact()
-            KEY_Q: use_nearby_fixture()
+func _notification(what: int) -> void:
+    # iOS can swallow a touch release when the app loses focus or a system
+    # gesture interrupts; never leave the stick (and the player) running.
+    if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED]:
+        _reset_pointers()
+
+## Game input runs in _unhandled_input so GUI Controls (God Mode panel) that
+## sit above the world consume their own touches first.
+func _unhandled_input(event: InputEvent) -> void:
+    touch.stick_center = _touch_stick_center()
+    var routed: Dictionary = touch.route(event, _now_ms())
+    if routed["handled"]:
+        motion = touch.motion
+        for action in routed["actions"]:
+            _tap(action["pos"])
+        get_viewport().set_input_as_handled()
+        return
+    if event is InputEventKey and event.pressed and not event.echo:
+        _key(event.keycode)
+
+func _key(keycode: int) -> void:
+    match keycode:
+        KEY_TAB: switch_mode()
+        KEY_M: toggle_overview()
+        KEY_R: toggle_roof()
+        KEY_F: toggle_floor()
+        KEY_E, KEY_SPACE: request_interact()
+        KEY_Q: use_nearby_fixture()
 
 func _poly_world(points: Array, height: float, color: Color) -> void:
     var verts := PackedVector2Array()
@@ -511,7 +577,7 @@ func _draw_fixture(fixture: Dictionary) -> void:
         draw_circle(_iso(center) - Vector2(0,height+3), 4.0, Color("8edaac") if opened else Color("eec977"))
 
 func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
-    var plan: Dictionary = _plan_for(building, current_floor if str(building.get("id", "")) == inside_id else 0)
+    var plan: Dictionary = _plan_for(building, current_floor if str(building.get("id", building.get("instance_id", ""))) == inside_id else 0)
     if plan.is_empty():
         return
     for room in plan["rooms"]:
@@ -621,6 +687,9 @@ func _draw_ground() -> void:
             var k: int = posmod(xx*31+yy*19+xx*yy*3,6)
             _quad_world(Rect2(xx,yy,1,1),Color("3a5944").lightened(float(k)*.017))
 
+func _top_button_titles() -> Array:
+    return ["ROOF", "FLOOR", "MAP", "CITY" if mode == "lab" else "LAB"]
+
 func _draw_hud() -> void:
     var s: Vector2 = get_viewport_rect().size
     draw_rect(Rect2(0,0,s.x,102),Color("14201b"))
@@ -634,11 +703,12 @@ func _draw_hud() -> void:
         HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("b4ba9f"))
     draw_string(ThemeDB.fallback_font,Vector2(17,78),message,
         HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ecd293"))
-    var titles: Array = ["ROOF", "FLOOR", "MAP", "CITY" if mode == "lab" else "LAB"]
+    var titles: Array = _top_button_titles()
+    var safe: Rect2 = _safe_rect()
     for i in range(4):
-        var x: float = s.x - 432 + i*108
-        draw_rect(Rect2(x,9,99,36),Color("58655a"))
-        draw_string(ThemeDB.fallback_font,Vector2(x+15,32),titles[i],
+        var x: float = safe.end.x - 432 + i*108
+        draw_rect(Rect2(x,safe.position.y+9,99,36),Color("58655a"))
+        draw_string(ThemeDB.fallback_font,Vector2(x+15,safe.position.y+32),titles[i],
             HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("f5ecd6"))
     var stick: Vector2 = _touch_stick_center()
     draw_circle(stick,67,Color(0.07,0.13,0.11,.82))

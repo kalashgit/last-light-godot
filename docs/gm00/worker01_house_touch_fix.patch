@@ -1,0 +1,14 @@
+diff --git a/scripts/house.gd b/scripts/house.gd
+index 02c1bf0..205c4d0 100644
+--- a/scripts/house.gd
++++ b/scripts/house.gd
+@@ -360,6 +360,9 @@ func _update_stick(point: Vector2) -> void:
+   joystick_vector = Vector2.ZERO
+ 
+ func _input(event: InputEvent) -> void:
++ # One physical touch also arrives as an emulated mouse event (device -1); handle touch only.
++ if (event is InputEventMouseButton or event is InputEventMouseMotion) and event.device == InputEvent.DEVICE_ID_EMULATION:
++  return
+  if event is InputEventScreenTouch:
+   if event.pressed:
+    if event.position.distance_to(stick_center) < stick_radius + 42 and joystick_touch < 0:

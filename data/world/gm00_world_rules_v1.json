@@ -1,0 +1,35 @@
+{
+  "schema": "last_light.gm00_world_rules.v1",
+  "status": "NONCANONICAL_GAMEPLAY_CALIBRATION_NOT_GOLDEN",
+  "seed": "LL-GM00-WORLD-0001",
+  "notes": "Extends the survival pilot item definitions (data/neighborhood/survival_pilot_v1.json) to every room kind produced by the modular room kits. proto.* IDs are prototype gameplay definitions, not A00 canonical IDs.",
+  "items_source": "res://data/neighborhood/survival_pilot_v1.json",
+  "inventory_capacity": 30,
+  "base_damage": 1,
+  "loot_by_room": {
+    "kitchen": ["proto.food_tin", "proto.water_bottle", "proto.food_tin"],
+    "pantry": ["proto.food_tin", "proto.food_tin", "proto.water_bottle"],
+    "bathroom": ["proto.bandage", "proto.water_bottle", "proto.bandage"],
+    "bedroom": ["proto.bandage", "proto.scrap", "proto.food_tin"],
+    "living": ["proto.scrap", "proto.water_bottle", "proto.food_tin"],
+    "den": ["proto.scrap", "proto.bandage", "proto.water_bottle"],
+    "hall": ["proto.scrap", "proto.water_bottle", "proto.food_tin"],
+    "storage": ["proto.scrap", "proto.bandage", "proto.food_tin"],
+    "utility": ["proto.scrap", "proto.scrap", "proto.water_bottle"],
+    "laundry": ["proto.scrap", "proto.water_bottle", "proto.scrap"],
+    "garage": ["proto.scrap", "proto.scrap", "proto.water_bottle"],
+    "office": ["proto.scrap", "proto.water_bottle", "proto.bandage"],
+    "retail": ["proto.food_tin", "proto.water_bottle", "proto.bandage", "proto.scrap"],
+    "food_service": ["proto.food_tin", "proto.water_bottle", "proto.food_tin"],
+    "medical": ["proto.bandage", "proto.bandage", "proto.water_bottle"],
+    "industrial": ["proto.scrap", "proto.scrap", "proto.water_bottle"],
+    "classroom": ["proto.scrap", "proto.water_bottle", "proto.food_tin"],
+    "generic": ["proto.food_tin", "proto.water_bottle", "proto.scrap"]
+  },
+  "container_loot_by_spawn_name": {
+    "refrigerator": "kitchen", "freezer": "kitchen", "cabinet": "kitchen", "kitchen drawer": "kitchen",
+    "drawer": "bedroom", "locker": "storage", "shelf": "storage", "crate": "storage"
+  },
+  "time": {"start_hour": 9.0, "real_seconds_per_game_hour": 60.0},
+  "weather": ["clear", "overcast", "rain", "fog", "storm"]
+}
