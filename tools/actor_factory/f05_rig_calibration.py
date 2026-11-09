@@ -272,7 +272,7 @@ for contact_clip in ('idle', 'walk', 'run', 'sneak'):
                 evaluated.to_mesh_clear()
         lowest_raw_sole = min(lowest_raw_sole, floor)
         highest_raw_sole = max(highest_raw_sole, floor)
-floor_origin_adjustment = max(0.0, .002 - lowest_raw_sole)
+floor_origin_adjustment = max(0.0, .001 - lowest_raw_sole)
 if highest_raw_sole + floor_origin_adjustment > .025:
     raise RuntimeError('F05 floor pose range exceeds 25mm contact window: ' +
                        repr((lowest_raw_sole, highest_raw_sole)))
