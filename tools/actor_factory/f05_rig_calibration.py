@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 import bpy
-from mathutils import Vector
+from mathutils import Vector, Matrix
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -36,6 +36,8 @@ def material(name, rgb, roughness=0.85):
 skin = material('F05 test skin', (.53, .34, .24))
 underwear = material('F05 test underwear', (.18, .20, .22))
 fabric = material('F05 test canvas', (.16, .24, .20))
+shirt = material('F05 test shirt cotton', (.28, .34, .39))
+seam = material('F05 test seam', (.11, .14, .17))
 hair = material('F05 test hair', (.14, .09, .06))
 steel = material('F05 test tool', (.28, .32, .33), .43)
 
@@ -104,6 +106,24 @@ for side, sign in [('L',1),('R',-1)]:
     limb('shin '+side,(sign*.12,0,.55),(sign*.12,0,.14),.075*limb_width,'shin_'+side,skin)
     ellipsoid('foot '+side,(sign*.12,-.105,.08),(.09*limb_width,.17,.08),'foot_'+side,underwear)
 
+# Separate outer garments: fit envelopes scale with the selected physique.
+# Geometry remains rigid-weighted; shoulder/elbow deformation QA is not yet approved.
+ellipsoid('wearable_shirt_body', (0,-.003,1.30),
+          (.258*body_width,.158*body_width,.274),'chest',shirt)
+for side, sign in [('L',1),('R',-1)]:
+    limb('wearable_shirt_sleeve_'+side,
+         (sign*.25,0,1.43),(sign*.29,0,1.31),
+         .084*limb_width,'upper_arm_'+side,shirt)
+    limb('wearable_pants_upper_'+side,
+         (sign*.115,0,.91),(sign*.12,0,.55),
+         .113*limb_width,'thigh_'+side,fabric)
+    limb('wearable_pants_lower_'+side,
+         (sign*.12,0,.55),(sign*.12,0,.17),
+         .087*limb_width,'shin_'+side,fabric)
+# Contrasting belt visually distinguishes torso and pelvis in 2.5D preview.
+ellipsoid('wearable_waist_band', (0,0,1.035),
+          (.218*body_width,.164*body_width,.025),'pelvis',seam)
+
 # Explicitly noncanonical calibration props; imported from no outside source.
 ellipsoid('backpack test', (0,.19,1.31),(.19*body_width,.12,.27),'chest',fabric)
 limb('held tool proxy',(.37,0,.83),(.37,0,1.23),.021,'hand_R',steel)
@@ -120,10 +140,11 @@ for name,(bone,point) in sockets.items():
     ob.parent=rig
     ob.parent_type='BONE'
     ob.parent_bone=bone
-    # Preserve world-space calibration placement under bone parenting.
-    bone_matrix=rig.data.bones[bone].matrix_local
-    ob.matrix_parent_inverse=bone_matrix.inverted()
-    ob.location=point
+    # Use a bone-local offset from the rest-pose head rather than treating
+    # a world-space point as a bone-space location.
+    rest = rig.data.bones[bone]
+    ob.matrix_parent_inverse = Matrix.Identity(4)
+    ob.location = rest.matrix_local.inverted() @ Vector(point)
     ob.empty_display_size=.035
 
 clips={'idle':(4,180),'walk':(8,105),'run':(8,75),'sneak':(8,125),
@@ -221,7 +242,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.1',
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.2','wearable_layers':['shirt_body','shirt_sleeves','pants_upper','pants_lower','waist_band'],
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
