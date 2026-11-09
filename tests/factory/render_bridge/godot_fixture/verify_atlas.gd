@@ -68,6 +68,20 @@ func _initialize() -> void:
         sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
         sprite.region_enabled = true
         sprite.region_rect = Rect2(area)
+        # Trimmed sprites carry the original world contact point in cropped pixels.
+        # Godot's centered Sprite2D would otherwise shift each heading differently.
+        if entry.has("anchor_local_px"):
+            var local_anchor: Array = entry["anchor_local_px"]
+            if local_anchor.size() != 2:
+                push_error("F12_GODOT_INVALID_LOCAL_ANCHOR")
+                quit(12)
+                return
+            var expected_offset := Vector2(area.size.x * 0.5 - float(local_anchor[0]), area.size.y * 0.5 - float(local_anchor[1]))
+            sprite.offset = expected_offset
+            if sprite.offset.distance_to(expected_offset) > 0.001:
+                push_error("F12_GODOT_ANCHOR_COMPENSATION_FAIL")
+                quit(13)
+                return
         # Shared position anchors all headings to the same physical 80x40 tile.
         sprite.position = Vector2(80, 40)
         sprite.visible = direction == 0
