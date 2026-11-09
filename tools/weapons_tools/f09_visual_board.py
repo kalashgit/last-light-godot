@@ -55,11 +55,34 @@ def main():
             stats.append({"source_asset_id": item["source_asset_id"],
                           "view": name, "alpha_bbox": list(bbox),
                           "alpha_bbox_area": area})
+    # Native-size art inspection on plausible contrasting terrain values.
+    # This is a visual review aid, never an automatic Golden 40 approval.
+    backgrounds=[("dry_concrete",(158,150,139)),("night_asphalt",(49,56,59)),
+                 ("dark_timber",(80,65,52)),("pale_plaster",(203,195,177))]
+    terrain=Image.new("RGB",(4*192,3*204),(32,33,34))
+    td=ImageDraw.Draw(terrain)
+    native_stats=[]
+    for row,item in enumerate(items):
+        source=Image.open(OUT/item["source_asset_id"]/"review_icon.png").convert("RGBA")
+        bbox=source.getchannel("A").getbbox()
+        thumb=source.crop(bbox)
+        thumb.thumbnail((64,64),Image.Resampling.BOX)
+        assert max(thumb.width,thumb.height)>=38, item["source_asset_id"]
+        for col,(background_name,rgb) in enumerate(backgrounds):
+            tile=Image.new("RGBA",(174,174),(*rgb,255))
+            tile.alpha_composite(thumb,((174-thumb.width)//2,(174-thumb.height)//2))
+            terrain.paste(tile.convert("RGB"),(col*192+9,row*204+24))
+            td.text((col*192+9,row*204+4),background_name,fill=(230,230,225))
+            native_stats.append({"asset":item["source_asset_id"],
+                                 "surface":background_name,"native_size_px":list(thumb.size)})
+    terrain_path=OUT/"f09_v17_native_terrain_readability.png"
+    terrain.save(terrain_path,optimize=True)
     dest = OUT / "f09_v4_visual_review_board.png"
     sheet.save(dest, optimize=True)
     (OUT / "visual_pixel_qa.json").write_text(json.dumps({
         "status": "VISUAL_INPUTS_VALID_FOR_HUMAN_REVIEW_NOT_APPROVED",
-        "board": dest.name, "views": stats}, indent=2)+"\n")
+        "board": dest.name, "terrain_review":terrain_path.name,
+        "native_backgrounds":native_stats, "views": stats}, indent=2)+"\n")
     assert len(stats)==15
     print("F09_V4_VISUAL_PIXEL_QA_PASS", len(stats), "candidate views", flush=True)
 
