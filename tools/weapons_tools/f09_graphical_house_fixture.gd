@@ -60,6 +60,45 @@ func _capture() -> void:
         push_error("F09_VISUAL_INDOOR_SCREENSHOT_SAVE_FAILED")
         quit(85)
         return
+    # Measure actual OpenGL frame pacing and process memory in this Linux
+    # virtual-display environment. THIS IS NOT iPhone telemetry.
+    var frame_times_ms: Array[float]=[]
+    var rss_bytes: int=0
+    var peak_bytes: int=0
+    var previous_us: int=Time.get_ticks_usec()
+    for n in range(120):
+        await process_frame
+        var current_us: int=Time.get_ticks_usec()
+        frame_times_ms.append(float(current_us-previous_us)/1000.0)
+        previous_us=current_us
+        rss_bytes=maxi(rss_bytes,OS.get_static_memory_usage())
+        peak_bytes=maxi(peak_bytes,OS.get_static_memory_peak_usage())
+    frame_times_ms.sort()
+    var sum_ms: float=0.0
+    for t in frame_times_ms:
+        sum_ms+=t
+    var sample_fps: float=1000.0/maxf(sum_ms/float(frame_times_ms.size()),0.001)
+    var benchmark: Dictionary={
+        "platform":OS.get_name(),"device_class":"LINUX_XVFB_MESA_NOT_IPHONE",
+        "renderer":"Godot 4.3 OpenGL compatibility, Xvfb software display",
+        "samples":frame_times_ms.size(),
+        "mean_frame_ms":sum_ms/float(frame_times_ms.size()),
+        "p95_frame_ms":frame_times_ms[clampi(int(ceil(119*0.95)),0,119)],
+        "measured_sample_fps":sample_fps,
+        "last_process_memory_bytes":rss_bytes,
+        "last_peak_memory_bytes":peak_bytes,
+        "iphone_fps_verified":false,
+        "iphone_memory_verified":false
+    }
+    var telemetry: FileAccess=FileAccess.open(area+"/f09_virtual_runner_telemetry.json",FileAccess.WRITE)
+    if telemetry==null:
+        push_error("F09_VIRTUAL_TELEMETRY_WRITE_FAILED")
+        quit(86)
+        return
+    telemetry.store_string(JSON.stringify(benchmark,"  "))
+    telemetry.close()
+    print("F09_LINUX_VIRTUAL_PERFORMANCE_CAPTURE_PASS samples=120",
+          " fps=",snappedf(sample_fps,0.1)," peak_memory_bytes=",peak_bytes)
     print("F09_REAL_OPENGL_GAMEPLAY_SCREENSHOTS_PASS size=",pixels.get_size(),
           " source=res://main.tscn rendered_drop_count=3 screenshots=2")
     game.queue_free()
