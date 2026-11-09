@@ -151,6 +151,27 @@ jobs:
           assert r["min_silhouette_pixels"]>100
           print("F12_GAMEPLAY_REVIEW_METRICS_PASS",r["max_world_pivot_drift_px"],r["min_silhouette_pixels"])
           PY
+      - name: Trim all F10 frames losslessly and compose memory-efficient anchored atlas
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/trim_frames.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/trimmed" --margin 2
+          python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-f10/trimmed/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/trimmed" --output-dir "$RUNNER_TEMP/f12-f10/trimmed_atlas" --page-size 1024 --padding 2
+          python - <<'PY'
+          import os,json,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-f10"
+          t=json.loads((p/"trimmed/trim_audit.json").read_text())
+          a=json.loads((p/"trimmed_atlas/atlas.json").read_text())
+          old=json.loads((p/"atlas/atlas.json").read_text())
+          assert len(a["frames"])==16
+          assert all("anchor_local_px" in f for f in a["frames"])
+          assert t["pixel_reduction_fraction"]>0.4
+          old_rgba8=old["pages"]*old["page_size"]**2*4
+          new_rgba8=a["pages"]*a["page_size"]**2*4
+          assert new_rgba8<old_rgba8, (old_rgba8,new_rgba8)
+          report={"original_rgba8_bytes":old_rgba8,"trimmed_rgba8_bytes":new_rgba8,"trimmed_pages":a["pages"],"pixel_reduction":t["pixel_reduction_fraction"]}
+          (p/"atlas_memory_qa.json").write_text(json.dumps(report,indent=2)+"\\n")
+          print("F12_TRIMMED_IPHONE_MEMORY_PROXY_PASS",json.dumps(report))
+          PY
       - name: Upload real F10 hatchback candidate evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4
@@ -179,6 +200,12 @@ jobs:
           cp build/f12-f10/atlas/atlas_*.png tests/factory/render_bridge/godot_fixture/atlas/
       - name: Run Godot 4 import and 80x40 sprite contract
         run: |
+          godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
+          godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
+      - name: Validate trimmed atlas with local pivot compensation in Godot
+        run: |
+          cp build/f12-f10/trimmed_atlas/atlas.json tests/factory/render_bridge/godot_fixture/atlas/atlas.json
+          cp build/f12-f10/trimmed_atlas/atlas_*.png tests/factory/render_bridge/godot_fixture/atlas/
           godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
           godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
 
