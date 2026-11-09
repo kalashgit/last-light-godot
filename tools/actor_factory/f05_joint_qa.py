@@ -33,6 +33,7 @@ if set(tracks) != set(clips):
 pairs = [("torso skin", "wearable_shirt_body")]
 for side in ("L", "R"):
     pairs.append(("leg_skin_" + side, "wearable_pants_" + side))
+    pairs.append(("arm_skin_" + side, "wearable_shirt_sleeve_" + side))
 # Check nonadjacent body/garment collisions. Overlapping shoulders, cuffs and
 # crotch seams are exempted explicitly, not counted as validated.
 unrelated = [("hand " + side, "wearable_pants_" + side)
@@ -62,8 +63,11 @@ def tree(points, faces):
     return BVHTree.FromPolygons(points, faces, all_triangles=False)
 
 def radial_margin(skin, shell, segments=16):
-    if len(skin) != len(shell) or len(skin) % segments:
+    if len(skin) < len(shell) or len(shell) % segments or len(skin) % segments:
         raise RuntimeError("Paired loft topology changed across deformation")
+    # The sleeve deliberately covers only the upper four rings of the
+    # continuous arm, rather than extending all the way to the wrist.
+    skin = skin[-len(shell):]
     gaps = []
     for start in range(0, len(skin), segments):
         center = sum((v for v in skin[start:start + segments]), Vector()) / segments
@@ -102,12 +106,12 @@ for clip, frames in clips.items():
                 defects.append({"clip": clip, "frame": frame, "subframe": sub,
                                 "type": "surface_intersection", "objects": [inner, outer],
                                 "triangle_pairs": intersections})
-            if inner.startswith("leg_skin"):
+            if inner.startswith(("leg_skin", "arm_skin")):
                 margin = radial_margin(iv, ov)
                 min_radial = min(min_radial, margin)
                 if margin < 0.004:
                     defects.append({"clip": clip, "frame": frame, "subframe": sub,
-                                    "type": "trouser_skin_clearance",
+                                    "type": "garment_skin_clearance",
                                     "objects": [inner, outer],
                                     "clearance_m": round(margin, 5)})
         for first, second in unrelated:
@@ -136,10 +140,10 @@ result = {
     "full_frames": sum(clips.values()),
     "half_frames": sum(clips[name] - 1 for name in ("idle", "walk", "run", "sneak")),
     "samples": len(rows),
-    "minimum_trouser_radial_clearance_m": round(min_radial, 5),
+    "minimum_limb_garment_radial_clearance_m": round(min_radial, 5),
     "minimum_foot_sole_z_m": round(worst_floor, 5),
     "maximum_foot_hover_z_m": round(max_hover, 5),
-    "scope": "evaluated loft pair surfaces, unrelated hand/arm-pants collisions, foot floor contact",
+    "scope": "all 50 keyed and 24 intermediate poses, continuous arm/sleeve and leg/trouser surfaces, unrelated hand/arm-pants collisions, floor contact",
     "exclusions": ["shoulder sleeve and shirt seam", "two pant legs at crotch",
                    "footwear cuff to ankle seam", "physically planted-foot IK",
                    "Godot gameplay rendering", "visual approval"],
@@ -150,7 +154,7 @@ result = {
 }
 (out / "joint_qa.json").write_text(json.dumps(result, indent=2) + "\n")
 print("F05_JOINT_QA", result["status"], "samples", len(rows),
-      "defects", len(defects), "radial_min", result["minimum_trouser_radial_clearance_m"],
+      "defects", len(defects), "radial_min", result["minimum_limb_garment_radial_clearance_m"],
       "floor_min", result["minimum_foot_sole_z_m"],
       "floor_hover_max", result["maximum_foot_hover_z_m"])
 if defects:
