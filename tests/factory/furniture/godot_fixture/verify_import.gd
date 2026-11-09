@@ -34,6 +34,14 @@ func _initialize() -> void:
 	var door := instance.find_child("hinge_local.main_door", true, false) as Node3D
 	var crisper := instance.find_child("slide_local.crisper_drawer", true, false) as Node3D
 	var freezer := instance.find_child("hinge_local.freezer_flap", true, false) as Node3D
+	var imported_pivots: Array[String] = []
+	for node in instance.find_children("*", "Node3D", true, false):
+		var found_name := str(node.name)
+		if found_name.contains("hinge") or found_name.contains("slide") or found_name.contains("freezer"):
+			imported_pivots.append(found_name)
+	print("F01_IMPORT_DIAGNOSTIC meshes=", mesh_nodes.size(), " players=", players.size(),
+		" door=", door != null, " crisper=", crisper != null, " freezer=", freezer != null,
+		" pivot_names=", imported_pivots)
 	if players.is_empty() or mesh_nodes.size() < 70 or door == null or crisper == null or freezer == null:
 		_fail("F01_IMPORT_FAIL: missing mesh, hinge or drawer hierarchy", 3)
 		return
