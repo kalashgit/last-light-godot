@@ -6,6 +6,7 @@ on:
       - 'tools/weapons_tools/f09_bake_pbr_maps.py'
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
       - 'tools/weapons_tools/f09_pack_atlas.py'
+      - 'tools/weapons_tools/f09_main_game_fixture.gd'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
       - 'tools/weapons_tools/f09_verify_cross_family.py'
@@ -49,6 +50,8 @@ jobs:
         run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --editor --import
       - name: Exercise F09 gameplay Sprite2D scene fixture
         run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://fixture.gd
+      - name: Exercise candidate atlas inside actual LAST LIGHT house gameplay scene
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://main_game_fixture.gd
       - name: Upload unapproved F09 F11 F12 integration evidence
         if: always()
         uses: actions/upload-artifact@v4
