@@ -1,0 +1,12 @@
+config_version=5
+
+[application]
+config/name="F10 Vehicle Interaction Isolated QA"
+run/main_scene="res://world.tscn"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+
+[input]
+interact={"deadzone":0.5,"events":[Object(InputEventKey,"physical_keycode":69)]}
