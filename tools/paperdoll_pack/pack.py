@@ -188,7 +188,8 @@ def main() -> None:
     args = parser.parse_args()
     result = verify_package(args.output) if args.verify else pack_frames(args.source, args.output)
     print("LL_PAPERDOLL_PACKAGE_PASS", json.dumps(
-        {"sheets": len(result["sheets"]) if "sheets" in result else result["sheets"],
+        {"sheets": (len(result["sheets"]) if isinstance(result.get("sheets"), list)
+                    else result.get("sheets", result.get("generated_sheet_count"))),
          "status": "TECHNICAL_CANDIDATE_NOT_GOLDEN"}, sort_keys=True))
 
 
