@@ -10,6 +10,8 @@ on:
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
       - 'tools/weapons_tools/f09_verify_cross_family.py'
+      - 'tools/weapons_tools/f09_glb_mesh_quality.py'
+      - 'tools/weapons_tools/build.py'
       - '.github/workflows/f09-cross-family-fixture.yml'
       - 'tools/weapons_tools/f09_v5_models.py'
       - 'tools/weapons_tools/f09_v11_wrench.py'
@@ -38,6 +40,8 @@ jobs:
         run: python3 tools/weapons_tools/f09_stage_godot.py
       - name: Verify baked GLB texture embed, atlas coverage and staged sprites
         run: python3 tools/weapons_tools/f09_verify_cross_family.py
+      - name: Reject degenerate GLB triangles and invalid normals
+        run: python3 tools/weapons_tools/f09_glb_mesh_quality.py
       - name: Install Godot 4.3 (project compatibility)
         run: |
           curl --fail --location --retry 3 --silent --show-error \
