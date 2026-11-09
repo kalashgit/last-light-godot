@@ -22,6 +22,10 @@ import render_v3_recovery as base
 from fleet_render import make_materials,cube,pipe,faces
 from hero_profile import L,W,H,WB,R
 
+# Keep the lower door aperture clear of the front wheel arch.
+DOOR_FRONT_X=.70
+DOOR_HINGE_X=.715
+
 
 def attach_to_pivot(ob,pivot):
     """Preserve world placement at rest, then inherit a mechanical hinge transform."""
@@ -106,7 +110,7 @@ def body_shell(m,door_experiment=False):
     if door_experiment:
         door_root=bpy.data.objects.new("F10 HERO driver door vertical hinge PROTOTYPE",None)
         bpy.context.collection.objects.link(door_root)
-        door_root.location=(.965,-.717,.94)
+        door_root.location=(DOOR_HINGE_X,-.717,.94)
     for side in (-1,1):
         verts=[]
         for x in xs:
@@ -124,7 +128,7 @@ def body_shell(m,door_experiment=False):
                 p=p if side==1 else tuple(reversed(p))
                 # One body-surface aperture, exact same vertices as the door
                 # skin in its closed pose. Avoid a separate overlapping slab.
-                if door_experiment and side==-1 and -.36 <= (xs[i]+xs[i+1])/2 <= .95:
+                if door_experiment and side==-1 and -.36 <= (xs[i]+xs[i+1])/2 <= DOOR_FRONT_X:
                     door_idx.append(p)
                 else:
                     faces_idx.append(p)
@@ -180,9 +184,9 @@ def body_shell(m,door_experiment=False):
                  .006,m["dark"])
     if door_experiment:
         # The cabin aperture is left open; sill and end jambs frame the hole.
-        cube("F10 HERO driver door inner sill",(.30,-.665,.305),
-             (1.32,.075,.055),m["dark"],.012)
-        for x in (-.38,.96):
+        cube("F10 HERO driver door inner sill",(.17,-.665,.305),
+             (1.06,.075,.055),m["dark"],.012)
+        for x in (-.38,.745):
             cube("F10 HERO cabin aperture jamb",(x,-.666,.635),
                  (.053,.080,.65),m["trim"],.014)
     return door_root
@@ -218,11 +222,11 @@ def interior_cavity(m,door_root):
     # Separate interior plastic panel with a solid thin cross-section at the
     # hinge side and a genuine protruding armrest. Both rotate with door skin.
     for name,center,size,mat,bevel in (
-        ("driver door inner padded card",(.278,-.693,.638),(1.24,.048,.550),interior,.032),
-        ("driver door inner upper rail",(.278,-.700,.908),(1.28,.065,.062),plastic,.016),
+        ("driver door inner padded card",(.162,-.693,.638),(1.02,.048,.550),interior,.032),
+        ("driver door inner upper rail",(.162,-.700,.908),(1.06,.065,.062),plastic,.016),
         ("driver door inner armrest",(.205,-.638,.737),(.52,.096,.070),plastic,.021),
-        ("driver door interior latch",(.536,-.631,.841),(.156,.050,.034),m["steel"],.008),
-        ("driver door front edge thickness",(.929,-.731,.627),(.046,.130,.548),m["body"],.012),
+        ("driver door interior latch",(.478,-.631,.841),(.156,.050,.034),m["steel"],.008),
+        ("driver door front edge thickness",(.678,-.731,.627),(.046,.130,.548),m["body"],.012),
         ("driver door rear edge thickness",(-.354,-.730,.627),(.047,.128,.548),m["body"],.012),
     ):
         attach_to_pivot(cube("F10 HERO "+name,center,size,mat,bevel),door_root)
@@ -270,6 +274,9 @@ def greenhouse(m,door_root=None):
                 (front_sill-.080,ylow,1.022),(bbase+.038,ylow,1.022)]),
             ("rear quarter pane",[(xrear+.045,ytop,1.438),(btop-.047,ytop,1.461),
                 (bbase-.056,ylow,1.022),(rear_sill+.080,ylow,1.022)])):
+            if door_root and side==-1 and name=="front door pane":
+                verts=list(verts)
+                verts[2]=(DOOR_FRONT_X,ylow,1.022)
             pane=faces("F10 HERO inset "+name,verts,m["glass"])
             if door_root and side==-1 and name=="front door pane":
                 attach_to_pivot(pane,door_root)
@@ -287,13 +294,13 @@ def greenhouse(m,door_root=None):
         # Bridge the outer door skin to its movable pane with real attached
         # body-colour belt metal and a connected A/B window surround.
         belt=faces("F10 HERO driver door movable upper belt",[
-            (-.38,-.714,.920),(.965,-.714,.920),
-            (.965,-.714,1.035),(-.38,-.714,1.035)],m["body"])
+            (-.38,-.714,.920),(DOOR_FRONT_X,-.714,.920),
+            (DOOR_FRONT_X,-.714,1.035),(-.38,-.714,1.035)],m["body"])
         attach_to_pivot(belt,door_root)
         for name,points,radius in (
-            ("driver moving A-frame",[(.965,-.710,.948),(.372,-.574,1.438)],.029),
+            ("driver moving A-frame",[(DOOR_FRONT_X,-.710,.948),(.372,-.574,1.438)],.029),
             ("driver moving B-frame",[(-.36,-.710,.948),(-.382,-.574,1.462)],.033),
-            ("driver moving glass waist",[(-.38,-.714,1.025),(.965,-.714,1.025)],.022),
+            ("driver moving glass waist",[(-.38,-.714,1.025),(DOOR_FRONT_X,-.714,1.025)],.022),
         ):
             attach_to_pivot(pipe("F10 HERO "+name,points,radius,m["body"]),door_root)
     pipe("rear hatch edge",[(rear_sill,-.702,.980),(rear_sill,.702,.980)],.021,m["trim"])
