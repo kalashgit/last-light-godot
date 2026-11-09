@@ -1,9 +1,11 @@
 extends Node2D
 ## LAST LIGHT | Isolated 60-Archetype Neighborhood + Three-House Laboratory.
-## Original schematic art ONLY, not Golden-approved F01-F12 source or final gameplay.
+## Modular original DEBUG interiors, using only exact approved F01-F12 source if available.
 ## Opt-in scene. Never replaces res://main.tscn or the existing save format.
 const CITY_PATH := "res://data/neighborhood/showcase_60_v1.json"
 const LAB_PATH := "res://data/neighborhood/house_lab_h01_h02_h03_v1.json"
+const ROOM_FACTORY = preload("res://scripts/neighborhood_module_factory.gd")
+const APPROVED_ASSETS = preload("res://scripts/neighborhood_approved_asset_resolver.gd")
 const TX := 40.0
 const TY := 20.0
 const WALK_SPEED := 5.4
@@ -21,6 +23,10 @@ var touch_index: int = -1
 var message: String = "Three-house laboratory. Press TAB to tour all 60 types."
 var validation_summary: Dictionary = {}
 var validation_error: String = ""
+var room_factory: Variant = ROOM_FACTORY.new()
+var approved_assets: Variant = APPROVED_ASSETS.new()
+var room_plans: Dictionary = {}
+var fixture_states: Dictionary = {} # Prototype-session-only. NOT the gameplay save schema.
 
 func _ready() -> void:
     city = _read_json(CITY_PATH)
@@ -45,11 +51,25 @@ func _ready() -> void:
     if not validation_error.is_empty():
         push_error("NEIGHBORHOOD_SHOWCASE_INVALID: " + validation_error)
         return
+    if room_factory.kits.is_empty():
+        validation_error = "modular room kit definitions missing"
+        push_error("NEIGHBORHOOD_SHOWCASE_INVALID: " + validation_error)
+        return
+    for house in lab["houses"]:
+        room_plans[str(house["id"]) + "/0"] = room_factory.make_plan(house, true, 0)
+        if int(house.get("stories", 1)) > 1:
+            room_plans[str(house["id"]) + "/1"] = room_factory.make_plan(house, true, 1)
+    for building in city["buildings"]:
+        room_plans[str(building["instance_id"]) + "/0"] = room_factory.make_plan(building, false, 0)
+    approved_assets.load_approved()
     player = _vec(lab["player_spawn"])
     validation_summary = {
-        "status": "SCHEMATIC_NEIGHBORHOOD_LOADED",
+        "status": "MODULAR_INTERIORS_PROVISIONAL",
         "catalog_archetypes": city["buildings"].size(),
         "three_house_labs": lab["houses"].size(),
+        "room_plan_count": room_plans.size(),
+        "fixture_count": _total_fixtures(),
+        "approved_sprite_roles": approved_assets.approved_role_count(),
         "golden_approved": false,
         "playable_release_integrated": false,
         "tile_pixel_basis": [80, 40]
@@ -119,12 +139,23 @@ func _selected_building() -> Dictionary:
             return b
     return {}
 
+func _plan_for(building: Dictionary, floor_index: int = 0) -> Dictionary:
+    return room_plans.get(str(building.get("id", building.get("instance_id", ""))) + "/" + str(floor_index), {})
+
+func _total_fixtures() -> int:
+    var count: int = 0
+    for plan in room_plans.values():
+        count += int(plan["fixture_count"])
+    return count
+
 func _can_walk(point: Vector2) -> bool:
     if not _bounds().grow(-0.5).has_point(point):
         return false
     var selected: Dictionary = _selected_building()
     if not selected.is_empty():
-        return _inside_footprint(selected, point)
+        if not _inside_footprint(selected, point):
+            return false
+        return room_factory.can_move(_plan_for(selected, current_floor), player, point)
     for b in _all_buildings():
         if not _is_outdoor(b) and _inside_footprint(b, point):
             return false
@@ -202,7 +233,39 @@ func interact() -> void:
     player = inside_point
     inside_id = str(nearest.get("id", nearest.get("instance_id", "")))
     current_floor = 0
-    message = "Entered " + str(nearest["name"]) + " / concept rooms"
+    message = "Entered " + str(nearest["name"]) + " / furnished modular rooms (provisional)"
+    queue_redraw()
+
+func use_nearby_fixture() -> void:
+    var active: Dictionary = _selected_building()
+    var plans: Array = []
+    if not active.is_empty():
+        plans.append(_plan_for(active, current_floor))
+    elif mode == "city":
+        for site in city["buildings"]:
+            if _is_outdoor(site) and _inside_footprint(site, player):
+                plans.append(_plan_for(site))
+    if plans.is_empty():
+        message = "Enter a structure or visit an outdoor site to inspect fixtures"
+        return
+    var closest: Dictionary = {}
+    var nearest_distance: float = 2.6
+    for plan in plans:
+        for room in plan.get("rooms", []):
+            for fixture in room["fixtures"]:
+                var distance: float = player.distance_to(_vec(fixture["pos"]))
+                if distance < nearest_distance:
+                    nearest_distance = distance
+                    closest = fixture
+    if closest.is_empty():
+        message = "Walk closer to a furnished object to inspect it"
+        return
+    if not bool(closest["interactive"]):
+        message = "Inspected " + str(closest["role"]) + " (prototype, no loot system)"
+        return
+    var key: String = str(closest["id"])
+    fixture_states[key] = not bool(fixture_states.get(key, false))
+    message = ("Opened " if fixture_states[key] else "Closed ") + str(closest["role"]) + " (session-only demo state)"
     queue_redraw()
 
 func _touch_stick_center() -> Vector2:
@@ -212,6 +275,9 @@ func _touch_stick_center() -> Vector2:
 func _enter_center() -> Vector2:
     var s: Vector2 = get_viewport_rect().size
     return Vector2(s.x - 92, s.y - 116)
+
+func _use_center() -> Vector2:
+    return _enter_center() + Vector2(0, -132)
 
 func _tap(p: Vector2) -> void:
     var s: Vector2 = get_viewport_rect().size
@@ -227,6 +293,8 @@ func _tap(p: Vector2) -> void:
         return
     if p.distance_to(_enter_center()) < 68:
         interact()
+    elif p.distance_to(_use_center()) < 58:
+        use_nearby_fixture()
 
 func _input(event: InputEvent) -> void:
     if event is InputEventScreenTouch:
@@ -260,6 +328,7 @@ func _input(event: InputEvent) -> void:
             KEY_R: toggle_roof()
             KEY_F: toggle_floor()
             KEY_E, KEY_SPACE: interact()
+            KEY_Q: use_nearby_fixture()
 
 func _poly_world(points: Array, height: float, color: Color) -> void:
     var verts := PackedVector2Array()
@@ -312,47 +381,114 @@ func _draw_roof(b: Dictionary, roof_color: Color) -> void:
     draw_line(_iso(front_a), _iso(front_a) - Vector2(0, 49), Color("81908a"), 3)
     draw_line(_iso(front_b), _iso(front_b) - Vector2(0, 49), Color("81908a"), 3)
 
-func _draw_lab_rooms(b: Dictionary) -> void:
-    var rooms: Array = b.get("upper_rooms", []) if current_floor == 1 else b["rooms"]
-    for room in rooms:
-        var dims: Array = room["rect"]
-        var pos: Vector2 = _rect(b).position
-        var floor_rect := Rect2(pos + Vector2(float(dims[0]),float(dims[1])),
-            Vector2(float(dims[2]),float(dims[3])))
-        var tint: Color = Color("8f8570")
-        match str(room["type"]):
-            "kitchen": tint = Color("8e9a93")
-            "bathroom": tint = Color("75939a")
-            "bedroom": tint = Color("9c7c71")
-            "hall", "stairs": tint = Color("b8aa8d")
-            "garage": tint = Color("666967")
-            "utility", "storage", "pantry": tint = Color("887e6c")
-        _quad_world(floor_rect, tint)
-        var center: Vector2 = floor_rect.get_center()
-        if _zoom() > 0.3:
-            draw_string(ThemeDB.fallback_font, _iso(center),
-                str(room["type"]), HORIZONTAL_ALIGNMENT_CENTER, -1, 12, Color("f3e7c8"))
-    if b.get("id", "") == "LAB-H02" and current_floor == 0:
-        var s: Array = b["stairwell"]
-        var pos: Vector2 = _rect(b).position
-        _quad_world(Rect2(pos + Vector2(float(s[0]),float(s[1])),
-            Vector2(float(s[2]),float(s[3]))),Color("cfbd82"))
+func _room_color(kind: String) -> Color:
+    match kind:
+        "kitchen": return Color("80928b")
+        "bedroom": return Color("9c8076")
+        "bathroom": return Color("72929a")
+        "living", "den": return Color("9f9681")
+        "hall", "stairs": return Color("b5a587")
+        "garage", "industrial": return Color("777d77")
+        "medical": return Color("8ba5a2")
+        "food_service": return Color("a38d73")
+        "retail": return Color("a69879")
+        "storage", "pantry", "utility": return Color("847b69")
+        _: return Color("918f82")
 
-func _draw_city_rooms(b: Dictionary) -> void:
-    var modules: Array = b.get("room_modules", [])
-    var r: Rect2 = _rect(b)
-    var count: int = mini(4, modules.size())
-    if count < 1:
+func _draw_wall_part(a: Vector2, b: Vector2) -> void:
+    # Raised vertical strips establish depth even without approved F02 wall art.
+    draw_line(_iso(a), _iso(b), Color("484b48"), 4.0)
+    draw_line(_iso(a) - Vector2(0, 15), _iso(b) - Vector2(0, 15), Color("c4b9a0"), 3.0)
+    draw_line(_iso(a), _iso(a) - Vector2(0, 15), Color("a8a18e"), 2.0)
+    draw_line(_iso(b), _iso(b) - Vector2(0, 15), Color("a8a18e"), 2.0)
+
+func _draw_room_wall(a: Vector2, b: Vector2, portals: Array) -> void:
+    var length: float = a.distance_to(b)
+    if length < .05:
         return
-    var cw: float = r.size.x / 2.0
-    var ch: float = r.size.y / 2.0
-    for i in range(count):
-        var part := Rect2(r.position + Vector2(float(i % 2)*cw, float(i / 2)*ch),
-            Vector2(cw,ch))
-        _quad_world(part,Color("9f9784") if i % 2 == 0 else Color("8c9185"))
+    var direction: Vector2 = (b - a).normalized()
+    var pieces: int = ceili(length / .45)
+    var open_run: bool = true
+    var segment_start: Vector2 = a
+    for i in range(pieces):
+        var start: Vector2 = a.lerp(b, float(i) / float(pieces))
+        var end: Vector2 = a.lerp(b, float(i+1) / float(pieces))
+        var middle: Vector2 = (start + end) / 2.0
+        var blocked_by_portal: bool = false
+        for portal in portals:
+            var center: Vector2 = _vec(portal["point"])
+            if absf(direction.dot(center - a)) > length + .01:
+                continue
+            if absf(direction.cross(center - a)) < .02 and middle.distance_to(center) <= float(portal["half_width"]):
+                blocked_by_portal = true
+                break
+        if blocked_by_portal:
+            if not open_run:
+                _draw_wall_part(segment_start, start)
+            open_run = true
+        elif open_run:
+            segment_start = start
+            open_run = false
+    if not open_run:
+        _draw_wall_part(segment_start, b)
+
+func _fixture_color(role: String) -> Color:
+    if role in ["fridge", "washing_machine", "medical_cabinet", "toilet", "sink", "stove"]:
+        return Color("b4c3bf")
+    if role in ["machine", "tool_chest", "filing_cabinet"]:
+        return Color("75848a")
+    if role in ["sofa", "bed", "exam_bed"]:
+        return Color("8c6f65")
+    if role in ["storage_shelf", "dresser", "display_shelf", "crate"]:
+        return Color("9a825f")
+    return Color("a99574")
+
+func _draw_fixture(fixture: Dictionary) -> void:
+    var center: Vector2 = _vec(fixture["pos"])
+    var sprite: Dictionary = approved_assets.sprite_for(str(fixture["role"]))
+    if not sprite.is_empty():
+        draw_texture(sprite["texture"], _iso(center) - sprite["pivot"])
+        return
+    # Original procedural colored-block preview, never a claimed Golden sprite.
+    var size: Vector2 = _vec(fixture["size"])
+    var r := Rect2(center - size / 2.0, size)
+    var c: Color = _fixture_color(str(fixture["role"]))
+    var height: float = 25.0 if str(fixture["role"]) in ["fridge", "machine", "storage_shelf", "display_shelf", "medical_cabinet", "filing_cabinet"] else 12.0
+    var p: Vector2 = r.position
+    var ex: Vector2 = p + Vector2(size.x, 0)
+    var ey: Vector2 = p + size
+    var eleft: Vector2 = p + Vector2(0, size.y)
+    draw_colored_polygon(PackedVector2Array([_iso(eleft), _iso(ey), _iso(ey) - Vector2(0,height), _iso(eleft) - Vector2(0,height)]),c.darkened(.32))
+    draw_colored_polygon(PackedVector2Array([_iso(ex), _iso(ey), _iso(ey) - Vector2(0,height), _iso(ex) - Vector2(0,height)]),c.darkened(.22))
+    _quad_world(r, c, height)
+    if bool(fixture.get("interactive", false)):
+        var opened: bool = bool(fixture_states.get(str(fixture["id"]), false))
+        draw_circle(_iso(center) - Vector2(0,height+3), 4.0, Color("8edaac") if opened else Color("eec977"))
+
+func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
+    var plan: Dictionary = _plan_for(building, current_floor if str(building.get("id", "")) == inside_id else 0)
+    if plan.is_empty():
+        return
+    for room in plan["rooms"]:
+        var dims: Array = room["rect"]
+        var area := Rect2(float(dims[0]),float(dims[1]),float(dims[2]),float(dims[3]))
+        _quad_world(area,_room_color(str(room["normalized_type"])))
         if _zoom() > .3:
-            draw_string(ThemeDB.fallback_font,_iso(part.get_center()),str(modules[i]),
-                HORIZONTAL_ALIGNMENT_CENTER,-1,11,Color("e2dac2"))
+            draw_string(ThemeDB.fallback_font,_iso(area.get_center()) + Vector2(0,18),
+                str(room["type"]),HORIZONTAL_ALIGNMENT_CENTER,-1,12,Color("f3edcf"))
+    if _zoom() > .24:
+        if show_walls:
+            for room in plan["rooms"]:
+                var dims: Array = room["rect"]
+                var r := Rect2(float(dims[0]),float(dims[1]),float(dims[2]),float(dims[3]))
+                var pts: Array = [r.position,Vector2(r.end.x,r.position.y),r.end,Vector2(r.position.x,r.end.y)]
+                for i in range(4):
+                    _draw_room_wall(pts[i],pts[(i+1)%4],plan["portals"])
+            for portal in plan["portals"]:
+                draw_circle(_iso(_vec(portal["point"])),5,Color("dfbf82"))
+        for room in plan["rooms"]:
+            for fixture in room["fixtures"]:
+                _draw_fixture(fixture)
 
 func _draw_building(b: Dictionary) -> void:
     var r: Rect2 = _rect(b)
@@ -366,14 +502,14 @@ func _draw_building(b: Dictionary) -> void:
     if outdoor:
         var points: Array = _shape(b)
         _poly_world(points, 0, col.lightened(.13))
-        draw_circle(_iso(r.get_center()), 7, Color("b0a47a"))
+        if not overview:
+            _draw_modular_rooms(b, false)
+        else:
+            draw_circle(_iso(r.get_center()), 7, Color("b0a47a"))
     else:
         var active: bool = str(b.get("id",b.get("instance_id",""))) == inside_id
         if active or roof_hidden:
-            if mode == "lab":
-                _draw_lab_rooms(b)
-            else:
-                _draw_city_rooms(b)
+            _draw_modular_rooms(b)
         else:
             _draw_roof(b,col.darkened(.18))
     var door: Vector2 = _entry(b)
@@ -430,6 +566,9 @@ func _draw_hud() -> void:
     var caption: String = "THREE HOUSE LAB | H01 • H02 • H03" if mode=="lab" else "ALL 60 TYPES | ORIGINAL PROTOTYPE"
     draw_string(ThemeDB.fallback_font,Vector2(17,49),caption,
         HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("b9cdb8"))
+    draw_string(ThemeDB.fallback_font,Vector2(17,94),
+        "Modules: " + str(room_plans.size()) + " | Fixtures: " + str(_total_fixtures()) + " | Approved sprite roles: " + str(approved_assets.approved_role_count()),
+        HORIZONTAL_ALIGNMENT_LEFT,-1,11,Color("b4ba9f"))
     draw_string(ThemeDB.fallback_font,Vector2(17,78),message,
         HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("ecd293"))
     var titles: Array = ["ROOF", "FLOOR", "MAP", "CITY" if mode == "lab" else "LAB"]
@@ -449,8 +588,12 @@ func _draw_hud() -> void:
     draw_string(ThemeDB.fallback_font,enter+Vector2(-26,6),
         "EXIT" if not inside_id.is_empty() else "ENTER",
         HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color("273027"))
+    var use_at: Vector2 = _use_center()
+    draw_circle(use_at,46,Color("7c9a87"))
+    draw_string(ThemeDB.fallback_font,use_at+Vector2(-17,6),"USE",
+        HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color("10251b"))
     draw_string(ThemeDB.fallback_font,Vector2(16,s.y-23),
-        "TAB: city/lab | M: map | E: enter/exit | R: roof | F: floor | debug art / unapproved",
+        "TAB: city/lab | M: map | E: enter/exit | Q: inspect/toggle | R: roof | F: floor | provisional art",
         HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("e3cd99"))
 
 func _draw() -> void:
