@@ -123,9 +123,11 @@ def lab_preview():
         xx,yy=p_iso(*b["front_door"],origin,scale)
         d.ellipse([xx-7,yy-7,xx+7,yy+7],fill="#f3cc80")
         d.line([(xx,yy),p_iso(b["front_door"][0],22,origin,scale)],fill="#c2bd9f",width=5)
+    # Label only AFTER all buildings, so later floor polygons cannot cover labels.
+    short={"LAB-H01":"OAK / STARTER","LAB-H02":"CEDAR / 2 FLOORS","LAB-H03":"BIRCH / L + GARAGE"}
+    for b in LAB["houses"]:
         tx,ty=p_iso(b["footprint"][0]+b["footprint"][2]/2,b["footprint"][1]-3,origin,scale)
-        short={"LAB-H01":"OAK / STARTER","LAB-H02":"CEDAR / 2 FLOORS","LAB-H03":"BIRCH / L + GARAGE"}
-    d.text((tx,ty-12),b["id"]+"  "+short[b["id"]],font=MED,fill="#ffe0a0",anchor="mm")
+        d.text((tx,ty-12),b["id"]+"  "+short[b["id"]],font=MED,fill="#ffe0a0",anchor="mm")
     d.text((35,825),"Roof-off floor-plan inspection | H02 upstairs via F in Godot | H03 garage/cutout preserved",font=MED,fill="#d6caa6")
     d.text((35,858),"Room positions trace to LAB A. Props, collision, stairs and final textures remain calibration work.",font=MED,fill="#aab7ad")
     img.save(OUT/"h01_h02_h03_rooms_preview.png",optimize=True)
