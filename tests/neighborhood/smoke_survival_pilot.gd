@@ -107,9 +107,11 @@ func _test() -> void:
         _fail("save/load refused a previously written pilot snapshot: " + str(scene.message))
         return
     var actual: Dictionary = scene._snapshot()
-    if actual != original:
+    # JSON deserialization normalizes numeric Variants (e.g. int 2 to float 2.0).
+    # Compare the persisted wire representation, not Godot's internal Variant tags.
+    if JSON.stringify(actual) != JSON.stringify(original):
         for field in original.keys():
-            if actual.get(field) != original[field]:
+            if JSON.stringify(actual.get(field)) != JSON.stringify(original[field]):
                 print("SAVE_FIELD_DIFFERENCE ", field, " before=", JSON.stringify(original[field]), " after=", JSON.stringify(actual.get(field)))
         _fail("save/load changed world inventory, stats or zombie states")
         return
