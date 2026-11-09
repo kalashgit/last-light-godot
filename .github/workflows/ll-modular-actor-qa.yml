@@ -1,0 +1,47 @@
+name: LAST LIGHT modular 2.5D actor and Y-sort pilot QA
+
+on:
+  pull_request:
+    paths:
+      - "scripts/ll_modular_actor_2d.gd"
+      - "scripts/ll_modular_actor_lab.gd"
+      - "scenes/modular_actor_lab.tscn"
+      - "tests/modular_actor_2d.gd"
+      - ".github/workflows/ll-modular-actor-qa.yml"
+  push:
+    branches:
+      - "chatgpt/modular-actor-ysort-pilot-20261109"
+    paths:
+      - "scripts/ll_modular_actor_2d.gd"
+      - "scripts/ll_modular_actor_lab.gd"
+      - "scenes/modular_actor_lab.tscn"
+      - "tests/modular_actor_2d.gd"
+      - ".github/workflows/ll-modular-actor-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ll-modular-actor-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  godot-headless:
+    name: Godot 4 actual-engine layer, pivot, and depth contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: barichello/godot-ci:4.6.3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify Godot version
+        run: godot --version
+      - name: Godot native import and script parse
+        run: godot --headless --path . --editor --quit
+      - name: Verify shared animation frame clock, pivot, slot order, and Y-sort parent
+        run: godot --headless --path . --script res://tests/modular_actor_2d.gd
+      - name: Verify the standalone calibration scene loads
+        run: godot --headless --path . --quit-after 3 res://scenes/modular_actor_lab.tscn
