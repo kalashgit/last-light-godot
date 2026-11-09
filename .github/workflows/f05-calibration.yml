@@ -60,6 +60,7 @@ jobs:
         if: always()
         run: |
           curl -fSL --retry 3 https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip -o /tmp/f05-godot.zip
+          echo 'd6e382fb531019f85630c1f485a561a0d20c4a2344b6c3847735cfee7da812aa  /tmp/f05-godot.zip' | sha256sum -c -
           mkdir -p /tmp/f05-godot
           unzip -q /tmp/f05-godot.zip -d /tmp/f05-godot
           chmod +x /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64
@@ -70,7 +71,7 @@ jobs:
           mkdir -p tests/fixtures
           cp build/f05-cal/f05_noncanonical_calibration.glb tests/fixtures/f05_noncanonical_calibration.glb
           set -o pipefail
-          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --import 2>&1 | tee build/f05-godot-import.log
+          timeout --signal=TERM --kill-after=10s 120s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --import 2>&1 | tee build/f05-godot-import.log
       - name: Godot skinned-mesh, animation and playable physics test
         if: always()
         run: |
