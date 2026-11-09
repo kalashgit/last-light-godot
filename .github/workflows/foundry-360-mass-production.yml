@@ -56,9 +56,10 @@ jobs:
       - name: Install Blender and Pillow
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           python -m pip install 'Pillow>=10,<13'
           blender --version | head -n 2
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import numpy; print("FOUNDRY_BLENDER_NUMPY", numpy.__version__)'
       - name: Retrieve the verified original archive
         env:
           GH_TOKEN: ${{ github.token }}
