@@ -20,15 +20,32 @@ packing work runs on CPU with Pillow without Blender or paid AI execution.
 
 - Source: `foundry_candidates/ll_*/atlas_16_headings.png` plus manifest.
 - Output: `sheet_0000.png`, etc.; `sprite_sheet_manifest.json`,
-  `batch_report.json`, `next_state.json`.
-- Bounded batch: 1–8 unique persisted assets, 16 headings each; pages are
+  `batch_report.json`, `next_state.json`. In 40-item mass mode, also write
+  `inventory_sheet_0000.png`, `inventory_sheet_manifest.json`, etc.
+- Bounded technical/pilot batch: 1–80 unique persisted assets, 16 headings each; pages are
   1024×1024 or 2048×2048 RGBA, up to 32 pages per batch.
+- **Mass production mode:** default scheduled/manual job batches **40 distinct
+  canonical assets**, or optionally 80, with 40 original item thumbnails in
+  every transparent inventory PNG page. Every inventory sheet has 8 columns ×
+  5 rows at 256 pixels/cell (2048×1280), one 45° frame per distinct asset.
+  `inventory_sheet_manifest.json` gives one `asset_id`, source atlas SHA,
+  exact RGBA pixel SHA and cell/region per thumbnail, suitable for an eventual
+  Godot inventory atlas. The separate runtime PNG pages still pack **all 16
+  direction frames per asset** with original alpha-preserving transforms.
+  The 40 items are not counted as 640 independent assets.
+- A tail of **fewer than 40 verified assets waits** for another admitted
+  candidate batch; the packer never fills the page with duplicates or invented
+  art, never advances the cursor for a held tail, and emits a waiting report.
+  For technical calibration only, legacy smaller batches still work without
+  inventory-sheet mode. A batch of 80 emits two complete 40-item inventory
+  pages; each runtime atlas may require multiple separate 2048px pages.
 - `state.json` records exact candidate IDs and atlas SHA-256. Repeated inputs
   are skipped; changed hashes are rejected instead of silently overwritten.
 - Source atlas checksum, manifest provenance, transparency and actual region
   bounds are checked. A candidate with `golden_approved=true` is refused.
-- The publisher validates page SHA-256, frame count, region bounds and
-  monotonic cursor before an immutable copy to
+- The publisher validates every runtime and inventory page SHA-256, the
+  inventory 40-item count, each individual RGBA pixel hash and region bounds,
+  all 16 heading frames, and monotonic cursor before an immutable copy to
   `foundry/sprite-sheets-v1` (never to `main`).
 - Scheduled runs are gated by the repo variable
   `FOUNDRY_SPRITE_SHEETS_ENABLED=true`, and default to dormant. The owner may
@@ -112,7 +129,8 @@ python -m unittest discover -s tests/foundry_sheets -v
 python tools/foundry_sheets/pack.py \
   --candidates /path/to/persisted/foundry_candidates \
   --output /tmp/technical-sprite-sheets \
-  --batch-size 4 --page-size 1024 --run-id 1
+  --batch-size 40 --min-batch-size 40 --inventory-page-items 40 \
+  --page-size 2048 --run-id 1
 ```
 
 The output ZIP/branch artifact is not permanent external storage. Once
