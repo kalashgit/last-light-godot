@@ -23,8 +23,8 @@ from fleet_render import make_materials,cube,pipe,faces
 from hero_profile import L,W,H,WB,R
 
 # Keep the lower door aperture clear of the front wheel arch.
-DOOR_FRONT_X=.70
-DOOR_HINGE_X=.715
+DOOR_FRONT_X=.58
+DOOR_HINGE_X=.595
 
 
 def attach_to_pivot(ob,pivot):
@@ -184,9 +184,9 @@ def body_shell(m,door_experiment=False):
                  .006,m["dark"])
     if door_experiment:
         # The cabin aperture is left open; sill and end jambs frame the hole.
-        cube("F10 HERO driver door inner sill",(.17,-.665,.305),
-             (1.06,.075,.055),m["dark"],.012)
-        for x in (-.38,.745):
+        cube("F10 HERO driver door inner sill",(.105,-.665,.305),
+             (.93,.075,.055),m["dark"],.012)
+        for x in (-.38,.625):
             cube("F10 HERO cabin aperture jamb",(x,-.666,.635),
                  (.053,.080,.65),m["trim"],.014)
     return door_root
@@ -222,11 +222,11 @@ def interior_cavity(m,door_root):
     # Separate interior plastic panel with a solid thin cross-section at the
     # hinge side and a genuine protruding armrest. Both rotate with door skin.
     for name,center,size,mat,bevel in (
-        ("driver door inner padded card",(.162,-.693,.638),(1.02,.048,.550),interior,.032),
-        ("driver door inner upper rail",(.162,-.700,.908),(1.06,.065,.062),plastic,.016),
+        ("driver door inner padded card",(.105,-.693,.638),(.87,.048,.550),interior,.032),
+        ("driver door inner upper rail",(.105,-.700,.908),(.89,.065,.062),plastic,.016),
         ("driver door inner armrest",(.205,-.638,.737),(.52,.096,.070),plastic,.021),
         ("driver door interior latch",(.478,-.631,.841),(.156,.050,.034),m["steel"],.008),
-        ("driver door front edge thickness",(.678,-.731,.627),(.046,.130,.548),m["body"],.012),
+        ("driver door front edge thickness",(.555,-.731,.627),(.042,.130,.548),m["body"],.012),
         ("driver door rear edge thickness",(-.354,-.730,.627),(.047,.128,.548),m["body"],.012),
     ):
         attach_to_pivot(cube("F10 HERO "+name,center,size,mat,bevel),door_root)
