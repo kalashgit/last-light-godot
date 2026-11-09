@@ -47,6 +47,18 @@ class CatalogTests(unittest.TestCase):
         self.assertFalse(result["golden_approved"])
         self.assertFalse(result["orders"][0]["automatic_golden_promotion_allowed"])
 
+    def test_notion_numbered_work_order_beats_alphabetical_name(self):
+        doc = sample()
+        doc["production_masters"][0]["content_id"] = "ll_zz_refrigerator"
+        doc["production_masters"][0]["work_order"] = "A00-B001-F01-refrigerator-r1"
+        doc["production_masters"][1].update({
+            "content_id": "ll_aa_firewood", "semantic_verification": "Canonical Verified",
+            "priority": "P0", "queue": "F09", "work_order": "A00-B008-F09-firewood-r1",
+        })
+        result = catalog.plan(doc, batch_size=2)
+        self.assertEqual([x["content_id"] for x in result["orders"]],
+                         ["ll_zz_refrigerator", "ll_aa_firewood"])
+
     def test_approved_notion_stage_is_not_golden(self):
         result = catalog.plan(sample())
         self.assertTrue(result["orders"][0]["rights_review_required"])
