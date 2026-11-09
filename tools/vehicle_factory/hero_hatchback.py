@@ -30,6 +30,8 @@ DOOR_HINGE_X=.595
 DOOR_HINGE_Y=-.82
 BONNET_HINGE="F10 HERO bonnet rear transverse hinge PROTOTYPE"
 HATCH_HINGE="F10 HERO rear hatch roof transverse hinge PROTOTYPE"
+BONNET_SEAM_X=1.085  # forward of the windscreen toe, not beneath the glazing
+HATCH_ROOF_PIVOT_X=-1.410  # behind the rear edge of the fixed cabin roof
 
 
 def attach_to_pivot(ob,pivot):
@@ -120,12 +122,12 @@ def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=
     if bonnet_experiment:
         bonnet_root=bpy.data.objects.new(BONNET_HINGE,None)
         bpy.context.collection.objects.link(bonnet_root)
-        bonnet_root.location=(.45,0,.974)
+        bonnet_root.location=(BONNET_SEAM_X,0,.974)
     hatch_root=None
     if hatch_experiment:
         hatch_root=bpy.data.objects.new(HATCH_HINGE,None)
         bpy.context.collection.objects.link(hatch_root)
-        hatch_root.location=(-1.35,0,1.484)
+        hatch_root.location=(HATCH_ROOF_PIVOT_X,0,1.484)
     for side in (-1,1):
         verts=[]
         for x in xs:
@@ -170,10 +172,8 @@ def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=
             a=7*i+j
             poly=(a,a+7,a+8,a+1)
             midpoint=(xs[i]+xs[i+1])*.5
-            if bonnet_root and midpoint>.45:
+            if bonnet_root and midpoint>BONNET_SEAM_X:
                 bonnet_polys.append(poly)
-            elif hatch_root and midpoint< -1.35:
-                hatch_polys.append(poly)
             else:
                 polys.append(poly)
     mesh_object("F10 HERO continuous body crown",verts,polys,[m["body"]])
@@ -181,23 +181,24 @@ def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=
         attach_to_pivot(mesh_object("F10 HERO liftable bonnet painted crown",verts,
                                     bonnet_polys,[m["body"]]),bonnet_root)
         attach_to_pivot(cube("F10 HERO bonnet underside dark reinforcement",
-                             (1.2,0,.921),(1.30,1.03,.025),m["dark"],.008),bonnet_root)
+                             (1.50,0,.917),(.76,1.03,.024),m["dark"],.008),bonnet_root)
         # The open hood reveals actual shallow mechanical depth rather than an
         # undifferentiated black polygon. Fixed components stay below the
         # underside of the bonnet in its resting pose.
-        cube("F10 HERO engine bay recessed base",(1.22,0,.696),
-             (1.27,1.09,.13),m["dark"],.018)
-        cube("F10 HERO compact inline engine block",(1.18,.04,.782),
-             (.60,.47,.18),m["steel"],.035)
-        cube("F10 HERO dark cam cover",(1.18,.04,.874),
-             (.49,.39,.037),m["trim"],.011)
-        cube("F10 HERO small battery housing",(1.53,-.39,.783),
-             (.235,.245,.169),m["trim"],.018)
-        cube("F10 HERO engine air filter box",(.87,.39,.801),
-             (.33,.232,.129),m["trim"],.022)
-    if hatch_polys:
-        attach_to_pivot(mesh_object("F10 HERO liftable rear hatch top crown",verts,
-                                    hatch_polys,[m["body"]]),hatch_root)
+        cube("F10 HERO engine bay recessed base",(1.48,0,.696),
+             (.79,1.09,.13),m["dark"],.018)
+        cube("F10 HERO compact inline engine block",(1.43,.04,.782),
+             (.43,.47,.18),m["steel"],.035)
+        cube("F10 HERO dark cam cover",(1.43,.04,.871),
+             (.38,.39,.035),m["trim"],.011)
+        cube("F10 HERO small battery housing",(1.69,-.39,.783),
+             (.21,.245,.169),m["trim"],.018)
+        cube("F10 HERO engine air filter box",(1.23,.39,.801),
+             (.26,.232,.129),m["trim"],.022)
+    if hatch_root:
+        # The body crown is below the window-line and remains fixed. Moving
+        # this roof-height-independent panel with the liftgate caused its arc
+        # to scissor through the stationary rear quarter glazing.
         # Cargo pieces are chassis-mounted: they remain exposed and stationary
         # as the roof-hinged liftgate follows its keyed opening arc.
         fabric=base.mat("F10 HERO cargo carpet",(.21,.25,.23),.0,.92,wear=.06)
@@ -222,7 +223,9 @@ def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=
                 face=(a+j,a+j+3,a+j+4,a+j+1)
                 polys.append(face if sign==1 else tuple(reversed(face)))
         panel=mesh_object("F10 HERO sculpted frontal stamp" if sign==1 else
-                          "F10 HERO sculpted rear panel",v,polys,[m["body"]])
+                          "F10 HERO sculpted rear panel",
+                          [(xx-.055,yy,zz) for xx,yy,zz in v]
+                          if sign==-1 and hatch_root else v,polys,[m["body"]])
         if sign==-1 and hatch_root:
             attach_to_pivot(panel,hatch_root)
         cube("subtle rubber impact strip",(x+sign*.014,0,.418),
@@ -313,7 +316,8 @@ def greenhouse(m,door_root=None,hatch_root=None):
         (xfront,-.556,zf+.008),(xfront,.556,zf+.008),
         (front_sill,.698,bottom_z),(front_sill,-.698,bottom_z)],m["glass"])
     rear_glass=faces("F10 HERO inset rear liftgate glass",[
-        (xrear,-.556,zr+.008),(xrear,.556,zr+.008),
+        (HATCH_ROOF_PIVOT_X-.005 if hatch_root else xrear,-.556,zr+.008),
+        (HATCH_ROOF_PIVOT_X-.005 if hatch_root else xrear,.556,zr+.008),
         (rear_sill,.696,.979),(rear_sill,-.696,.979)],m["black_glass"])
     if hatch_root:
         attach_to_pivot(rear_glass,hatch_root)
