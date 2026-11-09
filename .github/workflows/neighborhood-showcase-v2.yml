@@ -28,6 +28,17 @@ jobs:
           python-version: "3.11"
       - name: Validate exact 60 Notion building types and full 3-house room plans
         run: python -m unittest discover -s tests/neighborhood -p "test_*.py" -v
+      - name: Build genuine-data schematic preview images
+        run: |
+          python -m pip install "Pillow>=10,<12"
+          python tests/neighborhood/render_overview.py
+      - name: Upload 60-archetype / H01-H03 review previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-60-neighborhood-and-three-house-lab-previews
+          path: build/neighborhood-showcase/*.png
+          retention-days: 14
+          if-no-files-found: error
       - name: Install actual pinned Godot 4.3
         run: |
           curl --fail --location --silent --show-error --retry 3 \
