@@ -377,9 +377,9 @@ func test_saves() -> void:
 	var saved := state()
 	var path := "user://house-survival-roundtrip.json"
 	var invalid_path := "user://house-survival-invalid.json"
-	check(game._save_game(path) == OK, "version-two atomic save succeeds")
+	check(game._save_game(path) == OK, "version-three atomic save succeeds")
 	var payload: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
-	check(payload.version == 2, "save has explicit schema-two version")
+	check(payload.version == 3, "save has explicit schema-three version")
 	game._restart_game()
 	check(game._load_game(path) == OK and state() == saved, "schema-two round trip restores survival, inventory, drops and legacy world")
 	var invalids: Array[Dictionary] = []

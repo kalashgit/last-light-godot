@@ -1,0 +1,88 @@
+{
+	"schema_version": 1,
+	"contract_id": "LL-W02-GAMEPLAY-PRESENTATION-V1",
+	"owner": "W02",
+	"status": "W02_PROPOSED",
+	"status_note": "Gameplay meaning of clips and event markers only. Clip names and rig/socket schema need W07 acknowledgement; infected timing needs W03; furniture state needs W05. Not an art, Golden, A00 or production approval.",
+	"consumers": ["F05", "F06", "F01", "F09", "F12", "W07", "W01"],
+	"timing_source": "res://data/gameplay_rules.json (dotted *_rule paths, seconds or m/s). Never copy numbers into this file.",
+	"event_rules": {
+		"exactly_once": "Marker appears on exactly one frame per direction of the clip.",
+		"tolerance": "An event with at_rule must start within one frame duration of the target time.",
+		"looping_clips": "Clips with gameplay events must not loop, so a repeated art frame can never repeat damage, transfer or loot."
+	},
+	"actors": {
+		"player": {
+			"families": ["F05"],
+			"min_directions": 8,
+			"clips": {
+				"idle": {"loop": true, "events": []},
+				"walk": {"loop": true, "ground_speed_rule": "locomotion.walk_speed", "events": [], "presentation_events": ["foot_contact"]},
+				"run": {"loop": true, "ground_speed_rule": "locomotion.sprint_speed", "events": [], "presentation_events": ["foot_contact"]},
+				"sneak": {"loop": true, "ground_speed_rule": "locomotion.sneak_speed", "events": [], "presentation_events": ["foot_contact"]},
+				"attack": {
+					"loop": false,
+					"max_duration_rule": "combat.default_weapon_cooldown",
+					"events": [{"name": "attack_contact", "count": "exactly_once", "gameplay_commit": "melee damage and one weapon wear"}],
+					"commit_timing": "ON_INPUT",
+					"commit_note": "Gameplay currently resolves the hit on input. The contact marker is required now so W07 can later switch commit_timing to ON_EVENT without new art."
+				},
+				"shove": {
+					"loop": false,
+					"max_duration_rule": "combat.shove.cooldown",
+					"events": [{"name": "shove_contact", "count": "exactly_once", "gameplay_commit": "push-back and wind-up interrupt"}],
+					"commit_timing": "ON_INPUT"
+				},
+				"interact": {
+					"loop": false,
+					"events": [{"name": "interact_commit", "count": "exactly_once", "gameplay_commit": "container/drop transfer or consumption"}],
+					"commit_timing": "ON_INPUT"
+				},
+				"hurt": {"loop": false, "events": [], "note": "Visual only: damage was resolved by receive_attack()."},
+				"death": {"loop": false, "events": [], "forbidden_events": ["attack_contact", "shove_contact", "interact_commit", "loot_spawn"], "note": "Death and loot resolve once in gameplay at health 0."}
+			}
+		},
+		"infected": {
+			"families": ["F06"],
+			"acknowledgement_required": "W03",
+			"min_directions": 8,
+			"clips": {
+				"walk": {"loop": true, "ground_speed_rule": "locomotion.zombie_speed", "events": [], "presentation_events": ["foot_contact"]},
+				"attack": {
+					"loop": false,
+					"max_duration_rule_sum": ["combat.zombie_attack_windup", "combat.zombie_attack_recovery"],
+					"events": [{"name": "attack_contact", "count": "exactly_once", "at_rule": "combat.zombie_attack_windup", "gameplay_commit": "receive_attack() on the player"}],
+					"commit_timing": "AT_RULE_TIME"
+				},
+				"hurt": {"loop": false, "events": []},
+				"death": {"loop": false, "events": [], "forbidden_events": ["attack_contact", "loot_spawn"], "note": "Kill loot is rolled once by gameplay."}
+			}
+		}
+	},
+	"objects": {
+		"container": {
+			"families": ["F01"],
+			"acknowledgement_required": "W05",
+			"min_directions": 1,
+			"applies_to": "items with container=true in data/house_layout.json",
+			"clips": {
+				"open": {"loop": false, "events": [{"name": "access_enabled", "count": "exactly_once", "gameplay_commit": "take/store permitted"}], "commit_timing": "ON_INPUT"},
+				"close": {"loop": false, "events": [{"name": "access_disabled", "count": "exactly_once", "gameplay_commit": "take/store refused"}], "commit_timing": "ON_INPUT"}
+			}
+		}
+	},
+	"items": {
+		"families": ["F09", "F01"],
+		"identity": "canonical_master_id must equal a gameplay item id in data/survival_items.json. ll_golden_* records are prototype icons and cannot bind to a production package.",
+		"roles_by_kind": {
+			"weapon": ["inventory_icon", "world_ground", "held"],
+			"food": ["inventory_icon", "world_ground"],
+			"drink": ["inventory_icon", "world_ground"],
+			"heal": ["inventory_icon", "world_ground"],
+			"utility": ["inventory_icon", "world_ground"],
+			"material": ["inventory_icon", "world_ground"]
+		},
+		"held_min_directions": 8,
+		"held_sockets": ["grip", "held_item_tip"]
+	}
+}

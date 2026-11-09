@@ -148,6 +148,9 @@ func draw(game) -> void:
  _status(game, Rect2(status.position + Vector2(28 + cell_width, 10), Vector2(cell_width, 28)), "STAMINA", game.stamina, STAMINA)
  _status(game, Rect2(status.position + Vector2(14, 52), Vector2(cell_width, 28)), "HUNGER", game.hunger, FOOD)
  _status(game, Rect2(status.position + Vector2(28 + cell_width, 52), Vector2(cell_width, 28)), "THIRST", game.thirst, WATER)
+ var condition_line: String = game._status_line()
+ if not condition_line.is_empty():
+  game._text(_fit(condition_line, status_width, 13), status.position + Vector2(4, status.size.y + 16), 13, Color("e0916f"))
  _button(game, controls.inventory, "INVENTORY", game.inventory_open)
  _button(game, controls.pause, "II", game.paused)
  if not game.inventory_open and not game.paused and game.health>0:

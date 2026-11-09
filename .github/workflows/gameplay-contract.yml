@@ -1,0 +1,86 @@
+name: W02 gameplay presentation contract
+
+on:
+  push:
+    branches: [claude/worker-02-gameplay-systems-743b97]
+  pull_request:
+    paths:
+      - "data/contracts/**"
+      - "data/gameplay_rules.json"
+      - "data/survival_items.json"
+      - "tools/gameplay_contract/**"
+      - "tests/gameplay_contract/**"
+      - ".github/workflows/gameplay-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  checker-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tests/gameplay_contract/test_check_presentation.py
+
+  real-w01-fixture:
+    # Runs the checker on the real output of W01's PR #53 Godot import run.
+    # That artifact expires around 2026-11-22; after that this job fails loudly
+    # rather than reporting a result it did not compute.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download W01 real F12 atlas fixture (PR #53 run 42535528235)
+        uses: actions/download-artifact@v4
+        with:
+          name: f12-real-atlas-godot4-import-fixture-calibration
+          run-id: 42535528235
+          repository: kalashgit/last-light-godot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/w01_fixture
+      - name: Check fixture and V2 packages against the W02 contract
+        env:
+          FIXTURE: ${{ runner.temp }}/w01_fixture
+        run: |
+          set -u
+          find "$FIXTURE" -type f | sort
+          manifest=$(find "$FIXTURE" -name fixture_manifest.json | head -n 1)
+          test -n "$manifest"
+          sha256sum "$manifest"
+          # Expected fail-closed verdict: calibration output, no gameplay markers yet.
+          set +e
+          python tools/gameplay_contract/check_presentation.py "$manifest" > "$RUNNER_TEMP/fixture_result.json"
+          code=$?
+          cat "$RUNNER_TEMP/fixture_result.json"
+          set -e
+          test "$code" -eq 2
+          python - "$RUNNER_TEMP/fixture_result.json" <<'PY'
+          import json, sys
+          r = json.load(open(sys.argv[1]))
+          assert r["status"] == "BLOCKED", r
+          for name in ("cube", "vehicle", "cow"):
+              assert r["cases"][name]["status"] == "OUT_OF_W02_SCOPE", (name, r["cases"][name])
+          fridge = r["cases"]["fridge"]
+          assert fridge["subject"] == "container" and fridge["status"] == "BLOCKED", fridge
+          print("W02 REAL FIXTURE RESULT:", json.dumps(fridge, sort_keys=True))
+          PY
+          count=0
+          for package in $(find "$FIXTURE" -name 'v2_*_package.json' | sort); do
+            set +e
+            out=$(python tools/gameplay_contract/check_presentation.py "$package" --mode production)
+            set -e
+            echo "$out"
+            echo "$out" | grep -q '"status": "NOT_BINDABLE_CALIBRATION"'
+            count=$((count + 1))
+          done
+          test "$count" -eq 3
+          echo "W02 REAL FIXTURE PASS: fridge blocked with findings, 3 calibration packages not bindable"
