@@ -2,7 +2,7 @@
 
 ## Truthful scope
 
-This workflow wraps **existing original F01 V10 refrigerator source** and F11-style portable materials. It produces four **F12 diagnostic** views, not 80×40px/m game-world-approved sprite atlases. The existing F01 model creates separately animated door/crisper clips; isolated Godot import tests run against the actual generated GLB. It does not modify `main.tscn`, canonical registry, Golden assets or existing production branches.
+This workflow wraps **existing original F01 V10 refrigerator source** and F11-style portable materials. It produces four existing **F12 diagnostic** views, plus four additional **F12 CAL-01 80×40 projected technical candidate** views with independently checked camera basis and fixed upper-left lighting. **Neither set is a Golden-approved gameplay atlas**. The existing F01 model creates separately animated door/crisper clips; isolated Godot import tests run against the actual generated GLB. It does not modify `main.tscn`, canonical registry, Golden assets or existing production branches.
 
 This is the orchestration foundation, **not yet a fully autonomous AI creative repair system**. Structured `ai_feedback.json` describes defects for an external coding-agent task. No model API is called, no unreviewed patches are executed, and model spending is $0. Auto-remediation is restricted to a maximum of three transient Blender process attempts, immediately stopping on persistent semantic/geometry/animation defects. A fresh corrected source commit and fresh QA run are required for actual geometry repairs.
 
@@ -21,8 +21,8 @@ This is the orchestration foundation, **not yet a fully autonomous AI creative r
 |---|---|---|
 | Geometry | Blender source and GLB signatures, mesh/geometry report | independent collision/clearance review |
 | Animation | 7+7 rendered frames and two GLB clips | F12 event-frame/pivot parity |
-| F11 materials | existing portable PBR textures, 18 file references | canonical shared material IDs and F11 signoff |
-| F12 sprites | four genuine diagnostic Blender renders, alpha/non-clipping QA | calibrated world scale, full atlas/angles and Golden review |
+| F11 materials | existing portable PBR textures, 18 file references; shared gate verifies 9 color/roughness pairs, RGBA, sizing, roughness channels and alpha | F11 canonical material ID/signoff and full texture baking |
+| F12 sprites | four genuine diagnostic Blender renders; four CAL-01 world-basis measured candidates, hash/alpha/non-clipping QA | full atlas/animation-angle output and founder Golden review |
 | Godot | real 4.6.3 isolated GLB import + interaction fixture | integrated gameplay, save and iPhone/Xogot test |
 | A00 | semantic ID is verified, rights/visual gates are not | rights approval and immutable Golden promotion ledger |
 
@@ -75,3 +75,11 @@ These are recorded provenance and actual CI failure causes, not fabricated engin
 F01 run [42585975737](https://github.com/kalashgit/last-light-godot/actions/runs/42585975737) subsequently passed **both real Blender candidate generation and real Godot 4 engine import/animation/interaction**, plus the F12 diagnostic and controller tests. The GH issue/draft-PR reporting jobs were intentionally skipped on the unprivileged branch `push` event. The source candidate remains noncanonical and subject to founder art review.
 
 The F10 failure was traced to an **object-label mismatch**: its `fleet_render.cube/pipe` functions prepend `LL FLEET ` while its clearance and animation test lookup expects `F10 HERO `. A temporary, tightly scoped M02 pinned-checkout adapter renames only explicitly tagged F10 HERO Blender objects at creation time and records the shim in the artifact. The adapter changes no mesh, material, animation or parent transform. Clearance must still achieve zero genuine sampled collisions, and GLB/animation validations must pass; a successful name fix alone never passes F10.
+
+## Integrated F11-style and F12 CAL-01 candidate gates
+
+`tools/autonomous_factory/f12_candidate.py` loads the actual generated F01 Blender source and renders four headings using the **same pinned F12 CAL-01** orthographic scale (256/(40√2)), elevation (asin(0.5)) and fixed-world key-light placement. It **measures** the projected 1-metre X/Y basis and rejects anything more than 0.001 px off the F12 80×40 projection. Its `f12_candidate.json` holds the pinned F12 source SHA, F01 input digest, measured basis, per-heading hashes and explicit `founder_approved:false`.
+
+`tools/autonomous_factory/qa_shared.py` also independently inspects all nine F01 image-backed PBR basecolor/roughness pairs for dimensions, grayscale roughness, alpha and format. It verifies the four candidate images' dimensions, SHA-256 values, nonempty alpha, nonclipping and directional variation. This makes F11-style and F12 technical properties shared **blocking** CI quality gates for F01, while the full independent F11 material production and F12 renderer calibration jobs remain pinned and separate. It is **not** a claim of full F11 asset equivalence, world gameplay correctness or artistic certification.
+
+The new integrated gates were authored after the first successful F01 real Blender/Godot run; they require their own new real engine run before being reported as passing.

@@ -76,10 +76,17 @@ jobs:
             --python tools/autonomous_factory/render_views.py -- \
             --source "$OUTPUT/attempt_1/refrigerator_refined_calibration.blend" \
             --output "$OUTPUT/views"
+          # Actual F12 CAL-01 80x40 world projection on the F01 source:
+          # separate candidate images; never Golden-approved or promoted.
+          blender -b --factory-startup --python-exit-code 3 -t 2 \
+            --python tools/autonomous_factory/f12_candidate.py -- \
+            --source "$OUTPUT/attempt_1/refrigerator_refined_calibration.blend" \
+            --output "$OUTPUT/f12_calibrated"
       - name: Validate F12 diagnostic directions
         run: |
           python3 -m pip install 'Pillow>=10,<13'
           python3 tools/autonomous_factory/qa_views.py "$OUTPUT/views"
+          python3 tools/autonomous_factory/qa_shared.py "$OUTPUT"
       - name: Capture source, preview, hashes, logs, and defect evidence
         if: always()
         uses: actions/upload-artifact@v4
