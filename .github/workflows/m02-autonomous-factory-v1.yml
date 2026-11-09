@@ -1,6 +1,11 @@
 name: M02 Autonomous Asset Factory V1 (protected candidate)
 
 on:
+  push:
+    branches: ['codex/m02-autonomous-asset-factory-v1']
+    paths:
+      - 'tools/autonomous_factory/**'
+      - '.github/workflows/m02-autonomous-factory-v1.yml'
   pull_request:
     paths:
       - 'tools/autonomous_factory/**'
@@ -51,6 +56,9 @@ jobs:
       OUTPUT: build/m02_f01_v1
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install bounded dependencies (hosted only)
         if: inputs.runner != 'isolated-self-hosted'
         run: |
@@ -68,7 +76,7 @@ jobs:
             --output "$OUTPUT/views"
       - name: Validate F12 diagnostic directions
         run: |
-          python3 -m pip install --user 'Pillow>=10,<15'
+          python3 -m pip install 'Pillow>=10,<13'
           python3 tools/autonomous_factory/qa_views.py "$OUTPUT/views"
       - name: Capture source, preview, hashes, logs, and defect evidence
         if: always()
@@ -100,7 +108,7 @@ jobs:
   candidate-draft:
     needs: [contracts, blender-candidate, real-godot-fixture]
     if: >-
-      github.event_name != 'pull_request' &&
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') &&
       github.actor == 'kalashgit' &&
       needs.real-godot-fixture.result == 'success'
     runs-on: ubuntu-latest
@@ -132,7 +140,7 @@ jobs:
   failure-issue:
     needs: [contracts, blender-candidate, real-godot-fixture]
     if: >-
-      always() && github.event_name != 'pull_request' &&
+      always() && (github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') &&
       github.actor == 'kalashgit' &&
       (needs.contracts.result == 'failure' || needs.blender-candidate.result == 'failure' || needs.real-godot-fixture.result == 'failure')
     runs-on: ubuntu-latest
