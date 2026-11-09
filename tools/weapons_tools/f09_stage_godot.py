@@ -25,6 +25,33 @@ def main():
     assert golden.is_dir(),"Golden 40 assets not present in repo"
     shutil.copytree(golden,DST/"assets"/"last_light"/"golden40",
                     dirs_exist_ok=True)
+    # Main house_art.gd reads this genuine factory manifest and the matching
+    # grounded furniture/decor sprites. Stage only referenced assets; copying
+    # the entire production factory would be wasteful and obscure defects.
+    original_factory=ROOT/"assets"/"generated"/"factory"
+    manifest_path=original_factory/"manifest.json"
+    assert manifest_path.exists(),"Actual gameplay factory manifest missing"
+    factory_dst=DST/"assets"/"generated"/"factory"
+    factory_dst.mkdir(parents=True,exist_ok=True)
+    shutil.copyfile(manifest_path,factory_dst/"manifest.json")
+    manifest=json.loads(manifest_path.read_text())
+    house_layout=json.loads((ROOT/"data"/"house_layout.json").read_text())
+    referenced={entry["asset_id"] for category in ("furniture","decorations")
+                for entry in house_layout.get(category,[])}
+    factory_map={obj["id"]:obj for obj in manifest["objects"]}
+    assert referenced.issubset(factory_map),referenced-set(factory_map)
+    for asset_id in sorted(referenced):
+        definition=factory_map[asset_id]
+        ground=[frame["file"] for frame in definition["frames"]
+                if frame["mode"]=="ground"]
+        assert ground,("ground frame missing",asset_id)
+        for filename in ground:
+            origin=original_factory/filename
+            dest=factory_dst/filename
+            assert origin.is_file(),origin
+            dest.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(origin,dest)
+    print("F09_REAL_HOUSE_FACTORY_STAGED",len(referenced),flush=True)
     (DST/"main_game_fixture.gd").write_text(
         (ROOT/"tools"/"weapons_tools"/"f09_main_game_fixture.gd").read_text())
     (DST/"f09_candidate_16_heading_atlas.png").write_bytes(
