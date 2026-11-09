@@ -2,7 +2,10 @@
 
 This test fixture is independent of `last-light-godot/project.godot` and `main.tscn`.
 It tests GLB scene import, freezer/door/drawer hierarchy, distinct door and
-crisper animations, and the proposed interaction gate in a standalone script.
+crisper animations, and a versioned, deterministic candidate interaction state in
+`fridge_interaction.gd`. The script verifies prohibited access when closed,
+independent inner access, closure reset, valid save-state round-trip and rejection
+of inconsistent or unknown-version state data.
 It **does not** prove production collision, inventory integration, save/load,
 W05/W07 gameplay state ownership, or actual iPhone play.
 
@@ -21,4 +24,6 @@ Ubuntu runner and executes the test in `barichello/godot-ci:4.6.3`.
 Do not count a pending CI run as a pass: record the exact workflow-run URL,
 job conclusion, and step logs after it finishes.
 
-The source GLB is an unapproved F01 calibration, not a finished canonical master.
+The founder approved V10 as the visual benchmark on 2026-11-09. The source GLB
+remains an **unapproved canonical/mass-production** candidate until A00 and the
+remaining F11/F12, live gameplay, provenance and device gates are completed.

@@ -1,6 +1,6 @@
 # F01 V10 refrigerator: independent mechanics, image PBR, Godot import fixture
 
-Status: **NONCANONICAL_CALIBRATION_NOT_APPROVED**. Source candidate `ll_furniture_refrigerator`, A00 revision `A00-20261108-B001-r1`, [Notion canonical candidate](https://app.notion.com/p/412f639e237381a7b951f661cbf3ac19). A00 verifies identity; rights, founder visual approval and F11/F12 contracts remain pending. The 360-model source archive is preserved. The playable LAST LIGHT Godot project has not been modified.
+Status: **FOUNDER_VISUAL_BENCHMARK_APPROVED; NONCANONICAL_INTEGRATION_CANDIDATE**. On **2026-11-09**, the founder explicitly wrote: **"I approve F01 refrigerator V10 as the visual benchmark. Continue the remaining production integration gates before mass production."** Approval scope is **V10 visual benchmark only**: it is not Golden/master approval, authorization to mass-produce, permission to merge, or F11/F12/gameplay/rights signoff. Source candidate `ll_furniture_refrigerator`, A00 revision `A00-20261108-B001-r1`, [Notion canonical candidate](https://app.notion.com/p/412f639e237381a7b951f661cbf3ac19). A00 verifies identity; rights and F11/F12 contracts remain pending. The 360-model source archive is preserved. The playable LAST LIGHT Godot project has not been modified.
 
 ## Actual local Blender V10 results
 
@@ -54,9 +54,9 @@ The definitive [workflow run #6](https://github.com/kalashgit/last-light-godot/a
 
 This isolated interaction test is not a production game interaction test: gameplay state ownership, collision, save/load, inventory access and iPhone performance require integration by W05/W07, F12 and the game assembler.
 
-## Founder visual signoff request
+## Founder visual approval — recorded, scope limited
 
-Review both door and drawer contact sheets, especially at the **128 px diagnostic** scale. Decide **approve V10 as an art benchmark** or **return for revisions**. Requested review criteria:
+The founder approved V10 as the **visual benchmark** on 2026-11-09. The following remain the art criteria for F11/F12 native-scale and in-game checks, especially the **128 px diagnostic** sheets:
 
 - Appliance clearly reads as a refrigerator at gameplay size; door/chassis boundaries are distinct.
 - Open interior looks physically credible, shelves do not collapse to stripes, freezer recess is identifiable.
@@ -64,7 +64,7 @@ Review both door and drawer contact sheets, especially at the **128 px diagnosti
 - Materials retain the intended grounded-pixel-realism style, with upper-left light and plausible wear.
 - Silhouette and proportions fit the eventual furniture Golden 40 standard.
 
-**No automatic Golden approval or mass-production switch is granted by this document.**
+**No automatic Golden approval or mass-production switch is granted by this visual approval.**
 
 ## Known limitations
 
@@ -72,4 +72,4 @@ Review both door and drawer contact sheets, especially at the **128 px diagnosti
 - The freezer flap is modeled and independently pivoted but not yet animated; no verified freezer-specific canonical state is available.
 - The crisper render visibly changes in RGB while alpha may remain constant; F12 sprite optimization must preserve that interior motion.
 - The actual Godot fixture simulates an access gate locally but is not wired into the live player/loot/inventory system.
-- Founder approval, rights review, collision, Godot gameplay integration and iPhone visual acceptance remain explicit gates.
+- Founder **visual benchmark approval is COMPLETE**; A00/rights review, F11/F12 material and sprite contract, collision, live Godot gameplay integration and iPhone visual acceptance remain explicit gates.

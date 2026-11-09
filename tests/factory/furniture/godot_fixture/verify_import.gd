@@ -1,5 +1,7 @@
 extends SceneTree
 
+const FridgeInteraction = preload("res://fridge_interaction.gd")
+
 # Standalone Godot 4 gameplay-contract fixture, NOT production gameplay code.
 # Requires model.glb beside project.godot. Tests independent visual interactions.
 
@@ -60,11 +62,9 @@ func _initialize() -> void:
 	if door_angle < 0.7 or drawer_move_during_door > 0.002:
 		_fail("F01_INTERACTION_FAIL: door clip motion missing or drawer wrongly coupled", 5)
 		return
-	# Independent interaction contract: a closed door must prevent drawer access.
-	var door_open := false
-	var crisper_can_open := door_open
-	if crisper_can_open:
-		_fail("F01_INTERACTION_FAIL: closed door allowed crisper", 6)
+	var fridge := FridgeInteraction.new()
+	if fridge.toggle_drawer() or fridge.toggle_freezer() or fridge.can_access("crisper"):
+		_fail("F01_INTERACTION_FAIL: closed appliance allowed inner access", 6)
 		return
 	# On a fresh scene, the drawer clip should move only the drawer pivot.
 	var fresh := (packed as PackedScene).instantiate()
@@ -80,12 +80,30 @@ func _initialize() -> void:
 	if drawer_travel < 0.08 or door_move_during_drawer > 0.002:
 		_fail("F01_INTERACTION_FAIL: drawer clip motion missing or door wrongly coupled", 7)
 		return
-	# This is an isolated contract simulation, not the real W05/W07 interaction.
-	door_open = true
-	crisper_can_open = door_open
-	if not crisper_can_open:
-		_fail("F01_INTERACTION_FAIL: open door did not permit crisper", 8)
+	# Verify access states and deterministic persistence without touching game saves.
+	if not fridge.toggle_door() or not fridge.can_access("shelves") or fridge.can_access("crisper"):
+		_fail("F01_INTERACTION_FAIL: main door access contract", 8)
+		return
+	if not fridge.toggle_drawer() or not fridge.can_access("crisper"):
+		_fail("F01_INTERACTION_FAIL: drawer access contract", 9)
+		return
+	if not fridge.toggle_freezer() or not fridge.can_access("freezer"):
+		_fail("F01_INTERACTION_FAIL: freezer access contract", 10)
+		return
+	var saved := fridge.snapshot()
+	var restored := FridgeInteraction.new()
+	if not restored.restore(saved) or restored.snapshot() != saved:
+		_fail("F01_INTERACTION_FAIL: candidate state round-trip", 11)
+		return
+	if restored.restore({"version": 1, "door_open": false, "drawer_open": true, "freezer_open": false}):
+		_fail("F01_INTERACTION_FAIL: invalid persisted state accepted", 12)
+		return
+	if restored.restore({"version": 99, "door_open": true, "drawer_open": false, "freezer_open": false}):
+		_fail("F01_INTERACTION_FAIL: future version accepted", 13)
+		return
+	if restored.toggle_door() or restored.drawer_open or restored.freezer_open or restored.can_access("freezer"):
+		_fail("F01_INTERACTION_FAIL: closing door left contents accessible", 14)
 		return
 	print("F01_GODOT_GLTF_IMPORT_PASS meshes=", mesh_nodes.size(), " door_rad=", door_angle, " drawer_m=", drawer_travel)
-	print("F01_GODOT_INTERACTION_PASS isolated_contract=true")
+	print("F01_GODOT_INTERACTION_PASS isolated_contract=true state_round_trip=true access_gate=true")
 	quit(0)
