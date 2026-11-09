@@ -58,8 +58,9 @@ jobs:
           sha256sum "$manifest"
           # Expected fail-closed verdict: calibration output, no gameplay markers yet.
           set +e
-          python tools/gameplay_contract/check_presentation.py "$manifest" | tee "$RUNNER_TEMP/fixture_result.json"
+          python tools/gameplay_contract/check_presentation.py "$manifest" > "$RUNNER_TEMP/fixture_result.json"
           code=$?
+          cat "$RUNNER_TEMP/fixture_result.json"
           set -e
           test "$code" -eq 2
           python - "$RUNNER_TEMP/fixture_result.json" <<'PY'
