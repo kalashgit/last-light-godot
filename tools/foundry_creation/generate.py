@@ -162,6 +162,10 @@ def cabinet(v,r,m):
     for x in (-w*.40,w*.40):
         for y in (-d*.35,d*.35):
             box(f"leg_{x:.2f}_{y:.2f}",(x,y,.07),(.07,.065,.14),m["wood"],.003)
+    box("cabinet_rear_panel",(0,d/2+.021,h*.55),(w*.87,.031,h*.72),m["wood"],.009)
+    box("cabinet_base_kickplate",(0,-d/2-.017,.18),(w*.83,.024,.09),m["dark"],.004)
+    for side in (-1,1):
+        box(f"door_visible_hinge_{side}",(side*w*.41,-d/2-.047,h*.70),(.028,.027,.083),m["steel"],.005)
     return (w+.05,d+.06,h+.05)
 
 def generator(v,r,m):
