@@ -1,0 +1,16 @@
+{
+  "candidate_references": 3114,
+  "distinct_provisional_semantic_keys": 3106,
+  "evidence_tiers": {
+    "GAMEPLAY_NECESSITY_NOT_YET_DEMONSTRATED": 3067,
+    "LIVE_GAMEPLAY_IDENTITY_MATCH": 2,
+    "TECHNICAL_ART_RESOURCE_MATCH": 33,
+    "GOLDEN40_METADATA_IDENTITY_MATCH_NOT_VISUAL_APPROVAL": 12
+  },
+  "live_survival_items_defined": 8,
+  "golden40_prototype_items_defined": 40,
+  "technical_import_resources_defined": 311,
+  "scope": "Source-name-to-existing-game-ID reconciliation; not proof of physical geometry match, visual quality or gameplay necessity.",
+  "source_art_rights": "research_only",
+  "new_canonical_masters": 0
+}
