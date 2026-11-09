@@ -27,8 +27,19 @@ const OUTDOOR_ZOOM := 1.0
 const MIN_ZOOM := 0.75
 const MAX_ZOOM := 3.25
 const ZOOM_STEP := 0.25
+## Four rows per backpack page so every USE/DROP target can be >= 44 pt tall.
+const INVENTORY_PAGE_SIZE := 4
 var camera_zoom := 1.0
 var zoom_adjust := 0.0
+## W08 camera: indoor/outdoor framing uses a hysteresis band around the house
+## footprint so walking along a doorway cannot flip zoom back and forth, and the
+## vertical framing pivot eases instead of jumping 12% of the screen height.
+const CAMERA_HYSTERESIS_M := 0.35
+const PIVOT_INDOOR := .58
+const PIVOT_OUTDOOR := .70
+const PIVOT_EASE := 7.0
+var camera_indoor := false
+var camera_pivot_y := PIVOT_OUTDOOR
 var factory_icon_textures: Dictionary = {}
 var held_sprites: Dictionary = {}
 var selected_target: Dictionary = {}
@@ -109,7 +120,7 @@ func _ready() -> void:
   _announce("Original save retained; backup loaded" if backup_status==OK else "Save could not load — original file retained")
   paused=true
  get_viewport().size_changed.connect(_on_viewport_resized)
- camera_zoom = _zoom_target()
+ _snap_camera()
  loot_builder = LootBuilder.new()
  add_child(loot_builder)
  loot_builder.setup(self)
@@ -278,7 +289,11 @@ func _shove() -> void:
 
 func _process(delta: float) -> void:
  # The HUD stays at native size while the world eases into indoor/outdoor zoom.
- camera_zoom = move_toward(camera_zoom, _zoom_target(), 3.0 * clampf(delta,0.0,0.25))
+ var camera_dt := clampf(delta,0.0,0.25)
+ camera_zoom = move_toward(camera_zoom, _zoom_target(), 3.0 * camera_dt)
+ var pivot_goal := _pivot_target()
+ camera_pivot_y = lerpf(camera_pivot_y, pivot_goal, 1.0 - exp(-PIVOT_EASE * camera_dt))
+ if absf(camera_pivot_y - pivot_goal) < .0005: camera_pivot_y = pivot_goal
  if paused or inventory_open or builder_open or health<=0:
   queue_redraw()
   return
@@ -344,13 +359,29 @@ func _iso(p: Vector2, height: float = 0) -> Vector2:
 
 func _screen(p: Vector2, height: float = 0) -> Vector2:
  var size := get_viewport_rect().size
- return _iso(p, height) - _iso(player) + size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+ return _iso(p, height) - _iso(player) + size * Vector2(.50, camera_pivot_y)
 
 func _camera_pivot() -> Vector2:
- return get_viewport_rect().size * Vector2(.50, .58 if HOME.has_point(player) else .70)
+ return get_viewport_rect().size * Vector2(.50, camera_pivot_y)
+
+## Indoor framing with hysteresis: switch in only when clearly inside the
+## footprint, switch out only when clearly outside; keep the last mode between.
+func _camera_inside() -> bool:
+ if HOME.grow(-CAMERA_HYSTERESIS_M).has_point(player): camera_indoor = true
+ elif not HOME.grow(CAMERA_HYSTERESIS_M).has_point(player): camera_indoor = false
+ return camera_indoor
+
+func _pivot_target() -> float:
+ return PIVOT_INDOOR if _camera_inside() else PIVOT_OUTDOOR
+
+## Teleports (new game, load, backup recovery) frame instantly; no slow pan.
+func _snap_camera() -> void:
+ camera_indoor = HOME.has_point(player)
+ camera_pivot_y = _pivot_target()
+ camera_zoom = _zoom_target()
 
 func _zoom_target() -> float:
- return clampf((INDOOR_ZOOM if HOME.has_point(player) else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
+ return clampf((INDOOR_ZOOM if _camera_inside() else OUTDOOR_ZOOM) + zoom_adjust, MIN_ZOOM, MAX_ZOOM)
 
 func _adjust_zoom(delta: float) -> void:
  if health<=0 or paused or inventory_open or builder_open: return
@@ -642,6 +673,7 @@ func _restart_game() -> void:
  autosave_time = 0.0
  paused = false
  _clear_pointers()
+ _snap_camera()
  _announce("Find the front door and press INTERACT")
  _save_game()
 
@@ -776,6 +808,7 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
  attack_cooldown=0; shove_cooldown=0; recovery_delay=0
  navigation.paths.clear(); navigation.timers.clear()
  _clear_pointers()
+ _snap_camera()
  if data.version==1: _announce("Legacy progress loaded; caches supplied food, water and bandages")
  return OK
 
@@ -838,8 +871,8 @@ func _context_prompt() -> String:
 
 func _inventory_rows() -> Array:
  var rows:=survival.rows()
- inventory_page=clampi(inventory_page,0,maxi(0,ceili(rows.size()/6.0)-1))
- var page: Array=rows.slice(inventory_page*6,inventory_page*6+6)
+ inventory_page=clampi(inventory_page,0,maxi(0,ceili(rows.size()/float(INVENTORY_PAGE_SIZE))-1))
+ var page: Array=rows.slice(inventory_page*INVENTORY_PAGE_SIZE,(inventory_page+1)*INVENTORY_PAGE_SIZE)
  for row in page:
   var definition: Dictionary=survival.definitions[row.id]
   row.detail="%s · %.2f kg%s" % [definition.category,float(definition.weight_kg)*int(row.count)," · equipped" if survival.equipped==row.id else ""]

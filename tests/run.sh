@@ -37,6 +37,17 @@ run_checked --headless --path . --script tests/save_isolation.gd
 
 run_checked --headless --path . --script tests/world_art.gd
 
+# W08 mobile input, HUD layout, touch targets and camera (engine-level only).
+run_checked --headless --path . --script tests/mobile/mobile_input.gd
+# Render parity of the draw-call batcher needs a real GL context.
+if command -v xvfb-run >/dev/null 2>&1; then
+ parity=$(xvfb-run -a "$engine" --path . --rendering-driver opengl3 --script tests/mobile/render_batch_parity.gd 2>&1 || true)
+ echo "$parity" | grep -E 'RENDER BATCH PARITY' || true
+ echo "$parity" | grep -q 'RENDER BATCH PARITY: PASS'
+else
+ echo "RENDER BATCH PARITY: SKIPPED (no xvfb-run; needs a display)"
+fi
+
 # Integration candidate: merged #18/#19/#25/#26 interfaces in one build.
 run_checked --headless --path . --script tests/integration.gd
 python3 -m unittest discover -s tests -p 'test_*.py'
