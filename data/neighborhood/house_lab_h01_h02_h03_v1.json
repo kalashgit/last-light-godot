@@ -1,0 +1,393 @@
+{
+  "schema": "last_light.house_lab_v1",
+  "source": "https://app.notion.com/p/411f639e23738160861bef69a130bbb7",
+  "seed": "LL-HOUSE-LAB-20261109",
+  "tile_pixel_basis": [
+    80,
+    40
+  ],
+  "status": "LAYOUT_CALIBRATION_ONLY_NOT_GOLDEN",
+  "world_bounds": [
+    0,
+    0,
+    96,
+    46
+  ],
+  "player_spawn": [
+    12,
+    22
+  ],
+  "three_house_lab": [
+    "LAB-H01",
+    "LAB-H02",
+    "LAB-H03"
+  ],
+  "houses": [
+    {
+      "id": "LAB-H01",
+      "name": "Oak starter house",
+      "type": "one_story_starter",
+      "footprint": [
+        6,
+        9,
+        12,
+        10
+      ],
+      "roof_style": "gable",
+      "front_door": [
+        12,
+        19
+      ],
+      "stories": 1,
+      "condition": "abandoned",
+      "rooms": [
+        {
+          "id": "LAB-H01-LIV",
+          "rect": [
+            0,
+            0,
+            6,
+            5
+          ],
+          "type": "living"
+        },
+        {
+          "id": "LAB-H01-KIT",
+          "rect": [
+            6,
+            0,
+            6,
+            5
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "LAB-H01-BED",
+          "rect": [
+            0,
+            5,
+            5,
+            5
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "LAB-H01-HAL",
+          "rect": [
+            5,
+            5,
+            2,
+            5
+          ],
+          "type": "hall"
+        },
+        {
+          "id": "LAB-H01-BAT",
+          "rect": [
+            7,
+            5,
+            5,
+            3
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "LAB-H01-UTL",
+          "rect": [
+            7,
+            8,
+            5,
+            2
+          ],
+          "type": "utility"
+        }
+      ],
+      "upper_rooms": []
+    },
+    {
+      "id": "LAB-H02",
+      "name": "Cedar two-storey family house",
+      "type": "two_story_family",
+      "footprint": [
+        34,
+        7,
+        16,
+        12
+      ],
+      "roof_style": "hip",
+      "front_door": [
+        41,
+        19
+      ],
+      "stories": 2,
+      "condition": "weathered",
+      "stairwell": [
+        7,
+        8,
+        3,
+        4
+      ],
+      "rooms": [
+        {
+          "id": "LAB-H02-LIV",
+          "rect": [
+            0,
+            0,
+            8,
+            6
+          ],
+          "type": "living"
+        },
+        {
+          "id": "LAB-H02-KIT",
+          "rect": [
+            8,
+            0,
+            8,
+            6
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "LAB-H02-DEN",
+          "rect": [
+            0,
+            6,
+            5,
+            6
+          ],
+          "type": "den"
+        },
+        {
+          "id": "LAB-H02-HAL",
+          "rect": [
+            5,
+            6,
+            5,
+            6
+          ],
+          "type": "hall"
+        },
+        {
+          "id": "LAB-H02-BAT0",
+          "rect": [
+            10,
+            6,
+            3,
+            3
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "LAB-H02-LND",
+          "rect": [
+            13,
+            6,
+            3,
+            3
+          ],
+          "type": "laundry"
+        },
+        {
+          "id": "LAB-H02-PAN",
+          "rect": [
+            10,
+            9,
+            3,
+            3
+          ],
+          "type": "pantry"
+        },
+        {
+          "id": "LAB-H02-STO",
+          "rect": [
+            13,
+            9,
+            3,
+            3
+          ],
+          "type": "storage"
+        }
+      ],
+      "upper_rooms": [
+        {
+          "id": "LAB-H02-MASTER",
+          "rect": [
+            0,
+            0,
+            6,
+            5
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "LAB-H02-BED2",
+          "rect": [
+            6,
+            0,
+            6,
+            5
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "LAB-H02-BATH1",
+          "rect": [
+            12,
+            0,
+            4,
+            5
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "LAB-H02-CORR",
+          "rect": [
+            0,
+            5,
+            16,
+            3
+          ],
+          "type": "hall"
+        },
+        {
+          "id": "LAB-H02-BED3",
+          "rect": [
+            0,
+            8,
+            6,
+            4
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "LAB-H02-LAND",
+          "rect": [
+            6,
+            8,
+            5,
+            4
+          ],
+          "type": "stairs"
+        },
+        {
+          "id": "LAB-H02-OFFICE",
+          "rect": [
+            11,
+            8,
+            5,
+            4
+          ],
+          "type": "office"
+        }
+      ]
+    },
+    {
+      "id": "LAB-H03",
+      "name": "Birch distressed L-house with garage",
+      "type": "l_house_attached_garage",
+      "footprint": [
+        66,
+        5,
+        18,
+        14
+      ],
+      "cutout": [
+        14,
+        0,
+        4,
+        4
+      ],
+      "roof_style": "asymmetric_gable",
+      "front_door": [
+        73.5,
+        19
+      ],
+      "stories": 1,
+      "condition": "boarded",
+      "rooms": [
+        {
+          "id": "LAB-H03-LIV",
+          "rect": [
+            0,
+            0,
+            8,
+            6
+          ],
+          "type": "living"
+        },
+        {
+          "id": "LAB-H03-KIT",
+          "rect": [
+            8,
+            0,
+            6,
+            6
+          ],
+          "type": "kitchen"
+        },
+        {
+          "id": "LAB-H03-DEN",
+          "rect": [
+            0,
+            6,
+            6,
+            4
+          ],
+          "type": "den"
+        },
+        {
+          "id": "LAB-H03-BED",
+          "rect": [
+            0,
+            10,
+            6,
+            4
+          ],
+          "type": "bedroom"
+        },
+        {
+          "id": "LAB-H03-HAL",
+          "rect": [
+            6,
+            6,
+            3,
+            8
+          ],
+          "type": "hall"
+        },
+        {
+          "id": "LAB-H03-OFF",
+          "rect": [
+            9,
+            6,
+            5,
+            5
+          ],
+          "type": "office"
+        },
+        {
+          "id": "LAB-H03-BAT",
+          "rect": [
+            9,
+            11,
+            5,
+            3
+          ],
+          "type": "bathroom"
+        },
+        {
+          "id": "LAB-H03-GAR",
+          "rect": [
+            14,
+            4,
+            4,
+            10
+          ],
+          "type": "garage"
+        }
+      ],
+      "upper_rooms": []
+    }
+  ]
+}
