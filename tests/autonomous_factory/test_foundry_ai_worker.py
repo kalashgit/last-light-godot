@@ -94,5 +94,31 @@ class TestFoundryCorrection(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             MockGitHub("test").issue_for_run(123)
 
+    def test_daily_issue_cap(self):
+        now = worker.dt.datetime.now(worker.dt.timezone.utc).isoformat()
+        class MockGitHub(worker.GitHub):
+            def request(self, path, method="GET", body=None, token=None):
+                return [
+                    {"number": i, "created_at": now,
+                     "body": "<!-- foundry-correction-run:%d -->" % i}
+                    for i in range(6)
+                ]
+        self.assertEqual(MockGitHub("test").correction_issues_last_day(), 6)
+
+    def test_issue_cap_ignores_unmanaged_issues(self):
+        now = worker.dt.datetime.now(worker.dt.timezone.utc).isoformat()
+        class MockGitHub(worker.GitHub):
+            def request(self, path, method="GET", body=None, token=None):
+                return [{"created_at": now, "body": "unrelated manual task"}]
+        self.assertEqual(MockGitHub("test").correction_issues_last_day(), 0)
+
+    def test_daily_cap_fails_closed_when_unbounded(self):
+        now = worker.dt.datetime.now(worker.dt.timezone.utc).isoformat()
+        class MockGitHub(worker.GitHub):
+            def request(self, path, method="GET", body=None, token=None):
+                return [{"created_at": now, "body": "not found"} for _ in range(100)]
+        with self.assertRaises(RuntimeError):
+            MockGitHub("test").correction_issues_last_day()
+
 if __name__ == "__main__":
     unittest.main()
