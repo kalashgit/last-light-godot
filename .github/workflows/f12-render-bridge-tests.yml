@@ -131,7 +131,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/f12-f10"
           cp "$RUNNER_TEMP/f10-source-commit.txt" "$RUNNER_TEMP/f12-f10/f10-source-commit.txt"
           blender -b --factory-startup -t 2 --python tools/factory/render_bridge/f10_source_adapter.py -- --source-root "$RUNNER_TEMP/f10-source" --output "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend"
-          blender -b --factory-startup -t 2 --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend" --object F12_F10_HERO_ROOT_QA_ONLY --output "$RUNNER_TEMP/f12-f10/frames" --headings 16 --width 256 --height 256 --samples 12
+          blender -b --factory-startup -t 2 --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend" --object F12_F10_HERO_ROOT_QA_ONLY --output "$RUNNER_TEMP/f12-f10/frames" --headings 16 --width 384 --height 384 --samples 12
       - name: Inspect all 16 actual hatchback headings and package atlas
         run: |
           set -euo pipefail
