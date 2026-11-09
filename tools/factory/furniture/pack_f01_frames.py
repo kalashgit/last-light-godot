@@ -49,8 +49,9 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument("--frames",type=Path,required=True)
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--motion",choices=("hinge_open","crisper_open"),default="hinge_open")
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
-    sources=[a.frames/f"hinge_open_{i:02d}.png" for i in range(7)]
+    sources=[a.frames/f"{a.motion}_{i:02d}.png" for i in range(7)]
     images=validate(sources)
     w,h=images[0].size
     extrude_px=2; spacing=4; step=w+2*extrude_px+spacing
@@ -59,18 +60,21 @@ def main():
     for i,img in enumerate(images):
         x=extrude_px+i*step;y=extrude_px
         extrude(atlas,img,x,y,extrude_px)
-        result.append({"name":f"hinge_open_{i:02d}","frame":i,
+        result.append({"name":f"{a.motion}_{i:02d}","frame":i,
           "rect_px":{"x":x,"y":y,"w":w,"h":h},
           "pivot_px":{"x":256,"y":256},
-          "duration_ms_proposed":75,"door_angle_deg":round(-105*i/6,4),
+          "duration_ms_proposed":75,
+          **({"door_angle_deg":round(-105*i/6,4)} if a.motion=="hinge_open"
+             else {"crisper_travel_m":round(.19*i/6,5)}),
           "source_sha256":digest(sources[i])})
-    image_path=a.output/"refrigerator_hinge_open_atlas.png"
+    image_path=a.output/f"refrigerator_{a.motion}_atlas.png"
     atlas.save(image_path,optimize=True)
     # Downsampled diagnostic only: not a calibrated F12 game sprite resolution.
     diagnostic=images[-1].resize((128,128),resample=Image.Resampling.LANCZOS)
     diagnostic_path=a.output/"diagnostic_128_not_game_approved.png"
     diagnostic.save(diagnostic_path)
     metadata={"schema":1,"queue":"F01","status":"INTERMEDIATE_ATLAS_NOT_F12_APPROVED",
+      "motion":a.motion,
       "canonical_candidate":"ll_furniture_refrigerator","source_revision":"A00-20261108-B001-r1",
       "source_model_status":"NONCANONICAL_REFINEMENT_CALIBRATION",
       "atlas":image_path.name,"atlas_sha256":digest(image_path),
@@ -78,7 +82,7 @@ def main():
       "frame_count":len(result),"directions":["calibrated_view_only"],
       "pivot_policy":"UNTRIMMED_ENVELOPE_ORIGIN_CENTER; verify F12 against Blender world_ground projection",
       "animation_contract":"PROPOSAL_PENDING_W05_W07",
-      "proposed_events":[{"at_frame":6,"event":"access_enabled"}],
+      "proposed_events":[{"at_frame":6,"event":("access_enabled" if a.motion=="hinge_open" else "contents_exposed")}],
       "physical_dimensions_m":{"width":.77,"depth":.71,"height":1.77},
       "footprint_proposal_m":{"x_min":-.385,"x_max":.385,"y_min":-.355,"y_max":.355},
       "hinge_local_proposal_m":{"x":-.37,"y":-.374,"z":.885},
