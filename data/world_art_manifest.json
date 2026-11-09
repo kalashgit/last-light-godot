@@ -1,0 +1,4226 @@
+{
+  "schema": "last-light.world-art.v1",
+  "projection": {
+    "tile_px": [
+      80,
+      40
+    ],
+    "half_tile_px": [
+      40,
+      20
+    ],
+    "units": "gameplay_metres",
+    "vertical_px_per_m": 48.989795,
+    "world_zoom_applications": 1
+  },
+  "source_hashes": {
+    "assets/generated/factory/manifest.json": "ce04b285961b90d710682d3eb37228f8941823b5bf265e60b6bff93f1f18a0e4",
+    "assets/last_light/golden40/manifest.json": "2efe36cc9f0a1530754e6f83e92c7e4905301384656527a729322347ee2f5530",
+    "data/house_layout.json": "328d8591cfee509a2e1fc29a6729eea0984a411bb9da3d41d3d4ae693a1abebe"
+  },
+  "assets": [
+    {
+      "definition_id": "ll_crafting_firewood",
+      "icon_asset_id": "ll_crafting_firewood",
+      "world_asset_id": "ll_crafting_firewood",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_crafting_firewood/ground.png",
+      "ground_footprint_m": [
+        0.55,
+        0.2288
+      ],
+      "dimensions_m": [
+        0.55,
+        0.2288,
+        0.1536
+      ],
+      "tile_occupancy": [
+        0.55,
+        0.2288
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        112,
+        176,
+        144,
+        201
+      ],
+      "anchor_px": [
+        16,
+        16
+      ],
+      "contact_px": [
+        16,
+        16
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "847b93d3bf67207bfbf5e84f0f77a54ddc4171d901f9c3c078f9f6cdb6ab96e5"
+    },
+    {
+      "definition_id": "ll_crafting_pine_plank",
+      "icon_asset_id": "ll_crafting_pine_plank",
+      "world_asset_id": "ll_crafting_pine_plank",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_crafting_pine_plank/ground.png",
+      "ground_footprint_m": [
+        0.85,
+        0.16
+      ],
+      "dimensions_m": [
+        0.85,
+        0.16,
+        0.035
+      ],
+      "tile_occupancy": [
+        0.85,
+        0.16
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        106,
+        179,
+        150,
+        204
+      ],
+      "anchor_px": [
+        22,
+        13
+      ],
+      "contact_px": [
+        22,
+        13
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "6ec0e8037d02eb6d556ffc7e646761c674caa417ae4f3512e157656f350de59d"
+    },
+    {
+      "definition_id": "ll_food_bean_tin",
+      "icon_asset_id": "ll_food_bean_tin",
+      "world_asset_id": "ll_food_bean_tin",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_food_bean_tin/ground.png",
+      "ground_footprint_m": [
+        0.09,
+        0.09
+      ],
+      "dimensions_m": [
+        0.09,
+        0.09,
+        0.13
+      ],
+      "tile_occupancy": [
+        0.09,
+        0.09
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        123,
+        182,
+        133,
+        195
+      ],
+      "anchor_px": [
+        5,
+        10
+      ],
+      "contact_px": [
+        5,
+        10
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "ed4019aa430113fa2faae832bccf95585a05f8c7e5531ce0e8bd58fb014da5f5"
+    },
+    {
+      "definition_id": "ll_food_water_bottle",
+      "icon_asset_id": "ll_food_water_bottle",
+      "world_asset_id": "ll_food_water_bottle",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_food_water_bottle/ground.png",
+      "ground_footprint_m": [
+        0.085,
+        0.085
+      ],
+      "dimensions_m": [
+        0.085,
+        0.085,
+        0.27
+      ],
+      "tile_occupancy": [
+        0.085,
+        0.085
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        123,
+        176,
+        132,
+        195
+      ],
+      "anchor_px": [
+        5,
+        16
+      ],
+      "contact_px": [
+        5,
+        16
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "91b82fa523153e9ed37f1200376973ab0e64331ab2a0c5ee118724f19bec28d6"
+    },
+    {
+      "definition_id": "ll_furniture_bathtub",
+      "icon_asset_id": "ll_furniture_bathtub",
+      "world_asset_id": "ll_furniture_bathtub",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_bathtub/ground.png",
+      "ground_footprint_m": [
+        0.7125,
+        1.7655
+      ],
+      "dimensions_m": [
+        0.7125,
+        1.7655,
+        0.495
+      ],
+      "tile_occupancy": [
+        0.7125,
+        1.7655
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        76,
+        142,
+        180,
+        219
+      ],
+      "anchor_px": [
+        52,
+        50
+      ],
+      "contact_px": [
+        52,
+        50
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "b5df4461c88745fa2d32807a4ca89209f6478f1806b374dc5915cca40b47864d"
+    },
+    {
+      "definition_id": "ll_furniture_bookcase",
+      "icon_asset_id": "ll_furniture_bookcase",
+      "world_asset_id": "ll_furniture_bookcase",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_bookcase/ground.png",
+      "ground_footprint_m": [
+        0.935,
+        0.312
+      ],
+      "dimensions_m": [
+        0.935,
+        0.312,
+        1.584
+      ],
+      "tile_occupancy": [
+        0.935,
+        0.312
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        101,
+        100,
+        155,
+        206
+      ],
+      "anchor_px": [
+        27,
+        92
+      ],
+      "contact_px": [
+        27,
+        92
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "1efdf526de33f1e019eb9040dc79c7a798b889635ffc697574f587dc77556985"
+    },
+    {
+      "definition_id": "ll_furniture_coffee_table",
+      "icon_asset_id": "ll_furniture_coffee_table",
+      "world_asset_id": "ll_furniture_coffee_table",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_coffee_table/ground.png",
+      "ground_footprint_m": [
+        1.125,
+        0.736
+      ],
+      "dimensions_m": [
+        1.125,
+        0.736,
+        0.81
+      ],
+      "tile_occupancy": [
+        1.125,
+        0.736
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        89,
+        135,
+        167,
+        210
+      ],
+      "anchor_px": [
+        39,
+        57
+      ],
+      "contact_px": [
+        39,
+        57
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "cdfb19c7747cf4ce97652c76e261066c72f0a4907ce321dc8fc2c76b7abd8d98"
+    },
+    {
+      "definition_id": "ll_furniture_cooking_stove",
+      "icon_asset_id": "ll_furniture_cooking_stove",
+      "world_asset_id": "ll_furniture_cooking_stove",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_cooking_stove/ground.png",
+      "ground_footprint_m": [
+        0.689,
+        0.576
+      ],
+      "dimensions_m": [
+        0.689,
+        0.576,
+        0.945
+      ],
+      "tile_occupancy": [
+        0.689,
+        0.576
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        101,
+        132,
+        155,
+        206
+      ],
+      "anchor_px": [
+        27,
+        60
+      ],
+      "contact_px": [
+        27,
+        60
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "85f88a511f9fd00bf64b34d8c1cc4eea5ba9edd5d0740ff8372e07013bc907fe"
+    },
+    {
+      "definition_id": "ll_furniture_dining_chair",
+      "icon_asset_id": "ll_furniture_dining_chair",
+      "world_asset_id": "ll_furniture_dining_chair",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_dining_chair/ground.png",
+      "ground_footprint_m": [
+        0.46,
+        0.48
+      ],
+      "dimensions_m": [
+        0.46,
+        0.48,
+        0.88
+      ],
+      "tile_occupancy": [
+        0.46,
+        0.48
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        108,
+        138,
+        148,
+        202
+      ],
+      "anchor_px": [
+        20,
+        54
+      ],
+      "contact_px": [
+        20,
+        54
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "eb5540fffef189315076a1667054e41b5c34fddc63177a305a6059f8c8a3cfa6"
+    },
+    {
+      "definition_id": "ll_furniture_kitchen_counter",
+      "icon_asset_id": "ll_furniture_kitchen_counter",
+      "world_asset_id": "ll_furniture_kitchen_counter",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_kitchen_counter/ground.png",
+      "ground_footprint_m": [
+        1.045,
+        0.642
+      ],
+      "dimensions_m": [
+        1.045,
+        0.642,
+        0.81
+      ],
+      "tile_occupancy": [
+        1.045,
+        0.642
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        92,
+        134,
+        164,
+        210
+      ],
+      "anchor_px": [
+        36,
+        58
+      ],
+      "contact_px": [
+        36,
+        58
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "511e5cf839ac2cdeb452fa2dfcc6b866b2e29c1d9666b32f9f2b4ad623c99fdf"
+    },
+    {
+      "definition_id": "ll_furniture_kitchen_table",
+      "icon_asset_id": "ll_furniture_kitchen_table",
+      "world_asset_id": "ll_furniture_kitchen_table",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_kitchen_table/ground.png",
+      "ground_footprint_m": [
+        1.375,
+        0.832
+      ],
+      "dimensions_m": [
+        1.375,
+        0.832,
+        0.72
+      ],
+      "tile_occupancy": [
+        1.375,
+        0.832
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        82,
+        135,
+        174,
+        213
+      ],
+      "anchor_px": [
+        46,
+        57
+      ],
+      "contact_px": [
+        46,
+        57
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "5d5f2bcdfaf387ac5dceca51563122edda8f14a14f39d12945ef071afc189ac2"
+    },
+    {
+      "definition_id": "ll_furniture_medicine_cabinet",
+      "icon_asset_id": "ll_furniture_medicine_cabinet",
+      "world_asset_id": "ll_furniture_medicine_cabinet",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_medicine_cabinet/ground.png",
+      "ground_footprint_m": [
+        0.75,
+        0.44
+      ],
+      "dimensions_m": [
+        0.75,
+        0.44,
+        0.85
+      ],
+      "tile_occupancy": [
+        0.75,
+        0.44
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        102,
+        137,
+        154,
+        206
+      ],
+      "anchor_px": [
+        26,
+        55
+      ],
+      "contact_px": [
+        26,
+        55
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "7aee6f91f28afd66b30f9c8842797fdb92df130c2d6d09e2b5f1b79e8c651f6d"
+    },
+    {
+      "definition_id": "ll_furniture_nightstand",
+      "icon_asset_id": "ll_furniture_nightstand",
+      "world_asset_id": "ll_furniture_nightstand",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_nightstand/ground.png",
+      "ground_footprint_m": [
+        0.825,
+        0.4576
+      ],
+      "dimensions_m": [
+        0.825,
+        0.4576,
+        0.816
+      ],
+      "tile_occupancy": [
+        0.825,
+        0.4576
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        100,
+        138,
+        156,
+        206
+      ],
+      "anchor_px": [
+        28,
+        54
+      ],
+      "contact_px": [
+        28,
+        54
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "93ee5365a9393b21232d359ef235d03443a0b40f7e0d4a5bd071bb816f080f34"
+    },
+    {
+      "definition_id": "ll_furniture_refrigerator",
+      "icon_asset_id": "ll_furniture_refrigerator",
+      "world_asset_id": "ll_furniture_refrigerator",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_refrigerator/ground.png",
+      "ground_footprint_m": [
+        0.7,
+        0.65
+      ],
+      "dimensions_m": [
+        0.7,
+        0.65,
+        1.7
+      ],
+      "tile_occupancy": [
+        0.7,
+        0.65
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        99,
+        94,
+        157,
+        207
+      ],
+      "anchor_px": [
+        29,
+        98
+      ],
+      "contact_px": [
+        29,
+        98
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "dd981d0b4088ae66c358448023eacee82e98f042d83469b51334bc06c19008b1"
+    },
+    {
+      "definition_id": "ll_furniture_single_bed",
+      "icon_asset_id": "ll_furniture_single_bed",
+      "world_asset_id": "ll_furniture_single_bed",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_single_bed/ground.png",
+      "ground_footprint_m": [
+        0.95,
+        2.14
+      ],
+      "dimensions_m": [
+        0.95,
+        2.14,
+        0.585
+      ],
+      "tile_occupancy": [
+        0.95,
+        2.14
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        65,
+        132,
+        192,
+        219
+      ],
+      "anchor_px": [
+        63,
+        60
+      ],
+      "contact_px": [
+        63,
+        60
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "beaa3d6a680b198329e84de5b328efa8afcfd1426ed63f787fb60492ce78b517"
+    },
+    {
+      "definition_id": "ll_furniture_sink_cabinet",
+      "icon_asset_id": "ll_furniture_sink_cabinet",
+      "world_asset_id": "ll_furniture_sink_cabinet",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_sink_cabinet/ground.png",
+      "ground_footprint_m": [
+        0.88,
+        0.624
+      ],
+      "dimensions_m": [
+        0.88,
+        0.624,
+        0.864
+      ],
+      "tile_occupancy": [
+        0.88,
+        0.624
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        96,
+        133,
+        160,
+        209
+      ],
+      "anchor_px": [
+        32,
+        59
+      ],
+      "contact_px": [
+        32,
+        59
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "4a1b04db66a29f13c546a79764e74dbb0536820c687e0f0fa035d0dd42c730f7"
+    },
+    {
+      "definition_id": "ll_furniture_storage_chest",
+      "icon_asset_id": "ll_furniture_storage_chest",
+      "world_asset_id": "ll_furniture_storage_chest",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_storage_chest/ground.png",
+      "ground_footprint_m": [
+        0.935,
+        0.4992
+      ],
+      "dimensions_m": [
+        0.935,
+        0.4992,
+        0.528
+      ],
+      "tile_occupancy": [
+        0.935,
+        0.4992
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        97,
+        150,
+        159,
+        208
+      ],
+      "anchor_px": [
+        31,
+        42
+      ],
+      "contact_px": [
+        31,
+        42
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "3d6b8f0a1af4e564fa2a0217eec445842daf5d3415dc7e16ac58adbdc21ebcfe"
+    },
+    {
+      "definition_id": "ll_furniture_toilet",
+      "icon_asset_id": "ll_furniture_toilet",
+      "world_asset_id": "ll_furniture_toilet",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_toilet/ground.png",
+      "ground_footprint_m": [
+        0.4,
+        0.65
+      ],
+      "dimensions_m": [
+        0.4,
+        0.65,
+        0.8
+      ],
+      "tile_occupancy": [
+        0.4,
+        0.65
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        111,
+        143,
+        149,
+        199
+      ],
+      "anchor_px": [
+        17,
+        49
+      ],
+      "contact_px": [
+        17,
+        49
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "fd99f4646efe6f7050501b5c10cff20940cff232222db2043a8b95d4e1df2f8f"
+    },
+    {
+      "definition_id": "ll_furniture_two_seat_sofa",
+      "icon_asset_id": "ll_furniture_two_seat_sofa",
+      "world_asset_id": "ll_furniture_two_seat_sofa",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_two_seat_sofa/ground.png",
+      "ground_footprint_m": [
+        1.75,
+        0.82
+      ],
+      "dimensions_m": [
+        1.75,
+        0.82,
+        0.82
+      ],
+      "tile_occupancy": [
+        1.75,
+        0.82
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        74,
+        125,
+        182,
+        215
+      ],
+      "anchor_px": [
+        54,
+        67
+      ],
+      "contact_px": [
+        54,
+        67
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "7ba4cf9049750c049b507a4675308db714da2369ee3dd3919048e3ae182a52bb"
+    },
+    {
+      "definition_id": "ll_furniture_wardrobe",
+      "icon_asset_id": "ll_furniture_wardrobe",
+      "world_asset_id": "ll_furniture_wardrobe",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_furniture_wardrobe/ground.png",
+      "ground_footprint_m": [
+        0.9025,
+        0.6206
+      ],
+      "dimensions_m": [
+        0.9025,
+        0.6206,
+        1.665
+      ],
+      "tile_occupancy": [
+        0.9025,
+        0.6206
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        95,
+        93,
+        161,
+        209
+      ],
+      "anchor_px": [
+        33,
+        99
+      ],
+      "contact_px": [
+        33,
+        99
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "furniture",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "60003a6191102c519b060c30402cfb7821a9ea25eae25a0456a37671d5af6c75"
+    },
+    {
+      "definition_id": "ll_golden_acorn",
+      "icon_asset_id": "ll_golden_acorn",
+      "icon_path": "assets/last_light/golden40/objects/acorn/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "a6d28a88be003fcbf59191c01bebfc14b410abd5ee917a3e5f2c07f4062befde"
+    },
+    {
+      "definition_id": "ll_golden_aerosol_canister",
+      "icon_asset_id": "ll_golden_aerosol_canister",
+      "icon_path": "assets/last_light/golden40/objects/aerosol_canister/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "42c8a2708bd9a379eaaeb9acbf52eac7ba968fd7611b66e11f304203609ca16b"
+    },
+    {
+      "definition_id": "ll_golden_air_filter_panel",
+      "icon_asset_id": "ll_golden_air_filter_panel",
+      "icon_path": "assets/last_light/golden40/objects/air_filter_panel/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "97bf0539f2497a4b077fb26fe53b231a73b6bdc2d8d2480eb97eb5b76f0917e9"
+    },
+    {
+      "definition_id": "ll_golden_air_filter_tape",
+      "icon_asset_id": "ll_golden_air_filter_tape",
+      "icon_path": "assets/last_light/golden40/objects/air_filter_tape/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "1222fd5283e12763ff98d25e1b609103ac8ad3ea9ee162da463953afe304d3ae"
+    },
+    {
+      "definition_id": "ll_golden_alcohol_wipes",
+      "icon_asset_id": "ll_golden_alcohol_wipes",
+      "icon_path": "assets/last_light/golden40/objects/alcohol_wipes/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "805394f5737540dee20e0e9b07f0c10128cc0b105f48cd4046ec5174c6ceff0f"
+    },
+    {
+      "definition_id": "ll_golden_alcohol_wipes_old",
+      "icon_asset_id": "ll_golden_alcohol_wipes_old",
+      "icon_path": "assets/last_light/golden40/objects/alcohol_wipes_old/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "7e5796a4d45d275e90d296c5cb76cede707cf47bedbddb2a292e89b2e89ff054"
+    },
+    {
+      "definition_id": "ll_golden_aluminum_ingot",
+      "icon_asset_id": "ll_golden_aluminum_ingot",
+      "icon_path": "assets/last_light/golden40/objects/aluminum_ingot/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "6a2c67190444640f3b87fde1b7b9da97096080f5f0ae894aa231feee25235aee"
+    },
+    {
+      "definition_id": "ll_golden_aluminum_scrap",
+      "icon_asset_id": "ll_golden_aluminum_scrap",
+      "icon_path": "assets/last_light/golden40/objects/aluminum_scrap/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "cb6a44e64fea0adfc9950865d639bbf3afd0d179ff929c1064d7fb99560785cd"
+    },
+    {
+      "definition_id": "ll_golden_amethyst_gem",
+      "icon_asset_id": "ll_golden_amethyst_gem",
+      "icon_path": "assets/last_light/golden40/objects/amethyst_gem/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "fdd45550d2afa84b7fb23a710dbeea754dee6b477d5a0e31e1dcb423bbc86878"
+    },
+    {
+      "definition_id": "ll_golden_amethyst_raw",
+      "icon_asset_id": "ll_golden_amethyst_raw",
+      "icon_path": "assets/last_light/golden40/objects/amethyst_raw/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "e9a1d84b10f0ee74e10646dd0831304aa142bf6460713ebd9d6ba800239eb69a"
+    },
+    {
+      "definition_id": "ll_golden_ammo_box_40cal",
+      "icon_asset_id": "ll_golden_ammo_box_40cal",
+      "icon_path": "assets/last_light/golden40/objects/ammo_box_40cal/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "5938cf901b5cf9a27c3d9dd0b249a9105052a3af855e270bcf1fc21b68b42635"
+    },
+    {
+      "definition_id": "ll_golden_ammunition_case",
+      "icon_asset_id": "ll_golden_ammunition_case",
+      "icon_path": "assets/last_light/golden40/objects/ammunition_case/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "14d7a026b1892453d5a49c13e180d6d4340df6082557bd50595774cc33184f5f"
+    },
+    {
+      "definition_id": "ll_golden_baseball_bat",
+      "icon_asset_id": "ll_golden_baseball_bat",
+      "icon_path": "assets/last_light/golden40/weapons/baseball_bat/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "c8db978607b0dd93e003e34818e53abfb79582cb15a268adad80136a1d066875"
+    },
+    {
+      "definition_id": "ll_golden_basic_mace",
+      "icon_asset_id": "ll_golden_basic_mace",
+      "icon_path": "assets/last_light/golden40/weapons/basic_mace/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "3f166460d71bab177c33f05418963ea29b6fd6541783099839ea9eb49e4c6848"
+    },
+    {
+      "definition_id": "ll_golden_bone_club",
+      "icon_asset_id": "ll_golden_bone_club",
+      "icon_path": "assets/last_light/golden40/weapons/bone_club/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "c9150f18622bd4a54e09c0194a253270638a5937ea7326f93c585c849b4cf641"
+    },
+    {
+      "definition_id": "ll_golden_butterfly_knife_folded",
+      "icon_asset_id": "ll_golden_butterfly_knife_folded",
+      "icon_path": "assets/last_light/golden40/weapons/butterfly_knife_folded/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "7d07dc328da31a1a652913dabdacaa2ec3922a3c87445f907f5bebcec7d3ec54"
+    },
+    {
+      "definition_id": "ll_golden_crowbar",
+      "icon_asset_id": "ll_golden_crowbar",
+      "icon_path": "assets/last_light/golden40/weapons/crowbar/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "0897522e12fb4debe53ce32d97fad61c49692e053bd308c4cebfafb8489157b9"
+    },
+    {
+      "definition_id": "ll_golden_crude_machete",
+      "icon_asset_id": "ll_golden_crude_machete",
+      "icon_path": "assets/last_light/golden40/weapons/crude_machete/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "218e631f641e5a92946f9283667cae5fc5614c838b149a5be5bf9b394421857e"
+    },
+    {
+      "definition_id": "ll_golden_digital_alarm_clock",
+      "icon_asset_id": "ll_golden_digital_alarm_clock",
+      "icon_path": "assets/last_light/golden40/objects/digital_alarm_clock/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "e5157e0a2c24dbc7d6f554f940d875e6a23946a629ab709d1a9ad1a0bcca0ade"
+    },
+    {
+      "definition_id": "ll_golden_felling_axe",
+      "icon_asset_id": "ll_golden_felling_axe",
+      "icon_path": "assets/last_light/golden40/weapons/felling_axe/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "daca0e7a7f0066b19a2c98a8f6f3ed3b8bd5116277571396954fe81d4efaf25f"
+    },
+    {
+      "definition_id": "ll_golden_field_pack_camo",
+      "icon_asset_id": "ll_golden_field_pack_camo",
+      "icon_path": "assets/last_light/golden40/objects/field_pack_camo/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "8fd6a2be3488ca98d1c559cd10966f3e641e5a6467377dcccaa5516c4cb97c55"
+    },
+    {
+      "definition_id": "ll_golden_field_pack_olive",
+      "icon_asset_id": "ll_golden_field_pack_olive",
+      "icon_path": "assets/last_light/golden40/objects/field_pack_olive/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "ab6a0a05b6d79cf9f8177380f271cd30981e3b1031c85096b16558b237aab8fd"
+    },
+    {
+      "definition_id": "ll_golden_field_pack_sand",
+      "icon_asset_id": "ll_golden_field_pack_sand",
+      "icon_path": "assets/last_light/golden40/objects/field_pack_sand/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "052a35ccd17b9805ea578149f69ac9ef6e3a060d2f03b8f54e998a57b661758d"
+    },
+    {
+      "definition_id": "ll_golden_hand_axe",
+      "icon_asset_id": "ll_golden_hand_axe",
+      "icon_path": "assets/last_light/golden40/weapons/hand_axe/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "e1c440f359b636d34e87c96bf368b9a1c394979aa92eb0b598d086c019c0bfce"
+    },
+    {
+      "definition_id": "ll_golden_hunting_knife",
+      "icon_asset_id": "ll_golden_hunting_knife",
+      "icon_path": "assets/last_light/golden40/weapons/hunting_knife/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "8f3a28b9b8590691cc2c5191c26f4dfb8348fa7660ecbaeb811c7b5374fa8079"
+    },
+    {
+      "definition_id": "ll_golden_hunting_rifle",
+      "icon_asset_id": "ll_golden_hunting_rifle",
+      "icon_path": "assets/last_light/golden40/weapons/hunting_rifle/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "0142953dd497f53f20f8671e64d612a1aa92c9f5c9e6e4e567b2283b7bbe3621"
+    },
+    {
+      "definition_id": "ll_golden_isopropyl_alcohol",
+      "icon_asset_id": "ll_golden_isopropyl_alcohol",
+      "icon_path": "assets/last_light/golden40/objects/isopropyl_alcohol/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "e314597b8f3064f9fc334a58e741e27ef0259eae8bfc7ac8dc0d52e0bda5e189"
+    },
+    {
+      "definition_id": "ll_golden_licorice_sweets",
+      "icon_asset_id": "ll_golden_licorice_sweets",
+      "icon_path": "assets/last_light/golden40/objects/licorice_sweets/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "1cbbfd7eaeb4e3be8797c2abd665a1222866ec662f66e7d6733568a31e27831e"
+    },
+    {
+      "definition_id": "ll_golden_machete",
+      "icon_asset_id": "ll_golden_machete",
+      "icon_path": "assets/last_light/golden40/weapons/machete/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "f7c2635566c0a8f012281ee7f7a60d27e0f670eb89d1105e5e7785128704b481"
+    },
+    {
+      "definition_id": "ll_golden_meat_cleaver",
+      "icon_asset_id": "ll_golden_meat_cleaver",
+      "icon_path": "assets/last_light/golden40/weapons/meat_cleaver/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "9a1d8bb108d4a6f60f60eeff79cae52c1ae6630ba7d61d8d06f995bd866da97e"
+    },
+    {
+      "definition_id": "ll_golden_pickaxe",
+      "icon_asset_id": "ll_golden_pickaxe",
+      "icon_path": "assets/last_light/golden40/weapons/pickaxe/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "f83ddbe2a971d826bb7055341fe7a2412950afc9b5ba41d019215dfa3c4f3f70"
+    },
+    {
+      "definition_id": "ll_golden_pitchfork",
+      "icon_asset_id": "ll_golden_pitchfork",
+      "icon_path": "assets/last_light/golden40/weapons/pitchfork/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "74f816bb1c6757254cf9178f0943cc2f285acf90ab0ed0d6e4fdcdffc683ac10"
+    },
+    {
+      "definition_id": "ll_golden_pocket_knife",
+      "icon_asset_id": "ll_golden_pocket_knife",
+      "icon_path": "assets/last_light/golden40/weapons/pocket_knife/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "3e62eca5eebdd696663195c9c1bb6ee026b0977a11a5576f76f5e6965babf635"
+    },
+    {
+      "definition_id": "ll_golden_reinforced_baseball_bat",
+      "icon_asset_id": "ll_golden_reinforced_baseball_bat",
+      "icon_path": "assets/last_light/golden40/weapons/reinforced_baseball_bat/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "2feac6c6aa39488de79c1a00b945e42b1be46c79641ca832f4f6ff2ca5332a6b"
+    },
+    {
+      "definition_id": "ll_golden_respirator_mask",
+      "icon_asset_id": "ll_golden_respirator_mask",
+      "icon_path": "assets/last_light/golden40/objects/respirator_mask/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "c46a26fb282aad15398b8dae07adfde1bf3034fd7aa806212b4044db73fc22c9"
+    },
+    {
+      "definition_id": "ll_golden_scythe",
+      "icon_asset_id": "ll_golden_scythe",
+      "icon_path": "assets/last_light/golden40/weapons/scythe/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "b7d560b4f63c25b4f6e7241a4735175b4467d9b5ea9be0ab1381777702fc194d"
+    },
+    {
+      "definition_id": "ll_golden_short_pump_shotgun",
+      "icon_asset_id": "ll_golden_short_pump_shotgun",
+      "icon_path": "assets/last_light/golden40/weapons/short_pump_shotgun/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "9498c841470c36c0588c39d905845daaeb8fefb0263dd2a144db843f9c9392d1"
+    },
+    {
+      "definition_id": "ll_golden_single_edge_sword",
+      "icon_asset_id": "ll_golden_single_edge_sword",
+      "icon_path": "assets/last_light/golden40/weapons/single_edge_sword/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "2a4db00c8de6c845d17f47e8b152f528fd46af653569d3fdf038d3e5012373ac"
+    },
+    {
+      "definition_id": "ll_golden_stone_axe",
+      "icon_asset_id": "ll_golden_stone_axe",
+      "icon_path": "assets/last_light/golden40/weapons/stone_axe/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "959f2727a2197a256ceee1938323233bbc44186f6a9a764fc756a8563f2eae05"
+    },
+    {
+      "definition_id": "ll_golden_timed_aerosol_canister",
+      "icon_asset_id": "ll_golden_timed_aerosol_canister",
+      "icon_path": "assets/last_light/golden40/objects/timed_aerosol_canister/64.png",
+      "world_asset_id": null,
+      "world_sprite_path": null,
+      "world_state": "world_view_missing_temporary_marker",
+      "ground_footprint_m": null,
+      "dimensions_m": null,
+      "tile_occupancy": null,
+      "source_canvas_px": null,
+      "crop_rect_px": null,
+      "anchor_px": null,
+      "contact_px": null,
+      "draw_scale": 1.0,
+      "facing": null,
+      "available_facings": [],
+      "z_height_m": 0,
+      "render_layer": "ground_loot",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "none_for_test_marker",
+      "marker_radius_px": 2.5,
+      "alpha_qc_status": "manual_review_required_bright_edge",
+      "provenance": "Founder-supplied original contact sheet, 2026-11-06",
+      "approval_status": "founder_style_reference_only_world_not_approved",
+      "sha256": "272233564d9fcfc40d246b6feb6f7411607bbbd09480d78f7581c6bd63acfd77"
+    },
+    {
+      "definition_id": "ll_household_alarm_clock",
+      "icon_asset_id": "ll_household_alarm_clock",
+      "world_asset_id": "ll_household_alarm_clock",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_alarm_clock/ground.png",
+      "ground_footprint_m": [
+        0.16,
+        0.06
+      ],
+      "dimensions_m": [
+        0.16,
+        0.06,
+        0.16
+      ],
+      "tile_occupancy": [
+        0.16,
+        0.06
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        122,
+        181,
+        134,
+        195
+      ],
+      "anchor_px": [
+        6,
+        11
+      ],
+      "contact_px": [
+        6,
+        11
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "aa1bd55bcd1883c8d92cf0d88ad315dbb60204aa8c47457e3a4c4fc22152e9ef"
+    },
+    {
+      "definition_id": "ll_household_backpack",
+      "icon_asset_id": "ll_household_backpack",
+      "world_asset_id": "ll_household_backpack",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_backpack/ground.png",
+      "ground_footprint_m": [
+        0.352,
+        0.1872
+      ],
+      "dimensions_m": [
+        0.352,
+        0.1872,
+        0.432
+      ],
+      "tile_occupancy": [
+        0.352,
+        0.1872
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        116,
+        167,
+        140,
+        197
+      ],
+      "anchor_px": [
+        12,
+        25
+      ],
+      "contact_px": [
+        12,
+        25
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "50483020843566fa47cd1bcf7a98e5a9324898cc3a6eb4a591a05528953485aa"
+    },
+    {
+      "definition_id": "ll_household_bar_soap",
+      "icon_asset_id": "ll_household_bar_soap",
+      "world_asset_id": "ll_household_bar_soap",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_bar_soap/ground.png",
+      "ground_footprint_m": [
+        0.18,
+        0.12
+      ],
+      "dimensions_m": [
+        0.18,
+        0.12,
+        0.035
+      ],
+      "tile_occupancy": [
+        0.18,
+        0.12
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        121,
+        186,
+        135,
+        196
+      ],
+      "anchor_px": [
+        7,
+        6
+      ],
+      "contact_px": [
+        7,
+        6
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "dc76734d82de6760c3f1197ad5827e5b4c19a8f4c18a3d97d42a39da504de9ad"
+    },
+    {
+      "definition_id": "ll_household_bucket",
+      "icon_asset_id": "ll_household_bucket",
+      "world_asset_id": "ll_household_bucket",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_bucket/ground.png",
+      "ground_footprint_m": [
+        0.33,
+        0.312
+      ],
+      "dimensions_m": [
+        0.33,
+        0.312,
+        0.3072
+      ],
+      "tile_occupancy": [
+        0.33,
+        0.312
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        117,
+        170,
+        140,
+        198
+      ],
+      "anchor_px": [
+        11,
+        22
+      ],
+      "contact_px": [
+        11,
+        22
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "6180503b67119cb6557f073eacf21b82616a607673bda81a54d0d4e62d5c58f7"
+    },
+    {
+      "definition_id": "ll_household_candle",
+      "icon_asset_id": "ll_household_candle",
+      "world_asset_id": "ll_household_candle",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_candle/ground.png",
+      "ground_footprint_m": [
+        0.0617,
+        0.0696
+      ],
+      "dimensions_m": [
+        0.0617,
+        0.0696,
+        0.144
+      ],
+      "tile_occupancy": [
+        0.0617,
+        0.0696
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        124,
+        182,
+        132,
+        195
+      ],
+      "anchor_px": [
+        4,
+        10
+      ],
+      "contact_px": [
+        4,
+        10
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "865a8a5f45ef719f9fb1eb20605d17807b913cfd10987bec84f64047bd8528c7"
+    },
+    {
+      "definition_id": "ll_household_ceramic_mug",
+      "icon_asset_id": "ll_household_ceramic_mug",
+      "world_asset_id": "ll_household_ceramic_mug",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_ceramic_mug/ground.png",
+      "ground_footprint_m": [
+        0.081,
+        0.1104
+      ],
+      "dimensions_m": [
+        0.081,
+        0.1104,
+        0.108
+      ],
+      "tile_occupancy": [
+        0.081,
+        0.1104
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        124,
+        184,
+        132,
+        195
+      ],
+      "anchor_px": [
+        4,
+        8
+      ],
+      "contact_px": [
+        4,
+        8
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "2d826516388b70aee4e88e3553a715b5abc9b59c1278694a265868f269e93a9c"
+    },
+    {
+      "definition_id": "ll_household_cooking_pot",
+      "icon_asset_id": "ll_household_cooking_pot",
+      "world_asset_id": "ll_household_cooking_pot",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_cooking_pot/ground.png",
+      "ground_footprint_m": [
+        0.28,
+        0.28
+      ],
+      "dimensions_m": [
+        0.28,
+        0.28,
+        0.18
+      ],
+      "tile_occupancy": [
+        0.28,
+        0.28
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        118,
+        177,
+        138,
+        197
+      ],
+      "anchor_px": [
+        10,
+        15
+      ],
+      "contact_px": [
+        10,
+        15
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "8ddc02e4dccd7a432ac88c6911455aec60eddb4c08b3b73db666450ce32ede4d"
+    },
+    {
+      "definition_id": "ll_household_cutting_board",
+      "icon_asset_id": "ll_household_cutting_board",
+      "world_asset_id": "ll_household_cutting_board",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_cutting_board/ground.png",
+      "ground_footprint_m": [
+        0.765,
+        0.1472
+      ],
+      "dimensions_m": [
+        0.765,
+        0.1472,
+        0.0378
+      ],
+      "tile_occupancy": [
+        0.765,
+        0.1472
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        108,
+        179,
+        148,
+        203
+      ],
+      "anchor_px": [
+        20,
+        13
+      ],
+      "contact_px": [
+        20,
+        13
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "130faf7085bee012e35c742d3ea026059e14464be4ed7fe5b0a354a14ec6d80e"
+    },
+    {
+      "definition_id": "ll_household_flashlight",
+      "icon_asset_id": "ll_household_flashlight",
+      "world_asset_id": "ll_household_flashlight",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_flashlight/ground.png",
+      "ground_footprint_m": [
+        0.0605,
+        0.0572
+      ],
+      "dimensions_m": [
+        0.0605,
+        0.0572,
+        0.2112
+      ],
+      "tile_occupancy": [
+        0.0605,
+        0.0572
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        124,
+        179,
+        132,
+        195
+      ],
+      "anchor_px": [
+        4,
+        13
+      ],
+      "contact_px": [
+        4,
+        13
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "f85e590410111a8ac24afaac7d5d6de76b1ae89bab99c4267542e9dd733d02dd"
+    },
+    {
+      "definition_id": "ll_household_folded_blanket",
+      "icon_asset_id": "ll_household_folded_blanket",
+      "world_asset_id": "ll_household_folded_blanket",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_folded_blanket/ground.png",
+      "ground_footprint_m": [
+        0.4,
+        0.3
+      ],
+      "dimensions_m": [
+        0.4,
+        0.3,
+        0.08
+      ],
+      "tile_occupancy": [
+        0.4,
+        0.3
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        113,
+        180,
+        143,
+        200
+      ],
+      "anchor_px": [
+        15,
+        12
+      ],
+      "contact_px": [
+        15,
+        12
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "c1ff4c0d28ce68eb85997bfbfbbfa3527a0a39766d1d4e6ce92757c955057061"
+    },
+    {
+      "definition_id": "ll_household_folded_towel",
+      "icon_asset_id": "ll_household_folded_towel",
+      "world_asset_id": "ll_household_folded_towel",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_folded_towel/ground.png",
+      "ground_footprint_m": [
+        0.44,
+        0.312
+      ],
+      "dimensions_m": [
+        0.44,
+        0.312,
+        0.0768
+      ],
+      "tile_occupancy": [
+        0.44,
+        0.312
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        112,
+        180,
+        144,
+        201
+      ],
+      "anchor_px": [
+        16,
+        12
+      ],
+      "contact_px": [
+        16,
+        12
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "86ff2cc8e966066f8a6f1fced9b1c82b06266e84139b4050ba1e2f28bbab3ace"
+    },
+    {
+      "definition_id": "ll_household_fuel_can",
+      "icon_asset_id": "ll_household_fuel_can",
+      "world_asset_id": "ll_household_fuel_can",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_fuel_can/ground.png",
+      "ground_footprint_m": [
+        0.27,
+        0.1472
+      ],
+      "dimensions_m": [
+        0.27,
+        0.1472,
+        0.4536
+      ],
+      "tile_occupancy": [
+        0.27,
+        0.1472
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        117,
+        166,
+        138,
+        197
+      ],
+      "anchor_px": [
+        11,
+        26
+      ],
+      "contact_px": [
+        11,
+        26
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "48423180a644c8797ef53358ad14735b6cdefb816b3ee1eb544e5b4b6f6dcde3"
+    },
+    {
+      "definition_id": "ll_household_hardback_book",
+      "icon_asset_id": "ll_household_hardback_book",
+      "world_asset_id": "ll_household_hardback_book",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_hardback_book/ground.png",
+      "ground_footprint_m": [
+        0.152,
+        0.2354
+      ],
+      "dimensions_m": [
+        0.152,
+        0.2354,
+        0.0315
+      ],
+      "tile_occupancy": [
+        0.152,
+        0.2354
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        119,
+        185,
+        137,
+        197
+      ],
+      "anchor_px": [
+        9,
+        7
+      ],
+      "contact_px": [
+        9,
+        7
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "8ed7adc283b43f2a4c87acaca78cc16928cc0e41390bad13af373cc44dc5661f"
+    },
+    {
+      "definition_id": "ll_household_laundry_basket",
+      "icon_asset_id": "ll_household_laundry_basket",
+      "world_asset_id": "ll_household_laundry_basket",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_laundry_basket/ground.png",
+      "ground_footprint_m": [
+        0.3325,
+        0.321
+      ],
+      "dimensions_m": [
+        0.3325,
+        0.321,
+        0.315
+      ],
+      "tile_occupancy": [
+        0.3325,
+        0.321
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        117,
+        170,
+        139,
+        198
+      ],
+      "anchor_px": [
+        11,
+        22
+      ],
+      "contact_px": [
+        11,
+        22
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "e4ff2c60d743c68a9a657a188b4b8ffbddd33b8984e26adbf5df5be9b61645fa"
+    },
+    {
+      "definition_id": "ll_household_magazine",
+      "icon_asset_id": "ll_household_magazine",
+      "world_asset_id": "ll_household_magazine",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_magazine/ground.png",
+      "ground_footprint_m": [
+        0.1696,
+        0.2112
+      ],
+      "dimensions_m": [
+        0.1696,
+        0.2112,
+        0.0368
+      ],
+      "tile_occupancy": [
+        0.1696,
+        0.2112
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        119,
+        185,
+        137,
+        197
+      ],
+      "anchor_px": [
+        9,
+        7
+      ],
+      "contact_px": [
+        9,
+        7
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "3c6e8839471ed5fde41a0beed686a6933e6727eb4529e859e83d408424542775"
+    },
+    {
+      "definition_id": "ll_household_paperback_book",
+      "icon_asset_id": "ll_household_paperback_book",
+      "world_asset_id": "ll_household_paperback_book",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_paperback_book/ground.png",
+      "ground_footprint_m": [
+        0.16,
+        0.22
+      ],
+      "dimensions_m": [
+        0.16,
+        0.22,
+        0.035
+      ],
+      "tile_occupancy": [
+        0.16,
+        0.22
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        119,
+        185,
+        137,
+        197
+      ],
+      "anchor_px": [
+        9,
+        7
+      ],
+      "contact_px": [
+        9,
+        7
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "404ed44e045f7065b469538388bbad5eeb81d7d2e85415518c732e04b272f5ad"
+    },
+    {
+      "definition_id": "ll_household_portable_radio",
+      "icon_asset_id": "ll_household_portable_radio",
+      "world_asset_id": "ll_household_portable_radio",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_portable_radio/ground.png",
+      "ground_footprint_m": [
+        0.225,
+        0.0736
+      ],
+      "dimensions_m": [
+        0.225,
+        0.0736,
+        0.1728
+      ],
+      "tile_occupancy": [
+        0.225,
+        0.0736
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        120,
+        180,
+        136,
+        196
+      ],
+      "anchor_px": [
+        8,
+        12
+      ],
+      "contact_px": [
+        8,
+        12
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "41d1f708b41fc96be39cfd2318cc7e26cfa7bb5851f47cdf973193a2caa20dba"
+    },
+    {
+      "definition_id": "ll_household_storage_box",
+      "icon_asset_id": "ll_household_storage_box",
+      "world_asset_id": "ll_household_storage_box",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_storage_box/ground.png",
+      "ground_footprint_m": [
+        0.171,
+        0.0828
+      ],
+      "dimensions_m": [
+        0.171,
+        0.0828,
+        0.2808
+      ],
+      "tile_occupancy": [
+        0.171,
+        0.0828
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        121,
+        174,
+        135,
+        196
+      ],
+      "anchor_px": [
+        7,
+        18
+      ],
+      "contact_px": [
+        7,
+        18
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "f624ca05271b30338dd81c2137ea27a5733a7ff6050ccc7913cc5d0f78876b93"
+    },
+    {
+      "definition_id": "ll_household_toilet_roll",
+      "icon_asset_id": "ll_household_toilet_roll",
+      "world_asset_id": "ll_household_toilet_roll",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_household_toilet_roll/ground.png",
+      "ground_footprint_m": [
+        0.114,
+        0.1284
+      ],
+      "dimensions_m": [
+        0.114,
+        0.1284,
+        0.09
+      ],
+      "tile_occupancy": [
+        0.114,
+        0.1284
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        123,
+        184,
+        133,
+        195
+      ],
+      "anchor_px": [
+        5,
+        8
+      ],
+      "contact_px": [
+        5,
+        8
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "d0389568968ebbcd184ef78e1c10fe1417396078de3a10e1a06493eca31af459"
+    },
+    {
+      "definition_id": "ll_medical_antiseptic",
+      "icon_asset_id": "ll_medical_antiseptic",
+      "world_asset_id": "ll_medical_antiseptic",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_medical_antiseptic/ground.png",
+      "ground_footprint_m": [
+        0.0808,
+        0.091
+      ],
+      "dimensions_m": [
+        0.0808,
+        0.091,
+        0.243
+      ],
+      "tile_occupancy": [
+        0.0808,
+        0.091
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        123,
+        178,
+        133,
+        195
+      ],
+      "anchor_px": [
+        5,
+        14
+      ],
+      "contact_px": [
+        5,
+        14
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "2496b7eadf0973e28a0466e34a827f64a779a68931c5d3e7bbbaccb4e0300f62"
+    },
+    {
+      "definition_id": "ll_medical_first_aid_case",
+      "icon_asset_id": "ll_medical_first_aid_case",
+      "world_asset_id": "ll_medical_first_aid_case",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_medical_first_aid_case/ground.png",
+      "ground_footprint_m": [
+        0.28,
+        0.17
+      ],
+      "dimensions_m": [
+        0.28,
+        0.17,
+        0.09
+      ],
+      "tile_occupancy": [
+        0.28,
+        0.17
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        117,
+        182,
+        139,
+        198
+      ],
+      "anchor_px": [
+        11,
+        10
+      ],
+      "contact_px": [
+        11,
+        10
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "4edcb001df3b14d5dc63f94c46d0c8159604a9c94d433ed68dfa13b54ffdd5f1"
+    },
+    {
+      "definition_id": "ll_medical_sterile_bandage",
+      "icon_asset_id": "ll_medical_sterile_bandage",
+      "world_asset_id": "ll_medical_sterile_bandage",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_medical_sterile_bandage/ground.png",
+      "ground_footprint_m": [
+        0.12,
+        0.12
+      ],
+      "dimensions_m": [
+        0.12,
+        0.12,
+        0.1
+      ],
+      "tile_occupancy": [
+        0.12,
+        0.12
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        123,
+        184,
+        133,
+        195
+      ],
+      "anchor_px": [
+        5,
+        8
+      ],
+      "contact_px": [
+        5,
+        8
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "e661c8c06f8f04696ff5058f35c625606fce0d91372d6a162c39b6e8a9caa4ff"
+    },
+    {
+      "definition_id": "ll_tools_claw_hammer",
+      "icon_asset_id": "ll_tools_claw_hammer",
+      "world_asset_id": "ll_tools_claw_hammer",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_tools_claw_hammer/ground.png",
+      "ground_footprint_m": [
+        0.13,
+        0.32
+      ],
+      "dimensions_m": [
+        0.13,
+        0.32,
+        0.055
+      ],
+      "tile_occupancy": [
+        0.13,
+        0.32
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        120,
+        184,
+        137,
+        197
+      ],
+      "anchor_px": [
+        8,
+        8
+      ],
+      "contact_px": [
+        8,
+        8
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "5a96237e20c808c81db314cf5e9387743f6802f21073a27f13b5d08a562438bd"
+    },
+    {
+      "definition_id": "ll_tools_hatchet",
+      "icon_asset_id": "ll_tools_hatchet",
+      "world_asset_id": "ll_tools_hatchet",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_tools_hatchet/ground.png",
+      "ground_footprint_m": [
+        0.25,
+        0.62
+      ],
+      "dimensions_m": [
+        0.25,
+        0.62,
+        0.06
+      ],
+      "tile_occupancy": [
+        0.25,
+        0.62
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        113,
+        181,
+        146,
+        200
+      ],
+      "anchor_px": [
+        15,
+        11
+      ],
+      "contact_px": [
+        15,
+        11
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "300034da754225559f972ae1412ec593f01e24dcf3973a67fb6324d9d4925b52"
+    },
+    {
+      "definition_id": "ll_tools_shovel",
+      "icon_asset_id": "ll_tools_shovel",
+      "world_asset_id": "ll_tools_shovel",
+      "world_state": "existing_original_world_candidate",
+      "world_sprite_path": "assets/generated/factory/sprites/ll_tools_shovel/ground.png",
+      "ground_footprint_m": [
+        0.216,
+        1.012
+      ],
+      "dimensions_m": [
+        0.216,
+        1.012,
+        0.0648
+      ],
+      "tile_occupancy": [
+        0.216,
+        1.012
+      ],
+      "source_canvas_px": [
+        256,
+        256
+      ],
+      "crop_rect_px": [
+        104,
+        178,
+        152,
+        204
+      ],
+      "anchor_px": [
+        24,
+        14
+      ],
+      "contact_px": [
+        24,
+        14
+      ],
+      "draw_scale": 1.0,
+      "facing": "factory_authored_0",
+      "available_facings": [
+        "factory_authored_0"
+      ],
+      "z_height_m": 0,
+      "render_layer": "ground_prop",
+      "occlusion_group": "ground_contact",
+      "shadow_profile": "footprint_contact",
+      "alpha_qc_status": "no_bright_edge_detected_visual_review_pending",
+      "provenance": "Original LAST LIGHT procedural geometry and materials",
+      "approval_status": "existing_original_candidate_not_newly_approved",
+      "sha256": "e3ee8a4ab9f9d28b1cfd4179abbc0b29a63aa5daf12c3baaedde9850b44fcd3f"
+    }
+  ],
+  "placements": [
+    {
+      "instance_id": "house.kitchen.counter",
+      "definition_id": "ll_furniture_kitchen_counter",
+      "world_asset_id": "ll_furniture_kitchen_counter",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        1.5,
+        0.7
+      ],
+      "dimensions_m": [
+        1.1394080996884732,
+        0.7,
+        0.8831775700934579
+      ],
+      "native_dimensions_m": [
+        1.045,
+        0.642,
+        0.81
+      ],
+      "draw_scale": 1.0903426791277258,
+      "world_contact_m": [
+        1.95,
+        1.35
+      ],
+      "anchor_px": [
+        36,
+        58
+      ],
+      "contact_px": [
+        36,
+        58
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bedroom.bed",
+      "definition_id": "ll_furniture_single_bed",
+      "world_asset_id": null,
+      "render_mode": "legacy_fitted_procedural_candidate",
+      "ground_footprint_m": [
+        1.25,
+        0.9
+      ],
+      "dimensions_m": [
+        1.25,
+        0.9,
+        0.591960019428536
+      ],
+      "native_dimensions_m": [
+        0.95,
+        2.14,
+        0.585
+      ],
+      "draw_scale": null,
+      "world_contact_m": [
+        7.125,
+        1.45
+      ],
+      "anchor_px": null,
+      "contact_px": null,
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": "compact collision footprint is not realistic single-bed anatomy"
+    },
+    {
+      "instance_id": "house.living.sofa",
+      "definition_id": "ll_furniture_two_seat_sofa",
+      "world_asset_id": "ll_furniture_two_seat_sofa",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        1.6,
+        0.75
+      ],
+      "dimensions_m": [
+        1.6,
+        0.7497142857142858,
+        0.7497142857142858
+      ],
+      "native_dimensions_m": [
+        1.75,
+        0.82,
+        0.82
+      ],
+      "draw_scale": 0.9142857142857144,
+      "world_contact_m": [
+        1.9000000000000001,
+        6.875
+      ],
+      "anchor_px": [
+        54,
+        67
+      ],
+      "contact_px": [
+        54,
+        67
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bathroom.medicine",
+      "definition_id": "ll_furniture_medicine_cabinet",
+      "world_asset_id": "ll_furniture_medicine_cabinet",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.75,
+        0.75
+      ],
+      "dimensions_m": [
+        0.75,
+        0.44,
+        0.85
+      ],
+      "native_dimensions_m": [
+        0.75,
+        0.44,
+        0.85
+      ],
+      "draw_scale": 1.0,
+      "world_contact_m": [
+        7.625,
+        6.975
+      ],
+      "anchor_px": [
+        26,
+        55
+      ],
+      "contact_px": [
+        26,
+        55
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.kitchen.fridge",
+      "definition_id": "ll_furniture_refrigerator",
+      "world_asset_id": "ll_furniture_refrigerator",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.7,
+        0.65
+      ],
+      "dimensions_m": [
+        0.7,
+        0.65,
+        1.7
+      ],
+      "native_dimensions_m": [
+        0.7,
+        0.65,
+        1.7
+      ],
+      "draw_scale": 1.0,
+      "world_contact_m": [
+        0.7,
+        0.675
+      ],
+      "anchor_px": [
+        29,
+        98
+      ],
+      "contact_px": [
+        29,
+        98
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.kitchen.table",
+      "definition_id": "ll_furniture_kitchen_table",
+      "world_asset_id": "ll_furniture_kitchen_table",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        1.1,
+        0.7
+      ],
+      "dimensions_m": [
+        1.1,
+        0.6656,
+        0.576
+      ],
+      "native_dimensions_m": [
+        1.375,
+        0.832,
+        0.72
+      ],
+      "draw_scale": 0.8,
+      "world_contact_m": [
+        3.3499999999999996,
+        2.9
+      ],
+      "anchor_px": [
+        46,
+        57
+      ],
+      "contact_px": [
+        46,
+        57
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.kitchen.chair",
+      "definition_id": "ll_furniture_dining_chair",
+      "world_asset_id": "ll_furniture_dining_chair",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.46,
+        0.48
+      ],
+      "dimensions_m": [
+        0.46,
+        0.48,
+        0.88
+      ],
+      "native_dimensions_m": [
+        0.46,
+        0.48,
+        0.88
+      ],
+      "draw_scale": 1.0,
+      "world_contact_m": [
+        1.03,
+        2.84
+      ],
+      "anchor_px": [
+        20,
+        54
+      ],
+      "contact_px": [
+        20,
+        54
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.kitchen.stove",
+      "definition_id": "ll_furniture_cooking_stove",
+      "world_asset_id": "ll_furniture_cooking_stove",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.69,
+        0.58
+      ],
+      "dimensions_m": [
+        0.69,
+        0.5768359941944847,
+        0.9463715529753265
+      ],
+      "native_dimensions_m": [
+        0.689,
+        0.576,
+        0.945
+      ],
+      "draw_scale": 1.0014513788098693,
+      "world_contact_m": [
+        3.4450000000000003,
+        0.69
+      ],
+      "anchor_px": [
+        27,
+        60
+      ],
+      "contact_px": [
+        27,
+        60
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bedroom.nightstand",
+      "definition_id": "ll_furniture_nightstand",
+      "world_asset_id": "ll_furniture_nightstand",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.65,
+        0.46
+      ],
+      "dimensions_m": [
+        0.65,
+        0.3605333333333334,
+        0.642909090909091
+      ],
+      "native_dimensions_m": [
+        0.825,
+        0.4576,
+        0.816
+      ],
+      "draw_scale": 0.787878787878788,
+      "world_contact_m": [
+        5.425,
+        0.68
+      ],
+      "anchor_px": [
+        28,
+        54
+      ],
+      "contact_px": [
+        28,
+        54
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bedroom.wardrobe",
+      "definition_id": "ll_furniture_wardrobe",
+      "world_asset_id": "ll_furniture_wardrobe",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.9,
+        0.62
+      ],
+      "dimensions_m": [
+        0.9,
+        0.6188808864265929,
+        1.6603878116343491
+      ],
+      "native_dimensions_m": [
+        0.9025,
+        0.6206,
+        1.665
+      ],
+      "draw_scale": 0.997229916897507,
+      "world_contact_m": [
+        8.45,
+        0.51
+      ],
+      "anchor_px": [
+        33,
+        99
+      ],
+      "contact_px": [
+        33,
+        99
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bedroom.chest",
+      "definition_id": "ll_furniture_storage_chest",
+      "world_asset_id": "ll_furniture_storage_chest",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.94,
+        0.5
+      ],
+      "dimensions_m": [
+        0.9364983974358975,
+        0.5,
+        0.5288461538461539
+      ],
+      "native_dimensions_m": [
+        0.935,
+        0.4992,
+        0.528
+      ],
+      "draw_scale": 1.001602564102564,
+      "world_contact_m": [
+        5.62,
+        3.3
+      ],
+      "anchor_px": [
+        31,
+        42
+      ],
+      "contact_px": [
+        31,
+        42
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.living.bookcase",
+      "definition_id": "ll_furniture_bookcase",
+      "world_asset_id": "ll_furniture_bookcase",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.94,
+        0.32
+      ],
+      "dimensions_m": [
+        0.9399999999999998,
+        0.3136684491978609,
+        1.5924705882352939
+      ],
+      "native_dimensions_m": [
+        0.935,
+        0.312,
+        1.584
+      ],
+      "draw_scale": 1.0053475935828875,
+      "world_contact_m": [
+        0.82,
+        4.66
+      ],
+      "anchor_px": [
+        27,
+        92
+      ],
+      "contact_px": [
+        27,
+        92
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.living.coffee_table",
+      "definition_id": "ll_furniture_coffee_table",
+      "world_asset_id": "ll_furniture_coffee_table",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.9,
+        0.59
+      ],
+      "dimensions_m": [
+        0.9,
+        0.5888,
+        0.6480000000000001
+      ],
+      "native_dimensions_m": [
+        1.125,
+        0.736,
+        0.81
+      ],
+      "draw_scale": 0.8,
+      "world_contact_m": [
+        3.25,
+        5.895
+      ],
+      "anchor_px": [
+        39,
+        57
+      ],
+      "contact_px": [
+        39,
+        57
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bathroom.sink",
+      "definition_id": "ll_furniture_sink_cabinet",
+      "world_asset_id": "ll_furniture_sink_cabinet",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.88,
+        0.62
+      ],
+      "dimensions_m": [
+        0.8743589743589744,
+        0.62,
+        0.8584615384615385
+      ],
+      "native_dimensions_m": [
+        0.88,
+        0.624,
+        0.864
+      ],
+      "draw_scale": 0.9935897435897436,
+      "world_contact_m": [
+        5.54,
+        4.76
+      ],
+      "anchor_px": [
+        32,
+        59
+      ],
+      "contact_px": [
+        32,
+        59
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bathroom.toilet",
+      "definition_id": "ll_furniture_toilet",
+      "world_asset_id": "ll_furniture_toilet",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.4,
+        0.65
+      ],
+      "dimensions_m": [
+        0.4,
+        0.65,
+        0.8
+      ],
+      "native_dimensions_m": [
+        0.4,
+        0.65,
+        0.8
+      ],
+      "draw_scale": 1.0,
+      "world_contact_m": [
+        8.35,
+        4.825
+      ],
+      "anchor_px": [
+        17,
+        49
+      ],
+      "contact_px": [
+        17,
+        49
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    },
+    {
+      "instance_id": "house.bathroom.tub",
+      "definition_id": "ll_furniture_bathtub",
+      "world_asset_id": "ll_furniture_bathtub",
+      "render_mode": "original_ground_sprite",
+      "ground_footprint_m": [
+        0.65,
+        1.65
+      ],
+      "dimensions_m": [
+        0.65,
+        1.6106315789473684,
+        0.451578947368421
+      ],
+      "native_dimensions_m": [
+        0.7125,
+        1.7655,
+        0.495
+      ],
+      "draw_scale": 0.9122807017543859,
+      "world_contact_m": [
+        8.424999999999999,
+        6.4750000000000005
+      ],
+      "anchor_px": [
+        52,
+        50
+      ],
+      "contact_px": [
+        52,
+        50
+      ],
+      "facing": "existing_authored_view",
+      "render_layer": "furniture",
+      "shadow_profile": "footprint_contact",
+      "interaction_reach_face": "existing_distance_to_rect_not_authored_front",
+      "approval_status": "visual_review_required",
+      "known_issue": null
+    }
+  ],
+  "decoration_supports": [
+    {
+      "decoration_index": 0,
+      "asset_id": "ll_food_bean_tin",
+      "parent_support": "house.kitchen.counter",
+      "surface_height_m": 0.81,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 1,
+      "asset_id": "ll_food_water_bottle",
+      "parent_support": "house.kitchen.counter",
+      "surface_height_m": 0.81,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 2,
+      "asset_id": "ll_household_cutting_board",
+      "parent_support": "house.kitchen.counter",
+      "surface_height_m": 0.81,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 3,
+      "asset_id": "ll_household_ceramic_mug",
+      "parent_support": "house.kitchen.table",
+      "surface_height_m": 0.72,
+      "legacy_height_px": 29,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 4,
+      "asset_id": "ll_household_paperback_book",
+      "parent_support": "house.kitchen.table",
+      "surface_height_m": 0.72,
+      "legacy_height_px": 29,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 5,
+      "asset_id": "ll_household_cooking_pot",
+      "parent_support": "house.kitchen.stove",
+      "surface_height_m": 0.945,
+      "legacy_height_px": 45,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 6,
+      "asset_id": "ll_household_alarm_clock",
+      "parent_support": "house.bedroom.nightstand",
+      "surface_height_m": 0.816,
+      "legacy_height_px": 40,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 7,
+      "asset_id": "ll_household_backpack",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 8,
+      "asset_id": "ll_household_folded_blanket",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 25,
+      "status": "unsupported_raised_prop_manual_review"
+    },
+    {
+      "decoration_index": 9,
+      "asset_id": "ll_household_laundry_basket",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 10,
+      "asset_id": "ll_household_portable_radio",
+      "parent_support": "house.living.coffee_table",
+      "surface_height_m": 0.81,
+      "legacy_height_px": 29,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 11,
+      "asset_id": "ll_household_magazine",
+      "parent_support": "house.living.coffee_table",
+      "surface_height_m": 0.81,
+      "legacy_height_px": 29,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 12,
+      "asset_id": "ll_household_hardback_book",
+      "parent_support": "house.living.bookcase",
+      "surface_height_m": null,
+      "legacy_height_px": 32,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 13,
+      "asset_id": "ll_household_candle",
+      "parent_support": "house.living.bookcase",
+      "surface_height_m": null,
+      "legacy_height_px": 77,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 14,
+      "asset_id": "ll_household_storage_box",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 15,
+      "asset_id": "ll_medical_antiseptic",
+      "parent_support": "house.bathroom.medicine",
+      "surface_height_m": 0.85,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 16,
+      "asset_id": "ll_medical_sterile_bandage",
+      "parent_support": "house.bathroom.medicine",
+      "surface_height_m": 0.85,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 17,
+      "asset_id": "ll_household_bar_soap",
+      "parent_support": "house.bathroom.sink",
+      "surface_height_m": 0.864,
+      "legacy_height_px": 42,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 18,
+      "asset_id": "ll_household_folded_towel",
+      "parent_support": "house.bathroom.tub",
+      "surface_height_m": 0.495,
+      "legacy_height_px": 22,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 19,
+      "asset_id": "ll_household_toilet_roll",
+      "parent_support": "house.bathroom.toilet",
+      "surface_height_m": null,
+      "legacy_height_px": 35,
+      "status": "calibrated_support"
+    },
+    {
+      "decoration_index": 20,
+      "asset_id": "ll_crafting_pine_plank",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 21,
+      "asset_id": "ll_crafting_firewood",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 22,
+      "asset_id": "ll_tools_shovel",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 23,
+      "asset_id": "ll_household_bucket",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    },
+    {
+      "decoration_index": 24,
+      "asset_id": "ll_household_fuel_can",
+      "parent_support": null,
+      "surface_height_m": null,
+      "legacy_height_px": 0,
+      "status": "ground_supported"
+    }
+  ],
+  "limitations": [
+    "All Golden 40 world views unavailable: neutral markers only.",
+    "Legacy compact fitted-bed visual retains collision size and is not a realistic single bed.",
+    "Unsupported raised blanket/towel await furniture layout approval.",
+    "No new asset or device approval is inferred."
+  ]
+}

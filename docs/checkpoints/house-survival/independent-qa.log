@@ -1,0 +1,8 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+HOUSE_SURVIVAL: control checks finished
+HOUSE_SURVIVAL: movement/collision checks finished; distances [4.40000629425049, 4.40000629425049, 4.39999485015869, 7.19999408721924, 1.90000557899475]
+HOUSE_SURVIVAL: combat/zombie checks finished
+HOUSE_SURVIVAL: inventory/survival checks finished
+HOUSE_SURVIVAL: save/migration checks finished
+HOUSE_SURVIVAL: 154 checks, 0 failures (synthetic engine input; actual iPhone/Xogot UNVERIFIED)

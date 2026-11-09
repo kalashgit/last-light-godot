@@ -1,0 +1,157 @@
+{
+  "schema": "last-light.worker-status.v1",
+  "updated_at": "2026-11-09T11:25:00Z",
+  "note": "States derived from GitHub branches/PRs and session transcripts only. A launched session is not an implemented task.",
+  "workers": [
+    {
+      "id": "W01",
+      "role": "Master Integration",
+      "session": "session_01C8bxoNKnJ9vdV3GGHQ7X4U",
+      "branch": "claude/last-light-godot-integration-mfylkq",
+      "head": "2700d64",
+      "pr": 38,
+      "state": "BLOCKED",
+      "tests": "reported by worker; not re-run",
+      "blocking": [
+        "session failed 23:44Z (usage limit); duplicate candidate #38 vs #37 unresolved"
+      ],
+      "next": "awaits founder choice of canonical world line (D8) before LL-W01-002"
+    },
+    {
+      "id": "W02",
+      "role": "Gameplay Systems",
+      "session": "session_01C8bxoM8nDVuwh7DKYz5t8E",
+      "branch": "claude/worker-02-gameplay-systems-743b97",
+      "head": "132babb",
+      "pr": 36,
+      "state": "DRAFT_PR_READY",
+      "tests": "worker reports presentation contract V2 in #36; worker notes fridge clip-name failure and hits applied on button press (open defects)",
+      "blocking": [],
+      "next": "fix the two self-reported defects; keep zombie array sizing (D4)"
+    },
+    {
+      "id": "W03",
+      "role": "Zombie AI",
+      "session": "session_01C8bxoMR7V2yDqbTEQYBCT5",
+      "branch": "claude/worker-03-zombie-ai-h6ty9i",
+      "head": "67d9f55",
+      "pr": 39,
+      "state": "BLOCKED",
+      "tests": "reported 123 fixture checks; not re-run",
+      "blocking": [
+        "session failed 23:44Z (usage limit)",
+        "#39 still based on #10 (D5)"
+      ],
+      "next": "rebase after D8"
+    },
+    {
+      "id": "W04",
+      "role": "World Generation",
+      "session": "session_01C8bxoKBxuX8UY2sCBTaTvK",
+      "branch": "claude/last-light-worldgen-cax1qs",
+      "head": "0352726",
+      "pr": 67,
+      "state": "DRAFT_PR_READY",
+      "tests": "worker reports 33 Python + 52 Godot checks; not re-run by Director",
+      "blocking": [
+        "stacked on #19; separate generator vs scripts/neighborhood.gd (D6/D8)"
+      ],
+      "next": "hold; no merge into neighborhood.gd until D8"
+    },
+    {
+      "id": "W05",
+      "role": "World Simulation",
+      "session": "session_01C8bxoMV7bQHTNC8GJhK4x6",
+      "branch": "claude/worker-05-world-simulation-4x074o",
+      "head": "44893a0",
+      "pr": null,
+      "state": "BLOCKED",
+      "tests": "unknown",
+      "blocking": [
+        "session failed 23:44Z (usage limit); no draft PR"
+      ],
+      "next": "open draft PR with test summary"
+    },
+    {
+      "id": "W06",
+      "role": "Blender Asset Factory",
+      "session": "session_01C8bxoLMqkwHSJ6TzPr7Vrv",
+      "branch": "claude/worker-06-blender-asset-factory-4eeev0",
+      "head": "05b3fad",
+      "pr": 73,
+      "state": "DRAFT_PR_READY",
+      "tests": "worker reports F12 19/19, V2 15/15, W06 16/16, Godot 4.3 import PASS; CI not yet run",
+      "blocking": [
+        "360 masters only in Actions artifacts expiring 2026-12-08; F12 pilot artifact expires 2026-11-22",
+        "golden40 manifest cites pzwiki.net reference URLs (rights review)"
+      ],
+      "next": "W10/K00 archive artifacts; A00 rights review"
+    },
+    {
+      "id": "W07",
+      "role": "Animation Factory",
+      "session": "session_01C8bxoJHP4ZnZaZJnfQwCsQ",
+      "branch": null,
+      "head": null,
+      "pr": null,
+      "state": "NOT_STARTED",
+      "tests": "none",
+      "blocking": [
+        "failed at launch and again 23:44Z (usage limit)"
+      ],
+      "next": "wave 2 relaunch"
+    },
+    {
+      "id": "W08",
+      "role": "iPhone UI & Performance",
+      "session": "session_01C8bxoNE31VdoywdoFEFfAq",
+      "branch": "claude/worker-08-iphone-ui-performance-3e3b4i",
+      "head": "d0cfff5",
+      "pr": 72,
+      "state": "DRAFT_PR_READY",
+      "tests": "per PR; CI was in progress",
+      "blocking": [
+        "based on #38 (2700d64), not #37"
+      ],
+      "next": "rebase onto chosen candidate after D8"
+    },
+    {
+      "id": "W09",
+      "role": "Independent QA",
+      "session": "session_01C8bxoKTFfduXakCe244b4H",
+      "branch": null,
+      "head": null,
+      "pr": null,
+      "state": "BLOCKED",
+      "tests": "session summary: 14 gates pass, 6 defect probes confirmed; NOTHING PUSHED",
+      "blocking": [
+        "session failed 23:44Z before pushing"
+      ],
+      "next": "resume: push qa_gate_matrix.md with the 6 defects"
+    },
+    {
+      "id": "W10",
+      "role": "Build & Release",
+      "session": "session_01C8bxoNdHzRhotySUj2JBmd",
+      "branch": null,
+      "head": null,
+      "pr": null,
+      "state": "NOT_STARTED",
+      "tests": "none",
+      "blocking": [
+        "failed again 23:44Z (usage limit)"
+      ],
+      "next": "wave 2 relaunch"
+    }
+  ],
+  "extra_sessions": [
+    {
+      "id": "GM00",
+      "session": "session_01C8bxoLRGdkHVxaSwaJN28E",
+      "branch": "claude/gm00-master-game-maker-v1-q1107b",
+      "head": "d8c7284",
+      "pr": 71,
+      "note": "founder-launched; stacked on #60; sent founder a Xogot zip LAST_LIGHT_GM00_xogot_d8c7284.zip"
+    }
+  ]
+}

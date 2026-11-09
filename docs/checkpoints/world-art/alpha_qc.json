@@ -1,0 +1,2212 @@
+[
+  {
+    "asset_id": "ll_food_bean_tin",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_food_bean_tin/ground.png",
+    "sha256": "ed4019aa430113fa2faae832bccf95585a05f8c7e5531ce0e8bd58fb014da5f5",
+    "mode": "RGBA",
+    "size": [
+      10,
+      13
+    ],
+    "bbox": [
+      1,
+      1,
+      9,
+      12
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 63,
+    "edge_pixels": 54,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_food_water_bottle",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_food_water_bottle/ground.png",
+    "sha256": "91b82fa523153e9ed37f1200376973ab0e64331ab2a0c5ee118724f19bec28d6",
+    "mode": "RGBA",
+    "size": [
+      9,
+      19
+    ],
+    "bbox": [
+      1,
+      1,
+      8,
+      18
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 95,
+    "edge_pixels": 79,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_medical_sterile_bandage",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_medical_sterile_bandage/ground.png",
+    "sha256": "e661c8c06f8f04696ff5058f35c625606fce0d91372d6a162c39b6e8a9caa4ff",
+    "mode": "RGBA",
+    "size": [
+      10,
+      11
+    ],
+    "bbox": [
+      1,
+      1,
+      9,
+      10
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 57,
+    "edge_pixels": 47,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_medical_antiseptic",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_medical_antiseptic/ground.png",
+    "sha256": "2496b7eadf0973e28a0466e34a827f64a779a68931c5d3e7bbbaccb4e0300f62",
+    "mode": "RGBA",
+    "size": [
+      10,
+      17
+    ],
+    "bbox": [
+      1,
+      1,
+      9,
+      16
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 88,
+    "edge_pixels": 74,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_medical_first_aid_case",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_medical_first_aid_case/ground.png",
+    "sha256": "4edcb001df3b14d5dc63f94c46d0c8159604a9c94d433ed68dfa13b54ffdd5f1",
+    "mode": "RGBA",
+    "size": [
+      22,
+      16
+    ],
+    "bbox": [
+      1,
+      1,
+      21,
+      15
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 186,
+    "edge_pixels": 111,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_tools_claw_hammer",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_tools_claw_hammer/ground.png",
+    "sha256": "5a96237e20c808c81db314cf5e9387743f6802f21073a27f13b5d08a562438bd",
+    "mode": "RGBA",
+    "size": [
+      17,
+      13
+    ],
+    "bbox": [
+      1,
+      1,
+      16,
+      12
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 78,
+    "edge_pixels": 78,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_tools_hatchet",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_tools_hatchet/ground.png",
+    "sha256": "300034da754225559f972ae1412ec593f01e24dcf3973a67fb6324d9d4925b52",
+    "mode": "RGBA",
+    "size": [
+      33,
+      19
+    ],
+    "bbox": [
+      1,
+      1,
+      32,
+      18
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 192,
+    "edge_pixels": 166,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_tools_shovel",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_tools_shovel/ground.png",
+    "sha256": "e3ee8a4ab9f9d28b1cfd4179abbc0b29a63aa5daf12c3baaedde9850b44fcd3f",
+    "mode": "RGBA",
+    "size": [
+      48,
+      26
+    ],
+    "bbox": [
+      1,
+      1,
+      47,
+      25
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 299,
+    "edge_pixels": 247,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_crafting_pine_plank",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_crafting_pine_plank/ground.png",
+    "sha256": "6ec0e8037d02eb6d556ffc7e646761c674caa417ae4f3512e157656f350de59d",
+    "mode": "RGBA",
+    "size": [
+      44,
+      25
+    ],
+    "bbox": [
+      1,
+      1,
+      43,
+      24
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 364,
+    "edge_pixels": 226,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_crafting_firewood",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_crafting_firewood/ground.png",
+    "sha256": "847b93d3bf67207bfbf5e84f0f77a54ddc4171d901f9c3c078f9f6cdb6ab96e5",
+    "mode": "RGBA",
+    "size": [
+      32,
+      25
+    ],
+    "bbox": [
+      1,
+      1,
+      31,
+      24
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 449,
+    "edge_pixels": 195,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_paperback_book",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_paperback_book/ground.png",
+    "sha256": "404ed44e045f7065b469538388bbad5eeb81d7d2e85415518c732e04b272f5ad",
+    "mode": "RGBA",
+    "size": [
+      18,
+      12
+    ],
+    "bbox": [
+      1,
+      1,
+      17,
+      11
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 109,
+    "edge_pixels": 78,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_hardback_book",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_hardback_book/ground.png",
+    "sha256": "8ed7adc283b43f2a4c87acaca78cc16928cc0e41390bad13af373cc44dc5661f",
+    "mode": "RGBA",
+    "size": [
+      18,
+      12
+    ],
+    "bbox": [
+      1,
+      1,
+      17,
+      11
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 109,
+    "edge_pixels": 82,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_magazine",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_magazine/ground.png",
+    "sha256": "3c6e8839471ed5fde41a0beed686a6933e6727eb4529e859e83d408424542775",
+    "mode": "RGBA",
+    "size": [
+      18,
+      12
+    ],
+    "bbox": [
+      1,
+      1,
+      17,
+      11
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 112,
+    "edge_pixels": 82,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_storage_box",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_storage_box/ground.png",
+    "sha256": "f624ca05271b30338dd81c2137ea27a5733a7ff6050ccc7913cc5d0f78876b93",
+    "mode": "RGBA",
+    "size": [
+      14,
+      22
+    ],
+    "bbox": [
+      1,
+      1,
+      13,
+      21
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 200,
+    "edge_pixels": 124,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_laundry_basket",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_laundry_basket/ground.png",
+    "sha256": "e4ff2c60d743c68a9a657a188b4b8ffbddd33b8984e26adbf5df5be9b61645fa",
+    "mode": "RGBA",
+    "size": [
+      22,
+      28
+    ],
+    "bbox": [
+      1,
+      1,
+      21,
+      27
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 443,
+    "edge_pixels": 179,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_bucket",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_bucket/ground.png",
+    "sha256": "6180503b67119cb6557f073eacf21b82616a607673bda81a54d0d4e62d5c58f7",
+    "mode": "RGBA",
+    "size": [
+      23,
+      28
+    ],
+    "bbox": [
+      1,
+      1,
+      22,
+      27
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 441,
+    "edge_pixels": 181,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_cooking_pot",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_cooking_pot/ground.png",
+    "sha256": "8ddc02e4dccd7a432ac88c6911455aec60eddb4c08b3b73db666450ce32ede4d",
+    "mode": "RGBA",
+    "size": [
+      20,
+      20
+    ],
+    "bbox": [
+      1,
+      1,
+      19,
+      19
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 260,
+    "edge_pixels": 130,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_ceramic_mug",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_ceramic_mug/ground.png",
+    "sha256": "2d826516388b70aee4e88e3553a715b5abc9b59c1278694a265868f269e93a9c",
+    "mode": "RGBA",
+    "size": [
+      8,
+      11
+    ],
+    "bbox": [
+      1,
+      1,
+      7,
+      10
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 48,
+    "edge_pixels": 46,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_cutting_board",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_cutting_board/ground.png",
+    "sha256": "130faf7085bee012e35c742d3ea026059e14464be4ed7fe5b0a354a14ec6d80e",
+    "mode": "RGBA",
+    "size": [
+      40,
+      24
+    ],
+    "bbox": [
+      1,
+      1,
+      39,
+      23
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 312,
+    "edge_pixels": 194,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_bar_soap",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_bar_soap/ground.png",
+    "sha256": "dc76734d82de6760c3f1197ad5827e5b4c19a8f4c18a3d97d42a39da504de9ad",
+    "mode": "RGBA",
+    "size": [
+      14,
+      10
+    ],
+    "bbox": [
+      1,
+      1,
+      13,
+      9
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 69,
+    "edge_pixels": 57,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_toilet_roll",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_toilet_roll/ground.png",
+    "sha256": "d0389568968ebbcd184ef78e1c10fe1417396078de3a10e1a06493eca31af459",
+    "mode": "RGBA",
+    "size": [
+      10,
+      11
+    ],
+    "bbox": [
+      1,
+      1,
+      9,
+      10
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 55,
+    "edge_pixels": 47,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_folded_towel",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_folded_towel/ground.png",
+    "sha256": "86ff2cc8e966066f8a6f1fced9b1c82b06266e84139b4050ba1e2f28bbab3ace",
+    "mode": "RGBA",
+    "size": [
+      32,
+      21
+    ],
+    "bbox": [
+      1,
+      1,
+      31,
+      20
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 352,
+    "edge_pixels": 169,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_folded_blanket",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_folded_blanket/ground.png",
+    "sha256": "c1ff4c0d28ce68eb85997bfbfbbfa3527a0a39766d1d4e6ce92757c955057061",
+    "mode": "RGBA",
+    "size": [
+      30,
+      20
+    ],
+    "bbox": [
+      1,
+      1,
+      29,
+      19
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 320,
+    "edge_pixels": 159,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_candle",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_candle/ground.png",
+    "sha256": "865a8a5f45ef719f9fb1eb20605d17807b913cfd10987bec84f64047bd8528c7",
+    "mode": "RGBA",
+    "size": [
+      8,
+      13
+    ],
+    "bbox": [
+      1,
+      1,
+      7,
+      12
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 54,
+    "edge_pixels": 54,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_flashlight",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_flashlight/ground.png",
+    "sha256": "f85e590410111a8ac24afaac7d5d6de76b1ae89bab99c4267542e9dd733d02dd",
+    "mode": "RGBA",
+    "size": [
+      8,
+      16
+    ],
+    "bbox": [
+      1,
+      1,
+      7,
+      15
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 64,
+    "edge_pixels": 64,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_portable_radio",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_portable_radio/ground.png",
+    "sha256": "41d1f708b41fc96be39cfd2318cc7e26cfa7bb5851f47cdf973193a2caa20dba",
+    "mode": "RGBA",
+    "size": [
+      16,
+      16
+    ],
+    "bbox": [
+      1,
+      1,
+      15,
+      15
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 144,
+    "edge_pixels": 99,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_alarm_clock",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_alarm_clock/ground.png",
+    "sha256": "aa1bd55bcd1883c8d92cf0d88ad315dbb60204aa8c47457e3a4c4fc22152e9ef",
+    "mode": "RGBA",
+    "size": [
+      12,
+      14
+    ],
+    "bbox": [
+      1,
+      1,
+      11,
+      13
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 96,
+    "edge_pixels": 70,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_fuel_can",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_fuel_can/ground.png",
+    "sha256": "48423180a644c8797ef53358ad14735b6cdefb816b3ee1eb544e5b4b6f6dcde3",
+    "mode": "RGBA",
+    "size": [
+      21,
+      31
+    ],
+    "bbox": [
+      1,
+      1,
+      20,
+      30
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 431,
+    "edge_pixels": 188,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_household_backpack",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_household_backpack/ground.png",
+    "sha256": "50483020843566fa47cd1bcf7a98e5a9324898cc3a6eb4a591a05528953485aa",
+    "mode": "RGBA",
+    "size": [
+      24,
+      30
+    ],
+    "bbox": [
+      1,
+      1,
+      23,
+      29
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 490,
+    "edge_pixels": 195,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_dining_chair",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_dining_chair/ground.png",
+    "sha256": "eb5540fffef189315076a1667054e41b5c34fddc63177a305a6059f8c8a3cfa6",
+    "mode": "RGBA",
+    "size": [
+      40,
+      64
+    ],
+    "bbox": [
+      1,
+      1,
+      39,
+      63
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1174,
+    "edge_pixels": 797,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_kitchen_table",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_kitchen_table/ground.png",
+    "sha256": "5d5f2bcdfaf387ac5dceca51563122edda8f14a14f39d12945ef071afc189ac2",
+    "mode": "RGBA",
+    "size": [
+      92,
+      78
+    ],
+    "bbox": [
+      1,
+      1,
+      91,
+      77
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2838,
+    "edge_pixels": 973,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_coffee_table",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_coffee_table/ground.png",
+    "sha256": "cdfb19c7747cf4ce97652c76e261066c72f0a4907ce321dc8fc2c76b7abd8d98",
+    "mode": "RGBA",
+    "size": [
+      78,
+      75
+    ],
+    "bbox": [
+      1,
+      1,
+      77,
+      74
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2338,
+    "edge_pixels": 902,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_nightstand",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_nightstand/ground.png",
+    "sha256": "93ee5365a9393b21232d359ef235d03443a0b40f7e0d4a5bd071bb816f080f34",
+    "mode": "RGBA",
+    "size": [
+      56,
+      68
+    ],
+    "bbox": [
+      1,
+      1,
+      55,
+      67
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2779,
+    "edge_pixels": 453,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_wardrobe",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_wardrobe/ground.png",
+    "sha256": "60003a6191102c519b060c30402cfb7821a9ea25eae25a0456a37671d5af6c75",
+    "mode": "RGBA",
+    "size": [
+      66,
+      116
+    ],
+    "bbox": [
+      1,
+      1,
+      65,
+      115
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 6059,
+    "edge_pixels": 691,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_bookcase",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_bookcase/ground.png",
+    "sha256": "1efdf526de33f1e019eb9040dc79c7a798b889635ffc697574f587dc77556985",
+    "mode": "RGBA",
+    "size": [
+      54,
+      106
+    ],
+    "bbox": [
+      1,
+      1,
+      53,
+      105
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 4564,
+    "edge_pixels": 719,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_kitchen_counter",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_kitchen_counter/ground.png",
+    "sha256": "511e5cf839ac2cdeb452fa2dfcc6b866b2e29c1d9666b32f9f2b4ad623c99fdf",
+    "mode": "RGBA",
+    "size": [
+      72,
+      76
+    ],
+    "bbox": [
+      1,
+      1,
+      71,
+      75
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 3904,
+    "edge_pixels": 550,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_sink_cabinet",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_sink_cabinet/ground.png",
+    "sha256": "4a1b04db66a29f13c546a79764e74dbb0536820c687e0f0fa035d0dd42c730f7",
+    "mode": "RGBA",
+    "size": [
+      64,
+      76
+    ],
+    "bbox": [
+      1,
+      1,
+      63,
+      75
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 3603,
+    "edge_pixels": 577,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_medicine_cabinet",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_medicine_cabinet/ground.png",
+    "sha256": "7aee6f91f28afd66b30f9c8842797fdb92df130c2d6d09e2b5f1b79e8c651f6d",
+    "mode": "RGBA",
+    "size": [
+      52,
+      69
+    ],
+    "bbox": [
+      1,
+      1,
+      51,
+      68
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2656,
+    "edge_pixels": 478,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_single_bed",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_single_bed/ground.png",
+    "sha256": "beaa3d6a680b198329e84de5b328efa8afcfd1426ed63f787fb60492ce78b517",
+    "mode": "RGBA",
+    "size": [
+      127,
+      87
+    ],
+    "bbox": [
+      1,
+      1,
+      126,
+      86
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 5562,
+    "edge_pixels": 820,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_two_seat_sofa",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_two_seat_sofa/ground.png",
+    "sha256": "7ba4cf9049750c049b507a4675308db714da2369ee3dd3919048e3ae182a52bb",
+    "mode": "RGBA",
+    "size": [
+      108,
+      90
+    ],
+    "bbox": [
+      1,
+      1,
+      107,
+      89
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 5675,
+    "edge_pixels": 784,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_storage_chest",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_storage_chest/ground.png",
+    "sha256": "3d6b8f0a1af4e564fa2a0217eec445842daf5d3415dc7e16ac58adbdc21ebcfe",
+    "mode": "RGBA",
+    "size": [
+      62,
+      58
+    ],
+    "bbox": [
+      1,
+      1,
+      61,
+      57
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2356,
+    "edge_pixels": 426,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_refrigerator",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_refrigerator/ground.png",
+    "sha256": "dd981d0b4088ae66c358448023eacee82e98f042d83469b51334bc06c19008b1",
+    "mode": "RGBA",
+    "size": [
+      58,
+      113
+    ],
+    "bbox": [
+      1,
+      1,
+      57,
+      112
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 5469,
+    "edge_pixels": 785,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_cooking_stove",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_cooking_stove/ground.png",
+    "sha256": "85f88a511f9fd00bf64b34d8c1cc4eea5ba9edd5d0740ff8372e07013bc907fe",
+    "mode": "RGBA",
+    "size": [
+      54,
+      74
+    ],
+    "bbox": [
+      1,
+      1,
+      53,
+      73
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 3121,
+    "edge_pixels": 499,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_toilet",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_toilet/ground.png",
+    "sha256": "fd99f4646efe6f7050501b5c10cff20940cff232222db2043a8b95d4e1df2f8f",
+    "mode": "RGBA",
+    "size": [
+      38,
+      56
+    ],
+    "bbox": [
+      1,
+      1,
+      37,
+      55
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1243,
+    "edge_pixels": 371,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_furniture_bathtub",
+    "role": "world",
+    "path": "assets/generated/factory/sprites/ll_furniture_bathtub/ground.png",
+    "sha256": "b5df4461c88745fa2d32807a4ca89209f6478f1806b374dc5915cca40b47864d",
+    "mode": "RGBA",
+    "size": [
+      104,
+      77
+    ],
+    "bbox": [
+      1,
+      1,
+      103,
+      76
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 4619,
+    "edge_pixels": 644,
+    "bright_edge_pixels": 0,
+    "status": "no_bright_edge_detected_visual_review_pending",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_ammo_box_40cal",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/ammo_box_40cal/64.png",
+    "sha256": "5938cf901b5cf9a27c3d9dd0b249a9105052a3af855e270bcf1fc21b68b42635",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      12,
+      60,
+      52
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1852,
+    "edge_pixels": 649,
+    "bright_edge_pixels": 39,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_acorn",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/acorn/64.png",
+    "sha256": "a6d28a88be003fcbf59191c01bebfc14b410abd5ee917a3e5f2c07f4062befde",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      55
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1994,
+    "edge_pixels": 710,
+    "bright_edge_pixels": 67,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_aerosol_canister",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/aerosol_canister/64.png",
+    "sha256": "42c8a2708bd9a379eaaeb9acbf52eac7ba968fd7611b66e11f304203609ca16b",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      16,
+      4,
+      48,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1393,
+    "edge_pixels": 518,
+    "bright_edge_pixels": 39,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_timed_aerosol_canister",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/timed_aerosol_canister/64.png",
+    "sha256": "272233564d9fcfc40d246b6feb6f7411607bbbd09480d78f7581c6bd63acfd77",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      15,
+      4,
+      48,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1634,
+    "edge_pixels": 534,
+    "bright_edge_pixels": 46,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_air_filter_tape",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/air_filter_tape/64.png",
+    "sha256": "1222fd5283e12763ff98d25e1b609103ac8ad3ea9ee162da463953afe304d3ae",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      7,
+      60,
+      57
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2430,
+    "edge_pixels": 601,
+    "bright_edge_pixels": 39,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_air_filter_panel",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/air_filter_panel/64.png",
+    "sha256": "97bf0539f2497a4b077fb26fe53b231a73b6bdc2d8d2480eb97eb5b76f0917e9",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      10,
+      60,
+      53
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1785,
+    "edge_pixels": 568,
+    "bright_edge_pixels": 35,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_digital_alarm_clock",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/digital_alarm_clock/64.png",
+    "sha256": "e5157e0a2c24dbc7d6f554f940d875e6a23946a629ab709d1a9ad1a0bcca0ade",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      10,
+      60,
+      53
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2087,
+    "edge_pixels": 589,
+    "bright_edge_pixels": 35,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_respirator_mask",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/respirator_mask/64.png",
+    "sha256": "c46a26fb282aad15398b8dae07adfde1bf3034fd7aa806212b4044db73fc22c9",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      11,
+      60,
+      53
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1714,
+    "edge_pixels": 604,
+    "bright_edge_pixels": 63,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_isopropyl_alcohol",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/isopropyl_alcohol/64.png",
+    "sha256": "e314597b8f3064f9fc334a58e741e27ef0259eae8bfc7ac8dc0d52e0bda5e189",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      14,
+      4,
+      49,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1517,
+    "edge_pixels": 556,
+    "bright_edge_pixels": 30,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_alcohol_wipes_old",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/alcohol_wipes_old/64.png",
+    "sha256": "7e5796a4d45d275e90d296c5cb76cede707cf47bedbddb2a292e89b2e89ff054",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      14,
+      60,
+      50
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1622,
+    "edge_pixels": 630,
+    "bright_edge_pixels": 55,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_alcohol_wipes",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/alcohol_wipes/64.png",
+    "sha256": "805394f5737540dee20e0e9b07f0c10128cc0b105f48cd4046ec5174c6ceff0f",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      12,
+      60,
+      51
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1822,
+    "edge_pixels": 631,
+    "bright_edge_pixels": 67,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_field_pack_camo",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/field_pack_camo/64.png",
+    "sha256": "8fd6a2be3488ca98d1c559cd10966f3e641e5a6467377dcccaa5516c4cb97c55",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      7,
+      4,
+      57,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2411,
+    "edge_pixels": 697,
+    "bright_edge_pixels": 72,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_field_pack_sand",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/field_pack_sand/64.png",
+    "sha256": "052a35ccd17b9805ea578149f69ac9ef6e3a060d2f03b8f54e998a57b661758d",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      5,
+      4,
+      59,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2536,
+    "edge_pixels": 727,
+    "bright_edge_pixels": 77,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_field_pack_olive",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/field_pack_olive/64.png",
+    "sha256": "ab6a0a05b6d79cf9f8177380f271cd30981e3b1031c85096b16558b237aab8fd",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      5,
+      4,
+      58,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2564,
+    "edge_pixels": 724,
+    "bright_edge_pixels": 45,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_licorice_sweets",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/licorice_sweets/64.png",
+    "sha256": "1cbbfd7eaeb4e3be8797c2abd665a1222866ec662f66e7d6733568a31e27831e",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      9,
+      60,
+      54
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1885,
+    "edge_pixels": 778,
+    "bright_edge_pixels": 63,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_aluminum_ingot",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/aluminum_ingot/64.png",
+    "sha256": "6a2c67190444640f3b87fde1b7b9da97096080f5f0ae894aa231feee25235aee",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      12,
+      60,
+      51
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1450,
+    "edge_pixels": 569,
+    "bright_edge_pixels": 53,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_aluminum_scrap",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/aluminum_scrap/64.png",
+    "sha256": "cb6a44e64fea0adfc9950865d639bbf3afd0d179ff929c1064d7fb99560785cd",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      11,
+      60,
+      52
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1819,
+    "edge_pixels": 679,
+    "bright_edge_pixels": 46,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_amethyst_raw",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/amethyst_raw/64.png",
+    "sha256": "e9a1d84b10f0ee74e10646dd0831304aa142bf6460713ebd9d6ba800239eb69a",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      56
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2068,
+    "edge_pixels": 637,
+    "bright_edge_pixels": 54,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_amethyst_gem",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/amethyst_gem/64.png",
+    "sha256": "fdd45550d2afa84b7fb23a710dbeea754dee6b477d5a0e31e1dcb423bbc86878",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      7,
+      60,
+      57
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2179,
+    "edge_pixels": 661,
+    "bright_edge_pixels": 118,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_ammunition_case",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/objects/ammunition_case/64.png",
+    "sha256": "14d7a026b1892453d5a49c13e180d6d4340df6082557bd50595774cc33184f5f",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      56
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 2222,
+    "edge_pixels": 649,
+    "bright_edge_pixels": 40,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_hand_axe",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/hand_axe/64.png",
+    "sha256": "e1c440f359b636d34e87c96bf368b9a1c394979aa92eb0b598d086c019c0bfce",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      4,
+      59,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1414,
+    "edge_pixels": 798,
+    "bright_edge_pixels": 17,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_felling_axe",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/felling_axe/64.png",
+    "sha256": "daca0e7a7f0066b19a2c98a8f6f3ed3b8bd5116277571396954fe81d4efaf25f",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      5,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 989,
+    "edge_pixels": 712,
+    "bright_edge_pixels": 8,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_stone_axe",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/stone_axe/64.png",
+    "sha256": "959f2727a2197a256ceee1938323233bbc44186f6a9a764fc756a8563f2eae05",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      5,
+      4,
+      58,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1257,
+    "edge_pixels": 734,
+    "bright_edge_pixels": 3,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_baseball_bat",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/baseball_bat/64.png",
+    "sha256": "c8db978607b0dd93e003e34818e53abfb79582cb15a268adad80136a1d066875",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      5,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 812,
+    "edge_pixels": 556,
+    "bright_edge_pixels": 1,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_reinforced_baseball_bat",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/reinforced_baseball_bat/64.png",
+    "sha256": "2feac6c6aa39488de79c1a00b945e42b1be46c79641ca832f4f6ff2ca5332a6b",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      5,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 963,
+    "edge_pixels": 639,
+    "bright_edge_pixels": 4,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_basic_mace",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/basic_mace/64.png",
+    "sha256": "3f166460d71bab177c33f05418963ea29b6fd6541783099839ea9eb49e4c6848",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      4,
+      60,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1004,
+    "edge_pixels": 622,
+    "bright_edge_pixels": 8,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_bone_club",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/bone_club/64.png",
+    "sha256": "c9150f18622bd4a54e09c0194a253270638a5937ea7326f93c585c849b4cf641",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      4,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1114,
+    "edge_pixels": 642,
+    "bright_edge_pixels": 10,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_meat_cleaver",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/meat_cleaver/64.png",
+    "sha256": "9a1d8bb108d4a6f60f60eeff79cae52c1ae6630ba7d61d8d06f995bd866da97e",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      6,
+      60,
+      58
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1423,
+    "edge_pixels": 707,
+    "bright_edge_pixels": 36,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_crowbar",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/crowbar/64.png",
+    "sha256": "0897522e12fb4debe53ce32d97fad61c49692e053bd308c4cebfafb8489157b9",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      56
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 719,
+    "edge_pixels": 631,
+    "bright_edge_pixels": 4,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_hunting_knife",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/hunting_knife/64.png",
+    "sha256": "8f3a28b9b8590691cc2c5191c26f4dfb8348fa7660ecbaeb811c7b5374fa8079",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      56
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1058,
+    "edge_pixels": 666,
+    "bright_edge_pixels": 16,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_single_edge_sword",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/single_edge_sword/64.png",
+    "sha256": "2a4db00c8de6c845d17f47e8b152f528fd46af653569d3fdf038d3e5012373ac",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      8,
+      60,
+      56
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 559,
+    "edge_pixels": 487,
+    "bright_edge_pixels": 18,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_butterfly_knife_folded",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/butterfly_knife_folded/64.png",
+    "sha256": "7d07dc328da31a1a652913dabdacaa2ec3922a3c87445f907f5bebcec7d3ec54",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      10,
+      60,
+      54
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1304,
+    "edge_pixels": 552,
+    "bright_edge_pixels": 10,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_pocket_knife",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/pocket_knife/64.png",
+    "sha256": "3e62eca5eebdd696663195c9c1bb6ee026b0977a11a5576f76f5e6965babf635",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      13,
+      60,
+      51
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 856,
+    "edge_pixels": 512,
+    "bright_edge_pixels": 24,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_crude_machete",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/crude_machete/64.png",
+    "sha256": "218e631f641e5a92946f9283667cae5fc5614c838b149a5be5bf9b394421857e",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      9,
+      60,
+      54
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 953,
+    "edge_pixels": 640,
+    "bright_edge_pixels": 9,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_machete",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/machete/64.png",
+    "sha256": "f7c2635566c0a8f012281ee7f7a60d27e0f670eb89d1105e5e7785128704b481",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      10,
+      60,
+      53
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 700,
+    "edge_pixels": 506,
+    "bright_edge_pixels": 16,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_pickaxe",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/pickaxe/64.png",
+    "sha256": "f83ddbe2a971d826bb7055341fe7a2412950afc9b5ba41d019215dfa3c4f3f70",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      5,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 1048,
+    "edge_pixels": 773,
+    "bright_edge_pixels": 5,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_pitchfork",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/pitchfork/64.png",
+    "sha256": "74f816bb1c6757254cf9178f0943cc2f285acf90ab0ed0d6e4fdcdffc683ac10",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      4,
+      60,
+      59
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 743,
+    "edge_pixels": 682,
+    "bright_edge_pixels": 4,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_scythe",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/scythe/64.png",
+    "sha256": "b7d560b4f63c25b4f6e7241a4735175b4467d9b5ea9be0ab1381777702fc194d",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      7,
+      4,
+      57,
+      60
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 917,
+    "edge_pixels": 816,
+    "bright_edge_pixels": 13,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_short_pump_shotgun",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/short_pump_shotgun/64.png",
+    "sha256": "9498c841470c36c0588c39d905845daaeb8fefb0263dd2a144db843f9c9392d1",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      15,
+      60,
+      49
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 729,
+    "edge_pixels": 588,
+    "bright_edge_pixels": 6,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  },
+  {
+    "asset_id": "ll_golden_hunting_rifle",
+    "role": "inventory_only",
+    "path": "assets/last_light/golden40/weapons/hunting_rifle/64.png",
+    "sha256": "0142953dd497f53f20f8671e64d612a1aa92c9f5c9e6e4e567b2283b7bbe3621",
+    "mode": "RGBA",
+    "size": [
+      64,
+      64
+    ],
+    "bbox": [
+      4,
+      12,
+      60,
+      52
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "opaque_pixels": 677,
+    "edge_pixels": 549,
+    "bright_edge_pixels": 4,
+    "status": "manual_review_required_bright_edge",
+    "rule": "4-connected alpha-boundary; RGB minimum >210 and channel spread <25; white materials can legitimately trigger; not an art approval"
+  }
+]

@@ -15,9 +15,14 @@ Retrieved via connected Google Drive: Backpack.fbx, FirstAidKit.fbx, Radio.fbx, 
 ## Import strategy
 
 1. Convert a curated selection of FBX to GLB using Blender or another reliable converter, retaining materials and scale.
-2. Preview each GLB in `asset_lab.tscn`, and inspect shading, orientation and dimensions.
-3. Build an actual Node3D isometric house in a **separate scene**; keep `main.tscn` and the current playable Node2D house untouched.
-4. Add contextual collision, interactions, roof cutaway, character animation and camera controls.
-5. Expand with a compatible modular residential building/furniture asset pack. Survival Pack is largely small props, **not a full set of houses or furniture**.
+2. Render licensed models offline using `tools/render_isometric.py`; validate output with `tools/validate_sprites.py`. See `docs/visual-pipeline.md` for the fixed 80×40 tile, lighting and anchor contract.
+3. Inspect candidate PNGs in a separate **Node2D** visual test room. The old Node3D asset lab is discarded experimentation, not the visual integration path. Keep `main.tscn` as the playable 2D scene.
+4. Retain independent gameplay collision, interactions and roof cutaway. No runtime 3D camera changes.
+5. Approve a small matching environment subset before expansion. Survival Pack is largely small props, **not a full set of houses or furniture**.
 
 Asset usage is subject to the original `License.txt` in the Drive folder. Do not use Project Zomboid proprietary models or textures.
+
+
+## Pipeline smoke evidence — 2026-11-04
+
+Blender 4.3.2 CPU Cycles rendered one synthetic calibration cube to `/tmp/last-light-render-smoke`, outside the repository. `python tools/validate_sprites.py /tmp/last-light-render-smoke` passed RGBA, dimensions, padding, anchor and provenance checks. PNG was visually inspected. Denoising is disabled because the environment Blender build lacks OpenImageDenoise. This proves the tool runs; it does not prove imported Survival Pack materials or finished room quality. Connected resource/license audit is recorded separately by the integration owner.

@@ -1,0 +1,15 @@
+{
+  "schema": "last-light.integration-queue.v1",
+  "owner": "W01",
+  "known_good": "f17b35b (#26)",
+  "candidate_branch": "claude/last-light-integration-candidate (not yet created)",
+  "queue": [
+    {"order": 1, "item": "Choose candidate base: #37 (lab + #18) or #38 (#19 + #18)", "decision": "Director recommends #37 as base, then cherry-pick #38's UCF street viewer only if founder wants it (lab supersedes it)", "status": "AWAITING_W01"},
+    {"order": 2, "item": "W02 #36 gameplay (save schema 3)", "evidence": "docs/coordination/trials/w02_on_pr37.patch + tests log, EXIT 0", "status": "READY_FOR_W01"},
+    {"order": 3, "item": "W03 #39 zombie AI", "status": "BLOCKED_REBASE"},
+    {"order": 4, "item": "W05 interactions", "status": "NOT_SUBMITTED"},
+    {"order": 5, "item": "W04 world generation (must extend scripts/neighborhood.gd, not a parallel generator)", "status": "NOT_SUBMITTED"},
+    {"order": 6, "item": "W08 mobile UI", "status": "NOT_SUBMITTED"},
+    {"order": 7, "item": "W06/W07 approved assets", "status": "NO_APPROVED_ASSETS"}
+  ]
+}

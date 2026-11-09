@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-05",
+  "base": "1b609366ced6664e1ea4419b9dc9da1d9e6c36d1",
+  "branch": "codex/house-survival-v05-v06",
+  "engine": "4.6.3.stable.official.7d41c59c4",
+  "entry": "res://main.tscn",
+  "baseline_tests": "PASS",
+  "foundation": "PASS",
+  "gameplay_checks": 154,
+  "survival_model_checks": 89,
+  "asset_gallery_pages_modes": 45,
+  "factory_asset_validator": "300 IDs / 1032 frames PASS",
+  "asset_negative_tests": 5,
+  "all_supported_items_scavengeable": 8,
+  "searchable_containers": 5,
+  "screenshots": 10,
+  "performance": {
+    "cpu_simulation_ms_max": 0.25,
+    "cpu_simulation_ms_p50": 0.018,
+    "cpu_simulation_ms_p95": 0.033,
+    "cpu_simulation_samples": 600,
+    "display": "X11",
+    "draw_calls": 324.0,
+    "engine": "4.6.3-stable (official)",
+    "rendered_frame_wall_ms_p50": 31.974,
+    "rendered_frame_wall_ms_p95": 48.468,
+    "rendered_frames_after_warmup": 150,
+    "scope": "host observations, not iPhone or Xogot",
+    "texture_memory_bytes": 10082803.0,
+    "video_adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+    "viewport": [
+      1560,
+      720
+    ]
+  },
+  "before_draw_calls": 2600,
+  "iphone_xogot": "UNVERIFIED",
+  "deployed": false,
+  "merged": false
+}
