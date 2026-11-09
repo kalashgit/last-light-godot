@@ -1,0 +1,6 @@
+{
+  "schema": "last_light.neighborhood_asset_bindings.v1",
+  "status": "NO_APPROVED_ASSETS_YET",
+  "bindings": [],
+  "notes": "Intentionally empty. Each future binding requires an A00 canonical asset ID, family F01-F12, exact immutable file SHA256, exact package SHA256, matching protected founder+W09 Golden approval, and Godot-approved sprite metadata. No automatic approval from file existence."
+}

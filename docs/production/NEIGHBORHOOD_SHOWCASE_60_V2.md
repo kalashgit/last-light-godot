@@ -1,5 +1,7 @@
 # LAST LIGHT — 60 Building Types + H01/H02/H03 House Laboratory
 
+**V3 continuation:** [Modular and furnished interiors with fail-closed F01–F12 approval bridge](NEIGHBORHOOD_MODULAR_INTERIORS_V3.md). This V2 document describes the original schematic baseline, not the new V3 branch.
+
 **Status:** Opt-in playable-layout **schematic prototype**; no founder Golden approval, no main-scene switch, no mass production. This is *not* a claim that 60 unique building meshes, furnished playable interiors, or complete gameplay systems exist.
 
 **GitHub draft PR:** https://github.com/kalashgit/last-light-godot/pull/56
