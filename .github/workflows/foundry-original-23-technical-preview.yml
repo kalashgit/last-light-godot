@@ -90,3 +90,33 @@ jobs:
           path: build/original_23/
           retention-days: 14
           if-no-files-found: error
+
+  all-23-artifact-reconciliation:
+    needs: bounded-blender-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<14'
+      - name: Download all six separately hashed original Blender/GLB/sprite review windows
+        uses: actions/download-artifact@v4
+        with:
+          pattern: original-23-review-window-*
+          path: build/original_23/windows
+          merge-multiple: false
+      - name: Reject absent models, forged receipts, pixel duplicates, bad alpha or missing headings
+        run: |
+          python -m tools.foundry_original_23.audit_artifacts \
+            --windows build/original_23/windows --output build/original_23/all_23_review
+      - name: Upload combined 23-item review contact sheet and honest QA report (never production atlas)
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-23-all-assets-review-${{ github.run_id }}
+          path: build/original_23/all_23_review/
+          retention-days: 14
+          if-no-files-found: error

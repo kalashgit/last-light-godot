@@ -66,6 +66,7 @@ def create_previews(manifest: dict, renders: Path, output: Path) -> dict:
     output.mkdir(parents=True, exist_ok=True)
     selected = []
     icons = []
+    seen_icons = {}
     for asset in manifest["assets"]:
         ident = asset["asset_id"]
         source = renders / ident
@@ -87,6 +88,13 @@ def create_previews(manifest: dict, renders: Path, output: Path) -> dict:
         dest.mkdir(parents=True, exist_ok=True)
         icon = icon_from_frame(frames[2])
         check = inspect_alpha(icon)
+        raw_pixel_sha = hashlib.sha256(icon.tobytes()).hexdigest()
+        if raw_pixel_sha in seen_icons:
+            raise ValueError("Cross-ID duplicate sprite artwork requires originality review: " + ident + " / " + seen_icons[raw_pixel_sha])
+        seen_icons[raw_pixel_sha] = ident
+        heading_pixels = {hashlib.sha256(f.tobytes()).hexdigest() for f in frames}
+        if len(heading_pixels) < 2:
+            raise ValueError("All 16 world headings are pixel-identical: " + ident)
         icon.save(dest / "inventory_64.png", optimize=True)
         icons.append(icon)
         # The directional page is explicit 4x4 PNG; the 16 individual source
@@ -101,11 +109,18 @@ def create_previews(manifest: dict, renders: Path, output: Path) -> dict:
         selected.append({
             "asset_id": ident, "rendered_headings": 16, "inventory_size_px": [64, 64],
             "inventory_alpha_qa": check,
+            "unique_direction_frame_count": len(heading_pixels),
+            "inventory_pixel_sha256": raw_pixel_sha,
             "preview_sha256": hashlib.sha256((dest / "inventory_64.png").read_bytes()).hexdigest(),
             "source_glb_sha256": metadata["source_sha256"],
             "artistic_originality_review": "PENDING_HUMAN_REVIEW",
             "f12_gameplay_scale_accepted": False, "godot_tested": False,
             "founder_golden_approved": False, "production_sheet_admitted": False,
+            "visual_reviewer_scores": {
+                "original_silhouette": None, "physical_materials": None,
+                "upper_left_lighting": None, "pixel_treatment": None,
+                "readable_at_32_48_64": None, "godot_world_consistency": None,
+            },
         })
     if not selected:
         raise ValueError("No Blender-rendered original models available for preprocessing")

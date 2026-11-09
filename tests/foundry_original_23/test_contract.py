@@ -11,6 +11,7 @@ from tools.foundry_original_23.contract import (
     DEFAULT_MANIFEST, EXPECTED_IDS, MASTER, build_render_plan, check_manifest,
 )
 from tools.foundry_original_23.gameplay import build_gameplay
+from tools.foundry_original_23.audit_artifacts import find_windows
 from tools.foundry_original_23.postprocess import (
     create_previews, icon_from_frame, inspect_alpha,
 )
@@ -73,6 +74,11 @@ class OriginalBatchTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "No real independently generated GLB"):
                 build_render_plan(Path(t), Path(t)/"render_plan.json")
 
+    def test_aggregate_fail_closed_without_six_independent_windows(self):
+        with tempfile.TemporaryDirectory() as t:
+            with self.assertRaisesRegex(ValueError, "exactly six"):
+                find_windows(Path(t))
+
     def test_transparent_64px_icon_and_alpha_border(self):
         image = Image.new("RGBA", (192, 192), (0, 0, 0, 0))
         ImageDraw.Draw(image).ellipse((64, 24, 124, 164), fill=(120, 55, 20, 255))
@@ -102,6 +108,23 @@ class OriginalBatchTests(unittest.TestCase):
                 frame.save(folder/f"{i:02d}.png")
             with self.assertRaisesRegex(ValueError, "Missing 16-direction"):
                 create_previews(self.doc, Path(t)/"render", Path(t)/"output")
+
+    def test_cross_asset_identical_original_art_rejected(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)/"render"
+            for ident in EXPECTED_IDS[:2]:
+                folder = root/ident
+                folder.mkdir(parents=True)
+                (folder/"render_metadata.json").write_text(json.dumps({
+                    "asset_id": ident, "frames": 16, "golden_approved": False,
+                    "source_sha256": "0"*64,
+                }))
+                for i in range(16):
+                    frame = Image.new("RGBA", (192, 192), (0, 0, 0, 0))
+                    ImageDraw.Draw(frame).rectangle((50+i%4, 30, 120, 130), fill=(40, 80, 120, 255))
+                    frame.save(folder/f"{i:02d}.png")
+            with self.assertRaisesRegex(ValueError, "Cross-ID duplicate"):
+                create_previews(self.doc, root, Path(t)/"output")
 
 
 if __name__ == "__main__":

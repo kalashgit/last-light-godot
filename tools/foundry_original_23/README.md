@@ -41,6 +41,11 @@ windows of up to four IDs on the draft PR, renders 16 directions, packs
 **64×64 transparent inventory sprites**, archives review contact sheets and
 JSON SHA256 receipts. This workflow has read-only GitHub
 permissions; no publish, merge, deployment, API image generation or R2 costs.
+Its final aggregate job rechecks **all 23 real editable `.blend` sources,
+GLBs, 64×64 sprites and 368 original directional PNG frames** across the six
+artifacts, rejects duplicate icon pixels and forged admissions, and uploads a
+single 23-item **technical review contact sheet**. This is *not* a 40-item
+released atlas; independent material/lighting and gameplay review remains.
 
 ## How a 23–45 candidate becomes a true 40-item sheet input
 
