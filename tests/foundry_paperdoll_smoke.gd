@@ -11,7 +11,7 @@ func check(ok: bool, label: String) -> void:
         failures.append(label)
         push_error("FAIL: " + label)
 
-func _initialize() -> void:
+func _init() -> void:
     call_deferred("_run")
 
 func make_sheet(columns: int, dirs: int) -> Texture2D:
