@@ -50,7 +50,7 @@ def verify(output: Path):
             with Image.open(file) as im:
                 if im.mode != "RGBA" or im.size != (640, 512) or im.getchannel("A").getbbox() is None:
                     problems.append(f"{subject}: invalid transparent frame {file.name}")
-                if frame["file"] in ("roof_on.png", "roof_cut.png"):
+                if frame["file"] in ("roof_on.png", "roof_cut.png", "entrance_view.png"):
                     previews.append((subject, frame["file"], im.copy()))
         records.append({"subject": subject, "part_count": len(m["parts"]),
                         "opening_count": len(m["openings"]),
@@ -61,12 +61,12 @@ def verify(output: Path):
           "iphone": "NOT_TESTED", "issues": problems, "subjects": records}
     (output / "qa_report.json").write_text(json.dumps(qa, indent=2)+"\n")
     if not problems:
-        sheet = Image.new("RGB", (5*248, 2*248), (33, 40, 43))
+        sheet = Image.new("RGB", (5*248, 3*248), (33, 40, 43))
         draw = ImageDraw.Draw(sheet)
         for i, (_, label, im) in enumerate(previews):
             subject = previews[i][0]
             col = list(SUBJECTS).index(subject)
-            row = 1 if label == "roof_cut.png" else 0
+            row = {"roof_on.png": 0, "roof_cut.png": 1, "entrance_view.png": 2}[label]
             thumb = im.copy()
             thumb.thumbnail((232, 210), Image.Resampling.LANCZOS)
             bg = Image.new("RGBA", thumb.size,
@@ -75,7 +75,7 @@ def verify(output: Path):
             px, py = col*248+(248-thumb.width)//2, row*248+5
             sheet.paste(bg.convert("RGB"), (px, py))
             draw.text((col*248+6, row*248+220),
-                      f"{subject} / {'cut' if row else 'roof'}", fill=(228, 231, 215))
+                      f"{subject} / {label.removesuffix('.png')}", fill=(228, 231, 215))
         sheet.save(output / "f02_contact_sheet.png")
         archives = output / "f02_noncanonical_calibration.zip"
         with zipfile.ZipFile(archives, "w", compression=zipfile.ZIP_DEFLATED,
