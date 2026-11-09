@@ -111,5 +111,52 @@ class CalibrationOutputs(unittest.TestCase):
         self.assertIn("AnimationPlayer",source)
         self.assertFalse((fixture/"model.glb").exists(),"fixture source must not be committed as final game asset")
 
+    def test_v8_hollow_fridge_and_independent_drawer_rig(self):
+        folder=BASE/"refrigerator_v8b"
+        report=json.loads((folder/"calibration_report.json").read_text())
+        self.assertGreaterEqual(report["mesh_count"],70)
+        self.assertEqual(report["crisper_tray_meshes"],7)
+        self.assertEqual(report["crisper_slide_travel_proposed_m"],.19)
+        self.assertEqual(report["checks"]["closed_door_raycast"],"door.enamel_panel")
+        self.assertEqual(report["checks"]["open_cavity_raycast"],"liner.back")
+        self.assertTrue(report["glb_hinge_pivot_exported"])
+        data=(folder/"refrigerator_refined_calibration.glb").read_bytes()
+        gltf=json.loads(data[20:20+struct.unpack_from("<I",data,12)[0]])
+        self.assertEqual(len(gltf["animations"]),1)
+        self.assertTrue(any(n.get("name")=="slide_local.crisper_drawer" for n in gltf["nodes"]))
+        self.assertTrue(any(n.get("name")=="hinge_local.main_door" for n in gltf["nodes"]))
+
+    def test_v8_native_scale_alpha_and_contact_sheet(self):
+        folder=BASE/"refrigerator_v8b"
+        report=json.loads((folder/"render_qa.json").read_text())
+        self.assertEqual(report["frame_count"],7)
+        self.assertGreaterEqual(min(report["clear_margins_px"]),12)
+        self.assertTrue(report["adjacent_frames_visibly_distinct"])
+        with Image.open(folder/"qa_contact_sheet_v8.png") as sheet:
+            self.assertEqual(sheet.size,(1708,584))
+
+    def test_v9_original_pbr_images_export_to_glb(self):
+        folder=BASE/"refrigerator_v9c"
+        manifest=json.loads((folder/"calibration_report.json").read_text())
+        self.assertGreaterEqual(manifest["portable_texture_count"],2)
+        self.assertEqual(len(manifest["original_texture_images"]),2)
+        self.assertIn("NOT_F11_VALIDATED",manifest["material_finish"])
+        for name in manifest["original_texture_images"]:
+            path=folder/name
+            with Image.open(path) as texture:
+                self.assertEqual(texture.size,(256,256))
+                extrema=texture.convert("RGB").getextrema()
+                self.assertTrue(all(low>50 and high-low>0 for low,high in extrema),
+                                "Black/constant texture is not a portable PBR material")
+        glb=(folder/"refrigerator_refined_calibration.glb").read_bytes()
+        gltf=json.loads(glb[20:20+struct.unpack_from("<I",glb,12)[0]])
+        self.assertGreaterEqual(len(gltf.get("textures",[])),2)
+        self.assertGreaterEqual(len(gltf.get("images",[])),2)
+        self.assertTrue(all(any("TEXCOORD_0" in p.get("attributes",{}) for p in mesh["primitives"])
+                            for mesh in gltf["meshes"]))
+        self.assertEqual(len(gltf["animations"]),1)
+        visual=json.loads((folder/"render_qa.json").read_text())
+        self.assertGreaterEqual(min(visual["clear_margins_px"]),12)
+
 
 if __name__=="__main__":unittest.main()
