@@ -18,6 +18,11 @@ def validate(root):
     assert {item["name"] for item in manifest["items"]} == set(EXPECTED)
     for entry in manifest["items"]:
         name = entry["name"]
+        if name == "sofa":
+            assert entry["auto_uv_unwrapped"], "Expected organic sofa UV fallback"
+            assert set(entry["auto_uv_density_factors"]) == set(entry["auto_uv_unwrapped"]), \
+                "Missing physical texel density for some newly unwrapped sofa pieces"
+            assert all(0 < scale < 10000 for scale in entry["auto_uv_density_factors"].values())
         payload = (root / entry["file"]).read_bytes()
         magic, version, total = struct.unpack_from("<III", payload)
         assert (magic, version, total) == (0x46546C67, 2, len(payload))
