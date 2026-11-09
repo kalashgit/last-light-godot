@@ -15,6 +15,13 @@ import math
 from pathlib import Path
 import sys
 
+# Ubuntu's apt Blender 4.0 isolates system dist-packages, although the bundled
+# glTF exporter imports NumPy from there. Keep the change limited to this
+# process; never install arbitrary packages inside the runtime on import.
+system_dist = Path("/usr/lib/python3/dist-packages")
+if system_dist.is_dir() and str(system_dist) not in sys.path:
+    sys.path.append(str(system_dist))
+
 import bpy
 from mathutils import Vector
 from bpy_extras.object_utils import world_to_camera_view
