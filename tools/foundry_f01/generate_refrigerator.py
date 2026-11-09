@@ -385,7 +385,7 @@ def create_contact_sheet(output: Path) -> Path:
 def export_source(root: bpy.types.Object, output: Path) -> tuple[Path, Path]:
     blend_path = output / "model.blend"
     glb_path = output / "model.glb"
-    bpy.ops.wm.save_as_mainfile(filepath=str(blend_path.resolve()))
+    bpy.ops.wm.save_as_mainfile(filepath=str(blend_path.resolve()), compress=False)
     bpy.ops.object.select_all(action="DESELECT")
     root.select_set(True)
     for child in root.children_recursive:
@@ -402,6 +402,7 @@ def export_source(root: bpy.types.Object, output: Path) -> tuple[Path, Path]:
     if len(glb) < 1000 or glb[:4] != b"glTF" or struct.unpack_from("<I", glb, 8)[0] != len(glb):
         raise RuntimeError("GLB header/length verification failed")
     blend = blend_path.read_bytes()
+    print(f"F01_BLEND_HEADER_INSPECT size={len(blend)} first8={blend[:8].hex()}", flush=True)
     if len(blend) < 1000 or blend[:7] != b"BLENDER":
         raise RuntimeError("Editable Blender source signature verification failed")
     return blend_path, glb_path
