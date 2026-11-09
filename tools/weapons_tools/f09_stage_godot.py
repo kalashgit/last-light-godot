@@ -114,9 +114,9 @@ def main():
             "visible_carry":False,"frames":frames,
             "status":"PROVISIONAL_CANDIDATE_ISOLATED_TEST_ONLY",
             "license":"CC0-1.0","source":"F09 procedural candidate"})
-    item_path.write_text(json.dumps(inventory,indent=2)+"\\n")
+    item_path.write_text(json.dumps(inventory,indent=2)+"\n")
     (factory_dst/"manifest.json").write_text(
-        json.dumps(factory_manifest,indent=2)+"\\n")
+        json.dumps(factory_manifest,indent=2)+"\n")
     print("F09_ACTUAL_INVENTORY_FIXTURE_STAGED",len(IDS),flush=True)
     (DST/"candidate_manifest.json").write_text(json.dumps({
         "status":"ISOLATED_GODOT_CANDIDATE_NOT_MAIN_GAME",
