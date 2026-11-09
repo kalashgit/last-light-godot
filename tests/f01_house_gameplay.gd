@@ -35,7 +35,10 @@ func run() -> void:
  game.selected_target = target
  check(game._context_prompt() == "Open Refrigerator", "real HUD prompt shows refrigerator action")
  var initial_inventory: Dictionary = game.survival.snapshot()
- game._interact()
+ # The first transition uses the actual HUD interaction hitbox, not a direct state call.
+ game._layout_controls()
+ var interact_rect: Rect2 = game.control_rects.interact
+ game._tap(interact_rect.get_center())
  check(game.refrigerator.door_open and not game.refrigerator.drawer_open, "main door opens independently")
  check(game._context_prompt() == "Open Crisper", "second action prompts drawer opening")
  game._interact()
