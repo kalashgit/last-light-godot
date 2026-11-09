@@ -20,6 +20,11 @@ for sys_path in ('/usr/lib/python3.12/lib-dynload',
 import bpy
 from mathutils import Vector
 from bpy_extras.object_utils import world_to_camera_view
+script_dir = str(Path(__file__).resolve().parent)
+if script_dir not in sys.path:sys.path.insert(0,script_dir)
+from f06_reference_recipe_v10 import (JACKET_BASE, JACKET_LINING,
+                                       EARTH_TWILL, OLD_DRY_DAMAGE,
+                                       localized_damage, periorbital_tone)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--f05-blend', required=True)
@@ -31,7 +36,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -142,7 +147,7 @@ def multi_bone_elliptic_shell(name,rings,bones,material,rig):
     """
     # V9 elevates actual cloth topology. Previous calibration versions retain
     # their exact geometry and deformation test baselines.
-    sculpt_cloth=args.geometry_profile=='v9_sculpted' and name.startswith('V6 ')
+    sculpt_cloth=args.geometry_profile in ('v9_sculpted','v10_reference') and name.startswith('V6 ')
     if sculpt_cloth:
         dense=[]
         for index,one in enumerate(rings[:-1]):
@@ -990,6 +995,136 @@ def refine_v9_extremities_and_finishes(profile,rig):
         nt.links.new(bump.outputs['Normal'],bsdf.inputs['Normal'])
         bsdf.inputs['Roughness'].default_value=.93
 
+def refine_v10_reference_grounding(profile,rig):
+    """Original grounded zombie wear: coherent outfit + localized condition.
+
+    Screenshots inform silhouette/readability only; no third-party image or
+    material pixels are sampled. One existing civilian calibration archetype is
+    refined; all other F06 fixtures remain unchanged for regression comparison.
+    """
+    if profile['outfit']!='jacket':return
+    jacket=next(m for m in bpy.data.materials if m.name.startswith('V4 faded jacket panel'))
+    nt=jacket.node_tree
+    bsdf=next(n for n in nt.nodes if n.type=='BSDF_PRINCIPLED')
+    ramp=next(n for n in nt.nodes if n.type=='VALTORGB')
+    noise=next(n for n in nt.nodes if n.type=='TEX_NOISE')
+    noise.inputs['Scale'].default_value=5.5
+    noise.inputs['Detail'].default_value=1.8
+    for element,mul in zip(sorted(ramp.color_ramp.elements,key=lambda e:e.position),
+                           (.89,.95,1,1.04,1.07)):
+        element.color=(*(max(0,min(.60,c*mul)) for c in JACKET_BASE),1)
+    bsdf.inputs['Roughness'].default_value=.94
+    jacket['F06_F11_V10_PROVISIONAL']='faded slate workwear / unbaked'
+
+    # The right chest panel gets a bounded, desaturated old damage patch.
+    # Material is copied, so sleeves and other panels never inherit the mask.
+    affected=bpy.data.objects['V9 tailored open jacket panel R']
+    stained=jacket.copy()
+    stained.name='V10 localized damaged jacket / F11 provisional'
+    graph=stained.node_tree
+    shader=next(n for n in graph.nodes if n.type=='BSDF_PRINCIPLED')
+    color_link=next(l for l in graph.links if l.to_node==shader and
+                    l.to_socket.name=='Base Color')
+    original=color_link.from_socket
+    graph.links.remove(color_link)
+    attr_node=graph.nodes.new('ShaderNodeAttribute')
+    attr_node.attribute_name='v10_damage_field'
+    mix=graph.nodes.new('ShaderNodeMixRGB')
+    mix.blend_type='MIX'
+    mix.inputs[2].default_value=(*OLD_DRY_DAMAGE,1)
+    graph.links.new(attr_node.outputs['Fac'],mix.inputs[0])
+    graph.links.new(original,mix.inputs[1])
+    graph.links.new(mix.outputs['Color'],shader.inputs['Base Color'])
+    affected.data.materials.clear()
+    affected.data.materials.append(stained)
+    damage=affected.data.vertex_colors.new(name='v10_damage_field')
+    for poly in affected.data.polygons:
+        for loop in poly.loop_indices:
+            vert=affected.data.vertices[affected.data.loops[loop].vertex_index]
+            amount=localized_damage(vert.co.x,vert.co.z)
+            damage.data[loop].color=(amount,amount,amount,1)
+    affected['F06_V10_LOCALIZED_WEAR']=True
+
+    # Large uneven patches in original woodland/earth colors: higher-order
+    # noise and 4 discrete albedo regions at native world scale, with no
+    # pixel-level imitation of the supplied screenshot or licensed patterns.
+    twill=next(m for m in bpy.data.materials if m.name.startswith('Stained twill'))
+    camouflage=twill.copy()
+    camouflage.name='V10 original earthwork twill / F11 provisional'
+    graph=camouflage.node_tree
+    nodes=graph.nodes
+    shader=next(n for n in nodes if n.type=='BSDF_PRINCIPLED')
+    previous=next(l for l in graph.links if l.to_node==shader and
+                  l.to_socket.name=='Base Color')
+    graph.links.remove(previous)
+    pattern=nodes.new('ShaderNodeTexNoise')
+    pattern.inputs['Scale'].default_value=5.8
+    pattern.inputs['Detail'].default_value=1.8
+    pattern.inputs['Roughness'].default_value=.72
+    color=nodes.new('ShaderNodeValToRGB')
+    color.color_ramp.interpolation='CONSTANT'
+    elements=color.color_ramp.elements
+    elements[0].position=.22
+    elements[0].color=(*EARTH_TWILL[0],1)
+    elements[1].position=.44
+    elements[1].color=(*EARTH_TWILL[1],1)
+    for pos,rgb in ((.65,EARTH_TWILL[2]),(.83,EARTH_TWILL[3])):
+        el=elements.new(pos)
+        el.color=(*rgb,1)
+    graph.links.new(pattern.outputs['Fac'],color.inputs['Fac'])
+    graph.links.new(color.outputs['Color'],shader.inputs['Base Color'])
+    shader.inputs['Roughness'].default_value=.91
+    camouflage['F06_F11_V10_PROVISIONAL']='original earth twill / unbaked'
+    for name in ('V6 skinned trouser leg L','V6 skinned trouser leg R',
+                 'pelvis trousers'):
+        leg=bpy.data.objects.get(name)
+        if leg:
+            leg.data.materials.clear()
+            leg.data.materials.append(camouflage)
+
+    # Subtle, asymmetric orbital and left-cheek discoloration is authored onto
+    # the integrated V9 head, not attached as dark spherical eye patches.
+    face=bpy.data.objects['V9 integrated craniofacial sculpt']
+    orbital=face.data.vertex_colors['orbital_ao']
+    for poly in face.data.polygons:
+        for loop in poly.loop_indices:
+            vertex=face.data.vertices[face.data.loops[loop].vertex_index]
+            if vertex.co.y<-.052:
+                prev=orbital.data[loop].color[0]
+                value=max(.64,prev*periorbital_tone(vertex.co.x,vertex.co.z))
+                orbital.data[loop].color=(value,value,value,1)
+
+    # A shallow, *open-front* hood drapes behind the head. A fabric tube or
+    # full helmet would obscure the expression and create toy proportions.
+    rings=((1.434,.183,.116),(1.495,.161,.123),
+           (1.563,.149,.132),(1.628,.146,.143),
+           (1.697,.143,.137),(1.757,.132,.120))
+    steps=28
+    vertices=[]
+    for z,rx,ry in rings:
+        for i in range(steps):
+            theta=math.pi*i/(steps-1)
+            x=rx*math.cos(theta)
+            y=.018+ry*math.sin(theta)
+            # Supple fabric drape with little undulation near shoulder seam.
+            z_offset=.006*math.sin(2*theta)*math.sin(z*17.0)
+            vertices.append((x,y,z+z_offset))
+    faces=[(j*steps+i,j*steps+i+1,(j+1)*steps+i+1,(j+1)*steps+i)
+           for j in range(len(rings)-1) for i in range(steps-1)]
+    hood=mesh_part('V10 open-front work jacket hood',vertices,faces,'head',jacket,rig)
+    hood.vertex_groups.clear()
+    low=hood.vertex_groups.new(name='chest')
+    high=hood.vertex_groups.new(name='head')
+    for row in range(len(rings)):
+        t=.02+.96*row/(len(rings)-1)
+        for i in range(steps):
+            index=row*steps+i
+            low.add([index],1-t,'REPLACE')
+            high.add([index],t,'REPLACE')
+    hood.modifiers.new('V10 hood cloth thickness','SOLIDIFY').thickness=.009
+    hood['F06_V10_OPEN_FACE_HOOD']=True
+    for polygon in hood.data.polygons:polygon.use_smooth=True
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -1068,7 +1203,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -1128,23 +1263,25 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         refine_v3_anatomy_and_wear(profile,rig)
-    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         refine_v4_readability(profile,rig)
-    if args.geometry_profile in ('v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         refine_v5_weighted_joints(profile,rig)
-    if args.geometry_profile in ('v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v6_skinned','v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         refine_v6_continuous_skinning(profile,rig)
-    if args.geometry_profile in ('v7_anatomical','v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v7_anatomical','v8_grounded','v9_sculpted','v10_reference'):
         refine_v7_anatomy_and_infection(profile,rig)
-    if args.geometry_profile in ('v8_grounded','v9_sculpted'):
+    if args.geometry_profile in ('v8_grounded','v9_sculpted','v10_reference'):
         refine_v8_grounded_style(profile,rig)
-    if args.geometry_profile=='v9_sculpted':
+    if args.geometry_profile in ('v9_sculpted','v10_reference'):
         refine_v9_craniofacial_sculpt(profile,rig)
         refine_v9_cloth_surface(profile,rig)
         refine_v9_garment_construction(profile,rig)
         refine_v9_extremities_and_finishes(profile,rig)
+    if args.geometry_profile=='v10_reference':
+        refine_v10_reference_grounding(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
