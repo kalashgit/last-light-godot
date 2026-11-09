@@ -40,6 +40,13 @@ class DispatchTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.prepare(i, 83)
 
+    def test_past_assignment_denied_even_if_unassigned_now(self):
+        with self.assertRaises(ValueError):
+            module.reject_repeat_assignment([{
+                "event": "assigned", "assignee": {"login": "copilot-swe-agent[bot]"}
+            }])
+        module.reject_repeat_assignment([{"event": "labeled", "label": {"name": "F01"}}])
+
     def test_closed_issue_denied(self):
         i = issue()
         i["state"] = "closed"
