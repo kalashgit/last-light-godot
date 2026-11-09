@@ -60,7 +60,15 @@ def main():
             anchor_xy=anchor(src.getchannel("A"))
             before=sum(1 for v in src.getchannel("A").getdata() if v>MIN_ALPHA)
             after=sum(1 for v in rim.getchannel("A").getdata() if v>MIN_ALPHA)
-            assert after>=before and after<=before*1.9,(ident,heading,before,after)
+            original_bounds=src.getchannel("A").getbbox()
+            grade_bounds=rim.getchannel("A").getbbox()
+            assert after>=before and after<=before*2.5,(ident,heading,before,after)
+            # Bound the actual contour spread to a strict single pixel on
+            # every side; percent growth alone penalizes narrow metal tools.
+            assert (grade_bounds[0]>=original_bounds[0]-1 and
+                    grade_bounds[1]>=original_bounds[1]-1 and
+                    grade_bounds[2]<=original_bounds[2]+1 and
+                    grade_bounds[3]<=original_bounds[3]+1),(ident,heading,"rim too wide")
             assert src.getchannel("A").getbbox()!=None
             # Critical: all original interior RGB samples remain unchanged.
             assert all(rim.getpixel((x,y))[:3]==src.getpixel((x,y))[:3]
