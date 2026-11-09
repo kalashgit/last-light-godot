@@ -1,0 +1,60 @@
+name: Foundry Copilot single-issue pilot (owner + budget gated)
+
+on:
+  pull_request:
+    paths:
+      - '.github/agents/foundry-modeler.agent.md'
+      - '.github/workflows/foundry-copilot-pilot-dispatch.yml'
+      - 'tools/foundry_copilot/**'
+      - 'tests/foundry_copilot/**'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Billable assignment of only issue #83 (requires owner's hard-stop budget + user token)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  contract-tests:
+    if: github.event_name == 'pull_request' || !inputs.apply
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/foundry_copilot -v
+
+  assign-one-reviewed-issue:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      inputs.apply == true &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'kalashgit' &&
+      vars.FOUNDRY_COPILOT_OWNER_BUDGET_CONFIRMED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Recheck fail-closed issue and billing contract
+        run: python -m unittest discover -s tests/foundry_copilot -v
+      - name: Assign one custom Copilot coding agent (billable)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          FOUNDRY_COPILOT_USER_TOKEN: ${{ secrets.FOUNDRY_COPILOT_USER_TOKEN }}
+          FOUNDRY_COPILOT_OWNER_BUDGET_CONFIRMED: ${{ vars.FOUNDRY_COPILOT_OWNER_BUDGET_CONFIRMED }}
+        run: python tools/foundry_copilot/dispatch.py --issue-number 83 --apply
