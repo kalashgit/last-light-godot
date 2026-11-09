@@ -94,18 +94,26 @@ def build(m, *, form, tube, hoop, z=.040):
     form("V11 moving lower polished jaw flat",
          [(-.049,.116),(-.010,.113),(-.010,.116),(-.049,.119)],
          .0010,m["edge"],z+.0095,.0001)
-    # Recessed worm housing is below the inner neck, not a floating blob.
-    form("V11 worm-wheel recessed socket dark pocket",
-         [(.017,.079),(.052,.079),(.054,.105),(.016,.105)],
-         .0016,m["rubber"],z+.010,.00015)
-    tube("V11 worm-wheel steel knurled barrel",
-         (.034,.087,.053),(.034,.098,.053),.010,.010,m["edge"],28)
-    for i in range(12):
-        theta=math.tau*i/12
-        x=.034+.0094*math.cos(theta)
-        zz=.053+.0094*math.sin(theta)
-        tube("V11 worm adjustment close knurl %02d"%i,
-             (x,.086,zz),(x,.099,zz),.00040,.00040,m["oxide"],6)
+    # V18: the wheel lives in a shaped shallow forged pocket. Its outer
+    # teeth are intentionally visible but DO NOT extend outside the head.
+    # Steel guide rail visibly bridges the independent sliding jaw and body.
+    form("V18 raised forged worm mechanism saddle",
+         [(.011,.073),(.040,.075),(.046,.090),(.038,.108),(.014,.105)],
+         .007,m["forged"],z-.003,.0008)
+    form("V18 dark recessed worm wheel socket",
+         [(.019,.080),(.039,.080),(.042,.102),(.020,.102)],
+         .0011,m["oxide"],z+.009,.0001)
+    # Cylinder axis follows the handle length, as on a real thumbwheel.
+    tube("V18 inset worm wheel machined drum",
+         (.030,.083,.052),(.030,.098,.052),.0084,.0084,m["edge"],24)
+    for i in range(8):
+        theta=math.tau*i/8
+        x=.030+.0080*math.cos(theta)
+        zz=.052+.0080*math.sin(theta)
+        tube("V18 captured thumbwheel coarse knurl %02d"%i,
+             (x,.085,zz),(x,.096,zz),.00055,.00055,m["oxide"],8)
+    form("V18 exposed sliding rail",[(.009,.074),(.019,.074),
+          (.019,.116),(.009,.116)],.003,m["edge"],z+.007,.00025)
     # Straight engraved setting ticks signal a translating steel jaw.
     for i in range(4):
         y=.090+i*.005
