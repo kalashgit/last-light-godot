@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "catalog_sha256": "85acc503a47511b87480a6a3434f2eb99a49f86706e6cb24aa9f3b9b60785875",
+  "total": 512,
+  "completed_before": [],
+  "batch_count": 2,
+  "batch": [
+    {
+      "asset_id": "ll_generated_industrial_locker_000",
+      "archetype": "industrial_locker",
+      "family": "F01",
+      "seed": 867931864,
+      "blend_sha256": "0b3d2513eff8f35e2278417bc27633ae588c95e0089f2231541f3c6a5bd40b37",
+      "glb_sha256": "ab07a49fea407cce001d81727cb7395f9f0cc73bdb233396adedf1e17719465c",
+      "atlas_sha256": "31e543956af012dac770cbff3043955155d5ace69c19418ddaa1282bf3bcab6e",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    },
+    {
+      "asset_id": "ll_generated_tool_chest_000",
+      "archetype": "tool_chest",
+      "family": "F01",
+      "seed": 3177380823,
+      "blend_sha256": "58dfbe5ae8066904db8d5ebf98fc0f1e235fd70f9fc5f02f4add976d9f714d64",
+      "glb_sha256": "98a0f7a67efa01ccf1e79d1e7ed9a2396aa3dc2d1a67c3bd3a5c184023dfd9c9",
+      "atlas_sha256": "a84aaf9c97bf0b86f24c09f6f3f2c64e420c0674a939ed1e4eef9787926d4c59",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    }
+  ],
+  "archive_sha256": "d1cb7890243078776ed96c139b1ef754ec4ab3ce9486c0031cdd6f57a544261b",
+  "archive_size_bytes": 652073,
+  "source_editable": true,
+  "golden_approved": false,
+  "canonical_promoted": false,
+  "gameplay_integrated": false,
+  "release_tag": "foundry-created-42654909455",
+  "release_archive": "foundry_new_sources.zip",
+  "release_state": "DRAFT_DO_NOT_PUBLISH",
+  "run_id": "42654909455"
+}

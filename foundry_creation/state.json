@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "catalog_sha256": "85acc503a47511b87480a6a3434f2eb99a49f86706e6cb24aa9f3b9b60785875",
+  "total": 512,
+  "completed": [
+    "ll_generated_industrial_locker_000",
+    "ll_generated_tool_chest_000"
+  ],
+  "remaining": 510,
+  "last_approved_source_bundle_tag": "foundry-created-42654909455",
+  "golden_approved": false
+}
