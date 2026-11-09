@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_master_actor_human_worker_crowbar",
+  "source_glb_sha256": "df876a42c6015fa33a6611b67a454522580ad39d470fbec7e38731e4cdb78a26",
+  "atlas_sha256": "ecfffb35202bb9898e02bb43c956cefc537fde587c364a6aafad33b5f343e8b2",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2047257,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

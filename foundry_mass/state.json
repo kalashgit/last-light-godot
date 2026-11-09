@@ -4,9 +4,11 @@
   "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
   "completed": [
     "ll_master_actor_human_older",
-    "ll_master_actor_human_underwear"
+    "ll_master_actor_human_underwear",
+    "ll_master_actor_human_worker_crowbar",
+    "ll_master_actor_zombie_construction"
   ],
-  "last_run_id": "42654909446",
+  "last_run_id": "42659248906",
   "golden_approved": false,
-  "remaining": 358
+  "remaining": 356
 }

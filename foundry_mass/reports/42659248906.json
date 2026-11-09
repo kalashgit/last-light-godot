@@ -1,0 +1,42 @@
+{
+  "run_id": "42659248906",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 4,
+  "remaining": 356,
+  "generated": [
+    {
+      "asset_id": "ll_master_actor_human_worker_crowbar",
+      "source_glb_sha256": "df876a42c6015fa33a6611b67a454522580ad39d470fbec7e38731e4cdb78a26",
+      "atlas_sha256": "ecfffb35202bb9898e02bb43c956cefc537fde587c364a6aafad33b5f343e8b2",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2047257,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_master_actor_zombie_construction",
+      "source_glb_sha256": "87a8335b3de8e98eb3e9551f1143c3fa063eb22b7410bb7901f5bf023ec69f05",
+      "atlas_sha256": "787be260acff69a31112d2fcc367b0a0325b8d7169e8b356bcda250f8a417f67",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2539502,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_master_actor_zombie_construction",
+  "source_glb_sha256": "87a8335b3de8e98eb3e9551f1143c3fa063eb22b7410bb7901f5bf023ec69f05",
+  "atlas_sha256": "787be260acff69a31112d2fcc367b0a0325b8d7169e8b356bcda250f8a417f67",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2539502,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
