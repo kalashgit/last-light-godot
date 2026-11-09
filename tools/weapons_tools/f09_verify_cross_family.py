@@ -44,7 +44,8 @@ def main():
         assert all(mat.get("pbrMetallicRoughness",{}).get("baseColorTexture")
                    for mat in materials),("GLB lost albedo texture",ident)
         assert all(mat.get("occlusionTexture") for mat in materials),(
-            "GLB lost real AO channel binding",ident)\n        assert all(mat.get("normalTexture") for mat in materials),(
+            "GLB lost real AO channel binding",ident)
+        assert all(mat.get("normalTexture") for mat in materials),(
             "GLB lost tangent normals",ident)
         assert all(mat.get("pbrMetallicRoughness",{}).get("metallicRoughnessTexture")
                    for mat in materials),("GLB lost packed ORM map",ident)
@@ -61,7 +62,8 @@ def main():
                        "status":"CROSS_FAMILY_FIXTURE_NOT_APPROVED"})
     (BASE/"cross_family_validation.json").write_text(json.dumps({
         "checked":result,"f11_approved":False,"f12_approved":False,
-        "godot_gameplay_approved":False},indent=2)+"\n")
+        "godot_gameplay_approved":False},indent=2)+"
+")
     print("F09_CROSS_FAMILY_FILE_QA_PASS",len(result),"tools",flush=True)
 
 if __name__=="__main__":
