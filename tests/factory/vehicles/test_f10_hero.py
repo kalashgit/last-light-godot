@@ -11,6 +11,8 @@ def verify(raw_dir,packed_dir):
     atlas=json.loads((packed_dir/"manifest.json").read_text())
     assert src["canonical_master_id"] is None
     assert src["status"]=="NONCANONICAL_GEOMETRY_HERO_UNAPPROVED"
+    assert isinstance(src.get("render_samples"),int) and src["render_samples"]>=8
+    assert isinstance(src.get("render_denoise"),bool)
     assert len(src["frames"])==16
     assert [f["angle_deg"] for f in src["frames"]]==[22.5*i for i in range(16)]
     assert len({tuple(f["fixed_world_pivot_px"]) for f in src["frames"]})==1
