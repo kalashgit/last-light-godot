@@ -14,6 +14,8 @@ def audit(raw):
     frames=manifest["frames"]
     assert [f["angle_deg"] for f in frames]==[0,22,44,66]
     assert [f["duration_ms"] for f in frames]==[100]*4
+    assert manifest["blender_keyframes"]==[1,2,3,4,5]
+    assert manifest["blender_fps"]==10
     assert len({tuple(f["pivot_xyz_m"]) for f in frames})==1
     assert len({tuple(f["fixed_world_pivot_px"]) for f in frames})==1
     assert (raw/"hero_front_door_calibration.blend").stat().st_size>1024
