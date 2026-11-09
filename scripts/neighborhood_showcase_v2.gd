@@ -404,7 +404,9 @@ func _draw_streets() -> void:
         for b in city["buildings"]:
             if overview or _rect(b).get_center().distance_to(player) < 43:
                 var door: Vector2 = _entry(b)
-                draw_line(_iso(door),_iso(door + Vector2(0,2.0)),Color("a99d85"),4)
+                var block_row: int = maxi(0,int(floor(door.y / 27.0)))
+                var public_sidewalk_y: float = float(21 + 27*block_row)
+                draw_line(_iso(door),_iso(Vector2(door.x,public_sidewalk_y)),Color("a99d85"),4)
 
 func _draw_ground() -> void:
     var bounds: Rect2 = _bounds()
