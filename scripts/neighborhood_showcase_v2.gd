@@ -398,14 +398,24 @@ func _room_color(kind: String) -> Color:
         "storage", "pantry", "utility": return Color("847b69")
         _: return Color("918f82")
 
-func _draw_wall_part(a: Vector2, b: Vector2) -> void:
-    # Raised vertical strips establish depth even without approved F02 wall art.
-    draw_line(_iso(a), _iso(b), Color("484b48"), 4.0)
-    draw_line(_iso(a) - Vector2(0, 15), _iso(b) - Vector2(0, 15), Color("c4b9a0"), 3.0)
-    draw_line(_iso(a), _iso(a) - Vector2(0, 15), Color("a8a18e"), 2.0)
-    draw_line(_iso(b), _iso(b) - Vector2(0, 15), Color("a8a18e"), 2.0)
+func _finish_color(name: String) -> Color:
+    match name:
+        "aged_oak": return Color("9c8a69")
+        "walnut": return Color("706657")
+        "scarred_wood": return Color("77736a")
+        "warm_plaster": return Color("c7bba1")
+        "muted_sage": return Color("9ba99a")
+        "dusty_grey": return Color("9a9b92")
+        _: return Color("a79e88")
 
-func _draw_room_wall(a: Vector2, b: Vector2, portals: Array) -> void:
+func _draw_wall_part(a: Vector2, b: Vector2, wall_tint: Color) -> void:
+    # Raised vertical strips establish depth even without approved F02 wall art.
+    draw_line(_iso(a), _iso(b), wall_tint.darkened(.61), 4.0)
+    draw_line(_iso(a) - Vector2(0, 15), _iso(b) - Vector2(0, 15), wall_tint.lightened(.13), 3.0)
+    draw_line(_iso(a), _iso(a) - Vector2(0, 15), wall_tint.darkened(.16), 2.0)
+    draw_line(_iso(b), _iso(b) - Vector2(0, 15), wall_tint.darkened(.16), 2.0)
+
+func _draw_room_wall(a: Vector2, b: Vector2, portals: Array, wall_tint: Color) -> void:
     var length: float = a.distance_to(b)
     if length < .05:
         return
@@ -427,13 +437,13 @@ func _draw_room_wall(a: Vector2, b: Vector2, portals: Array) -> void:
                 break
         if blocked_by_portal:
             if not open_run:
-                _draw_wall_part(segment_start, start)
+                _draw_wall_part(segment_start, start, wall_tint)
             open_run = true
         elif open_run:
             segment_start = start
             open_run = false
     if not open_run:
-        _draw_wall_part(segment_start, b)
+        _draw_wall_part(segment_start, b, wall_tint)
 
 func _fixture_color(role: String) -> Color:
     if role in ["fridge", "washing_machine", "medical_cabinet", "toilet", "sink", "stove"]:
@@ -510,6 +520,8 @@ func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
         var floor_col: Color = _room_color(str(room["normalized_type"]))
         var theme: Dictionary = plan.get("theme", {})
         var wear: float = float(theme.get("wear", 0.0))
+        if not theme.is_empty() and not str(room["normalized_type"]) in ["bathroom", "garage"]:
+            floor_col = floor_col.lerp(_finish_color(str(theme.get("floor", ""))),.55)
         _quad_world(area,floor_col.darkened(wear * .28))
         if not theme.is_empty() and _zoom() > .35:
             for ix in range(1,int(area.size.x)):
@@ -525,7 +537,8 @@ func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
                 var r := Rect2(float(dims[0]),float(dims[1]),float(dims[2]),float(dims[3]))
                 var pts: Array = [r.position,Vector2(r.end.x,r.position.y),r.end,Vector2(r.position.x,r.end.y)]
                 for i in range(4):
-                    _draw_room_wall(pts[i],pts[(i+1)%4],plan["portals"])
+                    var wall_color: Color = _finish_color(str(plan.get("theme", {}).get("walls", "")))
+                    _draw_room_wall(pts[i],pts[(i+1)%4],plan["portals"],wall_color)
             for portal in plan["portals"]:
                 draw_circle(_iso(_vec(portal["point"])),5,Color("dfbf82"))
         var all_fixtures: Array = []

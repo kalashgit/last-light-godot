@@ -40,6 +40,8 @@ python tests/neighborhood/render_overview.py
 
 The new smoke checks all 29 authored house-room plans for a free walkable sample, every internal portal for a viable two-way crossing, floor decoration/stable instance IDs, and a negative cross-wall interaction. The Godot-exported plan JSON then drives the preview sheet, so the display references the actual runtime fixture decisions. The previews are still **source-data illustrations**, not live rendered frames or iPhone device captures.
 
+**Observed initial V4 CI:** [GitHub Actions run 42542494470](https://github.com/kalashgit/last-light-godot/actions/runs/42542494470) passed 14 Python tests and actual Godot 4.3 scene/module/furnished-house/export smoke tests. Godot reported **29 authored rooms, 118 provisional fixtures, 20 nonblocking decorations, and 43 passable internal two-way portals** across H01/H02/H03 (with Cedar upper floor). The complete neighborhood report contained 64 module plans, 503 provisional fixtures, 51 enclosed entries, 9 outdoor sites and zero approved sprite bindings. This is geometry/interaction test evidence; it does not imply approval of visual fidelity or device FPS.
+
 ### Must-pass before scaling beyond the three houses
 
 1. Founder approves real F01/F02/F11/F12 packages with exact immutable hashes after independent W09 technical/visual tests.

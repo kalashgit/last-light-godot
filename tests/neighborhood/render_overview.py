@@ -157,6 +157,11 @@ def furnished_preview():
         "utility":"#827d67", "laundry":"#7e918d", "pantry":"#8b8069",
         "storage":"#8b8069",
     }
+    finish_colors={"aged_oak":"#9c8a69","walnut":"#706657","scarred_wood":"#77736a"}
+    def blend_hex(left, right, mix):
+        a=[int(left[i:i+2],16) for i in (1,3,5)]
+        b=[int(right[i:i+2],16) for i in (1,3,5)]
+        return '#'+''.join(f'{round(x*(1-mix)+y*mix):02x}' for x,y in zip(a,b))
     for b, floor, (panel_x,panel_y), title in panels:
         d.rounded_rectangle((panel_x,panel_y,panel_x+1180,panel_y+575),
                             radius=20,fill="#1e2d2b",outline="#68796f",width=3)
@@ -171,7 +176,12 @@ def furnished_preview():
             if plan:
                 x-=ox
                 y-=oy
-            quad(d,[x,y,w,h], colors.get(room["type"],"#938e7b"), origin, scale, outline="#b9b4a4")
+            tint=colors.get(room["type"],"#938e7b")
+            if plan and room["type"] not in ("bathroom","garage"):
+                finish=finish_colors.get(plan.get("theme",{}).get("floor",""))
+                if finish:
+                    tint=blend_hex(tint,finish,.55)
+            quad(d,[x,y,w,h],tint,origin,scale,outline="#b9b4a4")
         # Raised furniture is sorted by footprint position, so higher/front objects sit above rear ones.
         furnishings=[]
         for room in floors:
