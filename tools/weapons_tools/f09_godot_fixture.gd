@@ -58,7 +58,8 @@ func _run() -> void:
         # Headless uses the dummy RenderingServer. Validate imported
         # PackedScene nodes without creating live MeshInstance3D resources;
         # doing so produced a spurious dummy-storage mesh-null error on exit.
-        var state := packed.get_state()
+        var scene_resource: PackedScene = packed as PackedScene
+        var state: SceneState = scene_resource.get_state()
         if state == null or state.get_node_count() < 1:
             push_error("F09_GLB_EMPTY_PACKED_SCENE " + glb)
             quit(27)
