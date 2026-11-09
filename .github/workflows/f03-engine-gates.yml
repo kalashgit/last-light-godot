@@ -1,0 +1,52 @@
+name: F03 candidate Blender Godot integration
+on:
+  push:
+    branches: [f03/engine-gates-v13-candidate]
+    paths: ['tools/f03_engine_v13/**', '.github/workflows/f03-engine-gates.yml']
+  pull_request:
+    paths: ['tools/f03_engine_v13/**', '.github/workflows/f03-engine-gates.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and Godot 4.4.1
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender xvfb libgl1 unzip
+          curl -fL --retry 3 -o /tmp/godot.zip https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -o /tmp/godot.zip -d /tmp
+          sudo install -m755 /tmp/Godot_v4.4.1-stable_linux.x86_64 /usr/local/bin/godot
+          python3 -m pip install --break-system-packages pillow
+          blender --version | head -2
+          godot --version
+      - name: Generate candidate atlas and Godot project
+        run: |
+          python3 tools/f03_engine_v13/generate.py
+      - name: Blender headless material render and .blend
+        run: |
+          mkdir -p tools/f03_engine_v13/evidence
+          set -o pipefail
+          blender --background --factory-startup --python tools/f03_engine_v13/blender_source.py -- --out tools/f03_engine_v13/evidence 2>&1 | tee tools/f03_engine_v13/evidence/blender.log
+      - name: Godot native import
+        run: |
+          set -o pipefail
+          godot --headless --path tools/f03_engine_v13/godot --editor --import --quit 2>&1 | tee tools/f03_engine_v13/evidence/import.log
+          godot --headless --path tools/f03_engine_v13/godot --script res://native_test.gd 2>&1 | tee tools/f03_engine_v13/evidence/native.log
+          grep -q 'F03_NATIVE_IMPORT_PASS' tools/f03_engine_v13/evidence/native.log
+      - name: Godot real viewport capture
+        run: |
+          set -o pipefail
+          xvfb-run -a godot --rendering-driver opengl3 --path tools/f03_engine_v13/godot -- --capture 2>&1 | tee tools/f03_engine_v13/evidence/render.log
+          python3 tools/f03_engine_v13/validate.py
+      - name: Evidence including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f03-v13-engine-gate
+          path: tools/f03_engine_v13/evidence/
+          if-no-files-found: warn
