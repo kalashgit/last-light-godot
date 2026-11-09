@@ -15,9 +15,12 @@ Stage one reads the frozen, **not live-synced**
 two reads the A00 R03 admission file from its review branch and pins its exact
 SHA256 (`04845071b8a2f5509ad953cef8701249bca13f61a8b1731016de50ee6145574a`).
 Only the 15 expressly admitted F01/F09 work orders may be selected. A stale
-record, changed source-geometry manifest, unverified master, wrong ID, or
-attempted Golden promotion stops the run. Every returned model retains Notion
-URL, work order, source hashes, constraints and QA status.
+record, changed source GLB, unverified master, wrong ID, or attempted Golden
+promotion stops the run. Every returned model retains Notion URL, work order,
+source hashes, constraints and QA status. R03's historical field named
+`geometry_source_manifest_sha256` is actually the <b>GLB content SHA-256</b>,
+as verified against `preview/geometry-first-all-360/batch_report.json` on the
+original reconstruction branch; the code checks the GLB bytes accordingly.
 
 The first pilot is the **mattress**, as the refrigerator artwork has not been
 approved. For now this flow refines **existing exported original 3D geometry**;
