@@ -8,9 +8,11 @@
     "ll_master_actor_human_worker_crowbar",
     "ll_master_actor_zombie_construction",
     "ll_master_actor_zombie_hospital",
-    "ll_crafting_bolt_box"
+    "ll_crafting_bolt_box",
+    "ll_crafting_bracket_pack",
+    "ll_crafting_cable_coil"
   ],
-  "last_run_id": "42659429465",
+  "last_run_id": "42659641658",
   "golden_approved": false,
-  "remaining": 354
+  "remaining": 352
 }

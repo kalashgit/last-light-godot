@@ -1,0 +1,42 @@
+{
+  "run_id": "42659641658",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 8,
+  "remaining": 352,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_bracket_pack",
+      "source_glb_sha256": "6350da7adc9d6d62d0145c1bbbbdc776c8429fc95711a9b3806918f23c4c4297",
+      "atlas_sha256": "c66bcfca572bb315c44a6838c8713ccfe1b0b2e36897c53788b9fff6f1ce4763",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2466597,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_cable_coil",
+      "source_glb_sha256": "06bd15da853f9904f9e63270b9b2c1977b7e145091f22f01d4379ac9ff1fb2c1",
+      "atlas_sha256": "cfc25f1ed925b6bc39bc1c32cf38c786be0b0af4fa81218808bb0e41d8debda4",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2483194,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
