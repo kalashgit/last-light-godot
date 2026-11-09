@@ -50,7 +50,7 @@ jobs:
         run: blender --version | head -n 2
       - name: Render genuine CAL-01 fixture
         run: |
-          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/calibrate.py -- --output "$RUNNER_TEMP/f12-calibration"
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/calibrate.py -- --output "$RUNNER_TEMP/f12-calibration"
           test -s "$RUNNER_TEMP/f12-calibration/CAL-01_calibration_only.blend"
           test -s "$RUNNER_TEMP/f12-calibration/CAL-01_cube_rgba.png"
           test -s "$RUNNER_TEMP/f12-calibration/CAL-01_report.json"
@@ -84,8 +84,8 @@ jobs:
       - name: Generate noncanonical Blender source and 16 real headings
         run: |
           mkdir -p "$RUNNER_TEMP/f12-smoke"
-          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/make_directional_fixture.py -- --output "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend"
-          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend" --object CAL02_ONLY_Root --output "$RUNNER_TEMP/f12-smoke/frames" --headings 16 --width 256 --height 256 --samples 8
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/make_directional_fixture.py -- --output "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend"
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend" --object CAL02_ONLY_Root --output "$RUNNER_TEMP/f12-smoke/frames" --headings 16 --width 256 --height 256 --samples 8
       - name: Validate 16 headings and PNG alpha
         run: |
           python tools/factory/render_bridge/verify_headings.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --headings 16
@@ -130,8 +130,8 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/f12-f10"
           cp "$RUNNER_TEMP/f10-source-commit.txt" "$RUNNER_TEMP/f12-f10/f10-source-commit.txt"
-          blender -b --factory-startup -t 2 --python tools/factory/render_bridge/f10_source_adapter.py -- --source-root "$RUNNER_TEMP/f10-source" --output "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend"
-          blender -b --factory-startup -t 2 --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend" --object F12_F10_HERO_ROOT_QA_ONLY --output "$RUNNER_TEMP/f12-f10/frames" --headings 16 --width 384 --height 384 --samples 12
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python tools/factory/render_bridge/f10_source_adapter.py -- --source-root "$RUNNER_TEMP/f10-source" --output "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend"
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend" --object F12_F10_HERO_ROOT_QA_ONLY --output "$RUNNER_TEMP/f12-f10/frames" --headings 16 --width 384 --height 384 --samples 12
       - name: Inspect all 16 actual hatchback headings and package atlas
         run: |
           set -euo pipefail
