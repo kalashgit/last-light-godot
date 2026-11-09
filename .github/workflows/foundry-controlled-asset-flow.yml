@@ -2,7 +2,7 @@ name: LAST LIGHT controlled Notion-to-Godot asset review pilot
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, labeled]
     paths:
       - '.github/workflows/foundry-controlled-asset-flow.yml'
       - 'tools/foundry_flow/**'
@@ -57,7 +57,10 @@ jobs:
     # queue, auto-retry, publishing, or AI inference is enabled here.
     if: >-
       (github.event_name == 'pull_request' &&
-       github.event.action == 'opened' &&
+       (github.event.action == 'opened' ||
+        (github.event.action == 'labeled' &&
+         github.event.label.name == 'controlled-pilot' &&
+         github.event.pull_request.number == 99)) &&
        github.event.pull_request.head.repo.full_name == github.repository &&
        github.actor == 'kalashgit') ||
       (github.event_name == 'workflow_dispatch' &&
