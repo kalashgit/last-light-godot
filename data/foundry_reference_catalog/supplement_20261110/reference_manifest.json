@@ -1,0 +1,168 @@
+{
+  "schema": "last-light.founder-references.v1",
+  "source_count": 10,
+  "source_type": "founder-supplied contact JPEG",
+  "one_file_per_upload": true,
+  "usage": "visual research only; no reuse as runtime textures or meshes",
+  "asset_scope": "several hundred approximate inventory entries; exact unique physical count unverified",
+  "existing_draft_pr108_matched_hashes": 8,
+  "additional_sheets_not_in_pr108": 2,
+  "golden_3d_approvals": 0,
+  "golden_sprite_scope": "do not infer approval of model candidates",
+  "canonical_notion_mapping": "PENDING",
+  "sheets": [
+    {
+      "sheet_id": "founder_20261110_01",
+      "file": "reference_sheets/LL_reference_sheet_01.jpeg",
+      "sha256": "727e701b07f05c03c9c95364469347ecfb107ddf7da5b8d3124d62ed7cc437b3",
+      "bytes": 589299,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/001-050.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/001-050.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_02",
+      "file": "reference_sheets/LL_reference_sheet_02.jpeg",
+      "sha256": "764c48e57e6cd85d02ea8a9f3582c88f2783016618314f059ec5b9efb7db07b6",
+      "bytes": 847055,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/101-150.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/101-150.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_03",
+      "file": "reference_sheets/LL_reference_sheet_03.jpeg",
+      "sha256": "09e922f8e897424c7e38b7cd5332bf8f677fed90fda5639ae1d45ca47fd64276",
+      "bytes": 840328,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/051-100.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/051-100.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_04",
+      "file": "reference_sheets/LL_reference_sheet_04.jpeg",
+      "sha256": "d53b35680feddc28314096eec987e310d3f65c17a44bbc65a2c2db691c4efa5f",
+      "bytes": 612434,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": false,
+      "github_pr108_filename": null,
+      "source_slot_mapping": "UNRESOLVED",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/supplement_20261110/founder_extra_50_cells_unmapped.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_05",
+      "file": "reference_sheets/LL_reference_sheet_05.jpeg",
+      "sha256": "457177be39281372d8aea459c1132de7242895d201f71a5b3c1b2076618c5fee",
+      "bytes": 541340,
+      "pixel_dimensions": [
+        1536,
+        961
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/151-190.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/151-190.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_06",
+      "file": "reference_sheets/LL_reference_sheet_06.jpeg",
+      "sha256": "712844e585c70f9803384086f583b27dac47d809c8a6f3ad4e0e3a0f6a3a3fe0",
+      "bytes": 780901,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/201-250.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/201-250.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_07",
+      "file": "reference_sheets/LL_reference_sheet_07.jpeg",
+      "sha256": "9ee5ddcb98bddf2ba96f4ef0f47456e1892d38b2191f20dcfa4029b5985bb129",
+      "bytes": 786965,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/251-300.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/251-300.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_08",
+      "file": "reference_sheets/LL_reference_sheet_08.jpeg",
+      "sha256": "cbe61cd42357ed474a999611a00ec4bcc12c8caf5f328fda6b60b878c1feaed7",
+      "bytes": 787235,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/301-350.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/301-350.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_09",
+      "file": "reference_sheets/LL_reference_sheet_09.jpeg",
+      "sha256": "c1bb16e2c386d8a51e7c28f8555623551b0f05d412579e73e49066612542a9e1",
+      "bytes": 857441,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": true,
+      "github_pr108_filename": "sheets/351-400.jpeg",
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/351-400.jpeg"
+    },
+    {
+      "sheet_id": "founder_20261110_10",
+      "file": "reference_sheets/LL_reference_sheet_10.jpeg",
+      "sha256": "7f03d66822e53d5bf0bc594763edee9d8b1d44931c0aee2334130f5f395d91b8",
+      "bytes": 750413,
+      "pixel_dimensions": [
+        1536,
+        1024
+      ],
+      "github_pr108_existing_same_hash": false,
+      "github_pr108_filename": null,
+      "source_slot_mapping": "UNRESOLVED",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/supplement_20261110/founder_401_600_dense_overview.jpeg"
+    }
+  ],
+  "github_pr109_exact_bytes_archived": 10,
+  "additional_sheets_now_stored_in_git_pr109": 2,
+  "notes": "All ten JPEGs are present in the isolated stacked PR #109; eight inherited from draft #108, two newly added as exact SHA-verified Git blobs. Not Golden source meshes."
+}
