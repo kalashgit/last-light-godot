@@ -28,6 +28,7 @@ run_checked --headless --path . --script tests/asset_gallery.gd
 run_checked --headless --path . --script tests/player_mechanics.gd
 run_checked --headless --path . --script tests/survival_model.gd
 run_checked --headless --path . --script tests/house_survival.gd
+run_checked --headless --path . --script tests/f01_house_gameplay.gd
 run_checked --headless --path . --script tests/control_settings.gd
 
 run_checked --headless --path . --script tests/loot_loop.gd
