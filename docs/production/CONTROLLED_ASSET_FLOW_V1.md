@@ -64,8 +64,10 @@ Future original-mesh recipe authoring remains an independent review step.
 The workflow `.github/workflows/foundry-controlled-asset-flow.yml` runs the
 fast tests on PR changes. It runs **one** real mattress Blender/Godot pilot when
 the founder opens the same-repo integration PR. After that, PR synchronize
-events run contracts only. The owner can manually dispatch an explicitly
-admitted single asset on the workflow's permitted branch. There is no cron,
+events run contracts only. The owner can request a single CI retry by applying
+the `controlled-pilot` PR label (PR #99 only), without enabling expensive
+production on every code push. The owner can also dispatch an explicitly
+admitted single asset after main-branch integration. There is no cron,
 mass cursor promotion, auto-recursive dispatch, model API, or main-scene
 modification. PR pilot permissions are read-only. After review and merge, the
 founder may explicitly choose `persist_review=true` on a manual main-branch
