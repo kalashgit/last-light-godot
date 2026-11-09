@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/actor_factory/f05_*.py'
       - 'tools/actor_factory/tests/test_f05*.py'
+      - 'tests/f05_godot_integration.gd'
       - '.github/workflows/f05-calibration.yml'
 permissions:
   contents: read
@@ -21,6 +22,7 @@ jobs:
   blender-calibration:
     runs-on: ubuntu-latest
     needs: unit-tests
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
@@ -46,6 +48,31 @@ jobs:
           xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
       - name: Validate artifact integrity (fails on missing GLB)
         run: python3 tools/actor_factory/f05_validate.py build/f05-cal
+      - name: Full evaluated joint intersections and sole contact
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_joint_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-joint.log
+      - name: Install pinned Godot 4 engine for real project import
+        run: |
+          curl -fSL --retry 3 https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip -o /tmp/f05-godot.zip
+          mkdir -p /tmp/f05-godot
+          unzip -q /tmp/f05-godot.zip -d /tmp/f05-godot
+          chmod +x /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64
+          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --version
+      - name: Import GLB into the actual LAST LIGHT Godot project
+        run: |
+          mkdir -p tests/fixtures
+          cp build/f05-cal/f05_noncanonical_calibration.glb tests/fixtures/f05_noncanonical_calibration.glb
+          set -o pipefail
+          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --import 2>&1 | tee build/f05-godot-import.log
+      - name: Godot skinned-mesh, animation and playable physics test
+        run: |
+          set -o pipefail
+          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/f05_godot_integration.gd -- --output "$PWD/build/f05-cal/godot_qa.json" 2>&1 | tee build/f05-godot-smoke.log
       - name: Render actual animation poses and screen garment clipping
         if: always()
         env:
@@ -69,5 +96,8 @@ jobs:
             build/f05-cal/
             build/f05-blender.log
             build/f05-motion.log
+            build/f05-joint.log
+            build/f05-godot-import.log
+            build/f05-godot-smoke.log
           if-no-files-found: warn
           retention-days: 14
