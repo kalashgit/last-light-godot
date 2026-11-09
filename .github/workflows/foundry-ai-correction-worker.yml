@@ -11,11 +11,13 @@ on:
       - M02 Pinned F02 F03 F10 F11 F12 Engine Calibration
       - M02 Autonomous Asset Factory V1 (protected candidate)
       - M02 Pinned F05 F06 F07 F09 Specialist Contracts
+      - Foundry 360 continuous Blender sprite batch
+      - Foundry original editable model factory
     types: [completed]
   workflow_dispatch:
     inputs:
       run_id:
-        description: Completed allowlisted failing M02 workflow run ID
+        description: Completed allowlisted failing M02 or Foundry production workflow ID
         required: true
         type: string
       dry_run:
@@ -80,9 +82,15 @@ jobs:
   correction-queue:
     if: >-
       (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.conclusion == 'failure' &&
-       github.event.workflow_run.head_branch == 'codex/m02-autonomous-asset-factory-v1' &&
-       github.event.workflow_run.head_repository.full_name == github.repository) ||
+       (github.event.workflow_run.conclusion == 'failure' ||
+        github.event.workflow_run.conclusion == 'timed_out') &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       ((github.event.workflow_run.head_branch == 'codex/m02-autonomous-asset-factory-v1' &&
+         (github.event.workflow_run.event == 'pull_request' ||
+          github.event.workflow_run.event == 'workflow_dispatch')) ||
+        (github.event.workflow_run.head_branch == 'main' &&
+         (github.event.workflow_run.event == 'schedule' ||
+          github.event.workflow_run.event == 'workflow_dispatch')))) ||
       (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit')
     runs-on: ubuntu-latest
     timeout-minutes: 5
