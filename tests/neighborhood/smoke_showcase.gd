@@ -57,5 +57,36 @@ func _test() -> void:
     if scene.get("overview"):
         _fail("overview reset failed")
         return
+    var enterable: int = 0
+    var outdoor_sites: int = 0
+    var items: Array = scene.get("city")["buildings"]
+    for item in items:
+        scene.set("inside_id", "")
+        var front: Array = item["front_door"]
+        var front_point := Vector2(float(front[0]),float(front[1]))
+        scene.set("player",front_point + Vector2(0,1.1))
+        scene.call("interact")
+        if item["site_kind"] == "outdoor":
+            outdoor_sites += 1
+            if scene.get("inside_id") != "":
+                _fail("outdoor site wrongly treated as enclosed house: " + str(item["archetype_id"]))
+                return
+        else:
+            enterable += 1
+            if scene.get("inside_id") != item["instance_id"]:
+                _fail("front-door interaction failed: " + str(item["archetype_id"]))
+                return
+            if scene.call("_can_walk",front_point + Vector2(0,1.1)):
+                _fail("building wall allowed walking straight out without interaction")
+                return
+            scene.call("interact")
+            if scene.get("inside_id") != "":
+                _fail("exit failed: " + str(item["archetype_id"]))
+                return
+    if enterable + outdoor_sites != 60:
+        _fail("not every archetype was exercised")
+        return
+    result["entrance_smoke_count"] = enterable
+    result["outdoor_site_count"] = outdoor_sites
     print("NEIGHBORHOOD_SHOWCASE_PASS " + JSON.stringify(result))
     quit(0)
