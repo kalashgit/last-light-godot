@@ -68,6 +68,52 @@ def main():
         models=DST/"models"
         models.mkdir(exist_ok=True)
         shutil.copyfile(source/"preview_albedo_baked.glb",models/(ident+".glb"))
+    # INTEGRATION TEST ONLY: add provisional inventory definitions and
+    # art records in the throwaway clone, NEVER modify the real data files.
+    recipes=json.loads((ROOT/"tools"/"weapons_tools"/"recipes.json").read_text())
+    selected={entry["asset_id"]:entry for entry in recipes["assets"]
+              if entry["asset_id"] in IDS}
+    assert len(selected)==3
+    item_path=DST/"data"/"survival_items.json"
+    inventory=json.loads(item_path.read_text())
+    original={entry["id"] for entry in inventory["items"]}
+    assert not original.intersection(IDS),"provisional fixture already canonical"
+    factory_manifest=json.loads((factory_dst/"manifest.json").read_text())
+    for ident in IDS:
+        recipe=selected[ident]
+        inventory["items"].append({
+            "id":ident,"art_id":ident,"name":recipe.get("display_name",recipe["name"]),
+            "category":"Tools","kind":"utility","weight_kg":0.55,
+            "stack_max":1,
+        })
+        src=SRC/ident/"world_sprite_96"
+        target=factory_dst/"sprites"/ident
+        target.mkdir(parents=True,exist_ok=True)
+        frames=[]
+        for heading in range(16):
+            filename=f"h{heading:02}.png"
+            shutil.copyfile(src/filename,target/filename)
+            frames.append({
+                "file":f"sprites/{ident}/{filename}",
+                "mode":"ground" if heading==0 else "held",
+                "angle_degrees":heading*22.5,
+                "size_px":[96,96],
+                "anchor_px":[48,48],
+                "source_canvas_px":[384,384],
+                "crop_rect_px":[144,144,240,240]})
+        factory_manifest["objects"].append({
+            "id":ident,"name":recipe["name"],"category":"tools",
+            "family":"f09_v18_candidate",
+            "dimensions_m":recipe["dimensions_m"],
+            "collision":{"footprint_m":recipe["dimensions_m"][:2],
+                         "solid":False},
+            "visible_carry":False,"frames":frames,
+            "status":"PROVISIONAL_CANDIDATE_ISOLATED_TEST_ONLY",
+            "license":"CC0-1.0","source":"F09 procedural candidate"})
+    item_path.write_text(json.dumps(inventory,indent=2)+"\\n")
+    (factory_dst/"manifest.json").write_text(
+        json.dumps(factory_manifest,indent=2)+"\\n")
+    print("F09_ACTUAL_INVENTORY_FIXTURE_STAGED",len(IDS),flush=True)
     (DST/"candidate_manifest.json").write_text(json.dumps({
         "status":"ISOLATED_GODOT_CANDIDATE_NOT_MAIN_GAME",
         "tools":list(IDS),"sprite_count":48,"baked_glbs":3},indent=2)+"\n")
