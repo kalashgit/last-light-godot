@@ -1,0 +1,93 @@
+name: Foundry bounded 2D sprite sheet packer (non-Golden)
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-mass-sprite-sheets.yml'
+      - 'tools/foundry_sheets/**'
+      - 'tests/foundry_sheets/**'
+  schedule:
+    - cron: '25,55 * * * *'
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: 'Existing technical atlases to pack per bounded run'
+        type: choice
+        options: ['1', '2', '4', '8']
+        default: '4'
+
+permissions:
+  contents: read
+concurrency:
+  group: foundry-sprite-sheets-serialized
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - run: python -m unittest discover -s tests/foundry_sheets -v
+
+  pack-and-persist:
+    if: >-
+      (github.event_name == 'schedule' && vars.FOUNDRY_SPRITE_SHEETS_ENABLED == 'true') ||
+      (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      BATCH_SIZE: ${{ inputs.batch_size || '4' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - run: python -m unittest discover -s tests/foundry_sheets -v
+      - name: Fetch only already-persisted, non-Golden technical sprite candidates
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/heads/foundry/technical-sprites-v1:refs/remotes/origin/foundry/technical-sprites-v1
+          git worktree add --detach /tmp/foundry-sheet-sources origin/foundry/technical-sprites-v1
+          mkdir -p build/foundry_sheets
+          if git ls-remote --exit-code --heads origin foundry/sprite-sheets-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/sprite-sheets-v1:refs/remotes/origin/foundry/sprite-sheets-v1
+            git show origin/foundry/sprite-sheets-v1:foundry_sheets/state.json > build/foundry_sheets/previous_state.json
+          fi
+      - name: Pack deterministic transparent 2D sheets + Godot regions
+        run: |
+          set -euo pipefail
+          args=()
+          if test -f build/foundry_sheets/previous_state.json; then args+=(--state build/foundry_sheets/previous_state.json); fi
+          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --page-size 1024 --run-id "$GITHUB_RUN_ID" "${args[@]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-sprite-sheets-${{ github.run_id }}
+          path: build/foundry_sheets/batch/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Persist only verified technical sheets and monotonic cursor
+        run: |
+          set -euo pipefail
+          count=$(python -c "import json;print(json.load(open('build/foundry_sheets/batch/batch_report.json'))['batch_count'])")
+          if test "$count" -eq 0; then echo 'FOUNDRY_SHEETS_CAUGHT_UP'; exit 0; fi
+          if git show-ref --quiet refs/remotes/origin/foundry/sprite-sheets-v1; then
+            git worktree add -b "foundry-sheet-publish-$GITHUB_RUN_ID" /tmp/foundry-sheet-publish origin/foundry/sprite-sheets-v1
+          else
+            git worktree add -b "foundry-sheet-publish-$GITHUB_RUN_ID" /tmp/foundry-sheet-publish "$GITHUB_SHA"
+          fi
+          python tools/foundry_sheets/publish.py --source build/foundry_sheets/batch --destination /tmp/foundry-sheet-publish
+          git -C /tmp/foundry-sheet-publish config user.name 'github-actions[bot]'
+          git -C /tmp/foundry-sheet-publish config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/foundry-sheet-publish add foundry_sheets
+          git -C /tmp/foundry-sheet-publish commit -m 'chore(foundry): persist non-Golden sprite sheets [skip ci]'
+          git -C /tmp/foundry-sheet-publish push origin HEAD:refs/heads/foundry/sprite-sheets-v1
