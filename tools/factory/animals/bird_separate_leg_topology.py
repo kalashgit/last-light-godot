@@ -1,4 +1,4 @@
-"""F07 V11 bird anatomical calibration: independent torso and leg geometry.
+"""F07 V11/V12 bird anatomy: independent torso and offset-tunable shank geometry.
 
 Open a V6 flat-ground .blend and run this script. Preserve the original
 armature, IK animation, toe targets, feather materials and accessory parts.
@@ -11,6 +11,8 @@ import os
 import sys
 
 out = os.path.abspath(sys.argv[sys.argv.index('--') + 1])
+shank_rear_pull = float(sys.argv[sys.argv.index('--') + 2]) if len(sys.argv) > sys.argv.index('--') + 2 else 0.0
+assert -.15 <= shank_rear_pull <= .25, 'Noncanonical leg fore/aft-offset study is bounded'
 os.makedirs(out, exist_ok=True)
 old=bpy.data.objects['Chicken_CAL_NOT_CANONICAL']
 feather=old.data.materials[0]
@@ -75,8 +77,8 @@ legs=[]
 for side,y in [('L',.16),('R',-.16)]:
     # A bent, tapered game-resolution lower limb. Rings have a continuous
     # connected mesh; upper and lower sections share verteces and skinning.
-    rings=[(3.00,.385,.055), (2.975,.29,.042),
-           (2.990,.18,.028), (3.020,.105,.023)]
+    rings=[(3.00-shank_rear_pull,.385,.055), (2.975-shank_rear_pull,.29,.042),
+           (2.990-.5*shank_rear_pull,.18,.028), (3.020,.105,.023)]
     vertices=[]
     n=12
     for x,z,r in rings:
@@ -119,11 +121,14 @@ for side,y in [('L',.16),('R',-.16)]:
     legs.append(limb)
 
 bpy.context.scene.frame_set(1)
-dest=os.path.join(out,'f07_v11_separate_bird_anatomy_noncanonical.blend')
+variant='v12' if abs(shank_rear_pull)>1e-9 else 'v11'
+dest=os.path.join(out,f'f07_{variant}_separate_bird_anatomy_noncanonical.blend')
 bpy.ops.wm.save_as_mainfile(filepath=dest)
 report={'status':'NONCANONICAL_CALIBRATION_ONLY','old_merged_mesh_vertices':old_verts,
+        'variant':variant,
         'new_torso_vertices':len(body.data.vertices),
         'separate_shank_meshes':{x.name:len(x.data.vertices) for x in legs},
+        'shank_rear_pull_m':shank_rear_pull,
         'topology_rebuilt':True,'rig_reused':rig.name,
         'ground_clearance_not_yet_validated':True}
 with open(os.path.join(out,'bird_separate_leg_topology.json'),'w') as f:json.dump(report,f,indent=2)
