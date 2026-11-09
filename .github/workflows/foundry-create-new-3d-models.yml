@@ -92,7 +92,7 @@ jobs:
       - name: Generate real Blender meshes and editable sources
         run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_creation/generate.py -- --plan build/foundry_created/generator_plan.json --output build/foundry_created/sources
       - name: Render 16 real isometric sprites from the new GLBs
-        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- --plan build/foundry_created/sources/render_plan.json --output build/foundry_created/views --resolution 192 --samples 4
+        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- --plan build/foundry_created/sources/render_plan.json --output build/foundry_created/views --resolution 192 --samples 4 --lighting-mode studio
       - name: Validate and assemble atlas
         run: python tools/foundry_mass/finalize.py --plan build/foundry_created/sources/render_plan.json --views build/foundry_created/views --output build/foundry_created/candidates --run-id "$GITHUB_RUN_ID"
       - name: Bundle new editable blend and glb source
