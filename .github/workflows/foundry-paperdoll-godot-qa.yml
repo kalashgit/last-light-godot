@@ -9,6 +9,10 @@ on:
       - ".github/workflows/foundry-paperdoll-godot-qa.yml"
   workflow_dispatch:
 
+concurrency:
+  group: paperdoll-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -32,4 +36,4 @@ jobs:
       - name: Import resources and reject parse errors
         run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --editor --import --quit
       - name: Exercise paperdoll and depth scene with real Godot
-        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/foundry_paperdoll_smoke.gd
+        run: timeout --signal=TERM --kill-after=5s 75s /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/foundry_paperdoll_smoke.gd
