@@ -168,7 +168,9 @@ def tube(name, start, end, r0, r1, mat, vertices=16):
     ob.rotation_euler = Vector((0, 0, 1)).rotation_difference(v).to_euler()
     named(ob, name, mat)
     bevel = ob.modifiers.new("Real edge roll", "BEVEL")
-    bevel.width = min(.0017, r0*.15, r1*.15)
+    # A shallow cap must not receive a bevel wider than its half-depth:
+    # otherwise Blender collapses adjacent faces into zero-area triangles.
+    bevel.width = min(.0017, r0*.15, r1*.15, v.length*.18)
     bevel.segments = 2
     ob.modifiers.new("Stable face normals", "WEIGHTED_NORMAL")
     return ob
