@@ -136,6 +136,7 @@ jobs:
             build/f02_blender/f02_contact_sheet.png
             build/f02_blender/qa_report.json
             build/f02_blender/run_report.json
+            build/f02_blender/*/entrance_view.png
             build/f02_blender/*/roof_on.png
             build/f02_blender/*/roof_cut.png
             build/f02_blender/*/manifest.json
