@@ -46,3 +46,17 @@ jobs:
         run: |
           timeout 75s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 \
             --headless --path . --script res://tests/neighborhood/smoke_scene.gd
+      - name: Package standalone Godot inspection project without modifying main
+        run: python tools/neighborhood/package_mobile_preview.py
+      - name: Smoke-test standalone portable project independently
+        run: |
+          timeout 75s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 \
+            --headless --path build/neighborhood_preview/LAST_LIGHT_63_BUILDINGS_GODOT_4_3_PREVIEW \
+            --script res://tests/neighborhood/smoke_scene.gd
+      - name: Upload standalone prototype project for Xogot/iPhone manual inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-63-buildings-godot43-preview-not-golden
+          path: build/neighborhood_preview/LAST_LIGHT_63_BUILDINGS_GODOT_4_3_PREVIEW.zip
+          retention-days: 14
+          if-no-files-found: error
