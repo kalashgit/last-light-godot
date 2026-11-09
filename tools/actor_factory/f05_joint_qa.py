@@ -83,6 +83,7 @@ rows = []
 min_radial = 1e9
 worst_floor = 1e9
 max_hover = 0.0
+locomotion_angles = {}
 for clip, frames in clips.items():
     for name, track in tracks.items():
         track.mute = name != clip
@@ -98,6 +99,16 @@ for clip, frames in clips.items():
                 cache[name] = evaluated_mesh(bpy.data.objects[name], dg)
             return cache[name]
         row = {"clip": clip, "frame": frame, "subframe": sub}
+        if clip in ("walk", "run", "sneak"):
+            angles = locomotion_angles.setdefault(clip, {
+                "pelvis_yaw": [], "chest_yaw": [],
+                "shoulder_roll": [], "arm_swing": [], "elbow_flex": []
+            })
+            angles["pelvis_yaw"].append(rig.pose.bones["pelvis"].rotation_euler.z)
+            angles["chest_yaw"].append(rig.pose.bones["chest"].rotation_euler.z)
+            angles["shoulder_roll"].append(rig.pose.bones["shoulder_L"].rotation_euler.z)
+            angles["arm_swing"].append(rig.pose.bones["upper_arm_L"].rotation_euler.x)
+            angles["elbow_flex"].append(rig.pose.bones["forearm_L"].rotation_euler.x)
         for inner, outer in pairs:
             iv, ip = mesh(inner)
             ov, op = mesh(outer)
@@ -134,6 +145,24 @@ for clip, frames in clips.items():
                                 "type": "foot_floor_contact", "sole_z_m": round(floor, 5)})
         rows.append(row)
 
+# Fail if locomotion reverts to a stiff mannequin despite mesh clearance.
+motion_ranges = {
+    clip: {axis: round(max(values)-min(values), 5)
+           for axis, values in channels.items()}
+    for clip, channels in locomotion_angles.items()
+}
+for clip, channels in motion_ranges.items():
+    minima = {
+        "pelvis_yaw": .04,
+        "chest_yaw": .035,
+        "shoulder_roll": .025,
+        "arm_swing": .20,
+        "elbow_flex": .03,
+    }
+    for name, minimum in minima.items():
+        if channels[name] < minimum:
+            defects.append({"clip": clip, "type": "stiff_locomotion",
+                            "channel": name, "range_radians": channels[name]})
 result = {
     "status": "FAIL" if defects else "PASS",
     "physique": json.loads((out / "manifest.json").read_text())["physique"],
@@ -150,6 +179,7 @@ result = {
     "defects": defects[:100],
     "total_defects": len(defects),
     "sample_records": rows,
+    "locomotion_angle_ranges_rad": motion_ranges,
     "canonical_approved": False,
 }
 (out / "joint_qa.json").write_text(json.dumps(result, indent=2) + "\n")
