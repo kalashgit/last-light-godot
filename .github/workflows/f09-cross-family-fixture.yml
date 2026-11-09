@@ -7,6 +7,9 @@ on:
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
       - 'tools/weapons_tools/f09_pack_atlas.py'
       - 'tools/weapons_tools/f09_main_game_fixture.gd'
+      - 'tools/weapons_tools/f09_real_pickup_fixture.gd'
+      - 'tools/weapons_tools/f09_graphical_house_fixture.gd'
+      - 'tools/weapons_tools/f09_verify_screenshots.py'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
       - 'tools/weapons_tools/f09_verify_cross_family.py'
@@ -63,6 +66,30 @@ jobs:
             echo "F09 main-game fixture emitted missing-resource or script errors"
             exit 1
           fi
+      - name: Validate actual item drop, pickup, inventory and save/reload
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-pickup-save \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage \
+              --script res://real_pickup_fixture.gd 2>&1 | tee /tmp/f09-pickup.log
+          grep -q F09_REAL_HOUSE_INVENTORY_SAVE_RELOAD_PASS /tmp/f09-pickup.log
+          test "$(grep -c F09_REAL_ITEM_PICKUP_PASS /tmp/f09-pickup.log)" -eq 3
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_INTERACTION_FAIL:' /tmp/f09-pickup.log; then exit 1; fi
+      - name: Install virtual display and OpenGL software driver
+        run: sudo apt-get install -y xvfb mesa-utils libgl1-mesa-dri
+      - name: Capture actual rendered game screenshots via Godot OpenGL
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-graphical-save \
+          xvfb-run -a -s '-screen 0 1280x720x24' \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --path build/f09_godot_stage \
+              --rendering-driver opengl3 --resolution 1280x720 \
+              --script res://graphical_house_fixture.gd \
+              2>&1 | tee /tmp/f09-graphical.log
+          grep -q F09_REAL_OPENGL_GAMEPLAY_SCREENSHOTS_PASS /tmp/f09-graphical.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_VISUAL_' /tmp/f09-graphical.log; then exit 1; fi
+      - name: Validate screenshots nonblank and visually distinct
+        run: python3 tools/weapons_tools/f09_verify_screenshots.py
       - name: Upload unapproved F09 F11 F12 integration evidence
         if: always()
         uses: actions/upload-artifact@v4
