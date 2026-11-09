@@ -63,11 +63,7 @@ jobs:
       - name: Create isolated Godot test project
         run: |
           mkdir -p build/f02_godot/tools/factory/structures
-          printf 'config_version=5
-
-[application]
-config/name="F02 Isolated Physics Calibration"
-' > build/f02_godot/project.godot
+          printf 'config_version=5\n\n[application]\nconfig/name="F02 Isolated Physics Calibration"\n' > build/f02_godot/project.godot
           cp tools/factory/structures/godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
           cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
           cp tools/factory/structures/test_godot_door_physics.gd build/f02_godot/tools/factory/structures/
