@@ -29,8 +29,8 @@ def eligible(run: dict[str, Any]) -> Verdict:
     if (run.get("repository") or {}).get("full_name") != OWNER_REPO:
         return Verdict(False, "repository mismatch")
     head_repo = (run.get("head_repository") or {}).get("full_name")
-    if head_repo not in (None, OWNER_REPO):
-        return Verdict(False, "foreign head repository")
+    if head_repo != OWNER_REPO:
+        return Verdict(False, "foreign or missing head repository")
     if run.get("name") not in ALLOWED_WORKFLOWS:
         return Verdict(False, "workflow not allowlisted")
     if run.get("head_branch") != ALLOWED_BRANCH:
