@@ -76,8 +76,10 @@ def run(output, samples=8, heading_deg=0):
         assert door.parent == hinge and len(door.data.polygons)>10
         assert bpy.data.objects["F10 HERO inset front door pane"].parent == hinge
         assert bpy.data.objects["F10 HERO driver door movable upper belt"].parent == hinge
-        for name in ("driver door inner padded card","driver door inner upper rail",
-                     "driver door inner armrest","driver door interior latch",
+        for name in ("driver door inner padded card","driver door upholstered inset",
+                     "driver door inner upper rail","driver door inner armrest",
+                     "driver door lower storage pocket","driver door pull handle",
+                     "driver door interior latch",
                      "driver door front edge thickness","driver door rear edge thickness"):
             assert bpy.data.objects["LL FLEET F10 HERO "+name].parent == hinge
         for name in ("textured driver seat cushion","raked driver seat back",
