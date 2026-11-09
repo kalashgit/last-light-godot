@@ -76,3 +76,42 @@ jobs:
         run: |
           /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
             --script res://tools/factory/structures/test_godot_door_physics.gd
+
+  blender:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender
+          python -m pip install 'Pillow>=10,<12'
+          blender --version | head -2
+      - name: Generate original F02 surface textures
+        run: python tools/factory/structures/textures.py --output-dir build/f02_blender/textures
+      - name: Rebuild five Blender scenes and sprite previews
+        run: |
+          blender -b --factory-startup -t 2 --python \
+            tools/factory/structures/blender_calibration.py -- \
+            --subject all --output-dir build/f02_blender
+      - name: Verify generated Blender and sprite artifacts
+        run: python tools/factory/structures/qa_package.py --output-dir build/f02_blender
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f02-blender-calibration-evidence
+          path: |
+            build/f02_blender/f02_contact_sheet.png
+            build/f02_blender/qa_report.json
+            build/f02_blender/run_report.json
+            build/f02_blender/*/roof_on.png
+            build/f02_blender/*/roof_cut.png
+            build/f02_blender/*/manifest.json
+          if-no-files-found: warn
+          retention-days: 7
