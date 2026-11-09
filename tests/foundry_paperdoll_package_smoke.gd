@@ -57,6 +57,14 @@ func _run() -> void:
 	check(not actor.layer("backpack").visible, "backpack hidden")
 	check(actor.restore_state(before), "inventory/restored equipment")
 	check(actor.layer("backpack").visible, "re-equipped backpack visible")
+	var serialized = JSON.parse_string(JSON.stringify(before))
+	check(serialized is Dictionary, "JSON save schema")
+	if serialized is Dictionary:
+		check(actor.restore_state(serialized), "JSON serialized outfit restores without truncation")
+		var decimal_save: Dictionary = serialized.duplicate(true)
+		decimal_save["frame"] = 0.5
+		check(not actor.restore_state(decimal_save), "fractional frame save rejected")
+		check(actor.frame == 2, "rejected save retains current animation frame")
 
 	var invalid_snapshot := before.duplicate(true)
 	invalid_snapshot["equipped"]["shirt"] = "missing_shirt"
