@@ -182,9 +182,29 @@ def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=
                                     bonnet_polys,[m["body"]]),bonnet_root)
         attach_to_pivot(cube("F10 HERO bonnet underside dark reinforcement",
                              (1.2,0,.921),(1.30,1.03,.025),m["dark"],.008),bonnet_root)
+        # The open hood reveals actual shallow mechanical depth rather than an
+        # undifferentiated black polygon. Fixed components stay below the
+        # underside of the bonnet in its resting pose.
+        cube("F10 HERO engine bay recessed base",(1.22,0,.696),
+             (1.27,1.09,.13),m["dark"],.018)
+        cube("F10 HERO compact inline engine block",(1.18,.04,.782),
+             (.60,.47,.18),m["steel"],.035)
+        cube("F10 HERO dark cam cover",(1.18,.04,.874),
+             (.49,.39,.037),m["trim"],.011)
+        cube("F10 HERO small battery housing",(1.53,-.39,.783),
+             (.235,.245,.169),m["trim"],.018)
+        cube("F10 HERO engine air filter box",(.87,.39,.801),
+             (.33,.232,.129),m["trim"],.022)
     if hatch_polys:
         attach_to_pivot(mesh_object("F10 HERO liftable rear hatch top crown",verts,
                                     hatch_polys,[m["body"]]),hatch_root)
+        # Cargo pieces are chassis-mounted: they remain exposed and stationary
+        # as the roof-hinged liftgate follows its keyed opening arc.
+        fabric=base.mat("F10 HERO cargo carpet",(.21,.25,.23),.0,.92,wear=.06)
+        cube("F10 HERO rear cargo recessed floor",(-1.62,0,.552),
+             (.57,1.08,.065),fabric,.018)
+        cube("F10 HERO folding rear seat back",(-1.28,0,.719),
+             (.116,1.00,.340),fabric,.024)
     # Curved original front/rear panel instead of a pasted rectangular block.
     for x,sign in ((L*.485,1),(-L*.485,-1)):
         v=[]
@@ -396,8 +416,12 @@ def detailing(m,door_root=None):
     # No ornamental bonnet line: broad uninterrupted paint planes read cleaner.
 
 
-def build(paint="#364958",driver_door_deg=None,bonnet_deg=None,rear_hatch_deg=None):
+def build(paint="#26372f",driver_door_deg=None,bonnet_deg=None,rear_hatch_deg=None):
     m=make_materials(paint,1)
+    # A flat, consistent painted roof better matches the restrained classic
+    # compact-car language of the founder's reference than the lighter roof
+    # tint used by the generic vehicle-family material library.
+    m["roof"]=m["body"]
     m["glass"]=glass_material("F10 HERO original light glazing")
     m["black_glass"]=glass_material("F10 HERO original rear tint",dark=True)
     door_root,bonnet_root,hatch_root=body_shell(m,
@@ -454,7 +478,7 @@ def render(out,samples,denoise=False):
         print("F10_HERO_FRAME",heading,flush=True)
     payload=dict(schema_version=1,directions=16,tile_px=[80,40],
         asset_id="NONCANONICAL_F10_HERO_HATCHBACK_V2",model="compact_hatchback",
-        paint_hex="#364958",palette_id="dark_blue",condition_level=1,
+        paint_hex="#26372f",palette_id="experimental_dark_green",condition_level=1,
         declared_dimensions_m=[L,W,H],wheelbase_m=WB,ortho_scale=ortho,
         render_samples=samples,render_denoise=denoise,
         original_source="Original manual surface/station Blender generator",
