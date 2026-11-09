@@ -20,7 +20,7 @@ func check(condition: bool, label: String) -> void:
 
 
 func run() -> void:
- var game := load("res://main.tscn").instantiate()
+ var game: Variant = load("res://main.tscn").instantiate()
  root.add_child(game)
  game.set_process(false)
  game._restart_game()
@@ -74,7 +74,7 @@ func run() -> void:
  game.player=Vector2(8.0,7.0)
  check(not game._target_valid(target), "distant player cannot operate refrigerator remotely")
  for suffix in ["", ".old", ".invalid", ".bak"]:
-  var filename := SAVE_TEST+suffix
+  var filename: String = SAVE_TEST+suffix
   if FileAccess.file_exists(filename): DirAccess.remove_absolute(ProjectSettings.globalize_path(filename))
  game.free()
  print("F01_HOUSE_GAMEPLAY: %d checks, %d failures (actual main.tscn state/save/loot; iPhone hardware unverified)" % [checks,failures.size()])
