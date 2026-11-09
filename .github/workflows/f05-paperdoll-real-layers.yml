@@ -92,11 +92,15 @@ jobs:
           /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
             --path build/pinned-paperdoll-runtime \
             --script res://tests/foundry_paperdoll_package_smoke.gd
-      - name: Exercise 100 actual Blender-layer actors inside playable LAST LIGHT scene
+      - name: Require 100 actual Blender-layer actors inside playable LAST LIGHT scene
         run: |
+          set -euo pipefail
           /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
             --path build/pinned-paperdoll-runtime \
-            --script res://tests/foundry_paperdoll_world_smoke.gd
+            --script res://tests/foundry_paperdoll_world_smoke.gd \
+            2>&1 | tee "build/f05-${{ matrix.kind }}-world.log"
+          grep -q 'LL_PAPERDOLL_WORLD_PASS assertions=15 characters=100' \
+            "build/f05-${{ matrix.kind }}-world.log"
       - name: Archive non-Golden source, native renders and QA evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -106,5 +110,6 @@ jobs:
             build/real-layered/${{ matrix.kind }}/
             build/pinned-paperdoll-runtime/build/paperdoll_package/
             build/f05-${{ matrix.kind }}-blender.log
+            build/f05-${{ matrix.kind }}-world.log
           if-no-files-found: warn
           retention-days: 14
