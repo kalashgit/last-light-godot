@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "source_kind": "A00_METADATA_RESEARCH_ONLY",
+  "source_snapshot_sha256": "e1dab31c975f8d0dc48361a8df1ff31490a8d35c47064b041bfa1aab664963b8",
+  "expected_records": 21025,
+  "expected_unique_ids": 21025,
+  "expected_classes": {
+    "ANIMATION_FRAME_REFERENCE": 2,
+    "CANONICAL_MASTER_CANDIDATE": 4396,
+    "COMPOSITION_REFERENCE": 11197,
+    "DUPLICATE_ALIAS": 2,
+    "MATERIAL_TEXTURE": 28,
+    "MEANINGFUL_VARIANT": 532,
+    "NEEDS_MANUAL_REVIEW": 1676,
+    "OUT_OF_SCOPE": 577,
+    "STATE_OR_DIRECTION": 1913,
+    "UI_ICON_ONLY": 702
+  },
+  "expected_batches": {
+    "A00-20261108-B001": 300,
+    "A00-20261108-B002": 300,
+    "A00-20261108-B003": 500,
+    "A00-20261108-B004": 1000,
+    "A00-20261108-B005": 3000,
+    "A00-20261108-B006": 3000,
+    "A00-20261108-B007": 8000,
+    "A00-20261108-B008": 4925
+  },
+  "files": [
+    {
+      "name": "a00_20261108_b001_300.jsonl",
+      "sha256": "add56096aac84305a2f882078b8fc6911633f508435f2407a27712f0b5a8cf1b"
+    },
+    {
+      "name": "a00_20261108_b002_300.jsonl",
+      "sha256": "f79aaa6c88974f9a9fc51c1d15dcd15f0bcf94402561398ddd5acac3b91ff8f4"
+    },
+    {
+      "name": "a00_20261108_b003_500.jsonl",
+      "sha256": "d5b0d571a83d52b2c12b76f25939c53ece64f00e8edec55b20f7754bd6e3a7d7"
+    },
+    {
+      "name": "a00_20261108_b004_1000.jsonl",
+      "sha256": "d886da61ee56c3e25d473d7777c21ffc178c2359ce581b8890b559002c1c4d87"
+    },
+    {
+      "name": "a00_20261108_b005_3000_part_a.jsonl",
+      "sha256": "8ab89261aa04268b1e33e2785d291b9ede71a3a352ad49155f572a7b00a65a51"
+    },
+    {
+      "name": "a00_20261108_b005_3000_part_b.jsonl",
+      "sha256": "ecc139e6a5717bd113472259d1f0357f2fa631f2b0bf46c86d99f158fc7c520b"
+    },
+    {
+      "name": "a00_20261108_b005_3000_part_c.jsonl",
+      "sha256": "30c9072877185be4852ee1c877f3d1a7219a13c043b1a20b0952b10b73943698"
+    },
+    {
+      "name": "a00_20261108_b006_3000_part_a.jsonl",
+      "sha256": "0d5cee8204c4213d72f73d5a88f39ca16494902a14642448f1324a02f3f6e6d7"
+    },
+    {
+      "name": "a00_20261108_b006_3000_part_b.jsonl",
+      "sha256": "6319ee65c1b4c10ba7407032c0dd68caa878322eb196cdd52095e3137521d99a"
+    },
+    {
+      "name": "a00_20261108_b006_3000_part_c.jsonl",
+      "sha256": "18238adf6e4c30ace1e159b0391a37b8911672e8d353666acd57691c37ba1b1c"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_a.jsonl",
+      "sha256": "c1a556131fcfe1c6338fa94484c584805327caac003441e660de94f3b8f0b7db"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_b.jsonl",
+      "sha256": "5d20cf087fe26d344f9da9f86f5305b96c5f4409f07b859b72f3c44156d13906"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_c.jsonl",
+      "sha256": "85aaf96bd44ad445621ebe7825a101d71387123a6e6c2eb28c0029f648a9ab2f"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_d.jsonl",
+      "sha256": "d4f08ecf1e4cdca685abbb26d51ef18010d667061c272362b450a079f9a9ba11"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_e.jsonl",
+      "sha256": "7a84e53363139a9a5ba916d85af84274c9f4e2fa7184bf5512ba2e83c4a370c9"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_f.jsonl",
+      "sha256": "257bd75a187a92e24591a0e1081b92a3ac901d8f8a2992735d33d4f282b9d4e1"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_g.jsonl",
+      "sha256": "72f3c3af4dc96689d61e1fa1513518067c396a8130784cea11bfc0b3163dfe25"
+    },
+    {
+      "name": "a00_20261108_b007_8000_part_h.jsonl",
+      "sha256": "c5b3f69294276927da2c8ca33b0ebeb371e0901ce5a2065cb32ed001f46665a4"
+    },
+    {
+      "name": "a00_20261108_b008_4925_part_a.jsonl",
+      "sha256": "250d8733fc10fdde4ba286fbd58100fc06ea5dbde154a84b6163055d8a519be8"
+    },
+    {
+      "name": "a00_20261108_b008_4925_part_b.jsonl",
+      "sha256": "a4810f76c40eb57e04e02e964deda4d9f3ab2cdf6a5dcf618eece6608dd49d62"
+    },
+    {
+      "name": "a00_20261108_b008_4925_part_c.jsonl",
+      "sha256": "a89312a922f49fb60e51591356848f8530712e79d9965d46b9d14026fdef3c0a"
+    },
+    {
+      "name": "a00_20261108_b008_4925_part_d.jsonl",
+      "sha256": "b97907c0b50718bef2ce4707e967d40c97822af3ea9c665d8265e3e792ef6961"
+    },
+    {
+      "name": "a00_20261108_b008_4925_part_e.jsonl",
+      "sha256": "c13a0a7dc5dcceaec28bcc58da4db120579c09aed3302a55c4a77cb33d6c855e"
+    }
+  ],
+  "notes": "A00 metadata only; no imported third-party pixels; never auto-promote reference to original asset."
+}

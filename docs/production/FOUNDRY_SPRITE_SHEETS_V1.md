@@ -1,5 +1,61 @@
 # LAST LIGHT — deterministic mass sprite-sheet stage V1
 
+## Closed-loop A00 → Notion → original Blender art → offline sheets
+
+The research intake is now explicitly separate from image generation and
+founder approval:
+
+1. The **23 immutable A00 JSONL shards** in
+   `data/foundry_reference_catalog/source/` preserve **21,025 unique third-party
+   file-page research records**, with known per-file SHA-256 hashes and class
+   counts in `source_inventory_manifest_v1.json`. This includes 4,396
+   provisional canonical-master candidates, not 4,396 approved game assets.
+   No copyrighted source art, PNG pixels, PZ assets, or textures are imported.
+2. A read-only 60-master Notion snapshot, including original `Proposed Brief`,
+   geometry, material, gameplay and state fields, lives in
+   `notion_master_recipes_snapshot_v1.json`. R03 original-refinement admissions
+   are pinned in `r03_admitted_refinement_snapshot_v1.json`. The authoritative
+   creator-facing rules and six founder QA categories are machine-checked in
+   `sprite_bible_contract_v2.json` (Notion Master Sprite Bible V2).
+3. `tools/foundry_reference_intake/build.py` checks every record's source-page
+   ID, source-rights, URL, full-shard hash, semantic class counts and Notion
+   provenance. It writes `research_semantic_candidates.jsonl` (research only),
+   `original_recipe_work_orders.jsonl` (independent-authoring descriptions and
+   **no third-party pixel inputs**), `semantic_or_provenance_holds.jsonl` and
+   `intake_report.json`. Only R03-admitted, correctly reconciled original
+   recipes may enter the mass-sheet technical rendering lane.
+4. Blender workers independently design geometry and materials from these
+   semantic physical requirements, never tracing or extracting source pixels.
+   F11 and F12 must visually assess physically credible construction,
+   materials, upper-left illumination, silhouette at 32/48/64px, native 64px
+   inventory representation, consistent 2:1 world scale and support pivot.
+   A prior technical candidate is **not** sufficient Golden art evidence.
+5. The 40-item packer accepts `--recipe-queue` and refuses unauthorized
+   original-asset IDs. It packs only independently produced transparent
+   technical source atlases, retaining 16 headings per item separately. The
+   publisher retains pixel-sha/page-sha, duplicate-image, RGBA, placement and
+   immutable-cursor checks. Godot-world and iPhone/device reviews remain
+   required before a founder Golden decision.
+
+To regenerate the deterministic research and physical recipe queue locally:
+
+```sh
+python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+python -m unittest discover -s tests/foundry_reference_intake -v
+```
+
+The automated PR and production workflows execute this intake before packing.
+The initial reconciled snapshot has **18 usable physical-authoring recipes**:
+22 semantically verified by Notion, of which four are held (incomplete nail
+box and bread-loaf geometry/material recipes; conflicting refrigerator founder
+approval evidence; malformed crowbar source-ID reference). Fourteen of the
+15 R03 original-refinement admissions are currently eligible; the refrigerator
+remains held. The remaining 38 Notion masters are not semantically verified.
+These holds are *not* silently repaired, and do not count as model or Golden
+output. The branch still cannot honestly produce a 40-distinct-art sheet from
+the existing eight non-Golden technical sources. It must wait for enough
+original, admitted art.
+
 ## What is implemented
 
 This stage does **not** make new geometry, call Copilot, or grant Golden status.

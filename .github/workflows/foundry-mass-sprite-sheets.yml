@@ -5,6 +5,9 @@ on:
       - '.github/workflows/foundry-mass-sprite-sheets.yml'
       - 'tools/foundry_sheets/**'
       - 'tests/foundry_sheets/**'
+      - 'tools/foundry_reference_intake/**'
+      - 'tests/foundry_reference_intake/**'
+      - 'data/foundry_reference_catalog/**'
   schedule:
     - cron: '25,55 * * * *'
   workflow_dispatch:
@@ -35,6 +38,14 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install 'Pillow>=10,<13'
       - run: python -m unittest discover -s tests/foundry_sheets -v
+      - run: python -m unittest discover -s tests/foundry_reference_intake -v
+      - name: Validate all 21,025 original-research metadata records against Notion and Sprite Bible
+        run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-original-reference-intake-${{ github.run_id }}
+          path: build/foundry_reference_intake/
+          retention-days: 7
 
   pack-and-persist:
     if: >-
@@ -53,6 +64,9 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install 'Pillow>=10,<13'
       - run: python -m unittest discover -s tests/foundry_sheets -v
+      - run: python -m unittest discover -s tests/foundry_reference_intake -v
+      - name: Validate research, rights, original physical recipes, and R03 refinement eligibility
+        run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
       - name: Fetch only already-persisted, non-Golden technical sprite candidates
         run: |
           set -euo pipefail
@@ -68,7 +82,7 @@ jobs:
           set -euo pipefail
           args=()
           if test -f build/foundry_sheets/previous_state.json; then args+=(--state build/foundry_sheets/previous_state.json); fi
-          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --min-batch-size 40 --inventory-page-items 40 --page-size 2048 --run-id "$GITHUB_RUN_ID" "${args[@]}"
+          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --min-batch-size 40 --inventory-page-items 40 --page-size 2048 --run-id "$GITHUB_RUN_ID" --recipe-queue build/foundry_reference_intake/original_recipe_work_orders.jsonl "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:
           name: foundry-sprite-sheets-${{ github.run_id }}

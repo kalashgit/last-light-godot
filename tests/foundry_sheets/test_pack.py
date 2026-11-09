@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/foundry_sheets"))
-from pack import pack, sha
+from pack import pack, sha, load_admitted_recipe_ids
 from publish import stage
 
 
@@ -114,6 +114,29 @@ class SheetTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cannot fill"):
             pack(self.source, self.path / "bad_inventory", batch_size=8,
                  inventory_page_items=40)
+
+    def test_strict_recipe_queue_excludes_unadmitted_art(self):
+        queue = self.path / "queue.jsonl"
+        queue.write_text(json.dumps({
+            "asset_id": "ll_furniture_mattress", "stage": "ORIGINAL_REFINEMENT_TECHNICAL_ONLY",
+            "automated_render_authorized": True,
+            "generation_input": {"original_creation_only": True,
+                "source_image_pixels_allowed": False, "source_mesh_copy_allowed": False,
+                "reference_silhouette_tracing_allowed": False,
+                "style_contract": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2_ORIGINALITY_GATE"},
+            "gates": {"founder_golden_approved": False},
+            "provenance_review_only": {"source_records_are_research_only": True},
+        }) + "\n")
+        admitted = load_admitted_recipe_ids(queue)
+        self.assertEqual(admitted, {"ll_furniture_mattress"})
+        report = pack(self.source, self.path / "strict", allowed_asset_ids=admitted,
+                      batch_size=2, run_id="99")
+        self.assertEqual(report["batch_count"], 1)
+        compromised = json.loads(queue.read_text())
+        compromised["generation_input"]["source_image_pixels_allowed"] = True
+        queue.write_text(json.dumps(compromised) + "\n")
+        with self.assertRaisesRegex(ValueError, "originality evidence"):
+            load_admitted_recipe_ids(queue)
 
     def test_mass_80_assets_produce_two_genuine_40_item_pages(self):
         for i in range(78):

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source_schema": "A00_PRODUCTION_ADMISSION_R03_V1",
+  "source_branch": "codex/a00-production-admission-r03-20261109",
+  "source_date": "2026-11-09",
+  "dispatch_total": 15,
+  "admission_scope": "Start original-asset geometry/material/refinement with explicit art QA gates. Not Golden or game-ready.",
+  "model_visual_verified": false,
+  "source_pixels_imported": false,
+  "admitted_original_refinement_ids": [
+    "ll_crafting_firewood",
+    "ll_crafting_glass_pane",
+    "ll_crafting_screw_box",
+    "ll_furniture_bookcase",
+    "ll_furniture_mattress",
+    "ll_furniture_refrigerator",
+    "ll_household_bucket",
+    "ll_household_fire_extinguisher",
+    "ll_household_match_box",
+    "ll_household_propane_bottle",
+    "ll_medical_medical_gloves",
+    "ll_medical_splint",
+    "ll_medical_tweezers",
+    "ll_tools_hand_drill",
+    "ll_tools_hand_saw"
+  ]
+}

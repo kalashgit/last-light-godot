@@ -70,9 +70,35 @@ def _state(state: dict | None) -> list[dict]:
     return completed
 
 
+def load_admitted_recipe_ids(path: Path) -> set[str]:
+    """Only the original-authoring R03 lane may enter a mass packing run."""
+    admitted: set[str] = set()
+    with path.open(encoding="utf-8") as source:
+        for line in source:
+            row = json.loads(line)
+            ident = row.get("asset_id", "")
+            rules = row.get("generation_input", {})
+            gates = row.get("gates", {})
+            trace = row.get("provenance_review_only", {})
+            if not IDENT.fullmatch(ident) or ident in admitted:
+                raise ValueError("Duplicate or invalid canonical recipe ID")
+            if (rules.get("original_creation_only") is not True
+                    or rules.get("source_image_pixels_allowed") is not False
+                    or rules.get("source_mesh_copy_allowed") is not False
+                    or rules.get("reference_silhouette_tracing_allowed") is not False
+                    or rules.get("style_contract") != "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2_ORIGINALITY_GATE"
+                    or gates.get("founder_golden_approved") is not False
+                    or trace.get("source_records_are_research_only") is not True):
+                raise ValueError(f"Untrusted production or originality evidence: {ident}")
+            if row.get("automated_render_authorized") is True and row.get("stage") == "ORIGINAL_REFINEMENT_TECHNICAL_ONLY":
+                admitted.add(ident)
+    return admitted
+
+
 def pack(candidate_root: Path, output: Path, state: dict | None = None,
          batch_size: int = 4, page_size: int = 1024, run_id: str = "1",
-         min_batch_size: int = 1, inventory_page_items: int = 0) -> dict:
+         min_batch_size: int = 1, inventory_page_items: int = 0,
+         allowed_asset_ids: set[str] | None = None) -> dict:
     if not isinstance(batch_size, int) or not 1 <= batch_size <= 80:
         raise ValueError("Batch must contain between 1 and 80 assets")
     if (not isinstance(min_batch_size, int) or min_batch_size < 1
@@ -87,7 +113,8 @@ def pack(candidate_root: Path, output: Path, state: dict | None = None,
     completed = _state(state)
     indexed = {entry["asset_id"]: entry["atlas_sha256"] for entry in completed}
     candidates = sorted(d for d in candidate_root.iterdir()
-                        if d.is_dir() and IDENT.fullmatch(d.name))
+                        if d.is_dir() and IDENT.fullmatch(d.name)
+                        and (allowed_asset_ids is None or d.name in allowed_asset_ids))
     for folder in candidates:
         if folder.name in indexed:
             source = folder / "atlas_16_headings.png"
@@ -202,11 +229,16 @@ def main() -> None:
     p.add_argument("--inventory-page-items", type=int, default=0)
     p.add_argument("--page-size", type=int, default=1024)
     p.add_argument("--run-id", default="1")
+    p.add_argument("--recipe-queue", type=Path,
+                   help="Original refinement lane from verified Notion and Sprite Bible intake")
     a = p.parse_args()
+    if a.inventory_page_items and a.recipe_queue is None:
+        p.error("40+ production mode requires the original R03 recipe queue")
     pack(a.candidates, a.output,
          json.loads(a.state.read_text()) if a.state and a.state.exists() else None,
          a.batch_size, a.page_size, a.run_id, a.min_batch_size,
-         a.inventory_page_items)
+         a.inventory_page_items,
+         load_admitted_recipe_ids(a.recipe_queue) if a.recipe_queue else None)
 
 
 if __name__ == "__main__":
