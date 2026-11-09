@@ -55,10 +55,20 @@ func _make_box(entry: Dictionary, movable: bool) -> StaticBody3D:
     body.name = ("Dynamic_" if movable else "Static_") + str(entry.get("part", "unnamed")).validate_node_name()
     # Source geometry is Blender Z-up; Godot is Y-up.
     body.position = Vector3(float(center_values[0]), float(center_values[2]), -float(center_values[1]))
-    # Rotate the *local collider axes* from Blender into Godot. Simply\n    # swapping Euler angles and box dimensions fails for sloped roofs.\n    var source_rotation := Basis.from_euler(Vector3(\n        float(rotation_values[0]), float(rotation_values[1]),\n        float(rotation_values[2])), EULER_ORDER_XYZ)\n    var blender_to_godot := Basis(\n        Vector3(1.0, 0.0, 0.0),\n        Vector3(0.0, 0.0, -1.0),\n        Vector3(0.0, 1.0, 0.0))\n    body.basis = blender_to_godot * source_rotation
+    # Rotate the *local collider axes* from Blender into Godot. Simply
+    # swapping Euler angles and box dimensions fails for sloped roofs.
+    var source_rotation := Basis.from_euler(Vector3(
+        float(rotation_values[0]), float(rotation_values[1]),
+        float(rotation_values[2])), EULER_ORDER_XYZ)
+    var blender_to_godot := Basis(
+        Vector3(1.0, 0.0, 0.0),
+        Vector3(0.0, 0.0, -1.0),
+        Vector3(0.0, 1.0, 0.0))
+    body.basis = blender_to_godot * source_rotation
     var shape_node := CollisionShape3D.new()
     var shape := BoxShape3D.new()
-    # Keep source-local dimensions: the basis performs axis conversion.\n    shape.size = dims
+    # Keep source-local dimensions: the basis performs axis conversion.
+    shape.size = dims
     shape_node.shape = shape
     body.add_child(shape_node)
     add_child(body)
