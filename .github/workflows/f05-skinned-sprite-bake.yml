@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/actor_factory/bake_skinned_sprites.py'
       - 'tools/actor_factory/validate_skinned_bake.py'
+      - 'tests/f05_skinned_bake_godot_smoke.gd'
       - '.github/workflows/f05-skinned-sprite-bake.yml'
   workflow_dispatch:
 
@@ -94,19 +95,16 @@ jobs:
             build/pinned-paperdoll-runtime/tests/fixtures/f05_single_skinned_master.glb
           /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
             --path build/pinned-paperdoll-runtime --editor --import --quit
-      - name: Exercise inventory, 8-direction 2D animation and 100 actor gameplay compatibility
+      - name: Require skinned GLB skeleton import and manifest-driven 100 actor gameplay
         run: |
           set -euo pipefail
+          cp tests/f05_skinned_bake_godot_smoke.gd \
+            build/pinned-paperdoll-runtime/tests/f05_skinned_bake_godot_smoke.gd
           /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
             --path build/pinned-paperdoll-runtime \
-            --script res://tests/foundry_paperdoll_package_smoke.gd \
-            2>&1 | tee build/skinned-package-godot.log
-          grep -q 'LL_PAPERDOLL_PACKAGE_GODOT_PASS' build/skinned-package-godot.log
-          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
-            --path build/pinned-paperdoll-runtime \
-            --script res://tests/foundry_paperdoll_world_smoke.gd \
+            --script res://tests/f05_skinned_bake_godot_smoke.gd \
             2>&1 | tee build/skinned-100actors.log
-          grep -q 'LL_PAPERDOLL_WORLD_PASS assertions=15 characters=100' build/skinned-100actors.log
+          grep -q 'LL_SKINNED_GODOT_PASS actors=100' build/skinned-100actors.log
       - name: Archive editable rig, original transparent frames and QA logs — never Golden
         if: always()
         uses: actions/upload-artifact@v4
