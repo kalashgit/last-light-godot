@@ -18,6 +18,7 @@ VALID_PRIORITY = frozenset({"P0", "P1", "P2", "P3"})
 VALID_STAGE = frozenset({"Backlog", "Original Design", "Generating", "QA Review", "Approved", "Blocked"})
 IDENTITY = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{1,127}\Z")
 PRIORITY = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
+ORDER_SEQUENCE = re.compile(r"\AA00-B([0-9]{3})-")
 
 
 def _distinct(rows: list[dict], field: str) -> None:
@@ -78,7 +79,14 @@ def plan(catalog: dict, completed: list[str] | None = None, batch_size: int = 4)
     ready = [r for r in masters if r["semantic_verification"] == "Canonical Verified"
              and r["queue"] and r["work_order"] and r["stage"] != "Blocked"
              and r["content_id"] not in done]
-    ready.sort(key=lambda r: (PRIORITY[r["priority"]], r["content_id"]))
+    # Preserve Notion's A00-B001, B002, ... deliberately curated sequence
+    # within a priority tier. In particular, F01's refrigerator Golden
+    # calibration precedes less critical P0 small props.
+    def _order_key(r: dict) -> tuple[int, int, str]:
+        match = ORDER_SEQUENCE.match(r["work_order"])
+        return (PRIORITY[r["priority"]], int(match.group(1)) if match else 999, r["content_id"])
+
+    ready.sort(key=_order_key)
     payload = json.dumps(catalog, sort_keys=True, separators=(",", ":")).encode()
     orders = [{
         "content_id": r["content_id"], "family": r["family"], "worker": r["queue"],
