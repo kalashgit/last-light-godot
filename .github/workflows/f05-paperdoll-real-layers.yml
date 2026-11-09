@@ -40,7 +40,7 @@ jobs:
       - name: Install Blender CPU and image inspector
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends blender
+          sudo apt-get install -y --no-install-recommends blender python3-numpy libegl1 libgl1-mesa-dri
           blender --version | head -n 2
       - name: Install offline PNG inspection tools
         uses: actions/setup-python@v5
