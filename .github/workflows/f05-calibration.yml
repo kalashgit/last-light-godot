@@ -46,6 +46,20 @@ jobs:
           xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
       - name: Validate artifact integrity (fails on missing GLB)
         run: python3 tools/actor_factory/f05_validate.py build/f05-cal
+      - name: Render actual animation poses and screen garment clipping
+        if: always()
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          test -s build/f05-cal/f05_noncanonical_calibration.blend
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_motion_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-motion.log
+      - name: Assemble inspectable motion contact sheet
+        if: always()
+        run: |
+          /usr/bin/python3 tools/actor_factory/f05_contact_sheet.py build/f05-cal --log-preview
       - name: Archive calibration evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,5 +68,6 @@ jobs:
           path: |
             build/f05-cal/
             build/f05-blender.log
+            build/f05-motion.log
           if-no-files-found: warn
           retention-days: 14
