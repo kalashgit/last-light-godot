@@ -179,13 +179,53 @@ def body_shell(m,door_experiment=False):
             pipe("door full-height stamped shutline",[(x,yy,.394),(x,yy,.944)],
                  .006,m["dark"])
     if door_experiment:
-        # Recessed interior backing remains with the chassis when the actual
-        # door skin swings away; this is not an approved modeled cabin.
-        faces("F10 HERO driver aperture recessed dark inner backing",[
-            (-.37,-.652,.30),(.96,-.652,.30),(.96,-.652,.94),(-.37,-.652,.94)],m["trim"])
+        # The cabin aperture is left open; sill and end jambs frame the hole.
         cube("F10 HERO driver door inner sill",(.30,-.665,.305),
              (1.32,.075,.055),m["dark"],.012)
+        for x in (-.38,.96):
+            cube("F10 HERO cabin aperture jamb",(x,-.666,.635),
+                 (.053,.080,.65),m["trim"],.014)
     return door_root
+
+
+def interior_cavity(m,door_root):
+    """Minimal *actual depth* behind an experimental separated door opening.
+
+    All source pieces live in chassis coordinates. The inner door card alone is
+    attached to the pivot; seat, floor, dash and steering stay with the chassis.
+    """
+    if door_root is None:
+        return
+    # A cabin in shadow needs mid-value upholstery; near-black cloth disappears
+    # completely at the native 2.5D gameplay sprite size.
+    interior=base.mat("F10 HERO slate interior cloth",(.36,.37,.355),.02,.91,wear=.04)
+    plastic=base.mat("F10 HERO charcoal interior plastic",(.18,.188,.185),.02,.85,wear=.04)
+    cube("F10 HERO cabin recessed footwell",(.25,-.10,.360),
+         (1.43,1.13,.10),plastic,.027)
+    cube("F10 HERO textured driver seat cushion",(.115,-.370,.605),
+         (.49,.48,.16),interior,.055)
+    cube("F10 HERO raked driver seat back",(-.140,-.370,.852),
+         (.175,.49,.54),interior,.058)
+    cube("F10 HERO driver headrest",(-.184,-.370,1.185),
+         (.13,.27,.17),interior,.034)
+    cube("F10 HERO dashboard lower assembly",(.72,-.08,.770),
+         (.30,1.07,.19),plastic,.045)
+    # Steering-wheel hoop in the YZ plane: readable when the driver door opens.
+    hoop=[(.49,-.285+.165*math.cos(t*math.tau/32),.954+.165*math.sin(t*math.tau/32))
+          for t in range(33)]
+    pipe("F10 HERO driver steering wheel hoop",hoop,.022,m["trim"])
+    pipe("F10 HERO driver wheel lower spoke",[(.49,-.285,.954),(.49,-.285,.795)],.015,m["steel"])
+    # Separate interior plastic panel with a solid thin cross-section at the
+    # hinge side and a genuine protruding armrest. Both rotate with door skin.
+    for name,center,size,mat,bevel in (
+        ("driver door inner padded card",(.278,-.693,.638),(1.24,.048,.550),interior,.032),
+        ("driver door inner upper rail",(.278,-.700,.908),(1.28,.065,.062),plastic,.016),
+        ("driver door inner armrest",(.205,-.638,.737),(.52,.096,.070),plastic,.021),
+        ("driver door interior latch",(.536,-.631,.841),(.156,.050,.034),m["steel"],.008),
+        ("driver door front edge thickness",(.929,-.731,.627),(.046,.130,.548),m["body"],.012),
+        ("driver door rear edge thickness",(-.354,-.730,.627),(.047,.128,.548),m["body"],.012),
+    ):
+        attach_to_pivot(cube("F10 HERO "+name,center,size,mat,bevel),door_root)
 
 
 def greenhouse(m,door_root=None):
@@ -312,6 +352,7 @@ def build(paint="#364958",driver_door_deg=None):
     m["black_glass"]=glass_material("F10 HERO original rear tint",dark=True)
     door_root=body_shell(m,door_experiment=driver_door_deg is not None)
     greenhouse(m,door_root=door_root)
+    interior_cavity(m,door_root)
     wheels(m)
     detailing(m,door_root=door_root)
     if door_root:
