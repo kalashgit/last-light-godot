@@ -7,7 +7,7 @@ const Fixture = preload("res://tools/factory/structures/godot_collision_fixture.
 
 func _initialize() -> void:
     var fixture := Fixture.new()
-    root.add_child.call_deferred(fixture)
+    # No _ready() needed: test construction directly without an unrelated JSON error.
     call_deferred("_verify", fixture)
 
 func _verify(fixture: Node3D) -> void:
@@ -30,6 +30,7 @@ func _verify(fixture: Node3D) -> void:
         return
     var shape_node: CollisionShape3D = body.get_child(0)
     var box: BoxShape3D = shape_node.shape
+    print("F02 shape actual size: ", box.size, " expected: ", Vector3(2.5, 1.4, 0.12))
     if box.size.distance_to(Vector3(2.5, 1.4, 0.12)) > 0.00001:
         push_error("F02: local box dimensions changed")
         quit(1)
