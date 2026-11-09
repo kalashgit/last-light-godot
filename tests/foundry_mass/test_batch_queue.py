@@ -19,6 +19,7 @@ def load(name):
 
 queue = load("queue")
 finalize = load("finalize")
+publish = load("publish")
 
 class MassBatchTests(unittest.TestCase):
     def setUp(self):
@@ -120,6 +121,27 @@ class MassBatchTests(unittest.TestCase):
         p=queue.plan(self.archive,None,1,self.root/"plan")
         with self.assertRaises(ValueError):
             finalize.finalize(p,self.render_mock(p,clip=True),self.root/"badout")
+
+    def test_candidate_publication_never_overwrites_existing(self):
+        p=queue.plan(self.archive,None,1,self.root/"plan")
+        source=self.root/"out"
+        finalize.finalize(p,self.render_mock(p),source,"123")
+        dest=self.root/"archived"
+        self.assertEqual(publish.stage(source,dest),1)
+        self.assertTrue((dest/"foundry_mass/state.json").is_file())
+        self.assertTrue((dest/"foundry_candidates/ll_test_000/atlas_16_headings.png").is_file())
+        with self.assertRaises(ValueError):
+            publish.stage(source,dest)
+
+    def test_tampered_atlas_cannot_advance_cursor(self):
+        p=queue.plan(self.archive,None,1,self.root/"plan")
+        source=self.root/"out"
+        finalize.finalize(p,self.render_mock(p),source,"123")
+        (source/"ll_test_000/atlas_16_headings.png").write_bytes(b"forged")
+        dest=self.root/"archived"
+        with self.assertRaises(ValueError):
+            publish.stage(source,dest)
+        self.assertFalse((dest/"foundry_mass/state.json").exists())
 
 if __name__=="__main__":
     unittest.main()
