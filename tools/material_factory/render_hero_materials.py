@@ -4,7 +4,7 @@ No Project Zomboid textures or proprietary external material inputs used.
 Usage:
   blender -b -t 2 --factory-startup --python tools/material_factory/render_hero_materials.py -- --material-root build/material_factory/materials --output build/material_factory/hero_raw
 """
-import sys, importlib.util
+import sys, importlib.util, json
 from pathlib import Path
 import bpy
 
@@ -13,6 +13,7 @@ def argument(key,default):
     return ARGS[ARGS.index(key)+1] if key in ARGS else default
 
 ROOT=Path(argument("--material-root","build/material_factory/materials")).resolve()
+RECIPES={r["id"]:r for r in json.loads(Path(__file__).with_name("recipes.json").read_text())}
 SCRIPT=Path(__file__).resolve().parents[1]/"blender_factory"/"render_v3_recovery.py"
 spec=importlib.util.spec_from_file_location("last_light_v3_original_renderer",str(SCRIPT))
 v3=importlib.util.module_from_spec(spec)
@@ -36,6 +37,8 @@ def bind_pbr(material, material_id, slot):
     links=material.node_tree.links
     p=next((node for node in nodes if node.type=="BSDF_PRINCIPLED"),None)
     if p is None:raise ValueError("Missing Principled shader in "+material.name)
+    material["ll_material_id"]=material_id
+    material["ll_uv_scale_m"]=float(RECIPES[material_id]["uv_scale_m"])
     coord=nodes.new("ShaderNodeTexCoord")
     # Object-generated positions carry semantic board-to-board grain direction.
     # Exact UV scale and orientation still needs 3D inspection and actor-relative calibration.
@@ -78,4 +81,16 @@ def material_fidelity(key,m):
     for slot,material_id in BIND.get(key,{}).items():
         bind_pbr(m[slot],material_id,slot)
 v3.material_fidelity_v3=material_fidelity
-v3.main()
+# Some distro Blender builds omit OpenImageDenoiser; retain Cycles and the
+# shared camera/light profile while disabling unsupported denoising only.
+original_setup=v3.setup
+def compatible_setup():
+    scene=original_setup()
+    scene.cycles.use_denoising=False
+    for layer in scene.view_layers:
+        if hasattr(layer,"cycles"):
+            layer.cycles.use_denoising=False
+    return scene
+v3.setup=compatible_setup
+if __name__=="__main__":
+    v3.main()
