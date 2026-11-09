@@ -30,7 +30,9 @@ jobs:
       - run: python -m unittest discover -s tests/foundry_autonomy -v
 
   review-audit:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit' && github.ref == 'refs/heads/main')
+    # Keep the periodic audit dormant until the live Notion approval status
+    # is reconciled with the frozen work-order snapshot and owner opts in.
+    if: (github.event_name == 'schedule' && vars.FOUNDRY_AUTONOMY_AUDIT_ENABLED == 'true') || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit' && github.ref == 'refs/heads/main' && vars.FOUNDRY_AUTONOMY_AUDIT_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
