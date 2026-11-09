@@ -109,7 +109,15 @@ def make_scene(bpy, plan, texture_dir):
 
     w, h = plan.footprint
     scene = bpy.context.scene
-    scene.render.engine = "BLENDER_EEVEE" if bpy.app.version < (4, 2, 0) else "BLENDER_EEVEE_NEXT"
+    # Runner software rendering: avoid requiring a GPU/EGL context for QA.
+    # Final F12 EEVEE calibration remains a separate approval gate.
+    import os
+    if os.environ.get("F02_CI_CPU_RENDER") == "1":
+        scene.render.engine = "CYCLES"
+        scene.cycles.device = "CPU"
+        scene.cycles.samples = 10
+    else:
+        scene.render.engine = "BLENDER_EEVEE" if bpy.app.version < (4, 2, 0) else "BLENDER_EEVEE_NEXT"
     scene.render.resolution_x = 640
     scene.render.resolution_y = 512
     scene.render.resolution_percentage = 100
