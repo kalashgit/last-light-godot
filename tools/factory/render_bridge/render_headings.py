@@ -95,6 +95,7 @@ def main():
         raise ValueError("asset root must use XYZ Euler rotation for this candidate runner")
     out.mkdir(parents=True,exist_ok=False)
     frames=[]
+    anchor_positions=[]
     for heading in range(opts.headings):
         root.rotation_euler=original.copy()
         root.rotation_euler.z+=2*math.pi*heading/opts.headings
@@ -108,6 +109,11 @@ def main():
                 projected.append(world_to_camera_view(scene, scene.camera, world))
         if not projected or any(p.z <= 0 or p.x < 0.02 or p.x > 0.98 or p.y < 0.02 or p.y > 0.98 for p in projected):
             raise ValueError('heading %d geometry exceeds camera safe frame' % heading)
+        pivot_uv = world_to_camera_view(scene, scene.camera, root.matrix_world.translation)
+        pivot_px = [pivot_uv.x * opts.width, (1-pivot_uv.y)*opts.height]
+        anchor_positions.append(pivot_px)
+        if max(abs(pivot_px[i]-anchor_positions[0][i]) for i in (0,1)) > 0.001:
+            raise ValueError("world ground pivot drift at heading %d" % heading)
         filename="heading_%02d.png"%heading
         path=out/filename
         scene.render.filepath=str(path)
@@ -115,12 +121,14 @@ def main():
         frames.append({"key":"heading_%02d"%heading,"file":filename,
                        "width":opts.width,"height":opts.height,
                        "duration_ms":100,"direction":heading,"frame_index":0,
-                       "clip":"static","source_sha256":digest(path)})
+                       "clip":"static","source_sha256":digest(path),
+                       "world_ground_pivot_px":[round(v,5) for v in pivot_px]})
     root.rotation_euler=original
     manifest={"schema_version":1,"status":"CANDIDATE_NOT_A00_APPROVED",
               "source_blend_sha256":digest(blend),"root_object":opts.object,
               "headings":opts.headings,"camera":"F12_80x40_candidate",
-              "pivot_policy":"EXISTING_ROOT_ORIGIN_NOT_VERIFIED",
+              "pivot_policy":"WORLD_ROOT_ORIGIN_MEASURED_STABLE_0_001PX",
+              "pivot_max_drift_px":round(max((sum((a[i]-anchor_positions[0][i])**2 for i in (0,1)))**0.5 for a in anchor_positions),8),
               "frames":frames}
     (out/"manifest.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
     print("F12_DIRECTIONAL_CANDIDATE_RENDER_COMPLETE",len(frames),flush=True)
