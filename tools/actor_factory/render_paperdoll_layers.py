@@ -95,6 +95,8 @@ def mats(kind):
         "blue": material("dusty blue cotton", (.23, .32, .48)),
         "pack": material("worn canvas", (.32, .27, .19)),
         "strap": material("dark webbing", (.16, .16, .13)),
+        "seams": material("aged stitched seam", (.16, .21, .22)),
+        "wound": material("dried infected lesion", (.31, .12, .10)),
     }
 
 
@@ -121,6 +123,15 @@ def build_geometry(actor, clip, frame, settings):
             m["skin"], "body", "base")
     ellipse("BODY hair cap", (0, torso_y+.02, 1.78*r), (.198*broad, .188, .075*r),
             m["hair"], "body", "base")
+    # Real original facial geometry, not flat decals or copied facial textures.
+    for sign in (-1, 1):
+        ellipse("BODY eye " + str(sign), (sign*.065, torso_y-.194, 1.695*r),
+                (.021, .012, .029*r), m["eyes"], "body", "base")
+    if actor["kind"] == "zombie":
+        ellipse("INFECTED exposed cheek lesion", (.09, torso_y-.192, 1.625*r),
+                (.067, .019, .078*r), m["wound"], "body", "base")
+        ellipse("INFECTED broken brow", (-.062, torso_y-.200, 1.733*r),
+                (.062, .014, .022*r), m["wound"], "body", "base")
     for sign in (-1, 1):
         x = sign * .12
         gait = step * sign
@@ -143,20 +154,39 @@ def build_geometry(actor, clip, frame, settings):
         ellipse("PANTS boot " + str(sign), (x, -.055+gait, .083*r),
                 (.14, .26, .13*r), m["boots"], "pants", "jeans")
 
-        for item, key in (("green_shirt", "green"), ("blue_shirt", "blue")):
-            limb(item + " sleeve " + str(sign), shoulder, elbow,
-                 .084, m[key], "shirt", item)
+        # Separate, structurally different garment recipes using the same pose.
+        # Green tee: short fitted sleeve. Blue work shirt: long sleeve + cuff.
+        short_end = Vector(shoulder).lerp(Vector(elbow), .54)
+        limb("green_shirt short sleeve " + str(sign), shoulder, short_end,
+             .085, m["green"], "shirt", "green_shirt")
+        limb("blue_shirt upper sleeve " + str(sign), shoulder, elbow,
+             .089, m["blue"], "shirt", "blue_shirt")
+        limb("blue_shirt lower sleeve " + str(sign), elbow, wrist,
+             .071, m["blue"], "shirt", "blue_shirt")
+        ellipse("blue_shirt fitted wrist cuff " + str(sign), wrist,
+                (.092, .092, .047*r), m["seams"], "shirt", "blue_shirt")
 
     ellipse("PANTS waist shell", (0, .012, .92*r), (.285, .233, .245*r),
             m["pants"], "pants", "jeans")
-    for item, key in (("green_shirt", "green"), ("blue_shirt", "blue")):
-        ellipse(item + " fitted torso", (0, torso_y, torso_z),
-                (.299*broad, .228, .42*r), m[key], "shirt", item)
-        ellipse(item + " collar", (0, torso_y-.02, 1.48*r),
-                (.113, .113, .056*r), m[key], "shirt", item)
+    # Blue garment has a longer hem, square chest pockets and a button placket.
+    # These are genuine editable meshes, not two colors on one source design.
+    ellipse("green_shirt short fitted torso", (0, torso_y, torso_z),
+            (.299*broad, .228, .42*r), m["green"], "shirt", "green_shirt")
+    ellipse("green_shirt rib knit neck", (0, torso_y-.02, 1.48*r),
+            (.118, .118, .056*r), m["seams"], "shirt", "green_shirt")
+    ellipse("blue_shirt workwear shaped torso", (0, torso_y, 1.22*r),
+            (.303*broad, .232, .47*r), m["blue"], "shirt", "blue_shirt")
+    ellipse("blue_shirt collar", (0, torso_y-.022, 1.49*r),
+            (.132, .132, .072*r), m["seams"], "shirt", "blue_shirt")
+    cube("blue_shirt vertical placket", (0, torso_y-.245, 1.275*r),
+         (.035, .020, .29*r), m["seams"], "shirt", "blue_shirt", bevel=.004)
+    for sign in (-1, 1):
+        cube("blue_shirt original sewn chest pocket " + str(sign),
+             (sign*.135, torso_y-.240, 1.32*r),
+             (.13, .023, .14*r), m["blue"], "shirt", "blue_shirt", bevel=.006)
 
-    cube("BACKPACK canvas shell", (0, torso_y+.25, 1.25*r),
-         (.34, .19, .48*r), m["pack"], "backpack", "pack", bevel=.055)
+    cube("BACKPACK canvas shell", (0, torso_y+.235, 1.26*r),
+         (.31, .175, .41*r), m["pack"], "backpack", "pack", bevel=.045)
     for sign in (-1, 1):
         limb("BACKPACK shoulder strap " + str(sign),
              (sign*.12, torso_y-.07, 1.45*r),
@@ -230,8 +260,8 @@ def main():
     scene.render.film_transparent = True
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
-    scene.cycles.samples = 3
-    scene.cycles.use_denoising = False
+    scene.cycles.samples = 12
+    scene.cycles.use_denoising = True
     bpy.context.view_layer.update()
     center = world_to_camera_view(scene, scene.camera, Vector((0, 0, 0)))
     pivot = [round(center.x * WIDTH), round((1.0-center.y)*HEIGHT)]
