@@ -38,6 +38,10 @@ var pending_spawn_id := ""
 var golden_textures: Dictionary = {}
 const SurvivalState := preload("res://scripts/survival_state.gd")
 var survival := SurvivalState.new()
+const RefrigeratorState := preload("res://scripts/refrigerator_state.gd")
+var refrigerator := RefrigeratorState.new()
+const REFRIGERATOR_ID := "house.kitchen.fridge"
+const REFRIGERATOR_LOOT := {"ll_food_bean_tin":1,"ll_food_water_bottle":1}
 const HouseNavigation := preload("res://scripts/house_navigation.gd")
 var navigation := HouseNavigation.new()
 var save_blocked := false
@@ -142,6 +146,29 @@ func _make_house() -> void:
  items = art.furniture()
  navigation.rebuild(self)
 
+func _fridge_index() -> int:
+ for i in range(items.size()):
+  if items[i].id == REFRIGERATOR_ID: return i
+ return -1
+
+func _interact_refrigerator() -> void:
+ var action := refrigerator.next_action()
+ if action == "loot_crisper":
+  # Inventory acquisition is transactional; failure never consumes contents.
+  var previous := survival.snapshot()
+  for id in REFRIGERATOR_LOOT:
+   if not survival.add(id,REFRIGERATOR_LOOT[id]):
+    survival.restore(previous)
+    _announce("Make room before taking fridge supplies")
+    return
+ if not refrigerator.apply_action(action): return
+ match action:
+  "open_door": _announce("Refrigerator door OPEN")
+  "open_drawer": _announce("Crisper drawer OPEN")
+  "loot_crisper": _announce("Collected refrigerator contents")
+  "close_drawer": _announce("Crisper drawer CLOSED")
+  "close_door": _announce("Refrigerator door CLOSED")
+
 func _segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
  var line := b - a
  var t: float = clampf((p - a).dot(line) / maxf(line.length_squared(), .00001), 0, 1)
@@ -195,6 +222,8 @@ func _interact() -> void:
   return
  if target.kind=="door":
   _toggle_door(target.index)
+ elif target.kind=="refrigerator":
+  _interact_refrigerator()
  elif target.kind=="container":
   var item: Dictionary=items[target.index]
   var loot: Dictionary=CONTAINER_LOOT.get(item.id,{})
@@ -612,6 +641,7 @@ func _restart_game() -> void:
  recovery_available=false
  exhausted=false
  _make_house()
+ refrigerator.reset()
  pending_spawn_id = ""
  if loot_builder != null: loot_builder.set_open(false)
  survival.restore({"inventory":{},"equipped":""})
@@ -652,7 +682,7 @@ func _save_game(path: String = SAVE_PATH) -> Error:
  for i in range(infected.size()): enemies.append({"x":infected[i].x,"y":infected[i].y,"health":zombie_health[i]})
  var ground: Array=[]
  for drop in drops: ground.append({"id":drop.id,"count":drop.count,"x":drop.pos.x,"y":drop.pos.y})
- var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground}
+ var data: Dictionary={"version":SAVE_VERSION,"player":[player.x,player.y],"health":health,"supplies":supplies,"doors":door_states,"searched":searched,"enemies":enemies,"stamina":stamina,"hunger":hunger,"thirst":thirst,"survival":survival.snapshot(),"containers":containers,"drops":ground,"appliances":{REFRIGERATOR_ID:refrigerator.snapshot()}}
  # Never overwrite unknown/corrupt prior data, including a future schema.
  if FileAccess.file_exists(path):
   if _load_game(path,true)!=OK:
@@ -721,6 +751,10 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
    if not _valid_number(data.get(key),0,100): return ERR_INVALID_DATA
   if not survival.validate(data.get("survival")): return ERR_INVALID_DATA
   inventory_state=data.survival
+  # Older schema-2 saves omit this optional extension; accept as closed/unsearched.
+  var appliance_data: Variant=data.get("appliances", {})
+  if not appliance_data is Dictionary or appliance_data.size()>1: return ERR_INVALID_DATA
+  if appliance_data.size()>0 and (not appliance_data.has(REFRIGERATOR_ID) or not refrigerator.valid_snapshot(appliance_data[REFRIGERATOR_ID])): return ERR_INVALID_DATA
   var containers: Variant=data.get("containers")
   var expected: Array=[]
   for item in items:
@@ -740,6 +774,9 @@ func _load_game(path: String = SAVE_PATH, validate_only: bool = false) -> Error:
  if validate_only: return OK
  # Apply only after every legacy and extended value has passed validation.
  survival.restore(inventory_state)
+ refrigerator.reset()
+ if data.version==2 and data.get("appliances",{}).has(REFRIGERATOR_ID):
+  refrigerator.restore(data.appliances[REFRIGERATOR_ID])
  player=Vector2(position[0],position[1])
  if _blocked_static(player):
   player=_clear_saved_position(player)
@@ -793,6 +830,12 @@ func _target_valid(target: Dictionary) -> bool:
   point=player.clamp(rect.position,rect.end)
   if player.distance_to(point)>1.6: return false
   point=point.move_toward(player,.05)
+ elif target.kind=="refrigerator":
+  if index != _fridge_index(): return false
+  var rect := Rect2(items[index].pos,items[index].size)
+  point=player.clamp(rect.position,rect.end)
+  if player.distance_to(point)>1.6: return false
+  point=point.move_toward(player,.05)
  elif target.kind=="drop":
   if index<0 or index>=drops.size(): return false
   point=drops[index].pos
@@ -803,6 +846,7 @@ func _target_valid(target: Dictionary) -> bool:
 func _target_point(target: Dictionary) -> Vector2:
  if target.kind=="door": return (doors[target.index].a+doors[target.index].b)*.5
  if target.kind=="container": return items[target.index].pos+items[target.index].size*.5
+ if target.kind=="refrigerator": return items[target.index].pos+items[target.index].size*.5
  return drops[target.index].pos
 
 func _resolve_target() -> Dictionary:
@@ -810,8 +854,8 @@ func _resolve_target() -> Dictionary:
  selected_target={}
  var best: Dictionary={}
  var distance:=INF
- for kind in ["door","container","drop"]:
-  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+ for kind in ["door","container","refrigerator","drop"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind in ["container","refrigerator"] else drops.size()
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
@@ -826,6 +870,13 @@ func _context_prompt() -> String:
  if target.is_empty(): return "No usable target nearby"
  if target.kind=="door": return "Close Door" if doors[target.index].open else "Open Door"
  if target.kind=="drop": return "Pick Up Item"
+ if target.kind=="refrigerator":
+  match refrigerator.next_action():
+   "open_door": return "Open Refrigerator"
+   "open_drawer": return "Open Crisper"
+   "loot_crisper": return "Collect Crisper Contents"
+   "close_drawer": return "Close Crisper"
+   "close_door": return "Close Refrigerator"
  return "Search "+String(items[target.index].name).capitalize()
 
 func _inventory_rows() -> Array:
@@ -960,8 +1011,8 @@ func _place_builder_item(id: String, point: Vector2) -> bool:
 func _select_world_target(point: Vector2) -> void:
  var best: Dictionary={}
  var distance:=60.0
- for kind in ["door","container","drop"]:
-  var count: int=doors.size() if kind=="door" else items.size() if kind=="container" else drops.size()
+ for kind in ["door","container","refrigerator","drop"]:
+  var count: int=doors.size() if kind=="door" else items.size() if kind in ["container","refrigerator"] else drops.size()
   for index in range(count):
    var target: Dictionary={"kind":kind,"index":index}
    if not _target_valid(target): continue
@@ -1045,7 +1096,7 @@ func _set_dead_zone(value: float) -> void:
 
 func _interaction_distance(target: Dictionary) -> float:
  if target.kind=="door": return _segment_distance(player,doors[target.index].a,doors[target.index].b)
- if target.kind=="container":
+ if target.kind in ["container","refrigerator"]:
   var r:=Rect2(items[target.index].pos,items[target.index].size)
   return player.distance_to(player.clamp(r.position,r.end))
  return player.distance_to(drops[target.index].pos)
