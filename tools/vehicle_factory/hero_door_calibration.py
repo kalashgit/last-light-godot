@@ -16,7 +16,7 @@ from bpy_extras.object_utils import world_to_camera_view
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "blender_factory"))
 import render_v3_recovery as base
-from hero_hatchback import build
+from hero_hatchback import build,DOOR_HINGE_X
 
 
 def author_blender_door_action(scene,hinge):
@@ -32,13 +32,16 @@ def author_blender_door_action(scene,hinge):
     action=hinge.animation_data.action
     assert action is not None
     action.name="F10_driver_front_door_open_400ms_NONCANONICAL"
-    for curve in action.fcurves:
+    curves=list(action.fcurves) if hasattr(action,"fcurves") else [
+        curve for layer in action.layers for strip in layer.strips
+        for bag in strip.channelbags for curve in bag.fcurves]
+    for curve in curves:
         for point in curve.keyframe_points:
             point.interpolation="LINEAR"
     scene.frame_set(1)
     bpy.context.view_layer.update()
-    assert len(action.fcurves)>=1
-    assert any(len(c.keyframe_points)==5 for c in action.fcurves)
+    assert len(curves)>=1
+    assert any(len(c.keyframe_points)==5 for c in curves)
     return action.name
 
 
@@ -96,7 +99,7 @@ def run(output, samples=8, heading_deg=0):
         scene.render.filepath=str((output/filename).resolve())
         bpy.ops.render.render(write_still=True)
         frames.append({"index":index,"angle_deg":angle,"duration_ms":100,
-                       "png":filename,"pivot_xyz_m":[.965,-.717,.94],
+                       "png":filename,"pivot_xyz_m":[DOOR_HINGE_X,-.717,.94],
                        "fixed_world_pivot_px":[round(uv.x*768,4),round((1-uv.y)*768,4)]})
         print("F10_DOOR_FRAME",index,angle,flush=True)
     (output/"manifest.json").write_text(json.dumps({
