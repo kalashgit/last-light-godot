@@ -59,7 +59,13 @@ jobs:
       - name: Install pinned Godot 4 engine for real project import
         if: always()
         run: |
-          curl -fSL --retry 3 https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip -o /tmp/f05-godot.zip
+          # GitHub release assets intermittently return 504 in Actions.
+          # Prefer the Godot archive CDN and its object-storage mirror.
+          if ! curl -fSL --retry 2 --connect-timeout 20 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.4.1' -o /tmp/f05-godot.zip; then
+            if ! curl -fSL --retry 2 --connect-timeout 20 'https://godot-releases.nbg1.your-objectstorage.com/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip' -o /tmp/f05-godot.zip; then
+              curl -fSL --retry 3 --connect-timeout 20 'https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip' -o /tmp/f05-godot.zip
+            fi
+          fi
           echo 'd6e382fb531019f85630c1f485a561a0d20c4a2344b6c3847735cfee7da812aa  /tmp/f05-godot.zip' | sha256sum -c -
           mkdir -p /tmp/f05-godot
           unzip -q /tmp/f05-godot.zip -d /tmp/f05-godot
