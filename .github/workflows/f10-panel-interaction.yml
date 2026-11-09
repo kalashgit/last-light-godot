@@ -8,6 +8,7 @@ on:
       - 'tools/vehicle_factory/hero_*.py'
       - 'tools/vehicle_factory/verify_panel_glb.py'
       - 'tools/vehicle_factory/make_panel_gameplay_previews.py'
+      - 'tools/vehicle_factory/hero_panel_clearance.py'
       - 'tests/factory/vehicles/godot_f10/**'
   push:
     branches: [chatgpt/f10-door-clearance-clean-20261109]
@@ -16,6 +17,7 @@ on:
       - 'tools/vehicle_factory/hero_*.py'
       - 'tools/vehicle_factory/verify_panel_glb.py'
       - 'tools/vehicle_factory/make_panel_gameplay_previews.py'
+      - 'tools/vehicle_factory/hero_panel_clearance.py'
       - 'tests/factory/vehicles/godot_f10/**'
   workflow_dispatch:
 
@@ -53,6 +55,12 @@ jobs:
         run: |
           python tools/vehicle_factory/verify_panel_glb.py --clip bonnet build/f10/panel_qa/bonnet/bonnet.glb
           python tools/vehicle_factory/verify_panel_glb.py --clip rear_hatch build/f10/panel_qa/rear_hatch/rear_hatch.glb
+      - name: Audit bonnet and rear-hatch triangle clearance at five-degree intervals
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_panel_clearance.py -- --output build/f10/panel_qa/panel_clearance.json 2>&1 | tee build/f10/panel_qa/panel_clearance.log
+          grep -q 'F10_PANEL_CLEARANCE bonnet NO_SAMPLED_OPEN_POSE_CONTACT' build/f10/panel_qa/panel_clearance.log
+          grep -q 'F10_PANEL_CLEARANCE rear_hatch NO_SAMPLED_OPEN_POSE_CONTACT' build/f10/panel_qa/panel_clearance.log
       - name: Re-export previously calibrated front-door GLB for Godot player fixture
         run: |
           set -euo pipefail
