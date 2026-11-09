@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_bolt_box",
+  "source_glb_sha256": "c774a0753facaaddf4ef6a25938009c0a67c44aac5f7d97f443299ec80c7b8fe",
+  "atlas_sha256": "eaed1da000e697c402f9685794c8d497aa08b32686de1d681dc0ee221a73365c",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2455055,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

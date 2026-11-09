@@ -1,0 +1,42 @@
+{
+  "run_id": "42659429465",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 6,
+  "remaining": 354,
+  "generated": [
+    {
+      "asset_id": "ll_master_actor_zombie_hospital",
+      "source_glb_sha256": "0042710c1a6b2e96ad0f37c45d7144e8173b93531d509e0d42df5ea05580ea4f",
+      "atlas_sha256": "920815edf144b8900aea3813fbb0a93fe5b54b16cbfb7f521984dfa1fdbc4875",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2859268,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_bolt_box",
+      "source_glb_sha256": "c774a0753facaaddf4ef6a25938009c0a67c44aac5f7d97f443299ec80c7b8fe",
+      "atlas_sha256": "eaed1da000e697c402f9685794c8d497aa08b32686de1d681dc0ee221a73365c",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2455055,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

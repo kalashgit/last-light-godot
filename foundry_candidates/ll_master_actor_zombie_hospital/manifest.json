@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_master_actor_zombie_hospital",
+  "source_glb_sha256": "0042710c1a6b2e96ad0f37c45d7144e8173b93531d509e0d42df5ea05580ea4f",
+  "atlas_sha256": "920815edf144b8900aea3813fbb0a93fe5b54b16cbfb7f521984dfa1fdbc4875",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2859268,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
