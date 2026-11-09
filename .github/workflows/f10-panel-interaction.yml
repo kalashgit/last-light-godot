@@ -54,7 +54,7 @@ jobs:
       - name: Re-export previously calibrated front-door GLB for Godot player fixture
         run: |
           set -euo pipefail
-          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_door_calibration.py -- --output build/f10/panel_qa/door --samples 4 --heading-deg 45 2>&1 | tee build/f10/panel_qa/door.log
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_door_calibration.py -- --output build/f10/panel_qa/door --samples 4 --heading-deg 0 2>&1 | tee build/f10/panel_qa/door.log
           blender -b build/f10/panel_qa/door/hero_front_door_calibration.blend --python-expr "import bpy; bpy.ops.export_scene.gltf(filepath='build/f10/panel_qa/door/door.glb',export_format='GLB',export_animations=True)"
           python tools/vehicle_factory/verify_door_glb.py build/f10/panel_qa/door/door.glb
       - name: Install pinned official Godot 4.5.1 editor
