@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "blender": "4.3.2",
+  "godot": "4.6.3.stable.official.7d41c59c4",
+  "pillow": "13.0.0",
+  "full_batch_seconds": 117.72,
+  "sample_batch_seconds": 9.91,
+  "source_hash": "ccd23dea80a77f0f31a805fe61f90a09d464e4a31d0596556aba7f345d25dec2",
+  "validation": {
+    "status": "PASS",
+    "objects": 300,
+    "families": 78,
+    "categories": {
+      "food": 50,
+      "medical": 50,
+      "tools": 50,
+      "crafting": 50,
+      "household": 50,
+      "furniture": 50
+    },
+    "frames": {
+      "ground": 300,
+      "icon": 300,
+      "held": 432
+    },
+    "distinct_icon_pixels": 300,
+    "png_bytes": 4112374,
+    "decoded_rgba_bytes": 21537928
+  },
+  "runtime_directory_bytes": 5242806,
+  "raw_render_location": "/tmp/ll-factory-v1 (ephemeral, not runtime assets)",
+  "full_batch_command": "python tools/asset_factory/run.py --raw /tmp/ll-factory-v1",
+  "hardware_context": "Linux x86_64 CPU Cycles four threads; software OpenGL screenshots, no iPhone test"
+}

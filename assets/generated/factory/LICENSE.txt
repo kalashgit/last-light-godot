@@ -1,0 +1,16 @@
+LAST LIGHT Procedural Asset Factory V1
+Original geometry, materials, labels and rendered PNGs created for LAST LIGHT.
+No external models, textures, fonts or proprietary game artwork are used in
+rendered assets. Blender's built-in vector font renders original short labels.
+
+The generated geometry descriptions and rendered sprite assets in this directory
+are dedicated to the public domain under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+To the extent possible under law, the authors waive all copyright and related
+rights to these original assets. Provided without warranty.
+
+Source recipes: tools/asset_factory/{catalog.py,geometry.py,render_batch.py}
+Calibration: tools/render_isometric.py
+Source provenance and hashes: registry.json and manifest.json
+Contact-sheet captions use system DejaVu Sans when available; this font is not
+bundled. Contact sheets are documentation, not source textures.

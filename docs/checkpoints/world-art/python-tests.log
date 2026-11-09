@@ -1,0 +1,18 @@
+test_all_golden_ids_retained_without_world_art (world_art_test.WorldArtTests.test_all_golden_ids_retained_without_world_art) ... ok
+test_contact_anchor_offset_rejected (world_art_test.WorldArtTests.test_contact_anchor_offset_rejected) ... ok
+test_current_contract_validates (world_art_test.WorldArtTests.test_current_contract_validates) ... ok
+test_duplicate_ids_rejected (world_art_test.WorldArtTests.test_duplicate_ids_rejected) ... ok
+test_inventory_icon_world_substitution_rejected (world_art_test.WorldArtTests.test_inventory_icon_world_substitution_rejected) ... ok
+test_magnification_applied_once (world_art_test.WorldArtTests.test_magnification_applied_once) ... ok
+test_manifest_build_is_idempotent (world_art_test.WorldArtTests.test_manifest_build_is_idempotent) ... ok
+test_marker_cannot_become_billboard (world_art_test.WorldArtTests.test_marker_cannot_become_billboard) ... ok
+test_negative_dimensions_rejected (world_art_test.WorldArtTests.test_negative_dimensions_rejected) ... ok
+test_source_hash_change_rejected (world_art_test.WorldArtTests.test_source_hash_change_rejected) ... ok
+test_support_bindings_inside_actual_footprints (world_art_test.WorldArtTests.test_support_bindings_inside_actual_footprints) ... ok
+test_unsupported_facing_rejected (world_art_test.WorldArtTests.test_unsupported_facing_rejected) ... ok
+test_wrong_projection_rejected (world_art_test.WorldArtTests.test_wrong_projection_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.226s
+
+OK

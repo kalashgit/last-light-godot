@@ -1,0 +1,19 @@
+{
+  "source_head": "23b8ddda7a691e803b15d4d8ff4aca9ee96f8a26",
+  "branch": "codex/world-art-integration-20261107",
+  "godot_version": "4.6.3.stable.official.7d41c59c4",
+  "asset_records": 85,
+  "existing_original_world_bindings": 45,
+  "golden_missing_world_views": 40,
+  "furniture_placements": 16,
+  "decoration_support_records": 25,
+  "matched_capture_pairs": 15,
+  "new_world_art_assertions_passed": 166,
+  "python_tests_passed": 13,
+  "full_godot_regression": "passed",
+  "founder_visual_approval": false,
+  "iphone_verified": false,
+  "material_art_replacement": "not_performed",
+  "alpha_flags_inventory": 40,
+  "alpha_flags_existing_world": 0
+}

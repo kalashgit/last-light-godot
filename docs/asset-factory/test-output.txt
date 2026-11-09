@@ -1,0 +1,21 @@
+/tmp/ll-factory-geometry.log
+GEOMETRY PASS: 300 recipes, 78 families, 6 shared unit meshes, parameter variants; origin128,192 and 80x40 projection
+Blender 4.3.2
+Blender quit
+/tmp/ll-factory-negative-tests.log
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 1.671s
+OK
+/tmp/ll-factory-godot-final.log
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+FOUNDATION: 0 failures
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+GALLERY PASS: 300 objects, 1032 textures, 45 page/mode combinations
+/tmp/ll-factory-gui-final.log
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
