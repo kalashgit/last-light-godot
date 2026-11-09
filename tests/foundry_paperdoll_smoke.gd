@@ -89,6 +89,20 @@ func _run() -> void:
     check(not actor.restore_state(invalid_save), "unknown body save rejected")
     check(actor.equipped_id("body") == "body_v1", "rejected save left body intact")
     check(actor.restore_state(captured), "valid snapshot restored")
+    # Model a Blender camera-based front and back view. Rear objects must never
+    # render over the body when the actor faces the camera.
+    var named_headings: Dictionary = spec.duplicate(true)
+    named_headings["direction_names"] = [
+        "front", "front_right", "right", "back_right",
+        "back", "back_left", "left", "front_left"
+    ]
+    check(actor.configure(named_headings), "named 8-heading source accepted")
+    check(actor.play_anim("idle", 0), "front heading valid")
+    check(actor.layer("backpack").get_index() < actor.layer("body").get_index(),
+          "front backpack occluded by torso")
+    check(actor.play_anim("idle", 4), "back heading valid")
+    check(actor.layer("backpack").get_index() > actor.layer("shirt").get_index(),
+          "back backpack visible over torso")
     var expected_checks := checks
     lab.queue_free()
     if failures.is_empty():
