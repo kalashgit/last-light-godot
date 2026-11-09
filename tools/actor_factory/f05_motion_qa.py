@@ -44,6 +44,13 @@ for skin_name, garment_name, bone_name in pairs:
         raise SystemExit("F05_MOTION_QA_MISSING_GEOMETRY: " + garment_name)
 
 scene = bpy.context.scene
+# Fast geometry-only pose diagnostics. The generator's 256px Eevee still
+# remains the separate material/lighting reference.
+scene.render.engine = "BLENDER_WORKBENCH"
+scene.display.shading.light = "STUDIO"
+scene.display.shading.color_type = "MATERIAL"
+scene.display.shading.show_shadows = True
+scene.display.shading.show_cavity = True
 scene.render.resolution_x = 128
 scene.render.resolution_y = 128
 scene.render.resolution_percentage = 100
