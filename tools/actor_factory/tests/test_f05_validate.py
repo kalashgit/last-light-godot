@@ -32,6 +32,8 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.manifest = {
             "status": "CALIBRATION_ONLY",
             "physique": "lean",
+            "continuous_limb_shells": True,
+            "floor_contact": "ROOT_HEIGHT_CALIBRATION",
             "wearable_layers": sorted(validator.EXPECTED_WEARABLES),
             "body_width_factor": 1.0,
             "limb_width_factor": 1.0,
