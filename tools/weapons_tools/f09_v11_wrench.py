@@ -68,13 +68,15 @@ def build(m, *, form, tube, hoop, z=.040):
     # Stationary upper jaw curls outward from the right-hand head.
     # Its bottom contact surface runs along Y=.142 and opens LEFT.
     forged_loft("V15 fixed crescent upper jaw forged taper",
-         [(.014,.075),(.038,.085),(.055,.105),(.054,.140),
-          (.045,.160),(.024,.175),(-.016,.179),
-          (-.043,.172),(-.066,.159),(-.070,.148),
+         # Reduce the broad swollen casting around the fixed-jaw tip.
+         # Keep the machined contact flat at the original jaw clearance.
+         [(.014,.075),(.036,.084),(.048,.102),(.047,.131),
+          (.041,.151),(.025,.167),(-.015,.172),
+          (-.042,.165),(-.062,.154),(-.066,.147),
           (-.061,.140),(-.045,.139),(-.014,.143),
           (.010,.143),(.018,.122),(.015,.103)],
-         [.022,.023,.025,.026,.022,.019,.017,.014,
-          .011,.010,.009,.010,.015,.018,.024,.025],
+         [.021,.023,.024,.023,.020,.017,.015,.013,
+          .010,.009,.008,.010,.014,.017,.023,.024],
          m["forged"],z=z)
     # Lower sliding jaw: a distinct, angular lower limb below upper contact.
     # Its top contact is Y=.117. Negative-space open throat is 22-25mm.
