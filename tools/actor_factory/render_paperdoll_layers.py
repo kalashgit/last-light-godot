@@ -261,7 +261,7 @@ def main():
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.cycles.samples = 12
-    scene.cycles.use_denoising = True
+    scene.cycles.use_denoising = False  # Ubuntu apt Blender lacks OpenImageDenoiser
     bpy.context.view_layer.update()
     center = world_to_camera_view(scene, scene.camera, Vector((0, 0, 0)))
     pivot = [round(center.x * WIDTH), round((1.0-center.y)*HEIGHT)]
