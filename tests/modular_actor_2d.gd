@@ -1,8 +1,8 @@
 extends SceneTree
 ## Headless Godot 4 runtime contract for LAST LIGHT's noncanonical modular pilot.
 const ACTOR_SCRIPT = preload("res://scripts/ll_modular_actor_2d.gd")
-const CELL := Vector2i(32, 32)
-const HEADINGS := ["front", "right", "back", "left"]
+const CELL = Vector2i(32, 32)
+const HEADINGS = ["front", "right", "back", "left"]
 var failures: Array[String] = []
 
 
