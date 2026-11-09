@@ -1,0 +1,89 @@
+name: F01 refrigerator actual Blender source and 16-heading candidate QA
+
+on:
+  pull_request:
+    paths:
+      - 'tools/foundry_f01/**'
+      - 'tests/foundry_f01/**'
+      - '.github/workflows/foundry-f01-refrigerator-blender.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  real-blender-candidate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run canonical F01 unit contracts
+        run: python -m unittest discover -s tests/foundry_f01 -v
+      - name: Install the actual Blender runtime and image verifier
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13'
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import bpy; print("F01_BLENDER_VERSION", bpy.app.version_string)'
+      - name: Generate editable refrigerator source and 16 actual rendered views
+        run: |
+          blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_f01/generate_refrigerator.py -- --output build/foundry/f01/refrigerator
+      - name: Independent verify source, render and immutable archive integrity
+        run: |
+          python - <<'PY'
+          import hashlib, json, zipfile
+          from pathlib import Path
+          from PIL import Image
+          root=Path('build/foundry/f01/refrigerator')
+          manifest=(root/'manifest.json').read_bytes()
+          m=json.loads(manifest)
+          receipt=json.loads((root/'archive_receipt.json').read_text())
+          assert m['asset_id']=='ll_furniture_refrigerator'
+          assert m['work_order']=='A00-B001-F01-ll_furniture_refrigerator-r1'
+          assert m['golden_approved'] is False
+          assert m['founder_visual_approved'] is False
+          assert m['technical_artistic_candidate_only'] is True
+          assert m['godot_tested'] is False
+          assert receipt['golden_approved'] is False
+          assert receipt['embedded_manifest_sha256']==hashlib.sha256(manifest).hexdigest()
+          archive=(root/receipt['archive'])
+          assert receipt['archive_sha256']==hashlib.sha256(archive.read_bytes()).hexdigest()
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None
+              assert z.read('source/manifest.json')==manifest
+              assert z.read('source/model.blend')==(root/'model.blend').read_bytes()
+              assert z.read('source/model.glb')==(root/'model.glb').read_bytes()
+              assert z.read('diagnostics/contact_sheet_16_headings.png')==(root/'contact_sheet_16_headings.png').read_bytes()
+              assert len([n for n in z.namelist() if n.startswith('diagnostics/headings/') and n.endswith('.png')])==16
+          assert len(m['diagnostic_render']['headings'])==16
+          assert (root/'model.blend').read_bytes()[:7]==b'BLENDER'
+          assert (root/'model.glb').read_bytes()[:4]==b'glTF'
+          hashes=set()
+          for i in range(16):
+              frame=root/'headings'/f'{i:02}.png'
+              with Image.open(frame) as img:
+                  img.load()
+                  assert img.size==(256,256)
+                  assert img.mode=='RGBA'
+                  alpha=img.getchannel('A')
+                  assert alpha.getextrema()[0]==0 and alpha.getextrema()[1]>0
+              actual=hashlib.sha256(frame.read_bytes()).hexdigest()
+              assert m['diagnostic_render']['headings'][i]['sha256']==actual
+              hashes.add(actual)
+          assert len(hashes)>=4, 'Directions are not visually distinguishable'
+          print('F01_REAL_BLENDER_CANDIDATE_QA_PASS',receipt['archive_sha256'],'16 headings')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-f01-original-refrigerator-candidate-${{ github.run_id }}
+          path: build/foundry/f01/refrigerator/
+          retention-days: 14
+          if-no-files-found: error
