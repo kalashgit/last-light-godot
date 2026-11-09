@@ -40,14 +40,24 @@ func _run() -> void:
 	check(actor.get_child_count() == 4, "four independently composited slots")
 	check(actor.layer("body").get_index() < actor.layer("shirt").get_index(), "fixed body/shirt order")
 	check(environment.y_sort_enabled and not actor.y_sort_enabled, "actor sorted by ground point")
-	check(actor.layer("body").position == Vector2(0, -20), "identical world pivot")
+	var catalog_data = JSON.parse_string(FileAccess.get_file_as_string(FOLDER.path_join("catalog.json")))
+	check(catalog_data is Dictionary, "verified manifest can be parsed")
+	var spec: Dictionary = catalog_data["runtime"]
+	var dims: Array = spec["frame_size"]
+	var foot: Array = spec["pivot"]
+	var expected_offset := Vector2(float(dims[0]) * 0.5 - float(foot[0]),
+	                               float(dims[1]) * 0.5 - float(foot[1]))
+	check(actor.layer("body").position == expected_offset, "identical world pivot")
 
 	check(actor.play_anim("walk", 7), "8-heading walk accepted")
 	check(actor.seek_frame(2), "animation third frame")
 	for slot in ["body", "pants", "shirt", "backpack"]:
 		var layer: Sprite2D = actor.layer(slot)
 		check(layer.visible, slot + " visible after install")
-		check(layer.region_rect == Rect2(64, 336, 32, 48), slot + " exact 8-heading third-frame coordinates")
+		var expected_region := Rect2(float(2 * int(dims[0])),
+		                              float(7 * int(dims[1])),
+		                              float(dims[0]), float(dims[1]))
+		check(layer.region_rect == expected_region, slot + " exact 8-heading third-frame coordinates")
 	var old_coat: Texture2D = actor.layer("shirt").texture
 	check(actor.equip("shirt", "blue_shirt"), "swap preverified clothing without rerender")
 	check(actor.layer("shirt").texture != old_coat, "new garment texture applied")
