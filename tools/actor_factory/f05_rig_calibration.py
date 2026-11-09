@@ -118,7 +118,7 @@ for side, sign in [('L',1),('R',-1)]:
          (sign*.115,0,.91),(sign*.12,0,.55),
          .113*limb_width,'thigh_'+side,fabric)
     limb('wearable_pants_lower_'+side,
-         (sign*.12,0,.55),(sign*.12,0,.17),
+         (sign*.12,0,.55),(sign*.12,0,.14),
          .087*limb_width,'shin_'+side,fabric)
 # Contrasting belt visually distinguishes torso and pelvis in 2.5D preview.
 ellipsoid('wearable_waist_band', (0,0,1.035),
