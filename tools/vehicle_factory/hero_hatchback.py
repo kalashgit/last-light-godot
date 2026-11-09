@@ -28,6 +28,8 @@ DOOR_HINGE_X=.595
 # Slightly outboard of the door skin so the moving front seam sweeps clear of
 # the fixed front quarter-panel instead of scissoring through its upper strip.
 DOOR_HINGE_Y=-.82
+BONNET_HINGE="F10 HERO bonnet rear transverse hinge PROTOTYPE"
+HATCH_HINGE="F10 HERO rear hatch roof transverse hinge PROTOTYPE"
 
 
 def attach_to_pivot(ob,pivot):
@@ -83,7 +85,7 @@ def mesh_object(name,vertices,polys,materials,material_indices=None):
     return ob
 
 
-def body_shell(m,door_experiment=False):
+def body_shell(m,door_experiment=False,bonnet_experiment=False,hatch_experiment=False):
     # Rounded shoulders, asymmetric nose/tail taper and a gently rising belt.
     steps=112
     xs=[-L*.492+L*.984*i/steps for i in range(steps+1)]
@@ -114,6 +116,16 @@ def body_shell(m,door_experiment=False):
         door_root=bpy.data.objects.new("F10 HERO driver door vertical hinge PROTOTYPE",None)
         bpy.context.collection.objects.link(door_root)
         door_root.location=(DOOR_HINGE_X,DOOR_HINGE_Y,.94)
+    bonnet_root=None
+    if bonnet_experiment:
+        bonnet_root=bpy.data.objects.new(BONNET_HINGE,None)
+        bpy.context.collection.objects.link(bonnet_root)
+        bonnet_root.location=(.45,0,.974)
+    hatch_root=None
+    if hatch_experiment:
+        hatch_root=bpy.data.objects.new(HATCH_HINGE,None)
+        bpy.context.collection.objects.link(hatch_root)
+        hatch_root.location=(-1.35,0,1.484)
     for side in (-1,1):
         verts=[]
         for x in xs:
@@ -151,11 +163,28 @@ def body_shell(m,door_experiment=False):
             camber=1
             verts.append((x,q*y,z+extra*camber))
     polys=[]
+    bonnet_polys=[]
+    hatch_polys=[]
     for i in range(steps):
         for j in range(6):
             a=7*i+j
-            polys.append((a,a+7,a+8,a+1))
+            poly=(a,a+7,a+8,a+1)
+            midpoint=(xs[i]+xs[i+1])*.5
+            if bonnet_root and midpoint>.45:
+                bonnet_polys.append(poly)
+            elif hatch_root and midpoint< -1.35:
+                hatch_polys.append(poly)
+            else:
+                polys.append(poly)
     mesh_object("F10 HERO continuous body crown",verts,polys,[m["body"]])
+    if bonnet_polys:
+        attach_to_pivot(mesh_object("F10 HERO liftable bonnet painted crown",verts,
+                                    bonnet_polys,[m["body"]]),bonnet_root)
+        attach_to_pivot(cube("F10 HERO bonnet underside dark reinforcement",
+                             (1.2,0,.921),(1.30,1.03,.025),m["dark"],.008),bonnet_root)
+    if hatch_polys:
+        attach_to_pivot(mesh_object("F10 HERO liftable rear hatch top crown",verts,
+                                    hatch_polys,[m["body"]]),hatch_root)
     # Curved original front/rear panel instead of a pasted rectangular block.
     for x,sign in ((L*.485,1),(-L*.485,-1)):
         v=[]
@@ -172,8 +201,10 @@ def body_shell(m,door_experiment=False):
             for j in range(2):
                 face=(a+j,a+j+3,a+j+4,a+j+1)
                 polys.append(face if sign==1 else tuple(reversed(face)))
-        mesh_object("F10 HERO sculpted frontal stamp" if sign==1 else
-                    "F10 HERO sculpted rear panel",v,polys,[m["body"]])
+        panel=mesh_object("F10 HERO sculpted frontal stamp" if sign==1 else
+                          "F10 HERO sculpted rear panel",v,polys,[m["body"]])
+        if sign==-1 and hatch_root:
+            attach_to_pivot(panel,hatch_root)
         cube("subtle rubber impact strip",(x+sign*.014,0,.418),
              (.050,W*.757,.073),m["trim"],.025)
     cube("underbody recessed",(0,0,.295),(L*.90,W*.70,.145),m["dark"],.06)
@@ -192,7 +223,7 @@ def body_shell(m,door_experiment=False):
         for x in (-.38,.625):
             cube("F10 HERO cabin aperture jamb",(x,-.666,.635),
                  (.053,.080,.65),m["trim"],.014)
-    return door_root
+    return door_root,bonnet_root,hatch_root
 
 
 def interior_cavity(m,door_root):
@@ -207,6 +238,7 @@ def interior_cavity(m,door_root):
     # completely at the native 2.5D gameplay sprite size.
     interior=base.mat("F10 HERO slate interior cloth",(.36,.37,.355),.02,.91,wear=.04)
     plastic=base.mat("F10 HERO charcoal interior plastic",(.18,.188,.185),.02,.85,wear=.04)
+    padded=base.mat("F10 HERO mid-grey inset padded door fabric",(.285,.300,.296),.01,.94,wear=.03)
     cube("F10 HERO cabin recessed footwell",(.25,-.10,.360),
          (1.43,1.13,.10),plastic,.027)
     cube("F10 HERO textured driver seat cushion",(.115,-.370,.605),
@@ -226,8 +258,11 @@ def interior_cavity(m,door_root):
     # hinge side and a genuine protruding armrest. Both rotate with door skin.
     for name,center,size,mat,bevel in (
         ("driver door inner padded card",(.105,-.693,.638),(.87,.048,.550),interior,.032),
+        ("driver door upholstered inset",(.075,-.650,.657),(.67,.019,.306),padded,.027),
         ("driver door inner upper rail",(.105,-.700,.908),(.89,.065,.062),plastic,.016),
-        ("driver door inner armrest",(.205,-.638,.737),(.52,.096,.070),plastic,.021),
+        ("driver door inner armrest",(.105,-.626,.739),(.42,.096,.058),plastic,.019),
+        ("driver door lower storage pocket",(-.065,-.639,.482),(.50,.058,.112),plastic,.019),
+        ("driver door pull handle",(.162,-.550,.744),(.225,.031,.039),m["steel"],.010),
         ("driver door interior latch",(.478,-.631,.841),(.156,.050,.034),m["steel"],.008),
         ("driver door front edge thickness",(.555,-.731,.627),(.042,.130,.548),m["body"],.012),
         ("driver door rear edge thickness",(-.354,-.730,.627),(.047,.128,.548),m["body"],.012),
@@ -235,7 +270,7 @@ def interior_cavity(m,door_root):
         attach_to_pivot(cube("F10 HERO "+name,center,size,mat,bevel),door_root)
 
 
-def greenhouse(m,door_root=None):
+def greenhouse(m,door_root=None,hatch_root=None):
     # x,z roof contours create a gently crowned modern compact silhouette.
     xrear,xfront=-1.36,.42
     zr,zf=1.475,1.475
@@ -257,9 +292,11 @@ def greenhouse(m,door_root=None):
     faces("F10 HERO inset raked windshield",[
         (xfront,-.556,zf+.008),(xfront,.556,zf+.008),
         (front_sill,.698,bottom_z),(front_sill,-.698,bottom_z)],m["glass"])
-    faces("F10 HERO inset rear liftgate glass",[
+    rear_glass=faces("F10 HERO inset rear liftgate glass",[
         (xrear,-.556,zr+.008),(xrear,.556,zr+.008),
         (rear_sill,.696,.979),(rear_sill,-.696,.979)],m["black_glass"])
+    if hatch_root:
+        attach_to_pivot(rear_glass,hatch_root)
     for name,coords in (
         ("windscreen header seal",[(xfront,-.560,zf+.014),(xfront,.560,zf+.014)]),
         ("windscreen lower seal",[(front_sill,-.702,bottom_z),(front_sill,.702,bottom_z)]),
@@ -306,8 +343,11 @@ def greenhouse(m,door_root=None):
             ("driver moving glass waist",[(-.38,-.714,1.025),(DOOR_FRONT_X,-.714,1.025)],.022),
         ):
             attach_to_pivot(pipe("F10 HERO "+name,points,radius,m["body"]),door_root)
-    pipe("rear hatch edge",[(rear_sill,-.702,.980),(rear_sill,.702,.980)],.021,m["trim"])
-    pipe("rear wiper",[(-1.70,-.18,1.039),(-1.70,.22,1.083)],.012,m["trim"])
+    hatch_edge=pipe("rear hatch edge",[(rear_sill,-.702,.980),(rear_sill,.702,.980)],.021,m["trim"])
+    rear_wiper=pipe("rear wiper",[(-1.70,-.18,1.039),(-1.70,.22,1.083)],.012,m["trim"])
+    if hatch_root:
+        attach_to_pivot(hatch_edge,hatch_root)
+        attach_to_pivot(rear_wiper,hatch_root)
 
 
 def wheels(m):
@@ -356,18 +396,25 @@ def detailing(m,door_root=None):
     # No ornamental bonnet line: broad uninterrupted paint planes read cleaner.
 
 
-def build(paint="#364958",driver_door_deg=None):
+def build(paint="#364958",driver_door_deg=None,bonnet_deg=None,rear_hatch_deg=None):
     m=make_materials(paint,1)
     m["glass"]=glass_material("F10 HERO original light glazing")
     m["black_glass"]=glass_material("F10 HERO original rear tint",dark=True)
-    door_root=body_shell(m,door_experiment=driver_door_deg is not None)
-    greenhouse(m,door_root=door_root)
+    door_root,bonnet_root,hatch_root=body_shell(m,
+        door_experiment=driver_door_deg is not None,
+        bonnet_experiment=bonnet_deg is not None,
+        hatch_experiment=rear_hatch_deg is not None)
+    greenhouse(m,door_root=door_root,hatch_root=hatch_root)
     interior_cavity(m,door_root)
     wheels(m)
     detailing(m,door_root=door_root)
     if door_root:
         door_root.rotation_euler.z=math.radians(driver_door_deg)
-        bpy.context.view_layer.update()
+    if bonnet_root:
+        bonnet_root.rotation_euler.y=math.radians(-bonnet_deg)
+    if hatch_root:
+        hatch_root.rotation_euler.y=math.radians(rear_hatch_deg)
+    bpy.context.view_layer.update()
     return m
 
 
