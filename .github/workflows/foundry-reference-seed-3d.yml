@@ -1,0 +1,92 @@
+name: LAST LIGHT 40 distinct original reference 3D candidates (non-Golden)
+
+on:
+  pull_request:
+    paths:
+      - 'tools/seed_3d_factory.py'
+      - 'tools/validate_seed_batch.py'
+      - 'tools/convert_glb_to_blend.py'
+      - 'data/foundry_reference_catalog/supplement_20261110/**'
+      - '.github/workflows/foundry-reference-seed-3d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ll-refseed-3d-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-original-masters:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded, pinned offline original-model dependencies
+        run: python -m pip install 'numpy==2.3.5' 'trimesh==4.11.1' 'Pillow==12.3.0'
+      - name: Reproduce 40 independent GLB sources and 2D sprite atlases
+        run: |
+          set -euo pipefail
+          python tools/seed_3d_factory.py --output build/refseed-batch001
+          python tools/validate_seed_batch.py build/refseed-batch001
+      - name: Verify every expected source recipe and optional pinned binary hashes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('data/foundry_reference_catalog/supplement_20261110/seed_batch_001_index.json').read_text())
+          b=json.loads(Path('build/refseed-batch001/candidate_manifest.json').read_text())
+          assert a['golden_approved'] is False and b['golden_approved'] is False
+          assert len(a['assets'])==len(b['assets'])==40
+          for x,y in zip(a['assets'],b['assets']):
+              assert (x['candidate_id'],x['recipe_key'],x['parts'],x['triangles'])==(y['candidate_id'],y['recipe_key'],y['parts'],y['triangles'])
+              assert x['glb_sha256']==y['glb_sha256'], 'non-deterministic source hash: '+x['recipe_key']
+          print('LL_REFERENCE_PINNED_SOURCE_SHA_PASS',len(a['assets']))
+          PY
+      - name: Install actual Blender for editable source conversion
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
+          blender --version | head -n 2
+      - name: Convert all distinct GLB sources to native editable Blender files
+        env:
+          PYTHONPATH: /usr/lib/python3/dist-packages
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup -t 2 --python tools/convert_glb_to_blend.py -- \
+            --source build/refseed-batch001/models \
+            --output build/refseed-batch001/blend \
+            2>&1 | tee build/refseed-blender.log
+          grep -q 'LL_REFERENCE_NATIVE_BATCH_PASS 40 editable Blender sources' build/refseed-blender.log
+      - name: Independently verify editable source signatures and GLB origins
+        run: |
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          root=Path('build/refseed-batch001')
+          master=json.loads((root/'candidate_manifest.json').read_text())
+          blends=list((root/'blend').glob('*.blend'))
+          assert len(blends)==40, len(blends)
+          for asset in master['assets']:
+              p=root/'blend'/(asset['recipe_key']+'.blend')
+              assert p.exists() and p.stat().st_size>1000 and p.open('rb').read(7)==b'BLENDER', asset['recipe_key']
+          print('LL_REFERENCE_40_BLEND_HEADER_PASS',len(blends))
+          PY
+      - name: Upload candidate source artifacts without production or Golden promotion
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-reference-original-3d-40-${{ github.run_id }}
+          path: |
+            build/refseed-batch001/
+            build/refseed-blender.log
+          retention-days: 14
+          if-no-files-found: warn
