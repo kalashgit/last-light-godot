@@ -83,7 +83,17 @@ func _rooms_for(building: Dictionary, is_lab: bool, floor_index: int) -> Array:
         rooms.append({"id": _building_id(building) + "/room/" + str(i),
             "type": str(modules[i]),
             "rect": [origin.x + width * column, origin.y + row_height * row_idx, width, row_height]})
+    if _rotated(building):
+        # 180 deg prefab rotation: the whole room grid turns about the footprint.
+        for room in rooms:
+            var r: Array = room["rect"]
+            room["rect"] = [origin.x + float(foot[2]) - (float(r[0]) - origin.x) - float(r[2]),
+                origin.y + float(foot[3]) - (float(r[1]) - origin.y) - float(r[3]), float(r[2]), float(r[3])]
     return rooms
+
+## Opt-in (GM00 world): only generated catalog buildings carry rotation=180.
+func _rotated(building: Dictionary) -> bool:
+    return int(building.get("rotation", 0)) == 180
 
 func _as_rect(room: Dictionary) -> Rect2:
     var a: Array = room["rect"]
@@ -130,6 +140,8 @@ func make_plan(building: Dictionary, is_lab: bool, floor_index: int = 0) -> Dict
         for slot in range(definitions.size()):
             var definition: Dictionary = definitions[slot]
             var at: Array = definition["at"]
+            if _rotated(building) and not is_lab:
+                at = [1.0 - float(at[0]), 1.0 - float(at[1])]
             var sizes: Array = definition["size"]
             var sx: float = minf(float(sizes[0]), maxf(.5, rect.size.x - .8))
             var sy: float = minf(float(sizes[1]), maxf(.5, rect.size.y - .8))
