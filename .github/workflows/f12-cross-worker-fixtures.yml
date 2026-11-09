@@ -147,3 +147,29 @@ jobs:
           path: build/f12-cal04/
           if-no-files-found: warn
           retention-days: 7
+
+  godot-f01-fridge-animations:
+    needs: f01-fridge-cal04
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-cal04-real-f01-refrigerator-candidate
+          path: build/f12-cal04
+      - name: Retrieve original F01 isolated interaction contract
+        run: |
+          set -eu
+          git fetch --depth=1 origin refs/heads/chatgpt/f01-furniture-production
+          git worktree add --detach /tmp/f01-source-fixture FETCH_HEAD
+          mkdir -p tests/factory/render_bridge/f01_fixture
+          cp /tmp/f01-source-fixture/tests/factory/furniture/godot_fixture/* tests/factory/render_bridge/f01_fixture/
+          cp build/f12-cal04/refrigerator_refined_calibration.glb tests/factory/render_bridge/f01_fixture/model.glb
+      - name: Import exact newly generated refrigerator GLB
+        run: |
+          godot --headless --path tests/factory/render_bridge/f01_fixture --editor --import
+      - name: Verify independently animated door crisper freezer and interaction states
+        run: |
+          godot --headless --path tests/factory/render_bridge/f01_fixture --script res://verify_import.gd
