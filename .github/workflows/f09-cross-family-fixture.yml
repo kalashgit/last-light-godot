@@ -5,6 +5,7 @@ on:
       - 'tools/weapons_tools/f09_integration_fixture.py'
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
+      - 'tools/weapons_tools/f09_stage_godot.py'
       - '.github/workflows/f09-cross-family-fixture.yml'
       - 'tools/weapons_tools/f09_v5_models.py'
       - 'tools/weapons_tools/f09_v11_wrench.py'
@@ -27,6 +28,8 @@ jobs:
         run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/f09_integration_fixture.py
       - name: Pack and validate native 96px 16-heading sprites
         run: python3 tools/weapons_tools/f09_world_sprite_pack.py
+      - name: Pack isolated Godot candidate project
+        run: python3 tools/weapons_tools/f09_stage_godot.py
       - name: Install Godot 4.3 (project compatibility)
         run: |
           curl --fail --location --retry 3 --silent --show-error \
@@ -36,14 +39,16 @@ jobs:
           chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
           /tmp/Godot_v4.3-stable_linux.x86_64 --version
       - name: Import all generated Godot candidates
-        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --editor --import
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --editor --import
       - name: Exercise F09 gameplay Sprite2D scene fixture
-        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tools/weapons_tools/f09_godot_fixture.gd
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path build/f09_godot_stage --script res://fixture.gd
       - name: Upload unapproved F09 F11 F12 integration evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: f09-unapproved-cross-family-fixture
-          path: build/f09_integration_fixture/
+          path: |
+            build/f09_integration_fixture/
+            build/f09_godot_stage/
           if-no-files-found: warn
           retention-days: 14
