@@ -19,6 +19,29 @@ import render_v3_recovery as base
 from hero_hatchback import build
 
 
+def author_blender_door_action(scene,hinge):
+    """Actual Blender animation datablock, independent of rendered PNG poses."""
+    scene.frame_start=1
+    scene.frame_end=5
+    scene.render.fps=10
+    scene.render.fps_base=1
+    for frame,angle in ((1,0),(2,22),(3,44),(4,66),(5,66)):
+        hinge.rotation_euler.z=math.radians(angle)
+        hinge.keyframe_insert(data_path="rotation_euler",index=2,frame=frame,
+                              group="F10_driver_door_vertical_hinge")
+    action=hinge.animation_data.action
+    assert action is not None
+    action.name="F10_driver_front_door_open_400ms_NONCANONICAL"
+    for curve in action.fcurves:
+        for point in curve.keyframe_points:
+            point.interpolation="LINEAR"
+    scene.frame_set(1)
+    bpy.context.view_layer.update()
+    assert len(action.fcurves)>=1
+    assert any(len(c.keyframe_points)==5 for c in action.fcurves)
+    return action.name
+
+
 def run(output, samples=8, heading_deg=0):
     output.mkdir(parents=True, exist_ok=True)
     frames=[]
@@ -66,6 +89,7 @@ def run(output, samples=8, heading_deg=0):
             assert (actual-door.data.vertices[vid].co).length<1e-5
         bpy.context.view_layer.update()
         if index==0:
+            action_name=author_blender_door_action(scene,hinge)
             bpy.ops.wm.save_as_mainfile(filepath=str((output/"hero_front_door_calibration.blend").resolve()))
         uv=world_to_camera_view(scene,scene.camera,Vector((0,0,0)))
         filename=f"door_{index:02}.png"
@@ -80,6 +104,8 @@ def run(output, samples=8, heading_deg=0):
         "status":"EXPERIMENTAL_DRIVER_DOOR_NOT_APPROVED",
         "canonical_master_id":None,"heading_deg":heading_deg,"samples":samples,
         "clip":"driver_front_door_open","timing_ms":400,"frames":frames,
+        "blender_action":"F10_driver_front_door_open_400ms_NONCANONICAL",
+        "blender_keyframes":[1,2,3,4,5],"blender_fps":10,
         "cabin_opening":"separated_body_surface_with_recessed_floor_and_fixed_seat",
         "moving_door_parts":"exterior_skin_window_frame_inner_card_armrest_latch_edges",
         "limitations":["no validated door/fender collision clearance",
