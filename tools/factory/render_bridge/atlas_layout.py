@@ -8,6 +8,7 @@ This is a layout/metadata stage, NOT a PNG compositor or Godot importer.
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 def validate(frames, page_size, padding):
@@ -36,6 +37,10 @@ def validate(frames, page_size, padding):
         digest = f.get("source_sha256")
         if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
             raise ValueError("invalid source hash: " + key)
+        anchor = f.get("anchor_local_px")
+        if anchor is not None and (not isinstance(anchor,list) or len(anchor)!=2
+                or not all(type(v) in (int,float) and math.isfinite(v) for v in anchor)):
+            raise ValueError("invalid ground anchor: " + key)
         if f["width"] + 2 * padding > page_size or f["height"] + 2 * padding > page_size:
             raise ValueError("frame exceeds page: " + key)
 
@@ -52,12 +57,17 @@ def layout(frames, page_size=2048, padding=2):
         if y + h > page_size:
             pages.append([])
             x = y = shelf_h = 0
-        pages[-1].append({
+        entry = {
             "key": f["key"], "page": len(pages) - 1,
             "rect": [x + padding, y + padding, f["width"], f["height"]],
             "direction": f["direction"], "clip": f["clip"],
             "duration_ms": f["duration_ms"], "source_sha256": f["source_sha256"],
-        })
+        }
+        if "anchor_local_px" in f:
+            entry["anchor_local_px"] = f["anchor_local_px"]
+        if "source_crop_rect" in f:
+            entry["source_crop_rect"] = f["source_crop_rect"]
+        pages[-1].append(entry)
         x += w
         shelf_h = max(shelf_h, h)
     result = {"schema_version": 1, "status": "LAYOUT_ONLY_NOT_GAME_READY",
