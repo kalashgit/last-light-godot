@@ -30,6 +30,8 @@ if set(tracks) != set(clips):
 
 # Preview-only bounds: strict deforming-shell collision QA runs separately.
 pairs = [("torso skin", "wearable_shirt_body", "chest")]
+if bpy.data.objects.get("wearable_shirt_collar") is None:
+    raise SystemExit("F05_MOTION_QA_MISSING_COLLAR")
 for side in ("L", "R"):
     pairs.append(("leg_skin_" + side, "wearable_pants_" + side, "thigh_" + side))
 for side in ("L", "R"):
