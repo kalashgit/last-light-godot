@@ -239,19 +239,31 @@ func restore_state(state: Dictionary) -> bool:
     var clip: String = state["animation"]
     if not _spec["animations"].has(clip):
         return false
-    if not state.get("heading") is int or not state.get("frame") is int:
+    var raw_heading = state.get("heading", null)
+    var raw_frame = state.get("frame", null)
+    # Godot JSON.parse_string serializes int fields back as whole-number floats.
+    # Reject fractions and infinities; never silently truncate a saved state.
+    if not _exact_nonnegative_integer(raw_heading) or not _exact_nonnegative_integer(raw_frame):
         return false
     if not state.get("playing") is bool:
         return false
-    if state["heading"] < 0 or state["heading"] >= int(_spec["directions"]):
+    var decoded_heading: int = int(raw_heading)
+    var decoded_frame: int = int(raw_frame)
+    if decoded_heading >= int(_spec["directions"]):
         return false
-    if state["frame"] < 0 or state["frame"] >= int(_spec["animations"][clip]["frames"]):
+    if decoded_frame >= int(_spec["animations"][clip]["frames"]):
         return false
     _equipped = choices.duplicate(true)
     animation = clip
-    heading = state["heading"]
-    frame = state["frame"]
+    heading = decoded_heading
+    frame = decoded_frame
     playing = state["playing"]
     _elapsed = 0.0
     _apply_frame()
     return true
+
+func _exact_nonnegative_integer(value: Variant) -> bool:
+    if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+        return false
+    var converted := float(value)
+    return is_finite(converted) and converted == floorf(converted) and converted >= 0.0 and converted <= 65536.0
