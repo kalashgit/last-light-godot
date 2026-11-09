@@ -1,0 +1,40 @@
+name: M02 30-minute factory heartbeat (approval protected)
+
+on:
+  schedule:
+    - cron: '13,43 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+concurrency:
+  group: m02-heartbeat-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check registry contracts
+        run: python -m unittest discover -s tests/autonomous_factory -v
+      - name: Inspect real CI and update one managed dashboard issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          M02_WRITE_DASHBOARD: 'true'
+        run: python tools/autonomous_factory/heartbeat.py
+      - name: Preserve status artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m02-heartbeat-${{ github.run_id }}
+          path: m02-heartbeat.md
+          if-no-files-found: warn
+          retention-days: 3

@@ -1,0 +1,83 @@
+name: M02 Pinned F05 F06 F07 F09 Specialist Contracts
+# Source-level admission only; animation and gameplay approvals remain separate.
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/m02-specialist-contracts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-contracts:
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.head_ref == 'codex/m02-autonomous-asset-factory-v1')
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - family: F05
+            sha: 4ec0a5f5c0957c03a2c825a5b83e2e4b2e28178b
+          - family: F06
+            sha: fa7bddf026f75189edb0b251b024a990ab6a0be5
+          - family: F07
+            sha: 6f0346ff202fcee6a43f16f7ee3cfd69b071afe1
+          - family: F09
+            sha: 0791424f5fb120482b46c8888ddd8d6214806830
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install isolated Python test dependencies
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Verify immutable specialist source contract
+        env:
+          FAMILY: ${{ matrix.family }}
+          SOURCE_SHA: ${{ matrix.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          mkdir -p build/m02-contract
+          case "$FAMILY" in
+            F05)
+              python -m compileall -q tools/actor_factory
+              python -m unittest discover -s tools/actor_factory/tests -v
+              ;;
+            F06)
+              python -m compileall -q tools/factory/zombies
+              # The F06 test is an artifact-validation CLI, not a unittest.
+              # Until a generated F05-backed Blender fixture is supplied, do
+              # not claim that invoking it validates animation or sprites.
+              test -s tests/factory/zombies/test_f06_v2.py
+              python tests/factory/zombies/test_f06_v2.py --help
+              echo 'F06_SOURCE_COMPILE_AND_QA_ENTRYPOINT_ONLY_NOT_BLENDER_QA'
+              ;;
+            F07)
+              python -m compileall -q tools/factory/animals
+              test -s tools/factory/animals/validate_calibration.py
+              echo 'F07_SOURCE_COMPILE_ONLY_NOT_BLENDER_QA'
+              ;;
+            F09)
+              python -m compileall -q tools/weapons_tools
+              PYTHONPATH="$PWD" python tests/test_f09_canonical_gate.py
+              ;;
+          esac
+          printf 'family=%s\nsource_sha=%s\nstatus=SOURCE_CONTRACT_CANDIDATE_NOT_GOLDEN\n' "$FAMILY" "$SOURCE_SHA" > build/m02-contract/status.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m02-${{ matrix.family }}-contract-${{ github.run_id }}
+          path: build/m02-contract/
+          if-no-files-found: warn
+          retention-days: 5
