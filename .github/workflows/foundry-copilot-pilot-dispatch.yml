@@ -17,6 +17,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: foundry-copilot-issue83
+  cancel-in-progress: false
+
 jobs:
   contract-tests:
     if: github.event_name == 'pull_request' || !inputs.apply
