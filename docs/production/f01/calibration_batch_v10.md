@@ -52,6 +52,8 @@ Second workflow run [#2](https://github.com/kalashgit/last-light-godot/actions/r
 
 The definitive [workflow run #6](https://github.com/kalashgit/last-light-godot/actions/runs/42543992661) **passed both GitHub Actions jobs**: `blender-source` (job `128924928601`) and `godot-import-and-interactions` (job `128925186147`). The latter imported the regenerated GLB in actual Godot **4.6.3**, recognized its 83 meshes and animation player, resolved Godot's sanitized pivot names, and executed the isolated main-door/crisper independent-motion and door-before-drawer interaction-gate assertions. Earlier failures were corrected and retained as historical reproducibility evidence, not reported as passes.
 
+Following scoped founder approval, [workflow run #10](https://github.com/kalashgit/last-light-godot/actions/runs/42581549464) passed **both** Blender source regeneration (job `129041206046`) and actual Godot 4.6.3 import/interaction (job `129041463703`). Logs: `F01_GODOT_GLTF_IMPORT_PASS meshes=83 door_rad=1.7256942987442 drawer_m=0.17891666293144` and `F01_GODOT_INTERACTION_PASS isolated_contract=true state_round_trip=true access_gate=true`. The additional state assertions verify separate door/drawer/freezer permissions, closing-door reset, deterministic save-state round-trip, rejection of impossible stored combinations and rejection of unknown future save versions. This remains a **standalone contract fixture**, not the live LAST LIGHT save/inventory runtime.
+
 This isolated interaction test is not a production game interaction test: gameplay state ownership, collision, save/load, inventory access and iPhone performance require integration by W05/W07, F12 and the game assembler.
 
 ## Founder visual approval — recorded, scope limited
