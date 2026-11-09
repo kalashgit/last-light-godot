@@ -1,0 +1,2103 @@
+{
+  "schema_version": 1,
+  "project": "LAST_LIGHT",
+  "snapshot_date": "2026-11-09",
+  "visibility_note": "PUBLIC REPOSITORY SAFE: only identifiers and workflow classifications; full Notion briefs, media URLs, and private notes are excluded",
+  "status": "NOTION_READ_ONLY_SNAPSHOT_NOT_LIVE_SYNC",
+  "sources": {
+    "production_registry": "LL · Original Asset & Content Production Registry",
+    "world_registry": "LAST LIGHT — World Tile, Building & Container Registry",
+    "item_reference_registry": "LAST LIGHT — Master Item & Model Registry"
+  },
+  "coverage": {
+    "canonical_production_masters": 60,
+    "world_specifications": 118,
+    "source_reference_records": 50,
+    "unimported_research_archive": "Broader 4,347+ and 21,025 source-file indices remain research evidence, NOT automatically game assets",
+    "old_editable_3d_sources": 360,
+    "old_3d_golden_approved": 0,
+    "distinctions": "Notion Stage Approved is not Founder Visual Approved; never promote using stage alone"
+  },
+  "production_masters": [
+    {
+      "content_id": "animal.cattle",
+      "family": "animal",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "animal.chicken",
+      "family": "animal",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "animation.character.consume",
+      "family": "animation",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "animation.character.walk",
+      "family": "animation",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "character.survivor.layered_outfit",
+      "family": "character",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_clothing_hiking_boots",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_clothing_improvised_plastic_apron",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_clothing_leather_apron",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_clothing_leather_jacket",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_antler_pair",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_duct_tape",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_firewood",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P0",
+      "work_order": "A00-B008-F09-ll_crafting_firewood-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_glass_pane",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P0",
+      "work_order": "A00-B007-F09-ll_crafting_glass_pane-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_nail_box",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Approved",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P3",
+      "work_order": "A00-B002-F09-ll_crafting_nail_box-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_rope_coil",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_screw_box",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B003-F09-ll_crafting_screw_box-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_crafting_steel_wool",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Backlog",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P2",
+      "work_order": "A00-B007-F09-ll_crafting_steel_wool-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_equipment_canvas_bandolier",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_equipment_leather_bandolier",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_farming_animal_feed_sack",
+      "family": "prop",
+      "kind": null,
+      "stage": "QA Review",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_food_apple",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_food_bean_tin",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_food_bread_loaf",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Approved",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P3",
+      "work_order": "A00-B001-F09-ll_food_bread_loaf-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_food_water_bottle",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_furniture_bookcase",
+      "family": "prop",
+      "kind": "World Object",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F01",
+      "priority": "P0",
+      "work_order": "A00-B004-F01-ll_furniture_bookcase-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_furniture_mattress",
+      "family": "prop",
+      "kind": "World Object",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F01",
+      "priority": "P0",
+      "work_order": "A00-B002-F01-ll_furniture_mattress-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_furniture_refrigerator",
+      "family": "prop",
+      "kind": "World Object",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F01",
+      "priority": "P0",
+      "work_order": "A00-B001-F01-ll_furniture_refrigerator-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_golden_bone_club",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Backlog",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P2",
+      "work_order": "A00-B008-F09-ll_golden_bone_club-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_backpack",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_bucket",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P0",
+      "work_order": "A00-B007-F09-ll_household_bucket-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_duffel_bag",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_field_notebook",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_fire_extinguisher",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B003-F09-ll_household_fire_extinguisher-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_match_box",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P0",
+      "work_order": "A00-B007-F09-ll_household_match_box-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_photo_album",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Backlog",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P2",
+      "work_order": "A00-B007-F09-ll_household_photo_album-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_propane_bottle",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B003-F09-ll_household_propane_bottle-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_rolling_pin",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Backlog",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P2",
+      "work_order": "A00-B003-F09-ll_household_rolling_pin-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_household_shoe_box",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_antibiotic_tablets",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_first_aid_case",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_medical_gloves",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B004-F09-ll_medical_medical_gloves-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_splint",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B002-F09-ll_medical_splint-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_sterile_bandage",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_medical_tweezers",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B002-F09-ll_medical_tweezers-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_claw_hammer",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_crowbar",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Approved",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P3",
+      "work_order": "A00-B005-F09-ll_tools_crowbar-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_flat_screwdriver",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_hand_drill",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B007-F09-ll_tools_hand_drill-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_hand_saw",
+      "family": "prop",
+      "kind": "Item",
+      "stage": "Original Design",
+      "semantic_verification": "Canonical Verified",
+      "queue": "F09",
+      "priority": "P1",
+      "work_order": "A00-B005-F09-ll_tools_hand_saw-r1",
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ll_tools_hatchet",
+      "family": "prop",
+      "kind": null,
+      "stage": "Approved",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": true,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "prop.family.furniture_capability_crosswalk.v1",
+      "family": "prop",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "tile.family.floor_transition.v1",
+      "family": "tile",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "tile.family.roof_modular.v1",
+      "family": "tile",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "tile.family.terrain_vegetation.v1",
+      "family": "tile",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "tile.family.wall_opening.v1",
+      "family": "tile",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ui.health.contextual_treatment",
+      "family": "ui",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "ui.inventory.transfer",
+      "family": "ui",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "vehicle.sedan",
+      "family": "vehicle",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "vehicle.small_trailer",
+      "family": "vehicle",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    },
+    {
+      "content_id": "vehicle.van",
+      "family": "vehicle",
+      "kind": null,
+      "stage": "Original Design",
+      "semantic_verification": "Unreviewed",
+      "queue": null,
+      "priority": "P3",
+      "work_order": null,
+      "rights_reviewed": false,
+      "founder_visual_approved": false,
+      "technical_qa_passed": false,
+      "godot_tested": false,
+      "iphone_verified": false
+    }
+  ],
+  "world_specifications": [
+    {
+      "world_id": "ll.archetype.apartment_block",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.bank",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.bar_pub",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.barn",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.bowling_alley",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.cafe",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.campground",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.checkpoint",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.church",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.clinic",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.clothing_store",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.college_building",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.community_center",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.construction_site",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.department_store",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.detention_facility",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.diner",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.duplex",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.elementary_school",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.factory",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.farm",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.fire_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.garage",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.gas_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.grocery_store",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.gym",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.hair_salon",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.hardware_store",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.high_school",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.hospital",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.hotel",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.house_large",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.house_small",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.library",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.mechanic_shop",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.medical_center",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.military_base",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.mobile_home",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.motel",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.movie_theater",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.office",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.park",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.pharmacy",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.police_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.post_office",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.power_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.prison",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.radio_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.restaurant",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.shed",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.silo",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.sports_field",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.stadium",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.storage_yard",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.supermarket",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.townhouse",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.trailer_park",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.tv_station",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.warehouse",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.archetype.water_treatment",
+      "kind": "Building",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.armory_rack",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.bedside_drawer",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.drawer",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.dumpster",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.fishing_box",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.freezer",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.kitchen_cabinet",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.medical_cabinet",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.military_locker",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.pharmacy_shelf",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.police_locker",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.refrigerator",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.shed_crate",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.shop_shelf",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.tool_chest",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.trash_bin",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.vehicle_glovebox",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.vehicle_trunk",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.container.warehouse_shelf",
+      "kind": "Container",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.armory",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.barracks",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.bath",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.bedroom",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.cold_case",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.corridor",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.equipment",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.exam",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.garage",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.industrial",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.kitchen",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.living",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.loading",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.medical",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.office",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.pharmacy",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.reception",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.sales_floor",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.stock",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.storage",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.supply",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.utility",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.vehicle_bay",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.room.workshop",
+      "kind": "Room",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.berry_bush",
+      "kind": "Vegetation",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.dense_forest",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.farmland_soil",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.forest_ground",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.grassland",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.industrial_scrap",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.lake_edge",
+      "kind": "Water",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.military_base_a",
+      "kind": "Region",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.military_base_b",
+      "kind": "Region",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.pond_edge",
+      "kind": "Water",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.residential_neighborhood",
+      "kind": "Region",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.river_edge",
+      "kind": "Water",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.roadside_verge",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.shrub",
+      "kind": "Vegetation",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    },
+    {
+      "world_id": "ll.tile.urban_ground",
+      "kind": "Terrain",
+      "identity_qa": "Syntax checked",
+      "completion_tier": "Unresolved",
+      "godot_status": "Specification"
+    }
+  ],
+  "source_references": [
+    {
+      "reference_file_id": "8403",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "18645",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "5812",
+      "category": "Medical",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8339",
+      "category": "Medical",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "5839",
+      "category": "Medical",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "248",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "12140",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "249",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8254",
+      "category": "Medical",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "5782",
+      "category": "Medical",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8127",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "251",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "253",
+      "category": "Other",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "20365",
+      "category": "Other",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2938",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8154",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "208",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "12115",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2900",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "6618",
+      "category": "Material",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2093",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "114887",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "115529",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8350",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8439",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "263",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2126",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "3752",
+      "category": "Container",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8223",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "116523",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "265",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "11276",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Article verified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2131",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "5804",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "4559",
+      "category": "Material",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "8185",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "294",
+      "category": "Other",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "270",
+      "category": "Material",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2988",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "271",
+      "category": "Other",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "4036",
+      "category": "Material",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "5237",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "844",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "230",
+      "category": "Weapon",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "4055",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "21089",
+      "category": "Container",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "2942",
+      "category": "Food",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "116139",
+      "category": "Container",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "116895",
+      "category": "Other",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    },
+    {
+      "reference_file_id": "9710",
+      "category": "Tool",
+      "production_status": "Reference",
+      "verification": "Filename classified",
+      "rights": "Research only"
+    }
+  ]
+}
