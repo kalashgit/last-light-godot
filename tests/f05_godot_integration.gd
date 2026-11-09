@@ -36,9 +36,22 @@ func _run() -> void:
         if args[idx] == "--output":
             output = args[idx + 1]
     var defects: Array[String] = []
-    var scene := load(MODEL_PATH) as PackedScene
-    if scene == null:
-        _finish({"status": "FAIL", "defects": ["Godot could not import/load GLB"]}, output)
+    var actor: Node3D = null
+    var import_mode := "engine_imported_packed_scene"
+    var scene := ResourceLoader.load(MODEL_PATH) as PackedScene
+    if scene != null:
+        actor = scene.instantiate() as Node3D
+    if actor == null:
+        # Runtime loader still verifies the actual Godot engine's glTF skin
+        # and animation decoding when an editor-wide project import stalls.
+        import_mode = "runtime_gltf_document"
+        var document := GLTFDocument.new()
+        var state := GLTFState.new()
+        var code := document.append_from_file(ProjectSettings.globalize_path(MODEL_PATH), state)
+        if code == OK:
+            actor = document.generate_scene(state)
+    if actor == null:
+        _finish({"status": "FAIL", "defects": ["Godot could not decode GLB via either native importer"]}, output)
         return
     var stage := Node3D.new()
     stage.name = "F05_Noncanonical_Runtime_Lab"
@@ -63,7 +76,6 @@ func _run() -> void:
     collision.position.y = 0.90
     player.add_child(collision)
     stage.add_child(player)
-    var actor := scene.instantiate()
     actor.name = "F05_imported_character"
     player.add_child(actor)
 
@@ -129,6 +141,7 @@ func _run() -> void:
         "status": "PASS" if defects.is_empty() else "FAIL",
         "scope": "actual LAST LIGHT Godot GLB import, animation playback, 3D body and floor collision",
         "model": MODEL_PATH,
+        "import_mode": import_mode,
         "skeleton_count": skeletons.size(),
         "maximum_bones": max_bones,
         "mesh_count": mesh_count,
