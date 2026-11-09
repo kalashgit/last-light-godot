@@ -10,12 +10,21 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any
 
-ALLOWED_WORKFLOWS = frozenset({
-    "M02 Pinned F02 F03 F10 F11 F12 Engine Calibration",
-    "M02 Autonomous Asset Factory V1 (protected candidate)",
-    "M02 Pinned F05 F06 F07 F09 Specialist Contracts",
-})
-ALLOWED_BRANCH = "codex/m02-autonomous-asset-factory-v1"
+M02_BRANCH = "codex/m02-autonomous-asset-factory-v1"
+# (source branch, accepted original events, draft PR target)
+RUN_POLICY = {
+    "M02 Pinned F02 F03 F10 F11 F12 Engine Calibration":
+        (M02_BRANCH, frozenset({"pull_request", "workflow_dispatch"}), M02_BRANCH),
+    "M02 Autonomous Asset Factory V1 (protected candidate)":
+        (M02_BRANCH, frozenset({"pull_request", "workflow_dispatch"}), M02_BRANCH),
+    "M02 Pinned F05 F06 F07 F09 Specialist Contracts":
+        (M02_BRANCH, frozenset({"pull_request", "workflow_dispatch"}), M02_BRANCH),
+    "Foundry 360 continuous Blender sprite batch":
+        ("main", frozenset({"schedule", "workflow_dispatch"}), "main"),
+    "Foundry original editable model factory":
+        ("main", frozenset({"schedule", "workflow_dispatch"}), "main"),
+}
+ALLOWED_WORKFLOWS = frozenset(RUN_POLICY)
 ALLOWED_CONCLUSIONS = frozenset({"failure", "timed_out"})
 OWNER_REPO = "kalashgit/last-light-godot"
 API_ROOT = f"https://api.github.com/repos/{OWNER_REPO}"
@@ -33,11 +42,12 @@ def eligible(run: dict[str, Any]) -> Verdict:
         return Verdict(False, "foreign or missing head repository")
     if run.get("name") not in ALLOWED_WORKFLOWS:
         return Verdict(False, "workflow not allowlisted")
-    if run.get("head_branch") != ALLOWED_BRANCH:
+    policy = RUN_POLICY[run["name"]]
+    if run.get("head_branch") != policy[0]:
         return Verdict(False, "branch not allowlisted")
     if run.get("status") != "completed" or run.get("conclusion") not in ALLOWED_CONCLUSIONS:
         return Verdict(False, "no finished failure")
-    if run.get("event") not in ("pull_request", "workflow_dispatch"):
+    if run.get("event") not in policy[1]:
         return Verdict(False, "untrusted event")
     if not isinstance(run.get("id"), int) or run["id"] <= 0:
         return Verdict(False, "invalid run id")
@@ -65,12 +75,13 @@ def failure_issue(run: dict[str, Any], jobs: list[dict[str, Any]]) -> tuple[str,
     if not lines:
         lines = ["- No failed job metadata available; inspect the run summary."]
     marker = f"foundry-correction-run:{run['id']}"
+    branch, _, target_branch = RUN_POLICY[run["name"]]
     title = f"[Foundry AI] Repair {safe_text(run['name'], 75)} — run {run['id']}"
     body = (f"<!-- {marker} -->\n"
             f"## Reproducible CI failure\n\n"
             f"- Workflow: {safe_text(run['name'])}\n"
             f"- Immutable source SHA: `{run['head_sha']}`\n"
-            f"- Source branch: `{ALLOWED_BRANCH}`\n"
+            f"- Source branch: `{branch}`\n"
             f"- Run: https://github.com/{OWNER_REPO}/actions/runs/{run['id']}\n\n"
             "### Failed jobs\n" + "\n".join(lines) + "\n\n"
             "### Controlled coding-agent task\n"
@@ -78,7 +89,7 @@ def failure_issue(run: dict[str, Any], jobs: list[dict[str, Any]]) -> tuple[str,
             "Inspect the exact failing run and source commit; identify root cause and create "
             "a minimal correction on a NEW isolated branch. Preserve Blender/Godot tests, "
             "F11/F12 visual gates and provenance. Run the relevant genuine engine tests. "
-            "Open a DRAFT PR targeting `codex/m02-autonomous-asset-factory-v1` "
+            f"Open a DRAFT PR targeting `{target_branch}` "
             "with exact SHA, changed files, commands, results, and remaining issues. "
             "Do not merge, deploy, change secrets, approve Golden assets, or disable quality checks.\n\n"
             "**Status:** correction requested, not automatically fixed or Golden-approved.\n")
@@ -173,12 +184,12 @@ class GitHub:
     def create_issue(self, title: str, body: str) -> int:
         return self.request("/issues", "POST", {"title": title, "body": body})["number"]
 
-    def assign_copilot(self, issue_number: int, token: str) -> Any:
+    def assign_copilot(self, issue_number: int, token: str, target_branch: str) -> Any:
         return self.request(f"/issues/{issue_number}/assignees", "POST", {
             "assignees": ["copilot-swe-agent[bot]"],
             "agent_assignment": {
                 "target_repo": OWNER_REPO,
-                "base_branch": ALLOWED_BRANCH,
+                "base_branch": target_branch,
                 "custom_instructions": (
                     "Draft PR only. Never merge, deploy, edit secrets, or mark an "
                     "asset Golden. Do not bypass failing Blender/Godot gates."
@@ -227,7 +238,7 @@ def main() -> int:
         if gh.copilot_assignments_last_day(issue) >= 1:
             print(json.dumps({"status": "AI_DAILY_LIMIT", "reason": "one assignment per 24 hours"}))
             return 0
-        gh.assign_copilot(issue, token)
+        gh.assign_copilot(issue, token, RUN_POLICY[run["name"]][2])
         print(json.dumps({"status": "COPILOT_ASSIGNED", "issue": issue}))
     return 0
 
