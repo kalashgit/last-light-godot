@@ -1,0 +1,43 @@
+{
+  "status": "PARTIAL_LIVE_NOTION_READ_NOT_EXHAUSTIVE",
+  "registry": "https://app.notion.com/p/165d2e3653284b86a829c260f0895276",
+  "source_branch_commit": "c0bb2d0b41026a2f996baa1e52cef74994ac643f",
+  "records": [
+    {
+      "canonical_master_id": "ll_furniture_refrigerator",
+      "queue": "F01",
+      "semantic_verification": "Canonical Verified",
+      "source_revision": "A00-20261108-B001-r1",
+      "notion_asset_url": "https://app.notion.com/p/412f639e237381a7b951f661cbf3ac19",
+      "rights_reviewed": false,
+      "visual_approved": false,
+      "source_work_order": "A00-B001-F01-ll_furniture_refrigerator-r1",
+      "existing_source_candidates": ["ll_furniture_refrigerator", "ll_master_furniture_refrigerator"],
+      "decision": "SOURCE_DUPLICATE_GEOMETRY_RECONCILIATION_REQUIRED"
+    },
+    {
+      "canonical_master_id": "ll_furniture_bookcase",
+      "queue": "F01",
+      "semantic_verification": "Canonical Verified",
+      "source_revision": "A00-20261108-B004-r1",
+      "notion_asset_url": "https://app.notion.com/p/412f639e2373810ca998fa5f69333151",
+      "rights_reviewed": false,
+      "visual_approved": false,
+      "source_work_order": "A00-B004-F01-ll_furniture_bookcase-r1",
+      "existing_source_candidates": ["ll_furniture_bookcase"],
+      "decision": "HOLLOW_SHELF_GEOMETRY_AND_WOOD_MATERIAL_QA_REQUIRED"
+    },
+    {
+      "canonical_master_id": "ll_furniture_mattress",
+      "queue": "F01",
+      "semantic_verification": "Canonical Verified",
+      "source_revision": "A00-20261108-B002-r1",
+      "notion_asset_url": "https://app.notion.com/p/412f639e237381d5b91be3788d0f752d",
+      "rights_reviewed": false,
+      "visual_approved": false,
+      "source_work_order": "A00-B002-F01-ll_furniture_mattress-r1",
+      "existing_source_candidates": ["ll_furniture_mattress"],
+      "decision": "SOURCE_GEOMETRY_NEEDS_VISUAL_AND_MATERIAL_REFINEMENT"
+    }
+  ]
+}

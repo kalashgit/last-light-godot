@@ -1,0 +1,53 @@
+name: F01 isolated fridge Godot import calibration
+
+on:
+  pull_request:
+    paths:
+      - 'tools/factory/furniture/**'
+      - 'tests/factory/furniture/**'
+      - '.github/workflows/f01-godot-import-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender from Ubuntu repository
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+      - name: Generate actual noncanonical GLB fixture
+        run: |
+          blender --version
+          blender -b --factory-startup --python-exit-code 3 -t 2 \
+            --python tools/factory/furniture/refrigerator_calibration.py -- \
+            --output build/f01_ci_source --samples 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f01-noncanonical-import-fixture
+          path: build/f01_ci_source/refrigerator_refined_calibration.glb
+          if-no-files-found: error
+          retention-days: 3
+
+  godot-import-and-interactions:
+    needs: blender-source
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f01-noncanonical-import-fixture
+          path: tests/factory/furniture/godot_fixture/
+      - name: Move generated GLB to isolated Godot fixture
+        run: mv tests/factory/furniture/godot_fixture/refrigerator_refined_calibration.glb tests/factory/furniture/godot_fixture/model.glb
+      - name: Import generated model in real Godot 4
+        run: godot --headless --path tests/factory/furniture/godot_fixture --editor --import
+      - name: Exercise independent animations and interaction gate
+        run: godot --headless --path tests/factory/furniture/godot_fixture --script res://verify_import.gd
