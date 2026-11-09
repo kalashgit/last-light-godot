@@ -32,6 +32,7 @@ anatomy=[o for o in bpy.data.objects if o.type=='MESH' and o.name.startswith('V7
 v9face=bpy.data.objects.get('V9 integrated craniofacial sculpt')
 v9garments=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_V9_GARMENT_PANEL')]
 v9drape=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_V9_CLOTH_DRAPE')]
+v10hood=bpy.data.objects.get('V10 open-front work jacket hood')
 v8_materials=[m for m in bpy.data.materials if m.name.startswith('Worn woven cloth')
               and any(n.type=='BUMP' for n in m.node_tree.nodes)]
 if v8_materials:
@@ -84,6 +85,22 @@ if v9face:
         assert bump.inputs['Strength'].default_value<=.02
     print('F06_V9_SCULPT_GARMENT_SOURCE_PASS',len(v9face.data.vertices),
           len(v9drape),len(v9garments),len(hands))
+if v10hood:
+    assert v10hood.get('F06_V10_OPEN_FACE_HOOD')
+    assert len(v10hood.vertex_groups)==2
+    assert any(m.type=='SOLIDIFY' for m in v10hood.modifiers)
+    damaged=bpy.data.objects['V9 tailored open jacket panel R']
+    assert damaged.get('F06_V10_LOCALIZED_WEAR')
+    assert 'v10_damage_field' in damaged.data.vertex_colors
+    assert any(n.type=='ATTRIBUTE' and n.attribute_name=='v10_damage_field'
+               for n in damaged.data.materials[0].node_tree.nodes)
+    twill=next(m for m in bpy.data.materials if m.name.startswith('V10 original earthwork twill'))
+    ramp=next(n for n in twill.node_tree.nodes if n.type=='VALTORGB' and
+              n.color_ramp.interpolation=='CONSTANT')
+    assert len(ramp.color_ramp.elements)==4
+    assert all(bpy.data.objects[n].data.materials[0]==twill
+               for n in ('V6 skinned trouser leg L','V6 skinned trouser leg R'))
+    print('F06_V10_REFERENCE_ART_SOURCE_PASS hood, bounded damage, original twill shader')
 if continuous:
     assert len(continuous)==5,('expected torso plus four complete limbs',len(continuous))
     assert not any(o.name.startswith(('V5 deforming ','upper sleeve ','forearm ',
@@ -165,4 +182,8 @@ if v9face:
         assert len(imported_panels)==2
         assert all(len(o.vertex_groups)>=2 for o in imported_panels)
     print('F06_V9_FACE_CLOTH_GLTF_PASS')
+if v10hood:
+    assert any(o.type=='MESH' and 'V10 open-front work jacket hood' in o.name
+               for o in bpy.context.scene.objects), 'V10 hood missing in GLB'
+    print('F06_V10_HOOD_GLTF_PASS')
 print('F06_V2_BLENDER_REOPEN_PASS',path,len(expected),'actions','GLB import PASS')
