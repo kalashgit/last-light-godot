@@ -21,15 +21,15 @@ from hero_hatchback import build
 
 MOVING = {
     "door_skin": "F10 HERO connected left front door exterior",
-    "door_inner_card": "F10 HERO driver door inner padded card",
-    "door_front_edge": "F10 HERO driver door front edge thickness",
+    "door_inner_card": "LL FLEET F10 HERO driver door inner padded card",
+    "door_front_edge": "LL FLEET F10 HERO driver door front edge thickness",
     "door_window": "F10 HERO inset front door pane",
 }
 GUARDS = {
     "left_front_fender": "F10 HERO continuous sculpted side",
     "front_left_tire": "F10 HERO tire.002",
-    "front_aperture_jamb": "F10 HERO cabin aperture jamb.001",
-    "rear_aperture_jamb": "F10 HERO cabin aperture jamb",
+    "front_aperture_jamb": "LL FLEET F10 HERO cabin aperture jamb.001",
+    "rear_aperture_jamb": "LL FLEET F10 HERO cabin aperture jamb",
 }
 
 
