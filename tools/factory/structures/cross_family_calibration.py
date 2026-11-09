@@ -33,7 +33,7 @@ def evaluate(house_source: Path) -> dict:
     for name, (_, rough, metal) in PALETTE.items():
         if not (0 <= rough <= 1 and 0 <= metal <= 1):
             material_issues.append(f"{name}: scalar outside [0,1]")
-        material_issues.append(f"{name}: missing portable roughness/metallic/normal maps")
+        material_issues.append(f"{name}: candidate maps require F11 review; height/wear and UV density not validated")
 
     return {
         "status": "NONCANONICAL_CALIBRATION_ONLY",
@@ -42,7 +42,7 @@ def evaluate(house_source: Path) -> dict:
         "gameplay_iso": {"TX": tx, "TY": ty},
         "projection_tile_dimensions_match": projection_matches,
         "f12_approval": "PENDING_CAMERA_FACING_ANCHOR_LIGHTING_AND_PIXEL_QA",
-        "f11_approval": "PENDING_PORTABLE_PBR_CHANNELS_AND_F11_REVIEW",
+        "f11_approval": "PENDING_F11_PORTABLE_CHANNEL_AND_UV_REVIEW",
         "f11_material_issues": material_issues,
         "actual_f02_sprite_import_in_game": False,
         "iphone_verified": False,
