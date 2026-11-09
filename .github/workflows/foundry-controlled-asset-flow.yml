@@ -1,0 +1,227 @@
+name: LAST LIGHT controlled Notion-to-Godot asset review pilot
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    paths:
+      - '.github/workflows/foundry-controlled-asset-flow.yml'
+      - 'tools/foundry_flow/**'
+      - 'tests/foundry_flow/**'
+      - 'docs/production/CONTROLLED_ASSET_FLOW_V1.md'
+  workflow_dispatch:
+    inputs:
+      asset_id:
+        description: 'Exactly one previously admitted R03 model to inspect'
+        type: choice
+        options:
+          - ll_furniture_mattress
+          - ll_furniture_bookcase
+          - ll_furniture_refrigerator
+          - ll_crafting_firewood
+          - ll_household_bucket
+          - ll_tools_hand_saw
+        default: ll_furniture_mattress
+      persist_review:
+        description: 'Founder-opted immutable technical review branch write after QA'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: foundry-controlled-review-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - run: python -m unittest discover -s tests/foundry_flow -v
+      - run: python -m unittest discover -s tests/foundry_sheets -v
+      - run: python -m unittest discover -s tests/foundry_notion -v
+
+  real-mattress-pilot:
+    needs: contracts
+    # Exactly one real-source trial when the founder opens this same-repo PR.
+    # Subsequent pushes run fast contracts only; no schedule or cost-amplifying
+    # queue, auto-retry, publishing, or AI inference is enabled here.
+    if: >-
+      (github.event_name == 'pull_request' &&
+       (github.event.action == 'opened' ||
+        (github.event.action == 'labeled' &&
+         github.event.label.name == 'controlled-pilot' &&
+         github.event.pull_request.number == 99)) &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.actor == 'kalashgit') ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.actor == 'kalashgit')
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    env:
+      SOURCE_RUN: '42460745955'
+      SOURCE_ARTIFACT: 'last-light-360-editable-3d-masters-geometry-only-v1'
+      SOURCE_ARCHIVE: 'build/controlled/source/Last_Light_3D_Masters_All_360.zip'
+      PILOT_ASSET: ${{ inputs.asset_id || 'll_furniture_mattress' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 'Install bounded CPU tools: Blender, image QA, and official Godot 4'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy unzip
+          python -m pip install 'Pillow>=10,<13'
+          mkdir -p /tmp/ll-godot
+          curl --fail --location --retry 2 \
+            'https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip' \
+            -o /tmp/ll-godot/godot.zip
+          unzip -q /tmp/ll-godot/godot.zip -d /tmp/ll-godot
+          mv /tmp/ll-godot/Godot_v4.4.1-stable_linux.x86_64 /tmp/ll-godot/godot
+          chmod +x /tmp/ll-godot/godot
+          blender --version | head -n 1
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import numpy; print("FOUNDRY_BLENDER_NUMPY", numpy.__version__)'
+          /tmp/ll-godot/godot --version
+      - name: Resolve immutable A00 R03 admission and original 360 archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/controlled/source
+          git fetch --no-tags origin refs/heads/codex/a00-production-admission-r03-20261109:refs/remotes/origin/a00-production-admission-r03
+          git show origin/a00-production-admission-r03:docs/asset_audit/production_admission/r03_20261109/admitted_refinement_queue.json \
+            > build/controlled/source/admission.json
+          if gh release view foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" \
+              --pattern 'Last_Light_3D_Masters_All_360.zip' --dir build/controlled/source
+          else
+            gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" \
+              --name "$SOURCE_ARTIFACT" --dir build/controlled/source
+          fi
+          test -s "$SOURCE_ARCHIVE"
+          sha256sum build/controlled/source/admission.json "$SOURCE_ARCHIVE"
+      - name: Notion identity/rights gate and selected source extraction
+        run: |
+          python -m tools.foundry_flow.plan \
+            --snapshot data/foundry/notion_asset_snapshot_v1.json \
+            --admission build/controlled/source/admission.json \
+            --archive "$SOURCE_ARCHIVE" \
+            --asset-id "$PILOT_ASSET" \
+            --batch-size 1 --output build/controlled/plan
+      - name: Blender 16-heading original 3D render (review only)
+        run: |
+          blender -b --factory-startup --python-exit-code 3 -t 2 \
+            --python tools/foundry_flow/blender_audit.py -- \
+            --plan build/controlled/plan/plan.json \
+            --output build/controlled/blender_audit.json
+          blender -b --factory-startup --python-exit-code 3 -t 2 \
+            --python tools/foundry_mass/render.py -- \
+            --plan build/controlled/plan/plan.json \
+            --output build/controlled/raw_views --resolution 192 \
+            --samples 4 --lighting-mode studio
+      - name: Offline Golden-inspired native pixel style and transparent frames
+        run: |
+          python tools/foundry_flow/pixel_style.py \
+            --plan build/controlled/plan/plan.json \
+            --raw-views build/controlled/raw_views \
+            --output build/controlled/styled_views --logical-size 64
+      - name: Validate source render and make original candidate atlas
+        run: |
+          python tools/foundry_mass/finalize.py \
+            --plan build/controlled/plan/plan.json \
+            --views build/controlled/styled_views \
+            --output build/controlled/candidates --run-id "$GITHUB_RUN_ID"
+      - name: Offline atlas packing and sprite-gen interchange
+        run: |
+          python tools/foundry_sheets/pack.py \
+            --candidates build/controlled/candidates \
+            --output build/controlled/sheets \
+            --batch-size 1 --page-size 1024 --run-id "$GITHUB_RUN_ID"
+          python tools/foundry_sheets/sprite_gen_bridge.py \
+            --spec "build/controlled/styled_views/$PILOT_ASSET/interchange.json" \
+            --output build/controlled/offline_bridge --page-size 1024
+      - name: Godot 4 actual headless PNG, AtlasTexture, and Sprite2D import
+        run: |
+          set -euo pipefail
+          /tmp/ll-godot/godot --headless --path . \
+            --script res://tools/foundry_flow/godot_atlas_check.gd -- \
+            --manifest "$PWD/build/controlled/sheets/sprite_sheet_manifest.json" \
+            --report "$PWD/build/controlled/godot_report.json"
+      - name: Independent hashes, frame pixels, source lineage and approval packet
+        run: |
+          python tools/foundry_flow/qa.py \
+            --plan build/controlled/plan/plan.json \
+            --styled-views build/controlled/styled_views \
+            --candidates build/controlled/candidates \
+            --sheets build/controlled/sheets \
+            --offline-bridge build/controlled/offline_bridge \
+            --blender-audit build/controlled/blender_audit.json \
+            --godot-report build/controlled/godot_report.json \
+            --output build/controlled/review
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foundry-controlled-review-${{ github.run_id }}
+          path: |
+            build/controlled/plan/plan.json
+            build/controlled/raw_views/*/render_metadata.json
+            build/controlled/blender_audit.json
+            build/controlled/styled_views/
+            build/controlled/candidates/
+            build/controlled/sheets/
+            build/controlled/offline_bridge/
+            build/controlled/godot_report.json
+            build/controlled/review/
+          retention-days: 14
+          if-no-files-found: warn
+
+  publish-technical-review:
+    needs: real-mattress-pilot
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.actor == 'kalashgit' &&
+      github.ref == 'refs/heads/main' &&
+      inputs.persist_review == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: foundry-controlled-review-${{ github.run_id }}
+          path: build/controlled
+      - name: Stage immutable technical-only review outside main
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin foundry/controlled-review-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/controlled-review-v1:refs/remotes/origin/foundry/controlled-review-v1
+            git worktree add -b "controlled-review-$GITHUB_RUN_ID" /tmp/controlled-review-publish origin/foundry/controlled-review-v1
+          else
+            git worktree add -b "controlled-review-$GITHUB_RUN_ID" /tmp/controlled-review-publish "$GITHUB_SHA"
+          fi
+          python tools/foundry_flow/publish_review.py \
+            --source build/controlled --destination /tmp/controlled-review-publish
+          git -C /tmp/controlled-review-publish config user.name 'github-actions[bot]'
+          git -C /tmp/controlled-review-publish config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/controlled-review-publish add foundry_controlled_review
+          if git -C /tmp/controlled-review-publish diff --cached --quiet; then
+            echo 'REVIEW_PACKAGE_ALREADY_PERSISTED'; exit 0
+          fi
+          git -C /tmp/controlled-review-publish commit -m 'chore(foundry): preserve QA-only review package [skip ci]'
+          git -C /tmp/controlled-review-publish push origin HEAD:refs/heads/foundry/controlled-review-v1
