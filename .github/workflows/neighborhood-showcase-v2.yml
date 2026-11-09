@@ -30,17 +30,6 @@ jobs:
           python-version: "3.11"
       - name: Validate exact 60 Notion building types and full 3-house room plans
         run: python -m unittest discover -s tests/neighborhood -p "test_*.py" -v
-      - name: Build genuine-data schematic preview images
-        run: |
-          python -m pip install "Pillow>=10,<12"
-          python tests/neighborhood/render_overview.py
-      - name: Upload 60-archetype / H01-H03 review previews
-        uses: actions/upload-artifact@v4
-        with:
-          name: last-light-60-neighborhood-and-three-house-lab-previews
-          path: build/neighborhood-showcase/*.png
-          retention-days: 14
-          if-no-files-found: error
       - name: Install actual pinned Godot 4.3
         run: |
           curl --fail --location --silent --show-error --retry 3 \
@@ -55,3 +44,20 @@ jobs:
       - name: Exercise REAL Godot modular rooms, walls, fixture toggles and Golden gating
         run: |
           timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/smoke_modules.gd
+      - name: Validate furnished H01/H02/H03 layouts, clear portals and same-room interactions
+        run: |
+          timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/smoke_furnished_houses.gd
+      - name: Export actual Godot-generated furnished plans for review art
+        run: |
+          timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/export_furnished_plan.gd
+      - name: Render data-derived 60-building and furnished-house review previews
+        run: |
+          python -m pip install "Pillow>=10,<12"
+          python tests/neighborhood/render_overview.py
+      - name: Upload 60-archetype and H01-H03 furnishing review previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-v4-furnished-house-preview-provisional
+          path: build/neighborhood-showcase/*.png
+          retention-days: 14
+          if-no-files-found: error

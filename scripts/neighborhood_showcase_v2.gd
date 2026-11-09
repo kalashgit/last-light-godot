@@ -251,8 +251,11 @@ func use_nearby_fixture() -> void:
     var closest: Dictionary = {}
     var nearest_distance: float = 2.6
     for plan in plans:
+        var occupied_room: String = room_factory.room_at(plan, player)
         for room in plan.get("rooms", []):
             for fixture in room["fixtures"]:
+                if str(fixture["room_id"]) != occupied_room:
+                    continue
                 var distance: float = player.distance_to(_vec(fixture["pos"]))
                 if distance < nearest_distance:
                     nearest_distance = distance
@@ -443,6 +446,33 @@ func _fixture_color(role: String) -> Color:
         return Color("9a825f")
     return Color("a99574")
 
+func _draw_fixture_detail(role: String, r: Rect2, height: float) -> void:
+    var p: Vector2 = r.position
+    var top: Vector2 = r.position + Vector2(r.size.x, 0)
+    var mid: Vector2 = r.get_center()
+    var lift: Vector2 = Vector2(0, height)
+    if role in ["bed", "exam_bed"]:
+        var pillow := Rect2(p + Vector2(.1, .12), r.size * Vector2(.38, .52))
+        _quad_world(pillow, Color("dbd9c8"), height + 2)
+        draw_line(_iso(p + Vector2(.52 * r.size.x, 0)) - lift,
+            _iso(p + Vector2(.52 * r.size.x, r.size.y)) - lift,Color("625856"),2)
+    elif role == "sofa" or role == "armchair":
+        draw_line(_iso(p) - lift - Vector2(0,7),_iso(top) - lift - Vector2(0,7),Color("c4a296"),5)
+        draw_line(_iso(p + Vector2(r.size.x * .5,0)) - lift,
+            _iso(p + Vector2(r.size.x * .5,r.size.y)) - lift,Color("6b5049"),1)
+    elif role in ["fridge", "wardrobe", "storage_shelf", "filing_cabinet", "medicine_cabinet"]:
+        draw_line(_iso(p + Vector2(r.size.x*.53,r.size.y)) - lift,
+            _iso(p + Vector2(r.size.x*.53,r.size.y)) - Vector2(0,2),Color("5a625f"),2)
+        draw_circle(_iso(mid + Vector2(.16, r.size.y * .28)) - lift * .48,2.5,Color("efdfbb"))
+    elif role in ["stove", "washing_machine", "dryer"]:
+        for dx in [-.18,.18]:
+            draw_circle(_iso(mid + Vector2(dx,0)) - lift,4,Color("4b5352"))
+    elif role in ["dining_table", "coffee_table", "desk", "workbench", "counter"]:
+        draw_line(_iso(p + Vector2(.14,r.size.y * .22)) - lift,
+            _iso(p + Vector2(r.size.x - .14,r.size.y*.22)) - lift,Color("d5c39d"),1)
+    elif role in ["toilet", "sink", "kitchen_sink"]:
+        draw_circle(_iso(mid) - lift,4,Color("5e7779"))
+
 func _draw_fixture(fixture: Dictionary) -> void:
     var center: Vector2 = _vec(fixture["pos"])
     var sprite: Dictionary = approved_assets.sprite_for(str(fixture["role"]))
@@ -453,6 +483,10 @@ func _draw_fixture(fixture: Dictionary) -> void:
     var size: Vector2 = _vec(fixture["size"])
     var r := Rect2(center - size / 2.0, size)
     var c: Color = _fixture_color(str(fixture["role"]))
+    if not bool(fixture.get("solid", true)):
+        var decor: Color = Color("6b6252") if "rug" in str(fixture["role"]) or "mat" in str(fixture["role"]) else Color("777468")
+        _quad_world(r,decor,.5)
+        return
     var height: float = 25.0 if str(fixture["role"]) in ["fridge", "machine", "storage_shelf", "display_shelf", "medical_cabinet", "filing_cabinet"] else 12.0
     var p: Vector2 = r.position
     var ex: Vector2 = p + Vector2(size.x, 0)
@@ -461,6 +495,7 @@ func _draw_fixture(fixture: Dictionary) -> void:
     draw_colored_polygon(PackedVector2Array([_iso(eleft), _iso(ey), _iso(ey) - Vector2(0,height), _iso(eleft) - Vector2(0,height)]),c.darkened(.32))
     draw_colored_polygon(PackedVector2Array([_iso(ex), _iso(ey), _iso(ey) - Vector2(0,height), _iso(ex) - Vector2(0,height)]),c.darkened(.22))
     _quad_world(r, c, height)
+    _draw_fixture_detail(str(fixture["role"]), r, height)
     if bool(fixture.get("interactive", false)):
         var opened: bool = bool(fixture_states.get(str(fixture["id"]), false))
         draw_circle(_iso(center) - Vector2(0,height+3), 4.0, Color("8edaac") if opened else Color("eec977"))
@@ -472,7 +507,14 @@ func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
     for room in plan["rooms"]:
         var dims: Array = room["rect"]
         var area := Rect2(float(dims[0]),float(dims[1]),float(dims[2]),float(dims[3]))
-        _quad_world(area,_room_color(str(room["normalized_type"])))
+        var floor_col: Color = _room_color(str(room["normalized_type"]))
+        var theme: Dictionary = plan.get("theme", {})
+        var wear: float = float(theme.get("wear", 0.0))
+        _quad_world(area,floor_col.darkened(wear * .28))
+        if not theme.is_empty() and _zoom() > .35:
+            for ix in range(1,int(area.size.x)):
+                var a: Vector2 = area.position + Vector2(ix,0)
+                draw_line(_iso(a),_iso(a + Vector2(0,area.size.y)),floor_col.darkened(.25),.75)
         if _zoom() > .3:
             draw_string(ThemeDB.fallback_font,_iso(area.get_center()) + Vector2(0,18),
                 str(room["type"]),HORIZONTAL_ALIGNMENT_CENTER,-1,12,Color("f3edcf"))
@@ -486,8 +528,16 @@ func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
                     _draw_room_wall(pts[i],pts[(i+1)%4],plan["portals"])
             for portal in plan["portals"]:
                 draw_circle(_iso(_vec(portal["point"])),5,Color("dfbf82"))
+        var all_fixtures: Array = []
         for room in plan["rooms"]:
-            for fixture in room["fixtures"]:
+            all_fixtures.append_array(room["fixtures"])
+        for fixture in all_fixtures:
+            if not bool(fixture.get("solid", true)):
+                _draw_fixture(fixture)
+        all_fixtures.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
+            return float(a["pos"][0]) + float(a["pos"][1]) < float(b["pos"][0]) + float(b["pos"][1]))
+        for fixture in all_fixtures:
+            if bool(fixture.get("solid", true)):
                 _draw_fixture(fixture)
 
 func _draw_building(b: Dictionary) -> void:
