@@ -30,14 +30,22 @@ PR #85 remain the only billable pilot. Future automatic rework dispatch requires
 separate budget, lifetime-assignment, claim, and unique-job safeguards.
 
 Scheduled dispatch is every 30 minutes, but GitHub is free to delay or omit
-schedule events. The workflow becomes active **only after separately authorized
-merging** to `main`; PR runs execute tests only. Never equate a successful
-workflow with a visual or iPhone QA pass.
+schedule events. The audit job is **opt-in**: it runs on `main` only when the
+repository variable `FOUNDRY_AUTONOMY_AUDIT_ENABLED=true` has explicitly been
+set. This must remain disabled until the live Notion fridge record and the
+frozen production snapshot have been reconciled. As inspected on 2026-11-09,
+live Notion records the refrigerator's **visual reference** approval while
+technical QA, F11/F12, Godot, rights and iPhone acceptance remain incomplete;
+the frozen GitHub snapshot still says `founder_visual_approved=false`. This
+distinction must not be erased or interpreted as game-ready Golden approval.
+PR runs execute tests only. Never equate a successful workflow with a visual
+or iPhone QA pass.
 
 ## Durable R2 storage — disabled until explicitly authorized
 
 `archive_r2.py` validates non-traversing ZIP paths, ZIP CRC, editable `.blend`
-and `.glb` presence, deterministic SHA-256 content address, and complete
+and `.glb` counts and native file signatures (including compressed Blender
+sources), deterministic SHA-256 content address, and complete
 authenticated R2 readback. It is idempotent: an already matching object is
 verified without another write. Only `last-light-foundry-*` bucket names are
 allowed, so an unrelated bucket cannot silently be repurposed.
