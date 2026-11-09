@@ -10,6 +10,7 @@ from geometry import make_plan
 
 STATIC_ROLES = frozenset({"wall", "frame", "floor", "stair"})
 DYNAMIC_GROUPS = frozenset({"door_leaf", "window_leaf", "garage_gate"})
+DYNAMIC_COLLIDER_ROLES = frozenset({"door_leaf", "pane", "garage_gate"})
 
 
 def collision_proposal(subject: str) -> dict:
@@ -23,7 +24,7 @@ def collision_proposal(subject: str) -> dict:
             "size_m": list(part.size),
             "rotation_rad": list(part.rotation),
         }
-        if part.group in DYNAMIC_GROUPS:
+        if part.group in DYNAMIC_GROUPS and part.role in DYNAMIC_COLLIDER_ROLES:
             item["default_state"] = "closed"
             item["collision_policy"] = "W05_STATE_DRIVEN_PENDING"
             dynamic.append(item)
