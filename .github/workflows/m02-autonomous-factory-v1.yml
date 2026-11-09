@@ -47,9 +47,7 @@ jobs:
   blender-candidate:
     needs: contracts
     if: >-
-      (github.event_name != 'pull_request' ||
-       (github.event.pull_request.head.repo.full_name == github.repository &&
-        github.head_ref == 'codex/m02-autonomous-asset-factory-v1')) &&
+      github.event_name != 'pull_request' &&
       (github.event_name != 'repository_dispatch' || github.actor == 'kalashgit') &&
       (github.event_name != 'repository_dispatch' || github.event.client_payload.asset == 'f01-refrigerator')
     runs-on: ${{ inputs.runner == 'isolated-self-hosted' && fromJSON('["self-hosted","linux","x64","last-light-isolated-blender"]') || fromJSON('"ubuntu-latest"') }}
@@ -58,6 +56,13 @@ jobs:
       OUTPUT: build/m02_f01_v1
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout immutable F12 specialist atlas tools
+        uses: actions/checkout@v4
+        with:
+          repository: kalashgit/last-light-godot
+          ref: eba8e2c6d78bbc41b2de413d176d805b6c288337
+          path: m02-pinned-f12
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -86,6 +91,12 @@ jobs:
         run: |
           python3 -m pip install 'Pillow>=10,<13'
           python3 tools/autonomous_factory/qa_views.py "$OUTPUT/views"
+          PYTHONPATH="$PWD" python3 tools/autonomous_factory/prepare_f12_atlas.py "$OUTPUT/f12_calibrated"
+          python3 m02-pinned-f12/tools/factory/render_bridge/inspect_pngs.py \
+            "$OUTPUT/f12_calibrated/atlas_input.json" --source-dir "$OUTPUT/f12_calibrated" --margin 4
+          python3 m02-pinned-f12/tools/factory/render_bridge/compose_atlas.py \
+            "$OUTPUT/f12_calibrated/atlas_input.json" --source-dir "$OUTPUT/f12_calibrated" \
+            --output-dir "$OUTPUT/f12_atlas" --page-size 1024 --padding 2
           python3 tools/autonomous_factory/qa_shared.py "$OUTPUT"
       - name: Capture source, preview, hashes, logs, and defect evidence
         if: always()

@@ -2,6 +2,7 @@ import copy
 import unittest
 
 from tools.autonomous_factory.qa_shared import F12_SHA, check_f12_report
+from tools.autonomous_factory.prepare_f12_atlas import adapt
 
 
 BASE = {
@@ -20,12 +21,29 @@ BASE = {
 
 
 class SharedF11F12ContractTests(unittest.TestCase):
+    def test_f12_specialist_atlas_handoff_schema(self):
+        candidate = copy.deepcopy(BASE)
+        for frame in candidate["frames"]:
+            frame["file"] = f"f12_cal01_{frame['degrees']:03d}.png"
+            frame["sha256"] = "a" * 64
+        result = adapt(candidate)
+        self.assertEqual([f["direction"] for f in result["frames"]], [0, 4, 8, 12])
+        self.assertEqual([f["clip"] for f in result["frames"]], ["idle_calibration"] * 4)
+        self.assertIs(result["founder_approved"], False)
+
     def test_exact_calibration_contract(self):
         check_f12_report(copy.deepcopy(BASE))
 
     def test_reject_bad_projection(self):
         report = copy.deepcopy(BASE)
         report["measured_basis_px"][0][0] += .02
+        with self.assertRaises(ValueError):
+            check_f12_report(report)
+
+    def test_reject_nonfinite_projection(self):
+        report = copy.deepcopy(BASE)
+        report["measured_basis_px"][0][0] = float("nan")
+        report["max_absolute_residual_px"] = float("nan")
         with self.assertRaises(ValueError):
             check_f12_report(report)
 

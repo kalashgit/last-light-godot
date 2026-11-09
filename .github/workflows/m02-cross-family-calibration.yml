@@ -10,7 +10,6 @@ on:
     branches: ['codex/m02-autonomous-asset-factory-v1']
     paths:
       - '.github/workflows/m02-cross-family-calibration.yml'
-      - 'tools/autonomous_factory/**'
   workflow_dispatch:
 
 permissions:
@@ -22,10 +21,9 @@ concurrency:
 
 jobs:
   specialist-evidence:
-    if: >-
-      github.event_name != 'pull_request' ||
-      (github.event.pull_request.head.repo.full_name == github.repository &&
-       github.head_ref == 'codex/m02-autonomous-asset-factory-v1')
+    # Heavy engines run once per trusted feature-branch push or founder dispatch.
+    # PR events are for read-only metadata review, not duplicate 5-way rendering.
+    if: github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       max-parallel: 2
