@@ -125,12 +125,12 @@ def build_geometry(actor, clip, frame, settings):
             m["hair"], "body", "base")
     # Real original facial geometry, not flat decals or copied facial textures.
     for sign in (-1, 1):
-        ellipse("BODY eye " + str(sign), (sign*.065, torso_y-.194, 1.695*r),
+        ellipse("BODY eye " + str(sign), (sign*.065, torso_y-.115, 1.695*r),
                 (.021, .012, .029*r), m["eyes"], "body", "base")
     if actor["kind"] == "zombie":
-        ellipse("INFECTED exposed cheek lesion", (.09, torso_y-.192, 1.625*r),
+        ellipse("INFECTED exposed cheek lesion", (.09, torso_y-.122, 1.625*r),
                 (.067, .019, .078*r), m["wound"], "body", "base")
-        ellipse("INFECTED broken brow", (-.062, torso_y-.200, 1.733*r),
+        ellipse("INFECTED broken brow", (-.062, torso_y-.120, 1.733*r),
                 (.062, .014, .022*r), m["wound"], "body", "base")
     for sign in (-1, 1):
         x = sign * .12
@@ -197,6 +197,12 @@ def build_geometry(actor, clip, frame, settings):
                and "ll_layer_slot" in o]
     if len(objects) < 25:
         raise RuntimeError("missing original geometry")
+    # Preserve weighted face normals on Blender 4.0 rather than silently
+    # accepting its repeated auto-smooth warnings. Blender 4.1+ no longer
+    # exposes this property, so fall back safely on the native shader.
+    for obj in objects:
+        if hasattr(obj.data, "use_auto_smooth"):
+            obj.data.use_auto_smooth = True
     root = bpy.data.objects.new("LL_BIPED_V1_SHARED_RIG_ROOT", None)
     bpy.context.collection.objects.link(root)
     for obj in objects:
