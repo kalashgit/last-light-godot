@@ -1,0 +1,69 @@
+name: F12 Blender Calibration and Sprite Contracts
+on:
+  push:
+    branches:
+      - chatgpt/f12-clean-blender-ci-20261109
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+  pull_request:
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Compile Python source
+        run: python -m compileall -q tools/factory/render_bridge tests/factory/render_bridge
+      - name: Run F12 contracts
+        run: python -m unittest discover -s tests/factory/render_bridge -v
+
+  blender-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          python -m pip install 'Pillow>=10,<13'
+      - name: Capture Blender version
+        run: blender --version | head -n 2
+      - name: Render genuine CAL-01 fixture
+        run: |
+          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/calibrate.py -- --output "$RUNNER_TEMP/f12-calibration"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_calibration_only.blend"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_cube_rgba.png"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_report.json"
+      - name: Verify actual Blender render and calibrated report
+        env:
+          F12_CAL_REPORT: ${{ runner.temp }}/f12-calibration/CAL-01_report.json
+        run: |
+          python -m unittest discover -s tests/factory/render_bridge -p test_calibration.py -v
+      - name: Upload calibration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-cal01-real-blender-evidence
+          path: ${{ runner.temp }}/f12-calibration/
+          if-no-files-found: warn
+          retention-days: 7
