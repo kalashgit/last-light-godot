@@ -120,3 +120,12 @@ def torso_sections(physique_width, garment=False):
     return [(0.0, 0.0, z, rx * physique_width * fit,
              ry * physique_width * fit, influence)
             for z, rx, ry, influence in rows]
+
+
+def collar_sections(physique_width):
+    """Raised fabric crew collar, three rings, following upper chest and neck."""
+    return [
+        (0, 0, 1.470, .126 * physique_width, .110 * physique_width, .02),
+        (0, 0, 1.494, .121 * physique_width, .106 * physique_width, .36),
+        (0, 0, 1.516, .113 * physique_width, .100 * physique_width, .78),
+    ]
