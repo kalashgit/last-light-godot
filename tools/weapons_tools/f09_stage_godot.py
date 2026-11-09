@@ -14,6 +14,17 @@ def main():
         'renderer/rendering_method.mobile="gl_compatibility"\n')
     (DST/"fixture.gd").write_text(
         (ROOT/"tools"/"weapons_tools"/"f09_godot_fixture.gd").read_text())
+    # Reuse the real LAST LIGHT gameplay source, without changing it.
+    # This is an isolated copy, not the main game's running scene.
+    shutil.copytree(ROOT/"scripts",DST/"scripts",dirs_exist_ok=True)
+    shutil.copytree(ROOT/"data",DST/"data",dirs_exist_ok=True)
+    shutil.copyfile(ROOT/"main.tscn",DST/"main.tscn")
+    (DST/"main_game_fixture.gd").write_text(
+        (ROOT/"tools"/"weapons_tools"/"f09_main_game_fixture.gd").read_text())
+    (DST/"f09_candidate_16_heading_atlas.png").write_bytes(
+        (SRC/"f09_candidate_16_heading_atlas.png").read_bytes())
+    (DST/"f09_candidate_16_heading_atlas.json").write_bytes(
+        (SRC/"f09_candidate_16_heading_atlas.json").read_bytes())
     for ident in IDS:
         source=SRC/ident
         out=DST/"sprites"/ident
