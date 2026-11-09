@@ -138,10 +138,21 @@ def bake_auxiliary(mesh,folder):
         links.new(separate.outputs["Blue"],bsdf.inputs["Metallic"])
         normal_tex=nodes.new("ShaderNodeTexImage")
         normal_tex.image=normal
-        # glTF exporter recognizes this named node-group input as AO.\n        group=bpy.data.node_groups.get("glTF Settings")\n        if group is None:\n            group=bpy.data.node_groups.new("glTF Settings","ShaderNodeTree")\n            group.interface.new_socket(name="Occlusion",in_out="INPUT",\n                                       socket_type="NodeSocketFloat")\n        settings=nodes.new("ShaderNodeGroup")\n        settings.node_tree=group\n        links.new(separate.outputs["Red"],settings.inputs["Occlusion"])\n        normal_node=nodes.new("ShaderNodeNormalMap")
+        # glTF exporter recognizes this named node-group input as AO.
+        group=bpy.data.node_groups.get("glTF Settings")
+        if group is None:
+            group=bpy.data.node_groups.new("glTF Settings","ShaderNodeTree")
+            group.interface.new_socket(name="Occlusion",in_out="INPUT",
+                                       socket_type="NodeSocketFloat")
+        settings=nodes.new("ShaderNodeGroup")
+        settings.node_tree=group
+        links.new(separate.outputs["Red"],settings.inputs["Occlusion"])
+        normal_node=nodes.new("ShaderNodeNormalMap")
         links.new(normal_tex.outputs["Color"],normal_node.inputs["Color"])
         links.new(normal_node.outputs["Normal"],bsdf.inputs["Normal"])
-    return {"ambient_occlusion":"ambient_occlusion_baked.png",\n            "ao_channel":"REAL_CYCLES_AO_BAKE",\n            "roughness":"roughness_baked.png","metallic":"metallic_baked.png",
+    return {"ambient_occlusion":"ambient_occlusion_baked.png",
+            "ao_channel":"REAL_CYCLES_AO_BAKE",
+            "roughness":"roughness_baked.png","metallic":"metallic_baked.png",
             "orm":"occlusion_roughness_metallic.png",
             "normal":"normal_tangent_baked.png",
             "pbr_map_resolution":[512,512],
