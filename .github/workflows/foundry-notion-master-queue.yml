@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'data/foundry/notion_asset_snapshot_v1.json'
+      - 'data/foundry/deferred_candidates_v1.json'
       - 'tools/foundry_notion/**'
       - 'tests/foundry_notion/**'
       - '.github/workflows/foundry-notion-master-queue.yml'
@@ -35,6 +36,7 @@ jobs:
         run: |
           python tools/foundry_notion/catalog.py \
             --catalog data/foundry/notion_asset_snapshot_v1.json \
+            --deferred data/foundry/deferred_candidates_v1.json \
             --batch-size 4 \
             --output build/foundry_notion/next_work_orders.json
       - name: Archive the candidate-only work-order evidence
