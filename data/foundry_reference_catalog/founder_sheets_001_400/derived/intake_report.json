@@ -1,0 +1,23 @@
+{
+  "actual_3d_models_generated_by_intake": 0,
+  "canonical_or_production_admitted": 0,
+  "collection_id": "LAST_LIGHT_FOUNDER_STYLE_REFERENCES_20261110",
+  "golden_3d_approved": 0,
+  "pictured_reference_count": 390,
+  "recipe_authoring_work_orders": 390,
+  "schema_version": 1,
+  "sheet_count": 8,
+  "status": "REFERENCE_TRANSFERRED_AUTHORING_PENDING",
+  "unpictured_slots": [
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200
+  ]
+}
