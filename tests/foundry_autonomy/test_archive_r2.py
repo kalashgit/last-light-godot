@@ -73,6 +73,24 @@ class ArchiveTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             mod.archive_to_r2(self.store, self.path, BUCKET,
                               "foundry-360-source-v1", "legacy-360")
+        with self.assertRaises(ValueError):
+            mod.archive_to_r2(self.store, self.path, BUCKET,
+                              "foundry-legacy360-run-42460745955", "legacy-360")
+
+    def test_source_class_rejects_cross_class_artifact_ref(self):
+        with self.assertRaisesRegex(ValueError, "mismatch"):
+            mod.archive_to_r2(self.store, self.path, BUCKET,
+                              "foundry-legacy360-run-42460745955", "created-candidates")
+
+    def test_workflow_uses_real_pinned_artifact_and_full_readback(self):
+        workflow = (ROOT / ".github/workflows/foundry-archive-r2-verified.yml").read_text()
+        self.assertIn("artifact_id='13609641055'", workflow)
+        self.assertIn("run_id='42460745955'", workflow)
+        self.assertIn("0336fe22715835aee0f676e4ef825dfe8d43cc5c20c1ba78298255309cb37d4a", workflow)
+        self.assertIn("gh run download", workflow)
+        self.assertIn("actions: read", workflow)
+        self.assertIn("sha256sum --check --status", workflow)
+        self.assertIn("FOUNDRY_R2_ARCHIVE_ENABLED == 'true'", workflow)
 
     def test_readback_detects_object_corruption(self):
         class Corrupt(Store):
