@@ -1,4 +1,6 @@
 """Original deterministic F01 PBR shader calibration recipes; F11 review pending."""
+import math
+from pathlib import Path
 import bpy
 
 
@@ -33,7 +35,45 @@ def wood_grain(name,light=(.39,.24,.12),dark=(.18,.095,.045),axis="Z"):
     return mat
 
 
-def enamel(name,base=(.49,.55,.53)):
+def _original_enamel_maps(folder,base,size=256):
+    """Create 2 portable PNG channels, no external imagery or random state.
+
+    Fine-frequency wear is intentionally quiet. Large painted panels must read
+    as manufactured enamel at 128px rather than noisy stone or fabric.
+    """
+    folder=Path(folder)
+    folder.mkdir(parents=True,exist_ok=True)
+    color_pixels=[]
+    rough_pixels=[]
+    for y in range(size):
+        for x in range(size):
+            u=x/size;v=y/size
+            broad=math.sin(2*math.pi*(u*3.0+v*.35))*.40 + math.cos(2*math.pi*(v*5.0-u*.22))*.24
+            fine=math.sin(2*math.pi*(u*41.0+v*15.0))*.13
+            edge=math.sin(2*math.pi*(u-v)*2.0)*.12
+            wear=broad+fine+edge
+            factor=1.0+wear*.025
+            color_pixels.extend([max(0,min(1,c*factor)) for c in base]+[1.0])
+            rough=.41+wear*.025
+            rough_pixels.extend((rough,rough,rough,1.0))
+    results={}
+    for tag,pixels,is_color in (("basecolor",color_pixels,True),("roughness",rough_pixels,False)):
+        image=bpy.data.images.new("F01 original enamel "+tag,width=size,height=size,alpha=True)
+        # Changing color space AFTER filling image pixels silently zeroes the
+        # RGB buffer in Blender 4.0. Configure it before foreach_set().
+        image.colorspace_settings.name="sRGB" if is_color else "Non-Color"
+        image.pixels.foreach_set(pixels)
+        assert image.pixels[0]>.3, "Enamel pixels were cleared before PNG save"
+        image.update()
+        image.file_format="PNG"
+        image.filepath_raw=str(folder/(f"f01_original_enamel_{tag}.png"))
+        image.save()
+        image.pack()
+        results[tag]=image
+    return results
+
+
+def enamel(name,base=(.49,.55,.53),texture_folder=None):
     mat=bpy.data.materials.new(name);mat.use_nodes=True
     nodes=mat.node_tree.nodes;nodes.clear();links=mat.node_tree.links
     out=nodes.new("ShaderNodeOutputMaterial")
@@ -59,4 +99,11 @@ def enamel(name,base=(.49,.55,.53)):
     range_node.inputs["To Max"].default_value=.51
     links.new(noise.outputs["Fac"],range_node.inputs["Value"])
     links.new(range_node.outputs["Result"],p.inputs["Roughness"])
+    if texture_folder is not None:
+        maps=_original_enamel_maps(texture_folder,base)
+        for tag,input_name in (("basecolor","Base Color"),("roughness","Roughness")):
+            image_node=nodes.new("ShaderNodeTexImage")
+            image_node.label="F01 original baked "+tag
+            image_node.image=maps[tag]
+            links.new(image_node.outputs["Color"],p.inputs[input_name])
     return mat
