@@ -1,0 +1,179 @@
+name: Foundry original editable model factory
+on:
+  pull_request:
+    paths: ['tools/foundry_creation/**','tests/foundry_creation/**','tools/foundry_mass/finalize.py','.github/workflows/foundry-create-new-3d-models.yml']
+  schedule:
+    - cron: '08 * * * *'
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        type: choice
+        options: ['1','2','3','4']
+        default: '2'
+permissions:
+  contents: read
+concurrency:
+  group: foundry-originals-${{ github.event_name == 'pull_request' && github.head_ref || 'production' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      has_work: ${{ steps.check.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: check
+        run: |
+          mkdir -p build/foundry_created
+          if [[ "$GITHUB_EVENT_NAME" != 'pull_request' ]] && git ls-remote --exit-code --heads origin foundry/generated-sources-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/generated-sources-v1:refs/remotes/origin/foundry/generated-sources-v1
+            git show origin/foundry/generated-sources-v1:foundry_creation/state.json > build/foundry_created/state.json
+          fi
+          args=()
+          if test -f build/foundry_created/state.json; then args+=(--state build/foundry_created/state.json); fi
+          python3 tools/foundry_creation/plan.py "${args[@]}" --batch-size 1 --output build/foundry_created/check.json
+          python3 -c "import json,os; p=json.load(open('build/foundry_created/check.json'));f=open(os.environ['GITHUB_OUTPUT'],'a');print('has_work='+str(bool(p['selected'])).lower(),file=f)"
+  tests:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - run: python -m unittest discover -s tests/foundry_creation -v
+      - run: python -m unittest discover -s tests/foundry_mass -v
+  smoke-all-eight-recipes:
+    if: github.event_name == 'pull_request'
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13'
+      - name: Create ALL eight editable Blender archetypes and GLBs
+        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_creation/smoke_all_recipes.py -- --output build/recipe-smoke/sources
+      - name: Actually render 16 headings for each of the 8 archetypes
+        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- --plan build/recipe-smoke/sources/render_plan.json --output build/recipe-smoke/views --resolution 128 --samples 2 --lighting-mode studio
+      - name: Verify atlas framing and source provenance for 8 distinct models
+        run: |
+          python tools/foundry_mass/finalize.py --plan build/recipe-smoke/sources/render_plan.json --views build/recipe-smoke/views --output build/recipe-smoke/candidates --run-id "$GITHUB_RUN_ID"
+          python -c "import json; r=json.load(open('build/recipe-smoke/candidates/batch_report.json'));assert r['batch_count']==8 and all(x['distinct_heading_images']>=4 for x in r['generated']) and not r['golden_approved']"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-eight-archetype-visual-smoke-${{ github.run_id }}
+          path: build/recipe-smoke/candidates/
+          retention-days: 7
+          if-no-files-found: error
+
+  blender-create:
+    needs: [preflight, tests]
+    if: always() && needs.preflight.result == 'success' && needs.preflight.outputs.has_work == 'true' && (needs.tests.result == 'success' || needs.tests.result == 'skipped') && (github.event_name != 'workflow_dispatch' || github.actor == 'kalashgit')
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    permissions:
+      contents: read
+    env:
+      BATCH: ${{ github.event_name == 'pull_request' && '1' || inputs.batch_size || '2' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Blender and NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13'
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import numpy; print(numpy.__version__)'
+      - name: Read current completion cursor
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p build/foundry_created
+          if git ls-remote --exit-code --heads origin foundry/generated-sources-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/generated-sources-v1:refs/remotes/origin/foundry/generated-sources-v1
+            git show origin/foundry/generated-sources-v1:foundry_creation/state.json > build/foundry_created/state.json
+          fi
+      - name: Plan next ORIGINAL editable models
+        run: |
+          if test -f build/foundry_created/state.json; then
+            python tools/foundry_creation/plan.py --state build/foundry_created/state.json --output build/foundry_created/generator_plan.json --batch-size "$BATCH"
+          else
+            python tools/foundry_creation/plan.py --output build/foundry_created/generator_plan.json --batch-size "$BATCH"
+          fi
+      - name: Generate real Blender meshes and editable sources
+        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_creation/generate.py -- --plan build/foundry_created/generator_plan.json --output build/foundry_created/sources
+      - name: Render 16 real isometric sprites from the new GLBs
+        run: blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- --plan build/foundry_created/sources/render_plan.json --output build/foundry_created/views --resolution 192 --samples 4 --lighting-mode studio
+      - name: Validate and assemble atlas
+        run: python tools/foundry_mass/finalize.py --plan build/foundry_created/sources/render_plan.json --views build/foundry_created/views --output build/foundry_created/candidates --run-id "$GITHUB_RUN_ID"
+      - name: Bundle new editable blend and glb source
+        run: python tools/foundry_creation/package.py --plan build/foundry_created/generator_plan.json --report build/foundry_created/candidates/batch_report.json --sources build/foundry_created/sources --atlases build/foundry_created/candidates --output build/foundry_created/release/foundry_new_sources.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-new-editable-models-${{ github.run_id }}
+          path: |
+            build/foundry_created/generator_plan.json
+            build/foundry_created/release/
+          retention-days: 7
+          if-no-files-found: error
+  archive-and-advance:
+    needs: [preflight, tests, blender-create]
+    if: always() && needs.preflight.result == 'success' && needs.blender-create.result == 'success' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: foundry-new-editable-models-${{ github.run_id }}
+          path: build/foundry_created
+      - name: Create immutable DRAFT release for the real source files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="foundry-created-$GITHUB_RUN_ID"
+          gh release create "$tag" build/foundry_created/release/foundry_new_sources.zip --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft --title "Foundry new editable source models $GITHUB_RUN_ID (technical candidate)" --notes "Original procedural Blender masters, GLBs and sprite atlases. NOT GOLDEN."
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft,assets | jq -e '.isDraft == true and (.assets | any(.name == "foundry_new_sources.zip"))'
+      - name: Commit advancement to isolated branch only
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin foundry/generated-sources-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/generated-sources-v1:refs/remotes/origin/foundry/generated-sources-v1
+            git worktree add -b "foundry-record-$GITHUB_RUN_ID" /tmp/foundry-record origin/foundry/generated-sources-v1
+          else
+            git worktree add -b "foundry-record-$GITHUB_RUN_ID" /tmp/foundry-record "$GITHUB_SHA"
+          fi
+          python tools/foundry_creation/publish.py --plan build/foundry_created/generator_plan.json --manifest build/foundry_created/release/package_manifest.json --destination /tmp/foundry-record --release-tag "foundry-created-$GITHUB_RUN_ID"
+          git -C /tmp/foundry-record config user.name 'github-actions[bot]'
+          git -C /tmp/foundry-record config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/foundry-record add foundry_creation
+          git -C /tmp/foundry-record commit -m 'chore(foundry): save new editable model source hashes [skip ci]'
+          git -C /tmp/foundry-record push origin HEAD:refs/heads/foundry/generated-sources-v1

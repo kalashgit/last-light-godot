@@ -12,7 +12,12 @@ def digest(p: Path) -> str:
 def finalize(plan: dict, view_dir: Path, output: Path, run_id: str = "local") -> dict:
     if plan.get("schema_version") != 1 or plan.get("status") not in ("READY", "COMPLETE"):
         raise ValueError("Invalid planner schema")
+    count = plan.get("source_count", 360)
+    if not isinstance(count, int) or not 1 <= count <= 10000:
+        raise ValueError("Invalid bounded source-count")
     completed = list(plan["completed_before"])
+    if len(completed) + len(plan.get("selected", [])) > count:
+        raise ValueError("Source completion exceeds catalog")
     output.mkdir(parents=True, exist_ok=True)
     reviews = []
     for asset in plan["selected"]:
@@ -62,15 +67,15 @@ def finalize(plan: dict, view_dir: Path, output: Path, run_id: str = "local") ->
         reviews.append(record)
         completed.append(ident)
     proposal = {
-        "schema_version":1,"source_plan_sha256":plan["source_plan_sha256"],
+        "schema_version":1,"source_count":count,"source_plan_sha256":plan["source_plan_sha256"],
         "completed":completed,"last_run_id":str(run_id),
-        "golden_approved":False, "remaining":360-len(completed),
+        "golden_approved":False, "remaining":count-len(completed),
     }
     (output / "next_state.json").write_text(json.dumps(proposal, indent=2) + "\n")
     report = {
-        "run_id":str(run_id), "source_plan_sha256":plan["source_plan_sha256"],
+        "run_id":str(run_id), "source_count":count, "source_plan_sha256":plan["source_plan_sha256"],
         "batch_count":len(reviews),"completed_total":len(completed),
-        "remaining":360-len(completed),"generated":reviews,
+        "remaining":count-len(completed),"generated":reviews,
         "golden_approved":False,"technical_candidate_only":True,
     }
     (output / "batch_report.json").write_text(json.dumps(report, indent=2) + "\n")

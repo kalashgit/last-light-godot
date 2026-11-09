@@ -13,7 +13,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-def scene_for(asset: dict, resolution: int, samples: int):
+def scene_for(asset: dict, resolution: int, samples: int, lighting_mode: str = "legacy"):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=asset["glb_path"])
     scene = bpy.context.scene
@@ -51,8 +51,8 @@ def scene_for(asset: dict, resolution: int, samples: int):
 
     world = bpy.data.worlds.new("FOUNDry_Neutral_Fill")
     world.use_nodes = True
-    world.node_tree.nodes.get("Background").inputs["Color"].default_value = (0.25, 0.26, 0.29, 1)
-    world.node_tree.nodes.get("Background").inputs["Strength"].default_value = 0.5
+    world.node_tree.nodes.get("Background").inputs["Color"].default_value = (0.54, 0.56, 0.58, 1) if lighting_mode == "studio" else (0.25, 0.26, 0.29, 1)
+    world.node_tree.nodes.get("Background").inputs["Strength"].default_value = 0.85 if lighting_mode == "studio" else 0.5
     scene.world = world
 
     cam_data = bpy.data.cameras.new("FOUNDry_Iso")
@@ -69,13 +69,22 @@ def scene_for(asset: dict, resolution: int, samples: int):
     light_data = bpy.data.lights.new("FOUNDry_Upper_Left", "AREA")
     light = bpy.data.objects.new("FOUNDry_Upper_Left", light_data)
     scene.collection.objects.link(light)
-    light_data.energy = 450
+    light_data.energy = 1800 if lighting_mode == "studio" else 450
     light_data.shape = "DISK"
     light_data.size = max(2, diagonal * 1.5)
-    return scene, cam, light, dims
+    fill = None
+    if lighting_mode == "studio":
+        scene.view_settings.exposure = 0.3
+        fill_data = bpy.data.lights.new("FOUNDry_Studio_Bounce", "AREA")
+        fill = bpy.data.objects.new("FOUNDry_Studio_Bounce", fill_data)
+        scene.collection.objects.link(fill)
+        fill_data.energy = 480
+        fill_data.shape = "DISK"
+        fill_data.size = max(2, diagonal * 1.8)
+    return scene, cam, light, fill, dims
 
-def render_asset(asset: dict, root: Path, resolution: int, samples: int):
-    scene, cam, light, dims = scene_for(asset, resolution, samples)
+def render_asset(asset: dict, root: Path, resolution: int, samples: int, lighting_mode: str = "legacy"):
+    scene, cam, light, fill, dims = scene_for(asset, resolution, samples, lighting_mode)
     folder = root / asset["asset_id"]
     folder.mkdir(parents=True, exist_ok=True)
     target = Vector((0, 0, dims.z * 0.5))
@@ -90,12 +99,15 @@ def render_asset(asset: dict, root: Path, resolution: int, samples: int):
         # Light follows screen-space upper-left as camera changes heading.
         light.location = target + facing * 4 - right * 3 + Vector((0, 0, 7))
         light.rotation_euler = (target - light.location).to_track_quat("-Z", "Y").to_euler()
+        if fill:
+            fill.location = target - facing * 3 + right * 4 + Vector((0, 0, 5))
+            fill.rotation_euler = (target - fill.location).to_track_quat("-Z", "Y").to_euler()
         scene.render.filepath = str((folder / f"{heading:02d}.png").resolve())
         bpy.ops.render.render(write_still=True)
     (folder / "render_metadata.json").write_text(json.dumps({
         "asset_id": asset["asset_id"], "frames": 16,
         "resolution": resolution, "samples": samples,
-        "engine": "CYCLES_CPU",
+        "engine": "CYCLES_CPU", "lighting_mode": lighting_mode,
         "actual_heading_degrees": [i * 22.5 for i in range(16)],
         "source_sha256": asset["glb_sha256"], "diagnostic": True,
         "f11_approved": False, "f12_world_scale_approved": False,
@@ -110,6 +122,7 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--resolution", type=int, default=192)
     p.add_argument("--samples", type=int, default=4)
+    p.add_argument("--lighting-mode", choices=("legacy", "studio"), default="legacy")
     opt = p.parse_args(argv)
     if opt.resolution not in (128, 192, 256) or not 1 <= opt.samples <= 16:
         raise ValueError("Render budget outside approved envelope")
@@ -117,7 +130,7 @@ def main():
     if plan.get("schema_version") != 1 or plan.get("status") not in ("READY", "COMPLETE"):
         raise ValueError("Invalid Foundry source plan")
     for asset in plan["selected"]:
-        render_asset(asset, opt.output, opt.resolution, opt.samples)
+        render_asset(asset, opt.output, opt.resolution, opt.samples, opt.lighting_mode)
 
 if __name__ == "__main__":
     main()
