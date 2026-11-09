@@ -41,6 +41,11 @@ class TestFoundryCorrection(unittest.TestCase):
             run[field]["full_name"] = "someone/untrusted"
             self.assertFalse(worker.eligible(run).allowed)
 
+    def test_missing_head_repository_fails_closed(self):
+        run = copy.deepcopy(RUN)
+        run.pop("head_repository", None)
+        self.assertFalse(worker.eligible(run).allowed)
+
     def test_no_untrusted_branches(self):
         run = copy.deepcopy(RUN)
         run["head_branch"] = "main"
