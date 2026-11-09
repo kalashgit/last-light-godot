@@ -117,7 +117,13 @@ def verify(root: Path, contact: bool = True) -> dict:
         draw = ImageDraw.Draw(contact_sheet)
         for i, heading in enumerate(HEADING_ORDER):
             composed = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-            for slot, item in (ITEMS[0], ITEMS[1], ITEMS[2], ITEMS[4]):
+            # Direction-aware compositor: the rear pack renders UNDER the torso
+            # in frontal views and OVER it from behind. Synthetic preview and
+            # the real Godot runtime must use the same relative layer ordering.
+            order = ((ITEMS[4], ITEMS[0], ITEMS[1], ITEMS[2])
+                     if heading in ("front", "front_right", "front_left")
+                     else (ITEMS[0], ITEMS[1], ITEMS[2], ITEMS[4]))
+            for slot, item in order:
                 with Image.open(entries[(slot, item, "idle", heading, 0)]) as frame:
                     composed.alpha_composite(frame)
             bg = Image.new("RGBA", (w, h), (78, 80, 79, 255))
