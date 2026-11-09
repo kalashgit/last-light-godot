@@ -76,7 +76,7 @@ func _valid_spec(spec: Dictionary) -> bool:
     if not spec.get("slots") is Array or not spec.get("animations") is Dictionary:
         return false
     var slots: Array = spec["slots"]
-    if slots.is_empty() or slots.size() > ALLOWED_SLOTS.size():
+    if slots.is_empty() or slots.size() > ALLOWED_SLOTS.size() or not slots.has("body"):
         return false
     var seen := {}
     for slot in slots:
@@ -120,15 +120,13 @@ func _sheet_key(slot: String, item_id: String, anim: String) -> String:
     return JSON.stringify([slot, item_id, anim])
 
 func equip(slot: String, item_id: String) -> bool:
-    if not _sprites.has(slot):
+    if not _sprites.has(slot) or (slot == "body" and item_id.is_empty()):
         return false
-    if item_id != "":
-        var found := false
+    if not item_id.is_empty():
+        # A playable item must have every clip, or it would disappear on state change.
         for anim_id in _spec["animations"]:
-            if _sheets.has(_sheet_key(slot, item_id, anim_id)):
-                found = true
-        if not found:
-            return false
+            if not _sheets.has(_sheet_key(slot, item_id, anim_id)):
+                return false
     _equipped[slot] = item_id
     _apply_frame()
     return true
@@ -200,3 +198,60 @@ func equipped_id(slot: String) -> String:
 
 func layer(slot: String) -> Sprite2D:
     return _sprites.get(slot, null)
+
+func snapshot_state() -> Dictionary:
+    if _spec.is_empty():
+        return {}
+    return {
+        "schema": "last-light.paperdoll.state.v1",
+        "asset_id": _spec["asset_id"],
+        "equipped": _equipped.duplicate(true),
+        "animation": animation,
+        "heading": heading,
+        "frame": frame,
+        "playing": playing
+    }
+
+
+func restore_state(state: Dictionary) -> bool:
+    ## Atomic validation: a malicious or stale save must not strip clothing.
+    if _spec.is_empty() or state.get("schema", "") != "last-light.paperdoll.state.v1":
+        return false
+    if state.get("asset_id", "") != _spec["asset_id"]:
+        return false
+    if not state.get("equipped") is Dictionary:
+        return false
+    var choices: Dictionary = state["equipped"]
+    if choices.size() != _sprites.size():
+        return false
+    for slot in _sprites:
+        if not choices.has(slot) or not choices[slot] is String:
+            return false
+        var selected: String = choices[slot]
+        if slot == "body" and selected.is_empty():
+            return false
+        if not selected.is_empty():
+            for clip in _spec["animations"]:
+                if not _sheets.has(_sheet_key(slot, selected, clip)):
+                    return false
+    if not state.get("animation") is String:
+        return false
+    var clip: String = state["animation"]
+    if not _spec["animations"].has(clip):
+        return false
+    if not state.get("heading") is int or not state.get("frame") is int:
+        return false
+    if not state.get("playing") is bool:
+        return false
+    if state["heading"] < 0 or state["heading"] >= int(_spec["directions"]):
+        return false
+    if state["frame"] < 0 or state["frame"] >= int(_spec["animations"][clip]["frames"]):
+        return false
+    _equipped = choices.duplicate(true)
+    animation = clip
+    heading = state["heading"]
+    frame = state["frame"]
+    playing = state["playing"]
+    _elapsed = 0.0
+    _apply_frame()
+    return true
