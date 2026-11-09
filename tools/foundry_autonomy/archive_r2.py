@@ -15,7 +15,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 SOURCE_CLASSES = frozenset({"legacy-360", "created-candidates"})
-RELEASE_TAG = re.compile(r"(?:foundry-360-source-v1|foundry-created-[0-9]{1,18})\Z")
+RELEASE_TAG = re.compile(r"(?:foundry-360-source-v1|foundry-legacy360-run-42460745955|foundry-created-[0-9]{1,18})\Z")
 BUCKET = re.compile(r"last-light-foundry-[a-z0-9-]{3,45}\Z")
 
 
@@ -92,12 +92,17 @@ def archive_to_r2(client, path: Path, bucket: str, tag: str, source_class: str) 
         raise ValueError("Refuse to use a non-dedicated Foundry bucket")
     if not RELEASE_TAG.fullmatch(tag):
         raise ValueError("Unrecognized immutable release tag")
-    if (source_class == "legacy-360") != (tag == "foundry-360-source-v1"):
+    legacy_refs = {"foundry-360-source-v1", "foundry-legacy360-run-42460745955"}
+    if (source_class == "legacy-360") != (tag in legacy_refs):
         raise ValueError("Source class/release mismatch")
     inventory = inspect_zip(path, source_class)
     key = f"original-sources/{source_class}/{tag}/{inventory['sha256']}.zip"
-    metadata = {"sha256": inventory["sha256"], "github-release": tag,
+    metadata = {"sha256": inventory["sha256"], "github-source-ref": tag,
                 "art-status": "technical-candidate-not-golden"}
+    if tag == "foundry-legacy360-run-42460745955":
+        metadata["github-actions-run"] = "42460745955"
+    else:
+        metadata["github-release"] = tag
     try:
         remote = client.head_object(Bucket=bucket, Key=key)
     except Exception as exc:
