@@ -89,6 +89,22 @@ class ArchiveTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             mod.inspect_zip(self.path, "created-candidates")
 
+    def test_rejects_fake_editable_sources_even_with_valid_zip_crc(self):
+        for bad_member in ("model.blend", "model.glb"):
+            with self.subTest(bad_member=bad_member):
+                with zipfile.ZipFile(self.path, "w") as z:
+                    z.writestr("assets/model.blend", b"NOTBLENDER" if bad_member.endswith(".blend") else b"BLENDER" + b"0" * 10)
+                    z.writestr("assets/model.glb", b"NOTGLB" if bad_member.endswith(".glb") else b"glTF" + b"0" * 10)
+                with self.assertRaisesRegex(ValueError, "signature"):
+                    mod.inspect_zip(self.path, "created-candidates")
+
+    def test_accepts_gzip_compressed_blend_source(self):
+        import gzip
+        with zipfile.ZipFile(self.path, "w") as z:
+            z.writestr("assets/model.blend", gzip.compress(b"BLENDER" + b"0" * 10))
+            z.writestr("assets/model.glb", b"glTF" + b"0" * 10)
+        self.assertEqual(mod.inspect_zip(self.path, "created-candidates")["blend_files"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
