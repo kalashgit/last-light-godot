@@ -1,0 +1,41 @@
+name: LAST LIGHT 60 Building Neighborhood + H01-H03 House Lab
+
+on:
+  pull_request:
+    paths:
+      - "data/neighborhood/**"
+      - "scripts/neighborhood_showcase_v2.gd"
+      - "scenes/neighborhood_showcase_v2.tscn"
+      - "tests/neighborhood/**"
+      - ".github/workflows/neighborhood-showcase-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neighborhood-v2-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  neighborhood-contract-and-godot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate exact 60 Notion building types and full 3-house room plans
+        run: python -m unittest discover -s tests/neighborhood -p "test_*.py" -v
+      - name: Install actual pinned Godot 4.3
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" \
+            --output /tmp/godot43.zip
+          unzip -q /tmp/godot43.zip -d /tmp/godot43
+          chmod +x /tmp/godot43/Godot_v4.3-stable_linux.x86_64
+          /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Load the REAL Godot scene and exercise three houses + city overview
+        run: |
+          timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/smoke_showcase.gd
