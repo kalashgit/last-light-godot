@@ -22,6 +22,10 @@ from hero_hatchback import build
 MOVING = {
     "door_skin": "F10 HERO connected left front door exterior",
     "door_inner_card": "LL FLEET F10 HERO driver door inner padded card",
+    "door_upholstery": "LL FLEET F10 HERO driver door upholstered inset",
+    "door_storage": "LL FLEET F10 HERO driver door lower storage pocket",
+    "door_armrest": "LL FLEET F10 HERO driver door inner armrest",
+    "door_pull_handle": "LL FLEET F10 HERO driver door pull handle",
     "door_front_edge": "LL FLEET F10 HERO driver door front edge thickness",
     "door_window": "F10 HERO inset front door pane",
 }
