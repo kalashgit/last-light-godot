@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 CITY = json.loads((ROOT / "data/neighborhood/showcase_60_v1.json").read_text())
 LAB = json.loads((ROOT / "data/neighborhood/house_lab_h01_h02_h03_v1.json").read_text())
+ROOM_KITS = json.loads((ROOT / "data/neighborhood/modular_room_kits_v1.json").read_text())
 OUT = ROOT / "build/neighborhood-showcase"
 OUT.mkdir(parents=True, exist_ok=True)
 COLORS = {
@@ -133,7 +134,79 @@ def lab_preview():
     img.save(OUT/"h01_h02_h03_rooms_preview.png",optimize=True)
 
 
+def furnished_preview():
+    """Source-data illustration of the new modular fixture recipe, not a game screenshot."""
+    img = Image.new("RGB", (2420, 1310), BG)
+    d = ImageDraw.Draw(img)
+    d.text((28, 17), "LAST LIGHT // MODULAR FURNISHED HOUSE LAB", font=BIG, fill=INK)
+    d.text((28, 58), "Provisional code-built furnishings; room boundaries and F01/F02/F09 fixture slots. NO Golden-approved imagery.",
+           font=MED, fill="#bdcbb8")
+    panels = [
+        (LAB["houses"][0], "rooms", (20, 100), "H01 // OAK STARTER"),
+        (LAB["houses"][1], "rooms", (1220, 100), "H02 // CEDAR GROUND"),
+        (LAB["houses"][1], "upper_rooms", (20, 690), "H02 // CEDAR UPPER"),
+        (LAB["houses"][2], "rooms", (1220, 690), "H03 // BIRCH L-HOUSE + GARAGE"),
+    ]
+    colors = {
+        "living":"#99947d", "kitchen":"#79928e", "bedroom":"#a17e75",
+        "bathroom":"#79959d", "hall":"#ada083", "den":"#99947d",
+        "stairs":"#ae9870", "office":"#8b9688", "garage":"#6e7f7c",
+        "utility":"#827d67", "laundry":"#7e918d", "pantry":"#8b8069",
+        "storage":"#8b8069",
+    }
+    for b, floor, (panel_x,panel_y), title in panels:
+        d.rounded_rectangle((panel_x,panel_y,panel_x+1180,panel_y+575),
+                            radius=20,fill="#1e2d2b",outline="#68796f",width=3)
+        d.text((panel_x+30,panel_y+16), title,font=MED,fill="#e6d4a5")
+        origin=(panel_x+580,panel_y+130)
+        scale=.71
+        floors=b[floor]
+        for room in floors:
+            x,y,w,h=room["rect"]
+            quad(d,[x,y,w,h], colors.get(room["type"],"#938e7b"), origin, scale, outline="#b9b4a4")
+        # Raised furniture is sorted by footprint position, so higher/front objects sit above rear ones.
+        furnishings=[]
+        for room in floors:
+            x,y,w,h=room["rect"]
+            kind=ROOM_KITS["aliases"].get(room["type"],room["type"])
+            for slot in ROOM_KITS["rooms"].get(kind,ROOM_KITS["rooms"]["generic"]):
+                rw=min(slot["size"][0],max(.5,w-.8))
+                rh=min(slot["size"][1],max(.5,h-.8))
+                cx=max(x+rw/2+.15,min(x+w-rw/2-.15,x+w*slot["at"][0]))
+                cy=max(y+rh/2+.15,min(y+h-rh/2-.15,y+h*slot["at"][1]))
+                furnishings.append((cx+cy,cx,cy,rw,rh,slot))
+        for _,cx,cy,w,h,slot in sorted(furnishings):
+            role=slot["role"]
+            tall=role in {"fridge","machine","storage_shelf","display_shelf","medical_cabinet","filing_cabinet"}
+            rise=18 if tall else 9
+            corners=[p_iso(x,y,origin,scale) for x,y in [(cx-w/2,cy-h/2),(cx+w/2,cy-h/2),
+                     (cx+w/2,cy+h/2),(cx-w/2,cy+h/2)]]
+            base="#b1bfc2" if role in {"fridge","stove","washing_machine","sink","toilet"} else ("#927a67" if role in {"bed","sofa","exam_bed"} else "#b6a075")
+            # Shadows, front face and top face echo the provisional Godot drawing recipe.
+            d.polygon([corners[3],corners[2],(corners[2][0],corners[2][1]-rise),
+                       (corners[3][0],corners[3][1]-rise)],fill="#635a52")
+            d.polygon([(corners[1][0],corners[1][1]),corners[2],
+                       (corners[2][0],corners[2][1]-rise),(corners[1][0],corners[1][1]-rise)],fill="#7f7567")
+            d.polygon([(px,py-rise) for px,py in corners],fill=base,outline="#eee2be")
+            if slot.get("interactive"):
+                px,py=p_iso(cx,cy,origin,scale)
+                d.ellipse((px-3,py-rise-3,px+3,py-rise+3),fill="#eeca75")
+        for room in floors:
+            x,y,w,h=room["rect"]
+            px,py=p_iso(x+w/2,y+h/2,origin,scale)
+            d.text((px,py+22),room["type"].upper(),font=SMALL,fill="#f5ead2",anchor="mm",
+                   stroke_width=1,stroke_fill="#24302e")
+        if floor=="rooms":
+            px,py=p_iso(b["front_door"][0]-b["footprint"][0],
+                        b["front_door"][1]-b["footprint"][1],origin,scale)
+            d.ellipse((px-8,py-8,px+8,py+8),fill="#f3ca70",outline="#222c2a",width=2)
+        d.text((panel_x+30,panel_y+535),f"{len(floors)} rooms | {len(furnishings)} provisional fixtures | 0 approved sprites",
+               font=MED,fill="#b6c7bb")
+    img.save(OUT/"furnished_h01_h02_h03_provisional_preview.png",optimize=True)
+
+
 if __name__ == "__main__":
     city_preview()
     lab_preview()
+    furnished_preview()
     print("NEIGHBORHOOD_PREVIEW_CREATED",str(OUT))

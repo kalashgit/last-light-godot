@@ -42,7 +42,13 @@ godot --headless --path . --script res://tests/neighborhood/smoke_showcase.gd
 godot --headless --path . --script res://tests/neighborhood/smoke_modules.gd
 ```
 
-The GitHub workflow `.github/workflows/neighborhood-showcase-v2.yml` installs pinned Godot 4.3, runs both real-scene smoke scripts, runs Python contracts and produces two schematic preview images. No fixture should pass if an unapproved asset claims a Golden status. Real iPhone/Xogot control responsiveness, measured device FPS, input safe areas and final golden artwork **require separate device and founder evidence**.
+The GitHub workflow `.github/workflows/neighborhood-showcase-v2.yml` installs pinned Godot 4.3, runs both real-scene smoke scripts, runs Python contracts and produces three **source-data** preview images (60-archetype district, authored H01–H03 room plans, provisional furnished H01/H02/H03 floor views). These are **not actual Godot screenshots**. No fixture should pass if an unapproved asset claims a Golden status. Real iPhone/Xogot control responsiveness, measured device FPS, input safe areas and final golden artwork **require separate device and founder evidence**.
+
+### Initial reproducible CI evidence
+
+- [GitHub Actions run 42541029317](https://github.com/kalashgit/last-light-godot/actions/runs/42541029317): 12 Python tests `OK`; Godot 4.3 scene `NEIGHBORHOOD_SHOWCASE_PASS`; real Godot module suite `NEIGHBORHOOD_MODULE_PASS`.
+- Observed: 64 deterministic plans; 436 original provisional fixtures; 51 enclosed catalog archetypes with tested entry/exit; 9 outdoor open sites; 3 authored test houses (H02 with two floors); 0 Golden-approved sprite roles.
+- This proves an isolated headless scenario with fixtures and movement contracts. It is **not** a visual acceptance test, final gameplay acceptance test or iPhone hardware test.
 
 ## Next quality gates
 
