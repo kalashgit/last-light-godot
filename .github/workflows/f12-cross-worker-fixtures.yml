@@ -69,9 +69,29 @@ jobs:
           git worktree add --detach "$RUNNER_TEMP/f07-source" FETCH_HEAD
           mkdir -p build/f12-cal03
           git -C "$RUNNER_TEMP/f07-source" rev-parse HEAD > build/f12-cal03/f07-source-commit.txt
-      - name: Render real F07 noncanonical cow geometry at eight headings and three poses
+      - name: Adapt F07's render backend to deterministic CPU Cycles without modifying source checkout
         run: |
-          blender --python-exit-code 3 -b --factory-startup -t 2 --python "$RUNNER_TEMP/f07-source/tools/factory/animals/calibrate.py" -- "$(pwd)/build/f12-cal03" --only cow
+          python - <<'PY'
+          import os,json
+          from pathlib import Path
+          source=Path(os.environ["RUNNER_TEMP"])/"f07-source/tools/factory/animals/calibrate.py"
+          original=source.read_text()
+          needle="scene.render.engine='BLENDER_EEVEE'"
+          assert original.count(needle)==1,"F07 engine site changed; re-audit first"
+          patched=original.replace(needle,"scene.render.engine='CYCLES'\\n    scene.cycles.samples=8\\n    scene.cycles.use_denoising=False")
+          target=Path("build/f12-cal03/f07_cpu_render_adapted.py")
+          target.write_text(patched)
+          (target.parent/"render_backend_adaptation.json").write_text(json.dumps({
+              "source_script":"tools/factory/animals/calibrate.py",
+              "source_branch":"chatgpt/f07-animal-factory-calibration",
+              "changes":["BLENDER_EEVEE to CYCLES","8 CPU samples","denoising disabled"],
+              "geometry_or_rig_changed":False,
+              "canonical_approval":False
+          },indent=2))
+          PY
+      - name: Render real F07 cow geometry eight headings three poses with CPU backend
+        run: |
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python "$(pwd)/build/f12-cal03/f07_cpu_render_adapted.py" -- "$(pwd)/build/f12-cal03" --only cow
       - name: Validate cow pose/headings, report and transparent images
         run: |
           python - <<'PY'
