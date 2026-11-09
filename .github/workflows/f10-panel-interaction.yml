@@ -1,0 +1,88 @@
+name: F10 bonnet hatch and Godot player interaction pilot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/f10-panel-interaction.yml'
+      - 'tools/vehicle_factory/hero_*.py'
+      - 'tools/vehicle_factory/verify_panel_glb.py'
+      - 'tests/factory/vehicles/godot_f10/**'
+  push:
+    branches: [chatgpt/f10-door-clearance-clean-20261109]
+    paths:
+      - '.github/workflows/f10-panel-interaction.yml'
+      - 'tools/vehicle_factory/hero_*.py'
+      - 'tools/vehicle_factory/verify_panel_glb.py'
+      - 'tests/factory/vehicles/godot_f10/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f10-panel-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  blender-godot-panels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native Blender and Python preview dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy unzip
+          python -m pip install 'Pillow>=10,<15'
+          blender --version | head -n 2
+      - name: Generate authentic bonnet and rear-hatch action clips
+        run: |
+          set -euo pipefail
+          mkdir -p build/f10/panel_qa
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_panel_calibration.py -- --output build/f10/panel_qa --samples 6 2>&1 | tee build/f10/panel_qa/blender.log
+          grep -q 'F10_PANEL_CLIP_DONE bonnet' build/f10/panel_qa/blender.log
+          grep -q 'F10_PANEL_CLIP_DONE rear_hatch' build/f10/panel_qa/blender.log
+          ! grep -q 'Traceback (most recent call last)' build/f10/panel_qa/blender.log
+      - name: Verify real exported GLB animation keys and durations
+        run: |
+          python tools/vehicle_factory/verify_panel_glb.py --clip bonnet build/f10/panel_qa/bonnet/bonnet.glb
+          python tools/vehicle_factory/verify_panel_glb.py --clip rear_hatch build/f10/panel_qa/rear_hatch/rear_hatch.glb
+      - name: Re-export previously calibrated front-door GLB for Godot player fixture
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_door_calibration.py -- --output build/f10/panel_qa/door --samples 4 --heading-deg 45 2>&1 | tee build/f10/panel_qa/door.log
+          blender -b build/f10/panel_qa/door/hero_front_door_calibration.blend --python-expr "import bpy; bpy.ops.export_scene.gltf(filepath='build/f10/panel_qa/door/door.glb',export_format='GLB',export_animations=True)"
+          python tools/vehicle_factory/verify_door_glb.py build/f10/panel_qa/door/door.glb
+      - name: Install pinned official Godot 4.5.1 editor
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output build/f10/godot.zip 'https://github.com/godotengine/godot/releases/download/4.5.1-stable/Godot_v4.5.1-stable_linux.x86_64.zip'
+          echo '02ec53d1cc7dbb9cc6355393c61b9ab43d1244751a124f10248a4802830788cd  build/f10/godot.zip' | sha256sum --check
+          unzip -q build/f10/godot.zip -d build/f10/godotbin
+          chmod +x build/f10/godotbin/Godot_v4.5.1-stable_linux.x86_64
+          build/f10/godotbin/Godot_v4.5.1-stable_linux.x86_64 --headless --version
+      - name: Import actual animation GLBs and exercise three player actions
+        run: |
+          set -euo pipefail
+          PROJECT=tests/factory/vehicles/godot_f10
+          mkdir -p "$PROJECT/generated"
+          cp build/f10/panel_qa/door/door.glb "$PROJECT/generated/door.glb"
+          cp build/f10/panel_qa/bonnet/bonnet.glb "$PROJECT/generated/bonnet.glb"
+          cp build/f10/panel_qa/rear_hatch/rear_hatch.glb "$PROJECT/generated/rear_hatch.glb"
+          GODOT=build/f10/godotbin/Godot_v4.5.1-stable_linux.x86_64
+          "$GODOT" --headless --editor --path "$PROJECT" --import --quit 2>&1 | tee build/f10/panel_qa/godot_import.log
+          "$GODOT" --headless --path "$PROJECT" --script res://interaction_headless.gd 2>&1 | tee build/f10/panel_qa/godot_interaction.log
+          for target in door bonnet rear_hatch; do grep -q "F10_GODOT_PLAYER_INTERACTION_PASS $target" build/f10/panel_qa/godot_interaction.log; done
+          grep -q 'F10_GODOT_REMOTE_INTERACTION_REJECTED' build/f10/panel_qa/godot_interaction.log
+          ! grep -E '(SCRIPT ERROR|Parse Error|Assertion failed|Failed to load)' build/f10/panel_qa/godot_import.log build/f10/panel_qa/godot_interaction.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f10-bonnet-hatch-godot-qa
+          path: build/f10/panel_qa
+          retention-days: 7
+          if-no-files-found: warn
