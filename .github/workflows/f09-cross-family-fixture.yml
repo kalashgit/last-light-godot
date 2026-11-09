@@ -10,6 +10,8 @@ on:
       - 'tools/weapons_tools/f09_main_game_fixture.gd'
       - 'tools/weapons_tools/f09_real_pickup_fixture.gd'
       - 'tools/weapons_tools/f09_graphical_house_fixture.gd'
+      - 'tools/weapons_tools/f09_occlusion_zoom_fixture.gd'
+      - 'tools/weapons_tools/f09_verify_occlusion_zoom.py'
       - 'tools/weapons_tools/f09_verify_screenshots.py'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
@@ -93,6 +95,18 @@ jobs:
           if grep -E 'SCRIPT ERROR:|Parse Error:|F09_VISUAL_' /tmp/f09-graphical.log; then exit 1; fi
       - name: Validate screenshots nonblank and visually distinct
         run: python3 tools/weapons_tools/f09_verify_screenshots.py
+      - name: Render F12 vegetation/furniture/player overlap at gameplay zooms
+        run: |
+          set -o pipefail
+          XDG_DATA_HOME=/tmp/f09-zoom-occlusion \
+          xvfb-run -a -s '-screen 0 1280x720x24' \
+            /tmp/Godot_v4.3-stable_linux.x86_64 --path build/f09_godot_stage \
+              --rendering-driver opengl3 --resolution 1280x720 \
+              --script res://occlusion_zoom_fixture.gd 2>&1 | tee /tmp/f09-occlusion.log
+          grep -q F09_OCCLUSION_ZOOM_SCREENSHOTS_PASS /tmp/f09-occlusion.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|F09_OCCLUSION_FAIL:' /tmp/f09-occlusion.log; then exit 1; fi
+      - name: Verify real native-scale F12 occlusion screenshots
+        run: python3 tools/weapons_tools/f09_verify_occlusion_zoom.py
       - name: Upload unapproved F09 F11 F12 integration evidence
         if: always()
         uses: actions/upload-artifact@v4
