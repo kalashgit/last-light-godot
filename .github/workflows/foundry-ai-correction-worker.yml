@@ -1,0 +1,116 @@
+name: Foundry AI controlled correction worker V0
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-ai-correction-worker.yml'
+      - 'tools/autonomous_factory/foundry_ai_worker.py'
+      - 'tests/autonomous_factory/test_foundry_ai_worker.py'
+  workflow_run:
+    workflows:
+      - M02 Pinned F02 F03 F10 F11 F12 Engine Calibration
+      - M02 Autonomous Asset Factory V1 (protected candidate)
+      - M02 Pinned F05 F06 F07 F09 Specialist Contracts
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Completed allowlisted failing M02 workflow run ID
+        required: true
+        type: string
+      dry_run:
+        description: Produce diagnostic without creating issue
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foundry-correction-repo-serialized
+  cancel-in-progress: false
+
+jobs:
+  contract-tests:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/autonomous_factory -p test_foundry_ai_worker.py -v
+
+  live-failure-replay:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read-only replay of historical M02 F10 failed CI run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python tools/autonomous_factory/foundry_ai_worker.py --run-id 42608938487 > /tmp/foundry-replay.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          obj=json.loads(Path('/tmp/foundry-replay.json').read_text())
+          assert obj['status']=='DRY_RUN', obj
+          assert 'foundry-correction-run:42608938487' in obj['body']
+          assert 'job/' in obj['body']
+          assert 'Do not merge' in obj['body']
+          print('FOUNDRY_LIVE_READONLY_REPLAY_PASS', obj['title'])
+          PY
+
+  correction-queue:
+    if: >-
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'failure' &&
+       github.event.workflow_run.head_branch == 'codex/m02-autonomous-asset-factory-v1' &&
+       github.event.workflow_run.head_repository.full_name == github.repository) ||
+      (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    steps:
+      # No checkout of failed PR's source. This is trusted workflow code.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify worker contract
+        run: python -m unittest discover -s tests/autonomous_factory -p test_foundry_ai_worker.py -v
+      - name: Queue deterministic correction issue; AI assignment disabled unless opted in
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.run_id }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+          FOUNDRY_ENABLE_COPILOT_ASSIGN: ${{ vars.FOUNDRY_ENABLE_COPILOT_ASSIGN }}
+          FOUNDRY_COPILOT_USER_TOKEN: ${{ secrets.FOUNDRY_COPILOT_USER_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ "$DRY_RUN" == 'true' ]]; then
+            python tools/autonomous_factory/foundry_ai_worker.py --run-id "$RUN_ID"
+          else
+            python tools/autonomous_factory/foundry_ai_worker.py --run-id "$RUN_ID" --apply
+          fi
