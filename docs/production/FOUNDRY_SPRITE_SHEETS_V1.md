@@ -24,6 +24,10 @@ founder approval:
    **no third-party pixel inputs**), `semantic_or_provenance_holds.jsonl` and
    `intake_report.json`. Only R03-admitted, correctly reconciled original
    recipes may enter the mass-sheet technical rendering lane.
+   The 18 current machine-readable recipes, 42 holds, and intake report are
+   pinned under `data/foundry_reference_catalog/derived/`, so the Blender
+   workers can consume the branch directly. GitHub CI regenerates them and
+   compares their bytes; a stale snapshot fails before any 40-item production.
 4. Blender workers independently design geometry and materials from these
    semantic physical requirements, never tracing or extracting source pixels.
    F11 and F12 must visually assess physically credible construction,

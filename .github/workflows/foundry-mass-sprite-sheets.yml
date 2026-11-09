@@ -41,6 +41,11 @@ jobs:
       - run: python -m unittest discover -s tests/foundry_reference_intake -v
       - name: Validate all 21,025 original-research metadata records against Notion and Sprite Bible
         run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+      - name: Fail on stale pinned machine-readable work orders or verification holds
+        run: |
+          cmp data/foundry_reference_catalog/derived/original_recipe_work_orders.jsonl build/foundry_reference_intake/original_recipe_work_orders.jsonl
+          cmp data/foundry_reference_catalog/derived/semantic_or_provenance_holds.jsonl build/foundry_reference_intake/semantic_or_provenance_holds.jsonl
+          cmp data/foundry_reference_catalog/derived/intake_report.json build/foundry_reference_intake/intake_report.json
       - uses: actions/upload-artifact@v4
         with:
           name: foundry-original-reference-intake-${{ github.run_id }}
@@ -67,6 +72,11 @@ jobs:
       - run: python -m unittest discover -s tests/foundry_reference_intake -v
       - name: Validate research, rights, original physical recipes, and R03 refinement eligibility
         run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+      - name: Reject stale Notion/A00 recipe snapshots before producing sheets
+        run: |
+          cmp data/foundry_reference_catalog/derived/original_recipe_work_orders.jsonl build/foundry_reference_intake/original_recipe_work_orders.jsonl
+          cmp data/foundry_reference_catalog/derived/semantic_or_provenance_holds.jsonl build/foundry_reference_intake/semantic_or_provenance_holds.jsonl
+          cmp data/foundry_reference_catalog/derived/intake_report.json build/foundry_reference_intake/intake_report.json
       - name: Fetch only already-persisted, non-Golden technical sprite candidates
         run: |
           set -euo pipefail

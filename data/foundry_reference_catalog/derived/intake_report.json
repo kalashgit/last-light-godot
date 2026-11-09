@@ -1,0 +1,29 @@
+{
+  "founder_golden_approved": 0,
+  "mass_sheet_items_required": 40,
+  "notion_hold_count": 42,
+  "notion_master_count": 60,
+  "notion_semantic_verified": 22,
+  "original_assets_rendered_by_this_step": 0,
+  "primary_class_counts": {
+    "ANIMATION_FRAME_REFERENCE": 2,
+    "CANONICAL_MASTER_CANDIDATE": 4396,
+    "COMPOSITION_REFERENCE": 11197,
+    "DUPLICATE_ALIAS": 2,
+    "MATERIAL_TEXTURE": 28,
+    "MEANINGFUL_VARIANT": 532,
+    "NEEDS_MANUAL_REVIEW": 1676,
+    "OUT_OF_SCOPE": 577,
+    "STATE_OR_DIRECTION": 1913,
+    "UI_ICON_ONLY": 702
+  },
+  "provenance_hold_count": 1,
+  "ready_for_full_40_item_sheet": false,
+  "reconciled_physical_recipes": 18,
+  "refinement_admitted_provenance_hold": 1,
+  "refinement_admitted_valid": 14,
+  "research_candidate_count": 4396,
+  "schema_version": 1,
+  "source_records": 21025,
+  "status": "RESEARCH_AND_ORIGINAL_RECIPE_INTAKE_ONLY"
+}
