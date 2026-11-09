@@ -400,6 +400,23 @@ func _draw_building(b: Dictionary) -> void:
         _poly(PackedVector2Array([_project(d), _project(c), _project(c, wall_height), _project(d, wall_height)]), wall)
         _poly(PackedVector2Array([_project(bx), _project(c), _project(c, wall_height), _project(bx, wall_height)]), dark_wall)
         _line(d, c, Color("262f2d"), 2)
+        # Original procedural facades: two glazed front windows and a true
+        # vertical entry panel. These are geometric placeholders, NOT F02 art.
+        for window_slot in [0.18, 0.73]:
+            var wx: float = p.x + w * window_slot
+            var wa := Vector2(wx, p.y + h)
+            var wb := Vector2(wx + minf(1.45, w * 0.12), p.y + h)
+            _poly(PackedVector2Array([
+                _project(wa, 20), _project(wb, 20),
+                _project(wb, 42), _project(wa, 42)
+            ]), Color("7f9c9d"))
+            _line(wa, wb, Color("d6d8be"), 1.3, 41)
+        var entry := Vector2(p.x + w * 0.50, p.y + h)
+        _poly(PackedVector2Array([
+            _project(entry + Vector2(-0.55, 0)), _project(entry + Vector2(0.55, 0)),
+            _project(entry + Vector2(0.55, 0), 35), _project(entry + Vector2(-0.55, 0), 35)
+        ]), Color("564d40"))
+        draw_circle(_project(entry + Vector2(0.36, 0), 17), 2.1, Color("dbcd8b"))
         if inside:
             for room in _room_rects(b):
                 var room_rect: Rect2 = room["rect"]
@@ -417,11 +434,24 @@ func _draw_building(b: Dictionary) -> void:
             if style == "flat":
                 _tile(r, roof, roof_high)
             elif style == "duplex_split":
-                var left := Rect2(p, Vector2(w / 2.0, h))
-                var right := Rect2(p + Vector2(w / 2.0, 0), Vector2(w / 2.0, h))
-                _tile(left, roof.lightened(0.05), roof_high)
-                _tile(right, roof.darkened(0.06), roof_high + 11)
-                _line(p + Vector2(w / 2.0, 0), p + Vector2(w / 2.0, h), Color("ded9c1"), 2, roof_high)
+                # Two gables, two units, one shared party-wall seam.
+                for half in range(2):
+                    var x0: float = p.x + float(half) * w / 2.0
+                    var x1: float = x0 + w / 2.0
+                    var half_center: float = (x0 + x1) / 2.0
+                    var start := Vector2(x0, p.y)
+                    var end := Vector2(x0, p.y + h)
+                    var upper_start := Vector2(x1, p.y)
+                    var upper_end := Vector2(x1, p.y + h)
+                    var ridge_start := _project(Vector2(half_center, p.y), 99)
+                    var ridge_end := _project(Vector2(half_center, p.y + h), 99)
+                    _poly(PackedVector2Array([
+                        _project(start, roof_high), ridge_start, ridge_end, _project(end, roof_high)
+                    ]), roof.lightened(0.11 if half == 0 else 0.03))
+                    _poly(PackedVector2Array([
+                        ridge_start, _project(upper_start, roof_high), _project(upper_end, roof_high), ridge_end
+                    ]), roof.darkened(0.10 if half == 0 else 0.02))
+                _line(p + Vector2(w / 2.0, 0), p + Vector2(w / 2.0, h), Color("a7a08b"), 2, roof_high)
             elif style == "hip":
                 var tip := _project(p + Vector2(w * 0.5, h * 0.50), 102)
                 _poly(PackedVector2Array([_project(a, roof_high), _project(bx, roof_high), tip]), roof.lightened(0.14))
