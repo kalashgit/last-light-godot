@@ -24,7 +24,7 @@ Inspect each roof-on, roof-cut and entry-view render at the actual target world 
 
 ## F11 action required
 
-F02 currently uses original procedural **base-color maps** plus scalar roughness/metallic node properties. It does NOT export the requested portable normal/roughness/metallic/height/wear maps with a verified UV/world texel-density contract. F11 must validate and approve a shared building material kit, color-space/channel semantics and sample renders. No implied approval from the F02 generated texture swatches.
+F02 now produces original deterministic **base-color, roughness, metallic and OpenGL +Y candidate normal maps** for each of its twelve calibration materials, and binds those nodes in Blender. A separate test checks hashes and sRGB/Non-Color channel declarations. This is **not a verified F11 shared material library**: height/wear channels, UV/world texel density, normals under motion/lighting, physically realistic surface response and F11 Golden cross-family approval remain pending. No implied approval from F02 calibration textures.
 
 ## F12 action required
 
@@ -41,3 +41,10 @@ Founder: Approve or reject each specific new revision following comparative cont
 Device: Test actual target iPhone for sprite readability, frame rate, cutaway, door interaction and memory.
 
 **No merge/deployment authorised.**
+
+## Latest verified review build
+
+- GitHub Actions: https://github.com/kalashgit/last-light-godot/actions/runs/42589924345 — Python, Godot, Blender all passed.
+- Rebuilt review contact sheet includes roof-on, cutaway and reverse-angle entrance per subject.
+- Five editable Blender sources, five GLB exports, material channel sources and checksum receipt are in the full artifact package, https://github.com/kalashgit/last-light-godot/actions/runs/42589924345/artifacts/13660428844 (temporary retention).
+- Founder decision remains **PENDING**. No A00 F02 canonical ID rows were found in the Nov 9 Notion query. Actual F02 rendering in the five-building game and iPhone remains unverified.
