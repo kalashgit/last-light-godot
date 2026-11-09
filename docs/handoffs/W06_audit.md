@@ -45,7 +45,7 @@
 
 - F12 `calibrate.py` re-run with Blender 4.4 (bpy wheel): projection residual **0.000008 px** against the 80×40 basis. F12 unit tests: **19/19 pass**.
 - V2 contract tests (`tests/production_integration_v2`): **15/15 pass**.
-- W06 F12→V2→Godot bridge (see `docs/production/integration_v2/W06_F12_V2_BRIDGE.md`): F12 CAL-02 rendered at 4, 8 and 16 headings, pixel-deterministic over two runs, packaged, validated, and imported into Godot 4.3 headless. Promotion to `APPROVED_TEMPLATE` was correctly refused for every package.
+- W06 F12→V2→Godot bridge (see `docs/production/integration_v2/W06_F12_V2_BRIDGE.md`): F12 CAL-02 rendered at 4, 8 and 16 headings, pixel-deterministic over two runs, packaged, validated, and imported into Godot 4.3 headless. Promotion to `APPROVED_TEMPLATE` was correctly refused for every package. Reproduced in CI: https://github.com/kalashgit/last-light-godot/actions/runs/42605902154 (PASS).
 
 ## Not done / blocked
 

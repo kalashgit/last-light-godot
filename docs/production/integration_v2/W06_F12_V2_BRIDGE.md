@@ -68,7 +68,9 @@ PY_BPY=python F12_SRC=<F12 @ ab25089> GODOT=<godot 4.3> bash tools/asset_qa/f12_
 | Godot 4.3 headless import | `W06_ATLAS_V2_GODOT_PASS` for 4/8/16 animations; 4/8/16 Godot-side alpha-bbox checks |
 | Godot with tampered `alpha_bbox` | rejected (expected) |
 
-The native-size contact sheet for the 8-heading run is in `docs/handoffs/w06_evidence/cal02_8dir_native_contact_sheet.png`. CI has **not run yet**; it runs on this PR.
+The native-size contact sheet for the 8-heading run is in `docs/handoffs/w06_evidence/cal02_8dir_native_contact_sheet.png`.
+
+**CI (GitHub Actions, PR #73, head `05b3fad`): PASS.** Run https://github.com/kalashgit/last-light-godot/actions/runs/42605902154 used `bpy==4.4.0` on CPython 3.11.18, F12 at `ab25089`, and Godot 4.3.stable. Results: F12 tests 24/24 OK, V2 contract tests 15/15, W06 tests 16/16; `DETERMINISTIC_PIXELS` 4/8/16; promotion refused 3/3; `W06_ATLAS_V2_GODOT_PASS` 4/8/16; `GODOT_NEGATIVE_PASS` 3/3; `W06_E2E_PASS`. Evidence artifact 13667178883 (calibration only, 14-day retention). The V2 contract gate workflow (run 42605902092) also passed.
 
 ## 5. Findings for owning workers (not fixed by W06)
 
