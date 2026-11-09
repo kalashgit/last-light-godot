@@ -45,7 +45,7 @@ jobs:
       SOURCE_RUN: '42460745955'
       SOURCE_ARTIFACT: 'last-light-360-editable-3d-masters-geometry-only-v1'
       SOURCE_ARCHIVE: 'build/foundry/source/Last_Light_3D_Masters_All_360.zip'
-      BATCH_SIZE: ${{ github.event_name == 'pull_request' && '1' || inputs.batch_size || '2' }}
+      BATCH_SIZE: ${{ github.event_name == 'pull_request' && '2' || inputs.batch_size || '2' }}
     steps:
       - uses: actions/checkout@v4
         with:
