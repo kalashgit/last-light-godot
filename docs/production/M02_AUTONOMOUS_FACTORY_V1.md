@@ -63,3 +63,9 @@ The F01 workflow has a restricted feature-branch `push` trigger so its Blender/G
 - Contract matrix [42585281290](https://github.com/kalashgit/last-light-godot/actions/runs/42585281290): F05 passed; F07 passed **compile-only**. F06 lacked Pillow; F09 needed the repository root in `PYTHONPATH`. Those test-runner defects are corrected in the M02 workflows, pending rerun.
 
 These are recorded provenance and actual CI failure causes, not fabricated engine passes. Review the next workflow-run evidence before changing admission states or enabling F10 mass processing. No source-owner branch was overwritten.
+
+## Second hosted integration wave
+
+- Cross-family run [42585975651](https://github.com/kalashgit/last-light-godot/actions/runs/42585975651): real F03 Blender/Godot **PASS**; real F11 PBR generation and validation **PASS**; real F12 Blender camera and renderer contracts **PASS**. F02 advanced past its Blender 5 Eevee enum mismatch, but encountered missing runner `libEGL.so.1`; the M02-only integration dependencies now include EGL/OpenGL packages for another engine rerun. F10 remained blocked on the **actual missing named door-card mesh**; see [issue #69](https://github.com/kalashgit/last-light-godot/issues/69).
+- Source-contract run [42585975657](https://github.com/kalashgit/last-light-godot/actions/runs/42585975657): F05 tests **PASS**, F09 canonical-gate tests **PASS**, F07 **compile-only PASS**. The F06 discovered `test_f06_v2.py` is a positional-output-dir CLI; treating it as a unittest caused a false runner failure. It now checks source compilation and CLI availability explicitly, and reports **no Blender QA**, until a genuine F05-backed artifact is supplied.
+- F01 rerun [42585975737](https://github.com/kalashgit/last-light-godot/actions/runs/42585975737) was still underway when this correction was prepared. Neither its Blender retest nor Godot outcome should be presumed passed before the jobs complete.

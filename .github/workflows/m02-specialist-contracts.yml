@@ -58,7 +58,12 @@ jobs:
               ;;
             F06)
               python -m compileall -q tools/factory/zombies
-              python -m unittest discover -s tests/factory/zombies -p 'test_*.py' -v
+              # The F06 test is an artifact-validation CLI, not a unittest.
+              # Until a generated F05-backed Blender fixture is supplied, do
+              # not claim that invoking it validates animation or sprites.
+              test -s tests/factory/zombies/test_f06_v2.py
+              python tests/factory/zombies/test_f06_v2.py --help
+              echo 'F06_SOURCE_COMPILE_AND_QA_ENTRYPOINT_ONLY_NOT_BLENDER_QA'
               ;;
             F07)
               python -m compileall -q tools/factory/animals
