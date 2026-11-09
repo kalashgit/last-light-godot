@@ -104,7 +104,7 @@ def lab_preview():
     scale=.235
     origin=(540,100)
     d.text((35,24),"LAST LIGHT // THREE AUTHOR-DEFINED HOUSE LABS",font=BIG,fill=INK)
-    d.text((35,62),"H01 Oak 12×10  •  H02 Cedar 16×12, two-storey  •  H03 Birch 18×14, L-shaped garage",font=MED,fill="#a8b7ac")
+    d.text((35,62),"H01 Oak 12x10  |  H02 Cedar 16x12, two-storey  |  H03 Birch 18x14, L-shaped garage",font=MED,fill="#a8b7ac")
     quad(d,[0,0,96,46],"#344d3b",origin,scale)
     quad(d,[0,22,96,7],ROAD,origin,scale)
     for b in LAB["houses"]:
@@ -124,8 +124,9 @@ def lab_preview():
         d.ellipse([xx-7,yy-7,xx+7,yy+7],fill="#f3cc80")
         d.line([(xx,yy),p_iso(b["front_door"][0],22,origin,scale)],fill="#c2bd9f",width=5)
         tx,ty=p_iso(b["footprint"][0]+b["footprint"][2]/2,b["footprint"][1]-3,origin,scale)
-        d.text((tx,ty-12),b["id"]+"  "+b["name"],font=MED,fill="#ffe0a0",anchor="mm")
-    d.text((35,825),"Roof-off floor-plan inspection • H02 upstairs available in Godot via F • H03 garage/cutout preserved",font=MED,fill="#d6caa6")
+        short={"LAB-H01":"OAK / STARTER","LAB-H02":"CEDAR / 2 FLOORS","LAB-H03":"BIRCH / L + GARAGE"}
+    d.text((tx,ty-12),b["id"]+"  "+short[b["id"]],font=MED,fill="#ffe0a0",anchor="mm")
+    d.text((35,825),"Roof-off floor-plan inspection | H02 upstairs via F in Godot | H03 garage/cutout preserved",font=MED,fill="#d6caa6")
     d.text((35,858),"Room positions trace to LAB A. Props, collision, stairs and final textures remain calibration work.",font=MED,fill="#aab7ad")
     img.save(OUT/"h01_h02_h03_rooms_preview.png",optimize=True)
 
