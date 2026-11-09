@@ -7,6 +7,7 @@ on:
       - '.github/workflows/f10-panel-interaction.yml'
       - 'tools/vehicle_factory/hero_*.py'
       - 'tools/vehicle_factory/verify_panel_glb.py'
+      - 'tools/vehicle_factory/make_panel_gameplay_previews.py'
       - 'tests/factory/vehicles/godot_f10/**'
   push:
     branches: [chatgpt/f10-door-clearance-clean-20261109]
@@ -14,6 +15,7 @@ on:
       - '.github/workflows/f10-panel-interaction.yml'
       - 'tools/vehicle_factory/hero_*.py'
       - 'tools/vehicle_factory/verify_panel_glb.py'
+      - 'tools/vehicle_factory/make_panel_gameplay_previews.py'
       - 'tests/factory/vehicles/godot_f10/**'
   workflow_dispatch:
 
@@ -79,6 +81,10 @@ jobs:
           for target in door bonnet rear_hatch; do grep -q "F10_GODOT_PLAYER_INTERACTION_PASS $target" build/f10/panel_qa/godot_interaction.log; done
           grep -q 'F10_GODOT_REMOTE_INTERACTION_REJECTED' build/f10/panel_qa/godot_interaction.log
           ! grep -E '(SCRIPT ERROR|Parse Error|Assertion failed|Failed to load)' build/f10/panel_qa/godot_import.log build/f10/panel_qa/godot_interaction.log
+      - name: Inspect actual 214px transparent sprite poses and contact sheet
+        run: |
+          python tools/vehicle_factory/make_panel_gameplay_previews.py build/f10/panel_qa
+          test -s build/f10/panel_qa/F10_panel_contact_sheet_214px.png
       - uses: actions/upload-artifact@v4
         if: always()
         with:
