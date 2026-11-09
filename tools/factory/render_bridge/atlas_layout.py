@@ -41,6 +41,10 @@ def validate(frames, page_size, padding):
         if anchor is not None and (not isinstance(anchor,list) or len(anchor)!=2
                 or not all(type(v) in (int,float) and math.isfinite(v) for v in anchor)):
             raise ValueError("invalid ground anchor: " + key)
+        original_pivot = f.get("world_ground_pivot_px")
+        if original_pivot is not None and (not isinstance(original_pivot,list) or len(original_pivot)!=2
+                or not all(type(v) in (int,float) and math.isfinite(v) for v in original_pivot)):
+            raise ValueError("invalid original pivot: " + key)
         if f["width"] + 2 * padding > page_size or f["height"] + 2 * padding > page_size:
             raise ValueError("frame exceeds page: " + key)
 
@@ -67,6 +71,8 @@ def layout(frames, page_size=2048, padding=2):
             entry["anchor_local_px"] = f["anchor_local_px"]
         if "source_crop_rect" in f:
             entry["source_crop_rect"] = f["source_crop_rect"]
+        if "world_ground_pivot_px" in f:
+            entry["world_ground_pivot_px"] = f["world_ground_pivot_px"]
         pages[-1].append(entry)
         x += w
         shelf_h = max(shelf_h, h)
