@@ -108,7 +108,7 @@ func register_sheet(slot: String, item_id: String, anim: String, texture: Textur
     var dims: Array = _spec["frame_size"]
     var frames: int = _spec["animations"][anim]["frames"]
     var expected := Vector2i(int(dims[0]) * frames, int(dims[1]) * int(_spec["directions"]))
-    if texture.get_size() != expected:
+    if Vector2i(texture.get_size()) != expected:
         return false
     _sheets[_sheet_key(slot, item_id, anim)] = texture
     if _equipped.get(slot, "") == item_id:
