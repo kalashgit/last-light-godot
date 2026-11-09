@@ -25,7 +25,8 @@ def main():
             region=(x,y,96,96)
             assert region not in seen
             seen.add(region)
-            atlas.alpha_composite(image,(x,y))
+            # Byte-exact paste: alpha_composite premultiplies translucent pixels.
+            atlas.paste(image,(x,y))
             cells.append({"heading":heading,"region_px":[x,y,96,96],
                           "pivot_px":[48,48],"ground_anchor_px":[48,48],
                           "source_sha256":hashlib.sha256(p.read_bytes()).hexdigest()})
