@@ -38,8 +38,8 @@ for v in range(2):
         atlas.paste(tile,((c%9)*80,(v*9+c//9)*40))
 path=G/"assets"/"tri_material_atlas.png"
 atlas.save(path)
-(G/"project.godot").write_text('[application]\\nconfig/name="F03 Engine Candidate"\\nrun/main_scene="res://main.tscn"\\n[display]\\nwindow/size/viewport_width=960\\nwindow/size/viewport_height=600\\n[rendering]\\nrenderer/rendering_method="gl_compatibility"\\nrenderer/rendering_method.mobile="gl_compatibility"\\ntextures/default_filters/use_nearest_mipmap_filter=false\\n')
-(G/"main.tscn").write_text('[gd_scene load_steps=2 format=3]\\n[ext_resource type="Script" path="res://main.gd" id="1"]\\n[node name="Terrain" type="Node2D"]\\nscript = ExtResource("1")\\n')
+(G/"project.godot").write_text('[application]\nconfig/name="F03 Engine Candidate"\nrun/main_scene="res://main.tscn"\n[display]\nwindow/size/viewport_width=960\nwindow/size/viewport_height=600\n[rendering]\nrenderer/rendering_method="gl_compatibility"\nrenderer/rendering_method.mobile="gl_compatibility"\ntextures/default_filters/use_nearest_mipmap_filter=false\n')
+(G/"main.tscn").write_text('[gd_scene load_steps=2 format=3]\n[ext_resource type="Script" path="res://main.gd" id="1"]\n[node name="Terrain" type="Node2D"]\nscript = ExtResource("1")\n')
 (G/"terrain_factory.gd").write_text("""extends RefCounted
 const SIZE = Vector2i(80,40)
 static func corner(i:int,j:int)->int:
