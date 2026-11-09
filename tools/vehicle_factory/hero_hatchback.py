@@ -25,6 +25,9 @@ from hero_profile import L,W,H,WB,R
 # Keep the lower door aperture clear of the front wheel arch.
 DOOR_FRONT_X=.58
 DOOR_HINGE_X=.595
+# Slightly outboard of the door skin so the moving front seam sweeps clear of
+# the fixed front quarter-panel instead of scissoring through its upper strip.
+DOOR_HINGE_Y=-.82
 
 
 def attach_to_pivot(ob,pivot):
@@ -110,7 +113,7 @@ def body_shell(m,door_experiment=False):
     if door_experiment:
         door_root=bpy.data.objects.new("F10 HERO driver door vertical hinge PROTOTYPE",None)
         bpy.context.collection.objects.link(door_root)
-        door_root.location=(DOOR_HINGE_X,-.717,.94)
+        door_root.location=(DOOR_HINGE_X,DOOR_HINGE_Y,.94)
     for side in (-1,1):
         verts=[]
         for x in xs:
