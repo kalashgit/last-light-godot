@@ -1,8 +1,10 @@
 import copy
+import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
 from foundry_601_650 import ACTIVE_RECIPES, CONCEPTS, SHEETS, produce, verify, sha256
 
 
