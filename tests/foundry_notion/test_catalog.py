@@ -148,6 +148,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(result["orders"]), 4)
         self.assertTrue(all(not x["founder_visual_approved"] for x in result["orders"]))
 
+    def test_workflow_uses_deferred_candidate_ledger(self):
+        workflow = (ROOT / ".github/workflows/foundry-notion-master-queue.yml").read_text()
+        self.assertIn("--deferred data/foundry/deferred_candidates_v1.json", workflow)
+        self.assertIn("- 'data/foundry/deferred_candidates_v1.json'", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
