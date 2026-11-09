@@ -37,7 +37,8 @@ def component(name, xyz, dims, material, bevel=0.006, parent=None):
     ob = hero.cube(name, xyz, dims, material, bevel=bevel)
     # render_v3_recovery's weighted-normal helper requires this in Blender 4.0;
     # otherwise it emits warnings and its modifier is not evaluated correctly.
-    ob.data.use_auto_smooth = True
+    if hasattr(ob.data,"use_auto_smooth"):
+        ob.data.use_auto_smooth = True  # Blender 4.0 only; removed in 4.1+/5.x
     if parent:
         ob.parent = parent
         ob.matrix_parent_inverse = parent.matrix_world.inverted()
@@ -46,7 +47,8 @@ def component(name, xyz, dims, material, bevel=0.006, parent=None):
 
 def hardware_pin(name, xyz, radius, length, material, parent=None, rotation=None):
     ob = hero.cyl(name, xyz, radius, length, material, vertices=20, rotation=rotation)
-    ob.data.use_auto_smooth = True
+    if hasattr(ob.data,"use_auto_smooth"):
+        ob.data.use_auto_smooth = True
     if parent:
         ob.parent = parent
         ob.matrix_parent_inverse = parent.matrix_world.inverted()
