@@ -1,0 +1,18 @@
+{
+  "schema": "last-light.f12.material-handoff.v1",
+  "source_family": "F03",
+  "source_branch": "f03/engine-gates-v13-candidate",
+  "source_workflow": "f03-engine-gates.yml",
+  "evidence_artifact": "f03-v13-engine-gate",
+  "candidate_inputs": {
+    "editable_blend": "evidence/f03_materials.blend",
+    "rendered_material_preview": "evidence/blender_swatch.png",
+    "native_tilemap_preview": "evidence/godot_tilemap.png"
+  },
+  "calibration_only": true,
+  "canonical_asset_ids": [],
+  "a00_semantic_verification": "BLOCKED_CANONICAL_IDS",
+  "founder_visual_approval": false,
+  "f12_bake_status": "BLOCKED_PENDING_ENGINE_QA_AND_APPROVAL",
+  "promotion_allowed": false
+}
