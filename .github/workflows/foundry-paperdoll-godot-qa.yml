@@ -51,3 +51,12 @@ jobs:
         run: timeout --signal=TERM --kill-after=5s 75s /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/foundry_paperdoll_smoke.gd
       - name: Test actual offline manifest and clothing swap inside Godot
         run: timeout --signal=TERM --kill-after=5s 75s /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/foundry_paperdoll_package_smoke.gd
+      - name: Upload non-Golden technical layered atlas QA package
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-paperdoll-qa-${{ github.run_id }}
+          path: |
+            build/paperdoll_package/
+            build/paperdoll_source/manifest.json
+          retention-days: 7
+          if-no-files-found: error
