@@ -64,6 +64,7 @@
  },
  "props": [
   "ll.r00_lab_a_street.prop.0013",
+  "ll.r00_lab_a_street.prop.0181",
   "ll.r00_lab_a_street.prop.0182",
   "ll.r00_lab_a_street.prop.0183",
   "ll.r00_lab_a_street.prop.0184",
@@ -83,8 +84,7 @@
   "ll.r00_lab_a_street.prop.0198",
   "ll.r00_lab_a_street.prop.0199",
   "ll.r00_lab_a_street.prop.0200",
-  "ll.r00_lab_a_street.prop.0201",
-  "ll.r00_lab_a_street.prop.0202"
+  "ll.r00_lab_a_street.prop.0201"
  ],
  "rect": [
   32,

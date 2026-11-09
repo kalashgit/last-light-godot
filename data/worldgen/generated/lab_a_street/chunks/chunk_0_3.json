@@ -50,13 +50,13 @@
   "west": null
  },
  "props": [
-  "ll.r00_lab_a_street.prop.0065",
+  "ll.r00_lab_a_street.prop.0064",
+  "ll.r00_lab_a_street.prop.0141",
   "ll.r00_lab_a_street.prop.0142",
-  "ll.r00_lab_a_street.prop.0143",
+  "ll.r00_lab_a_street.prop.0159",
   "ll.r00_lab_a_street.prop.0160",
-  "ll.r00_lab_a_street.prop.0161",
-  "ll.r00_lab_a_street.prop.0166",
-  "ll.r00_lab_a_street.prop.0167"
+  "ll.r00_lab_a_street.prop.0165",
+  "ll.r00_lab_a_street.prop.0166"
  ],
  "rect": [
   0,

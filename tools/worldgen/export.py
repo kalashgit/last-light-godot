@@ -108,6 +108,7 @@ def export_world(world, report, out_dir: Path, chunk_size=DEFAULT_CHUNK):
         "bounds": world["bounds"], "tile_units": "1 logical tile = 1 gameplay unit = 80x40 px at 2:1 isometric",
         "chunk_size": chunk_size, "chunk_grid": [nx, ny], "chunks": chunk_index, "buildings": building_files,
         "spawn": world["spawn"], "blueprint_sha256": blueprint, "validation_ok": report["ok"],
+        "asset_intake": world.get("asset_intake", {}),
         "playable_single_scene": next(c["ok"] for c in report["checks"] if c["check"] == "fits_single_scene_save_bounds"),
         "art_status": "factory sprites (original CC0) for furniture; procedural placeholders for terrain, structure, vegetation and vehicles",
         "save_contract": {

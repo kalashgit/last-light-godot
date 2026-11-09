@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/worldgen/worldgen_game.gd" id="1_wg"]
+
+[node name="GeneratedWorld" type="Node2D"]
+script = ExtResource("1_wg")
+world_dir = "res://data/worldgen/generated/lab_a_street"

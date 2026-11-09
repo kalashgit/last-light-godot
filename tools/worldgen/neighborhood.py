@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import math
 
+from .asset_intake_v2 import bindings, intake
 from .buildings import fixture_building, generate_building
 from .catalog import catalog
 from .core import GENERATOR_VERSION, SCHEMA_RECIPE, GenerationError, Rng, contains, overlaps, r6, rect_cells, seg_key, stream_seed
@@ -216,6 +217,7 @@ def generate_world(recipe):
     place_props(world, style, cat)
     place_spawns(world)
     world["terrain_rows"] = [[terrain[(cx, cy)] for cx in range(W)] for cy in range(H)]
+    world["asset_intake"] = intake(world, recipe)
     return world
 
 
@@ -373,6 +375,8 @@ def place_props(world, style, cat):
         if cells & protected:
             return None
         if any(c in grid.blocked or c not in reach or t.get(c) not in WALKABLE for c in cells):
+            return None
+        if ptype not in ("vehicle", "vehicle_h") and any(t.get(c) in ("path", "driveway") for c in cells):
             return None
         for c in cells:
             grid.blocked.add(c)
@@ -621,6 +625,14 @@ def validate_world(world):
     refs += [l["building_id"] for l in world["lots"] if l.get("building_id") and l["building_id"] not in bids]
     refs += [s["building_id"] for s in world["spawn_points"] if s.get("building_id") and s["building_id"] not in bids]
     check("no_invalid_cross_references", not refs, str(refs[:4]))
+    try:
+        bindings()
+        check("v2_asset_bindings_valid_no_invented_ids", True)
+    except GenerationError as exc:
+        check("v2_asset_bindings_valid_no_invented_ids", False, str(exc))
+    ai = world.get("asset_intake", {})
+    calib = [p["package_id"] for p in ai.get("packages", []) if p["stage"] == "CALIBRATION"]
+    check("v2_no_calibration_assets_outside_isolated_fixture", not calib or ai.get("isolated_calibration_fixture") is True, str(calib))
     playable = W <= PLAYABLE_LIMIT and H <= PLAYABLE_LIMIT
     check("fits_single_scene_save_bounds", playable, f"{W}x{H} (limit {PLAYABLE_LIMIT})")
     return {"ok": all(c["ok"] for c in checks), "checks": checks,

@@ -70,11 +70,11 @@
   ]
  },
  "props": [
-  "ll.r00_demo_suburb.prop.0102",
+  "ll.r00_demo_suburb.prop.0101",
+  "ll.r00_demo_suburb.prop.0107",
   "ll.r00_demo_suburb.prop.0108",
-  "ll.r00_demo_suburb.prop.0109",
-  "ll.r00_demo_suburb.prop.0111",
-  "ll.r00_demo_suburb.prop.0112"
+  "ll.r00_demo_suburb.prop.0110",
+  "ll.r00_demo_suburb.prop.0111"
  ],
  "rect": [
   48,

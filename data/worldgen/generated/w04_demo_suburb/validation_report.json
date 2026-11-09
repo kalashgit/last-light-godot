@@ -2,7 +2,7 @@
  "checks": [
   {
    "check": "unique_ids",
-   "detail": "638 ids",
+   "detail": "637 ids",
    "ok": true
   },
   {
@@ -91,6 +91,16 @@
    "ok": true
   },
   {
+   "check": "v2_asset_bindings_valid_no_invented_ids",
+   "detail": "",
+   "ok": true
+  },
+  {
+   "check": "v2_no_calibration_assets_outside_isolated_fixture",
+   "detail": "[]",
+   "ok": true
+  },
+  {
    "check": "fits_single_scene_save_bounds",
    "detail": "98x60 (limit 100)",
    "ok": true
@@ -108,7 +118,7 @@
   "fences": 10,
   "generator_version": "ll-worldgen-0.1.0",
   "lots": 8,
-  "props": 255,
+  "props": 254,
   "roads": 5,
   "rooms": 53
  },

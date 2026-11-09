@@ -53,12 +53,12 @@
  },
  "props": [
   "ll.r00_lab_a_street.prop.0001",
+  "ll.r00_lab_a_street.prop.0130",
   "ll.r00_lab_a_street.prop.0131",
   "ll.r00_lab_a_street.prop.0132",
-  "ll.r00_lab_a_street.prop.0133",
-  "ll.r00_lab_a_street.prop.0144",
-  "ll.r00_lab_a_street.prop.0155",
-  "ll.r00_lab_a_street.prop.0174"
+  "ll.r00_lab_a_street.prop.0143",
+  "ll.r00_lab_a_street.prop.0154",
+  "ll.r00_lab_a_street.prop.0173"
  ],
  "rect": [
   0,

@@ -35,7 +35,8 @@ def load_export(out_dir):
              "road_graph": district["road_graph"], "lots": district["lots"], "buildings": buildings, "terrain": terrain,
              "fences": district["fences"], "props": district["props"], "curb_cuts": district["curb_cuts"],
              "spawn": district["spawn"], "spawn_points": district["spawn_points"],
-             "prefix": "ll." + Path(manifest["district"]["file"]).stem.replace("district_", "")}
+             "prefix": "ll." + Path(manifest["district"]["file"]).stem.replace("district_", ""),
+             "asset_intake": manifest.get("asset_intake", {})}
     W, H = world["bounds"][2], world["bounds"][3]
     world["terrain_rows"] = [[terrain[(x, y)] for x in range(W)] for y in range(H)]
     return manifest, world, chunks
