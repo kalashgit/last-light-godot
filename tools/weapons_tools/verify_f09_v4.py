@@ -41,6 +41,7 @@ def check(item, directory):
     if item["archetype"] == "saw":
         handles=[o for o in objects if "V9 solid wooden D grip" in o.name]
         assert len(handles)==1, "missing actual solid through-cut grip"
+        assert len(handles[0].data.vertices) == 160, "saw grip was not profile-smoothed"
         bm=bmesh.new()
         bm.from_mesh(handles[0].data)
         assert bm.verts and all(edge.is_manifold for edge in bm.edges), "grip non-manifold"
@@ -59,6 +60,9 @@ def check(item, directory):
         lower_max=max(v.co.y for v in moving[0].data.vertices)
         jaw_gap_m=upper_min-lower_max
         assert .014 <= jaw_gap_m <= .040, ("invalid wrench jaw aperture",jaw_gap_m)
+        fixed_jaw=[o for o in objects if "v15 fixed crescent upper jaw" in o.name.lower()][0]
+        # Slimmer forge must not turn the stationary head into a bulky 100 mm casting.
+        assert max(v.co.y for v in fixed_jaw.data.vertices) <= .173, "fixed jaw grew oversized"
         tapered=[o for o in objects if o.get("F09_VARIABLE_JAW_THICKNESS") is True]
         assert len(tapered)==2, "both jaws must be authored as 3D forging lofts"
         for jaw in tapered:
