@@ -83,7 +83,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y blender unzip
+          sudo apt-get install -y blender python3-numpy unzip
           python -m pip install 'Pillow>=10,<13'
           mkdir -p /tmp/ll-godot
           curl --fail --location --retry 2 \
@@ -93,6 +93,7 @@ jobs:
           mv /tmp/ll-godot/Godot_v4.4.1-stable_linux.x86_64 /tmp/ll-godot/godot
           chmod +x /tmp/ll-godot/godot
           blender --version | head -n 1
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import numpy; print("FOUNDRY_BLENDER_NUMPY", numpy.__version__)'
           /tmp/ll-godot/godot --version
       - name: Resolve immutable A00 R03 admission and original 360 archive
         env:
