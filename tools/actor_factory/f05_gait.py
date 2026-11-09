@@ -5,13 +5,13 @@ because F05 must remain legible at 128px native sprite height.
 import math
 
 LOCOMOTION = {
-    "walk": {"hip": .27, "knee": .34, "swing": .32,
+    "walk": {"hip": .235, "knee": .29, "swing": .32,
              "elbow": .12, "pelvis_yaw": .043, "chest_yaw": .045,
              "shoulder": .08, "body_lean": .018, "head_counter": .065},
-    "run": {"hip": .40, "knee": .58, "swing": .51,
+    "run": {"hip": .345, "knee": .48, "swing": .51,
             "elbow": .26, "pelvis_yaw": .055, "chest_yaw": .058,
             "shoulder": .12, "body_lean": .075, "head_counter": .09},
-    "sneak": {"hip": .18, "knee": .24, "swing": .16,
+    "sneak": {"hip": .15, "knee": .20, "swing": .16,
               "elbow": .16, "pelvis_yaw": .030, "chest_yaw": .028,
               "shoulder": .035, "body_lean": .10, "head_counter": .045},
 }
