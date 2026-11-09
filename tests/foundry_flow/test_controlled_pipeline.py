@@ -56,7 +56,7 @@ class ControlledPipelineTests(unittest.TestCase):
                 "rights_reviewed": False, "founder_visual_approved": False,
                 "technical_qa_passed": False, "godot_tested": False,
                 "iphone_verified": False, "canonical_new_id_created": False,
-                "geometry_source_manifest_sha256": digest(self.geometry_manifest),
+                "geometry_source_manifest_sha256": digest(self.glb),
                 "notion_url": f"https://notion.so/{ident}",
                 "geometry_source_bounds_m": [1., 1., 1.],
                 "quality_focus": "Verify original 3D silhouette",
@@ -102,7 +102,7 @@ class ControlledPipelineTests(unittest.TestCase):
         self.admission["work_orders"][0]["rights_reviewed"] = False
         self.admission["work_orders"][0]["geometry_source_manifest_sha256"] = "0" * 64
         with patch("tools.foundry_flow.plan.validate_snapshot"):
-            with self.assertRaisesRegex(ValueError, "manifest drift"):
+            with self.assertRaisesRegex(ValueError, "GLB fingerprint drift"):
                 plan(self.snapshot, self.admission, self.archive, self.root / "bad")
 
     def test_stale_cursor_blocks_and_does_not_skip_unapproved_items(self):
