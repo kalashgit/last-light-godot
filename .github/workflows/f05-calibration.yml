@@ -1,0 +1,133 @@
+name: F05 noncanonical character calibration
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/actor_factory/f05_*.py'
+      - 'tools/actor_factory/tests/test_f05*.py'
+      - 'tests/f05_godot_integration.gd'
+      - 'tests/f05_2d_gameplay_integration.gd'
+      - 'tools/actor_factory/godot_import_fixture/**'
+      - '.github/workflows/f05-calibration.yml'
+permissions:
+  contents: read
+concurrency:
+  group: f05-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fail-closed validator regression tests
+        run: python -m unittest discover -s tools/actor_factory/tests -p 'test_f05*.py' -v
+  blender-calibration:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        physique: [lean, broad]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and headless OpenGL/EGL software dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends blender python3-numpy python3-pil libegl1 libgl1 libgl1-mesa-dri libglx-mesa0 libopengl0 libgles2 mesa-utils xvfb libxrender1 libxi6 libxrandr2 libxfixes3 libxcursor1
+          blender --version
+          /usr/bin/python3 -c 'import numpy; print("system numpy", numpy.__version__)'
+          ldconfig -p | grep -E 'libEGL.so.1|libGL.so.1'
+          test -f /usr/lib/x86_64-linux-gnu/libEGL.so.1
+      - name: Generate noncanonical source, render and GLB
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          mkdir -p build/f05-cal
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_rig_calibration.py -- --output build/f05-cal --physique ${{ matrix.physique }} 2>&1 | tee build/f05-blender.log
+      - name: Validate artifact integrity (fails on missing GLB)
+        run: python3 tools/actor_factory/f05_validate.py build/f05-cal
+      - name: Full evaluated joint intersections and sole contact
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_joint_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-joint.log
+      - name: Render sixteen diagnostic animation poses for visual review
+        if: always()
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          test -s build/f05-cal/f05_noncanonical_calibration.blend
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_motion_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-motion.log
+      - name: Install pinned Godot 4 engine for real project import
+        if: always()
+        run: |
+          # GitHub release assets intermittently return 504 in Actions.
+          # Prefer the Godot archive CDN and its object-storage mirror.
+          if ! curl -fSL --retry 2 --connect-timeout 20 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.4.1' -o /tmp/f05-godot.zip; then
+            if ! curl -fSL --retry 2 --connect-timeout 20 'https://godot-releases.nbg1.your-objectstorage.com/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip' -o /tmp/f05-godot.zip; then
+              curl -fSL --retry 3 --connect-timeout 20 'https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip' -o /tmp/f05-godot.zip
+            fi
+          fi
+          echo 'd6e382fb531019f85630c1f485a561a0d20c4a2344b6c3847735cfee7da812aa  /tmp/f05-godot.zip' | sha256sum -c -
+          mkdir -p /tmp/f05-godot
+          unzip -q /tmp/f05-godot.zip -d /tmp/f05-godot
+          chmod +x /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64
+          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --version
+      - name: Native GLB import into isolated Godot editor fixture
+        if: always()
+        run: |
+          cp build/f05-cal/f05_noncanonical_calibration.glb tools/actor_factory/godot_import_fixture/actor.glb
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 60s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path tools/actor_factory/godot_import_fixture --editor --import 2>&1 | tee build/f05-godot-import.log
+      - name: Verify native Godot PackedScene, skeleton, meshes and all clips
+        if: always()
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 45s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path tools/actor_factory/godot_import_fixture --script res://verify_import.gd 2>&1 | tee build/f05-godot-native.log
+      - name: Godot animation and playable physics in actual LAST LIGHT project
+        if: always()
+        run: |
+          mkdir -p tests/fixtures
+          cp build/f05-cal/f05_noncanonical_calibration.glb tests/fixtures/f05_noncanonical_calibration.glb
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 60s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/f05_godot_integration.gd -- --output "$PWD/build/f05-cal/godot_qa.json" 2>&1 | tee build/f05-godot-smoke.log
+      - name: Gameplay map 2.5D sprite attachment and door/movement test
+        if: always()
+        run: |
+          mkdir -p tests/fixtures
+          cp build/f05-cal/calibration.png tests/fixtures/f05_calibration.png
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 60s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/f05_2d_gameplay_integration.gd 2>&1 | tee build/f05-2d-gameplay.log
+      - name: Assemble inspectable motion contact sheet
+        if: always()
+        run: |
+          /usr/bin/python3 tools/actor_factory/f05_contact_sheet.py build/f05-cal --log-preview
+      - name: Archive calibration evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f05-noncanonical-${{ matrix.physique }}
+          path: |
+            build/f05-cal/
+            build/f05-blender.log
+            build/f05-motion.log
+            build/f05-joint.log
+            build/f05-godot-import.log
+            build/f05-godot-native.log
+            build/f05-2d-gameplay.log
+            build/f05-godot-smoke.log
+          if-no-files-found: warn
+          retention-days: 14
