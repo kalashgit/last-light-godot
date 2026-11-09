@@ -1,0 +1,13 @@
+{
+  "schema": "last-light.reference-supplement-queue.v1",
+  "source_sheet_count": 2,
+  "status": "REFERENCE_ONLY_AWAITING_NOTION",
+  "model_count": 0,
+  "golden_3d_approved_count": 0,
+  "total_reference_slots": 250,
+  "visual_slots_not_unique_models": true,
+  "sections": {
+    "UNMAPPED_50": 50,
+    "DENSE_200": 200
+  }
+}
