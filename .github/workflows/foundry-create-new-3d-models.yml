@@ -193,10 +193,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           CHAIN_INPUT: ${{ inputs.continuation_batches || '0' }}
+          BATCH_INPUT: ${{ inputs.batch_size || '2' }}
         run: |
           set -euo pipefail
           if [[ "$GITHUB_EVENT_NAME" == 'push' ]]; then remaining=2; else remaining="$CHAIN_INPUT"; fi
           [[ "$remaining" =~ ^[012]$ ]] || { echo FOUNDRY_UNTRUSTED_CHAIN_DEPTH; exit 1; }
+          [[ "$BATCH_INPUT" =~ ^[1-4]$ ]] || { echo FOUNDRY_UNTRUSTED_BATCH_SIZE; exit 1; }
           if (( remaining == 0 )); then echo FOUNDRY_CHAIN_LIMIT_REACHED; exit 0; fi
           git fetch --no-tags origin refs/heads/foundry/generated-sources-v1:refs/remotes/origin/foundry/generated-sources-v1
           git show origin/foundry/generated-sources-v1:foundry_creation/state.json > /tmp/foundry-source-cursor-post-publish.json
@@ -204,4 +206,4 @@ jobs:
           if (( completed >= 512 )); then echo FOUNDRY_ALL_512_SOURCES_GENERATED; exit 0; fi
           next=$((remaining-1))
           echo "FOUNDRY_BOUNDED_SOURCE_CONTINUATION remaining=$next completed=$completed"
-          gh workflow run foundry-create-new-3d-models.yml --repo "$GITHUB_REPOSITORY" --ref main -f batch_size=2 -f continuation_batches="$next"
+          gh workflow run foundry-create-new-3d-models.yml --repo "$GITHUB_REPOSITORY" --ref main -f batch_size="$BATCH_INPUT" -f continuation_batches="$next"
