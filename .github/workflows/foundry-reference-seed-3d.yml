@@ -6,6 +6,7 @@ on:
       - 'tools/seed_3d_factory.py'
       - 'tools/validate_seed_batch.py'
       - 'tools/convert_glb_to_blend.py'
+      - 'tests/foundry_reference_sheets/godot_glb_candidate_smoke.gd'
       - 'data/foundry_reference_catalog/supplement_20261110/**'
       - '.github/workflows/foundry-reference-seed-3d.yml'
   workflow_dispatch:
@@ -80,6 +81,29 @@ jobs:
               assert p.exists() and p.stat().st_size>1000 and p.open('rb').read(7)==b'BLENDER', asset['recipe_key']
           print('LL_REFERENCE_40_BLEND_HEADER_PASS',len(blends))
           PY
+      - name: Prepare isolated Godot 4.3 model-import project
+        run: |
+          set -euo pipefail
+          mkdir -p build/refseed-godot/models build/refseed-godot/tests
+          cp build/refseed-batch001/models/*.glb build/refseed-godot/models/
+          cp tests/foundry_reference_sheets/godot_glb_candidate_smoke.gd build/refseed-godot/tests/
+          printf 'config_version=5\n[application]\nconfig/name="LL F11 TECHNICAL ONLY"\n' > build/refseed-godot/project.godot
+          curl -fL --retry 3 -o /tmp/godot43.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q /tmp/godot43.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Independently import and instantiate all 40 GLBs in real Godot
+        run: |
+          set -euo pipefail
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/refseed-godot --editor --import --quit \
+            2>&1 | tee build/refseed-godot-import.log
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/refseed-godot \
+            --script res://tests/godot_glb_candidate_smoke.gd \
+            2>&1 | tee build/refseed-godot-smoke.log
+          grep -q 'LL_GODOT_IMPORT_40_PASS models=40' build/refseed-godot-smoke.log
       - name: Upload candidate source artifacts without production or Golden promotion
         if: always()
         uses: actions/upload-artifact@v4
@@ -88,5 +112,7 @@ jobs:
           path: |
             build/refseed-batch001/
             build/refseed-blender.log
+            build/refseed-godot-import.log
+            build/refseed-godot-smoke.log
           retention-days: 14
           if-no-files-found: warn
