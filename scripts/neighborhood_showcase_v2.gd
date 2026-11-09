@@ -182,12 +182,15 @@ func _process(delta: float) -> void:
         if direction.length_squared() > 0.01:
             # Screen-space input into the same logical world axes as the existing house.
             var world_dir := Vector2(direction.x + direction.y, direction.y - direction.x).normalized()
-            var step: Vector2 = world_dir * minf(delta, 0.05) * WALK_SPEED
+            var step: Vector2 = world_dir * minf(delta, 0.05) * _walk_speed()
             if _can_walk(player + Vector2(step.x, 0)):
                 player.x += step.x
             if _can_walk(player + Vector2(0, step.y)):
                 player.y += step.y
     queue_redraw()
+
+func _walk_speed() -> float:
+    return WALK_SPEED
 
 func switch_mode() -> void:
     mode = "city" if mode == "lab" else "lab"
@@ -574,7 +577,7 @@ func _draw_fixture(fixture: Dictionary) -> void:
         draw_circle(_iso(center) - Vector2(0,height+3), 4.0, Color("8edaac") if opened else Color("eec977"))
 
 func _draw_modular_rooms(building: Dictionary, show_walls: bool = true) -> void:
-    var plan: Dictionary = _plan_for(building, current_floor if str(building.get("id", "")) == inside_id else 0)
+    var plan: Dictionary = _plan_for(building, current_floor if str(building.get("id", building.get("instance_id", ""))) == inside_id else 0)
     if plan.is_empty():
         return
     for room in plan["rooms"]:

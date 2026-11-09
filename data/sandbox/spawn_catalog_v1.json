@@ -1,0 +1,2118 @@
+{
+ "categories": [
+  "Items",
+  "Weapons",
+  "Tools",
+  "Furniture",
+  "Containers",
+  "Appliances",
+  "Building components",
+  "Vehicles",
+  "Zombies",
+  "Characters",
+  "Animals",
+  "Vegetation",
+  "Environmental props",
+  "Machinery"
+ ],
+ "entries": [
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": null,
+   "gameplay_item_id": "proto.bandage",
+   "identity_status": "PROTOTYPE_GAMEPLAY_DEFINITION",
+   "name": "Bandage",
+   "source": "data/neighborhood/survival_pilot_v1.json",
+   "spawn_id": "proto.bandage"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": null,
+   "gameplay_item_id": "proto.food_tin",
+   "identity_status": "PROTOTYPE_GAMEPLAY_DEFINITION",
+   "name": "Food tin",
+   "source": "data/neighborhood/survival_pilot_v1.json",
+   "spawn_id": "proto.food_tin"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": null,
+   "gameplay_item_id": "proto.scrap",
+   "identity_status": "PROTOTYPE_GAMEPLAY_DEFINITION",
+   "name": "Useful scrap",
+   "source": "data/neighborhood/survival_pilot_v1.json",
+   "spawn_id": "proto.scrap"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": null,
+   "gameplay_item_id": "proto.water_bottle",
+   "identity_status": "PROTOTYPE_GAMEPLAY_DEFINITION",
+   "name": "Water bottle",
+   "source": "data/neighborhood/survival_pilot_v1.json",
+   "spawn_id": "proto.water_bottle"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Furniture",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Bed",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.bed",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": "f01:cabinet",
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Cabinet",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.cabinet",
+   "work_order_id": "LL-F01-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Furniture",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Chair",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.chair",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Cooker",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.cooker",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Crate",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.crate",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Drawer",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.drawer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Freezer",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.freezer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": "f01:kitchen-drawer",
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Kitchen drawer",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.kitchen-drawer",
+   "work_order_id": "LL-F01-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Locker",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.locker",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": "f01:refrigerator",
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F01",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Refrigerator",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.refrigerator",
+   "work_order_id": "LL-F01-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "container",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Containers",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Shelf",
+   "size": [
+    1.0,
+    0.7
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.shelf",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": "f01:single-bed",
+   "canonical_asset_id": null,
+   "category": "Furniture",
+   "family": "F01",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Single bed",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.single-bed",
+   "work_order_id": "LL-F01-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Sink",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.sink",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": "f01:sofa",
+   "canonical_asset_id": null,
+   "category": "Furniture",
+   "family": "F01",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Sofa",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.sofa",
+   "work_order_id": "LL-F01-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Furniture",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Table",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.table",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F01",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Washer",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F01_v1.json",
+   "spawn_id": "prov.f01.washer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "wall",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Corners",
+   "size": [
+    2.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.corners",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "door",
+   "candidate_key": "f02:door-window",
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Door window",
+   "size": [
+    1.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.door-window",
+   "work_order_id": "LL-F02-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "door",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Doors",
+   "size": [
+    1.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.doors",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "wall",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Fences",
+   "size": [
+    2.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.fences",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "floor",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Floors",
+   "size": [
+    2.0,
+    2.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.floors",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "door",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Gates",
+   "size": [
+    1.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.gates",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "floor",
+   "candidate_key": "f02:roof-corner",
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Roof corner",
+   "size": [
+    2.0,
+    2.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.roof-corner",
+   "work_order_id": "LL-F02-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "floor",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Rooftops",
+   "size": [
+    2.0,
+    2.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.rooftops",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "window",
+   "candidate_key": "f02:shopfront",
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Shopfront",
+   "size": [
+    1.4,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.shopfront",
+   "work_order_id": "LL-F02-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "furniture",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Stairs",
+   "size": [
+    1.2,
+    0.8
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.stairs",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "wall",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Walls",
+   "size": [
+    2.0,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.walls",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "window",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Building components",
+   "family": "F02",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Windows",
+   "size": [
+    1.4,
+    0.3
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F02_v1.json",
+   "spawn_id": "prov.f02.windows",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "prop",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Environmental props",
+   "family": "F03",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Curbs and transitions",
+   "size": [
+    1.0,
+    1.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F03_v1.json",
+   "spawn_id": "prov.f03.curbs-and-transitions",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "prop",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Environmental props",
+   "family": "F03",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Potholes",
+   "size": [
+    1.0,
+    1.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F03_v1.json",
+   "spawn_id": "prov.f03.potholes",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "prop",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Environmental props",
+   "family": "F03",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Puddles",
+   "size": [
+    1.0,
+    1.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F03_v1.json",
+   "spawn_id": "prov.f03.puddles",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": "f04:berry-bush",
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Berry bush",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.berry-bush",
+   "work_order_id": "LL-F04-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Bush",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.bush",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Crop",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.crop",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "tree",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Dead tree",
+   "size": [
+    0.9,
+    0.9
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.dead-tree",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "tree",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Deciduous tree",
+   "size": [
+    0.9,
+    0.9
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.deciduous-tree",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Flowers",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.flowers",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "tree",
+   "candidate_key": "f04:hedge",
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Hedge",
+   "size": [
+    0.9,
+    0.9
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.hedge",
+   "work_order_id": "LL-F04-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "tree",
+   "candidate_key": "f04:oak",
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Oak",
+   "size": [
+    0.9,
+    0.9
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.oak",
+   "work_order_id": "LL-F04-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "tree",
+   "candidate_key": "f04:pine",
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Pine",
+   "size": [
+    0.9,
+    0.9
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.pine",
+   "work_order_id": "LL-F04-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Reed",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.reed",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Sapling",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.sapling",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "prop",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Environmental props",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Stump",
+   "size": [
+    1.0,
+    1.0
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.stump",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Vine",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.vine",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Weed",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.weed",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "plant",
+   "candidate_key": "f04:wheat",
+   "canonical_asset_id": null,
+   "category": "Vegetation",
+   "family": "F04",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Wheat",
+   "size": [
+    0.8,
+    0.8
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F04_v1.json",
+   "spawn_id": "prov.f04.wheat",
+   "work_order_id": "LL-F04-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": "f05:backpack",
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": "F05",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Backpack",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F05_v1.json",
+   "spawn_id": "prov.f05.backpack",
+   "work_order_id": "LL-F05-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Items",
+   "family": "F05",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Bags and equipped items",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F05_v1.json",
+   "spawn_id": "prov.f05.bags-and-equipped-items",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": "f05:held-tool",
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F05",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Held tool",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F05_v1.json",
+   "spawn_id": "prov.f05.held-tool",
+   "work_order_id": "LL-F05-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "character",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Characters",
+   "family": "F05",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Human bodies",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F05_v1.json",
+   "spawn_id": "prov.f05.human-bodies",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "character",
+   "candidate_key": "f05:neutral-underwear-character",
+   "canonical_asset_id": null,
+   "category": "Characters",
+   "family": "F05",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Neutral underwear character",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F05_v1.json",
+   "spawn_id": "prov.f05.neutral-underwear-character",
+   "work_order_id": "LL-F05-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": "f06:civilian",
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Civilian",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.civilian",
+   "work_order_id": "LL-F06-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Elderly",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.elderly",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Fire rescue",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.fire-rescue",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": "f06:hospital-orderly",
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Hospital orderly",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.hospital-orderly",
+   "work_order_id": "LL-F06-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": "f06:injured-crawler",
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Injured crawler",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.injured-crawler",
+   "work_order_id": "LL-F06-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Medical",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.medical",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Police",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.police",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": "f06:security",
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Security",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.security",
+   "work_order_id": "LL-F06-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Weak",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.weak",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Worker",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.worker",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "zombie",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Zombies",
+   "family": "F06",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Wounded and crawling actor variants",
+   "size": [
+    0.6,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F06_v1.json",
+   "spawn_id": "prov.f06.wounded-and-crawling-actor-variants",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": "f07:calf",
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Calf",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.calf",
+   "work_order_id": "LL-F07-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Cattle",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.cattle",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": "f07:chicken",
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Chicken",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.chicken",
+   "work_order_id": "LL-F07-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Deer",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.deer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Mouse",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.mouse",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": "f07:pig",
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Pig",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.pig",
+   "work_order_id": "LL-F07-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": "f07:rabbit",
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Rabbit",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.rabbit",
+   "work_order_id": "LL-F07-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Raccoon",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.raccoon",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Rat",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.rat",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Sheep",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.sheep",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Turkey",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.turkey",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "animal",
+   "candidate_key": "f07:v8-adult-cow",
+   "canonical_asset_id": null,
+   "category": "Animals",
+   "family": "F07",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "V8 adult cow",
+   "size": [
+    0.8,
+    0.6
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F07_v1.json",
+   "spawn_id": "prov.f07.v8-adult-cow",
+   "work_order_id": "LL-F07-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Air conditioner",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.air-conditioner",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": "f08:compressor",
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Compressor",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.compressor",
+   "work_order_id": "LL-F08-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Conveyor",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.conveyor",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": "f08:conveyor-segment",
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Conveyor segment",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.conveyor-segment",
+   "work_order_id": "LL-F08-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Forklift",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.forklift",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Furnace",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.furnace",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Generator",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.generator",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Motor",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.motor",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": "f08:portable-generator",
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Portable generator",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.portable-generator",
+   "work_order_id": "LL-F08-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Press",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.press",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Appliances",
+   "family": "F08",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Washer",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.washer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "machine",
+   "candidate_key": "f08:water-pump",
+   "canonical_asset_id": null,
+   "category": "Machinery",
+   "family": "F08",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Water pump",
+   "size": [
+    1.2,
+    1.0
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F08_v1.json",
+   "spawn_id": "prov.f08.water-pump",
+   "work_order_id": "LL-F08-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": "f09:awl",
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Awl",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.awl",
+   "work_order_id": "LL-F09-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 3,
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Axe",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.axe",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": "f09:cleaver",
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Cleaver",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.cleaver",
+   "work_order_id": "LL-F09-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": "f09:cross-screwdriver",
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Cross screwdriver",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.cross-screwdriver",
+   "work_order_id": "LL-F09-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": "f09:crowbar",
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Crowbar",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.crowbar",
+   "work_order_id": "LL-F09-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Hammer",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.hammer",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": "f09:hatchet",
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Hatchet",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.hatchet",
+   "work_order_id": "LL-F09-CAL-05"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 1,
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Knife",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.knife",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Machete",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.machete",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "weapon",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Weapons",
+   "damage": 2,
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Pitchfork",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.pitchfork",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Saw",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.saw",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Screwdriver",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.screwdriver",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Shovel",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.shovel",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "pickup",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Tools",
+   "family": "F09",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Wrench",
+   "size": [
+    0.4,
+    0.4
+   ],
+   "solid": false,
+   "source": "docs/production/queues/F09_v1.json",
+   "spawn_id": "prov.f09.wrench",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Ambulance",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.ambulance",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Bus",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.bus",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Coupe",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.coupe",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Hatchback",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.hatchback",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": "f10:pickup",
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Pickup",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.pickup",
+   "work_order_id": "LL-F10-CAL-03"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": "f10:sedan",
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Sedan",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.sedan",
+   "work_order_id": "LL-F10-CAL-02"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "SUV",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.suv",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Tractor",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.tractor",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Truck",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.truck",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": "f10:v6-1-inspired-compact-hatchback",
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "V6 1 inspired compact hatchback",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.v6-1-inspired-compact-hatchback",
+   "work_order_id": "LL-F10-CAL-01"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": "f10:van",
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "NEEDS_CANONICAL_REGISTRY_RECONCILIATION",
+   "name": "Van",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.van",
+   "work_order_id": "LL-F10-CAL-04"
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Wagon",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.wagon",
+   "work_order_id": null
+  },
+  {
+   "art_status": "PROVISIONAL_PROCEDURAL",
+   "behavior": "vehicle",
+   "candidate_key": null,
+   "canonical_asset_id": null,
+   "category": "Vehicles",
+   "family": "F10",
+   "identity_status": "REFERENCE_ARCHETYPE_ONLY",
+   "name": "Wreck",
+   "size": [
+    2.2,
+    4.2
+   ],
+   "solid": true,
+   "source": "docs/production/queues/F10_v1.json",
+   "spawn_id": "prov.f10.wreck",
+   "work_order_id": null
+  }
+ ],
+ "generated_by": "tools/build_spawn_catalog.py",
+ "notes": "No entry is Golden-approved. canonical_asset_id stays null until the A00 registry reconciles the queue candidate_key.",
+ "schema": "last_light.spawn_catalog.v1",
+ "status": "PROVISIONAL_NO_A00_CANONICAL_IDS"
+}
