@@ -1,0 +1,46 @@
+name: Foundry Notion master asset queue (no Golden promotion)
+
+on:
+  pull_request:
+    paths:
+      - 'data/foundry/notion_asset_snapshot_v1.json'
+      - 'tools/foundry_notion/**'
+      - 'tests/foundry_notion/**'
+      - '.github/workflows/foundry-notion-master-queue.yml'
+  schedule:
+    - cron: '33 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foundry-notion-snapshot-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run independent catalog safety and provenance regressions
+        run: python -m unittest discover -s tests/foundry_notion -v
+      - name: Build the next four verified design work orders
+        run: |
+          python tools/foundry_notion/catalog.py \
+            --catalog data/foundry/notion_asset_snapshot_v1.json \
+            --batch-size 4 \
+            --output build/foundry_notion/next_work_orders.json
+      - name: Archive the candidate-only work-order evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundry-notion-work-orders-${{ github.run_id }}
+          path: build/foundry_notion/next_work_orders.json
+          retention-days: 7
+          if-no-files-found: error
