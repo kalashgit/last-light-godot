@@ -55,14 +55,15 @@ func _run() -> void:
             push_error("F09_GLB_IMPORT_FAILED " + glb)
             quit(26)
             return
-        var candidate: Node = packed.instantiate()
-        if candidate == null:
-            push_error("F09_GLB_INSTANTIATION_FAILED " + glb)
+        # Headless uses the dummy RenderingServer. Validate imported
+        # PackedScene nodes without creating live MeshInstance3D resources;
+        # doing so produced a spurious dummy-storage mesh-null error on exit.
+        var state := packed.get_state()
+        if state == null or state.get_node_count() < 1:
+            push_error("F09_GLB_EMPTY_PACKED_SCENE " + glb)
             quit(27)
             return
-        get_root().add_child(candidate)
         imported_models += 1
-        candidate.queue_free()
     if imported_models != 3:
         quit(28)
         return
