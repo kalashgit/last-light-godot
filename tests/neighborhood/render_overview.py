@@ -136,10 +136,13 @@ def lab_preview():
 
 def furnished_preview():
     """Source-data illustration of the new modular fixture recipe, not a game screenshot."""
+    export_path = OUT/"godot_furnished_house_plans_v4.json"
+    exported = json.loads(export_path.read_text()) if export_path.exists() else {}
+    exported_plans = {(p["house_id"],p["floor"]):p for p in exported.get("houses",[])}
     img = Image.new("RGB", (2420, 1310), BG)
     d = ImageDraw.Draw(img)
     d.text((28, 17), "LAST LIGHT // MODULAR FURNISHED HOUSE LAB", font=BIG, fill=INK)
-    d.text((28, 58), "Provisional code-built furnishings; room boundaries and F01/F02/F09 fixture slots. NO Golden-approved imagery.",
+    d.text((28, 58), "Provisional F01/F02/F11/F12 recipe illustration; Godot-exported fixture placements when available. NOT approved imagery.",
            font=MED, fill="#bdcbb8")
     panels = [
         (LAB["houses"][0], "rooms", (20, 100), "H01 // OAK STARTER"),
@@ -154,33 +157,57 @@ def furnished_preview():
         "utility":"#827d67", "laundry":"#7e918d", "pantry":"#8b8069",
         "storage":"#8b8069",
     }
+    finish_colors={"aged_oak":"#9c8a69","walnut":"#706657","scarred_wood":"#77736a"}
+    def blend_hex(left, right, mix):
+        a=[int(left[i:i+2],16) for i in (1,3,5)]
+        b=[int(right[i:i+2],16) for i in (1,3,5)]
+        return '#'+''.join(f'{round(x*(1-mix)+y*mix):02x}' for x,y in zip(a,b))
     for b, floor, (panel_x,panel_y), title in panels:
         d.rounded_rectangle((panel_x,panel_y,panel_x+1180,panel_y+575),
                             radius=20,fill="#1e2d2b",outline="#68796f",width=3)
         d.text((panel_x+30,panel_y+16), title,font=MED,fill="#e6d4a5")
         origin=(panel_x+580,panel_y+130)
         scale=.71
-        floors=b[floor]
+        plan=exported_plans.get((b["id"],1 if floor=="upper_rooms" else 0))
+        floors=plan["rooms"] if plan else b[floor]
+        ox,oy=b["footprint"][:2]
         for room in floors:
             x,y,w,h=room["rect"]
-            quad(d,[x,y,w,h], colors.get(room["type"],"#938e7b"), origin, scale, outline="#b9b4a4")
+            if plan:
+                x-=ox
+                y-=oy
+            tint=colors.get(room["type"],"#938e7b")
+            if plan and room["type"] not in ("bathroom","garage"):
+                finish=finish_colors.get(plan.get("theme",{}).get("floor",""))
+                if finish:
+                    tint=blend_hex(tint,finish,.55)
+            quad(d,[x,y,w,h],tint,origin,scale,outline="#b9b4a4")
         # Raised furniture is sorted by footprint position, so higher/front objects sit above rear ones.
         furnishings=[]
         for room in floors:
-            x,y,w,h=room["rect"]
-            kind=ROOM_KITS["aliases"].get(room["type"],room["type"])
-            for slot in ROOM_KITS["rooms"].get(kind,ROOM_KITS["rooms"]["generic"]):
-                rw=min(slot["size"][0],max(.5,w-.8))
-                rh=min(slot["size"][1],max(.5,h-.8))
-                cx=max(x+rw/2+.15,min(x+w-rw/2-.15,x+w*slot["at"][0]))
-                cy=max(y+rh/2+.15,min(y+h-rh/2-.15,y+h*slot["at"][1]))
-                furnishings.append((cx+cy,cx,cy,rw,rh,slot))
+            if plan:
+                for slot in room["fixtures"]:
+                    cx,cy=slot["pos"][0]-ox,slot["pos"][1]-oy
+                    rw,rh=slot["size"]
+                    furnishings.append((cx+cy,cx,cy,rw,rh,slot))
+            else:
+                x,y,w,h=room["rect"]
+                kind=ROOM_KITS["aliases"].get(room["type"],room["type"])
+                for slot in ROOM_KITS["rooms"].get(kind,ROOM_KITS["rooms"]["generic"]):
+                    rw=min(slot["size"][0],max(.5,w-.8))
+                    rh=min(slot["size"][1],max(.5,h-.8))
+                    cx=max(x+rw/2+.15,min(x+w-rw/2-.15,x+w*slot["at"][0]))
+                    cy=max(y+rh/2+.15,min(y+h-rh/2-.15,y+h*slot["at"][1]))
+                    furnishings.append((cx+cy,cx,cy,rw,rh,slot))
         for _,cx,cy,w,h,slot in sorted(furnishings):
             role=slot["role"]
             tall=role in {"fridge","machine","storage_shelf","display_shelf","medical_cabinet","filing_cabinet"}
             rise=18 if tall else 9
             corners=[p_iso(x,y,origin,scale) for x,y in [(cx-w/2,cy-h/2),(cx+w/2,cy-h/2),
                      (cx+w/2,cy+h/2),(cx-w/2,cy+h/2)]]
+            if not slot.get("solid",True):
+                d.polygon(corners,fill="#615e50",outline="#ac9c79")
+                continue
             base="#b1bfc2" if role in {"fridge","stove","washing_machine","sink","toilet"} else ("#927a67" if role in {"bed","sofa","exam_bed"} else "#b6a075")
             # Shadows, front face and top face echo the provisional Godot drawing recipe.
             d.polygon([corners[3],corners[2],(corners[2][0],corners[2][1]-rise),
@@ -193,6 +220,9 @@ def furnished_preview():
                 d.ellipse((px-3,py-rise-3,px+3,py-rise+3),fill="#eeca75")
         for room in floors:
             x,y,w,h=room["rect"]
+            if plan:
+                x-=ox
+                y-=oy
             px,py=p_iso(x+w/2,y+h/2,origin,scale)
             d.text((px,py+22),room["type"].upper(),font=SMALL,fill="#f5ead2",anchor="mm",
                    stroke_width=1,stroke_fill="#24302e")

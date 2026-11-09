@@ -1,13 +1,18 @@
 extends RefCounted
 ## Deterministic module composition. Does not mint A00 IDs or approve any artwork.
 const KITS_PATH := "res://data/neighborhood/modular_room_kits_v1.json"
+const HOUSE_DETAILS_PATH := "res://data/neighborhood/house_lab_furnishing_v4.json"
 
 var kits: Dictionary = {}
+var house_details: Dictionary = {}
 
 func _init() -> void:
     var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(KITS_PATH))
     if data is Dictionary and data.get("schema", "") == "last_light.modular_room_kits.v1":
         kits = data
+    var detail: Variant = JSON.parse_string(FileAccess.get_file_as_string(HOUSE_DETAILS_PATH))
+    if detail is Dictionary and detail.get("schema", "") == "last_light.house_lab_furnishing.v4":
+        house_details = detail
 
 func _building_id(building: Dictionary) -> String:
     return str(building.get("id", building.get("instance_id", "")))
@@ -111,12 +116,17 @@ func _portals(rooms: Array) -> Array:
 
 func make_plan(building: Dictionary, is_lab: bool, floor_index: int = 0) -> Dictionary:
     var rooms: Array = _rooms_for(building, is_lab, floor_index)
+    var portals: Array = _portals(rooms)
     var fixture_count: int = 0
     for room in rooms:
         var rect: Rect2 = _as_rect(room)
         var role: String = _kind(str(room["type"]))
         var fixtures: Array = []
-        var definitions: Array = kits.get("rooms", {}).get(role, [])
+        var definitions: Array = kits.get("rooms", {}).get(role, []).duplicate(true)
+        var base_count: int = definitions.size()
+        if is_lab:
+            definitions.append_array(house_details.get("supplements", {}).get(role, []))
+            definitions.append_array(house_details.get("room_overrides", {}).get(str(room["id"]), []))
         for slot in range(definitions.size()):
             var definition: Dictionary = definitions[slot]
             var at: Array = definition["at"]
@@ -125,15 +135,35 @@ func make_plan(building: Dictionary, is_lab: bool, floor_index: int = 0) -> Dict
             var sy: float = minf(float(sizes[1]), maxf(.5, rect.size.y - .8))
             var x: float = clampf(rect.position.x + rect.size.x * float(at[0]), rect.position.x + sx / 2.0 + .15, rect.end.x - sx / 2.0 - .15)
             var y: float = clampf(rect.position.y + rect.size.y * float(at[1]), rect.position.y + sy / 2.0 + .15, rect.end.y - sy / 2.0 - .15)
+            var is_solid: bool = bool(definition.get("solid", true))
+            if slot >= base_count and is_solid:
+                var collision := Rect2(x - sx / 2.0, y - sy / 2.0, sx, sy).grow(.12)
+                var overlaps := false
+                for existing in fixtures:
+                    if bool(existing.get("solid", true)):
+                        var ep: Array = existing["pos"]
+                        var es: Array = existing["size"]
+                        var old := Rect2(float(ep[0]) - float(es[0]) / 2.0,
+                            float(ep[1]) - float(es[1]) / 2.0,float(es[0]),float(es[1]))
+                        if collision.intersects(old):
+                            overlaps = true
+                for portal in portals:
+                    if portal["a"] == room["id"] or portal["b"] == room["id"]:
+                        var portal_p: Array = portal["point"]
+                        if collision.grow(.45).has_point(Vector2(float(portal_p[0]),float(portal_p[1]))):
+                            overlaps = true
+                if overlaps:
+                    continue
             fixtures.append({"id": _building_id(building) + "/floor/" + str(floor_index) + "/" + str(room["id"]) + "/" + str(slot),
-                "role": str(definition["role"]), "family": str(definition["family"]),
+                "role": str(definition["role"]), "family": str(definition.get("family", "F01")),
                 "pos": [x, y], "size": [sx, sy], "interactive": bool(definition.get("interactive", false)),
-                "room_id": str(room["id"])})
+                "solid": is_solid, "room_id": str(room["id"])})
         room["fixtures"] = fixtures
         room["normalized_type"] = role
         fixture_count += fixtures.size()
     return {"building_id": _building_id(building), "floor": floor_index, "rooms": rooms,
-        "portals": _portals(rooms), "fixture_count": fixture_count}
+        "portals": portals, "fixture_count": fixture_count,
+        "theme": house_details.get("visual_themes", {}).get(_building_id(building), {}) if is_lab else {}}
 
 func room_at(plan: Dictionary, position: Vector2) -> String:
     for room in plan.get("rooms", []):
@@ -161,6 +191,8 @@ func can_move(plan: Dictionary, from: Vector2, destination: Vector2) -> bool:
         if room["id"] != to_room:
             continue
         for fixture in room["fixtures"]:
+            if not bool(fixture.get("solid", true)):
+                continue
             var p: Vector2 = Vector2(float(fixture["pos"][0]), float(fixture["pos"][1]))
             var size: Array = fixture["size"]
             if absf(destination.x - p.x) < float(size[0]) / 2.0 + .18 and absf(destination.y - p.y) < float(size[1]) / 2.0 + .18:
