@@ -90,14 +90,14 @@ jobs:
       - name: Install Blender and Pillow
         run: |
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy libegl1 libgl1-mesa-dri
           python -m pip install 'Pillow>=10,<12'
           blender --version | head -2
       - name: Generate original F02 surface textures
         run: python tools/factory/structures/textures.py --output-dir build/f02_blender/textures
       - name: Rebuild five Blender scenes and sprite previews
         run: |
-          blender -b --python-exit-code 1 --factory-startup -t 2 --python \
+          F02_CI_CPU_RENDER=1 blender -b --python-exit-code 1 --factory-startup -t 2 --python \
             tools/factory/structures/blender_calibration.py -- \
             --subject all --output-dir build/f02_blender
       - name: Verify generated Blender and sprite artifacts
