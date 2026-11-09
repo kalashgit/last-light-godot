@@ -53,6 +53,17 @@ def prepare(issue: dict, issue_number: int) -> dict:
     }
 
 
+def reject_repeat_assignment(events: list[dict]) -> None:
+    """An unassigned issue must not be used to buy another agent run."""
+    if not isinstance(events, list):
+        raise ValueError("Missing issue assignment history")
+    if len(events) >= 100:
+        raise ValueError("Assignment history exceeds inspected page")
+    if any(e.get("event") == "assigned" and
+           (e.get("assignee") or {}).get("login") == ASSIGNEE for e in events):
+        raise ValueError("Copilot was assigned before; lifetime pilot quota exhausted")
+
+
 def preflight(env: dict[str, str]) -> None:
     if env.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
         raise ValueError("Not a trusted manual dispatch")
@@ -96,6 +107,8 @@ def main() -> None:
     try:
         issue = request("GET", issue_path, reader)
         payload = prepare(issue, args.issue_number)
+        events = request("GET", issue_path + "/events?per_page=100", reader)
+        reject_repeat_assignment(events)
         if not args.apply:
             # Do not print issue body, credential, or unsanitized API content.
             print("FOUNDRY_COPILOT_DRY_RUN issue=83 agent=foundry-modeler billable=false")
