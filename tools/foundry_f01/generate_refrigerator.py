@@ -510,8 +510,22 @@ def run(output: Path, contract_path: Path) -> dict:
     manifest_path = output / "manifest.json"
     manifest_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     archive_path, archive_hash = create_candidate_archive(output, contract_path)
-    report["source_archive"]["sha256"] = archive_hash
-    manifest_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    # A ZIP cannot contain its own SHA-256 in an embedded manifest without
+    # changing its digest. Keep manifest.json byte-identical on disk and inside
+    # the ZIP; persist the outer archive checksum in a separate receipt.
+    receipt = {
+        "schema_version": 1,
+        "asset_id": contract["asset_id"],
+        "candidate_only": True,
+        "golden_approved": False,
+        "archive": archive_path.name,
+        "archive_sha256": archive_hash,
+        "embedded_manifest_sha256": sha256(manifest_path),
+    }
+    (output / "archive_receipt.json").write_text(
+        json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+    )
+    report["archive_receipt"] = receipt
     print(f"F01_REFRIGERATOR_CANDIDATE_PASS {contract['asset_id']}", flush=True)
     print(f"F01_BLEND_SHA256 {report['blend_sha256']}", flush=True)
     print(f"F01_GLB_SHA256 {report['glb_sha256']}", flush=True)
