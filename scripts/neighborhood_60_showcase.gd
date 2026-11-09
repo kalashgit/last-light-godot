@@ -472,7 +472,7 @@ func _draw_hud() -> void:
         var bw := (size.x - 28) / 3
         var rr := Rect2(10 + c * bw, 58 + row * 37, bw - 5, 32)
         draw_rect(rr, ZONE_COLORS[i].darkened(0.28))
-        var display := ["HOUSES", "SHOPS", "CIVIC", "INDUSTRIAL", "RECREATION", "SPECIAL"][i]
+        var display: String = str(["HOUSES", "SHOPS", "CIVIC", "INDUSTRIAL", "RECREATION", "SPECIAL"][i])
         _label(display, rr.position + Vector2(8, 21), 13, Color("f3edd8"))
     if message_timer > 0:
         draw_rect(Rect2(7, 153, size.x - 14, 32), Color("15241f"))
