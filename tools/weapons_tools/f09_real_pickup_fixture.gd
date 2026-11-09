@@ -28,21 +28,22 @@ func _run() -> void:
     if house.get("save_blocked") or house.get("paused"):
         _abort("house started blocked",63)
         return
-    if not house.survival.restore({"inventory":{},"equipped":""}):
+    var survival: Object = house.get("survival")
+    if not survival.call("restore",{"inventory":{},"equipped":""}):
         _abort("empty inventory restore failed",64)
         return
     for item_id in IDS:
-        if not house.survival.definitions.has(item_id):
+        if not (survival.get("definitions") as Dictionary).has(item_id):
             _abort("candidate missing in isolated gameplay definitions: "+item_id,65)
             return
-        if not house.survival.add(item_id,1):
+        if not survival.call("add",item_id,1):
             _abort("could not add item to real inventory: "+item_id,66)
             return
         if not house.call("_drop_item",item_id):
             _abort("could not drop tool through actual interaction: "+item_id,67)
             return
         var drops: Array = house.get("drops")
-        if drops.size()!=1 or drops[0].id!=item_id or house.survival.inventory.has(item_id):
+        if drops.size()!=1 or drops[0].id!=item_id or (survival.get("inventory") as Dictionary).has(item_id):
             _abort("drop did not move item from inventory to ground",68)
             return
         # Test the same selection/interaction path used by touch/keyboard.
@@ -51,15 +52,15 @@ func _run() -> void:
             return
         house.set("selected_target",{"kind":"drop","index":0})
         house.call("_interact")
-        if house.get("drops").size()!=0 or int(house.survival.inventory.get(item_id,0))!=1:
+        if house.get("drops").size()!=0 or int((survival.get("inventory") as Dictionary).get(item_id,0))!=1:
             _abort("real pickup failed to restore inventory: "+item_id,70)
             return
         print("F09_REAL_ITEM_PICKUP_PASS ",item_id)
     if house.call("_save_game",TEST_SAVE)!=OK:
         _abort("could not write isolated save",71)
         return
-    var expected: Dictionary=house.survival.snapshot()
-    if not house.survival.restore({"inventory":{},"equipped":""}):
+    var expected: Dictionary=survival.call("snapshot")
+    if not survival.call("restore",{"inventory":{},"equipped":""}):
         _abort("reset before reload failed",72)
         return
     if house.call("_load_game",TEST_SAVE)!=OK:
