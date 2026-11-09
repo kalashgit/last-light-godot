@@ -50,6 +50,8 @@ First workflow run [#1](https://github.com/kalashgit/last-light-godot/actions/ru
 
 Second workflow run [#2](https://github.com/kalashgit/last-light-godot/actions/runs/42543408861) passed mesh/render creation but failed exporting glTF: Blender 5's bundled exporter did not see `numpy`. The workflow now installs `python3-numpy` and the script includes Ubuntu's `dist-packages` path. Third workflow [#3](https://github.com/kalashgit/last-light-godot/actions/runs/42543550634) **passed Blender 5 model generation and artifact upload**; check the Godot job's final conclusion and logs before claiming engine integration.
 
+The definitive [workflow run #6](https://github.com/kalashgit/last-light-godot/actions/runs/42543992661) **passed both GitHub Actions jobs**: `blender-source` (job `128924928601`) and `godot-import-and-interactions` (job `128925186147`). The latter imported the regenerated GLB in actual Godot **4.6.3**, recognized its 83 meshes and animation player, resolved Godot's sanitized pivot names, and executed the isolated main-door/crisper independent-motion and door-before-drawer interaction-gate assertions. Earlier failures were corrected and retained as historical reproducibility evidence, not reported as passes.
+
 This isolated interaction test is not a production game interaction test: gameplay state ownership, collision, save/load, inventory access and iPhone performance require integration by W05/W07, F12 and the game assembler.
 
 ## Founder visual signoff request
