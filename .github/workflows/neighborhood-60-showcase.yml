@@ -40,3 +40,21 @@ jobs:
         run: |
           timeout 70s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 \
             --headless --path . --script res://tests/neighborhood_60/smoke.gd
+      - name: Install software OpenGL virtual display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+      - name: Capture actual 720x1152 rendered Godot three-house street
+        run: |
+          timeout 90s xvfb-run -a -s "-screen 0 720x1152x24" \
+            env LIBGL_ALWAYS_SOFTWARE=1 \
+            /tmp/godot43/Godot_v4.3-stable_linux.x86_64 \
+            --path . --script res://tests/neighborhood_60/capture.gd
+      - name: Preserve visual QA screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-60-neighborhood-three-house-godot-preview
+          path: preview/neighborhood_60/*.png
+          retention-days: 14
+          if-no-files-found: warn
