@@ -19,7 +19,7 @@ import render_v3_recovery as base
 from hero_hatchback import build
 
 
-def run(output, samples=8):
+def run(output, samples=8, heading_deg=0):
     output.mkdir(parents=True, exist_ok=True)
     frames=[]
     for index, angle in enumerate((0, 22, 44, 66)):
@@ -34,13 +34,30 @@ def run(output, samples=8):
         scene.render.film_transparent=True
         scene.render.image_settings.color_mode="RGBA"
         build(driver_door_deg=angle)
+        turntable=bpy.data.objects.new("F10 HERO clip turntable",None)
+        bpy.context.collection.objects.link(turntable)
+        for obj in list(scene.objects):
+            if obj.parent is None and (obj.type in ("MESH","CURVE") or
+                                       obj.name=="F10 HERO driver door vertical hinge PROTOTYPE"):
+                world=obj.matrix_world.copy()
+                obj.parent=turntable
+                obj.matrix_world=world
+        turntable.rotation_euler.z=math.radians(heading_deg)
         hinge=bpy.data.objects.get("F10 HERO driver door vertical hinge PROTOTYPE")
-        assert hinge is not None and len(hinge.children)>=11
+        assert hinge is not None and len(hinge.children)>=17
         assert abs(math.degrees(hinge.rotation_euler.z)-angle)<.001
         door=bpy.data.objects["F10 HERO connected left front door exterior"]
         assert door.parent == hinge and len(door.data.polygons)>10
         assert bpy.data.objects["F10 HERO inset front door pane"].parent == hinge
         assert bpy.data.objects["F10 HERO driver door movable upper belt"].parent == hinge
+        for name in ("driver door inner padded card","driver door inner upper rail",
+                     "driver door inner armrest","driver door interior latch",
+                     "driver door front edge thickness","driver door rear edge thickness"):
+            assert bpy.data.objects["LL FLEET F10 HERO "+name].parent == hinge
+        for name in ("textured driver seat cushion","raked driver seat back",
+                     "driver headrest","dashboard lower assembly","cabin recessed footwell"):
+            assert bpy.data.objects["LL FLEET F10 HERO "+name].parent != hinge
+        assert bpy.data.objects.get("F10 HERO driver aperture recessed dark inner backing") is None
         # At rest a sampled door polygon must occupy exactly its authored
         # body-surface coordinate; a double pivot translation would fail here.
         if index==0:
@@ -61,9 +78,11 @@ def run(output, samples=8):
     (output/"manifest.json").write_text(json.dumps({
         "schema_version":1,"asset_id":"NONCANONICAL_F10_HERO_HATCHBACK_V2",
         "status":"EXPERIMENTAL_DRIVER_DOOR_NOT_APPROVED",
-        "canonical_master_id":None,"heading_deg":0,"samples":samples,
+        "canonical_master_id":None,"heading_deg":heading_deg,"samples":samples,
         "clip":"driver_front_door_open","timing_ms":400,"frames":frames,
-        "limitations":["no approved inner upholstery","no collision clearance proof",
+        "cabin_opening":"separated_body_surface_with_recessed_floor_and_fixed_seat",
+        "moving_door_parts":"exterior_skin_window_frame_inner_card_armrest_latch_edges",
+        "limitations":["no validated door/fender collision clearance",
                        "no Godot gameplay contract","no founder visual approval"]},indent=2)+"\n")
     print("F10_DOOR_CALIBRATION_DONE",len(frames))
 
@@ -72,6 +91,7 @@ if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--samples",type=int,default=8)
+    p.add_argument("--heading-deg",type=float,default=0)
     args=sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else []
     a=p.parse_args(args)
-    run(a.output,a.samples)
+    run(a.output,a.samples,a.heading_deg)
