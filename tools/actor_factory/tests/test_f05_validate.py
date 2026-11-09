@@ -32,6 +32,7 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.manifest = {
             "status": "CALIBRATION_ONLY",
             "physique": "lean",
+            "wearable_layers": sorted(validator.EXPECTED_WEARABLES),
             "body_width_factor": 1.0,
             "limb_width_factor": 1.0,
             "canonical_master_id": None,
@@ -84,6 +85,11 @@ class F05ArtifactGateTests(unittest.TestCase):
         self.manifest["physique"] = "broad"
         self.save()
         self.assertIn("Physique dimensions do not match calibration contract", validator.validate(self.path))
+
+    def test_missing_garment_layer_fails(self):
+        self.manifest["wearable_layers"].remove("shirt_sleeves")
+        self.save()
+        self.assertIn("Missing required garment calibration layers", validator.validate(self.path))
 
     def test_missing_glb_fails(self):
         (self.path / "f05_noncanonical_calibration.glb").unlink()
