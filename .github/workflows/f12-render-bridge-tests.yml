@@ -168,3 +168,21 @@ jobs:
         run: |
           godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
           godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
+
+  godot-actual-game-scene:
+    needs: f10-source-bridge
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-real-f10-hatchback-source-16-headings
+          path: build/f12-f10/
+      - name: Import actual project assets and F10 test atlas in Godot 4
+        run: |
+          godot --headless --path . --editor --import
+      - name: Exercise actual LAST LIGHT main.tscn with 16 imported sprite headings
+        run: |
+          godot --headless --path . --script res://tests/factory/render_bridge/godot_gameplay_probe.gd
