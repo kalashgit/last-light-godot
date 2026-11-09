@@ -6,6 +6,7 @@ scheduled render. Successful return requires full remote readback and SHA256.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import os
@@ -43,6 +44,26 @@ def inspect_zip(path: Path, source_class: str) -> dict:
         required = 360 if source_class == "legacy-360" else 1
         if len(blends) < required or len(glbs) < required:
             raise ValueError("Incomplete editable source and GLB set")
+        # Correctly named ZIP members may still be fake. Validate the native
+        # headers, including Blender's supported gzip-compressed .blend files.
+        for name in blends:
+            with archive.open(name) as member:
+                header = member.read(7)
+                if header == b"BLENDER":
+                    continue
+                if header[:2] == b"\x1f\x8b":
+                    member.seek(0)
+                    try:
+                        with gzip.GzipFile(fileobj=member) as compressed:
+                            if compressed.read(7) == b"BLENDER":
+                                continue
+                    except (OSError, EOFError):
+                        pass
+                raise ValueError(f"Invalid native source signature: {name}")
+        for name in glbs:
+            with archive.open(name) as member:
+                if member.read(4) != b"glTF":
+                    raise ValueError(f"Invalid native source signature: {name}")
         if archive.testzip() is not None:
             raise ValueError("Source ZIP failed CRC validation")
     with path.open("rb") as stream:
