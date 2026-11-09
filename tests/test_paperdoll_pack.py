@@ -161,6 +161,31 @@ class PackageTest(unittest.TestCase):
         self.assertEqual(built["runtime"]["directions"], 8)
         self.assertEqual(verify_package(self.output)["sheets"], 10)
 
+    def test_11_all_source_pixels_preserved_without_alpha_bleed(self):
+        pack_frames(self.input, self.output)
+        headings = self.manifest["directions"]
+        for record in self.manifest["frames"]:
+            original_path = self.input / record["file"]
+            atlas_path = self.output / "atlases" / record["slot"] / record["item_id"] / (record["animation"] + ".png")
+            row = headings.index(record["direction"])
+            col = record["frame"]
+            with Image.open(original_path) as src, Image.open(atlas_path) as atlas:
+                crop = atlas.crop((col * 32, row * 48, col * 32 + 32, row * 48 + 48))
+                self.assertEqual(crop.mode, "RGBA")
+                self.assertEqual(crop.tobytes(), src.tobytes(),
+                                 f"pixel drift in {record['slot']}/{record['item_id']}")
+
+    def test_12_reject_symlink_escape(self):
+        external = self.root / "external.png"
+        Image.new("RGBA", (32, 48), (255, 255, 255, 255)).save(external)
+        alias = self.input / "frames" / "alias.png"
+        alias.symlink_to(external)
+        self.manifest["frames"][0]["file"] = "frames/alias.png"
+        self.manifest["frames"][0]["sha256"] = sha(external)
+        self.write()
+        with self.assertRaisesRegex(ValueError, "escapes root"):
+            pack_frames(self.input, self.output)
+
 
 def emit_fixture(root=ROOT):
     source = root / "build" / "paperdoll_source"
