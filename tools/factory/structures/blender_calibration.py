@@ -116,6 +116,8 @@ def make_scene(bpy, plan, texture_dir):
         scene.render.engine = "CYCLES"
         scene.cycles.device = "CPU"
         scene.cycles.samples = 10
+        for layer in scene.view_layers:
+            layer.cycles.use_denoising = False  # Ubuntu Blender build lacks OIDN
     else:
         scene.render.engine = "BLENDER_EEVEE" if bpy.app.version < (4, 2, 0) else "BLENDER_EEVEE_NEXT"
     scene.render.resolution_x = 640
