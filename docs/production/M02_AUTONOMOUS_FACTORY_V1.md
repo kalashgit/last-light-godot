@@ -39,3 +39,11 @@ Hosted public-repo standard Actions compute is generally free subject to current
 5. After actual F01 pipeline passes and founder authorizes next calibration, add an F10 animated component to the explicit allowlist, reusing the F10-specific existing generator/16-heading QA. It is deliberately **not enabled** in V1.
 
 No production deployment, autonomous merge, or mass generation.
+
+## Twelve-family expansion (admission ledger)
+
+`tools/autonomous_factory/family_registry.json` now enumerates **every F01–F12 workstream**. The separate `m02-family-coordinator.yml` reports exact runnable/blocked families on every relevant PR and by manual dispatch. It is read-only and uploads a per-family source/readiness evidence artifact. The coordinator does not pretend that all twelve specialist Blender generators already live in one branch.
+
+Only the verified F01 entrypoint is currently runnable through the F01 calibration workflow. F02–F12 are recorded as explicitly blocked until their independently developed source branches, original rights, generator entrypoints, output schema, animation/geometry-specific QA and engine fixtures are integrated and tested. The `readiness` field cannot be upgraded merely by editing JSON; the validation code fails closed for unverified adapters. F04 and F08 source branch identity remains unverified in the current audit.
+
+Next integrations should use small source-specific adapters and tests, never a blind cross-branch bulk merge. F10 animated doors and F03 tiles are promising next technical candidates, but neither is labelled integrated in this revision. A00's canonical approvals and F11/F12 world-scale calibration remain independent release gates.
