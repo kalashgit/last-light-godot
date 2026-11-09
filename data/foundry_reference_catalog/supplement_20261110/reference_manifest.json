@@ -22,7 +22,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/001-050.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/001-050.jpeg"
     },
     {
       "sheet_id": "founder_20261110_02",
@@ -35,7 +37,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/101-150.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/101-150.jpeg"
     },
     {
       "sheet_id": "founder_20261110_03",
@@ -48,7 +52,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/051-100.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/051-100.jpeg"
     },
     {
       "sheet_id": "founder_20261110_04",
@@ -61,7 +67,9 @@
       ],
       "github_pr108_existing_same_hash": false,
       "github_pr108_filename": null,
-      "source_slot_mapping": "UNRESOLVED"
+      "source_slot_mapping": "UNRESOLVED",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/supplement_20261110/founder_extra_50_cells_unmapped.jpeg"
     },
     {
       "sheet_id": "founder_20261110_05",
@@ -74,7 +82,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/151-190.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/151-190.jpeg"
     },
     {
       "sheet_id": "founder_20261110_06",
@@ -87,7 +97,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/201-250.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/201-250.jpeg"
     },
     {
       "sheet_id": "founder_20261110_07",
@@ -100,7 +112,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/251-300.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/251-300.jpeg"
     },
     {
       "sheet_id": "founder_20261110_08",
@@ -113,7 +127,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/301-350.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/301-350.jpeg"
     },
     {
       "sheet_id": "founder_20261110_09",
@@ -126,7 +142,9 @@
       ],
       "github_pr108_existing_same_hash": true,
       "github_pr108_filename": "sheets/351-400.jpeg",
-      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission"
+      "source_slot_mapping": "See PR108 draft intake, independently reverify before canonical admission",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/founder_sheets_001_400/sheets/351-400.jpeg"
     },
     {
       "sheet_id": "founder_20261110_10",
@@ -139,7 +157,12 @@
       ],
       "github_pr108_existing_same_hash": false,
       "github_pr108_filename": null,
-      "source_slot_mapping": "UNRESOLVED"
+      "source_slot_mapping": "UNRESOLVED",
+      "github_pr109_included_exact_bytes": true,
+      "github_pr109_relative_path": "data/foundry_reference_catalog/supplement_20261110/founder_401_600_dense_overview.jpeg"
     }
-  ]
+  ],
+  "github_pr109_exact_bytes_archived": 10,
+  "additional_sheets_now_stored_in_git_pr109": 2,
+  "notes": "All ten JPEGs are present in the isolated stacked PR #109; eight inherited from draft #108, two newly added as exact SHA-verified Git blobs. Not Golden source meshes."
 }
