@@ -31,7 +31,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -140,13 +140,52 @@ def multi_bone_elliptic_shell(name,rings,bones,material,rig):
     rings: (x, y, z, radius_x, radius_y, influence tuple), ordered lower-to-upper
     in body-space. No F05 rest bones or gameplay systems are mutated.
     """
-    sides=20
+    # V9 elevates actual cloth topology. Previous calibration versions retain
+    # their exact geometry and deformation test baselines.
+    sculpt_cloth=args.geometry_profile=='v9_sculpted' and name.startswith('V6 ')
+    if sculpt_cloth:
+        dense=[]
+        for index,one in enumerate(rings[:-1]):
+            two=rings[index+1]
+            for step in range(3):
+                t=step/3
+                dense.append(tuple(one[j]*(1-t)+two[j]*t for j in range(5))+
+                             (tuple(a*(1-t)+b*t for a,b in zip(one[-1],two[-1])),))
+        dense.append(rings[-1])
+        rings=dense
+    sides=32 if sculpt_cloth else 20
     vertices=[]
     for x,y,z,rx,ry,weights in rings:
         assert len(weights)==len(bones) and abs(sum(weights)-1)<1e-6
+        if sculpt_cloth and 'skinned arm' in name:
+            # Anatomical upper arm, narrowing elbow and modest forearm volume:
+            # the V6 sleeve's constant thick radii read as padded tubes.
+            factor=.85 if z>1.33 else .81 if z>1.20 else .84 if z>1.08 else .77
+            rx*=factor
+            ry*=factor
+        if sculpt_cloth and 'trouser leg' in name:
+            taper=.92 if z>.60 else .87
+            rx*=taper
+            ry*=taper
         for i in range(sides):
             angle=math.tau*i/sides
-            vertices.append((x+rx*math.cos(angle),y+ry*math.sin(angle),z))
+            px=x+rx*math.cos(angle)
+            py=y+ry*math.sin(angle)
+            if sculpt_cloth:
+                # Directional drape follows weight and tension: waist bunching,
+                # elbows and thigh folds. Geometrically authored, deterministic.
+                is_torso='torso' in name
+                is_arm='arm' in name
+                fold_center=1.115 if is_torso else 1.188 if is_arm else .57
+                spread=.083 if is_torso else .095 if is_arm else .105
+                bunch=math.exp(-((z-fold_center)/spread)**2)
+                tension=math.exp(-((z-(1.34 if is_torso else 1.38 if is_arm else .82))/.19)**2)
+                broad=.0075*bunch*math.cos(3*angle+7.0*z)
+                diagonal=.004*tension*math.sin(8.4*z+4.0*math.cos(angle))
+                amplitude=broad+diagonal
+                px+=amplitude*math.cos(angle)
+                py+=amplitude*math.sin(angle)
+            vertices.append((px,py,z))
     faces=[]
     for j in range(len(rings)-1):
         for i in range(sides):
@@ -170,6 +209,9 @@ def multi_bone_elliptic_shell(name,rings,bones,material,rig):
     modifier.object=rig
     ob['F06_V6_SKINNED']=True
     ob['F06_BONE_CHAIN']=list(bones)
+    if sculpt_cloth:
+        ob['F06_V9_CLOTH_DRAPE']=True
+        for face in mesh.polygons:face.use_smooth=True
     return ob
 
 def tapered(name,center,z_min,z_max,bottom_xy,top_xy,bone,material,rig,segments=12):
@@ -530,6 +572,424 @@ def refine_v7_anatomy_and_infection(profile,rig):
         if obj.type=='MESH' and obj.name.startswith('V7 '):
             for polygon in obj.data.polygons:polygon.use_smooth=True
 
+def refine_v8_grounded_style(profile,rig):
+    """Small-scale believable clothing and restrained F11 candidate surfaces."""
+    # PZ-inspired readability does not call for cartoonishly oversized pads;
+    # continuous skinned sleeves already supply credible shoulder volume.
+    removable=('V4 asymmetrical loose jacket shoulder',
+               'V4 short scrub sleeve ', 'V4 security shoulder pad ',
+               'V4 exposed wounded shoulder','raised left lapel',
+               'raised right lapel','collar notch')
+    for obj in list(bpy.data.objects):
+        if obj.type=='MESH' and obj.name.startswith(removable):
+            bpy.data.objects.remove(obj,do_unlink=True)
+    outfit=profile['outfit']
+    # A couple of large, plausible workwear cues, not dozens of noisy marks.
+    if outfit=='jacket':
+        fabric=next(m for m in bpy.data.materials if m.name.startswith('Worn woven cloth'))
+        stitch_fold('V8 relaxed jacket lapel left',[(-.110,-.161,1.444),
+                    (-.094,-.168,1.342),(-.081,-.158,1.281)],
+                    .031,'chest',fabric,rig)
+    elif outfit=='scrubs':
+        scrub=next(m for m in bpy.data.materials if m.name.startswith('V4 faded sage'))
+        stitch_fold('V8 orderly tunic side seam',[(-.205,-.056,1.39),
+                    (-.209,-.081,1.22),(-.204,-.076,1.08)],
+                    .027,'chest',scrub,rig)
+    elif outfit=='vest':
+        armor=next(m for m in bpy.data.materials if m.name.startswith('V4 dark graphite'))
+        for side,sign in (('L',1),('R',-1)):
+            stitch_fold('V8 tapered vest shoulder join '+side,
+                        [(sign*.193,-.126,1.44),(sign*.227,-.092,1.395),
+                         (sign*.235,-.050,1.343)],.052,'chest',armor,rig)
+    else:
+        cloth=next(m for m in bpy.data.materials if m.name.startswith('Worn woven cloth'))
+        stitch_fold('V8 ripped dragging sleeve edge',[(.265,-.033,1.373),
+                    (.287,-.068,1.29),(.305,-.074,1.24)],
+                    .043,'upper_arm_R',cloth,rig)
+
+    def layered_surface(m,base,macro,contrast,bump_strength):
+        """Five restrained albedo steps and diffuse PBR micro-roughness."""
+        nt=m.node_tree
+        if not nt:return
+        nodes=nt.nodes
+        bsdf=next((n for n in nodes if n.type=='BSDF_PRINCIPLED'),None)
+        ramp=next((n for n in nodes if n.type=='VALTORGB'),None)
+        noise=next((n for n in nodes if n.type=='TEX_NOISE'),None)
+        if not (bsdf and ramp and noise):return
+        noise.inputs['Scale'].default_value=macro
+        noise.inputs['Detail'].default_value=2.0
+        elements=ramp.color_ramp.elements
+        while len(elements)<5:elements.new(.5)
+        for element,pos,mult in zip(sorted(elements,key=lambda e:e.position),
+                                    (.12,.31,.50,.69,.88),
+                                    (1-contrast,1-contrast*.48,1,
+                                     1+contrast*.34,1+contrast*.68)):
+            element.position=pos
+            element.color=(*(max(0,min(1,x*mult)) for x in base),1)
+        ramp.color_ramp.interpolation='EASE'
+        micro=nodes.new('ShaderNodeTexNoise')
+        micro.inputs['Scale'].default_value=62 if bump_strength>.08 else 30
+        micro.inputs['Detail'].default_value=2
+        bump=nodes.new('ShaderNodeBump')
+        bump.inputs['Strength'].default_value=bump_strength
+        bump.inputs['Distance'].default_value=.025
+        nt.links.new(micro.outputs['Fac'],bump.inputs['Height'])
+        nt.links.new(bump.outputs['Normal'],bsdf.inputs['Normal'])
+        bsdf.inputs['Roughness'].default_value=.91 if bump_strength>.08 else .84
+    for m in bpy.data.materials:
+        label=m.name
+        if label.startswith('Worn woven cloth'):
+            layered_surface(m,profile['shirt'],6,.21,.12)
+        elif label.startswith('Stained twill'):
+            layered_surface(m,profile['pants'],7,.17,.14)
+        elif label.startswith('Pallid skin'):
+            layered_surface(m,profile['skin'],4,.10,.035)
+        elif label.startswith('Aged leather and rubber'):
+            layered_surface(m,(.14,.13,.12),9,.14,.12)
+        elif label.startswith('V7 skull orbital gradient'):
+            # Keep the skull's soft vertex-pigment eye shadow layer intact.
+            layered_surface(m,profile['skin'],4,.10,.035)
+
+def refine_v9_craniofacial_sculpt(profile,rig):
+    """Replace primitive facial attachments with one anatomical surface.
+
+    Dense, continuous source topology establishes the brows, recessed sockets,
+    bridge/tip/alae, cheeks, lips and chin before F12 downsizing. Pigment is
+    an interpolated vertex attribute, never a floating black-eye sphere.
+    """
+    removable=('V7 sculpted skull and jaw','V7 sculpted nasal cartilage',
+               'V7 angular upper brow ', 'V7 irregular ear ',
+               'V7 recessed mouth cavity', 'V7 continuous broken scalp hair',
+               'neck skin',
+               'V8 relaxed jacket lapel left')
+    for obj in list(bpy.data.objects):
+        if obj.type=='MESH' and obj.name.startswith(removable):
+            bpy.data.objects.remove(obj,do_unlink=True)
+    skin=next(m for m in bpy.data.materials if m.name.startswith('V7 skull orbital gradient'))
+    dermis=next(m for m in bpy.data.materials if m.name.startswith('Pallid skin'))
+    profiles=((1.505,.030,.035,-.006), (1.531,.066,.062,-.010),
+              (1.562,.087,.080,-.012), (1.600,.106,.102,-.006),
+              (1.641,.126,.113,-.004), (1.678,.128,.119,0),
+              (1.705,.128,.118,.004), (1.732,.119,.113,.007),
+              (1.763,.105,.098,.009), (1.788,.077,.072,.012),
+              (1.813,.012,.018,.014))
+    def gauss(x,z,cx,cz,sx,sz):
+        return math.exp(-(((x-cx)/sx)**2+((z-cz)/sz)**2))
+    def smooth_profile(z,index):
+        # Cubic Hermite interpolation avoids the visible horizontal facet
+        # bands produced when cheek and forehead radii change at fixed rings.
+        for j in range(len(profiles)-1):
+            if profiles[j][0]<=z<=profiles[j+1][0]:
+                break
+        p0,p1=profiles[j],profiles[j+1]
+        prev=profiles[max(0,j-1)]
+        following=profiles[min(len(profiles)-1,j+2)]
+        span=p1[0]-p0[0]
+        t=(z-p0[0])/span
+        m0=(p1[index]-prev[index])/(p1[0]-prev[0])
+        m1=(following[index]-p0[index])/(following[0]-p0[0])
+        return ((2*t**3-3*t**2+1)*p0[index]+
+                (t**3-2*t**2+t)*span*m0+
+                (-2*t**3+3*t**2)*p1[index]+
+                (t**3-t**2)*span*m1)
+    verts=[]
+    shades=[]
+    sides=72
+    rings=53
+    for row in range(rings):
+        z=profiles[0][0]+(profiles[-1][0]-profiles[0][0])*row/(rings-1)
+        rx,ry,cy=(smooth_profile(z,k) for k in (1,2,3))
+        for side in range(sides):
+            theta=math.tau*side/sides
+            x=rx*math.cos(theta)
+            front=max(0,-math.sin(theta))**2
+            y=cy+ry*math.sin(theta)
+            # Socket cavities are real inward depressions, edged by understated
+            # superior/inferior orbicularis tissue. The pupils are not buttons.
+            socket=sum(gauss(x,z,s*.057,1.686,.027,.017) for s in (-1,1))
+            lids=sum(gauss(x,z,s*.057,1.706,.036,.011)+
+                     .47*gauss(x,z,s*.057,1.668,.031,.008)
+                     for s in (-1,1))
+            cheek=sum(gauss(x,z,s*.079,1.629,.033,.028) for s in (-1,1))
+            # Two connected nose volumes: a narrow bridge, lower cartilage,
+            # and asymmetric alae formed as deformations of the same skull.
+            bridge=gauss(x,z,0,1.651,.021,.043)
+            tip=gauss(x,z,-.002,1.619,.025,.021)
+            alae=sum(gauss(x,z,s*.024,1.612,.015,.012) for s in (-1,1))
+            lips=gauss(x,z,0,1.580,.032,.008)
+            mouth=gauss(x,z,0,1.568,.032,.005)
+            chin=gauss(x,z,0,1.545,.063,.025)
+            nasolabial=sum(gauss(x,z,s*.037,1.601,.014,.027) for s in (-1,1))
+            y+=front*(.009*socket-.003*lids-.006*cheek-
+                      .011*bridge-.016*tip-.005*alae-.003*lips+
+                      .004*mouth-.006*chin+.002*nasolabial)
+            x+=front*.0015*gauss(x,z,.07,1.629,.07,.06)
+            verts.append((x,y,z))
+            shade=max(.80,min(1,.99-.15*socket-.12*mouth-
+                              .025*nasolabial+.018*cheek))
+            shades.append(shade)
+    faces=[]
+    for row in range(rings-1):
+        for side in range(sides):
+            nxt=(side+1)%sides
+            faces.append((row*sides+side,row*sides+nxt,
+                          (row+1)*sides+nxt,(row+1)*sides+side))
+    faces.extend((tuple(reversed(range(sides))),
+                  tuple(range((rings-1)*sides,rings*sides))))
+    sculpt=mesh_part('V9 integrated craniofacial sculpt',verts,faces,'head',skin,rig)
+    sculpt['F06_V9_INTEGRATED_FACE']=True
+    sculpt['F06_V9_ANATOMICAL_FEATURES']='eye sockets/brows/nose/lips/cheeks/chin'
+    attr=sculpt.data.vertex_colors.new(name='orbital_ao')
+    for poly in sculpt.data.polygons:
+        for loop in poly.loop_indices:
+            vindex=sculpt.data.loops[loop].vertex_index
+            shade=shades[vindex]
+            attr.data[loop].color=(shade,shade,shade,1)
+    for poly in sculpt.data.polygons:poly.use_smooth=True
+    # Neck is a contiguous-shaped trapezoid, not the V2 neck spheroid. It
+    # overlaps the jaw and passes beneath the uniform neckline at rest.
+    neck=[]
+    for z,rx,ry,y in ((1.431,.083,.068,-.004),
+                       (1.464,.072,.063,-.003),
+                       (1.507,.064,.061,-.004),
+                       (1.544,.065,.066,-.006),
+                       (1.568,.055,.061,-.007)):
+        for i in range(24):
+            theta=math.tau*i/24
+            neck.append((rx*math.cos(theta),y+ry*math.sin(theta),z))
+    neck_faces=[(j*24+i,j*24+(i+1)%24,(j+1)*24+(i+1)%24,(j+1)*24+i)
+                for j in range(4) for i in range(24)]
+    neck_faces.extend((tuple(reversed(range(24))),tuple(range(96,120))))
+    n=mesh_part('V9 tendons and neck volume',neck,neck_faces,'neck',dermis,rig)
+    for poly in n.data.polygons:poly.use_smooth=True
+    # The V7 scalp sat inside the cranium and disappeared in all rendered
+    # headings. This is a fitted hair shell above the head, with a receding
+    # asymmetric front hairline and slightly longer occipital coverage.
+    hair=next(m for m in bpy.data.materials if m.name.startswith('V7 uneven brittle hair'))
+    hair_vertices=[]
+    segments=64
+    for j in range(5):
+        for i in range(segments):
+            theta=math.tau*i/segments
+            front=max(0,-math.sin(theta))
+            back=max(0,math.sin(theta))
+            hairline=(1.731+.008*front-.035*back+
+                      .020*front*(1-math.cos(theta)**2)+
+                      .006*math.cos(7*theta)+.003*math.sin(11*theta))
+            if j==0:
+                z=hairline
+                rx,ry=.122,.116
+            else:
+                z,rx,ry=((1.757,.117,.111),
+                          (1.781,.096,.090),
+                          (1.804,.067,.063),
+                          (1.817,.009,.012))[j-1]
+            hair_vertices.append((.004+rx*math.cos(theta),
+                                  .008+ry*math.sin(theta),z))
+    hair_faces=[(j*segments+i,j*segments+(i+1)%segments,
+                 (j+1)*segments+(i+1)%segments,(j+1)*segments+i)
+                for j in range(4) for i in range(segments)]
+    hair_faces.append(tuple(range(4*segments,5*segments)))
+    hair_obj=mesh_part('V9 fitted scalp with receding hairline',hair_vertices,
+                       hair_faces,'head',hair,rig)
+    for poly in hair_obj.data.polygons:poly.use_smooth=True
+    # Body-integrated upper-face silhouette survives low-resolution reduction
+    # without an independent dark floating eyeball mesh.
+
+def refine_v9_cloth_surface(profile,rig):
+    """Tame coarse color patches and add F11-compatible directional weave."""
+    for mat_name,contrast,bump_strength,rough in (
+        ('Worn woven cloth',.11,.045,.91),
+        ('Stained twill',.095,.052,.89),
+        ('Pallid skin',.055,.018,.82),
+        ('V7 skull orbital gradient',.055,.018,.82)):
+        m=next(m for m in bpy.data.materials if m.name.startswith(mat_name))
+        nt=m.node_tree
+        ramp=next(n for n in nt.nodes if n.type=='VALTORGB')
+        bsdf=next(n for n in nt.nodes if n.type=='BSDF_PRINCIPLED')
+        bump=next(n for n in nt.nodes if n.type=='BUMP')
+        base=profile['pants'] if mat_name=='Stained twill' else (
+             profile['shirt'] if mat_name=='Worn woven cloth' else profile['skin'])
+        for element,mult in zip(sorted(ramp.color_ramp.elements,key=lambda e:e.position),
+                                (1-contrast,1-contrast*.4,1,1+contrast*.35,
+                                 1+contrast*.7)):
+            element.color=(*(max(0,min(1,c*mult)) for c in base),1)
+        bump.inputs['Strength'].default_value=bump_strength
+        bump.inputs['Distance'].default_value=.009
+        bsdf.inputs['Roughness'].default_value=rough
+        if mat_name in ('Pallid skin','V7 skull orbital gradient'):
+            subsurface=bsdf.inputs.get('Subsurface Weight')
+            if subsurface is not None:subsurface.default_value=.045
+        else:
+            # Fine weave along cloth grain affects normal, not noisy albedo.
+            wave=nt.nodes.new('ShaderNodeTexWave')
+            wave.wave_type='BANDS'
+            wave.bands_direction='X'
+            wave.inputs['Scale'].default_value=72
+            wave.inputs['Distortion'].default_value=.55
+            wave.inputs['Detail'].default_value=1.3
+            texture=next(n for n in nt.nodes if n.type=='TEX_NOISE' and
+                         n.inputs['Scale'].default_value>20)
+            mix=nt.nodes.new('ShaderNodeMixRGB')
+            mix.blend_type='MULTIPLY'
+            mix.inputs['Fac'].default_value=.18
+            nt.links.new(texture.outputs['Fac'],mix.inputs[1])
+            nt.links.new(wave.outputs['Fac'],mix.inputs[2])
+            nt.links.new(mix.outputs['Color'],bump.inputs['Height'])
+
+def refine_v9_garment_construction(profile,rig):
+    """Stitched, contoured front panels replace floating primitive jacket bars."""
+    if profile['outfit']!='jacket':return
+    for ob in list(bpy.data.objects):
+        if ob.type!='MESH':continue
+        if ob.name.startswith(('V4 inner shirt broad window',
+                               'V4 drooping left open jacket edge',
+                               'V4 slanted right jacket edge',
+                               'V8 relaxed jacket lapel left',
+                               'button placket','dull button',
+                               'sagging left breast pocket',
+                               'old chest stain','shoulder tension fold',
+                               'waist compression')):
+            bpy.data.objects.remove(ob,do_unlink=True)
+    jacket=next(m for m in bpy.data.materials if m.name.startswith('V4 faded jacket panel'))
+    # Continuous sleeves must match their parent coat; the V8 mismatched
+    # green tubes against beige panels were visually read as detached armor.
+    for name in ('V6 skinned arm L','V6 skinned arm R'):
+        sleeve=bpy.data.objects[name]
+        sleeve.data.materials.clear()
+        sleeve.data.materials.append(jacket)
+    # Dense garment shells wrap the anatomical torso along a front quarter.
+    # Conformal layers create a true cloth opening without hanging cylinders.
+    torso_rings=((1.035,.181,.143),(1.105,.191,.153),
+                 (1.190,.199,.159),(1.285,.212,.162),
+                 (1.377,.229,.161),(1.451,.202,.132))
+    def torso_width(z):
+        for idx in range(len(torso_rings)-1):
+            a,b=torso_rings[idx:idx+2]
+            if a[0]<=z<=b[0]:
+                u=(z-a[0])/(b[0]-a[0])
+                return (a[1]*(1-u)+b[1]*u,a[2]*(1-u)+b[2]*u)
+        return torso_rings[-1][1:]
+    for side,sign in (('L',-1),('R',1)):
+        rows=18
+        cols=9
+        vertices=[]
+        weights=[]
+        for row in range(rows):
+            z=1.095+.347*row/(rows-1)
+            rx,ry=torso_width(z)
+            opening=.033+.056*((z-1.095)/.347)**1.5
+            outer=rx*.86
+            for col in range(cols):
+                across=col/(cols-1)
+                x=sign*(opening+(outer-opening)*across)
+                # Panels hang slightly forward through the abdomen and lift
+                # toward the shoulder, following cloth ease and gravity.
+                radius=max(.04,1-(x/rx)**2)
+                y=.005-ry*math.sqrt(radius)-.009
+                y-=.004*math.sin(math.pi*across)*math.sin(
+                    math.pi*(z-1.095)/.347)
+                if col==0:y-=.003
+                vertices.append((x,y,z))
+                chest=min(.98,max(.05,(z-1.05)/.345))
+                weights.append((1-chest,chest))
+        faces=[(j*cols+i,j*cols+i+1,(j+1)*cols+i+1,(j+1)*cols+i)
+               for j in range(rows-1) for i in range(cols-1)]
+        ob=mesh_part('V9 tailored open jacket panel '+side,vertices,faces,
+                     'chest',jacket,rig)
+        ob.vertex_groups.clear()
+        spine=ob.vertex_groups.new(name='spine')
+        chest=ob.vertex_groups.new(name='chest')
+        for index,(w0,w1) in enumerate(weights):
+            spine.add([index],w0,'REPLACE')
+            chest.add([index],w1,'REPLACE')
+        ob['F06_V9_GARMENT_PANEL']=True
+        for poly in ob.data.polygons:poly.use_smooth=True
+        # Narrow integrated facing along the opening, with worn dark stitching.
+        # No giant raised bar: a flush seam follows the custom panel boundary.
+        for row in range(2,rows-2):
+            i=row*cols
+            x,y,z=vertices[i]
+            ob.data.vertices[i].co.y=y-.002
+        # Folded jacket facing has a four-point bevel, following the shoulder
+        # and neckline. It is an honest cloth overlap, not a cylindrical bar.
+        if sign<0:
+            facing_verts=[(-.092,-.139,1.443),(-.136,-.131,1.420),
+                          (-.073,-.159,1.278),(-.050,-.166,1.290)]
+        else:
+            facing_verts=[(.092,-.139,1.443),(.136,-.131,1.420),
+                          (.073,-.159,1.278),(.050,-.166,1.290)]
+        facing=mesh_part('V9 folded neckline facing '+side,
+                         facing_verts,[(0,1,2),(0,2,3)],'chest',jacket,rig)
+        facing['F06_V9_GARMENT_LAPEL']=True
+        for poly in facing.data.polygons:poly.use_smooth=True
+    # The under-shirt is the original multi-weight torso, exposed in a true
+    # opening between these panels. The muted panel contrasts, not randomness,
+    # carry the distinct civilian silhouette down to native sprite size.
+
+def refine_v9_extremities_and_finishes(profile,rig):
+    """Reduce giant shoes, floating damage blobs and pronged cartoon hands."""
+    for obj in list(bpy.data.objects):
+        if obj.type=='MESH' and obj.name.startswith((
+            'V7 hand palm','V7 dangling finger','boot sole ',
+            'grimy trouser knee','rolled trouser cuff')):
+            bpy.data.objects.remove(obj,do_unlink=True)
+    skin=next(m for m in bpy.data.materials if m.name.startswith('Pallid skin'))
+    # A single extruded silhouette per hand creates a connected palm, thumb
+    # and four short tapered digits; the source remains editable and skinned.
+    hand_outline=((-0.033,.962),(.032,.962),(.043,.900),
+                  (.065,.881),(.070,.848),(.054,.837),(.042,.859),
+                  (.043,.825),(.033,.804),(.023,.813),
+                  (.019,.812),(.012,.795),(.002,.792),(-.009,.800),
+                  (-.010,.818),(-.019,.809),(-.030,.811),
+                  (-.034,.829),(-.041,.820),(-.052,.828),
+                  (-.044,.873))
+    for side,sign in (('L',1),('R',-1)):
+        verts=[]
+        center=sign*.375
+        for y in (-.039,-.006):
+            for x,z in hand_outline:
+                verts.append((center+sign*x,y,z))
+        count=len(hand_outline)
+        faces=[tuple(reversed(range(count))),tuple(range(count,2*count))]
+        faces.extend((i,(i+1)%count,(i+1)%count+count,i+count)
+                     for i in range(count))
+        hand=mesh_part('V9 anatomically tapered hand '+side,
+                       verts,faces,'hand_'+side,skin,rig)
+        hand['F06_V9_CONNECTED_HAND']=True
+        hand.modifiers.new('V9 hand bevel','BEVEL').width=.005
+        hand.modifiers[-1].segments=2
+    for name in ('shoe L','shoe R'):
+        shoe=bpy.data.objects.get(name)
+        if shoe:
+            for v in shoe.data.vertices:
+                # Scope to original ellipsoid center; no foot sockets move.
+                center_x=.12 if name.endswith('L') else -.12
+                v.co.x=center_x+(v.co.x-center_x)*.90
+                v.co.y=-.112+(v.co.y+.112)*.80
+                v.co.z=.075+(v.co.z-.075)*.90
+    if profile['outfit']=='jacket':
+        jacket=next(m for m in bpy.data.materials if m.name.startswith('V4 faded jacket panel'))
+        nt=jacket.node_tree
+        ramp=next(n for n in nt.nodes if n.type=='VALTORGB')
+        base=(.30,.30,.255)
+        while len(ramp.color_ramp.elements)<5:ramp.color_ramp.elements.new(.5)
+        for element,pos,mul in zip(sorted(ramp.color_ramp.elements,key=lambda e:e.position),
+                                   (.12,.31,.50,.69,.88),(.90,.96,1,1.03,1.07)):
+            element.position=pos
+            element.color=(*(c*mul for c in base),1)
+        ramp.color_ramp.interpolation='EASE'
+        bsdf=next(n for n in nt.nodes if n.type=='BSDF_PRINCIPLED')
+        micro=nt.nodes.new('ShaderNodeTexNoise')
+        micro.inputs['Scale'].default_value=74
+        micro.inputs['Detail'].default_value=2
+        bump=nt.nodes.new('ShaderNodeBump')
+        bump.inputs['Strength'].default_value=.046
+        bump.inputs['Distance'].default_value=.008
+        nt.links.new(micro.outputs['Fac'],bump.inputs['Height'])
+        nt.links.new(bump.outputs['Normal'],bsdf.inputs['Normal'])
+        bsdf.inputs['Roughness'].default_value=.93
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -608,7 +1068,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -668,15 +1128,23 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
         refine_v3_anatomy_and_wear(profile,rig)
-    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
+    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
         refine_v4_readability(profile,rig)
-    if args.geometry_profile in ('v5_weighted','v6_skinned','v7_anatomical'):
+    if args.geometry_profile in ('v5_weighted','v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
         refine_v5_weighted_joints(profile,rig)
-    if args.geometry_profile in ('v6_skinned','v7_anatomical'):
+    if args.geometry_profile in ('v6_skinned','v7_anatomical','v8_grounded','v9_sculpted'):
         refine_v6_continuous_skinning(profile,rig)
-    if args.geometry_profile=='v7_anatomical':refine_v7_anatomy_and_infection(profile,rig)
+    if args.geometry_profile in ('v7_anatomical','v8_grounded','v9_sculpted'):
+        refine_v7_anatomy_and_infection(profile,rig)
+    if args.geometry_profile in ('v8_grounded','v9_sculpted'):
+        refine_v8_grounded_style(profile,rig)
+    if args.geometry_profile=='v9_sculpted':
+        refine_v9_craniofacial_sculpt(profile,rig)
+        refine_v9_cloth_surface(profile,rig)
+        refine_v9_garment_construction(profile,rig)
+        refine_v9_extremities_and_finishes(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
