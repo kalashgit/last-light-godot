@@ -49,5 +49,13 @@ class FiniteProductionTests(unittest.TestCase):
                 self.assertNotIn("golden_approved=true", s)
                 self.assertNotIn("promote-golden", s)
 
+    def test_original_creation_chain_preserves_bounded_owner_batch_size(self):
+        s = (ROOT / "foundry-create-new-3d-models.yml").read_text()
+        self.assertIn("BATCH_INPUT: ${{ inputs.batch_size || '2' }}", s)
+        self.assertIn('[[ "$BATCH_INPUT" =~ ^[1-4]$ ]]', s)
+        self.assertIn('-f batch_size="$BATCH_INPUT"', s)
+        self.assertNotIn('-f batch_size=2 -f continuation_batches=', s)
+        self.assertIn("if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'", s)
+
 if __name__ == "__main__":
     unittest.main()
