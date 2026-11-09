@@ -6,6 +6,7 @@ on:
       - 'tools/actor_factory/f05_*.py'
       - 'tools/actor_factory/tests/test_f05*.py'
       - 'tests/f05_godot_integration.gd'
+      - 'tools/actor_factory/godot_import_fixture/**'
       - '.github/workflows/f05-calibration.yml'
 permissions:
   contents: read
@@ -71,28 +72,24 @@ jobs:
           unzip -q /tmp/f05-godot.zip -d /tmp/f05-godot
           chmod +x /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64
           /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --version
-      - name: Import GLB into the actual LAST LIGHT Godot project
+      - name: Native GLB import into isolated Godot editor fixture
+        if: always()
+        run: |
+          cp build/f05-cal/f05_noncanonical_calibration.glb tools/actor_factory/godot_import_fixture/actor.glb
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 60s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path tools/actor_factory/godot_import_fixture --editor --import 2>&1 | tee build/f05-godot-import.log
+      - name: Verify native Godot PackedScene, skeleton, meshes and all clips
+        if: always()
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=10s 45s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path tools/actor_factory/godot_import_fixture --script res://verify_import.gd 2>&1 | tee build/f05-godot-native.log
+      - name: Godot animation and playable physics in actual LAST LIGHT project
         if: always()
         run: |
           mkdir -p tests/fixtures
           cp build/f05-cal/f05_noncanonical_calibration.glb tests/fixtures/f05_noncanonical_calibration.glb
           set -o pipefail
-          timeout --signal=TERM --kill-after=10s 120s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --editor --import 2>&1 | tee build/f05-godot-import.log
-      - name: Godot skinned-mesh, animation and playable physics test
-        if: always()
-        run: |
-          set -o pipefail
-          /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/f05_godot_integration.gd -- --output "$PWD/build/f05-cal/godot_qa.json" 2>&1 | tee build/f05-godot-smoke.log
-      - name: Render actual animation poses and screen garment clipping
-        if: always()
-        env:
-          LIBGL_ALWAYS_SOFTWARE: '1'
-          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
-          QT_QPA_PLATFORM: offscreen
-        run: |
-          test -s build/f05-cal/f05_noncanonical_calibration.blend
-          set -o pipefail
-          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_motion_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-motion.log
+          timeout --signal=TERM --kill-after=10s 60s /tmp/f05-godot/Godot_v4.4.1-stable_linux.x86_64 --headless --path . --script res://tests/f05_godot_integration.gd -- --output "$PWD/build/f05-cal/godot_qa.json" 2>&1 | tee build/f05-godot-smoke.log
       - name: Assemble inspectable motion contact sheet
         if: always()
         run: |
@@ -108,6 +105,7 @@ jobs:
             build/f05-motion.log
             build/f05-joint.log
             build/f05-godot-import.log
+            build/f05-godot-native.log
             build/f05-godot-smoke.log
           if-no-files-found: warn
           retention-days: 14
