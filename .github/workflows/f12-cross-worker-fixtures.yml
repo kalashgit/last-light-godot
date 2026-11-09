@@ -78,7 +78,7 @@ jobs:
           original=source.read_text()
           needle="scene.render.engine='BLENDER_EEVEE'"
           assert original.count(needle)==1,"F07 engine site changed; re-audit first"
-          patched=original.replace(needle,"scene.render.engine='CYCLES'\\n    scene.cycles.samples=8\\n    scene.cycles.use_denoising=False")
+          patched=original.replace(needle,"scene.render.engine='CYCLES'\n    scene.cycles.samples=8\n    scene.cycles.use_denoising=False")
           target=Path("build/f12-cal03/f07_cpu_render_adapted.py")
           target.write_text(patched)
           (target.parent/"render_backend_adaptation.json").write_text(json.dumps({
