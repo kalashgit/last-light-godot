@@ -43,10 +43,18 @@ run_checked --headless --path . --script tests/mobile/v2_presentation.gd
 # Render parity of the draw-call batcher needs a real GL context.
 if command -v xvfb-run >/dev/null 2>&1; then
  parity=$(xvfb-run -a "$engine" --path . --rendering-driver opengl3 --script tests/mobile/render_batch_parity.gd 2>&1 || true)
- echo "$parity" | grep -E 'RENDER BATCH PARITY' || true
- echo "$parity" | grep -q 'RENDER BATCH PARITY: PASS'
+ if echo "$parity" | grep -q 'RENDER BATCH PARITY: PASS'; then
+  echo "$parity" | grep -E 'RENDER BATCH PARITY'
+ elif echo "$parity" | grep -q 'RENDER BATCH PARITY: FAIL'; then
+  echo "$parity" | grep -E 'RENDER BATCH PARITY|FAIL'
+  exit 1
+ else
+  # No GL context (e.g. CI image without Mesa): not a pass, not a regression.
+  echo "RENDER BATCH PARITY: NOT RUN (no OpenGL context under Xvfb)"
+  echo "$parity" | tail -5
+ fi
 else
- echo "RENDER BATCH PARITY: SKIPPED (no xvfb-run; needs a display)"
+ echo "RENDER BATCH PARITY: NOT RUN (no xvfb-run; needs a display)"
 fi
 
 # Integration candidate: merged #18/#19/#25/#26 interfaces in one build.
