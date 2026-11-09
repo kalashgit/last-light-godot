@@ -117,13 +117,18 @@ def main():
         for heading in range(16):
             filename=f"h{heading:02}.png"
             shutil.copyfile(src/filename,target/filename)
-            contact=graded_by_id[ident]["frames"][heading]["ground_anchor_px"]
+            contact=graded_by_id[ident]["frames"][heading]["ground_contact_px"]
+            pivot=graded_by_id[ident]["frames"][heading]["pivot_px"]
+            assert pivot==[48,48],(ident,heading,"rotation pivot jitter")
+            shutil.copyfile(SRC/ident/"world_sprite_96_v19_reference"/filename,
+                            target/f"v19_{filename}")
             frames.append({
                 "file":f"sprites/{ident}/{filename}",
                 "mode":"ground" if heading==0 else "held",
                 "angle_degrees":heading*22.5,
                 "size_px":[96,96],
-                "anchor_px":contact,
+                "anchor_px":pivot,
+                "ground_contact_px":contact,
                 "source_canvas_px":[384,384],
                 "crop_rect_px":[144,144,240,240]})
         factory_manifest["objects"].append({
