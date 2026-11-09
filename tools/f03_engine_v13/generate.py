@@ -99,7 +99,7 @@ func _ready()->void:
     layer.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
     add_child(layer)
     F.populate(layer)
-    layer.position=Vector2(480,160)
+    layer.position=Vector2(140,260)
     if "--capture" in OS.get_cmdline_user_args():
         call_deferred("capture")
 func capture()->void:
