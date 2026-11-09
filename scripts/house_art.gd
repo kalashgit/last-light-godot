@@ -220,14 +220,14 @@ func _furniture(g, item: Dictionary) -> void:
   # Gameplay-rendered opening affordance follows the actual persistent state.
   # F12 must replace with V10 calibrated atlas frames before Golden release.
   _box(g,item.pos,item.size,64,Color("839e97"))
-  var cavity := g._screen(item.pos+Vector2(.09,.12),57)
+  var cavity: Vector2 = g._screen(item.pos+Vector2(.09,.12),57)
   g.draw_rect(Rect2(cavity-Vector2(9,28),Vector2(27,38)),Color("3f5855"))
   for n in range(3):
    g.draw_line(cavity+Vector2(-8,-16+n*12),cavity+Vector2(17,-16+n*12),Color("8bb0aa"),2)
-  var door_edge := g._screen(item.pos+Vector2(-.26,.14),55)
+  var door_edge: Vector2 = g._screen(item.pos+Vector2(-.26,.14),55)
   g.draw_line(door_edge,door_edge+Vector2(0,62),Color("b6c5bb"),9,true)
   if g.refrigerator.drawer_open:
-   var drawer := g._screen(item.pos+Vector2(.15,.62),17)
+   var drawer: Vector2 = g._screen(item.pos+Vector2(.15,.62),17)
    g.draw_rect(Rect2(drawer-Vector2(18,12),Vector2(37,15)),Color("bdc4b4"))
    g.draw_line(drawer-Vector2(12,8),drawer+Vector2(10,-8),Color("5e7e76"),2)
   if g.player.distance_to(center)<1.8:
