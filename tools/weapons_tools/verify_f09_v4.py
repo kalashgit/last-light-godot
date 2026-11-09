@@ -13,7 +13,7 @@ import build as factory
 from f09_v4_detail import refine
 
 TARGETS = {
-    "ll_tools_hand_saw": ("saw", ("12 integral teeth", "shaped hardwood cheek")),
+    "ll_tools_hand_saw": ("saw", ("v18 continuous tapered saw blade", "shaped hardwood cheek")),
     "ll_tools_adjustable_wrench": ("wrench", ("inset worm wheel machined drum", "translating lower jaw")),
     "ll_tools_socket_handle": ("ratchet", ("reversing lever", "quick release")),
 }
