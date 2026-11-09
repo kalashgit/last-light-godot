@@ -64,10 +64,48 @@ def make_maps(directory: Path, resolution: int = 128) -> dict:
                 px[x, y] = tuple(max(0, min(255, c+grain)) for c in base)
         target = directory / f"{material}_basecolor.png"
         image.save(target)
-        output[material] = {"basecolor_file": target.name,
-                            "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
-                            "roughness": rough, "metallic": metal,
-                            "status": "ORIGINAL_CALIBRATION_UNAPPROVED_F11"}
+        # Portable candidate channels. Gradients are subtle and intentionally
+        # do not claim F11 physical calibration or final UV scale approval.
+        lightness = image.convert("L")
+        diffuse = lightness.load()
+        rough_img = Image.new("L", (resolution, resolution))
+        metallic_img = Image.new("L", (resolution, resolution),
+                                 round(255 * metal))
+        normal_img = Image.new("RGB", (resolution, resolution))
+        rp = rough_img.load()
+        np = normal_img.load()
+        for y in range(resolution):
+            for x in range(resolution):
+                left = diffuse[max(0, x - 1), y]
+                right = diffuse[min(resolution - 1, x + 1), y]
+                above = diffuse[x, max(0, y - 1)]
+                below = diffuse[x, min(resolution - 1, y + 1)]
+                # Small local gradients: OpenGL tangent-space +Y.
+                nx = max(0, min(255, round(128 - (right - left) * .18)))
+                ny = max(0, min(255, round(128 - (below - above) * .18)))
+                np[x, y] = (nx, ny, 255)
+                rp[x, y] = max(0, min(255, round(
+                    rough * 255 + (diffuse[x, y] - sum(base)/3) * .15)))
+        channels = {"basecolor": (target, "sRGB")}
+        for channel, map_image in (("roughness", rough_img),
+                                   ("metallic", metallic_img),
+                                   ("normal", normal_img)):
+            filepath = directory / f"{material}_{channel}.png"
+            map_image.save(filepath)
+            channels[channel] = (filepath, "Non-Color")
+        output[material] = {
+            "basecolor_file": target.name,
+            "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+            "roughness": rough,
+            "metallic": metal,
+            "channels": {
+                channel: {"file": filepath.name,
+                          "sha256": hashlib.sha256(filepath.read_bytes()).hexdigest(),
+                          "color_space": color_space}
+                for channel, (filepath, color_space) in channels.items()
+            },
+            "normal_convention": "OPENGL_POSITIVE_Y",
+            "status": "ORIGINAL_CALIBRATION_UNAPPROVED_F11"}
     return output
 
 
