@@ -29,19 +29,22 @@ def main():
         rgb=atlas.convert("RGB")
         assert len(rgb.resize((64,64)).getcolors(4096) or [])>60,("blank/simple atlas",ident)
         document=glb_json(folder/"preview_albedo_baked.glb")
-        for filename in ("roughness_baked.png","metallic_baked.png",
+        for filename in ("ambient_occlusion_baked.png",
+                         "roughness_baked.png","metallic_baked.png",
                          "normal_tangent_baked.png",
                          "occlusion_roughness_metallic.png"):
             img=Image.open(folder/filename).convert("RGB")
             assert img.size==(512,512),(ident,filename,"invalid map size")
             assert (folder/filename).stat().st_size>3000,(ident,filename,"empty map")
         assert item.get("pbr_maps_complete") is True
+        assert item.get("ao_channel") == "REAL_CYCLES_AO_BAKE"
         materials=document.get("materials",[])
         assert len(materials)>=3
         assert len(document.get("images",[]))>=2, ("GLB lost PBR textures",ident)
         assert all(mat.get("pbrMetallicRoughness",{}).get("baseColorTexture")
                    for mat in materials),("GLB lost albedo texture",ident)
-        assert all(mat.get("normalTexture") for mat in materials),(
+        assert all(mat.get("occlusionTexture") for mat in materials),(
+            "GLB lost real AO channel binding",ident)\n        assert all(mat.get("normalTexture") for mat in materials),(
             "GLB lost tangent normals",ident)
         assert all(mat.get("pbrMetallicRoughness",{}).get("metallicRoughnessTexture")
                    for mat in materials),("GLB lost packed ORM map",ident)
