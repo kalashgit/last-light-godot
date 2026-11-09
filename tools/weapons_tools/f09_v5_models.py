@@ -70,21 +70,21 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
         from f09_v11_wrench import build as build_v11
         return build_v11(m,form=form,tube=tube,hoop=hoop,z=z)
     elif kind == "saw":
-        # Main saw body: tapered plate with 24 integrated real tooth notches,
-        # instead of many disconnected polygonlets intersecting the blade.
-        teeth=15
+        # F09 V18: 12 distinct saw teeth (24 mm pitch, >1 mm side set).
+        # Build the teeth into the blade boundary, never as floating pieces.
+        teeth=12
         outline=[(-.046,-.099),(-.050,.205),(-.029,.231)]
         for i in range(teeth,-1,-1):
             t=i/teeth
             y=-.087+t*.290
             x=.043-.031*t
-            # 15 integral alternating rake tips, shaped in the steel itself.
-            outline.append((x-.0020,y+.0045))
-            if i: outline.append((x+.0075,y-.0040))
-        form("V5 continuous tapered saw blade with integral teeth",
+            # Deeper raked edge needs to survive a 64 px downsample.
+            outline.append((x-.0020,y+.0055))
+            if i: outline.append((x+.0105,y-.0050))
+        form("V18 continuous tapered saw blade with 12 integral teeth",
              outline,.0055,m["forged"],z,.0004)
-        form("V5 honed narrow cutting strip",
-             [(.039,-.085),(.010,.207),(.007,.210),(.035,-.083)],
+        form("V18 honed tooth-root steel facet",
+             [(.037,-.080),(.008,.202),(.004,.204),(.032,-.080)],
              .0008,m["edge"],z+.0034,.0001)
         form("V5 darkened rigid blade spine",
              [(-.046,-.099),(-.050,.205),(-.044,.205),(-.040,-.095)],
@@ -114,24 +114,49 @@ def build(kind, m, *, form, tube, grip, closed_sweep, small_pin, hoop):
              [(-.075,-.206),(-.066,-.224),(-.056,-.221),(-.065,-.205)],
              .001,m["endwood"],z+.013,.0002)
     elif kind == "ratchet":
+        # F09 V18 material separation: the shaft, gearbox, selector and
+        # rubber grip must remain distinct after both Blender and GLB export.
+        # Do not mutate global factory materials or pretend this is F11 baking.
+        def palette_copy(source, name, colors, metallic=None, roughness=None):
+            material=source.copy()
+            material.name="LL F09 V18 "+name
+            nodes=material.node_tree.nodes
+            ramps=[n for n in nodes if n.bl_idname=="ShaderNodeValToRGB"]
+            if ramps:
+                ramp=max(ramps,key=lambda n:len(n.color_ramp.elements))
+                for el,rgb in zip(sorted(ramp.color_ramp.elements,key=lambda e:e.position),colors):
+                    el.color=(*rgb,1)
+            bsdfs=[n for n in nodes if n.bl_idname=="ShaderNodeBsdfPrincipled"]
+            if bsdfs:
+                if metallic is not None:
+                    bsdfs[0].inputs["Metallic"].default_value=metallic
+                if roughness is not None:
+                    bsdfs[0].inputs["Roughness"].default_value=roughness
+            return material
+        grip_mat=palette_copy(m["rubber"],"granular dark graphite grip",
+            ((.018,.025,.029),(.045,.061,.066),(.085,.101,.105)),.02,.88)
+        shaft_mat=palette_copy(m["edge"],"brushed silver drive shaft",
+            ((.25,.29,.32),(.57,.63,.65),(.78,.82,.83)),.78,.34)
+        head_mat=palette_copy(m["forged"],"dark gunmetal ratchet gearbox",
+            ((.060,.075,.079),(.14,.17,.18),(.24,.28,.29)),.78,.52)
         # Round cast head + strong tapered steel neck + durable hand grip.
         grip("V5 ergonomic soft-grip ratchet handle",
              [(-.158,.014,.013),(-.151,.020,.020),(-.113,.020,.019),
               (-.090,.019,.018),(-.060,.016,.016),(-.048,.012,.012)],
-             m["rubber"],z,24)
+             grip_mat,z,24)
         tube("V5 ratchet rear-end steel cap",
              (0,-.160,z),(0,-.154,z),.014,.014,m["oxide"],24)
         # One broad muted-red inset band; repeated plastic rings were noisy.
         tube("V5 grip relief ring",
              (0,-.105,z),(0,-.101,z),.020,.020,m["red"],24)
         tube("V5 ratchet forged chrome shaft",
-             (0,-.049,z),(0,.098,z),.0105,.012,m["edge"],20)
+             (0,-.049,z),(0,.098,z),.0105,.012,shaft_mat,20)
         tube("V5 head-to-shaft rigid socket",
-             (0,.082,z),(0,.115,z),.016,.018,m["forged"],20)
+             (0,.082,z),(0,.115,z),.016,.018,head_mat,20)
         tube("V5 real round ratchet gearbox",
-             (0,.125,.023),(0,.125,.059),.030,.030,m["forged"],36)
+             (0,.125,.023),(0,.125,.059),.030,.030,head_mat,36)
         tube("V5 machine-finished head lid",
-             (0,.125,.060),(0,.125,.063),.025,.025,m["edge"],36)
+             (0,.125,.060),(0,.125,.063),.025,.025,shaft_mat,36)
         # Selector protrudes from the casing, but never covers square drive.
         form("V5 distinct reversing lever",
              [(-.016,.129),(-.010,.127),(-.011,.150),(-.017,.154)],
