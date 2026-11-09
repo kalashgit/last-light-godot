@@ -1,0 +1,150 @@
+name: M02 Autonomous Asset Factory V1 (protected candidate)
+
+on:
+  pull_request:
+    paths:
+      - 'tools/autonomous_factory/**'
+      - 'tests/autonomous_factory/**'
+      - '.github/workflows/m02-autonomous-factory-v1.yml'
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: Trusted Blender executor
+        type: choice
+        default: hosted
+        options: [hosted, isolated-self-hosted]
+      asset:
+        type: choice
+        default: f01-refrigerator
+        options: [f01-refrigerator]
+  repository_dispatch:
+    types: [last-light-m02-calibration-v1]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m02-factory-v1-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test bounded controller and fail-closed QA
+        run: python -m unittest discover -s tests/autonomous_factory -v
+
+  blender-candidate:
+    needs: contracts
+    if: >-
+      github.event_name != 'pull_request' &&
+      (github.event_name != 'repository_dispatch' || github.actor == 'kalashgit') &&
+      (github.event_name != 'repository_dispatch' || github.event.client_payload.asset == 'f01-refrigerator')
+    runs-on: ${{ inputs.runner == 'isolated-self-hosted' && fromJSON('["self-hosted","linux","x64","last-light-isolated-blender"]') || fromJSON('"ubuntu-latest"') }}
+    timeout-minutes: 40
+    env:
+      OUTPUT: build/m02_f01_v1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install bounded dependencies (hosted only)
+        if: inputs.runner != 'isolated-self-hosted'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+      - name: Verify pinned engine and dependencies
+        run: blender --version
+      - name: Render existing F01 V10 source (maximum three attempts)
+        run: |
+          python3 tools/autonomous_factory/v1.py --output "$OUTPUT" --attempts 3 --samples 2
+          mkdir -p "$OUTPUT/views"
+          blender -b --factory-startup --python-exit-code 3 -t 2 \
+            --python tools/autonomous_factory/render_views.py -- \
+            --source "$OUTPUT/attempt_1/refrigerator_refined_calibration.blend" \
+            --output "$OUTPUT/views"
+      - name: Validate F12 diagnostic directions
+        run: |
+          python3 -m pip install --user 'Pillow>=10,<15'
+          python3 tools/autonomous_factory/qa_views.py "$OUTPUT/views"
+      - name: Capture source, preview, hashes, logs, and defect evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m02-f01-unapproved-${{ github.run_id }}
+          path: build/m02_f01_v1/
+          if-no-files-found: warn
+          retention-days: 3
+
+  real-godot-fixture:
+    needs: blender-candidate
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: m02-f01-unapproved-${{ github.run_id }}
+          path: build/m02_f01_v1
+      - name: Install candidate GLB in isolated fixture
+        run: cp build/m02_f01_v1/attempt_1/refrigerator_refined_calibration.glb tests/factory/furniture/godot_fixture/model.glb
+      - name: Real engine editor import
+        run: godot --headless --path tests/factory/furniture/godot_fixture --editor --import
+      - name: Real engine animation/interaction regression
+        run: godot --headless --path tests/factory/furniture/godot_fixture --script res://verify_import.gd
+
+  candidate-draft:
+    needs: [contracts, blender-candidate, real-godot-fixture]
+    if: >-
+      github.event_name != 'pull_request' &&
+      github.actor == 'kalashgit' &&
+      needs.real-godot-fixture.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create review-only branch and draft PR (no binary promotion)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          branch="m02/candidate-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
+          mkdir -p docs/production/m02_candidate_runs
+          printf '{"run_url":"%s","asset_id":"ll_furniture_refrigerator","status":"ENGINE_FIXTURE_PASSED_CANDIDATE","golden_approved":false,"promoted":false,"ai_cost_usd":0}\n' "$RUN_URL" > "docs/production/m02_candidate_runs/${GITHUB_RUN_ID}.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/production/m02_candidate_runs
+          git commit -m "Record unapproved F01 engine fixture candidate ${GITHUB_RUN_ID}"
+          git push origin "$branch"
+          gh pr create --draft --base 'chatgpt/f01-furniture-production' --head "$branch" \
+            --title "M02 candidate F01 refrigerator (review only) #${GITHUB_RUN_ID}" \
+            --body "Technical candidate only. Engine fixture passed: $RUN_URL. Examine short-lived preview artifact. No F11/F12 Golden world-scale approval, map gameplay integration, iPhone test, canonical promotion or merge."
+
+  failure-issue:
+    needs: [contracts, blender-candidate, real-godot-fixture]
+    if: >-
+      always() && github.event_name != 'pull_request' &&
+      github.actor == 'kalashgit' &&
+      (needs.contracts.result == 'failure' || needs.blender-candidate.result == 'failure' || needs.real-godot-fixture.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Open isolated defect issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "M02 factory F01 blocked: run ${GITHUB_RUN_ID}" \
+            --body "Fail-closed; inspect logs and short-lived artifacts: $RUN_URL. No canonical approval or promotion. Bounded repair requires reviewed source changes."
