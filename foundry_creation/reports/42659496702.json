@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "catalog_sha256": "85acc503a47511b87480a6a3434f2eb99a49f86706e6cb24aa9f3b9b60785875",
+  "total": 512,
+  "completed_before": [
+    "ll_generated_industrial_locker_000",
+    "ll_generated_tool_chest_000",
+    "ll_generated_warehouse_shelf_000",
+    "ll_generated_utility_cabinet_000"
+  ],
+  "batch_count": 2,
+  "batch": [
+    {
+      "asset_id": "ll_generated_portable_generator_000",
+      "archetype": "portable_generator",
+      "family": "F08",
+      "seed": 2203906506,
+      "blend_sha256": "fae54ac0fae452464132a30daf0f6bd31efa590c2684555e67e7c45b86cea54e",
+      "glb_sha256": "f32cd31271cda4b979e83e753b7c42592490163bcfc8ba66df3ef40638fe9ad3",
+      "atlas_sha256": "e05538df34352edfda9b9b115e0d2a98899c78cb44a27feea5f07e3ba7dd4bf7",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    },
+    {
+      "asset_id": "ll_generated_vending_machine_000",
+      "archetype": "vending_machine",
+      "family": "F08",
+      "seed": 752581424,
+      "blend_sha256": "86a87688012e27d6506c7823dc1e6443c04178c6ee8d5db003add4bd9a4ed21d",
+      "glb_sha256": "68b8fea2815eb29c27414ca377a84439c26fa1b19b74cdcb691afdcbb6e2b5fe",
+      "atlas_sha256": "71e822fc84b23c1d8265b4af79ad00d295e27162f668b8c1fb026f6aa8f64654",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    }
+  ],
+  "archive_sha256": "b90a3815590c2e198c72c3db3a4228590cfe17cbf2e24669866951bbce38bcf9",
+  "archive_size_bytes": 630243,
+  "source_editable": true,
+  "golden_approved": false,
+  "canonical_promoted": false,
+  "gameplay_integrated": false,
+  "release_tag": "foundry-created-42659496702",
+  "release_archive": "foundry_new_sources.zip",
+  "release_state": "DRAFT_DO_NOT_PUBLISH",
+  "run_id": "42659496702"
+}
