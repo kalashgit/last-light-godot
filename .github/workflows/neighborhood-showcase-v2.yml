@@ -5,9 +5,11 @@ on:
     paths:
       - "data/neighborhood/**"
       - "scripts/neighborhood_showcase_v2.gd"
+      - "scripts/neighborhood_survival_v1.gd"
       - "scripts/neighborhood_module_factory.gd"
       - "scripts/neighborhood_approved_asset_resolver.gd"
       - "scenes/neighborhood_showcase_v2.tscn"
+      - "scenes/neighborhood_survival_v1.tscn"
       - "tests/neighborhood/**"
       - ".github/workflows/neighborhood-showcase-v2.yml"
   workflow_dispatch:
@@ -47,6 +49,9 @@ jobs:
       - name: Validate furnished H01/H02/H03 layouts, clear portals and same-room interactions
         run: |
           timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/smoke_furnished_houses.gd
+      - name: Execute three-house survival, search, combat, consumables, and exact-save smoke
+        run: |
+          timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/smoke_survival_pilot.gd
       - name: Export actual Godot-generated furnished plans for review art
         run: |
           timeout 60s /tmp/godot43/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/neighborhood/export_furnished_plan.gd
