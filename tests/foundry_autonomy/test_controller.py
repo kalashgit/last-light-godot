@@ -35,6 +35,14 @@ def review():
 
 
 class ControllerTests(unittest.TestCase):
+    def test_scheduled_audit_is_disabled_without_owner_opt_in(self):
+        workflow = (ROOT / ".github/workflows/foundry-autonomous-review-audit.yml").read_text()
+        guard = "vars.FOUNDRY_AUTONOMY_AUDIT_ENABLED == 'true'"
+        job_condition = workflow.split("  review-audit:", 1)[1].split("    runs-on:", 1)[0]
+        self.assertEqual(job_condition.count(guard), 2)
+        self.assertIn("github.event_name == 'schedule'", job_condition)
+        self.assertIn("github.actor == 'kalashgit'", job_condition)
+
     def test_technical_success_waits_for_visual(self):
         d, state = mod.assess(CATALOG, pr(), run(), None)
         self.assertEqual(d["next_action"], "AWAIT_INDEPENDENT_VISUAL_REVIEW")
