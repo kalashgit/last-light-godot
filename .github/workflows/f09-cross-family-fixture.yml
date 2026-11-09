@@ -1,0 +1,49 @@
+name: F09 isolated F11 F12 Godot candidate integration
+on:
+  pull_request:
+    paths:
+      - 'tools/weapons_tools/f09_integration_fixture.py'
+      - 'tools/weapons_tools/f09_world_sprite_pack.py'
+      - 'tools/weapons_tools/f09_godot_fixture.gd'
+      - '.github/workflows/f09-cross-family-fixture.yml'
+      - 'tools/weapons_tools/f09_v5_models.py'
+      - 'tools/weapons_tools/f09_v11_wrench.py'
+      - 'tools/weapons_tools/f09_v6_materials.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  f09-isolated-fixture:
+    name: Blender bake, native sprites and Godot 4 QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install open-source Blender and image validation
+        run: sudo apt-get update && sudo apt-get install -y blender python3-numpy python3-pil unzip
+      - name: Build material-baked Blender and fixed-world source candidates
+        run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/f09_integration_fixture.py
+      - name: Pack and validate native 96px 16-heading sprites
+        run: python3 tools/weapons_tools/f09_world_sprite_pack.py
+      - name: Install Godot 4.3 (project compatibility)
+        run: |
+          curl --fail --location --retry 3 --silent --show-error \
+            -o /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --version
+      - name: Import all generated Godot candidates
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --editor --import
+      - name: Exercise F09 gameplay Sprite2D scene fixture
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tools/weapons_tools/f09_godot_fixture.gd
+      - name: Upload unapproved F09 F11 F12 integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f09-unapproved-cross-family-fixture
+          path: build/f09_integration_fixture/
+          if-no-files-found: warn
+          retention-days: 14
