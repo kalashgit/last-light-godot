@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: kalashgit/last-light-godot
-          ref: afd00961882f1231db216dc54c7b48690a0d57c5
+          ref: d924f4b5235b37ff03be6e903630957578dedba4
           path: build/pinned-paperdoll-runtime
           persist-credentials: false
       - name: Install Blender CPU and image inspector
