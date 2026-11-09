@@ -1,0 +1,48 @@
+name: Foundry founder sheets 3D authoring intake (non-Golden)
+on:
+  pull_request:
+    paths:
+      - 'tools/foundry_reference_sheets/**'
+      - 'tests/foundry_reference_sheets/**'
+      - 'data/foundry_reference_catalog/founder_sheets_001_400/**'
+      - '.github/workflows/foundry-founder-sheets-3d-intake.yml'
+  workflow_dispatch:
+    inputs:
+      start:
+        description: 'First visual reference slot (1-400; 191-200 are missing)'
+        type: number
+        default: 1
+      batch_size:
+        type: choice
+        options: ['10', '20', '40']
+        default: '40'
+permissions:
+  contents: read
+jobs:
+  verify-and-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - name: Verify all eight founder-provided sheets and 390 pictured slots
+        run: |
+          python -m unittest discover -s tests/foundry_reference_sheets -v
+          python -m tools.foundry_reference_sheets.build --output-dir data/foundry_reference_catalog/founder_sheets_001_400/derived --verify-pinned
+      - name: Stage a bounded batch for the original Blender modeling agent
+        env:
+          FIRST_SLOT: ${{ inputs.start || '1' }}
+          BATCH_SIZE: ${{ inputs.batch_size || '40' }}
+        run: |
+          python -m tools.foundry_reference_sheets.plan --start "$FIRST_SLOT" --batch-size "$BATCH_SIZE" --output build/founder-sheets-3d/authoring_plan.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: founder-sheets-original-3d-authoring-plan-${{ github.run_id }}
+          path: build/founder-sheets-3d/authoring_plan.json
+          retention-days: 7
+          if-no-files-found: error
