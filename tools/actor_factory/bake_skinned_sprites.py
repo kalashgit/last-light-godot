@@ -75,6 +75,16 @@ def check_source(rig):
             raise ValueError("missing F05 NLA source action " + clip)
     members = {}
     for key, names in GROUPS.items():
+        # Facial landmarks and original hair meshes are weighted to the
+        # existing head bone. Never replace or regenerate them per 2D frame.
+        # A dedicated swappable hair atlas is a future versioned contract.
+        names = list(names)
+        if key == ("body", "base"):
+            extras = sorted(ob.name for ob in bpy.data.objects
+                            if ob.type == "MESH" and ob.get("ll_body_detail", False))
+            if len(extras) < 14:
+                raise ValueError("reference-guided face/hair geometry missing")
+            names.extend(extras)
         for name in names:
             ob = bpy.data.objects.get(name)
             if ob is None or ob.type != "MESH":
@@ -229,6 +239,12 @@ def main():
                               for (slot, item), names in members.items()},
             "sampled_nla_frames": {clip: list(frames) for clip, frames in SAMPLES.items()},
             "confirmed_live_skin_deformation": True,
+            "original_face_hair_meshes": [
+                name for name in members[("body", "base")]
+                if bpy.data.objects[name].get("ll_body_detail", False)
+            ],
+            "facial_geometry_status": "ORIGINAL_CALIBRATION_NOT_GOLDEN",
+            "hair_layer": "BAKED_IN_BODY_PENDING_SEPARATE_SLOT",
             "status": "CALIBRATION_ONLY_NOT_GOLDEN",
             "source_rights": "original_procedural_F05"
         }
