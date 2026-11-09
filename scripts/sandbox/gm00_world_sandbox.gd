@@ -51,6 +51,9 @@ var time_of_day: float = 9.0
 var weather: String = "clear"
 var zoom_level: int = 1
 var god_panel: Node = null
+## Ground tiles baked once per 32x32 chunk into an ArrayMesh (one draw call
+## per visible chunk instead of one per tile). Cleared on world rebuild.
+var ground_cache: Dictionary = {}
 var perf: Dictionary = {"frames": 0, "process_us": 0.0, "draw_us": 0.0, "max_process_us": 0.0,
     "max_draw_us": 0.0, "drawn_buildings": 0, "drawn_veg": 0}
 
@@ -129,6 +132,7 @@ func _apply_world(composed: Dictionary, seed: int) -> void:
     # custom_buildings stays the AUTHORED list: a building that conflicts with
     # this seed is skipped (reported in layout_problems) but never forgotten.
     layout_problems = composed["problems"]
+    ground_cache.clear()
 
 func restart_pilot() -> void:
     if generator.recipe.is_empty():
@@ -1078,15 +1082,45 @@ func _view_rect() -> Rect2:
         r = r.expand(p)
     return r.grow(4.0).intersection(_bounds().grow(2.0))
 
-func _draw_ground_view(view: Rect2) -> void:
-    _quad_world(_bounds(), Color("344e3e"))
-    if overview or _zoom() < 0.4:
-        return
-    for yy in range(maxi(0, int(view.position.y)), mini(int(_bounds().end.y), int(view.end.y))):
-        for xx in range(maxi(0, int(view.position.x)), mini(int(_bounds().end.x), int(view.end.x))):
+func _ground_mesh(key: String) -> ArrayMesh:
+    if ground_cache.has(key):
+        return ground_cache[key]
+    var parts: PackedStringArray = key.split(":")
+    var size: int = int(layout.get("chunk_size", 32))
+    var x0: int = int(parts[0]) * size
+    var y0: int = int(parts[1]) * size
+    var bounds: Rect2 = _bounds()
+    var verts := PackedVector2Array()
+    var colors := PackedColorArray()
+    for yy in range(maxi(0, y0), mini(int(bounds.end.y), y0 + size)):
+        for xx in range(maxi(0, x0), mini(int(bounds.end.x), x0 + size)):
             var k: int = posmod(xx * 31 + yy * 19 + xx * yy * 3, 6)
-            if k > 2:
-                _quad_world(Rect2(xx, yy, 1, 1), Color("3a5944").lightened(float(k) * .017))
+            var c: Color = Color("344e3e") if k <= 2 else Color("3a5944").lightened(float(k) * .017)
+            var a: Vector2 = _iso(Vector2(xx, yy))
+            var b: Vector2 = _iso(Vector2(xx + 1, yy))
+            var d: Vector2 = _iso(Vector2(xx + 1, yy + 1))
+            var e: Vector2 = _iso(Vector2(xx, yy + 1))
+            verts.append_array([a, b, d, a, d, e])
+            for i in 6:
+                colors.append(c)
+    var mesh := ArrayMesh.new()
+    if not verts.is_empty():
+        var arrays: Array = []
+        arrays.resize(Mesh.ARRAY_MAX)
+        arrays[Mesh.ARRAY_VERTEX] = verts
+        arrays[Mesh.ARRAY_COLOR] = colors
+        mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+    ground_cache[key] = mesh
+    return mesh
+
+func _draw_ground_view(view: Rect2) -> void:
+    if overview or _zoom() < 0.4:
+        _quad_world(_bounds(), Color("344e3e"))
+        return
+    for key in _chunk_keys_for(view):
+        var mesh: ArrayMesh = _ground_mesh(key)
+        if mesh.get_surface_count() > 0:
+            draw_mesh(mesh, null)
 
 func _draw_roads(view: Rect2) -> void:
     for r in layout.get("sidewalks", []):

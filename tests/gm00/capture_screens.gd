@@ -50,5 +50,21 @@ func _run() -> void:
     s.god_set_weather("rain")
     s.god_set_time(21.0)
     await _shot("07_night_rain")
+    # Rendered performance sample on this machine (Mesa llvmpipe CPU renderer,
+    # NOT representative of iPhone GPU). Walk east along a street for 300 frames.
+    s.god_set_weather("clear")
+    s.god_set_time(12.0)
+    s.god_teleport_building("LAB-H01")
+    s.set_process(true)
+    s.touch.motion = Vector2(1, 1).normalized()
+    var t0: int = Time.get_ticks_usec()
+    for i in 300:
+        await process_frame
+    var ms: float = float(Time.get_ticks_usec() - t0) / 1000.0 / 300.0
+    s.touch.motion = Vector2.ZERO
+    var stats: Dictionary = s.perf_stats()
+    stats["wall_ms_per_frame"] = snappedf(ms, 0.01)
+    stats["renderer"] = RenderingServer.get_video_adapter_name()
+    print("RENDER_PERF ", JSON.stringify(stats))
     print("CAPTURE_DONE")
     quit(0)
