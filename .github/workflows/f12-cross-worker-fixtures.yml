@@ -182,6 +182,7 @@ jobs:
       - name: Retrieve original F01 isolated interaction contract
         run: |
           set -eu
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --depth=1 origin refs/heads/chatgpt/f01-furniture-production
           git worktree add --detach /tmp/f01-source-fixture FETCH_HEAD
           mkdir -p tests/factory/render_bridge/f01_fixture
