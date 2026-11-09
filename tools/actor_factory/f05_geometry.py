@@ -98,3 +98,25 @@ def sleeve_sections(sign, width):
     """Long sleeve uses matching upper elbow/shoulder cross-sections."""
     return [(x, y, z, rx * 1.17, ry * 1.17, blend)
             for x, y, z, rx, ry, blend in arm_sections(sign, width)[3:]]
+
+
+def torso_sections(physique_width, garment=False):
+    """Seven-ring waist/ribcage/shoulder loft, weighted through spine/chest.
+
+    The upper garment repeats the skin vertex layout with a consistent
+    transverse fit allowance. No faceted ball-shaped shirt profile.
+    """
+    fit = 1.12 if garment else 1.0
+    rows = [
+        # z, width, depth, chest bone influence
+        (1.065, .177, .135, .00),
+        (1.125, .190, .140, .12),
+        (1.205, .215, .149, .38),
+        (1.295, .239, .158, .72),
+        (1.380, .246, .154, .94),
+        (1.455, .226, .144, 1.00),
+        (1.510, .162, .123, 1.00),
+    ]
+    return [(0.0, 0.0, z, rx * physique_width * fit,
+             ry * physique_width * fit, influence)
+            for z, rx, ry, influence in rows]
