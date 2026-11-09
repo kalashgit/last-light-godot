@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "governance": "M02 coordination only; F01-F12 specialists retain source ownership",
+  "families": [
+    {"id":"F01","domain":"furniture_containers_appliances","source_branch":"chatgpt/f01-furniture-production","adapter":"f01_refrigerator_v10","readiness":"CALIBRATION_RUNNABLE","canonical_promotion":false},
+    {"id":"F02","domain":"buildings_structures","source_branch":"chatgpt/f02-buildings-structural-kits","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F03","domain":"terrain_tiles","source_branch":"f03/engine-gates-v13-candidate","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F04","domain":"vegetation","source_branch":null,"adapter":null,"readiness":"SOURCE_BRANCH_UNVERIFIED","canonical_promotion":false},
+    {"id":"F05","domain":"characters_clothing","source_branch":"chatgpt/f05-character-wearable-factory","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F06","domain":"infected","source_branch":"chatgpt/f06-infected-calibration","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F07","domain":"animals","source_branch":"chatgpt/f07-animal-factory-calibration","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F08","domain":"industrial_machinery","source_branch":null,"adapter":null,"readiness":"SOURCE_BRANCH_UNVERIFIED","canonical_promotion":false},
+    {"id":"F09","domain":"weapons_tools_inventory","source_branch":"chatgpt/f09-canonical-gate-20261109","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F10","domain":"vehicles","source_branch":"chatgpt/f10-door-clearance-clean-20261109","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F11","domain":"shared_materials","source_branch":"chatgpt/f11-material-calibration-20261109","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false},
+    {"id":"F12","domain":"shared_2_5d_rendering","source_branch":"chatgpt/f12-clean-blender-ci-20261109","adapter":null,"readiness":"AWAITING_VERIFIED_ADAPTER","canonical_promotion":false}
+  ]
+}
