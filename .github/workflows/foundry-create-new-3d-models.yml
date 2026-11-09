@@ -2,6 +2,10 @@ name: Foundry original editable model factory
 on:
   pull_request:
     paths: ['tools/foundry_creation/**','tests/foundry_creation/**','tools/foundry_mass/finalize.py','.github/workflows/foundry-create-new-3d-models.yml']
+  # Run a first persistent candidate batch on the reviewed workflow merge.
+  push:
+    branches: [main]
+    paths: ['.github/workflows/foundry-create-new-3d-models.yml']
   schedule:
     - cron: '08 * * * *'
   workflow_dispatch:
@@ -140,7 +144,7 @@ jobs:
           if-no-files-found: error
   archive-and-advance:
     needs: [preflight, tests, blender-create]
-    if: always() && needs.preflight.result == 'success' && needs.blender-create.result == 'success' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit'))
+    if: always() && needs.preflight.result == 'success' && needs.blender-create.result == 'success' && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor == 'kalashgit') || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
