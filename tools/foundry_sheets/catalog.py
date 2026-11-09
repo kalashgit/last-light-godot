@@ -40,6 +40,7 @@ def build(folders: list[tuple[Path, int, str]], output: Path,
     output.mkdir(parents=True, exist_ok=True)
     pages: list[dict] = []
     entries: list[dict] = []
+    seen_pixels: dict[tuple[int, int, str], str] = {}
     rows = (items_per_page + COLUMNS - 1) // COLUMNS
     for page_index, start in enumerate(range(0, len(folders), items_per_page)):
         page = Image.new("RGBA", (CELL * COLUMNS, CELL * rows), (0, 0, 0, 0))
@@ -57,6 +58,14 @@ def build(folders: list[tuple[Path, int, str]], output: Path,
             if bounds is None:
                 raise ValueError(f"Empty 45-degree inventory view: {folder.name}")
             cut = frame.crop(bounds)
+            pixel_sha = hashlib.sha256(cut.tobytes()).hexdigest()
+            visual_key = (cut.width, cut.height, pixel_sha)
+            if visual_key in seen_pixels:
+                raise ValueError(
+                    f"Duplicate visual sprite: {folder.name} matches {seen_pixels[visual_key]}; "
+                    "semantic review is required before counting it as a distinct item"
+                )
+            seen_pixels[visual_key] = folder.name
             x = (local_index % COLUMNS) * CELL + (CELL - size) // 2 + bounds[0]
             y = (local_index // COLUMNS) * CELL + (CELL - size) // 2 + bounds[1]
             page.alpha_composite(cut, (x, y))
@@ -72,7 +81,7 @@ def build(folders: list[tuple[Path, int, str]], output: Path,
                 "source_size": [size, size],
                 "trim_offset": [bounds[0], bounds[1]],
                 "source_atlas_sha256": source_sha,
-                "rgba_pixel_sha256": hashlib.sha256(cut.tobytes()).hexdigest(),
+                "rgba_pixel_sha256": pixel_sha,
                 "pivot_world_verified": False,
             })
         filename = f"inventory_sheet_{page_index:04d}.png"
