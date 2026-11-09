@@ -1,0 +1,193 @@
+name: Foundry 360 continuous Blender sprite batch
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-360-mass-production.yml'
+      - 'tools/foundry_mass/**'
+      - 'tests/foundry_mass/**'
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        type: choice
+        options: ['1', '2', '3', '4']
+        default: '2'
+permissions:
+  contents: read
+concurrency:
+  group: foundry-mass-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      has_work: ${{ steps.queue.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: queue
+        name: Skip exhausted source collection before expensive Blender installs
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == 'pull_request' ]]; then
+            echo 'has_work=true' >> "$GITHUB_OUTPUT"
+          elif git ls-remote --exit-code --heads origin foundry/technical-sprites-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/technical-sprites-v1:refs/remotes/origin/foundry/technical-sprites-v1
+            git show origin/foundry/technical-sprites-v1:foundry_mass/state.json > /tmp/foundry-state.json
+            python3 - <<'PY'
+          import json, os
+          d=json.load(open('/tmp/foundry-state.json'))
+          completed=d.get('completed')
+          if (d.get('schema_version')!=1 or
+              d.get('source_plan_sha256')!='e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463' or
+              not isinstance(completed,list) or len(completed)>360 or
+              len(completed)!=len(set(completed))):
+              raise SystemExit('FOUNDRY_CURSOR_UNTRUSTED')
+          has_work='false' if len(completed)==360 else 'true'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('has_work='+has_work+'\n')
+          print('FOUNDRY_PREFLIGHT',has_work,len(completed))
+          PY
+          else
+            echo 'has_work=true' >> "$GITHUB_OUTPUT"
+          fi
+  contracts:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<13'
+      - run: python -m unittest discover -s tests/foundry_mass -v
+  blender-batch:
+    needs: [preflight, contracts]
+    if: >-
+      always() &&
+      needs.preflight.result == 'success' &&
+      needs.preflight.outputs.has_work == 'true' &&
+      (needs.contracts.result == 'success' || needs.contracts.result == 'skipped') &&
+      (github.event_name != 'workflow_dispatch' || github.actor == 'kalashgit')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    env:
+      SOURCE_RUN: '42460745955'
+      SOURCE_ARTIFACT: 'last-light-360-editable-3d-masters-geometry-only-v1'
+      SOURCE_ARCHIVE: 'build/foundry/source/Last_Light_3D_Masters_All_360.zip'
+      BATCH_SIZE: ${{ github.event_name == 'pull_request' && '2' || inputs.batch_size || '2' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13'
+          blender --version | head -n 2
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import numpy; print("FOUNDRY_BLENDER_NUMPY", numpy.__version__)'
+      - name: Retrieve the verified original archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/foundry/source
+          if gh release view foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" --pattern 'Last_Light_3D_Masters_All_360.zip' --dir build/foundry/source
+          else
+            gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir build/foundry/source
+          fi
+          test -s "$SOURCE_ARCHIVE"
+      - name: Read candidate-branch progress cursor
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          mkdir -p build/foundry
+          if git ls-remote --exit-code --heads origin foundry/technical-sprites-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/technical-sprites-v1:refs/remotes/origin/foundry/technical-sprites-v1
+            git show origin/foundry/technical-sprites-v1:foundry_mass/state.json > build/foundry/state.json
+          fi
+      - name: Plan unprocessed models
+        run: |
+          set -euo pipefail
+          if test -f build/foundry/state.json; then
+            python tools/foundry_mass/queue.py --archive "$SOURCE_ARCHIVE" --state build/foundry/state.json --output build/foundry/plan --batch-size "$BATCH_SIZE"
+          else
+            python tools/foundry_mass/queue.py --archive "$SOURCE_ARCHIVE" --output build/foundry/plan --batch-size "$BATCH_SIZE"
+          fi
+      - name: Render 16 real Blender isometric headings
+        run: |
+          blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- --plan build/foundry/plan/plan.json --output build/foundry/views --resolution 192 --samples 4
+      - name: Validate frame alpha, framing and atlas files
+        run: |
+          python tools/foundry_mass/finalize.py --plan build/foundry/plan/plan.json --views build/foundry/views --output build/foundry/candidates --run-id "$GITHUB_RUN_ID"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-360-candidates-${{ github.run_id }}
+          path: build/foundry/candidates/
+          retention-days: 14
+          if-no-files-found: error
+  persist-candidates:
+    needs: [contracts, blender-batch]
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: foundry-360-candidates-${{ github.run_id }}
+          path: build/foundry/candidates
+      - name: Mirror immutable source in a nonpublished draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            mkdir -p /tmp/foundry-source
+            gh run download 42460745955 --repo "$GITHUB_REPOSITORY" --name last-light-360-editable-3d-masters-geometry-only-v1 --dir /tmp/foundry-source
+            test -s /tmp/foundry-source/Last_Light_3D_Masters_All_360.zip
+            gh release create foundry-360-source-v1               /tmp/foundry-source/Last_Light_3D_Masters_All_360.zip               --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft               --title 'Foundry 360 source masters — internal archive (DO NOT PUBLISH)'               --notes 'Immutable recovered editable-model archive used only for technical sprite batches. Keep this release draft. No Golden approval.'
+          fi
+      - name: Preserve candidates in isolated branch
+        run: |
+          set -euo pipefail
+          count=$(python -c "import json;print(json.load(open('build/foundry/candidates/batch_report.json'))['batch_count'])")
+          if test "$count" -eq 0; then echo 'FOUNDRY_COMPLETE no new assets'; exit 0; fi
+          if git ls-remote --exit-code --heads origin foundry/technical-sprites-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/technical-sprites-v1:refs/remotes/origin/foundry/technical-sprites-v1
+            git worktree add -b "foundry-publish-$GITHUB_RUN_ID" /tmp/foundry-publish origin/foundry/technical-sprites-v1
+          else
+            git worktree add -b "foundry-publish-$GITHUB_RUN_ID" /tmp/foundry-publish "$GITHUB_SHA"
+          fi
+          python tools/foundry_mass/publish.py --source build/foundry/candidates --destination /tmp/foundry-publish
+          git -C /tmp/foundry-publish config user.name 'github-actions[bot]'
+          git -C /tmp/foundry-publish config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/foundry-publish add foundry_mass foundry_candidates
+          git -C /tmp/foundry-publish commit -m 'chore(foundry): preserve technical candidates [skip ci]'
+          git -C /tmp/foundry-publish push origin HEAD:refs/heads/foundry/technical-sprites-v1
