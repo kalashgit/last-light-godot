@@ -90,6 +90,17 @@ def validate(root: Path):
         raise ValueError("invalid approval state")
     if len(src.get("source_meshes", {})) != len(ITEMS):
         raise ValueError("source garment meshes missing")
+    # Face and hairstyle features must be genuine weighted meshes exported
+    # alongside the rig, not flattened in from a third-party reference image.
+    details = src.get("original_face_hair_meshes")
+    if (not isinstance(details, list) or len(details) != 18
+            or len(set(details)) != len(details)
+            or not set(details).issubset(set(src["source_meshes"].get("body/base", [])))):
+        raise ValueError("original skinned head details missing or excluded from body render")
+    if src.get("facial_geometry_status") != "ORIGINAL_CALIBRATION_NOT_GOLDEN":
+        raise ValueError("missing provisional face/art quality status")
+    if src.get("hair_layer") != "BAKED_IN_BODY_PENDING_SEPARATE_SLOT":
+        raise ValueError("hair slot status falsely claims modular runtime")
     blend = restricted_file(root, src["source_blend"])
     glb = restricted_file(root, src["source_glb"])
     if blend.open("rb").read(7) != b"BLENDER":
