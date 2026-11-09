@@ -1,0 +1,145 @@
+name: F02 isolated Python and Godot QA
+on:
+  pull_request:
+    paths:
+      - 'tools/factory/structures/**'
+      - 'tests/factory/structures/**'
+      - '.github/workflows/f02-isolated-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f02-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install calibrated dependencies
+        run: python -m pip install 'Pillow>=10,<12'
+      - name: Original F02 geometry tests
+        run: python -m unittest discover -s tests/factory/structures -p 'test_*.py' -v
+      - name: F02 integration, collision, clearance tests
+        run: python -m unittest discover -s tools/factory/structures -p 'test_*.py' -v
+      - name: Generate noncanonical collision examples
+        run: |
+          mkdir -p build/f02_qa
+          python tools/factory/structures/collision_contract.py small_house --output build/f02_qa/small_house.json
+          python tools/factory/structures/collision_contract.py garage --output build/f02_qa/garage.json
+          python tools/factory/structures/audit_apertures.py small_house
+          python tools/factory/structures/audit_apertures.py garage
+          python tools/factory/structures/cross_family_calibration.py --house scripts/house.gd --output build/f02_qa/f11_f12_handoff.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f02-python-evidence
+          path: build/f02_qa/
+          if-no-files-found: warn
+          retention-days: 7
+
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install pinned Godot 4.4.1 headless binary
+        run: |
+          curl --fail --location --retry 3 --output /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.4.1-stable_linux.x86_64
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --version
+      - name: Create isolated Godot test project
+        run: |
+          mkdir -p build/f02_godot/tools/factory/structures
+          printf 'config_version=5\n\n[application]\nconfig/name="F02 Isolated Physics Calibration"\n' > build/f02_godot/project.godot
+          cp tools/factory/structures/godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_door_physics.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_actual_house.gd build/f02_godot/tools/factory/structures/
+          mkdir -p build/f02_godot/scripts
+          cp scripts/house.gd build/f02_godot/scripts/house.gd
+          python tools/factory/structures/collision_contract.py small_house --output build/f02_godot/tools/factory/structures/small_house.json
+      - name: Parse and execute GDScript transform QA
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
+            --script res://tools/factory/structures/test_godot_collision_fixture.gd
+      - name: Check unchanged playable house gameplay interactions
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
+            --script res://tools/factory/structures/test_godot_actual_house.gd
+      - name: Execute Godot door physics closed-open-closed check
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
+            --script res://tools/factory/structures/test_godot_door_physics.gd
+
+  blender:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy libegl1 libgl1-mesa-dri
+          python -m pip install 'Pillow>=10,<12'
+          blender --version | head -2
+      - name: Generate original F02 surface textures
+        run: python tools/factory/structures/textures.py --output-dir build/f02_blender/textures
+      - name: Rebuild five Blender scenes and sprite previews
+        run: |
+          F02_CI_CPU_RENDER=1 blender -b --python-exit-code 1 --factory-startup -t 2 --python \
+            tools/factory/structures/blender_calibration.py -- \
+            --subject all --output-dir build/f02_blender
+      - name: Verify generated Blender and sprite artifacts
+        run: python tools/factory/structures/qa_package.py --output-dir build/f02_blender
+      - name: Validate immutable archive receipt and source membership
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, zipfile
+          out = Path('build/f02_blender')
+          archive = out / 'f02_noncanonical_calibration.zip'
+          receipt = json.loads((out / 'archive_receipt.json').read_text())
+          assert receipt['archive_sha256'] == hashlib.sha256(archive.read_bytes()).hexdigest()
+          with zipfile.ZipFile(archive) as z:
+              assert z.read('qa_report.json') == (out / 'qa_report.json').read_bytes()
+              names = z.namelist()
+              assert len([n for n in names if n.endswith('.blend')]) == 5
+              assert len([n for n in names if n.endswith('.glb')]) == 5
+              assert 'f02_contact_sheet.png' in names
+          print('F02 ARCHIVE PASS: receipt and 5 blend + 5 glb verified')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f02-blender-calibration-evidence
+          path: |
+            build/f02_blender/f02_noncanonical_calibration.zip
+            build/f02_blender/archive_receipt.json
+            build/f02_blender/f02_contact_sheet.png
+            build/f02_blender/qa_report.json
+            build/f02_blender/run_report.json
+            build/f02_blender/*/entrance_view.png
+            build/f02_blender/*/roof_on.png
+            build/f02_blender/*/roof_cut.png
+            build/f02_blender/*/manifest.json
+          if-no-files-found: warn
+          retention-days: 7
