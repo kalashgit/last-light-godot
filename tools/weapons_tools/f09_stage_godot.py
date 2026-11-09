@@ -21,7 +21,7 @@ def main():
     # the cloned house.gd for QA; NEVER changes the source gameplay script.
     house_script=DST/"scripts"/"house.gd"
     house_source=house_script.read_text()
-    original_drop=' else:\\n  art._sprite(self,id,drop.pos)'
+    original_drop=' else:\n  art._sprite(self,id,drop.pos)'
     assert house_source.count(original_drop)==1, "house drop drawing contract changed"
     candidate_drop=''' else:
   if id in ["ll_tools_adjustable_wrench","ll_tools_socket_handle","ll_tools_hand_saw"]:
