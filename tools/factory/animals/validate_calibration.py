@@ -5,7 +5,9 @@ import sys
 from collections import deque
 
 report={'identity':'NONCANONICAL_CALIBRATION_ONLY','meshes':{},'armatures':{},'accepted_for_game':False}
-for name in ('Cow_CAL_NOT_CANONICAL','Chicken_CAL_NOT_CANONICAL'):
+names=['Cow_CAL_NOT_CANONICAL','Chicken_CAL_NOT_CANONICAL']
+names += [n for n in ('ChickenShank_L_CAL','ChickenShank_R_CAL') if n in bpy.data.objects]
+for name in names:
     ob=bpy.data.objects[name]
     graph=[set() for _ in ob.data.vertices]
     for edge in ob.data.edges:
