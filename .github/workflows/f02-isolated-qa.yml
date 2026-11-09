@@ -1,0 +1,72 @@
+name: F02 isolated Python and Godot QA
+on:
+  pull_request:
+    paths:
+      - 'tools/factory/structures/**'
+      - 'tests/factory/structures/**'
+      - '.github/workflows/f02-isolated-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f02-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install calibrated dependencies
+        run: python -m pip install 'Pillow>=10,<12'
+      - name: Original F02 geometry tests
+        run: python -m unittest discover -s tests/factory/structures -p 'test_*.py' -v
+      - name: F02 integration, collision, clearance tests
+        run: python -m unittest discover -s tools/factory/structures -p 'test_*.py' -v
+      - name: Generate noncanonical collision examples
+        run: |
+          mkdir -p build/f02_qa
+          python tools/factory/structures/collision_contract.py small_house --output build/f02_qa/small_house.json
+          python tools/factory/structures/collision_contract.py garage --output build/f02_qa/garage.json
+          python tools/factory/structures/audit_apertures.py small_house
+          python tools/factory/structures/audit_apertures.py garage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f02-python-evidence
+          path: build/f02_qa/
+          if-no-files-found: warn
+          retention-days: 7
+
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install pinned Godot 4.4.1 headless binary
+        run: |
+          curl --fail --location --retry 3 --output /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.4.1-stable_linux.x86_64
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --version
+      - name: Create isolated Godot test project
+        run: |
+          mkdir -p build/f02_godot/tools/factory/structures
+          printf 'config_version=5\n\n[application]\nconfig/name="F02 Isolated Physics Calibration"\n' > build/f02_godot/project.godot
+          cp tools/factory/structures/godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
+      - name: Parse and execute GDScript transform QA
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
+            --script res://tools/factory/structures/test_godot_collision_fixture.gd
