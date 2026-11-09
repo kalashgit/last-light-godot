@@ -1,0 +1,111 @@
+name: Foundry bounded autonomous technical and visual gate audit
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-autonomous-review-audit.yml'
+      - 'tools/foundry_autonomy/**'
+      - 'tests/foundry_autonomy/**'
+  schedule:
+    - cron: '10,40 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: foundry-candidate-review-audit-serialized
+  cancel-in-progress: false
+
+jobs:
+  contract-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/foundry_autonomy -v
+
+  review-audit:
+    # Keep the periodic audit dormant until the live Notion approval status
+    # is reconciled with the frozen work-order snapshot and owner opts in.
+    if: (github.event_name == 'schedule' && vars.FOUNDRY_AUTONOMY_AUDIT_ENABLED == 'true') || (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit' && github.ref == 'refs/heads/main' && vars.FOUNDRY_AUTONOMY_AUDIT_ENABLED == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/foundry_autonomy -v
+      - name: Read one allowlisted F01 draft and its exact-SHA real Blender CI
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/foundry_audit
+          gh api "repos/$GITHUB_REPOSITORY/pulls/85" > build/foundry_audit/raw_pr.json
+          jq -e '{number,work_order:"A00-B001-F01-ll_furniture_refrigerator-r1",asset_id:"ll_furniture_refrigerator",draft,state,merged:(.merged // false),repo:.base.repo.full_name,head_repo:.head.repo.full_name,base:.base.ref,head:.head.ref,head_sha:.head.sha}' build/foundry_audit/raw_pr.json > build/foundry_audit/pr.json
+          branch=$(jq -r '.head' build/foundry_audit/pr.json)
+          sha=$(jq -r '.head_sha' build/foundry_audit/pr.json)
+          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs" -f branch="$branch" -f per_page=100 > build/foundry_audit/runs.json
+          jq -e --arg sha "$sha" '[.workflow_runs[] | select(.head_sha == $sha and .name == "F01 refrigerator actual Blender source and 16-heading candidate QA" and .status == "completed")] | sort_by(.created_at) | last | if . == null then empty else {id,head_sha,head_branch,event,status,conclusion} end' build/foundry_audit/runs.json > build/foundry_audit/run.json || { echo 'No completed exact-SHA F01 CI run yet'; echo 'ready=false' >> "$GITHUB_OUTPUT"; exit 0; }
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+      - name: Read persistent review cursor and trusted independent review evidence
+        if: steps.current.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin foundry/autonomy-audit-v1 >/dev/null; then
+            git fetch --no-tags origin refs/heads/foundry/autonomy-audit-v1:refs/remotes/origin/foundry/autonomy-audit-v1
+            git show origin/foundry/autonomy-audit-v1:foundry_autonomy/state.json > build/foundry_audit/state.json
+            sha=$(jq -r .head_sha build/foundry_audit/pr.json)
+            if git cat-file -e "origin/foundry/autonomy-audit-v1:foundry_autonomy/independent_reviews/$sha.json" 2>/dev/null; then
+              git show "origin/foundry/autonomy-audit-v1:foundry_autonomy/independent_reviews/$sha.json" > build/foundry_audit/review.json
+            fi
+          fi
+      - name: Decide the next action without AI activation or Golden promotion
+        if: steps.current.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          args=()
+          if test -s build/foundry_audit/state.json; then args+=(--state build/foundry_audit/state.json); fi
+          if test -s build/foundry_audit/review.json; then args+=(--review build/foundry_audit/review.json); fi
+          python tools/foundry_autonomy/controller.py --catalog data/foundry/notion_asset_snapshot_v1.json --pr build/foundry_audit/pr.json --run build/foundry_audit/run.json "${args[@]}" --output build/foundry_audit/decision.json --next-state build/foundry_audit/next_state.json
+          jq -e '.golden_approved == false and .automated_copilot_dispatch == false and .automatic_merge == false' build/foundry_audit/decision.json
+      - uses: actions/upload-artifact@v4
+        if: steps.current.outputs.ready == 'true'
+        with:
+          name: foundry-autonomous-audit-${{ github.run_id }}
+          path: build/foundry_audit/decision.json
+          retention-days: 14
+          if-no-files-found: error
+      - name: Advance only the isolated audit ledger and report
+        if: steps.current.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          if git show-ref --quiet refs/remotes/origin/foundry/autonomy-audit-v1; then
+            git worktree add -b "foundry-audit-$GITHUB_RUN_ID" /tmp/foundry-audit origin/foundry/autonomy-audit-v1
+          else
+            git worktree add -b "foundry-audit-$GITHUB_RUN_ID" /tmp/foundry-audit "$GITHUB_SHA"
+          fi
+          mkdir -p /tmp/foundry-audit/foundry_autonomy/reports
+          cp build/foundry_audit/next_state.json /tmp/foundry-audit/foundry_autonomy/state.json
+          run=$(jq -r .run_id build/foundry_audit/decision.json)
+          cp build/foundry_audit/decision.json "/tmp/foundry-audit/foundry_autonomy/reports/$run.json"
+          git -C /tmp/foundry-audit config user.name 'github-actions[bot]'
+          git -C /tmp/foundry-audit config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/foundry-audit add foundry_autonomy
+          if ! git -C /tmp/foundry-audit diff --cached --quiet; then
+            git -C /tmp/foundry-audit commit -m 'chore(foundry): persist non-Golden review audit cursor [skip ci]'
+            git -C /tmp/foundry-audit push origin HEAD:refs/heads/foundry/autonomy-audit-v1
+          else
+            echo 'FOUNDRY_AUDIT_IDEMPOTENT no state change'
+          fi
