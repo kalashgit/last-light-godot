@@ -76,10 +76,10 @@ def run(output, samples=8, heading_deg=0):
         for name in ("driver door inner padded card","driver door inner upper rail",
                      "driver door inner armrest","driver door interior latch",
                      "driver door front edge thickness","driver door rear edge thickness"):
-            assert bpy.data.objects["F10 HERO "+name].parent == hinge
+            assert bpy.data.objects["LL FLEET F10 HERO "+name].parent == hinge
         for name in ("textured driver seat cushion","raked driver seat back",
                      "driver headrest","dashboard lower assembly","cabin recessed footwell"):
-            assert bpy.data.objects["F10 HERO "+name].parent != hinge
+            assert bpy.data.objects["LL FLEET F10 HERO "+name].parent != hinge
         assert bpy.data.objects.get("F10 HERO driver aperture recessed dark inner backing") is None
         # At rest a sampled door polygon must occupy exactly its authored
         # body-surface coordinate; a double pivot translation would fail here.
