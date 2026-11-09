@@ -1,0 +1,43 @@
+name: M02 F01-F12 Production Admission Board
+
+on:
+  pull_request:
+    paths:
+      - 'tools/autonomous_factory/**'
+      - 'tests/autonomous_factory/**'
+      - '.github/workflows/m02-family-coordinator.yml'
+  workflow_dispatch:
+    inputs:
+      family:
+        type: choice
+        description: Produce a fail-closed readiness report for a family or all families
+        default: ALL
+        options: [ALL, F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11, F12]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m02-family-admission-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  admission:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/autonomous_factory -v
+      - name: Create exact F01-F12 source and readiness inventory
+        env:
+          SELECTED_FAMILY: ${{ inputs.family || 'ALL' }}
+        run: python tools/autonomous_factory/families.py --family "$SELECTED_FAMILY" --output build/m02/family_plan.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m02-f01-f12-admission-${{ github.run_id }}
+          path: build/m02/family_plan.json
+          retention-days: 7
+          if-no-files-found: error
