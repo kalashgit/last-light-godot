@@ -63,7 +63,7 @@ jobs:
       - name: Install the headless local Blender authoring and renderer dependency
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends blender
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
           blender --version
       - name: Build independently authored original meshes/materials and editable .blend source
         run: |
