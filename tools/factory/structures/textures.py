@@ -43,8 +43,20 @@ def make_maps(directory: Path, resolution: int = 128) -> dict:
                     row = y // 22
                     mortar = y % 22 <= 1 or (x + (row % 2)*24) % 48 <= 2
                     grain += -32 if mortar else 0
-                if material in ("shingle", "metal_roof"):
-                    grain += -14 if y % 24 <= 1 else 0
+                if material == "shingle":
+                    # Staggered roof courses: shadow, end-joints and subtle
+                    # deterministic tile-to-tile colour variation.
+                    course = y // 20
+                    joint_x = (x + (course % 2) * 19) % 38
+                    grain += -16 if y % 20 <= 1 else 0
+                    grain += -11 if joint_x <= 1 else 0
+                    grain += ((x // 38 + course * 7) % 5 - 2) * 2
+                if material == "metal_roof":
+                    # Standing seams run along the pitch, not across it.
+                    rib = x % 40
+                    grain += -11 if rib <= 2 else 0
+                    grain += 7 if 3 <= rib <= 5 else 0
+                    grain += (y // 18 % 3) - 1
                 if material == "ceramic":
                     grain += -20 if x % 40 <= 1 or y % 40 <= 1 else 0
                 if material == "steel":
