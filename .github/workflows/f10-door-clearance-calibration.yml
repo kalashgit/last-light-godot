@@ -1,0 +1,73 @@
+name: F10 experimental door clearance and GLB animation audit
+
+on:
+  push:
+    branches:
+      - chatgpt/f10-door-clearance-clean-20261109
+    paths:
+      - '.github/workflows/f10-door-clearance-calibration.yml'
+      - 'tools/vehicle_factory/hero_*.py'
+      - 'tools/vehicle_factory/fleet_*.py'
+      - 'tools/blender_factory/render_v3_recovery.py'
+      - 'tests/factory/vehicles/test_f10_hero_door.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f10-experimental-door-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clearance-and-animation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install review-only dependencies
+        run: |
+          python -m pip install 'Pillow>=10,<15' 'numpy>=1.24,<3'
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Check actual 14 sampled door poses against fender tire and cabin jambs
+        run: |
+          set -euo pipefail
+          mkdir -p build/f10/door_gate
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_door_clearance.py -- --output build/f10/door_gate/clearance.json 2>&1 | tee build/f10/door_gate/clearance.log
+          grep -q 'F10_DOOR_CLEARANCE_AUDIT' build/f10/door_gate/clearance.log
+          ! grep -q 'Traceback (most recent call last)' build/f10/door_gate/clearance.log
+      - name: Build actual Blender action and four-frame sprite calibration
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup -t 2 --python tools/vehicle_factory/hero_door_calibration.py -- --output build/f10/door_gate/raw --samples 12 --heading-deg 45 2>&1 | tee build/f10/door_gate/animation.log
+          grep -q 'F10_DOOR_CALIBRATION_DONE 4' build/f10/door_gate/animation.log
+          ! grep -q 'Traceback (most recent call last)' build/f10/door_gate/animation.log
+          python tests/factory/vehicles/test_f10_hero_door.py build/f10/door_gate/raw
+          python tools/vehicle_factory/hero_door_sheet.py --input build/f10/door_gate/raw --output build/f10/door_gate/review
+      - name: Export animated GLB and assert actual five-key rotation channel
+        run: |
+          set -euo pipefail
+          blender -b build/f10/door_gate/raw/hero_front_door_calibration.blend --python-expr "import bpy; bpy.ops.export_scene.gltf(filepath='build/f10/door_gate/hero_front_door_animated.glb',export_format='GLB',export_animations=True)" 2>&1 | tee build/f10/door_gate/glb.log
+          ! grep -q 'Traceback (most recent call last)' build/f10/door_gate/glb.log
+          python tools/vehicle_factory/verify_door_glb.py build/f10/door_gate/hero_front_door_animated.glb
+      - name: Enforce clearance gate after collecting full animation evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('build/f10/door_gate/clearance.json').read_text())
+          print('F10_DOOR_CLEARANCE_VERDICT',result['verdict'],result['contact_count'])
+          assert result['verdict']=='NO_SAMPLED_TRIANGLE_CONTACT', 'Door intersects fixed fender, tire or cabin jamb at an open pose'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f10-door-calibration-evidence
+          path: build/f10/door_gate
+          retention-days: 7
+          if-no-files-found: warn
