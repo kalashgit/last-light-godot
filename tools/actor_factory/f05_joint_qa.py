@@ -158,4 +158,8 @@ print("F05_JOINT_QA", result["status"], "samples", len(rows),
       "floor_min", result["minimum_foot_sole_z_m"],
       "floor_hover_max", result["maximum_foot_hover_z_m"])
 if defects:
+    from collections import Counter
+    print("F05_JOINT_DEFECT_COUNTS", json.dumps(dict(Counter(item["type"] for item in defects))))
+    for item in defects[:35]:
+        print("F05_JOINT_DEFECT", json.dumps(item))
     sys.exit(4)
