@@ -19,7 +19,7 @@ def build(manifest_path, source_dir, output_dir):
     frames=sorted(manifest["frames"],key=lambda f:f["direction"])
     if len(frames)!=16 or [f["direction"] for f in frames]!=list(range(16)):
         raise ValueError("Expected all 16 directional frames exactly once")
-    tile_size=(190,160)
+    tile_size=(256,192)
     sheet=Image.new("RGB",(tile_size[0]*4,tile_size[1]*4),(37,44,39))
     records=[]
     for idx,frame in enumerate(frames):
@@ -51,11 +51,13 @@ def build(manifest_path, source_dir, output_dir):
         draw=ImageDraw.Draw(cell)
         for y in range(tile_size[1]):
             draw.line([(0,y),(tile_size[0],y)],fill=(67+y//8,72+y//10,66+y//9))
-        anchor_x,anchor_y=tile_size[0]//2,tile_size[1]-40
+        anchor_x,anchor_y=tile_size[0]//2,140
         draw.polygon([(anchor_x,anchor_y-20),(anchor_x+40,anchor_y),(anchor_x,anchor_y+20),(anchor_x-40,anchor_y)],fill=(95,101,84),outline=(125,135,109))
         # World root pixel is the origin used by F12; preserve it through crop.
         paste_x=round(anchor_x-pivot[0]+left)
         paste_y=round(anchor_y-pivot[1]+top)
+        if paste_x < 0 or paste_y < 0 or paste_x+w > tile_size[0] or paste_y+h > tile_size[1]:
+            raise ValueError('review cell would clip heading %02d: crop %s at %s' % (idx, (w,h), (paste_x,paste_y)))
         cell.paste(crop,(paste_x,paste_y),crop)
         draw.text((8,7),f"F10 heading {idx:02d}",fill=(235,237,229))
         sheet.paste(cell,(x0,y0))
