@@ -58,6 +58,16 @@ jobs:
         run: |
           set -o pipefail
           xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_joint_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-joint.log
+      - name: Render sixteen diagnostic animation poses for visual review
+        if: always()
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          test -s build/f05-cal/f05_noncanonical_calibration.blend
+          set -o pipefail
+          xvfb-run -a blender -b --factory-startup -t 2 --python tools/actor_factory/f05_motion_qa.py -- --output build/f05-cal 2>&1 | tee build/f05-motion.log
       - name: Install pinned Godot 4 engine for real project import
         if: always()
         run: |
