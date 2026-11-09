@@ -38,6 +38,7 @@ jobs:
           python tools/factory/structures/collision_contract.py garage --output build/f02_qa/garage.json
           python tools/factory/structures/audit_apertures.py small_house
           python tools/factory/structures/audit_apertures.py garage
+          python tools/factory/structures/cross_family_calibration.py --house scripts/house.gd --output build/f02_qa/f11_f12_handoff.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
