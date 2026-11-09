@@ -23,6 +23,17 @@ from fleet_render import make_materials,cube,pipe,faces
 from hero_profile import L,W,H,WB,R
 
 
+def attach_to_pivot(ob,pivot):
+    """Preserve world placement at rest, then inherit a mechanical hinge transform."""
+    bpy.context.view_layer.update()
+    world=ob.matrix_world.copy()
+    ob.parent=pivot
+    ob.matrix_parent_inverse=pivot.matrix_world.inverted()
+    ob.matrix_world=world
+    bpy.context.view_layer.update()
+    return ob
+
+
 def glass_material(name,dark=False):
     """Simple uniform dark glazing for stable isometric directional readability."""
     material=bpy.data.materials.new(name)
@@ -65,7 +76,7 @@ def mesh_object(name,vertices,polys,materials,material_indices=None):
     return ob
 
 
-def body_shell(m):
+def body_shell(m,door_experiment=False):
     # Rounded shoulders, asymmetric nose/tail taper and a gently rising belt.
     steps=112
     xs=[-L*.492+L*.984*i/steps for i in range(steps+1)]
@@ -91,6 +102,11 @@ def body_shell(m):
             if d<rad:
                 bottom=max(bottom,.340+math.sqrt(rad*rad-d*d)+.017)
         return bottom
+    door_root=None
+    if door_experiment:
+        door_root=bpy.data.objects.new("F10 HERO driver door vertical hinge PROTOTYPE",None)
+        bpy.context.collection.objects.link(door_root)
+        door_root.location=(.965,-.717,.94)
     for side in (-1,1):
         verts=[]
         for x in xs:
@@ -100,15 +116,24 @@ def body_shell(m):
                           (x,side*(.770*q+b*.45),.790),
                           (x,side*(.767*q+b),.865),
                           (x,side*(.721*q+b*.70),shoulder(x))))
-        faces_idx=[];material_idx=[]
+        faces_idx=[];door_idx=[];material_idx=[]
         for i in range(steps):
             a=i*4
             for j in range(3):
                 p=(a+j,a+j+4,a+j+5,a+j+1)
-                faces_idx.append(p if side==1 else tuple(reversed(p)))
-                material_idx.append(0)
+                p=p if side==1 else tuple(reversed(p))
+                # One body-surface aperture, exact same vertices as the door
+                # skin in its closed pose. Avoid a separate overlapping slab.
+                if door_experiment and side==-1 and -.36 <= (xs[i]+xs[i+1])/2 <= .95:
+                    door_idx.append(p)
+                else:
+                    faces_idx.append(p)
+                    material_idx.append(0)
         mesh_object("F10 HERO continuous sculpted side",verts,faces_idx,
                     [m["body"],m["dark"]],material_idx)
+        if door_idx:
+            skin=mesh_object("F10 HERO connected left front door exterior",verts,door_idx,[m["body"]])
+            attach_to_pivot(skin,door_root)
     # Crown rather than flat box: 7 longitudinal points for each station.
     verts=[]
     for x in xs:
@@ -150,11 +175,20 @@ def body_shell(m):
     for side in (-1,1):
         yy=side*W*.452
         for x in (-L*.095,L*.220):
+            if door_experiment and side==-1:continue
             pipe("door full-height stamped shutline",[(x,yy,.394),(x,yy,.944)],
                  .006,m["dark"])
+    if door_experiment:
+        # Recessed interior backing remains with the chassis when the actual
+        # door skin swings away; this is not an approved modeled cabin.
+        faces("F10 HERO driver aperture recessed dark inner backing",[
+            (-.37,-.652,.30),(.96,-.652,.30),(.96,-.652,.94),(-.37,-.652,.94)],m["trim"])
+        cube("F10 HERO driver door inner sill",(.30,-.665,.305),
+             (1.32,.075,.055),m["dark"],.012)
+    return door_root
 
 
-def greenhouse(m):
+def greenhouse(m,door_root=None):
     # x,z roof contours create a gently crowned modern compact silhouette.
     xrear,xfront=-1.36,.42
     zr,zf=1.475,1.475
@@ -196,7 +230,12 @@ def greenhouse(m):
                 (front_sill-.080,ylow,1.022),(bbase+.038,ylow,1.022)]),
             ("rear quarter pane",[(xrear+.045,ytop,1.438),(btop-.047,ytop,1.461),
                 (bbase-.056,ylow,1.022),(rear_sill+.080,ylow,1.022)])):
-            faces("F10 HERO inset "+name,verts,m["glass"])
+            pane=faces("F10 HERO inset "+name,verts,m["glass"])
+            if door_root and side==-1 and name=="front door pane":
+                attach_to_pivot(pane,door_root)
+                # The glass and its four perimeter edges are one door unit.
+                for a,b in zip(verts,verts[1:]+verts[:1]):
+                    attach_to_pivot(pipe("F10 HERO driver glass moving seal",[a,b],.013,m["trim"]),door_root)
         for name,coords,r in (
             ("A pillar",[(xfront,ytop,zf),(front_sill,ylow,bottom_z)],.035),
             ("B pillar",[(btop,ytop,1.49),(bbase,ylow,1.00)],.044),
@@ -204,6 +243,19 @@ def greenhouse(m):
             ("roof gutter",[(xrear,ytop,zr),(xfront,ytop,zf)],.021),
             ("window sill",[(rear_sill,ylow,.993),(front_sill,ylow,1.007)],.019)):
             pipe(name,coords,r,m["body"])
+    if door_root:
+        # Bridge the outer door skin to its movable pane with real attached
+        # body-colour belt metal and a connected A/B window surround.
+        belt=faces("F10 HERO driver door movable upper belt",[
+            (-.38,-.714,.920),(.965,-.714,.920),
+            (.965,-.714,1.035),(-.38,-.714,1.035)],m["body"])
+        attach_to_pivot(belt,door_root)
+        for name,points,radius in (
+            ("driver moving A-frame",[(.965,-.710,.948),(.372,-.574,1.438)],.029),
+            ("driver moving B-frame",[(-.36,-.710,.948),(-.382,-.574,1.462)],.033),
+            ("driver moving glass waist",[(-.38,-.714,1.025),(.965,-.714,1.025)],.022),
+        ):
+            attach_to_pivot(pipe("F10 HERO "+name,points,radius,m["body"]),door_root)
     pipe("rear hatch edge",[(rear_sill,-.702,.980),(rear_sill,.702,.980)],.021,m["trim"])
     pipe("rear wiper",[(-1.70,-.18,1.039),(-1.70,.22,1.083)],.012,m["trim"])
 
@@ -226,7 +278,7 @@ def wheels(m):
                 pipe("six-spoke pressed rim",[p0,p1],.022,m["steel"])
 
 
-def detailing(m):
+def detailing(m,door_root=None):
     front=L*.496;rear=-L*.496
     cube("fictional grille pocket",(front+.006,0,.653),(.025,W*.43,.139),m["trim"],.021)
     for z in (.611,.652,.691):
@@ -244,22 +296,27 @@ def detailing(m):
         cube("dark protruding mirror housing",(.62,side*W*.521,1.045),
              (.132,.112,.067),m["trim"],.021)
         for x in (-.47,.39):
-            cube("recessed handle",(x,side*W*.447,.905),
-                 (.125,.019,.023),m["trim"],.009)
+            handle=cube("recessed handle",(x,side*W*.447,.905),
+                        (.125,.019,.023),m["trim"],.009)
+            if door_root and side==-1 and x==.39:
+                attach_to_pivot(handle,door_root)
     cube("front cooling lower inset",(front+.006,0,.473),(.019,W*.49,.058),m["trim"],.011)
     cube("rear plate pocket",(rear-.005,0,.647),(.012,W*.28,.089),m["trim"],.010)
     cube("unbranded rear plate",(rear-.015,0,.647),(.008,W*.235,.061),m["cream"],.005)
     # No ornamental bonnet line: broad uninterrupted paint planes read cleaner.
 
 
-def build(paint="#364958"):
+def build(paint="#364958",driver_door_deg=None):
     m=make_materials(paint,1)
     m["glass"]=glass_material("F10 HERO original light glazing")
     m["black_glass"]=glass_material("F10 HERO original rear tint",dark=True)
-    body_shell(m)
-    greenhouse(m)
+    door_root=body_shell(m,door_experiment=driver_door_deg is not None)
+    greenhouse(m,door_root=door_root)
     wheels(m)
-    detailing(m)
+    detailing(m,door_root=door_root)
+    if door_root:
+        door_root.rotation_euler.z=math.radians(driver_door_deg)
+        bpy.context.view_layer.update()
     return m
 
 
