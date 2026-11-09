@@ -1,0 +1,122 @@
+name: LAST LIGHT 23-45 original geometry and sprites (technical non-Golden)
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundry-original-23-technical-preview.yml'
+      - 'tools/foundry_original_23/**'
+      - 'tests/foundry_original_23/**'
+      - 'data/foundry_reference_catalog/batch_23_45_original_recipes_v1.json'
+      - 'data/foundry_reference_catalog/notion_master_recipes_snapshot_v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: original-23-technical-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<14'
+      - run: python -m unittest discover -s tests/foundry_original_23 -v
+      - name: Reconcile 23 original Notion briefs and enforce zero production admissions
+        run: python -m tools.foundry_original_23.contract --output build/original_23/admission_report.json
+      - name: Prepare independent state machines and attachment guide
+        run: python -m tools.foundry_original_23.gameplay --output build/original_23/gameplay_handoff.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: original-23-contracts-${{ github.run_id }}
+          path: build/original_23/
+          retention-days: 14
+
+  bounded-blender-preview:
+    needs: original-contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    strategy:
+      fail-fast: false
+      matrix:
+        # Six bounded independent windows cover all 23 original proposals.
+        # Each GLB/BLEND/render artifact is strictly non-Golden and non-admitted.
+        start: [0, 4, 8, 12, 16, 20]
+    env:
+      MAX_MODELS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<14'
+      - name: Install the headless local Blender authoring and renderer dependency
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
+          blender --version
+      - name: Build independently authored original meshes/materials and editable .blend source
+        run: |
+          blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_original_23/blender_build.py -- \
+            --recipes data/foundry_reference_catalog/batch_23_45_original_recipes_v1.json \
+            --output build/original_23/models --start-index '${{ matrix.start }}' --max-assets "$MAX_MODELS"
+      - name: Check authored GLB checksums, preview admission and create render plan
+        run: |
+          python -m tools.foundry_original_23.contract --output build/original_23/admission_report.json \
+            --build-root build/original_23/models --plan-output build/original_23/render_plan.json
+      - name: Render original models from 16 headings using existing F12-compatible technical bridge
+        run: |
+          blender -b --factory-startup --python-exit-code 3 -t 2 --python tools/foundry_mass/render.py -- \
+            --plan build/original_23/render_plan.json --output build/original_23/renders \
+            --resolution 192 --samples 2 --lighting-mode studio
+      - name: Offline alpha cleanup, 64x64 inventory icons, 16-heading sheets and visual QA evidence
+        run: |
+          python -m tools.foundry_original_23.postprocess --renders build/original_23/renders \
+            --output build/original_23/review
+      - name: Publish only technical review evidence, never 40-item released sheets
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-23-review-window-${{ matrix.start }}-${{ github.run_id }}
+          path: build/original_23/
+          retention-days: 14
+          if-no-files-found: error
+
+  all-23-artifact-reconciliation:
+    needs: bounded-blender-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'Pillow>=10,<14'
+      - name: Download all six separately hashed original Blender/GLB/sprite review windows
+        uses: actions/download-artifact@v4
+        with:
+          pattern: original-23-review-window-*
+          path: build/original_23/windows
+          merge-multiple: false
+      - name: Reject absent models, forged receipts, pixel duplicates, bad alpha or missing headings
+        run: |
+          python -m tools.foundry_original_23.audit_artifacts \
+            --windows build/original_23/windows --output build/original_23/all_23_review
+      - name: Upload combined 23-item review contact sheet and honest QA report (never production atlas)
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-23-all-assets-review-${{ github.run_id }}
+          path: build/original_23/all_23_review/
+          retention-days: 14
+          if-no-files-found: error

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "contract_id": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2_ORIGINALITY_GATE",
+  "authority": {
+    "notion_url": "https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96",
+    "prior_style_url": "https://app.notion.com/p/40ff639e237381d2b696c6054ee1d7a7",
+    "source": "FOUNDER_APPROVED_STYLE_DIRECTION_NOT_INDIVIDUAL_ASSET_APPROVAL",
+    "individual_golden_approval_from_this_contract": false
+  },
+  "reference_policy": {
+    "default_rights": "THIRD_PARTY_RESEARCH_METADATA_ONLY",
+    "allowed_inputs": ["source_page_id", "source_title", "source_url", "source_categories", "semantic_object_description", "verified_original_recipe"],
+    "forbidden_inputs_to_renderer": ["third_party_source_png", "third_party_source_texture", "third_party_image_to_image", "traced_source_silhouette", "third_party_packaging_or_logo"],
+    "forbidden_promotion": ["reference_to_approved_sprite", "candidate_to_golden_without_founder", "inventory_icon_to_world_sprite_without_separate_geometry"],
+    "original_asset_only": true,
+    "rights_evidence_or_authorship_receipt_required_before_final_art": true
+  },
+  "house_style": {
+    "name": "GROUNDED_PIXEL_REALISM",
+    "readability": "physical_object_identity_then_silhouette_then_material_then_pixel_cluster_detail",
+    "palette": "muted_natural_colors_with_functional_accents",
+    "key_light": "screen_upper_left_soft_defined_10_to_11_oclock",
+    "shadow": "localized_creases_and_support_occlusion_no_unrelated_floating_shadow",
+    "pixel_treatment": "deliberate_crisp_native_clusters_nearest_neighbor_no_blurred_downsample",
+    "wear": "material_specific_causes_and_condition_states_not_uniform_noise",
+    "forbidden_styles": ["toy_cartoon", "vector_flat", "fantasy_glow", "oversized_black_sticker_outline", "procedural_uniform_grime", "ai_oil_paint_smearing", "brand_copy"],
+    "material_grammar": ["iron_steel", "painted_metal", "aluminum", "glass", "plastic", "cardboard_paper", "cotton_fabric", "leather", "wood", "rubber", "food_organic", "rock_crystal", "water_liquid"]
+  },
+  "representations": {
+    "inventory_icon": {"native_logical_px": [64, 64], "preview_at_px": [32, 48, 64], "view": "elevated_three_quarter", "alpha": "RGBA_TRANSPARENT", "separate_editable_source_required": true},
+    "world_loot": {"world_tile_px": [80, 40], "projection": "iso(x,y)=(40*(x-y),20*(x+y))", "pivot": "VERIFIED_SUPPORT_SURFACE_CONTACT", "separate_render_and_scale_qa_required": true},
+    "held_equipped": {"directional_attachment_pivot_required": true, "actor_overlay_and_occlusion_review_required": true},
+    "furniture_fixture": {"world_footprint_collision_access_occlusion_and_states_required": true}
+  },
+  "production": {
+    "source_disposition_before_recipe": true,
+    "semantic_identity_before_visual_generation": true,
+    "physical_recipe_requires": ["semantic_brief", "independent_geometry", "materials", "construction", "purpose", "states", "representation", "source_provenance"],
+    "batch_original_items_per_inventory_sheet": 40,
+    "inventory_sheet_grid": [8, 5],
+    "inventory_sheet_cell_px": 256,
+    "heading_frames_per_world_source": 16,
+    "release_lanes": ["research_only", "recipe_authoring", "original_refinement", "technical_sprite", "founder_visual_review", "approved_game_asset"]
+  },
+  "qa": {
+    "categories": ["identity_physical_realism", "silhouette_32_48_64", "material_shading", "house_style_consistency", "export_technical", "originality_provenance"],
+    "minimum_each_out_of_five_for_proposed_golden_gate": 4,
+    "automated_qa_is_not_founder_visual_approval": true,
+    "golden_requires_founder_decision": true,
+    "world_requires_godot_scene_and_iphone_evidence": true,
+    "never_copy_source_pixel_data": true
+  }
+}

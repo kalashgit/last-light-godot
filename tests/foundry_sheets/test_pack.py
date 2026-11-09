@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sys
 import tempfile
@@ -8,7 +9,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/foundry_sheets"))
-from pack import pack, sha
+from pack import pack, sha, load_admitted_recipe_ids
 from publish import stage
 
 
@@ -16,10 +17,11 @@ def candidate(root: Path, ident: str, size: int = 128):
     folder = root / ident
     folder.mkdir(parents=True)
     image = Image.new("RGBA", (4 * size + 20, 4 * size + 20))
+    variant = hashlib.sha256(ident.encode("utf-8")).digest()
     for i in range(16):
         col, row = i % 4, i // 4
         x, y = 4 + col * (size + 4), 4 + row * (size + 4)
-        color = ((i * 11) % 255, 30, 140, 255)
+        color = ((i * 11 + variant[0]) % 255, variant[1], variant[2], 255)
         ImageDraw.Draw(image).rectangle((x + 10, y + 15, x + 33, y + 45), fill=color)
     atlas = folder / "atlas_16_headings.png"
     image.save(atlas)
@@ -104,9 +106,106 @@ class SheetTests(unittest.TestCase):
         for size in (512, 4096):
             with self.assertRaises(ValueError):
                 pack(self.source, self.path / f"bad_{size}", page_size=size)
-        for count in (0, 9):
+        for count in (0, 81):
             with self.assertRaises(ValueError):
                 pack(self.source, self.path / f"bad_{count}", batch_size=count)
+        with self.assertRaisesRegex(ValueError, "minimum"):
+            pack(self.source, self.path / "bad_min", batch_size=4, min_batch_size=40)
+        with self.assertRaisesRegex(ValueError, "cannot fill"):
+            pack(self.source, self.path / "bad_inventory", batch_size=8,
+                 inventory_page_items=40)
+
+    def test_strict_recipe_queue_excludes_unadmitted_art(self):
+        queue = self.path / "queue.jsonl"
+        queue.write_text(json.dumps({
+            "asset_id": "ll_furniture_mattress", "stage": "ORIGINAL_REFINEMENT_TECHNICAL_ONLY",
+            "automated_render_authorized": True,
+            "generation_input": {"original_creation_only": True,
+                "source_image_pixels_allowed": False, "source_mesh_copy_allowed": False,
+                "reference_silhouette_tracing_allowed": False,
+                "style_contract": "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2_ORIGINALITY_GATE"},
+            "gates": {"founder_golden_approved": False},
+            "provenance_review_only": {"source_records_are_research_only": True},
+        }) + "\n")
+        admitted = load_admitted_recipe_ids(queue)
+        self.assertEqual(admitted, {"ll_furniture_mattress"})
+        report = pack(self.source, self.path / "strict", allowed_asset_ids=admitted,
+                      batch_size=2, run_id="99")
+        self.assertEqual(report["batch_count"], 1)
+        compromised = json.loads(queue.read_text())
+        compromised["generation_input"]["source_image_pixels_allowed"] = True
+        queue.write_text(json.dumps(compromised) + "\n")
+        with self.assertRaisesRegex(ValueError, "originality evidence"):
+            load_admitted_recipe_ids(queue)
+
+    def test_mass_80_assets_produce_two_genuine_40_item_pages(self):
+        for i in range(78):
+            candidate(self.source, f"ll_catalog_item_{i:03d}")
+        output = self.path / "mass"
+        report = pack(self.source, output, batch_size=80, min_batch_size=40,
+                      inventory_page_items=40, page_size=2048, run_id="333")
+        self.assertEqual(report["batch_count"], 80)
+        self.assertEqual(report["frame_count"], 1280)
+        self.assertEqual(report["inventory_page_count"], 2)
+        self.assertEqual(report["status"], "PACKED")
+        manifest = json.loads((output / "inventory_sheet_manifest.json").read_text())
+        self.assertEqual([p["asset_count"] for p in manifest["pages"]], [40, 40])
+        self.assertEqual(len(manifest["entries"]), 80)
+        self.assertEqual(len({entry["asset_id"] for entry in manifest["entries"]}), 80)
+        self.assertFalse(manifest["golden_approved"])
+        for entry in manifest["entries"]:
+            with Image.open(output / manifest["pages"][entry["page"]]["file"]) as page:
+                x, y, w, h = entry["region"]
+                icon = page.crop((x, y, x + w, y + h))
+            with Image.open(self.source / entry["asset_id"] / "atlas_16_headings.png") as source:
+                heading = entry["heading"]
+                col, row = heading % 4, heading // 4
+                size = entry["source_size"][0]
+                raw = source.crop((4 + col * (size + 4), 4 + row * (size + 4),
+                                   4 + col * (size + 4) + size,
+                                   4 + row * (size + 4) + size))
+            ox, oy = entry["trim_offset"]
+            self.assertEqual(icon.tobytes(), raw.crop((ox, oy, ox + w, oy + h)).tobytes())
+        self.assertEqual(stage(output, self.path / "persist"), 80)
+        with Image.open(output / "inventory_sheet_0000.png") as original:
+            altered = original.copy()
+        altered.putpixel((0, 0), (18, 91, 47, 255))
+        altered.save(output / "inventory_sheet_0000.png")
+        with self.assertRaisesRegex(ValueError, "digest mismatch"):
+            stage(output, self.path / "tampered")
+
+    def test_mass_waits_for_40_distinct_assets_without_advancing_cursor(self):
+        for i in range(37):
+            candidate(self.source, f"ll_wait_item_{i:03d}")
+        output = self.path / "waiting"
+        first = pack(self.source, output, batch_size=40, min_batch_size=40,
+                     inventory_page_items=40, page_size=2048, run_id="101")
+        self.assertEqual(first["batch_count"], 0)
+        self.assertEqual(first["held_for_full_page"], 39)
+        self.assertEqual(first["status"], "WAITING_FOR_COMPLETE_INVENTORY_PAGE")
+        self.assertFalse((output / "inventory_sheet_0000.png").exists())
+        self.assertEqual(json.loads((output / "next_state.json").read_text())["completed"], [])
+        candidate(self.source, "ll_wait_item_999")
+        second = pack(self.source, self.path / "ready", batch_size=40,
+                      min_batch_size=40, inventory_page_items=40,
+                      page_size=2048, run_id="102")
+        self.assertEqual(second["batch_count"], 40)
+        self.assertEqual(second["inventory_page_count"], 1)
+
+    def test_mass_does_not_count_duplicated_visual_art_as_unique_items(self):
+        for i in range(38):
+            candidate(self.source, f"ll_dedupe_item_{i:03d}")
+        original = self.source / "ll_dedupe_item_000" / "atlas_16_headings.png"
+        duplicate = self.source / "ll_dedupe_item_001" / "atlas_16_headings.png"
+        duplicate.write_bytes(original.read_bytes())
+        manifest = self.source / "ll_dedupe_item_001" / "manifest.json"
+        data = json.loads(manifest.read_text())
+        data["atlas_sha256"] = sha(duplicate)
+        manifest.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "Duplicate visual sprite"):
+            pack(self.source, self.path / "dedupe", batch_size=40,
+                 min_batch_size=40, inventory_page_items=40,
+                 page_size=2048, run_id="103")
 
     def test_publish_rejects_modified_sheet_bytes(self):
         first = self.path / "first"

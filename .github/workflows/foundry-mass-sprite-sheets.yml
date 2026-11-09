@@ -1,19 +1,22 @@
-name: Foundry bounded 2D sprite sheet packer (non-Golden)
+name: Foundry 40-item sprite pages + directional atlas (non-Golden)
 on:
   pull_request:
     paths:
       - '.github/workflows/foundry-mass-sprite-sheets.yml'
       - 'tools/foundry_sheets/**'
       - 'tests/foundry_sheets/**'
+      - 'tools/foundry_reference_intake/**'
+      - 'tests/foundry_reference_intake/**'
+      - 'data/foundry_reference_catalog/**'
   schedule:
     - cron: '25,55 * * * *'
   workflow_dispatch:
     inputs:
       batch_size:
-        description: 'Existing technical atlases to pack per bounded run'
+        description: 'Distinct admitted assets to pack into complete 40-item sheets'
         type: choice
-        options: ['1', '2', '4', '8']
-        default: '4'
+        options: ['40', '80']
+        default: '40'
 
 permissions:
   contents: read
@@ -35,6 +38,19 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install 'Pillow>=10,<13'
       - run: python -m unittest discover -s tests/foundry_sheets -v
+      - run: python -m unittest discover -s tests/foundry_reference_intake -v
+      - name: Validate all 21,025 original-research metadata records against Notion and Sprite Bible
+        run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+      - name: Fail on stale pinned machine-readable work orders or verification holds
+        run: |
+          cmp data/foundry_reference_catalog/derived/original_recipe_work_orders.jsonl build/foundry_reference_intake/original_recipe_work_orders.jsonl
+          cmp data/foundry_reference_catalog/derived/semantic_or_provenance_holds.jsonl build/foundry_reference_intake/semantic_or_provenance_holds.jsonl
+          cmp data/foundry_reference_catalog/derived/intake_report.json build/foundry_reference_intake/intake_report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundry-original-reference-intake-${{ github.run_id }}
+          path: build/foundry_reference_intake/
+          retention-days: 7
 
   pack-and-persist:
     if: >-
@@ -45,7 +61,7 @@ jobs:
     permissions:
       contents: write
     env:
-      BATCH_SIZE: ${{ inputs.batch_size || '4' }}
+      BATCH_SIZE: ${{ inputs.batch_size || '40' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,6 +69,14 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install 'Pillow>=10,<13'
       - run: python -m unittest discover -s tests/foundry_sheets -v
+      - run: python -m unittest discover -s tests/foundry_reference_intake -v
+      - name: Validate research, rights, original physical recipes, and R03 refinement eligibility
+        run: python tools/foundry_reference_intake/build.py --output build/foundry_reference_intake
+      - name: Reject stale Notion/A00 recipe snapshots before producing sheets
+        run: |
+          cmp data/foundry_reference_catalog/derived/original_recipe_work_orders.jsonl build/foundry_reference_intake/original_recipe_work_orders.jsonl
+          cmp data/foundry_reference_catalog/derived/semantic_or_provenance_holds.jsonl build/foundry_reference_intake/semantic_or_provenance_holds.jsonl
+          cmp data/foundry_reference_catalog/derived/intake_report.json build/foundry_reference_intake/intake_report.json
       - name: Fetch only already-persisted, non-Golden technical sprite candidates
         run: |
           set -euo pipefail
@@ -63,12 +87,12 @@ jobs:
             git fetch --no-tags origin refs/heads/foundry/sprite-sheets-v1:refs/remotes/origin/foundry/sprite-sheets-v1
             git show origin/foundry/sprite-sheets-v1:foundry_sheets/state.json > build/foundry_sheets/previous_state.json
           fi
-      - name: Pack deterministic transparent 2D sheets + Godot regions
+      - name: Pack complete 40-asset inventory PNGs and all 16 directional Godot frames
         run: |
           set -euo pipefail
           args=()
           if test -f build/foundry_sheets/previous_state.json; then args+=(--state build/foundry_sheets/previous_state.json); fi
-          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --page-size 1024 --run-id "$GITHUB_RUN_ID" "${args[@]}"
+          python tools/foundry_sheets/pack.py --candidates /tmp/foundry-sheet-sources/foundry_candidates --output build/foundry_sheets/batch --batch-size "$BATCH_SIZE" --min-batch-size 40 --inventory-page-items 40 --page-size 2048 --run-id "$GITHUB_RUN_ID" --recipe-queue build/foundry_reference_intake/original_recipe_work_orders.jsonl "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:
           name: foundry-sprite-sheets-${{ github.run_id }}
@@ -79,7 +103,7 @@ jobs:
         run: |
           set -euo pipefail
           count=$(python -c "import json;print(json.load(open('build/foundry_sheets/batch/batch_report.json'))['batch_count'])")
-          if test "$count" -eq 0; then echo 'FOUNDRY_SHEETS_CAUGHT_UP'; exit 0; fi
+          if test "$count" -eq 0; then echo 'FOUNDRY_SHEETS_WAITING_FOR_40_OR_CAUGHT_UP'; exit 0; fi
           if git show-ref --quiet refs/remotes/origin/foundry/sprite-sheets-v1; then
             git worktree add -b "foundry-sheet-publish-$GITHUB_RUN_ID" /tmp/foundry-sheet-publish origin/foundry/sprite-sheets-v1
           else

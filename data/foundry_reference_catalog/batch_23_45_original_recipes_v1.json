@@ -1,0 +1,2025 @@
+{
+  "schema_version": 1,
+  "batch_id": "LL_SPRITE_BIBLE_V2_ORIGINAL_23_45_20261109",
+  "source": "NOTION_CANONICAL_REGISTRY_MASTER_RECORDS",
+  "bible_url": "https://app.notion.com/p/40ff639e237381f7a3d7daacca26bf96",
+  "notion_registry_url": "https://app.notion.com/p/165d2e3653284b86a829c260f0895276",
+  "count": 23,
+  "inventory_sheet_min_unique": 40,
+  "production_promotion": "FAIL_CLOSED_UNTIL_A00_AND_F11_F12_AND_FOUNDER",
+  "source_art_pixels_imported": false,
+  "metadata_captured": "2026-11-09",
+  "assets": [
+    {
+      "asset_id": "ll_crafting_antler_pair",
+      "title": "Antler Pair",
+      "notion_url": "https://app.notion.com/p/410f639e23738138b46fd0d289f053f8",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "A matched pair of naturally shed deer antlers grouped as one item, warm ivory branching tines, rough brown coronet bases, original asymmetric fork arrangement, no skull",
+      "archetype": "antler_pair",
+      "kind": "crafting",
+      "nominal_dimensions_m": [
+        0.45,
+        0.15,
+        0.25
+      ],
+      "material_slots": [
+        "ivory_bone",
+        "weathered_bone"
+      ],
+      "states": [
+        "loose",
+        "broken"
+      ],
+      "attachment_sockets": [],
+      "gameplay_roles": [
+        "crafting",
+        "decorative",
+        "animal_resource"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "A matched pair of naturally shed deer antlers grouped as one item, warm ivory branching tines, rough brown coronet bases, original asymmetric fork arrangement, no skull",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_clothing_leather_apron",
+      "title": "Leather Apron",
+      "notion_url": "https://app.notion.com/p/410f639e2373813c8209f066b7a4a7d8",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "One warm russet thick workshop leather apron, tapered bib, attached neck strap and tiny buckles, wide lower hem, one stitched chest pocket; restrained satin wear",
+      "archetype": "leather_apron",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.55,
+        0.08,
+        0.85
+      ],
+      "material_slots": [
+        "russet_leather",
+        "stitch",
+        "brass"
+      ],
+      "states": [
+        "loose",
+        "equipped",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "torso_front",
+        "neck",
+        "waist_left",
+        "waist_right"
+      ],
+      "gameplay_roles": [
+        "protective_clothing",
+        "crafting"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "One warm russet thick workshop leather apron, tapered bib, attached neck strap and tiny buckles, wide lower hem, one stitched chest pocket; restrained satin wear",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_equipment_canvas_bandolier",
+      "title": "Canvas Bandolier",
+      "notion_url": "https://app.notion.com/p/410f639e237381449d34c4a15c21b20b",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+      "archetype": "canvas_bandolier",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.58,
+        0.1,
+        0.65
+      ],
+      "material_slots": [
+        "olive_canvas",
+        "thread",
+        "steel"
+      ],
+      "states": [
+        "loose",
+        "equipped",
+        "empty"
+      ],
+      "attachment_sockets": [
+        "chest_diagonal",
+        "shoulder",
+        "hip"
+      ],
+      "gameplay_roles": [
+        "storage",
+        "wearable"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Muted olive woven cross-chest strap curled into diagonal loop, eight empty narrow sewn sleeves and dull metal adjuster; visibly thinner diffuse cloth construction",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_clothing_improvised_plastic_apron",
+      "title": "Improvised Plastic Apron",
+      "notion_url": "https://app.notion.com/p/410f639e2373815aa116f674982d9e5a",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "One simple charcoal plastic protective apron, cut rectangular bib, attached neck loop and side ties folded inward; soft broad plastic creases, no wearer or text",
+      "archetype": "plastic_apron",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.56,
+        0.03,
+        0.82
+      ],
+      "material_slots": [
+        "charcoal_plastic",
+        "polymer_tie"
+      ],
+      "states": [
+        "loose",
+        "equipped",
+        "torn"
+      ],
+      "attachment_sockets": [
+        "torso_front",
+        "neck",
+        "waist_left",
+        "waist_right"
+      ],
+      "gameplay_roles": [
+        "protective_clothing"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "One simple charcoal plastic protective apron, cut rectangular bib, attached neck loop and side ties folded inward; soft broad plastic creases, no wearer or text",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_equipment_leather_bandolier",
+      "title": "Leather Bandolier",
+      "notion_url": "https://app.notion.com/p/410f639e2373817c9d41d17f3d79f892",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Warm brown broad leather cross-chest strap folded into oblique loop, six empty cartridge sleeves, rectangular steel adjustment buckle; satin leather and dark stitch seams",
+      "archetype": "leather_bandolier",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.58,
+        0.11,
+        0.68
+      ],
+      "material_slots": [
+        "brown_leather",
+        "stitch",
+        "steel"
+      ],
+      "states": [
+        "loose",
+        "equipped",
+        "empty"
+      ],
+      "attachment_sockets": [
+        "chest_diagonal",
+        "shoulder",
+        "hip"
+      ],
+      "gameplay_roles": [
+        "storage",
+        "wearable"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Warm brown broad leather cross-chest strap folded into oblique loop, six empty cartridge sleeves, rectangular steel adjustment buckle; satin leather and dark stitch seams",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_farming_animal_feed_sack",
+      "title": "Animal Feed Sack",
+      "notion_url": "https://app.notion.com/p/410f639e23738192ba3ae4b1e0e18752",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "QA Review",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Closed heavy kraft animal-feed sack with folded stitched top, broad olive grain-head pictogram and no text; matte paper and lower bulging corners",
+      "archetype": "feed_sack",
+      "kind": "consumable",
+      "nominal_dimensions_m": [
+        0.36,
+        0.23,
+        0.6
+      ],
+      "material_slots": [
+        "kraft_paper",
+        "olive_ink",
+        "thread"
+      ],
+      "states": [
+        "closed",
+        "opened",
+        "partly_used",
+        "empty"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "animal_feed",
+        "storage"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Closed heavy kraft animal-feed sack with folded stitched top, broad olive grain-head pictogram and no text; matte paper and lower bulging corners",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_tools_claw_hammer",
+      "title": "Claw Hammer",
+      "notion_url": "https://app.notion.com/p/410f639e23738101a2a3c7d9e539b917",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Ash handle, forged steel striking face and two curved split claw prongs",
+      "archetype": "claw_hammer",
+      "kind": "tool",
+      "nominal_dimensions_m": [
+        0.14,
+        0.05,
+        0.34
+      ],
+      "material_slots": [
+        "ash_wood",
+        "forged_steel"
+      ],
+      "states": [
+        "dropped",
+        "held",
+        "swing",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "right_hand_grip",
+        "left_hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "carpentry",
+        "barricade",
+        "melee"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Ash handle, forged steel striking face and two curved split claw prongs",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_crafting_rope_coil",
+      "title": "Rope Coil",
+      "notion_url": "https://app.notion.com/p/410f639e237381158838d0650aad6e33",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Five nested tan rope loops, plausible overlap and attached short end",
+      "archetype": "rope_coil",
+      "kind": "material",
+      "nominal_dimensions_m": [
+        0.35,
+        0.32,
+        0.11
+      ],
+      "material_slots": [
+        "hemp_rope"
+      ],
+      "states": [
+        "coiled",
+        "uncoiled",
+        "cut"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "binding",
+        "crafting"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Five nested tan rope loops, plausible overlap and attached short end",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_clothing_leather_jacket",
+      "title": "Leather Jacket",
+      "notion_url": "https://app.notion.com/p/410f639e2373811b943ccab0599f761c",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+      "archetype": "leather_jacket",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.68,
+        0.22,
+        0.77
+      ],
+      "material_slots": [
+        "dark_leather",
+        "lining",
+        "metal_zipper"
+      ],
+      "states": [
+        "loose",
+        "equipped",
+        "open",
+        "closed",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "torso",
+        "arms",
+        "neck"
+      ],
+      "gameplay_roles": [
+        "warmth",
+        "protective_clothing"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Dark brown hip zip jacket, turned collar, both sleeves, subtle satin seams",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_crafting_duct_tape",
+      "title": "Duct Tape",
+      "notion_url": "https://app.notion.com/p/410f639e23738132ae60e20faf287568",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Graphite tape coil with hollow kraft core and attached folded end",
+      "archetype": "duct_tape",
+      "kind": "material",
+      "nominal_dimensions_m": [
+        0.14,
+        0.14,
+        0.09
+      ],
+      "material_slots": [
+        "graphite_tape",
+        "kraft_core"
+      ],
+      "states": [
+        "full",
+        "partially_used",
+        "empty_core"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "repair",
+        "crafting"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Graphite tape coil with hollow kraft core and attached folded end",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_tools_flat_screwdriver",
+      "title": "Flat Screwdriver",
+      "notion_url": "https://app.notion.com/p/410f639e2373813a8e5fda238658951b",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Amber fluted handle, straight steel shaft and flattened tip",
+      "archetype": "flat_screwdriver",
+      "kind": "tool",
+      "nominal_dimensions_m": [
+        0.05,
+        0.05,
+        0.29
+      ],
+      "material_slots": [
+        "amber_plastic",
+        "steel"
+      ],
+      "states": [
+        "dropped",
+        "held",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "right_hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "screwing",
+        "repair"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Amber fluted handle, straight steel shaft and flattened tip",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_tools_hatchet",
+      "title": "Hatchet",
+      "notion_url": "https://app.notion.com/p/410f639e237381448be6e9a013d32f7e",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Short curved hickory handle with eye, forged head and wide honed edge",
+      "archetype": "hatchet",
+      "kind": "tool",
+      "nominal_dimensions_m": [
+        0.15,
+        0.06,
+        0.38
+      ],
+      "material_slots": [
+        "hickory_wood",
+        "forged_steel"
+      ],
+      "states": [
+        "dropped",
+        "held",
+        "swing",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "right_hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "cutting",
+        "melee"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Short curved hickory handle with eye, forged head and wide honed edge",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_medical_sterile_bandage",
+      "title": "Sterile Bandage",
+      "notion_url": "https://app.notion.com/p/410f639e23738150a21cc5c235744749",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Folded clean ivory gauze with lifted corner and layered edge",
+      "archetype": "sterile_bandage",
+      "kind": "medical",
+      "nominal_dimensions_m": [
+        0.15,
+        0.11,
+        0.027
+      ],
+      "material_slots": [
+        "ivory_gauze",
+        "medical_packaging"
+      ],
+      "states": [
+        "folded",
+        "unwrapped",
+        "used"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "wound_dressing"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Folded clean ivory gauze with lifted corner and layered edge",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_clothing_hiking_boots",
+      "title": "Hiking Boots",
+      "notion_url": "https://app.notion.com/p/410f639e2373817fafacf1af573dc704",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+      "archetype": "hiking_boots",
+      "kind": "wearable",
+      "nominal_dimensions_m": [
+        0.36,
+        0.34,
+        0.21
+      ],
+      "material_slots": [
+        "brown_leather",
+        "olive_fabric",
+        "rubber",
+        "laces"
+      ],
+      "states": [
+        "loose_pair",
+        "equipped",
+        "muddy",
+        "worn"
+      ],
+      "attachment_sockets": [
+        "left_foot",
+        "right_foot"
+      ],
+      "gameplay_roles": [
+        "footwear",
+        "protection"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Matched pair brown ankle boots, olive cuffs, laces and dark treaded soles",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_household_duffel_bag",
+      "title": "Duffel Bag",
+      "notion_url": "https://app.notion.com/p/410f639e237381838b2ac45e997578a0",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+      "archetype": "duffel_bag",
+      "kind": "container",
+      "nominal_dimensions_m": [
+        0.55,
+        0.25,
+        0.27
+      ],
+      "material_slots": [
+        "navy_canvas",
+        "black_zipper",
+        "webbing"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "equipped",
+        "empty",
+        "full"
+      ],
+      "attachment_sockets": [
+        "left_hand_grip",
+        "shoulder",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "storage",
+        "carry"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Horizontal navy canvas cylinder, zip top, two handles, attached shoulder strap",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_food_water_bottle",
+      "title": "Water Bottle",
+      "notion_url": "https://app.notion.com/p/410f639e23738187b469ce5557b71b79",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Clear ribbed PET bottle, dark cap and visible full water line",
+      "archetype": "water_bottle",
+      "kind": "consumable",
+      "nominal_dimensions_m": [
+        0.08,
+        0.08,
+        0.24
+      ],
+      "material_slots": [
+        "transparent_pet",
+        "blue_water",
+        "dark_plastic"
+      ],
+      "states": [
+        "full",
+        "half",
+        "empty",
+        "open"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "hydration",
+        "liquid_container"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Clear ribbed PET bottle, dark cap and visible full water line",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_household_backpack",
+      "title": "Backpack",
+      "notion_url": "https://app.notion.com/p/410f639e237381988897fb5a8af85850",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+      "archetype": "backpack",
+      "kind": "wearable_container",
+      "nominal_dimensions_m": [
+        0.37,
+        0.22,
+        0.54
+      ],
+      "material_slots": [
+        "olive_canvas",
+        "dark_webbing",
+        "steel"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "equipped",
+        "empty",
+        "full"
+      ],
+      "attachment_sockets": [
+        "spine",
+        "left_shoulder",
+        "right_shoulder",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "storage",
+        "carry"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Olive loaded canvas rucksack, domed flap, lower pocket, two buckles and shoulder straps",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_medical_antibiotic_tablets",
+      "title": "Antibiotic Tablets",
+      "notion_url": "https://app.notion.com/p/410f639e237381b892f8c3a003403eee",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+      "archetype": "antibiotic_tablets",
+      "kind": "medical",
+      "nominal_dimensions_m": [
+        0.08,
+        0.015,
+        0.14
+      ],
+      "material_slots": [
+        "aluminum_foil",
+        "clear_blister",
+        "cream_tablet",
+        "teal_card"
+      ],
+      "states": [
+        "sealed",
+        "opened",
+        "partly_used"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "medical_inventory"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Eight cream tablets in silver blister, two columns of four, teal end tab",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_household_field_notebook",
+      "title": "Field Notebook",
+      "notion_url": "https://app.notion.com/p/410f639e237381bbb3b3f7c5dc952ae4",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+      "archetype": "field_notebook",
+      "kind": "item",
+      "nominal_dimensions_m": [
+        0.13,
+        0.022,
+        0.19
+      ],
+      "material_slots": [
+        "olive_cloth",
+        "tan_paper",
+        "black_elastic"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "written"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "notes",
+        "storytelling"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Closed olive cloth bound notebook, tan pages, black elastic and stitched spine",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_medical_first_aid_case",
+      "title": "First Aid Case",
+      "notion_url": "https://app.notion.com/p/410f639e237381c4b6cbdf834c67737a",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+      "archetype": "first_aid_case",
+      "kind": "container",
+      "nominal_dimensions_m": [
+        0.32,
+        0.14,
+        0.22
+      ],
+      "material_slots": [
+        "oxblood_hardcase",
+        "ivory_symbol",
+        "steel"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "empty",
+        "full"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "medical_storage"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Closed oxblood rigid case, integral handle, two clasps, small ivory cross",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_household_shoe_box",
+      "title": "Shoe Box",
+      "notion_url": "https://app.notion.com/p/410f639e237381c9bed0fc2c1d264552",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Closed kraft box with overhanging lid and front semicircular notch",
+      "archetype": "shoe_box",
+      "kind": "container",
+      "nominal_dimensions_m": [
+        0.33,
+        0.2,
+        0.13
+      ],
+      "material_slots": [
+        "kraft_cardboard"
+      ],
+      "states": [
+        "closed",
+        "lid_removed",
+        "empty",
+        "full"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "container"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Closed kraft box with overhanging lid and front semicircular notch",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_food_apple",
+      "title": "Apple",
+      "notion_url": "https://app.notion.com/p/410f639e237381ec8ce5dd61e5664d95",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Asymmetric red apple with green shoulder and short attached stem",
+      "archetype": "apple",
+      "kind": "food",
+      "nominal_dimensions_m": [
+        0.09,
+        0.09,
+        0.09
+      ],
+      "material_slots": [
+        "red_skin",
+        "green_shoulder",
+        "brown_stem"
+      ],
+      "states": [
+        "fresh",
+        "bruised",
+        "rotten",
+        "consumed"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "nutrition",
+        "foraging"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Asymmetric red apple with green shoulder and short attached stem",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    },
+    {
+      "asset_id": "ll_food_bean_tin",
+      "title": "Bean Tin",
+      "notion_url": "https://app.notion.com/p/410f639e237381f9ac02dfafbba5be51",
+      "source_status": "NOTION_UNREVIEWED_ORIGINAL_DESIGN_PROPOSAL",
+      "notion_stage": "Approved",
+      "originality_scope": "INDEPENDENT_GEOMETRY_MATERIALS_LABELS_NO_SOURCE_PIXELS_OR_TRADE_DRESS",
+      "source_reference_ids": [],
+      "brief": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+      "archetype": "bean_tin",
+      "kind": "food",
+      "nominal_dimensions_m": [
+        0.073,
+        0.073,
+        0.115
+      ],
+      "material_slots": [
+        "steel",
+        "sage_label",
+        "cream_ink"
+      ],
+      "states": [
+        "sealed",
+        "opened",
+        "empty",
+        "spoiled"
+      ],
+      "attachment_sockets": [
+        "hand_grip",
+        "world_base"
+      ],
+      "gameplay_roles": [
+        "nutrition",
+        "cooking"
+      ],
+      "geometry_recipe": {
+        "mesh_strategy": "parametric_original_parts",
+        "uv_and_pbr_required": true,
+        "construction_notes": "Cylinder with rolled steel lid, sage/cream matte paper band and generic bean pictogram",
+        "editable_blend_required": true,
+        "original_matcap_and_silhouette_review_required": true
+      },
+      "inventory": {
+        "logical_resolution_px": [
+          64,
+          64
+        ],
+        "background": "transparent_RGBA",
+        "view": "elevated_three_quarter",
+        "light": "screen_upper_left",
+        "frame_pad_px": 3,
+        "check_readability_at_px": [
+          32,
+          48,
+          64
+        ]
+      },
+      "world": {
+        "render_headings": 16,
+        "heading_degrees_increment": 22.5,
+        "technical_preview_resolution_px": 192,
+        "world_tile_px": [
+          80,
+          40
+        ],
+        "pivot_status": "UNVERIFIED_REQUIRES_F12",
+        "representation": "world_loot; equipped_actor_separate_if_wearable",
+        "godot_tested": false,
+        "iphone_verified": false
+      },
+      "visual_qa": {
+        "originality_provenance": "REQUIRES_INDEPENDENT_ART_REVIEW",
+        "silhouette": "CHECK_32_48_64",
+        "material": "MATERIAL_SPECIFIC_WEAR_NO_UNIFORM_NOISE",
+        "style": "GROUNDED_PIXEL_REALISM",
+        "technical": "ALPHA_DIRECTION_PIVOT_SCALE",
+        "qa_score": null
+      },
+      "admission": {
+        "semantic_status": "UNREVIEWED",
+        "technical_preview_allowed": true,
+        "production_render_admitted": false,
+        "rights_reviewed": false,
+        "f11_approved": false,
+        "f12_approved": false,
+        "founder_golden_approved": false
+      }
+    }
+  ]
+}

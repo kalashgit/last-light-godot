@@ -14,6 +14,11 @@ from pathlib import Path
 
 from PIL import Image
 
+if __package__:
+    from .catalog import build as build_inventory_pages
+else:
+    from catalog import build as build_inventory_pages
+
 IDENT = re.compile(r"ll_[a-z0-9_]{2,90}\Z")
 RUN = re.compile(r"[0-9]{1,18}\Z")
 FRAME_COUNT = 16
@@ -65,27 +70,71 @@ def _state(state: dict | None) -> list[dict]:
     return completed
 
 
+def load_admitted_recipe_ids(path: Path) -> set[str]:
+    """Only the original-authoring R03 lane may enter a mass packing run."""
+    admitted: set[str] = set()
+    with path.open(encoding="utf-8") as source:
+        for line in source:
+            row = json.loads(line)
+            ident = row.get("asset_id", "")
+            rules = row.get("generation_input", {})
+            gates = row.get("gates", {})
+            trace = row.get("provenance_review_only", {})
+            if not IDENT.fullmatch(ident) or ident in admitted:
+                raise ValueError("Duplicate or invalid canonical recipe ID")
+            if (rules.get("original_creation_only") is not True
+                    or rules.get("source_image_pixels_allowed") is not False
+                    or rules.get("source_mesh_copy_allowed") is not False
+                    or rules.get("reference_silhouette_tracing_allowed") is not False
+                    or rules.get("style_contract") != "LAST_LIGHT_MASTER_SPRITE_BIBLE_V2_ORIGINALITY_GATE"
+                    or gates.get("founder_golden_approved") is not False
+                    or trace.get("source_records_are_research_only") is not True):
+                raise ValueError(f"Untrusted production or originality evidence: {ident}")
+            if row.get("automated_render_authorized") is True and row.get("stage") == "ORIGINAL_REFINEMENT_TECHNICAL_ONLY":
+                admitted.add(ident)
+    return admitted
+
+
 def pack(candidate_root: Path, output: Path, state: dict | None = None,
-         batch_size: int = 4, page_size: int = 1024, run_id: str = "1") -> dict:
-    if not isinstance(batch_size, int) or not 1 <= batch_size <= 8:
-        raise ValueError("Batch must contain between 1 and 8 assets")
+         batch_size: int = 4, page_size: int = 1024, run_id: str = "1",
+         min_batch_size: int = 1, inventory_page_items: int = 0,
+         allowed_asset_ids: set[str] | None = None) -> dict:
+    if not isinstance(batch_size, int) or not 1 <= batch_size <= 80:
+        raise ValueError("Batch must contain between 1 and 80 assets")
+    if (not isinstance(min_batch_size, int) or min_batch_size < 1
+            or min_batch_size > batch_size):
+        raise ValueError("Invalid minimum complete batch size")
+    if inventory_page_items not in (0, 40, 48, 64):
+        raise ValueError("Inventory sprite pages must contain at least 40 distinct assets")
+    if inventory_page_items and batch_size < inventory_page_items:
+        raise ValueError("Batch cannot fill the required inventory page")
     if page_size not in (1024, 2048) or not RUN.fullmatch(str(run_id)):
         raise ValueError("Unapproved page size or run ID")
     completed = _state(state)
     indexed = {entry["asset_id"]: entry["atlas_sha256"] for entry in completed}
     candidates = sorted(d for d in candidate_root.iterdir()
-                        if d.is_dir() and IDENT.fullmatch(d.name))
+                        if d.is_dir() and IDENT.fullmatch(d.name)
+                        and (allowed_asset_ids is None or d.name in allowed_asset_ids))
     for folder in candidates:
         if folder.name in indexed:
             source = folder / "atlas_16_headings.png"
             if sha(source) != indexed[folder.name]:
                 raise ValueError(f"Previously published source was modified: {folder.name}")
-    selected = [folder for folder in candidates if folder.name not in indexed][:batch_size]
+    pending = [folder for folder in candidates if folder.name not in indexed]
+    available = min(len(pending), batch_size)
+    if inventory_page_items:
+        # A 39-item tail is held for the next production run, never represented
+        # as a complete 40-item sprite sheet or padded with invented entries.
+        available -= available % inventory_page_items
+    if available < min_batch_size:
+        available = 0
+    selected = pending[:available]
     output.mkdir(parents=True, exist_ok=True)
     pages: list[Image.Image] = []
     page_index, cursor_x, cursor_y, row_height = -1, GAP, GAP, 0
     frames = []
     inventory = []
+    inventory_folders: list[tuple[Path, int, str]] = []
 
     def new_page() -> None:
         nonlocal page_index, cursor_x, cursor_y, row_height
@@ -100,6 +149,7 @@ def pack(candidate_root: Path, output: Path, state: dict | None = None,
         source_atlas = folder / "atlas_16_headings.png"
         inventory.append({"asset_id": folder.name, "atlas_sha256": sha(source_atlas),
                           "source_glb_sha256": source_record["source_glb_sha256"]})
+        inventory_folders.append((folder, size, inventory[-1]["atlas_sha256"]))
         with Image.open(source_atlas) as opened:
             atlas = opened.convert("RGBA")
             for heading in range(FRAME_COUNT):
@@ -136,12 +186,18 @@ def pack(candidate_root: Path, output: Path, state: dict | None = None,
         page.save(path, optimize=True)
         page_records.append({"file": name, "width": page_size, "height": page_size,
                              "sha256": sha(path)})
+    inventory_manifest = None
+    if inventory_page_items:
+        inventory_manifest = build_inventory_pages(
+            inventory_folders, output, str(run_id), inventory_page_items)
     manifest = {"schema_version": 1, "run_id": str(run_id), "pages": page_records,
                 "frames": frames, "sources": inventory, "frames_per_asset": FRAME_COUNT,
                 "coordinate_contract": "Godot AtlasTexture region [x,y,w,h] with trim_offset restored",
                 "f11_material_approved": False, "f12_world_scale_approved": False,
                 "gameplay_integrated": False, "iphone_verified": False,
                 "golden_approved": False, "status": "TECHNICAL_SPRITE_SHEET_CANDIDATE"}
+    if inventory_manifest is not None:
+        manifest["inventory_sheet_manifest"] = "inventory_sheet_manifest.json"
     (output / "sprite_sheet_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     new_state = {"schema_version": 1, "golden_approved": False,
                  "completed": completed + [{"asset_id": x["asset_id"],
@@ -151,7 +207,12 @@ def pack(candidate_root: Path, output: Path, state: dict | None = None,
     report = {"schema_version": 1, "run_id": str(run_id), "batch_count": len(inventory),
               "page_count": len(pages), "frame_count": len(frames),
               "completed_total": len(new_state["completed"]),
-              "unprocessed_visible": len(candidates) - len(new_state["completed"]),
+              "unprocessed_visible": len(pending) - len(inventory),
+              "inventory_page_count": len(inventory_manifest["pages"]) if inventory_manifest else 0,
+              "inventory_items_per_page": inventory_page_items,
+              "held_for_full_page": len(pending) - len(inventory) if inventory_page_items else 0,
+              "status": ("WAITING_FOR_COMPLETE_INVENTORY_PAGE" if not inventory and inventory_page_items and pending
+                         else "PACKED" if inventory else "CAUGHT_UP"),
               "golden_approved": False, "technical_candidate_only": True}
     (output / "batch_report.json").write_text(json.dumps(report, indent=2) + "\n")
     print("FOUNDRY_SHEETS_PACKED", len(inventory), len(frames), len(pages))
@@ -164,12 +225,20 @@ def main() -> None:
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--state", type=Path)
     p.add_argument("--batch-size", type=int, default=4)
+    p.add_argument("--min-batch-size", type=int, default=1)
+    p.add_argument("--inventory-page-items", type=int, default=0)
     p.add_argument("--page-size", type=int, default=1024)
     p.add_argument("--run-id", default="1")
+    p.add_argument("--recipe-queue", type=Path,
+                   help="Original refinement lane from verified Notion and Sprite Bible intake")
     a = p.parse_args()
+    if a.inventory_page_items and a.recipe_queue is None:
+        p.error("40+ production mode requires the original R03 recipe queue")
     pack(a.candidates, a.output,
          json.loads(a.state.read_text()) if a.state and a.state.exists() else None,
-         a.batch_size, a.page_size, a.run_id)
+         a.batch_size, a.page_size, a.run_id, a.min_batch_size,
+         a.inventory_page_items,
+         load_admitted_recipe_ids(a.recipe_queue) if a.recipe_queue else None)
 
 
 if __name__ == "__main__":
