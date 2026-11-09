@@ -1,0 +1,370 @@
+{
+  "schema": "last-light.reference-seed-index.v1",
+  "status": "TECHNICAL_CANDIDATE_NOT_GOLDEN",
+  "golden_approved": false,
+  "source_recipe_code": "tools/seed_3d_factory.py",
+  "source_archived_library_path": "/Last light/Production Candidates/FOUNDER_REFERENCE_BATCH_40_3D_20261110.zip",
+  "notion_recipe_admission": "PENDING",
+  "assets": [
+    {
+      "candidate_id": "ll_refseed_001",
+      "recipe_key": "field_backpack",
+      "name": "Backpack / field rucksack",
+      "family": "wearable",
+      "glb_sha256": "1481353bcb6ac1a479291a2f2692f234b5da2605a61b3560edc589c45ece189c",
+      "parts": 13,
+      "triangles": 540
+    },
+    {
+      "candidate_id": "ll_refseed_002",
+      "recipe_key": "first_aid_case",
+      "name": "First-aid kit",
+      "family": "medical",
+      "glb_sha256": "9ce6451a7d155aa35cd9f43f2a1bc5245be372d95bf896fec41167b1c00ff0c9",
+      "parts": 8,
+      "triangles": 204
+    },
+    {
+      "candidate_id": "ll_refseed_003",
+      "recipe_key": "survival_axe",
+      "name": "Axe",
+      "family": "tools",
+      "glb_sha256": "45880319359e6960b52e1bd77acebd3ff499a111a8fc3e0e53c3370bfafbd5c8",
+      "parts": 5,
+      "triangles": 132
+    },
+    {
+      "candidate_id": "ll_refseed_004",
+      "recipe_key": "shovel",
+      "name": "Shovel",
+      "family": "tools",
+      "glb_sha256": "edfb95058791e1ea9b29393abfba4ee737196af5903fdf679b367b3db722d67d",
+      "parts": 8,
+      "triangles": 316
+    },
+    {
+      "candidate_id": "ll_refseed_005",
+      "recipe_key": "hammer",
+      "name": "Ball-peen hammer",
+      "family": "tools",
+      "glb_sha256": "9aa3028094d0b9e1c5866e33403bfed1d5e4cb7113fbd2a3f870d18ddef929e5",
+      "parts": 4,
+      "triangles": 512
+    },
+    {
+      "candidate_id": "ll_refseed_006",
+      "recipe_key": "steel_bucket",
+      "name": "Galvanized bucket",
+      "family": "containers",
+      "glb_sha256": "ec7bf4024c3ce4ecc50c99f1ff742cd846c3e036db517f0d9df6157456ba63df",
+      "parts": 10,
+      "triangles": 964
+    },
+    {
+      "candidate_id": "ll_refseed_007",
+      "recipe_key": "old_radio",
+      "name": "Portable radio",
+      "family": "electronics",
+      "glb_sha256": "51100096c11448961db016644be10fbd9e22ba0149998833954f677eea278401",
+      "parts": 16,
+      "triangles": 708
+    },
+    {
+      "candidate_id": "ll_refseed_008",
+      "recipe_key": "flashlight",
+      "name": "Flashlight",
+      "family": "lighting",
+      "glb_sha256": "64c84f08dc5a7daebfe83b581fa58a7ff606a0bd3c6d25adef023372ddcc310d",
+      "parts": 7,
+      "triangles": 1788
+    },
+    {
+      "candidate_id": "ll_refseed_009",
+      "recipe_key": "metal_canteen",
+      "name": "Canteen",
+      "family": "containers",
+      "glb_sha256": "d6398e1a43bf93d787cd43d6a152a336fec43a0090574ee50e6325dec6c24fb1",
+      "parts": 8,
+      "triangles": 704
+    },
+    {
+      "candidate_id": "ll_refseed_010",
+      "recipe_key": "enamel_mug",
+      "name": "Enamel mug",
+      "family": "kitchen",
+      "glb_sha256": "348dc8cc4a88eca9f42e88220b75187d54cca6d7ba4791f0afc27fc385c7afdb",
+      "parts": 5,
+      "triangles": 1196
+    },
+    {
+      "candidate_id": "ll_refseed_011",
+      "recipe_key": "boiling_kettle",
+      "name": "Steel kettle",
+      "family": "kitchen",
+      "glb_sha256": "0841d39ba76f2bff6cb52dfe21e2a5cca59b7b3b422e87cea34540f4ed14b8dd",
+      "parts": 9,
+      "triangles": 824
+    },
+    {
+      "candidate_id": "ll_refseed_012",
+      "recipe_key": "fire_extinguisher",
+      "name": "Fire extinguisher",
+      "family": "safety",
+      "glb_sha256": "8e1b7ba3bde0d1b4456cd32c777bde6dfbc0f4238bae70e576a339994092723a",
+      "parts": 9,
+      "triangles": 740
+    },
+    {
+      "candidate_id": "ll_refseed_013",
+      "recipe_key": "surplus_helmet",
+      "name": "Surplus helmet",
+      "family": "wearable",
+      "glb_sha256": "e23467db3d7da0a593624e67fbc62443de181f1f0d743ba4b7a121b19ce29459",
+      "parts": 7,
+      "triangles": 2004
+    },
+    {
+      "candidate_id": "ll_refseed_014",
+      "recipe_key": "work_boot",
+      "name": "Work boot",
+      "family": "wearable",
+      "glb_sha256": "214f119e60fb105a153660244d5424ebd7940aa976cb7cb886de42f0dc019d7e",
+      "parts": 15,
+      "triangles": 1236
+    },
+    {
+      "candidate_id": "ll_refseed_015",
+      "recipe_key": "utility_belt",
+      "name": "Leather utility belt",
+      "family": "wearable",
+      "glb_sha256": "7039b61d901d17b2d9188dd38e4aea28061faa41a7b1eae9c1977441434ec348",
+      "parts": 6,
+      "triangles": 580
+    },
+    {
+      "candidate_id": "ll_refseed_016",
+      "recipe_key": "camp_stove",
+      "name": "Camping stove",
+      "family": "camping",
+      "glb_sha256": "bdfeed522185e1b042fb2efc121b56b7a1bef99fa11077d28918ffbc885074b6",
+      "parts": 8,
+      "triangles": 480
+    },
+    {
+      "candidate_id": "ll_refseed_017",
+      "recipe_key": "red_toolbox",
+      "name": "Red toolbox",
+      "family": "containers",
+      "glb_sha256": "87aa3e73cac103b10858528a11f8d6fafbaca96390031dcfbeb166b3991d6878",
+      "parts": 8,
+      "triangles": 204
+    },
+    {
+      "candidate_id": "ll_refseed_018",
+      "recipe_key": "wooden_crate",
+      "name": "Wooden crate",
+      "family": "furniture",
+      "glb_sha256": "3262d6c2330a8080e1c21af4f09bc033076029fcecbf7dbfa772f08f99be0fdd",
+      "parts": 9,
+      "triangles": 108
+    },
+    {
+      "candidate_id": "ll_refseed_019",
+      "recipe_key": "iron_anvil",
+      "name": "Forging anvil",
+      "family": "tools",
+      "glb_sha256": "fd4f3b51030ad797e01cee45cdfbb374b3d939e8ecf227ac0e1e6f8677e7bcaa",
+      "parts": 5,
+      "triangles": 144
+    },
+    {
+      "candidate_id": "ll_refseed_020",
+      "recipe_key": "baseball_bat",
+      "name": "Wooden baseball bat",
+      "family": "sports",
+      "glb_sha256": "8f6e771453ced36b9f2c77a13dd083733339cb8d43fff55348530d5cd3e8f8e2",
+      "parts": 7,
+      "triangles": 3300
+    },
+    {
+      "candidate_id": "ll_refseed_021",
+      "recipe_key": "cotton_apron",
+      "name": "Canvas apron",
+      "family": "wearable",
+      "glb_sha256": "3cc8f3ecbec8f9ad470a8fe0e247b60b2f35fa883973c615f60e651016339198",
+      "parts": 9,
+      "triangles": 456
+    },
+    {
+      "candidate_id": "ll_refseed_022",
+      "recipe_key": "canvas_bandana",
+      "name": "Folded bandana",
+      "family": "wearable",
+      "glb_sha256": "5cd14e855d2ffd3b03ef8bd18a643d727c97b5f2d23142593e6f6cb9be8cb0d9",
+      "parts": 5,
+      "triangles": 472
+    },
+    {
+      "candidate_id": "ll_refseed_023",
+      "recipe_key": "flash_goggles",
+      "name": "Protective goggles",
+      "family": "wearable",
+      "glb_sha256": "8d823487b3375dd600efb5fa89c13691f07b6646035d47fb0d011aa78921c651",
+      "parts": 8,
+      "triangles": 1836
+    },
+    {
+      "candidate_id": "ll_refseed_024",
+      "recipe_key": "baseball_cap",
+      "name": "Baseball cap, blank",
+      "family": "wearable",
+      "glb_sha256": "fd9f45915b24a0436b6d288a6335a5c61fbc6a4a9c984c7f0e22e00e6ffce361",
+      "parts": 5,
+      "triangles": 1056
+    },
+    {
+      "candidate_id": "ll_refseed_025",
+      "recipe_key": "leather_book",
+      "name": "Leather-bound book",
+      "family": "books",
+      "glb_sha256": "83daf2e9fd10477d5f3884ae17dbcd869675e86031d433fec79ed140141c6a02",
+      "parts": 5,
+      "triangles": 60
+    },
+    {
+      "candidate_id": "ll_refseed_026",
+      "recipe_key": "medication_bottle",
+      "name": "Medicine bottle, blank",
+      "family": "medical",
+      "glb_sha256": "884a305bfa430ff8291b14c9a8adf83ee4ca6c32f7bd098b56b913fb40c945bb",
+      "parts": 4,
+      "triangles": 168
+    },
+    {
+      "candidate_id": "ll_refseed_027",
+      "recipe_key": "medical_mask",
+      "name": "Disposable respirator",
+      "family": "medical",
+      "glb_sha256": "df0a3817a1e684cacfa595478baeae2e5d8c790ba0eb1f58d39ed9b7d968aaab",
+      "parts": 6,
+      "triangles": 560
+    },
+    {
+      "candidate_id": "ll_refseed_028",
+      "recipe_key": "metal_mess_tin",
+      "name": "Metal baking/mess tray",
+      "family": "kitchen",
+      "glb_sha256": "c521a5b6ecdb8d0aa04ebaec6ed1a577ce91dc34503d8297304d4f4b119a9ecd",
+      "parts": 5,
+      "triangles": 132
+    },
+    {
+      "candidate_id": "ll_refseed_029",
+      "recipe_key": "rolled_sleeping_bag",
+      "name": "Rolled sleeping bag",
+      "family": "camping",
+      "glb_sha256": "d185b67a0846dbe6dbd2adb41ac81436ea8cf575d54cdbffefd4dca55ec5bae4",
+      "parts": 5,
+      "triangles": 1704
+    },
+    {
+      "candidate_id": "ll_refseed_030",
+      "recipe_key": "antiseptic_spray",
+      "name": "Antiseptic spray bottle",
+      "family": "medical",
+      "glb_sha256": "5afc457bd7391126b449deb13ba0d3730a23ed7a04db590fb9900f64a832fa66",
+      "parts": 4,
+      "triangles": 168
+    },
+    {
+      "candidate_id": "ll_refseed_031",
+      "recipe_key": "cordless_drill",
+      "name": "Cordless hand drill",
+      "family": "tools",
+      "glb_sha256": "e1d3d3002ee358836ee17a375d2f786cb1dbca0446cd461f2e4b98032d8ec005",
+      "parts": 6,
+      "triangles": 168
+    },
+    {
+      "candidate_id": "ll_refseed_032",
+      "recipe_key": "tape_measure",
+      "name": "Tape measure",
+      "family": "tools",
+      "glb_sha256": "eeab7cdd1da0d33829baa820f77aa9775a83aface976f023a6e0b4112397c97a",
+      "parts": 4,
+      "triangles": 356
+    },
+    {
+      "candidate_id": "ll_refseed_033",
+      "recipe_key": "loaf_bread",
+      "name": "Bread loaf",
+      "family": "food",
+      "glb_sha256": "00ab581f44d1a47d7b279b6400d83ac5c4762ea522acc376fd431246d8264242",
+      "parts": 4,
+      "triangles": 1316
+    },
+    {
+      "candidate_id": "ll_refseed_034",
+      "recipe_key": "red_apple",
+      "name": "Apple",
+      "family": "food",
+      "glb_sha256": "d805813dc95f433866ca7cf425296ab3d9443ea1525c568293ba084992a794ec",
+      "parts": 3,
+      "triangles": 1648
+    },
+    {
+      "candidate_id": "ll_refseed_035",
+      "recipe_key": "banana",
+      "name": "Banana",
+      "family": "food",
+      "glb_sha256": "9fb6b38dc42cdb4a1c453f83be619de5dfa6c8aec7baaca7055e7256fb4efa01",
+      "parts": 6,
+      "triangles": 560
+    },
+    {
+      "candidate_id": "ll_refseed_036",
+      "recipe_key": "metal_ammo_case",
+      "name": "Metal storage/ammo case",
+      "family": "containers",
+      "glb_sha256": "e01ad3517fb29cba9154a23753cee690f4fdf19d64e14e9dbdc10955e6e3ec2e",
+      "parts": 6,
+      "triangles": 180
+    },
+    {
+      "candidate_id": "ll_refseed_037",
+      "recipe_key": "hunting_knife_sheath",
+      "name": "Leather tool sheath",
+      "family": "wearable",
+      "glb_sha256": "bb953f1168f31e7a7f9261dfc504ce43297c86e39158f9bd991edb5f684ae07b",
+      "parts": 11,
+      "triangles": 680
+    },
+    {
+      "candidate_id": "ll_refseed_038",
+      "recipe_key": "construction_gloves",
+      "name": "Construction work gloves",
+      "family": "wearable",
+      "glb_sha256": "dcbc103857e9b1b098e519e512769ce04b9eaa9d834e5a8811cdfc89237c03b8",
+      "parts": 12,
+      "triangles": 432
+    },
+    {
+      "candidate_id": "ll_refseed_039",
+      "recipe_key": "rope_coil",
+      "name": "Rope coil",
+      "family": "survival",
+      "glb_sha256": "b0199ea8fb5abe6e2cc5864c23c5fa2808ccec45e99423191d8fb822f0fe2d31",
+      "parts": 5,
+      "triangles": 1656
+    },
+    {
+      "candidate_id": "ll_refseed_040",
+      "recipe_key": "fishing_float",
+      "name": "Fishing bobber",
+      "family": "survival",
+      "glb_sha256": "d7b672ab4e07a55b5c715b51902d7d4132386eaec62d1586bd93a60d30c627e5",
+      "parts": 4,
+      "triangles": 1208
+    }
+  ]
+}
