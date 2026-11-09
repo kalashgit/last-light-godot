@@ -1,0 +1,37 @@
+{
+  "schema": "last_light.worldgen.building_programs.v1",
+  "note": "Initial five procedural programs (W04-A). Each maps onto one of the 60 canonical archetypes in archetypes_60.json. Footprints are logical tiles, front facing local south before parcel rotation.",
+  "programs": {
+    "house_small": {
+      "archetype_id": "house_small", "strategy": "residential_spine", "floors": 1,
+      "footprint_w": [10, 13], "footprint_h": [8, 11], "hall_width": 2,
+      "rooms": ["living", "kitchen", "bedroom", "bathroom"], "optional_rooms": ["utility"],
+      "roof": ["gable", "hip"], "condition": ["occupied", "abandoned", "looted"]
+    },
+    "house_two_storey": {
+      "archetype_id": "house_large", "strategy": "residential_spine", "floors": 2,
+      "footprint_w": [13, 16], "footprint_h": [10, 12], "hall_width": 4, "stair": [2, 3],
+      "rooms": ["living", "kitchen", "den", "bathroom"], "optional_rooms": ["utility", "pantry"],
+      "upper_rooms": ["bedroom", "bedroom", "bathroom"], "upper_optional_rooms": ["bedroom", "office"],
+      "roof": ["gable", "hip"], "condition": ["occupied", "abandoned"]
+    },
+    "house_garage": {
+      "archetype_id": "house_small", "secondary_archetype_id": "garage", "strategy": "residential_spine", "floors": 1,
+      "footprint_w": [10, 12], "footprint_h": [9, 11], "hall_width": 2, "garage": [5, 7],
+      "rooms": ["living", "kitchen", "bedroom", "bathroom"], "optional_rooms": ["den"],
+      "roof": ["offset_gable", "hip"], "condition": ["damaged", "boarded", "abandoned"]
+    },
+    "convenience_store": {
+      "archetype_id": "grocery_store", "strategy": "retail_front_back", "floors": 1,
+      "footprint_w": [14, 18], "footprint_h": [10, 12],
+      "rooms": ["sales", "front", "stock", "restroom", "office"],
+      "roof": ["flat"], "condition": ["looted", "abandoned", "damaged"]
+    },
+    "workshop": {
+      "archetype_id": "mechanic_shop", "strategy": "workshop_bay", "floors": 1,
+      "footprint_w": [12, 15], "footprint_h": [9, 11],
+      "rooms": ["bay", "work", "stock", "plant"],
+      "roof": ["flat", "gable"], "condition": ["abandoned", "damaged"]
+    }
+  }
+}

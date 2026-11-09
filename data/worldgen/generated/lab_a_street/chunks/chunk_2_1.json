@@ -1,0 +1,145 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbbgggggg|bbbbbbbbbbgggggg",
+   "sha256": "b8f67d0f40d3c9f3"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbggggbbbbbbbbb|bbbggggbbbbbbbbb",
+   "sha256": "f8c23c082c1bf1c1"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "gggggggggggggggg|gggggggggggggggg",
+   "sha256": "7cb6a1ccd0223bef"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbbbbbggg|bbbbbbbbbbbbbggg",
+   "sha256": "36aeb596d24e5149"
+  }
+ },
+ "buildings": [
+  "ll.r00_lab_a_street.lot.001.b01",
+  "ll.r00_lab_a_street.lot.002.b01"
+ ],
+ "chunk": [
+  2,
+  1
+ ],
+ "fences": [
+  "ll.r00_lab_a_street.fence.001",
+  "ll.r00_lab_a_street.fence.004",
+  "ll.r00_lab_a_street.fence.005"
+ ],
+ "neighbors": {
+  "east": [
+   3,
+   1
+  ],
+  "north": [
+   2,
+   0
+  ],
+  "south": [
+   2,
+   2
+  ],
+  "west": [
+   1,
+   1
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0011",
+  "ll.r00_lab_a_street.prop.0016",
+  "ll.r00_lab_a_street.prop.0019",
+  "ll.r00_lab_a_street.prop.0020",
+  "ll.r00_lab_a_street.prop.0021",
+  "ll.r00_lab_a_street.prop.0023",
+  "ll.r00_lab_a_street.prop.0024",
+  "ll.r00_lab_a_street.prop.0030",
+  "ll.r00_lab_a_street.prop.0073"
+ ],
+ "rect": [
+  32,
+  16,
+  16,
+  16
+ ],
+ "roads": [],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb",
+  "bbbggggggggggggg",
+  "bbbggggggggggggg",
+  "bbbggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg"
+ ],
+ "transition_rows": [
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002800000000",
+  "0028002c44444444",
+  "0028000111111111",
+  "0028000000000000",
+  "4468000000000000",
+  "1110000000000000",
+  "0000000000000000",
+  "0000000000000000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

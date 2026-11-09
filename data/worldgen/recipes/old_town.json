@@ -1,0 +1,8 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.old_town",
+ "name": "old_town",
+ "world_seed": 11,
+ "style": "old_town_dense",
+ "district_id": "ll.r00.old_town"
+}

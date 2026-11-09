@@ -1,0 +1,989 @@
+{
+ "art_status": "factory sprites (original CC0) for furniture; procedural placeholders for terrain, structure, vegetation and vehicles",
+ "asset_intake": {
+  "bindings_sha256": "2a9dfea31c0360940f8f0c657062a8d5fb898b81671b7e6f9e986662ed72762f",
+  "contract": "docs/production/CLAUDE_CHATGPT_INTEGRATION_V2.md (PR #53, unmerged)",
+  "demand": [
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 7,
+    "family": "F01",
+    "placement_type": "armchair"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "bathtub"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 12,
+    "family": "F01",
+    "placement_type": "bookcase"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 39,
+    "family": "F04",
+    "placement_type": "bush"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "checkout"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "coat_rack"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "coffee_table"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F01",
+    "placement_type": "cold_case"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "counter"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F01",
+    "placement_type": "crate"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:cabinet",
+    "count": 10,
+    "family": "F01",
+    "placement_type": "cupboard"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "desk"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "dining_table"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 9,
+    "family": "F01",
+    "placement_type": "double_bed"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "dresser"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F08",
+    "placement_type": "electrical_panel"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "filing_cabinet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:refrigerator",
+    "count": 6,
+    "family": "F01",
+    "placement_type": "fridge"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 7,
+    "family": "F01",
+    "placement_type": "mailbox"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 8,
+    "family": "F01",
+    "placement_type": "medicine_cabinet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "nightstand"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 8,
+    "family": "F01",
+    "placement_type": "retail_shelf"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "sink"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:sofa",
+    "count": 6,
+    "family": "F01",
+    "placement_type": "sofa_large"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "stove"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F08",
+    "placement_type": "streetlight"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F10",
+    "placement_type": "tire_stack"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 9,
+    "family": "F01",
+    "placement_type": "toilet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "tool_locker"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "trash_bin"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f04:oak",
+    "count": 192,
+    "family": "F04",
+    "placement_type": "tree"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "tv_stand"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 9,
+    "family": "F01",
+    "placement_type": "utility_shelf"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 9,
+    "family": "F01",
+    "placement_type": "vanity"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f10:sedan",
+    "count": 3,
+    "family": "F10",
+    "placement_type": "vehicle"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f10:sedan",
+    "count": 4,
+    "family": "F10",
+    "placement_type": "vehicle_h"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 9,
+    "family": "F01",
+    "placement_type": "wardrobe"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F01",
+    "placement_type": "washer"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "workbench"
+   }
+  ],
+  "isolated_calibration_fixture": false,
+  "mode": "production",
+  "packages": [],
+  "queue_snapshot_commit": "6ffac2b7f7212df95821cfbd14dc0e3a363a0bb9",
+  "rejected_packages": [],
+  "visual_status": "NO_V2_APPROVED_VISUALS: legacy pre-V2 factory sprites and procedural placeholders only"
+ },
+ "blueprint_sha256": "95d50ea3947b4286d16b1bd2b9814b19fccf3a48f55e4ec9b45382b050f13f16",
+ "bounds": [
+  0,
+  0,
+  98,
+  60
+ ],
+ "buildings": [
+  {
+   "chunks": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.001.b01.json",
+   "footprint": [
+    [
+     18,
+     14,
+     11,
+     9
+    ],
+    [
+     13,
+     14,
+     5,
+     6
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.001.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.001",
+   "program": "house_garage",
+   "sha256": "518472c9d0c8c0a238f54702d6c714599ae46f7884492c07d999fb9536301fc2",
+   "template": "proc:house_garage"
+  },
+  {
+   "chunks": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.002.b01.json",
+   "footprint": [
+    [
+     31,
+     14,
+     14,
+     11
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.002.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.002",
+   "program": "house_two_storey",
+   "sha256": "d9a67d1270376bbbebf69c172e9be4a2ae493e9680c7336bc2e14af49be3652d",
+   "template": "proc:house_two_storey"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     4,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.003.b01.json",
+   "footprint": [
+    [
+     53,
+     14,
+     15,
+     11
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.003.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.003",
+   "program": "convenience_store",
+   "sha256": "da23bc0672155a33f7835bad3198d4da1cc88f3811a9922825ae9333c621f2f8",
+   "template": "proc:convenience_store"
+  },
+  {
+   "chunks": [
+    [
+     4,
+     0
+    ],
+    [
+     4,
+     1
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     5,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.004.b01.json",
+   "footprint": [
+    [
+     72,
+     15,
+     12,
+     11
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.004.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.004",
+   "program": "house_small",
+   "sha256": "5ff50ae3d053a8c2cf2cf397b292d6cae15cb4a5d0f6fff51875ae3bc7dee252",
+   "template": "proc:house_small"
+  },
+  {
+   "chunks": [
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.005.b01.json",
+   "footprint": [
+    [
+     14,
+     37,
+     10,
+     9
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.005.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.005",
+   "program": "house_small",
+   "sha256": "f7d5afd9d6b3359ca088ab61f758c3941cfe557862b7198e9e1ba2edbd4caab8",
+   "template": "proc:house_small"
+  },
+  {
+   "chunks": [
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.006.b01.json",
+   "footprint": [
+    [
+     29,
+     36,
+     11,
+     9
+    ],
+    [
+     40,
+     38,
+     5,
+     7
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.006.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.006",
+   "program": "house_garage",
+   "sha256": "f21a013ee8fb0dcd2fe937f883e566870cca26c074896b1516b240f7e1f1660a",
+   "template": "proc:house_garage"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     2
+    ],
+    [
+     4,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.007.b01.json",
+   "footprint": [
+    [
+     53,
+     34,
+     13,
+     11
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.007.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.007",
+   "program": "house_two_storey",
+   "sha256": "266e3a275096de72cb3b380632b8b7b5256ca3209a3de354c073742c1b1762a1",
+   "template": "proc:house_two_storey"
+  },
+  {
+   "chunks": [
+    [
+     4,
+     2
+    ],
+    [
+     5,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_demo_suburb.lot.008.b01.json",
+   "footprint": [
+    [
+     71,
+     35,
+     14,
+     11
+    ]
+   ],
+   "id": "ll.r00_demo_suburb.lot.008.b01",
+   "lot_id": "ll.r00_demo_suburb.lot.008",
+   "program": "workshop",
+   "sha256": "978644f45d75bc68380ee25bce5c28cc4ad8d837e623c54b5d2b4ad5249531e8",
+   "template": "proc:workshop"
+  }
+ ],
+ "chunk_grid": [
+  7,
+  4
+ ],
+ "chunk_size": 16,
+ "chunks": [
+  {
+   "chunk": [
+    0,
+    0
+   ],
+   "file": "chunks/chunk_0_0.json",
+   "rect": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "sha256": "e599e113ee748e89036631fcf76576ad37e8d153eb1c253ff909925ea22ec10e"
+  },
+  {
+   "chunk": [
+    1,
+    0
+   ],
+   "file": "chunks/chunk_1_0.json",
+   "rect": [
+    16,
+    0,
+    16,
+    16
+   ],
+   "sha256": "6d4144c791f06867fc18dfae42f5c94a4eed1ebc822d1c817d84ff478297bb31"
+  },
+  {
+   "chunk": [
+    2,
+    0
+   ],
+   "file": "chunks/chunk_2_0.json",
+   "rect": [
+    32,
+    0,
+    16,
+    16
+   ],
+   "sha256": "f07183f0cc4d09c3faa025b4a0b33d094acabf3b5b2787da9dd6e51c8ff2f9a0"
+  },
+  {
+   "chunk": [
+    3,
+    0
+   ],
+   "file": "chunks/chunk_3_0.json",
+   "rect": [
+    48,
+    0,
+    16,
+    16
+   ],
+   "sha256": "6ab1e733682458acbeae4916e5fe3caf814cd3ff7d3cb9e246e38722d9ad88f6"
+  },
+  {
+   "chunk": [
+    4,
+    0
+   ],
+   "file": "chunks/chunk_4_0.json",
+   "rect": [
+    64,
+    0,
+    16,
+    16
+   ],
+   "sha256": "8964270b13fcccd3a704fc325e15583f8a976d8b300b6d5c4e8d12f551468ad6"
+  },
+  {
+   "chunk": [
+    5,
+    0
+   ],
+   "file": "chunks/chunk_5_0.json",
+   "rect": [
+    80,
+    0,
+    16,
+    16
+   ],
+   "sha256": "ebeb56055ce2c36f13e51c128eeb6b1f67f798b72ad2014216f63965b4243a4b"
+  },
+  {
+   "chunk": [
+    6,
+    0
+   ],
+   "file": "chunks/chunk_6_0.json",
+   "rect": [
+    96,
+    0,
+    2,
+    16
+   ],
+   "sha256": "7cc6dd51dae7d753adb88acbe709ee9d209a7de6ca3af4094acfe07f2150e587"
+  },
+  {
+   "chunk": [
+    0,
+    1
+   ],
+   "file": "chunks/chunk_0_1.json",
+   "rect": [
+    0,
+    16,
+    16,
+    16
+   ],
+   "sha256": "898b36eaa66680963c59d92f792e48d70c048408e269564d6ade0c70a44f20f4"
+  },
+  {
+   "chunk": [
+    1,
+    1
+   ],
+   "file": "chunks/chunk_1_1.json",
+   "rect": [
+    16,
+    16,
+    16,
+    16
+   ],
+   "sha256": "42f3ffa4dd661fd06a91c1a97d7b0d45a3e9c9ca47a468ba42ed927c32b970a6"
+  },
+  {
+   "chunk": [
+    2,
+    1
+   ],
+   "file": "chunks/chunk_2_1.json",
+   "rect": [
+    32,
+    16,
+    16,
+    16
+   ],
+   "sha256": "0bb1f7273e30264a456f023ff98ad93684989e56dfa22b02341a93edbe62bebf"
+  },
+  {
+   "chunk": [
+    3,
+    1
+   ],
+   "file": "chunks/chunk_3_1.json",
+   "rect": [
+    48,
+    16,
+    16,
+    16
+   ],
+   "sha256": "a4b6237a543e2c9e1f9922e84c3e0ec6d3375e47def0cc7faf4f5d2d55077448"
+  },
+  {
+   "chunk": [
+    4,
+    1
+   ],
+   "file": "chunks/chunk_4_1.json",
+   "rect": [
+    64,
+    16,
+    16,
+    16
+   ],
+   "sha256": "ffab565ef2f763c92b219eca374c280b2f37e2fe8ca5ae48f0cd1c5cc0de39e6"
+  },
+  {
+   "chunk": [
+    5,
+    1
+   ],
+   "file": "chunks/chunk_5_1.json",
+   "rect": [
+    80,
+    16,
+    16,
+    16
+   ],
+   "sha256": "61cb40b64edd85e4b70df31dce02b89dfd7b4ccc28070abcf51b3ba4dc7ae6e0"
+  },
+  {
+   "chunk": [
+    6,
+    1
+   ],
+   "file": "chunks/chunk_6_1.json",
+   "rect": [
+    96,
+    16,
+    2,
+    16
+   ],
+   "sha256": "36ff20ba1c79ca243943307f79c9527eb1eea651b97dc19dd7a1811772603956"
+  },
+  {
+   "chunk": [
+    0,
+    2
+   ],
+   "file": "chunks/chunk_0_2.json",
+   "rect": [
+    0,
+    32,
+    16,
+    16
+   ],
+   "sha256": "ef4dd97db4525f0a66b33d0fad21257a2a387131e42bada691bdb235ec775d65"
+  },
+  {
+   "chunk": [
+    1,
+    2
+   ],
+   "file": "chunks/chunk_1_2.json",
+   "rect": [
+    16,
+    32,
+    16,
+    16
+   ],
+   "sha256": "2dcd75470ea18ecc52f67d9b0e64bf01461506d17c878b6aebd5e0b50d4ea8bf"
+  },
+  {
+   "chunk": [
+    2,
+    2
+   ],
+   "file": "chunks/chunk_2_2.json",
+   "rect": [
+    32,
+    32,
+    16,
+    16
+   ],
+   "sha256": "3d737d194c6e0c584aa0abd209dd17d6693348a6f2c02048ca7e8e3d6092c93a"
+  },
+  {
+   "chunk": [
+    3,
+    2
+   ],
+   "file": "chunks/chunk_3_2.json",
+   "rect": [
+    48,
+    32,
+    16,
+    16
+   ],
+   "sha256": "1bca6423f32125c854bdf24c7fc82827ce22aa42ed72c012d353c095aa30db31"
+  },
+  {
+   "chunk": [
+    4,
+    2
+   ],
+   "file": "chunks/chunk_4_2.json",
+   "rect": [
+    64,
+    32,
+    16,
+    16
+   ],
+   "sha256": "0226cce4cbd514d45496ed19d7111561486038554f629c5c497ef69939326f9c"
+  },
+  {
+   "chunk": [
+    5,
+    2
+   ],
+   "file": "chunks/chunk_5_2.json",
+   "rect": [
+    80,
+    32,
+    16,
+    16
+   ],
+   "sha256": "3832664038910dc9ff7bbf1a1ddc50f6b66dfb5306efe405a27cd2283d835e5a"
+  },
+  {
+   "chunk": [
+    6,
+    2
+   ],
+   "file": "chunks/chunk_6_2.json",
+   "rect": [
+    96,
+    32,
+    2,
+    16
+   ],
+   "sha256": "54ae3ea7d9e296ed054a841bf994278718e923eb85f99717a2673d607d54ba1e"
+  },
+  {
+   "chunk": [
+    0,
+    3
+   ],
+   "file": "chunks/chunk_0_3.json",
+   "rect": [
+    0,
+    48,
+    16,
+    12
+   ],
+   "sha256": "5ddcfd79cf3418a24fb16da53d13e8e74166ae6e858cda66cdf73b498f0897ff"
+  },
+  {
+   "chunk": [
+    1,
+    3
+   ],
+   "file": "chunks/chunk_1_3.json",
+   "rect": [
+    16,
+    48,
+    16,
+    12
+   ],
+   "sha256": "5037f69e2f8721bcb7b772df3a1276844e277a4a86d42d0d1ff85615f6aaa1d2"
+  },
+  {
+   "chunk": [
+    2,
+    3
+   ],
+   "file": "chunks/chunk_2_3.json",
+   "rect": [
+    32,
+    48,
+    16,
+    12
+   ],
+   "sha256": "b1d9a2ea089c0419666a2e2c03eceda6bb45e106ded783a8de0432fb782b0c9b"
+  },
+  {
+   "chunk": [
+    3,
+    3
+   ],
+   "file": "chunks/chunk_3_3.json",
+   "rect": [
+    48,
+    48,
+    16,
+    12
+   ],
+   "sha256": "8c96fdae487996e21b880dc41402fb4649d0e8694d2c12e822fbec88a083e5a4"
+  },
+  {
+   "chunk": [
+    4,
+    3
+   ],
+   "file": "chunks/chunk_4_3.json",
+   "rect": [
+    64,
+    48,
+    16,
+    12
+   ],
+   "sha256": "4f1e1e4af93b18906c0b442a8e5db55b4998779f1d1a463edb0ee4d01d5e8891"
+  },
+  {
+   "chunk": [
+    5,
+    3
+   ],
+   "file": "chunks/chunk_5_3.json",
+   "rect": [
+    80,
+    48,
+    16,
+    12
+   ],
+   "sha256": "61da9407300badc39d7ac6acc094e63d0f24eaa475d3f4c22320e681e808bb06"
+  },
+  {
+   "chunk": [
+    6,
+    3
+   ],
+   "file": "chunks/chunk_6_3.json",
+   "rect": [
+    96,
+    48,
+    2,
+    12
+   ],
+   "sha256": "ffd533018a8f7719a295a08b5137df09d702d212bf16d84e094e3d5f7ebed36a"
+  }
+ ],
+ "continent": {
+  "id": "ll.continent.c00",
+  "note": "Continental layer is specified in docs/worldgen; not generated yet.",
+  "status": "design_only"
+ },
+ "district": {
+  "district_id": "ll.r00.demo_suburb",
+  "file": "district_r00_demo_suburb.json",
+  "sha256": "be1e9724ed5e140ac9b5818c46ccabd1ddab005cb3a9a1186a6f0ab5d44dab74",
+  "style": "suburban_detached"
+ },
+ "generator_version": "ll-worldgen-0.1.0",
+ "name": "W04 demo suburb (procedural)",
+ "playable_single_scene": true,
+ "region": {
+  "file": "region_spec.json",
+  "region_id": "ll.region.r00",
+  "sha256": "f610f2610cb93e3d01c1bf9bd6808723eab6ce06c911ff2928de42540eeea9c6"
+ },
+ "save_contract": {
+  "blueprint": "Immutable. Runtime copies the manifest set to user:// on first load and never regenerates a visited world.",
+  "delta_keys": [
+   "doors[door_id].open",
+   "doors[door_id].health",
+   "containers[item_id].searched",
+   "player",
+   "enemies",
+   "drops"
+  ],
+  "identity_check": "save delta stores world_id + generator_version + blueprint_sha256 and refuses to apply to a different blueprint"
+ },
+ "schema": "last_light.worldgen.world_manifest.v1",
+ "seed_salt": "llwg.layout.v1",
+ "spawn": [
+  19.5,
+  48.5
+ ],
+ "tile_units": "1 logical tile = 1 gameplay unit = 80x40 px at 2:1 isometric",
+ "validation_ok": true,
+ "world_id": "ll.world.w04_demo_suburb",
+ "world_seed": 20261106
+}

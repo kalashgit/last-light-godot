@@ -1,0 +1,143 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "aaaaaaaaaaaaaaaa|aaaaaaaaaaaaaaaa",
+   "sha256": "3684847efa22f0e8"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbbggsaaa|bbbbbbbbbbggsaaa",
+   "sha256": "b96df895cf0bccca"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggggggggggggsaaa|ggggggggggggsaaa",
+   "sha256": "cbb446b007278891"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbbbbbbggggggg|bbbbbbbbbggggggg",
+   "sha256": "cbdd2bff72a0ee92"
+  }
+ },
+ "buildings": [
+  "ll.r00_lab_a_street.lot.003.b01"
+ ],
+ "chunk": [
+  4,
+  1
+ ],
+ "fences": [
+  "ll.r00_lab_a_street.fence.001",
+  "ll.r00_lab_a_street.fence.007"
+ ],
+ "neighbors": {
+  "east": [
+   5,
+   1
+  ],
+  "north": [
+   4,
+   0
+  ],
+  "south": [
+   4,
+   2
+  ],
+  "west": [
+   3,
+   1
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0033",
+  "ll.r00_lab_a_street.prop.0040",
+  "ll.r00_lab_a_street.prop.0045",
+  "ll.r00_lab_a_street.prop.0046",
+  "ll.r00_lab_a_street.prop.0047",
+  "ll.r00_lab_a_street.prop.0118",
+  "ll.r00_lab_a_street.prop.0126"
+ ],
+ "rect": [
+  64,
+  16,
+  16,
+  16
+ ],
+ "roads": [
+  "ll.r00_lab_a_street.road.v1"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "bbbbbbbbbbggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa",
+  "ggggggggggggsaaa"
+ ],
+ "transition_rows": [
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "0000000002828000",
+  "4444444446828000",
+  "1111111111028000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "last_light.worldgen.room_rules.v1",
+  "note": "Contextual furnishing rules. Placement order follows LAB A section 1: fixed utility fixtures, mandatory large furniture, storage, optional. anchor: wall | corner | center. 'any_of' picks the first footprint that fits. Mandatory failure rejects the layout (bounded deterministic retry).",
+  "rooms": {
+    "kitchen":  [{"type": "fridge", "anchor": "wall", "required": true}, {"type": "stove", "anchor": "wall", "required": true}, {"type": "sink", "anchor": "wall", "required": true}, {"type": "counter", "anchor": "wall", "required": true}, {"type": "cupboard", "anchor": "wall", "count": [0, 2]}, {"type": "dining_table", "anchor": "center", "count": [0, 1], "min_area": 20}],
+    "living":   [{"any_of": ["sofa_large", "sofa"], "anchor": "wall", "required": true}, {"type": "tv_stand", "anchor": "wall", "required": true}, {"type": "bookcase", "anchor": "wall", "count": [0, 2]}, {"type": "armchair", "anchor": "wall", "count": [0, 1]}, {"type": "coffee_table", "anchor": "center", "count": [0, 1], "min_area": 20}],
+    "bedroom":  [{"any_of": ["double_bed", "single_bed"], "anchor": "wall", "required": true}, {"any_of": ["wardrobe", "dresser"], "anchor": "wall", "required": true}, {"type": "nightstand", "anchor": "wall", "count": [0, 1]}, {"type": "dresser", "anchor": "wall", "count": [0, 1], "min_area": 14}],
+    "bathroom": [{"type": "toilet", "anchor": "wall", "required": true}, {"type": "vanity", "anchor": "wall", "required": true}, {"type": "medicine_cabinet", "anchor": "wall", "required": true}, {"type": "bathtub", "anchor": "wall", "count": [0, 1], "min_area": 9}],
+    "utility":  [{"type": "washer", "anchor": "wall", "required": true}, {"type": "utility_shelf", "anchor": "wall", "required": true}, {"type": "electrical_panel", "anchor": "wall", "count": [0, 1]}],
+    "den":      [{"type": "desk", "anchor": "wall", "required": true}, {"type": "bookcase", "anchor": "wall", "count": [1, 2]}, {"type": "armchair", "anchor": "wall", "count": [0, 1]}],
+    "office":   [{"type": "desk", "anchor": "wall", "required": true}, {"type": "filing_cabinet", "anchor": "wall", "required": true}, {"type": "bookcase", "anchor": "wall", "count": [0, 1]}],
+    "pantry":   [{"type": "pantry_shelf", "anchor": "wall", "required": true}, {"type": "pantry_shelf", "anchor": "wall", "count": [0, 2]}],
+    "storage":  [{"type": "crate", "anchor": "wall", "required": true}, {"type": "crate", "anchor": "wall", "count": [0, 2]}],
+    "hall":     [{"type": "coat_rack", "anchor": "corner", "count": [0, 1], "min_area": 10}],
+    "corridor": [],
+    "landing":  [],
+    "garage":   [{"type": "workbench", "anchor": "wall", "required": true}, {"type": "tool_locker", "anchor": "wall", "required": true}, {"type": "utility_shelf", "anchor": "wall", "count": [0, 1]}],
+    "sales":    [{"type": "cold_case", "anchor": "wall", "count": [2, 4]}],
+    "front":    [{"type": "checkout", "anchor": "wall", "required": true}],
+    "stock":    [{"type": "utility_shelf", "anchor": "wall", "required": true}, {"type": "crate", "anchor": "wall", "count": [1, 3]}, {"type": "utility_shelf", "anchor": "wall", "count": [0, 2]}],
+    "restroom": [{"type": "toilet", "anchor": "wall", "required": true}, {"type": "vanity", "anchor": "wall", "required": true}],
+    "bay":      [{"type": "tire_stack", "anchor": "corner", "required": true}, {"type": "utility_shelf", "anchor": "wall", "count": [0, 1]}],
+    "work":     [{"type": "workbench", "anchor": "wall", "required": true}, {"type": "tool_locker", "anchor": "wall", "required": true}],
+    "plant":    [{"type": "electrical_panel", "anchor": "wall", "required": true}, {"type": "utility_shelf", "anchor": "wall", "count": [0, 1]}]
+  },
+  "exterior_door_rooms": ["hall", "kitchen", "living", "garage", "front", "stock", "bay", "utility", "work", "plant", "sales"],
+  "essential_rooms": ["kitchen", "living", "bedroom", "bathroom", "hall", "garage", "sales", "front", "stock", "bay", "work", "corridor", "landing"],
+  "min_room_cells": {"bathroom": [2, 2], "restroom": [2, 2], "bedroom": [3, 3], "kitchen": [3, 3], "living": [3, 4], "utility": [2, 2], "den": [3, 3], "office": [3, 3], "pantry": [2, 2], "storage": [2, 2], "garage": [4, 5]}
+}

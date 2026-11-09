@@ -1,0 +1,150 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "oooooosaaaasggbb|oooooosaaaasggbb",
+   "sha256": "2f4f609b42bd4f8f"
+  },
+  "north": {
+   "portals": [],
+   "seam": "________________|gggggggooooooooo",
+   "sha256": "5f62b2568c34c17a"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbggggbbbbbbbbb|bbbggggbbbbbbbbb",
+   "sha256": "f8c23c082c1bf1c1"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggggggsaaaasgggb|ggggggsaaaasgggb",
+   "sha256": "12ac6c25c8634ac5"
+  }
+ },
+ "buildings": [
+  "ll.r00_lab_a_street.lot.001.b01",
+  "ll.r00_lab_a_street.lot.002.b01"
+ ],
+ "chunk": [
+  2,
+  0
+ ],
+ "fences": [
+  "ll.r00_lab_a_street.fence.004"
+ ],
+ "neighbors": {
+  "east": [
+   3,
+   0
+  ],
+  "north": null,
+  "south": [
+   2,
+   1
+  ],
+  "west": [
+   1,
+   0
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0013",
+  "ll.r00_lab_a_street.prop.0181",
+  "ll.r00_lab_a_street.prop.0182",
+  "ll.r00_lab_a_street.prop.0183",
+  "ll.r00_lab_a_street.prop.0184",
+  "ll.r00_lab_a_street.prop.0185",
+  "ll.r00_lab_a_street.prop.0186",
+  "ll.r00_lab_a_street.prop.0187",
+  "ll.r00_lab_a_street.prop.0188",
+  "ll.r00_lab_a_street.prop.0189",
+  "ll.r00_lab_a_street.prop.0190",
+  "ll.r00_lab_a_street.prop.0191",
+  "ll.r00_lab_a_street.prop.0192",
+  "ll.r00_lab_a_street.prop.0193",
+  "ll.r00_lab_a_street.prop.0194",
+  "ll.r00_lab_a_street.prop.0195",
+  "ll.r00_lab_a_street.prop.0196",
+  "ll.r00_lab_a_street.prop.0197",
+  "ll.r00_lab_a_street.prop.0198",
+  "ll.r00_lab_a_street.prop.0199",
+  "ll.r00_lab_a_street.prop.0200",
+  "ll.r00_lab_a_street.prop.0201"
+ ],
+ "rect": [
+  32,
+  0,
+  16,
+  16
+ ],
+ "roads": [
+  "ll.r00_lab_a_street.road.h0"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "gggggggooooooooo",
+  "gggggggooooooooo",
+  "ggggggggoooooooo",
+  "ggggggggoooooooo",
+  "ggggggggoooooooo",
+  "gggggggooooooooo",
+  "ssssssssssssssss",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "ssssssssssssssss",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggbbbbbbbbb",
+  "bbbggggbbbbbbbbb"
+ ],
+ "transition_rows": [
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "4444444444444444",
+  "1111111111111111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "4444444444444444",
+  "1111111111111111",
+  "0000000444444444",
+  "4440002911111111",
+  "1138002800000000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

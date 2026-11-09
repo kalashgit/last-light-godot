@@ -1,0 +1,901 @@
+{
+ "art_status": "factory sprites (original CC0) for furniture; procedural placeholders for terrain, structure, vegetation and vehicles",
+ "asset_intake": {
+  "bindings_sha256": "2a9dfea31c0360940f8f0c657062a8d5fb898b81671b7e6f9e986662ed72762f",
+  "contract": "docs/production/CLAUDE_CHATGPT_INTEGRATION_V2.md (PR #53, unmerged)",
+  "demand": [
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "armchair"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "bathtub"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 12,
+    "family": "F01",
+    "placement_type": "bookcase"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 43,
+    "family": "F04",
+    "placement_type": "bush"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "chair"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "checkout"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 1,
+    "family": "F01",
+    "placement_type": "coat_rack"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "coffee_table"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "cold_case"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "counter"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "crate"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:cabinet",
+    "count": 4,
+    "family": "F01",
+    "placement_type": "cupboard"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 7,
+    "family": "F01",
+    "placement_type": "desk"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "dining_table"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "double_bed"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "dresser"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F08",
+    "placement_type": "electrical_panel"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "filing_cabinet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:refrigerator",
+    "count": 4,
+    "family": "F01",
+    "placement_type": "fridge"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "mailbox"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 5,
+    "family": "F01",
+    "placement_type": "medicine_cabinet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "nightstand"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F01",
+    "placement_type": "pantry_shelf"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 12,
+    "family": "F01",
+    "placement_type": "retail_shelf"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:single-bed",
+    "count": 2,
+    "family": "F01",
+    "placement_type": "single_bed"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "sink"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:sofa",
+    "count": 1,
+    "family": "F01",
+    "placement_type": "sofa"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f01:sofa",
+    "count": 3,
+    "family": "F01",
+    "placement_type": "sofa_large"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "stove"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F08",
+    "placement_type": "streetlight"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F10",
+    "placement_type": "tire_stack"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "toilet"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "tool_locker"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "trash_bin"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f04:oak",
+    "count": 214,
+    "family": "F04",
+    "placement_type": "tree"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "tv_stand"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 12,
+    "family": "F01",
+    "placement_type": "utility_shelf"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 6,
+    "family": "F01",
+    "placement_type": "vanity"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f10:sedan",
+    "count": 2,
+    "family": "F10",
+    "placement_type": "vehicle"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": "f10:sedan",
+    "count": 4,
+    "family": "F10",
+    "placement_type": "vehicle_h"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 4,
+    "family": "F01",
+    "placement_type": "wardrobe"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 2,
+    "family": "F01",
+    "placement_type": "washer"
+   },
+   {
+    "a00_canonical_master_id": null,
+    "candidate_key": null,
+    "count": 3,
+    "family": "F01",
+    "placement_type": "workbench"
+   }
+  ],
+  "isolated_calibration_fixture": false,
+  "mode": "production",
+  "packages": [],
+  "queue_snapshot_commit": "6ffac2b7f7212df95821cfbd14dc0e3a363a0bb9",
+  "rejected_packages": [],
+  "visual_status": "NO_V2_APPROVED_VISUALS: legacy pre-V2 factory sprites and procedural placeholders only"
+ },
+ "blueprint_sha256": "cc145d9f6139e4746162048536b4cf0cef00b3179261c7a9f36c6ceb6a1d3576",
+ "bounds": [
+  0,
+  0,
+  88,
+  62
+ ],
+ "buildings": [
+  {
+   "chunks": [
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.001.b01.json",
+   "footprint": [
+    [
+     21,
+     15,
+     14,
+     14
+    ],
+    [
+     17,
+     15,
+     4,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.001.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.001",
+   "program": "house_garage",
+   "sha256": "9a1e977ac1c58e53a7070400915862a83423e05a94db9fc49b40798e2758e05c",
+   "template": "lab_a:LAB-H03"
+  },
+  {
+   "chunks": [
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.002.b01.json",
+   "footprint": [
+    [
+     39,
+     14,
+     18,
+     12
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.002.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.002",
+   "program": "convenience_store",
+   "sha256": "f2913a754b09ee0e76c21751e5e36ef7aa5a8527fca284b86905a1e51f9c6d95",
+   "template": "lab_a:LAB-S01"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     4,
+     1
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.003.b01.json",
+   "footprint": [
+    [
+     60,
+     15,
+     14,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.003.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.003",
+   "program": "workshop",
+   "sha256": "bba0806fc61ed921696102dbe8822ca8d920993892d848a215dd239bdb1ad1be",
+   "template": "lab_a:LAB-W01"
+  },
+  {
+   "chunks": [
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.004.b01.json",
+   "footprint": [
+    [
+     14,
+     37,
+     12,
+     10
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.004.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.004",
+   "program": "house_small",
+   "sha256": "928814dc268dbf5343ca002d9abc0fecce17febafd101a7261173c91474d03e7",
+   "template": "lab_a:LAB-H01"
+  },
+  {
+   "chunks": [
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.005.b01.json",
+   "footprint": [
+    [
+     30,
+     35,
+     16,
+     12
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.005.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.005",
+   "program": "house_two_storey",
+   "sha256": "9469ec3b11995cf135713cd3ac7721c997da76b6041ec855c6c810e3211205fe",
+   "template": "lab_a:LAB-H02"
+  },
+  {
+   "chunks": [
+    [
+     3,
+     2
+    ],
+    [
+     4,
+     2
+    ]
+   ],
+   "file": "buildings/ll.r00_lab_a_street.lot.006.b01.json",
+   "footprint": [
+    [
+     53,
+     37,
+     10,
+     11
+    ],
+    [
+     63,
+     42,
+     5,
+     6
+    ]
+   ],
+   "id": "ll.r00_lab_a_street.lot.006.b01",
+   "lot_id": "ll.r00_lab_a_street.lot.006",
+   "program": "house_garage",
+   "sha256": "f03d0ec937702f172e6ef7352e816118a900902da3caa847d03785512ea7ae39",
+   "template": "proc:house_garage"
+  }
+ ],
+ "chunk_grid": [
+  6,
+  4
+ ],
+ "chunk_size": 16,
+ "chunks": [
+  {
+   "chunk": [
+    0,
+    0
+   ],
+   "file": "chunks/chunk_0_0.json",
+   "rect": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "sha256": "98bfcff0ca7172fe53a7ee284d60204499d70a08b0a4041c6a9837a4a3915539"
+  },
+  {
+   "chunk": [
+    1,
+    0
+   ],
+   "file": "chunks/chunk_1_0.json",
+   "rect": [
+    16,
+    0,
+    16,
+    16
+   ],
+   "sha256": "a2fe78e709f63b57abc2d5ff8b81c02da1612c2f6032d31ccca9d04d08e8faa9"
+  },
+  {
+   "chunk": [
+    2,
+    0
+   ],
+   "file": "chunks/chunk_2_0.json",
+   "rect": [
+    32,
+    0,
+    16,
+    16
+   ],
+   "sha256": "947c5a7a9e1fc536af66baa81a9979b5618294fb17c42108ceb7409b4aba7b5b"
+  },
+  {
+   "chunk": [
+    3,
+    0
+   ],
+   "file": "chunks/chunk_3_0.json",
+   "rect": [
+    48,
+    0,
+    16,
+    16
+   ],
+   "sha256": "7f1a82cca8df717b5c35a86d34e4db0a41b889fa85b87c050875e0350cf4b0a1"
+  },
+  {
+   "chunk": [
+    4,
+    0
+   ],
+   "file": "chunks/chunk_4_0.json",
+   "rect": [
+    64,
+    0,
+    16,
+    16
+   ],
+   "sha256": "8ae50c1c6b411444bd53afe48c39e3c36e85e6b9b4a896aee24ed7bff2d32b2b"
+  },
+  {
+   "chunk": [
+    5,
+    0
+   ],
+   "file": "chunks/chunk_5_0.json",
+   "rect": [
+    80,
+    0,
+    8,
+    16
+   ],
+   "sha256": "6a4f3653710c55e88fc63f91ea0d34e20dea09be28b266a43eab45b27aed2020"
+  },
+  {
+   "chunk": [
+    0,
+    1
+   ],
+   "file": "chunks/chunk_0_1.json",
+   "rect": [
+    0,
+    16,
+    16,
+    16
+   ],
+   "sha256": "afc387bbfb827ebd36e3c3e17b03c5f07e6905fbed4bd023645046e8369a1bbd"
+  },
+  {
+   "chunk": [
+    1,
+    1
+   ],
+   "file": "chunks/chunk_1_1.json",
+   "rect": [
+    16,
+    16,
+    16,
+    16
+   ],
+   "sha256": "eee1702e3ea29fb4af40db76d764550e40b1e496c9a88614a8a87bdd785977ec"
+  },
+  {
+   "chunk": [
+    2,
+    1
+   ],
+   "file": "chunks/chunk_2_1.json",
+   "rect": [
+    32,
+    16,
+    16,
+    16
+   ],
+   "sha256": "0a014d664c1d3f310c796254c4e760dda0a9317f4791528f3c2a8c77daca2bfc"
+  },
+  {
+   "chunk": [
+    3,
+    1
+   ],
+   "file": "chunks/chunk_3_1.json",
+   "rect": [
+    48,
+    16,
+    16,
+    16
+   ],
+   "sha256": "91c3cd3f9aa976c4c21a5a369b26c0c93ef24bb19d876af2c66ae1790ff3c366"
+  },
+  {
+   "chunk": [
+    4,
+    1
+   ],
+   "file": "chunks/chunk_4_1.json",
+   "rect": [
+    64,
+    16,
+    16,
+    16
+   ],
+   "sha256": "fb76a072760e8452bfa1aedbd35069199c2be5dfb473296f2eef4ea58259e7d5"
+  },
+  {
+   "chunk": [
+    5,
+    1
+   ],
+   "file": "chunks/chunk_5_1.json",
+   "rect": [
+    80,
+    16,
+    8,
+    16
+   ],
+   "sha256": "9481835df22651472c8bfe1601436d1d0f7a2349123813f4fe6e988df32e4970"
+  },
+  {
+   "chunk": [
+    0,
+    2
+   ],
+   "file": "chunks/chunk_0_2.json",
+   "rect": [
+    0,
+    32,
+    16,
+    16
+   ],
+   "sha256": "ab694bf2392814b6a55008b9139a365d8f3162cc77f57143b82511abf3ccb385"
+  },
+  {
+   "chunk": [
+    1,
+    2
+   ],
+   "file": "chunks/chunk_1_2.json",
+   "rect": [
+    16,
+    32,
+    16,
+    16
+   ],
+   "sha256": "26af0afb762f1522641e4487e080d2d75af19accf04017281f2376e5fd6b31bb"
+  },
+  {
+   "chunk": [
+    2,
+    2
+   ],
+   "file": "chunks/chunk_2_2.json",
+   "rect": [
+    32,
+    32,
+    16,
+    16
+   ],
+   "sha256": "ab84fd4c75755ffd90649826146b1528f7b294d390350a4eccab5203679b730e"
+  },
+  {
+   "chunk": [
+    3,
+    2
+   ],
+   "file": "chunks/chunk_3_2.json",
+   "rect": [
+    48,
+    32,
+    16,
+    16
+   ],
+   "sha256": "c257abe256dd9b23612e9cf9a8e927bf374ab622c021e9c0a4edfada6ad74cda"
+  },
+  {
+   "chunk": [
+    4,
+    2
+   ],
+   "file": "chunks/chunk_4_2.json",
+   "rect": [
+    64,
+    32,
+    16,
+    16
+   ],
+   "sha256": "ced5dfeb0e6dd391e1b9b383f976f81caaa62b7a29c2d2e9a18c6c306dd67dee"
+  },
+  {
+   "chunk": [
+    5,
+    2
+   ],
+   "file": "chunks/chunk_5_2.json",
+   "rect": [
+    80,
+    32,
+    8,
+    16
+   ],
+   "sha256": "8c34195d0e2d2e05b4584554f2d45a493a13910bcad0854133774129ba48a50b"
+  },
+  {
+   "chunk": [
+    0,
+    3
+   ],
+   "file": "chunks/chunk_0_3.json",
+   "rect": [
+    0,
+    48,
+    16,
+    14
+   ],
+   "sha256": "a85afd6e0583abc06274b22d8cdb35b8d3a461a27b5c58b2b23cc4e3f0315047"
+  },
+  {
+   "chunk": [
+    1,
+    3
+   ],
+   "file": "chunks/chunk_1_3.json",
+   "rect": [
+    16,
+    48,
+    16,
+    14
+   ],
+   "sha256": "7845c304d1ec061a1b74130e4481070c8bfd5ec44b51b9aacee51f2a7e1deb12"
+  },
+  {
+   "chunk": [
+    2,
+    3
+   ],
+   "file": "chunks/chunk_2_3.json",
+   "rect": [
+    32,
+    48,
+    16,
+    14
+   ],
+   "sha256": "aebb2da1e56736eed698dbc1579de4e307f7a78549fd13c66d07805d66af7418"
+  },
+  {
+   "chunk": [
+    3,
+    3
+   ],
+   "file": "chunks/chunk_3_3.json",
+   "rect": [
+    48,
+    48,
+    16,
+    14
+   ],
+   "sha256": "273fb455aed7bab1dfc976042d4d69ff67ba9799581db124478b7ec981d56bf8"
+  },
+  {
+   "chunk": [
+    4,
+    3
+   ],
+   "file": "chunks/chunk_4_3.json",
+   "rect": [
+    64,
+    48,
+    16,
+    14
+   ],
+   "sha256": "d544bb2679445fe5cf351c4be12d864acc9dc284b4e844cfff9aa0a775d92241"
+  },
+  {
+   "chunk": [
+    5,
+    3
+   ],
+   "file": "chunks/chunk_5_3.json",
+   "rect": [
+    80,
+    48,
+    8,
+    14
+   ],
+   "sha256": "9497f7835e3dd4ffa25aa6f58864c827c666b86bdab2959b1c4883c7507984b3"
+  }
+ ],
+ "continent": {
+  "id": "ll.continent.c00",
+  "note": "Continental layer is specified in docs/worldgen; not generated yet.",
+  "status": "design_only"
+ },
+ "district": {
+  "district_id": "ll.r00.lab_a_street",
+  "file": "district_r00_lab_a_street.json",
+  "sha256": "078334aa38c45b33a29d9fd08c34b6a83b852bba636e07e43e8faed34d396dac",
+  "style": "suburban_detached"
+ },
+ "generator_version": "ll-worldgen-0.1.0",
+ "name": "LAB A frozen five-building street",
+ "playable_single_scene": true,
+ "region": {
+  "file": "region_spec.json",
+  "region_id": "ll.region.r00",
+  "sha256": "dec7d88a33f04be06b960e38422ac00c3c267b7e8ee3b39f4aab2a5b726e37ce"
+ },
+ "save_contract": {
+  "blueprint": "Immutable. Runtime copies the manifest set to user:// on first load and never regenerates a visited world.",
+  "delta_keys": [
+   "doors[door_id].open",
+   "doors[door_id].health",
+   "containers[item_id].searched",
+   "player",
+   "enemies",
+   "drops"
+  ],
+  "identity_check": "save delta stores world_id + generator_version + blueprint_sha256 and refuses to apply to a different blueprint"
+ },
+ "schema": "last_light.worldgen.world_manifest.v1",
+ "seed_salt": "llwg.layout.v1",
+ "spawn": [
+  19.5,
+  50.5
+ ],
+ "tile_units": "1 logical tile = 1 gameplay unit = 80x40 px at 2:1 isometric",
+ "validation_ok": true,
+ "world_id": "ll.world.lab_a_street",
+ "world_seed": 20261107
+}

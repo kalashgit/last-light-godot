@@ -1,0 +1,1418 @@
+{
+ "archetype_id": "house_small",
+ "condition": "abandoned",
+ "entrances": [
+  {
+   "door_id": "ll.r00_demo_suburb.lot.006.b01.f0.d01",
+   "kind": "exterior",
+   "local_side": "south"
+  },
+  {
+   "door_id": "ll.r00_demo_suburb.lot.006.b01.f0.d08",
+   "kind": "exterior",
+   "local_side": "north"
+  },
+  {
+   "door_id": "ll.r00_demo_suburb.lot.006.b01.f0.d10",
+   "kind": "garage",
+   "local_side": "south"
+  }
+ ],
+ "floors": [
+  {
+   "cutouts": [],
+   "doors": [
+    {
+     "a": [
+      34.4,
+      45.0
+     ],
+     "b": [
+      35.6,
+      45.0
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL",
+      "exterior"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d01",
+     "kind": "exterior",
+     "local_side": "south",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2,
+     "world_side": "south"
+    },
+    {
+     "a": [
+      34.0,
+      39.4
+     ],
+     "b": [
+      34.0,
+      40.6
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d02",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      36.0,
+      36.9
+     ],
+     "b": [
+      36.0,
+      38.1
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d03",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      36.0,
+      39.4
+     ],
+     "b": [
+      36.0,
+      40.6
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R03",
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d04",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      34.0,
+      43.4
+     ],
+     "b": [
+      34.0,
+      44.6
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d05",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      36.0,
+      43.4
+     ],
+     "b": [
+      36.0,
+      44.6
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R05",
+      "ll.r00_demo_suburb.lot.006.b01.f0.HAL"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d06",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      31.4,
+      41.0
+     ],
+     "b": [
+      32.6,
+      41.0
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+      "ll.r00_demo_suburb.lot.006.b01.f0.R01"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d07",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      32.4,
+      36.0
+     ],
+     "b": [
+      33.6,
+      36.0
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+      "exterior"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d08",
+     "kind": "exterior",
+     "local_side": "north",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2,
+     "world_side": "north"
+    },
+    {
+     "a": [
+      40.0,
+      41.9
+     ],
+     "b": [
+      40.0,
+      43.1
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+      "ll.r00_demo_suburb.lot.006.b01.f0.R05"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d09",
+     "kind": "interior",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 1.2
+    },
+    {
+     "a": [
+      41.0,
+      45.0
+     ],
+     "b": [
+      44.0,
+      45.0
+     ],
+     "connects": [
+      "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+      "exterior"
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.d10",
+     "kind": "garage",
+     "local_side": "south",
+     "state": {
+      "barricade_socket": true,
+      "locked": false,
+      "open": false
+     },
+     "width": 3.0,
+     "world_side": "south"
+    }
+   ],
+   "furniture": [
+    {
+     "art": "placeholder_procedural",
+     "asset_id": null,
+     "container": true,
+     "height_m": 1.45,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o001",
+     "initial_contents": {},
+     "label": "PARKED CAR",
+     "loot_profile": "vehicle",
+     "loot_seed": 2111216797726920796,
+     "rect": [
+      42,
+      39,
+      2,
+      4
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+     "solid_rect": [
+      42.08,
+      39.08,
+      1.84,
+      3.84
+     ],
+     "type": "vehicle",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_refrigerator",
+     "container": true,
+     "height_m": 1.7,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o002",
+     "initial_contents": {
+      "ll_food_bean_tin": 1,
+      "ll_food_water_bottle": 2
+     },
+     "label": "REFRIGERATOR",
+     "loot_profile": "fridge",
+     "loot_seed": 2322704150287585797,
+     "rect": [
+      29,
+      39,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      29.08,
+      39.08,
+      0.84,
+      0.84
+     ],
+     "type": "fridge",
+     "utility": [
+      "power"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_cooking_stove",
+     "container": false,
+     "height_m": 0.95,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o003",
+     "label": "STOVE",
+     "rect": [
+      33,
+      37,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      33.08,
+      37.08,
+      0.84,
+      0.84
+     ],
+     "type": "stove",
+     "utility": [
+      "power"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_sink_cabinet",
+     "container": true,
+     "height_m": 0.86,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o004",
+     "initial_contents": {
+      "ll_food_water_bottle": 1
+     },
+     "label": "SINK CABINET",
+     "loot_profile": "under_sink",
+     "loot_seed": 5562992883710968867,
+     "rect": [
+      29,
+      37,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      29.08,
+      37.08,
+      0.84,
+      0.84
+     ],
+     "type": "sink",
+     "utility": [
+      "water"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_kitchen_counter",
+     "container": true,
+     "height_m": 0.81,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o005",
+     "initial_contents": {
+      "ll_food_water_bottle": 1
+     },
+     "label": "KITCHEN COUNTER",
+     "loot_profile": "kitchen_cupboard",
+     "loot_seed": 5516126759826031528,
+     "rect": [
+      33,
+      38,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      33.08,
+      38.08,
+      0.84,
+      0.84
+     ],
+     "type": "counter",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_kitchen_cupboard",
+     "container": true,
+     "height_m": 0.89,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o006",
+     "initial_contents": {
+      "ll_food_bean_tin": 1,
+      "ll_food_water_bottle": 1
+     },
+     "label": "CUPBOARD",
+     "loot_profile": "kitchen_cupboard",
+     "loot_seed": 2913427292459359185,
+     "rect": [
+      29,
+      36,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      29.08,
+      36.08,
+      0.84,
+      0.84
+     ],
+     "type": "cupboard",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_kitchen_cupboard",
+     "container": true,
+     "height_m": 0.89,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o007",
+     "initial_contents": {
+      "ll_food_bean_tin": 2
+     },
+     "label": "CUPBOARD",
+     "loot_profile": "kitchen_cupboard",
+     "loot_seed": 9135783223070418670,
+     "rect": [
+      29,
+      40,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      29.08,
+      40.08,
+      0.84,
+      0.84
+     ],
+     "type": "cupboard",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_dining_table",
+     "container": false,
+     "height_m": 0.79,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o008",
+     "label": "DINING TABLE",
+     "rect": [
+      31,
+      37,
+      2,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "solid_rect": [
+      31.08,
+      37.08,
+      1.84,
+      0.84
+     ],
+     "type": "dining_table",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_double_bed",
+     "container": true,
+     "height_m": 0.68,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o009",
+     "initial_contents": {},
+     "label": "BED",
+     "loot_profile": "bed",
+     "loot_seed": 5691341197944793160,
+     "rect": [
+      38,
+      37,
+      2,
+      2
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+     "solid_rect": [
+      38.08,
+      37.08,
+      1.84,
+      1.84
+     ],
+     "type": "double_bed",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_wardrobe",
+     "container": true,
+     "height_m": 1.67,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o010",
+     "initial_contents": {},
+     "label": "WARDROBE",
+     "loot_profile": "clothing",
+     "loot_seed": 7460577684141477458,
+     "rect": [
+      37,
+      38,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+     "solid_rect": [
+      37.08,
+      38.08,
+      0.84,
+      0.84
+     ],
+     "type": "wardrobe",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_nightstand",
+     "container": true,
+     "height_m": 0.82,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o011",
+     "initial_contents": {},
+     "label": "NIGHTSTAND",
+     "loot_profile": "nightstand",
+     "loot_seed": 4226792578432833998,
+     "rect": [
+      36,
+      38,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+     "solid_rect": [
+      36.08,
+      38.08,
+      0.84,
+      0.84
+     ],
+     "type": "nightstand",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_toilet",
+     "container": false,
+     "height_m": 0.8,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o012",
+     "label": "TOILET",
+     "rect": [
+      38,
+      40,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R03",
+     "solid_rect": [
+      38.08,
+      40.08,
+      0.84,
+      0.84
+     ],
+     "type": "toilet",
+     "utility": [
+      "water"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_bathroom_vanity",
+     "container": true,
+     "height_m": 0.97,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o013",
+     "initial_contents": {
+      "ll_medical_sterile_bandage": 1
+     },
+     "label": "VANITY",
+     "loot_profile": "bathroom",
+     "loot_seed": 761378738100771938,
+     "rect": [
+      39,
+      40,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R03",
+     "solid_rect": [
+      39.08,
+      40.08,
+      0.84,
+      0.84
+     ],
+     "type": "vanity",
+     "utility": [
+      "water"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_medicine_cabinet",
+     "container": true,
+     "height_m": 0.85,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o014",
+     "initial_contents": {
+      "ll_medical_first_aid_case": 1,
+      "ll_medical_sterile_bandage": 3
+     },
+     "label": "MEDICINE CABINET",
+     "loot_profile": "medicine",
+     "loot_seed": 6492606598690435094,
+     "rect": [
+      37,
+      40,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R03",
+     "solid_rect": [
+      37.08,
+      40.08,
+      0.84,
+      0.84
+     ],
+     "type": "medicine_cabinet",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_three_seat_sofa",
+     "container": true,
+     "height_m": 0.74,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o015",
+     "initial_contents": {},
+     "label": "SOFA",
+     "loot_profile": "sofa",
+     "loot_seed": 2576473597978797349,
+     "rect": [
+      29,
+      44,
+      3,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "solid_rect": [
+      29.08,
+      44.08,
+      2.84,
+      0.84
+     ],
+     "type": "sofa_large",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_tv_stand",
+     "container": true,
+     "height_m": 0.85,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o016",
+     "initial_contents": {
+      "ll_household_flashlight": 1
+     },
+     "label": "TV STAND",
+     "loot_profile": "media",
+     "loot_seed": 8946707000781937684,
+     "rect": [
+      30,
+      41,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "solid_rect": [
+      30.08,
+      41.08,
+      0.84,
+      0.84
+     ],
+     "type": "tv_stand",
+     "utility": [
+      "power"
+     ]
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_bookcase",
+     "container": true,
+     "height_m": 1.58,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o017",
+     "initial_contents": {},
+     "label": "BOOKCASE",
+     "loot_profile": "shelf",
+     "loot_seed": 1563865413166505628,
+     "rect": [
+      33,
+      41,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "solid_rect": [
+      33.08,
+      41.08,
+      0.84,
+      0.84
+     ],
+     "type": "bookcase",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_bookcase",
+     "container": true,
+     "height_m": 1.58,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o018",
+     "initial_contents": {},
+     "label": "BOOKCASE",
+     "loot_profile": "shelf",
+     "loot_seed": 3004463469140438846,
+     "rect": [
+      29,
+      41,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "solid_rect": [
+      29.08,
+      41.08,
+      0.84,
+      0.84
+     ],
+     "type": "bookcase",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_coffee_table",
+     "container": false,
+     "height_m": 0.5,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o019",
+     "label": "COFFEE TABLE",
+     "rect": [
+      31,
+      43,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "solid_rect": [
+      31.08,
+      43.08,
+      0.84,
+      0.84
+     ],
+     "type": "coffee_table",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_writing_desk",
+     "container": true,
+     "height_m": 0.68,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o020",
+     "initial_contents": {},
+     "label": "DESK",
+     "loot_profile": "desk",
+     "loot_seed": 4379378939056145917,
+     "rect": [
+      38,
+      44,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R05",
+     "solid_rect": [
+      38.08,
+      44.08,
+      0.84,
+      0.84
+     ],
+     "type": "desk",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_bookcase",
+     "container": true,
+     "height_m": 1.58,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o021",
+     "initial_contents": {
+      "ll_household_flashlight": 1
+     },
+     "label": "BOOKCASE",
+     "loot_profile": "shelf",
+     "loot_seed": 5250096831957594936,
+     "rect": [
+      37,
+      44,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R05",
+     "solid_rect": [
+      37.08,
+      44.08,
+      0.84,
+      0.84
+     ],
+     "type": "bookcase",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_bookcase",
+     "container": true,
+     "height_m": 1.58,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o022",
+     "initial_contents": {
+      "ll_crafting_pine_plank": 1
+     },
+     "label": "BOOKCASE",
+     "loot_profile": "shelf",
+     "loot_seed": 8897473863890812391,
+     "rect": [
+      38,
+      41,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R05",
+     "solid_rect": [
+      38.08,
+      41.08,
+      0.84,
+      0.84
+     ],
+     "type": "bookcase",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_workbench",
+     "container": true,
+     "height_m": 0.76,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o023",
+     "initial_contents": {},
+     "label": "WORKBENCH",
+     "loot_profile": "tools",
+     "loot_seed": 3911001007234415965,
+     "rect": [
+      43,
+      43,
+      2,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+     "solid_rect": [
+      43.08,
+      43.08,
+      1.84,
+      0.84
+     ],
+     "type": "workbench",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_locker",
+     "container": true,
+     "height_m": 1.94,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o024",
+     "initial_contents": {
+      "ll_crafting_pine_plank": 3
+     },
+     "label": "TOOL LOCKER",
+     "loot_profile": "tools",
+     "loot_seed": 5702872234754518485,
+     "rect": [
+      40,
+      44,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+     "solid_rect": [
+      40.08,
+      44.08,
+      0.84,
+      0.84
+     ],
+     "type": "tool_locker",
+     "utility": []
+    },
+    {
+     "art": "factory_sprite",
+     "asset_id": "ll_furniture_storage_shelf",
+     "container": true,
+     "height_m": 1.65,
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.o025",
+     "initial_contents": {},
+     "label": "STORAGE SHELF",
+     "loot_profile": "utility",
+     "loot_seed": 457724920447737670,
+     "rect": [
+      40,
+      40,
+      1,
+      1
+     ],
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+     "solid_rect": [
+      40.08,
+      40.08,
+      0.84,
+      0.84
+     ],
+     "type": "utility_shelf",
+     "utility": []
+    }
+   ],
+   "rooms": [
+    {
+     "code": "HAL",
+     "essential": true,
+     "floor_material": "wood_oak",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.HAL",
+     "rect": [
+      34,
+      36,
+      2,
+      9
+     ],
+     "type": "hall"
+    },
+    {
+     "code": "R01",
+     "essential": true,
+     "floor_material": "tile_ceramic",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.R01",
+     "rect": [
+      29,
+      36,
+      5,
+      5
+     ],
+     "type": "kitchen"
+    },
+    {
+     "code": "R02",
+     "essential": true,
+     "floor_material": "wood_oak",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+     "rect": [
+      36,
+      36,
+      4,
+      3
+     ],
+     "type": "bedroom"
+    },
+    {
+     "code": "R03",
+     "essential": true,
+     "floor_material": "tile_ceramic",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.R03",
+     "rect": [
+      36,
+      39,
+      4,
+      2
+     ],
+     "type": "bathroom"
+    },
+    {
+     "code": "R04",
+     "essential": true,
+     "floor_material": "wood_oak",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "rect": [
+      29,
+      41,
+      5,
+      4
+     ],
+     "type": "living"
+    },
+    {
+     "code": "R05",
+     "essential": false,
+     "floor_material": "wood_oak",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.R05",
+     "rect": [
+      36,
+      41,
+      4,
+      4
+     ],
+     "type": "den"
+    },
+    {
+     "code": "GAR",
+     "essential": true,
+     "floor_material": "concrete_stained",
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+     "rect": [
+      40,
+      38,
+      5,
+      7
+     ],
+     "type": "garage"
+    }
+   ],
+   "walls": [
+    {
+     "a": [
+      29.0,
+      36.0
+     ],
+     "b": [
+      32.4,
+      36.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      33.6,
+      36.0
+     ],
+     "b": [
+      40.0,
+      36.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      40.0,
+      38.0
+     ],
+     "b": [
+      45.0,
+      38.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      36.0,
+      39.0
+     ],
+     "b": [
+      40.0,
+      39.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      29.0,
+      41.0
+     ],
+     "b": [
+      31.4,
+      41.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      32.6,
+      41.0
+     ],
+     "b": [
+      34.0,
+      41.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      36.0,
+      41.0
+     ],
+     "b": [
+      40.0,
+      41.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      29.0,
+      45.0
+     ],
+     "b": [
+      34.4,
+      45.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      35.6,
+      45.0
+     ],
+     "b": [
+      41.0,
+      45.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      44.0,
+      45.0
+     ],
+     "b": [
+      45.0,
+      45.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      29.0,
+      36.0
+     ],
+     "b": [
+      29.0,
+      45.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      34.0,
+      36.0
+     ],
+     "b": [
+      34.0,
+      39.4
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      34.0,
+      40.6
+     ],
+     "b": [
+      34.0,
+      43.4
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      34.0,
+      44.6
+     ],
+     "b": [
+      34.0,
+      45.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      36.0,
+      36.0
+     ],
+     "b": [
+      36.0,
+      36.9
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      36.0,
+      38.1
+     ],
+     "b": [
+      36.0,
+      39.4
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      36.0,
+      40.6
+     ],
+     "b": [
+      36.0,
+      43.4
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      36.0,
+      44.6
+     ],
+     "b": [
+      36.0,
+      45.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      40.0,
+      36.0
+     ],
+     "b": [
+      40.0,
+      38.0
+     ],
+     "exterior": true
+    },
+    {
+     "a": [
+      40.0,
+      38.0
+     ],
+     "b": [
+      40.0,
+      41.9
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      40.0,
+      43.1
+     ],
+     "b": [
+      40.0,
+      45.0
+     ],
+     "exterior": false
+    },
+    {
+     "a": [
+      45.0,
+      38.0
+     ],
+     "b": [
+      45.0,
+      45.0
+     ],
+     "exterior": true
+    }
+   ],
+   "windows": [
+    {
+     "a": [
+      37.25,
+      36.0
+     ],
+     "b": [
+      38.75,
+      36.0
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.w01",
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+     "side": "north",
+     "state": {
+      "boarded": false,
+      "broken": false,
+      "privacy": false
+     }
+    },
+    {
+     "a": [
+      29.0,
+      42.25
+     ],
+     "b": [
+      29.0,
+      43.75
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.w02",
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "side": "west",
+     "state": {
+      "boarded": false,
+      "broken": false,
+      "privacy": false
+     }
+    },
+    {
+     "a": [
+      30.5,
+      45.0
+     ],
+     "b": [
+      32.5,
+      45.0
+     ],
+     "id": "ll.r00_demo_suburb.lot.006.b01.f0.w03",
+     "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+     "side": "south",
+     "state": {
+      "boarded": false,
+      "broken": false,
+      "privacy": false
+     }
+    }
+   ],
+   "z": 0
+  }
+ ],
+ "footprint": [
+  [
+   29,
+   36,
+   11,
+   9
+  ],
+  [
+   40,
+   38,
+   5,
+   7
+  ]
+ ],
+ "frame": {
+  "front": "south",
+  "local_size": [
+   16,
+   9
+  ],
+  "origin": [
+   29,
+   36
+  ],
+  "rotation": 0
+ },
+ "generation": {
+  "attempt": 1,
+  "rejected": [
+   "E_GARAGE_ACCESS"
+  ]
+ },
+ "generator_version": "ll-worldgen-0.1.0",
+ "id": "ll.r00_demo_suburb.lot.006.b01",
+ "layout_source": "procedural",
+ "lot_id": "ll.r00_demo_suburb.lot.006",
+ "materials": {
+  "roof": "shingle_asphalt",
+  "trim": "timber_painted",
+  "walls": "plaster_cream"
+ },
+ "program": "house_garage",
+ "roof": {
+  "material": "shingle_asphalt",
+  "profile": "offset_gable",
+  "rects": [
+   [
+    0,
+    0,
+    11,
+    9
+   ],
+   [
+    11,
+    2,
+    5,
+    7
+   ]
+  ]
+ },
+ "schema": "last_light.worldgen.building.v1",
+ "secondary_archetype_id": "garage",
+ "seeds": {
+  "furnish": 1972334257719507472,
+  "layout": 5136802788121963659,
+  "loot": 2388596448551028849
+ },
+ "size": [
+  16,
+  9
+ ],
+ "spawn_zones": [
+  {
+   "context": "bedroom",
+   "id": "ll.r00_demo_suburb.lot.006.b01.f0.R02.spawn",
+   "room": "ll.r00_demo_suburb.lot.006.b01.f0.R02",
+   "z": 0
+  },
+  {
+   "context": "living",
+   "id": "ll.r00_demo_suburb.lot.006.b01.f0.R04.spawn",
+   "room": "ll.r00_demo_suburb.lot.006.b01.f0.R04",
+   "z": 0
+  },
+  {
+   "context": "garage",
+   "id": "ll.r00_demo_suburb.lot.006.b01.f0.GAR.spawn",
+   "room": "ll.r00_demo_suburb.lot.006.b01.f0.GAR",
+   "z": 0
+  }
+ ],
+ "stairs": [],
+ "template": "proc:house_garage"
+}

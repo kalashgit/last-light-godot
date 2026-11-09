@@ -1,0 +1,404 @@
+{
+ "contract": "docs/production/CLAUDE_CHATGPT_INTEGRATION_V2.md (PR #53, unmerged)",
+ "placements": {
+  "armchair": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "bathtub": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "bookcase": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "bush": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F04"
+  },
+  "chair": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "checkout": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "coat_rack": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "coffee_table": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "cold_case": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "counter": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "crate": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "cupboard": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f01:cabinet",
+   "family": "F01"
+  },
+  "desk": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "dining_table": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "double_bed": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "dresser": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "electrical_panel": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F08"
+  },
+  "filing_cabinet": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "fridge": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "exact_semantic",
+   "candidate_key": "f01:refrigerator",
+   "family": "F01"
+  },
+  "mailbox": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "medicine_cabinet": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "nightstand": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "pantry_shelf": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "retail_shelf": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "single_bed": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "exact_semantic",
+   "candidate_key": "f01:single-bed",
+   "family": "F01"
+  },
+  "sink": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "sofa": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "exact_semantic",
+   "candidate_key": "f01:sofa",
+   "family": "F01"
+  },
+  "sofa_large": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "variant_of_master",
+   "candidate_key": "f01:sofa",
+   "family": "F01"
+  },
+  "stove": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "streetlight": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F08"
+  },
+  "tire_stack": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F10"
+  },
+  "toilet": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "tool_locker": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "trash_bin": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "tree": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f04:oak",
+   "family": "F04"
+  },
+  "tv_stand": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "utility_shelf": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "vanity": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "vehicle": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f10:sedan",
+   "family": "F10"
+  },
+  "vehicle_h": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f10:sedan",
+   "family": "F10"
+  },
+  "wardrobe": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "washer": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  },
+  "workbench": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F01"
+  }
+ },
+ "policy": [
+  "Worker 04 never assigns A00 canonical IDs; a00_canonical_master_id stays null until A00 publishes one.",
+  "candidate_key is a proposed demand link to an existing queue work order, not an identity or approval.",
+  "Production worlds render only packages that pass the shared validate_package.py gate against the approval ledger; today none do.",
+  "Calibration packages may appear only in worlds flagged isolated_calibration_fixture."
+ ],
+ "queue_snapshot": {
+  "candidate_keys": {
+   "F01": [
+    "f01:cabinet",
+    "f01:kitchen-drawer",
+    "f01:refrigerator",
+    "f01:single-bed",
+    "f01:sofa"
+   ],
+   "F02": [
+    "f02:door-window",
+    "f02:garage",
+    "f02:roof-corner",
+    "f02:shopfront",
+    "f02:small-house"
+   ],
+   "F03": [
+    "f03:asphalt",
+    "f03:asphalt-to-grass",
+    "f03:dirt",
+    "f03:grass",
+    "f03:shoreline"
+   ],
+   "F04": [
+    "f04:berry-bush",
+    "f04:hedge",
+    "f04:oak",
+    "f04:pine",
+    "f04:wheat"
+   ],
+   "F08": [
+    "f08:compressor",
+    "f08:conveyor-segment",
+    "f08:portable-generator",
+    "f08:water-pump"
+   ],
+   "F10": [
+    "f10:pickup",
+    "f10:sedan",
+    "f10:v6-1-inspired-compact-hatchback",
+    "f10:van"
+   ]
+  },
+  "commit": "6ffac2b7f7212df95821cfbd14dc0e3a363a0bb9",
+  "source": "docs/production/queues/F01..F10_v1.json"
+ },
+ "schema": "last_light.worldgen.asset_bindings_v2.v1",
+ "structure_layers": {
+  "door": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:door-window",
+   "family": "F02"
+  },
+  "exterior_wall": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:small-house",
+   "family": "F02"
+  },
+  "garage_shell": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:garage",
+   "family": "F02"
+  },
+  "roof": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:roof-corner",
+   "family": "F02"
+  },
+  "shopfront": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:shopfront",
+   "family": "F02"
+  },
+  "window": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f02:door-window",
+   "family": "F02"
+  }
+ },
+ "terrain_layers": {
+  "asphalt": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f03:asphalt",
+   "family": "F03"
+  },
+  "asphalt_grass_transition": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f03:asphalt-to-grass",
+   "family": "F03"
+  },
+  "dirt": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f03:dirt",
+   "family": "F03"
+  },
+  "field": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f04:wheat",
+   "family": "F04"
+  },
+  "grass": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f03:grass",
+   "family": "F03"
+  },
+  "gravel": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F03"
+  },
+  "sidewalk": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "no_matching_queue_entry",
+   "candidate_key": null,
+   "family": "F03"
+  },
+  "water_bank": {
+   "a00_canonical_master_id": null,
+   "binding_confidence": "proposed",
+   "candidate_key": "f03:shoreline",
+   "family": "F03"
+  }
+ }
+}

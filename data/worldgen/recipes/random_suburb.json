@@ -1,0 +1,8 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.random_suburb",
+ "name": "Fully zoned suburb (no overrides)",
+ "world_seed": 7,
+ "style": "suburban_detached",
+ "district_id": "ll.r00.random_suburb"
+}

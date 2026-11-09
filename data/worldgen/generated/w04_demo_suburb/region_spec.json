@@ -1,0 +1,880 @@
+{
+ "grid": [
+  8,
+  8
+ ],
+ "links": [
+  {
+   "id": "ll.region.r00.hwy00",
+   "kind": "highway",
+   "slots": [
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     4
+    ],
+    [
+     5,
+     5
+    ]
+   ]
+  }
+ ],
+ "name": "Harlan Valley (fictional)",
+ "region_id": "ll.region.r00",
+ "region_seed": 8510260813700939644,
+ "schema": "last_light.worldgen.region_spec.v1",
+ "slot_tiles": [
+  96,
+  96
+ ],
+ "slots": [
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d00",
+   "district_seed": 7937246709907959283,
+   "district_style": null,
+   "elevation": 0.3487,
+   "moisture": 0.5076,
+   "slot": [
+    0,
+    0
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d10",
+   "district_seed": 1446825346655298094,
+   "district_style": null,
+   "elevation": 0.4136,
+   "moisture": 0.26,
+   "slot": [
+    1,
+    0
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d20",
+   "district_seed": 4483398003706593779,
+   "district_style": null,
+   "elevation": 0.424,
+   "moisture": 0.2936,
+   "slot": [
+    2,
+    0
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d30",
+   "district_seed": 8871744104944861483,
+   "district_style": null,
+   "elevation": 0.454,
+   "moisture": 0.3011,
+   "slot": [
+    3,
+    0
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d40",
+   "district_seed": 8679508791799580654,
+   "district_style": null,
+   "elevation": 0.5054,
+   "moisture": 0.5239,
+   "slot": [
+    4,
+    0
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d50",
+   "district_seed": 3873292245972358175,
+   "district_style": null,
+   "elevation": 0.4774,
+   "moisture": 0.4959,
+   "slot": [
+    5,
+    0
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d60",
+   "district_seed": 3353120550325574726,
+   "district_style": null,
+   "elevation": 0.5081,
+   "moisture": 0.4625,
+   "slot": [
+    6,
+    0
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d70",
+   "district_seed": 800186702801923191,
+   "district_style": null,
+   "elevation": 0.513,
+   "moisture": 0.5457,
+   "slot": [
+    7,
+    0
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d01",
+   "district_seed": 1545657357528896964,
+   "district_style": null,
+   "elevation": 0.5813,
+   "moisture": 0.4139,
+   "slot": [
+    0,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d11",
+   "district_seed": 2822168025075126127,
+   "district_style": null,
+   "elevation": 0.4788,
+   "moisture": 0.4092,
+   "slot": [
+    1,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d21",
+   "district_seed": 7113129182162530528,
+   "district_style": null,
+   "elevation": 0.3657,
+   "moisture": 0.3157,
+   "slot": [
+    2,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d31",
+   "district_seed": 779020613088016035,
+   "district_style": null,
+   "elevation": 0.4859,
+   "moisture": 0.3182,
+   "slot": [
+    3,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d41",
+   "district_seed": 5754914793258256898,
+   "district_style": null,
+   "elevation": 0.5783,
+   "moisture": 0.4665,
+   "slot": [
+    4,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d51",
+   "district_seed": 39999611438162406,
+   "district_style": null,
+   "elevation": 0.5431,
+   "moisture": 0.5273,
+   "slot": [
+    5,
+    1
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d61",
+   "district_seed": 226679085099515640,
+   "district_style": null,
+   "elevation": 0.4144,
+   "moisture": 0.4758,
+   "slot": [
+    6,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d71",
+   "district_seed": 746323254029147103,
+   "district_style": null,
+   "elevation": 0.4231,
+   "moisture": 0.4785,
+   "slot": [
+    7,
+    1
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d02",
+   "district_seed": 4416468115185798992,
+   "district_style": null,
+   "elevation": 0.7501,
+   "moisture": 0.4863,
+   "slot": [
+    0,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d12",
+   "district_seed": 8432441135638592887,
+   "district_style": null,
+   "elevation": 0.5946,
+   "moisture": 0.5581,
+   "slot": [
+    1,
+    2
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d22",
+   "district_seed": 5397405039061413165,
+   "district_style": null,
+   "elevation": 0.3828,
+   "moisture": 0.306,
+   "slot": [
+    2,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d32",
+   "district_seed": 2154902227960308930,
+   "district_style": "rural_edge",
+   "elevation": 0.4386,
+   "moisture": 0.3301,
+   "slot": [
+    3,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d42",
+   "district_seed": 6315665737544502202,
+   "district_style": null,
+   "elevation": 0.4624,
+   "moisture": 0.3652,
+   "slot": [
+    4,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d52",
+   "district_seed": 1538286729411679044,
+   "district_style": null,
+   "elevation": 0.5106,
+   "moisture": 0.4001,
+   "slot": [
+    5,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d62",
+   "district_seed": 7839528665077870987,
+   "district_style": null,
+   "elevation": 0.3345,
+   "moisture": 0.4003,
+   "slot": [
+    6,
+    2
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d72",
+   "district_seed": 3847836272973743596,
+   "district_style": null,
+   "elevation": 0.2616,
+   "moisture": 0.4021,
+   "slot": [
+    7,
+    2
+   ],
+   "zone": "water"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d03",
+   "district_seed": 4886252140628881790,
+   "district_style": null,
+   "elevation": 0.6711,
+   "moisture": 0.5758,
+   "slot": [
+    0,
+    3
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d13",
+   "district_seed": 743206156477246724,
+   "district_style": null,
+   "elevation": 0.648,
+   "moisture": 0.5732,
+   "slot": [
+    1,
+    3
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d23",
+   "district_seed": 3208893790066966518,
+   "district_style": "rural_edge",
+   "elevation": 0.5334,
+   "moisture": 0.391,
+   "slot": [
+    2,
+    3
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": true,
+   "compiled_district_id": "ll.r00.demo_suburb",
+   "district_id": "ll.r00.d33",
+   "district_seed": 7393737719050758877,
+   "district_style": "suburban_detached",
+   "elevation": 0.3245,
+   "moisture": 0.3505,
+   "slot": [
+    3,
+    3
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d43",
+   "district_seed": 5809069855312010015,
+   "district_style": "rural_edge",
+   "elevation": 0.3684,
+   "moisture": 0.3116,
+   "slot": [
+    4,
+    3
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d53",
+   "district_seed": 2583288596781671006,
+   "district_style": "rural_edge",
+   "elevation": 0.444,
+   "moisture": 0.3051,
+   "slot": [
+    5,
+    3
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d63",
+   "district_seed": 7485510114287033541,
+   "district_style": null,
+   "elevation": 0.284,
+   "moisture": 0.3091,
+   "slot": [
+    6,
+    3
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d73",
+   "district_seed": 6047242221902342197,
+   "district_style": null,
+   "elevation": 0.2421,
+   "moisture": 0.4167,
+   "slot": [
+    7,
+    3
+   ],
+   "zone": "water"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d04",
+   "district_seed": 469436141186654979,
+   "district_style": null,
+   "elevation": 0.704,
+   "moisture": 0.3228,
+   "slot": [
+    0,
+    4
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d14",
+   "district_seed": 1849864734017199272,
+   "district_style": "rural_edge",
+   "elevation": 0.6114,
+   "moisture": 0.4257,
+   "slot": [
+    1,
+    4
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d24",
+   "district_seed": 7549397869622083778,
+   "district_style": "suburban_detached",
+   "elevation": 0.5246,
+   "moisture": 0.3589,
+   "slot": [
+    2,
+    4
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d34",
+   "district_seed": 8632756020442565095,
+   "district_style": "old_town_dense",
+   "elevation": 0.3682,
+   "moisture": 0.3927,
+   "slot": [
+    3,
+    4
+   ],
+   "zone": "town_center"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d44",
+   "district_seed": 8063387867201984082,
+   "district_style": "suburban_detached",
+   "elevation": 0.3407,
+   "moisture": 0.3948,
+   "slot": [
+    4,
+    4
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d54",
+   "district_seed": 8145749785167504593,
+   "district_style": "suburban_detached",
+   "elevation": 0.3583,
+   "moisture": 0.5525,
+   "slot": [
+    5,
+    4
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d64",
+   "district_seed": 7134485064695918871,
+   "district_style": "rural_edge",
+   "elevation": 0.2963,
+   "moisture": 0.4593,
+   "slot": [
+    6,
+    4
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d74",
+   "district_seed": 6887979422728774823,
+   "district_style": null,
+   "elevation": 0.218,
+   "moisture": 0.4955,
+   "slot": [
+    7,
+    4
+   ],
+   "zone": "water"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d05",
+   "district_seed": 5363210023040676976,
+   "district_style": null,
+   "elevation": 0.8171,
+   "moisture": 0.3812,
+   "slot": [
+    0,
+    5
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d15",
+   "district_seed": 5401411833547548523,
+   "district_style": null,
+   "elevation": 0.595,
+   "moisture": 0.348,
+   "slot": [
+    1,
+    5
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d25",
+   "district_seed": 8407140860234981044,
+   "district_style": "rural_edge",
+   "elevation": 0.5094,
+   "moisture": 0.2226,
+   "slot": [
+    2,
+    5
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d35",
+   "district_seed": 2459105886714087625,
+   "district_style": "suburban_detached",
+   "elevation": 0.5007,
+   "moisture": 0.2186,
+   "slot": [
+    3,
+    5
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d45",
+   "district_seed": 3886913337855729687,
+   "district_style": "suburban_detached",
+   "elevation": 0.3998,
+   "moisture": 0.3318,
+   "slot": [
+    4,
+    5
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d55",
+   "district_seed": 7221147651715341252,
+   "district_style": "old_town_dense",
+   "elevation": 0.3182,
+   "moisture": 0.584,
+   "slot": [
+    5,
+    5
+   ],
+   "zone": "town_center"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d65",
+   "district_seed": 8702106446335569734,
+   "district_style": "suburban_detached",
+   "elevation": 0.3056,
+   "moisture": 0.5626,
+   "slot": [
+    6,
+    5
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d75",
+   "district_seed": 5515269798727962102,
+   "district_style": "rural_edge",
+   "elevation": 0.363,
+   "moisture": 0.5781,
+   "slot": [
+    7,
+    5
+   ],
+   "zone": "rural_residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d06",
+   "district_seed": 8721830042017529640,
+   "district_style": null,
+   "elevation": 0.6768,
+   "moisture": 0.3101,
+   "slot": [
+    0,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d16",
+   "district_seed": 420463837064610192,
+   "district_style": null,
+   "elevation": 0.5764,
+   "moisture": 0.3418,
+   "slot": [
+    1,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d26",
+   "district_seed": 9041040734646661892,
+   "district_style": null,
+   "elevation": 0.5485,
+   "moisture": 0.3193,
+   "slot": [
+    2,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d36",
+   "district_seed": 4548462169182374022,
+   "district_style": "rural_edge",
+   "elevation": 0.5288,
+   "moisture": 0.3473,
+   "slot": [
+    3,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d46",
+   "district_seed": 3384435612943674465,
+   "district_style": "rural_edge",
+   "elevation": 0.4729,
+   "moisture": 0.4923,
+   "slot": [
+    4,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d56",
+   "district_seed": 3522567787189782453,
+   "district_style": "suburban_detached",
+   "elevation": 0.327,
+   "moisture": 0.5557,
+   "slot": [
+    5,
+    6
+   ],
+   "zone": "residential"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d66",
+   "district_seed": 1474979079811967344,
+   "district_style": "rural_edge",
+   "elevation": 0.3105,
+   "moisture": 0.5353,
+   "slot": [
+    6,
+    6
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d76",
+   "district_seed": 7623687469396122447,
+   "district_style": null,
+   "elevation": 0.2885,
+   "moisture": 0.535,
+   "slot": [
+    7,
+    6
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d07",
+   "district_seed": 5510288870541820849,
+   "district_style": null,
+   "elevation": 0.5523,
+   "moisture": 0.3749,
+   "slot": [
+    0,
+    7
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d17",
+   "district_seed": 6500214584837529342,
+   "district_style": null,
+   "elevation": 0.5569,
+   "moisture": 0.4075,
+   "slot": [
+    1,
+    7
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d27",
+   "district_seed": 675891144401700407,
+   "district_style": null,
+   "elevation": 0.6045,
+   "moisture": 0.5307,
+   "slot": [
+    2,
+    7
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d37",
+   "district_seed": 134165683831752261,
+   "district_style": null,
+   "elevation": 0.5916,
+   "moisture": 0.6663,
+   "slot": [
+    3,
+    7
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d47",
+   "district_seed": 3015883770558948310,
+   "district_style": null,
+   "elevation": 0.5837,
+   "moisture": 0.5852,
+   "slot": [
+    4,
+    7
+   ],
+   "zone": "wilderness"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d57",
+   "district_seed": 7088493793257727855,
+   "district_style": "rural_edge",
+   "elevation": 0.381,
+   "moisture": 0.4508,
+   "slot": [
+    5,
+    7
+   ],
+   "zone": "agricultural"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d67",
+   "district_seed": 1022430520435456235,
+   "district_style": null,
+   "elevation": 0.245,
+   "moisture": 0.4266,
+   "slot": [
+    6,
+    7
+   ],
+   "zone": "water"
+  },
+  {
+   "compiled": false,
+   "district_id": "ll.r00.d77",
+   "district_seed": 3128032127716044689,
+   "district_style": null,
+   "elevation": 0.2736,
+   "moisture": 0.4901,
+   "slot": [
+    7,
+    7
+   ],
+   "zone": "water"
+  }
+ ],
+ "status": "specification: only slots marked compiled=true have local street/parcel data",
+ "towns": [
+  [
+   3,
+   4
+  ],
+  [
+   5,
+   5
+  ]
+ ]
+}

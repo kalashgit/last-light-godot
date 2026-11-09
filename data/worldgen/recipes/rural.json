@@ -1,0 +1,8 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.rural",
+ "name": "rural",
+ "world_seed": 11,
+ "style": "rural_edge",
+ "district_id": "ll.r00.rural"
+}

@@ -1,0 +1,18 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.v2_calibration_fixture",
+ "name": "ISOLATED V2 calibration fixture (not production)",
+ "world_seed": 52053,
+ "style": "suburban_detached",
+ "district_id": "ll.r00.v2_fixture",
+ "blocks": [1, 1],
+ "lots_per_row": 2,
+ "lot_widths": {"0,0,n": [18, 16], "0,0,s": [16, 18]},
+ "lot_overrides": {"1": {"program": "convenience_store"}, "2": {"program": "house_small"}, "3": {"program": "house_small"}, "4": {"program": "house_garage"}},
+ "asset_intake": {
+  "mode": "calibration_fixture",
+  "packages_dir": "res://tests/worldgen/generated_v2/packages",
+  "calibration_subjects": {"fridge": "fridge", "vehicle": "vehicle", "vehicle_h": "vehicle"}
+ },
+ "notes": "Binds W01/F12 CALIBRATION packages to worldgen placements in an isolated fixture only. Packages are copied in by tests/worldgen/v2/run_v2_fixture.sh (real W01 output when present, otherwise a labelled synthetic stand-in)."
+}

@@ -1,0 +1,58 @@
+{
+ "schema": "last_light.worldgen.recipe.v1",
+ "world_id": "ll.world.w04_demo_suburb",
+ "name": "W04 demo suburb (procedural)",
+ "world_seed": 20261106,
+ "style": "suburban_detached",
+ "district_id": "ll.r00.demo_suburb",
+ "blocks": [
+  2,
+  1
+ ],
+ "lots_per_row": 2,
+ "lot_overrides": {
+  "1": {
+   "program": "house_garage"
+  },
+  "2": {
+   "program": "house_two_storey"
+  },
+  "3": {
+   "program": "convenience_store"
+  },
+  "4": {
+   "program": "house_small"
+  },
+  "5": {
+   "program": "house_small"
+  },
+  "6": {
+   "program": "house_garage"
+  },
+  "7": {
+   "program": "house_two_storey"
+  },
+  "8": {
+   "program": "workshop"
+  }
+ },
+ "notes": "Seed 20261106 is the UCF-001 street seed, retained for continuity. Programs are pinned per lot so the demo always contains all five W04-A programs; every floor plan, furnishing, prop and spawn is still procedural from the seed. Lot 5 (spawn side) is the starter house.",
+ "lot_widths": {
+  "0,0,n": [
+   18,
+   16
+  ],
+  "0,0,s": [
+   16,
+   18
+  ],
+  "1,0,n": [
+   17,
+   17
+  ],
+  "1,0,s": [
+   18,
+   16
+  ]
+ }
+}

@@ -1,0 +1,127 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     14
+    ]
+   ],
+   "seam": "ggsaaaasgggggg__|ggsaaaasgggggg__",
+   "sha256": "0a173f8d255b0908"
+  },
+  "north": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "gggppggggggggggg|gggppggggggggggg",
+   "sha256": "89c48eb6716419f3"
+  },
+  "south": {
+   "portals": [],
+   "seam": "________________|________________",
+   "sha256": "7d03b0b5e65253ae"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     14
+    ]
+   ],
+   "seam": "ggsaaaasgggggg__|ggsaaaasgggggg__",
+   "sha256": "0a173f8d255b0908"
+  }
+ },
+ "buildings": [],
+ "chunk": [
+  1,
+  3
+ ],
+ "fences": [],
+ "neighbors": {
+  "east": [
+   2,
+   3
+  ],
+  "north": [
+   1,
+   2
+  ],
+  "south": null,
+  "west": [
+   0,
+   3
+  ]
+ },
+ "props": [
+  "ll.r00_lab_a_street.prop.0050",
+  "ll.r00_lab_a_street.prop.0054",
+  "ll.r00_lab_a_street.prop.0055",
+  "ll.r00_lab_a_street.prop.0059",
+  "ll.r00_lab_a_street.prop.0062",
+  "ll.r00_lab_a_street.prop.0074",
+  "ll.r00_lab_a_street.prop.0080",
+  "ll.r00_lab_a_street.prop.0178"
+ ],
+ "rect": [
+  16,
+  48,
+  16,
+  14
+ ],
+ "roads": [
+  "ll.r00_lab_a_street.road.h1"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "gggppggggggggggg",
+  "gggppggggggggggg",
+  "ssssssssssssssss",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "aaaaaaaaaaaaaaaa",
+  "ssssssssssssssss",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg",
+  "gggggggggggggggg"
+ ],
+ "transition_rows": [
+  "0028280000000000",
+  "44682c4444444444",
+  "1110011111111111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "4444444444444444",
+  "1111111111111111",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000"
+ ],
+ "world_id": "ll.world.lab_a_street"
+}

@@ -1,0 +1,153 @@
+{
+ "border": {
+  "east": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggoooooooooooooo|gooooooooooooooo",
+   "sha256": "017a495a6b82d724"
+  },
+  "north": {
+   "portals": [],
+   "seam": "________________|ggggoooooogggggg",
+   "sha256": "c92623732f3f7541"
+  },
+  "south": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "bbbbggsaaaasgggo|bbbbggsaaaasgggg",
+   "sha256": "949a2c43aa8170d7"
+  },
+  "west": {
+   "portals": [
+    [
+     0,
+     16
+    ]
+   ],
+   "seam": "ggggggsaaaasgggb|ggggggsaaaasgggb",
+   "sha256": "12ac6c25c8634ac5"
+  }
+ },
+ "buildings": [
+  "ll.r00_demo_suburb.lot.004.b01"
+ ],
+ "chunk": [
+  5,
+  0
+ ],
+ "fences": [
+  "ll.r00_demo_suburb.fence.010"
+ ],
+ "neighbors": {
+  "east": [
+   6,
+   0
+  ],
+  "north": null,
+  "south": [
+   5,
+   1
+  ],
+  "west": [
+   4,
+   0
+  ]
+ },
+ "props": [
+  "ll.r00_demo_suburb.prop.0049",
+  "ll.r00_demo_suburb.prop.0052",
+  "ll.r00_demo_suburb.prop.0183",
+  "ll.r00_demo_suburb.prop.0186",
+  "ll.r00_demo_suburb.prop.0187",
+  "ll.r00_demo_suburb.prop.0188",
+  "ll.r00_demo_suburb.prop.0189",
+  "ll.r00_demo_suburb.prop.0190",
+  "ll.r00_demo_suburb.prop.0191",
+  "ll.r00_demo_suburb.prop.0192",
+  "ll.r00_demo_suburb.prop.0193",
+  "ll.r00_demo_suburb.prop.0194",
+  "ll.r00_demo_suburb.prop.0195",
+  "ll.r00_demo_suburb.prop.0197",
+  "ll.r00_demo_suburb.prop.0198",
+  "ll.r00_demo_suburb.prop.0202",
+  "ll.r00_demo_suburb.prop.0203",
+  "ll.r00_demo_suburb.prop.0204",
+  "ll.r00_demo_suburb.prop.0205",
+  "ll.r00_demo_suburb.prop.0206",
+  "ll.r00_demo_suburb.prop.0207",
+  "ll.r00_demo_suburb.prop.0208",
+  "ll.r00_demo_suburb.prop.0214",
+  "ll.r00_demo_suburb.prop.0215",
+  "ll.r00_demo_suburb.prop.0216"
+ ],
+ "rect": [
+  80,
+  0,
+  16,
+  16
+ ],
+ "roads": [
+  "ll.r00_demo_suburb.road.h0",
+  "ll.r00_demo_suburb.road.v2"
+ ],
+ "schema": "last_light.worldgen.chunk.v1",
+ "terrain_codes": {
+  "a": "asphalt",
+  "b": "floor",
+  "c": "concrete",
+  "d": "driveway",
+  "f": "field",
+  "g": "grass",
+  "o": "forest",
+  "p": "path",
+  "r": "gravel",
+  "s": "sidewalk",
+  "t": "dirt",
+  "w": "water"
+ },
+ "terrain_rows": [
+  "ggggoooooogggggg",
+  "ggggggoooogggggg",
+  "gggggggooogggooo",
+  "gggggggooogggooo",
+  "gggggggoooggoooo",
+  "ggggggggoooooooo",
+  "sssssssaaaasoooo",
+  "aaaaaaaaaaaaoooo",
+  "aaaaaaaaaaaaoooo",
+  "aaaaaaaaaaaaoooo",
+  "aaaaaaaaaaaaoooo",
+  "sssssssaaaasgooo",
+  "ggggggsaaaasggoo",
+  "ggggggsaaaasgggo",
+  "ggggggsaaaasgggo",
+  "bbbbggsaaaasgggo"
+ ],
+ "transition_rows": [
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "0000000000000000",
+  "4444444444440000",
+  "1111111111138000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000",
+  "0000000000028000",
+  "4444440000028000",
+  "1111138000028000",
+  "0000028000028000",
+  "4444028000028000",
+  "1113828000028000"
+ ],
+ "world_id": "ll.world.w04_demo_suburb"
+}
