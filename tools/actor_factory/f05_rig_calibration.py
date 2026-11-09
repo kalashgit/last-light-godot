@@ -120,6 +120,12 @@ for side, sign in [('L',1),('R',-1)]:
     limb('wearable_pants_lower_'+side,
          (sign*.12,0,.55),(sign*.12,0,.14),
          .087*limb_width,'shin_'+side,fabric)
+    # Articulated fabric bridge over the joint avoids an exposed gap when the
+    # shin rotates relative to the thigh.
+    ellipsoid('wearable_pants_knee_'+side,
+              (sign*.12,0,.55),
+              (.097*limb_width,.100*limb_width,.074),
+              'shin_'+side,fabric)
 # Contrasting belt visually distinguishes torso and pelvis in 2.5D preview.
 ellipsoid('wearable_waist_band', (0,0,1.035),
           (.218*body_width,.164*body_width,.025),'pelvis',seam)
@@ -156,10 +162,22 @@ for clip,(frames,duration) in clips.items():
     for frame in range(frames):
         angle=2*math.pi*frame/frames
         for side,sign in [('L',1),('R',-1)]:
+            stride = math.sin(angle)*sign
+            hip_amplitude={'walk':.27,'run':.40,'sneak':.18}.get(clip,0)
+            knee_amplitude={'walk':.34,'run':.58,'sneak':.24}.get(clip,0)
             upper=rig.pose.bones['thigh_'+side]
             upper.rotation_mode='XYZ'
-            upper.rotation_euler=(math.sin(angle)*sign*(.27 if clip in ('walk','run','sneak') else 0),0,0)
+            upper.rotation_euler=(stride*hip_amplitude,0,0)
             upper.keyframe_insert(data_path='rotation_euler',frame=frame+1)
+            knee=rig.pose.bones['shin_'+side]
+            knee.rotation_mode='XYZ'
+            knee_bend=max(0,-stride)*knee_amplitude
+            knee.rotation_euler=(knee_bend,0,0)
+            knee.keyframe_insert(data_path='rotation_euler',frame=frame+1)
+            ankle=rig.pose.bones['foot_'+side]
+            ankle.rotation_mode='XYZ'
+            ankle.rotation_euler=(-.5*knee_bend,0,0)
+            ankle.keyframe_insert(data_path='rotation_euler',frame=frame+1)
             arm_bone=rig.pose.bones['upper_arm_'+side]
             arm_bone.rotation_mode='XYZ'
             arm_bone.rotation_euler=(-math.sin(angle)*sign*(.19 if clip in ('walk','run') else 0),0,0)
@@ -242,7 +260,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.2','wearable_layers':['shirt_body','shirt_sleeves','pants_upper','pants_lower','waist_band'],
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.2','wearable_layers':['shirt_body','shirt_sleeves','pants_upper','pants_lower','knee_bridges','waist_band'],
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
