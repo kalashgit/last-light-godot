@@ -9,9 +9,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw
 
-def build(manifest_path, source_dir, output_dir, scale=1):
-    if scale not in (1, 2):
-        raise ValueError("Only native 1x and explicit 2x QA scales supported")
+def build(manifest_path, source_dir, output_dir):
     manifest_path=Path(manifest_path)
     source_dir=Path(source_dir).resolve()
     output_dir=Path(output_dir)
@@ -24,7 +22,6 @@ def build(manifest_path, source_dir, output_dir, scale=1):
     tile_size=(190,160)
     sheet=Image.new("RGB",(tile_size[0]*4,tile_size[1]*4),(37,44,39))
     records=[]
-    preview_scale=0.5  # source rendered at 80x40 logical pixels; 50% is a legibility stress test
     for idx,frame in enumerate(frames):
         name=frame["file"]
         if Path(name).name!=name or name in (".",".."):
@@ -65,7 +62,8 @@ def build(manifest_path, source_dir, output_dir, scale=1):
         alpha=img.getchannel("A")
         visible_pixels=sum(1 for a in alpha.tobytes() if a>=128)
         bright=0
-        for r,g,b,a in img.getdata():
+        pixels=img.tobytes()
+        for r,g,b,a in zip(*[iter(pixels)]*4):
             if a>=128 and min(r,g,b)>215:
                 bright+=1
         records.append({"heading":idx,"alpha_bounds":list(bounds),
