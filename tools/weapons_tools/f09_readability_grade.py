@@ -78,6 +78,38 @@ def main():
                              "opaque_source_px":before,"opaque_with_rim_px":after,
                              "world_scale_changed":False})
         evidence.append({"asset_id":ident,"heading_count":16,"frames":headings})
+    # Pack a separate REVIEW atlas of the graded frames; preserve the
+    # original pixel-exact F12 candidate atlas as immutable reference.
+    atlas=Image.new("RGBA",(16*96,3*96),(0,0,0,0))
+    atlas_records=[]
+    for row,ident in enumerate(IDS):
+        frames=[]
+        for heading in range(16):
+            frame=Image.open(BASE/ident/"world_sprite_96_readable"/
+                             f"h{heading:02}.png").convert("RGBA")
+            rect=[heading*96,row*96,96,96]
+            atlas.paste(frame,(rect[0],rect[1]))
+            foot=evidence[row]["frames"][heading]["ground_anchor_px"]
+            frames.append({"heading":heading,"rect_px":rect,
+                           "contact_anchor_px":foot,"source_id":ident})
+        atlas_records.append({"asset_id":ident,"frames":frames})
+    atlas_path=BASE/"f09_f12_readable_candidate_atlas.png"
+    atlas.save(atlas_path,optimize=True)
+    atlas_check=Image.open(atlas_path).convert("RGBA")
+    for record in atlas_records:
+        for frame in record["frames"]:
+            x,y,w,h=frame["rect_px"]
+            expected=Image.open(BASE/record["asset_id"]/"world_sprite_96_readable"/
+                                f'h{frame["heading"]:02}.png').convert("RGBA")
+            assert atlas_check.crop((x,y,x+w,y+h)).tobytes()==expected.tobytes()
+    (BASE/"f09_f12_readable_candidate_atlas.json").write_text(json.dumps({
+        "status":"F12_PROVISIONAL_NATIVE_SCALE_REVIEW_ONLY",
+        "atlas":"f09_f12_readable_candidate_atlas.png",
+        "size_px":[1536,288],"cells":48,
+        "resampling":"NONE","scale_multiplier":1,
+        "anchor_calibration":"lowest visible 3px ground-contour estimate",
+        "records":atlas_records},indent=2)+"\n")
+    print("F09_F12_READABLE_ATLAS_PIXEL_EXACT_PASS 48",flush=True)
     (BASE/"f09_f12_readability_report.json").write_text(json.dumps({
         "status":"F12_VISUAL_CANDIDATE_NOT_APPROVED",
         "native_px":[96,96],"scale_factor":1.0,
