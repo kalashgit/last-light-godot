@@ -67,3 +67,38 @@ jobs:
           path: ${{ runner.temp }}/f12-calibration/
           if-no-files-found: warn
           retention-days: 7
+
+  directional-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          python -m pip install 'Pillow>=10,<13'
+      - name: Generate noncanonical Blender source and 16 real headings
+        run: |
+          mkdir -p "$RUNNER_TEMP/f12-smoke"
+          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/make_directional_fixture.py -- --output "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend"
+          blender -b -t 2 --factory-startup --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend" --object CAL02_ONLY_Root --output "$RUNNER_TEMP/f12-smoke/frames" --headings 16 --width 256 --height 256 --samples 8
+      - name: Validate 16 headings and PNG alpha
+        run: |
+          python tools/factory/render_bridge/verify_headings.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --headings 16
+          python tools/factory/render_bridge/inspect_pngs.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-smoke/frames"
+      - name: Compose real RGBA atlas and verify output
+        run: |
+          python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-smoke/frames" --output-dir "$RUNNER_TEMP/f12-smoke/atlas" --page-size 2048 --padding 2
+          python -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-smoke/atlas/atlas.json"; d=json.loads(p.read_text()); assert len(d["frames"])==16; assert d["pages"]>=1; print("F12_ATLAS_SMOKE_PASS",len(d["frames"]))'
+      - name: Upload directional evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-cal02-noncanonical-16heading-smoke
+          path: ${{ runner.temp }}/f12-smoke/
+          if-no-files-found: warn
+          retention-days: 7
