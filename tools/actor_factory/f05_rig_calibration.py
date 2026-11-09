@@ -13,7 +13,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector, Matrix
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections
+from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections, torso_sections
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -96,7 +96,7 @@ def limb(name, a, b, radius, bone, mat):
     o.rotation_euler = (Vector(b)-Vector(a)).to_track_quat('Z','Y').to_euler()
     return o
 
-ellipsoid('torso skin', (0,0,1.30),(.245*body_width,.145*body_width,.265),'chest',skin)
+loft_chain('torso skin', torso_sections(body_width), 'chest', 'spine', skin)
 ellipsoid('underwear actual geometry', (0,0,.96),(.21*body_width,.155*body_width,.14),'pelvis',underwear)
 ellipsoid('head', (0,-.015,1.64),(.125,.117,.16),'head',skin)
 ellipsoid('hair cap test', (0,.012,1.76),(.127,.118,.065),'head',hair)
@@ -112,8 +112,8 @@ for side, sign in [('L',1),('R',-1)]:
 
 # Separate outer garments: fit envelopes scale with the selected physique.
 # Geometry remains rigid-weighted; shoulder/elbow deformation QA is not yet approved.
-ellipsoid('wearable_shirt_body', (0,-.003,1.30),
-          (.258*body_width,.158*body_width,.274),'chest',shirt)
+loft_chain('wearable_shirt_body', torso_sections(body_width, garment=True),
+           'chest', 'spine', shirt)
 for side, sign in [('L',1),('R',-1)]:
     loft_chain('wearable_shirt_sleeve_'+side, sleeve_sections(sign, limb_width),
                'upper_arm_'+side, 'forearm_'+side, shirt)
@@ -122,7 +122,7 @@ for side, sign in [('L',1),('R',-1)]:
                'thigh_'+side, 'shin_'+side, fabric)
 # Contrasting belt visually distinguishes torso and pelvis in 2.5D preview.
 ellipsoid('wearable_waist_band', (0,0,1.035),
-          (.218*body_width,.164*body_width,.025),'pelvis',seam)
+          (.210*body_width,.161*body_width,.022),'pelvis',seam)
 
 # Explicitly noncanonical calibration props; imported from no outside source.
 ellipsoid('backpack test', (0,.19,1.31),(.19*body_width,.12,.27),'chest',fabric)
@@ -316,7 +316,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.4','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.5','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
