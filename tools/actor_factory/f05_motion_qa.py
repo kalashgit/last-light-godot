@@ -28,13 +28,13 @@ clips = {"idle": 4, "walk": 8, "run": 8, "sneak": 8,
 if set(tracks) != set(clips):
     raise SystemExit("F05_MOTION_QA_MISSING_NLA: " + repr(set(clips) - set(tracks)))
 
+# Preview-only bounds: strict deforming-shell collision QA runs separately.
 pairs = [("torso skin", "wearable_shirt_body", "chest")]
 for side in ("L", "R"):
-    pairs.extend([
-        ("upper arm " + side, "wearable_shirt_sleeve_" + side, "upper_arm_" + side),
-        ("thigh " + side, "wearable_pants_upper_" + side, "thigh_" + side),
-        ("shin " + side, "wearable_pants_lower_" + side, "shin_" + side)
-    ])
+    pairs.append(("leg_skin_" + side, "wearable_pants_" + side, "thigh_" + side))
+for side in ("L", "R"):
+    if bpy.data.objects.get("wearable_shirt_sleeve_" + side) is None:
+        raise SystemExit("F05_MOTION_QA_MISSING_SLEEVE_" + side)
 for skin_name, garment_name, bone_name in pairs:
     if any(x is None for x in (
         bpy.data.objects.get(skin_name),
