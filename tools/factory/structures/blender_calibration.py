@@ -146,6 +146,19 @@ def make_scene(bpy, plan, texture_dir):
     light.data.shape = "DISK"
     light.data.size = 5
     light.rotation_euler = (target - light.location).to_track_quat("-Z", "Y").to_euler()
+    # Low-energy diffuse bounce keeps reverse-facing structures readable.
+    scene.world.use_nodes = True
+    background = scene.world.node_tree.nodes.get("Background")
+    if background:
+        background.inputs["Color"].default_value = (.48, .52, .55, 1)
+        background.inputs["Strength"].default_value = .48
+    bpy.ops.object.light_add(type="AREA", location=(w/2+4.5, h/2+5.2, 7))
+    fill = bpy.context.object
+    fill.name = "F02_BOUNCE_FILL_SECONDARY"
+    fill.data.energy = 185
+    fill.data.shape = "DISK"
+    fill.data.size = 7
+    fill.rotation_euler = (target - fill.location).to_track_quat("-Z", "Y").to_euler()
     return groups
 
 
