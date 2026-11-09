@@ -5,6 +5,7 @@ on:
       - 'tools/weapons_tools/f09_integration_fixture.py'
       - 'tools/weapons_tools/f09_bake_pbr_maps.py'
       - 'tools/weapons_tools/f09_world_sprite_pack.py'
+      - 'tools/weapons_tools/f09_pack_atlas.py'
       - 'tools/weapons_tools/f09_godot_fixture.gd'
       - 'tools/weapons_tools/f09_stage_godot.py'
       - 'tools/weapons_tools/f09_verify_cross_family.py'
@@ -30,6 +31,8 @@ jobs:
         run: blender -b --factory-startup -t 2 --python-exit-code 1 --python tools/weapons_tools/f09_integration_fixture.py
       - name: Pack and validate native 96px 16-heading sprites
         run: python3 tools/weapons_tools/f09_world_sprite_pack.py
+      - name: Pack F12-style pixel-exact 16-heading atlas and anchor manifest
+        run: python3 tools/weapons_tools/f09_pack_atlas.py
       - name: Pack isolated Godot candidate project
         run: python3 tools/weapons_tools/f09_stage_godot.py
       - name: Verify baked GLB texture embed, atlas coverage and staged sprites
