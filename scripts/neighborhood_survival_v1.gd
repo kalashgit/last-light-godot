@@ -44,6 +44,7 @@ func restart_pilot() -> void:
     fixture_states = {}
     zombies = rules["zombies"].duplicate(true)
     for zombie in zombies:
+        _canon_zombie(zombie)
         zombie["attack_cooldown"] = 0.0
     health = 100.0
     stamina = 100.0
@@ -55,6 +56,14 @@ func restart_pilot() -> void:
     restart_arm_until_ms = 0
     message = "MISSION: search Oak, Cedar and Birch, then return to your start point."
     queue_redraw()
+
+## One numeric type per field, whatever JSON returns. Godot 4.7 writes
+## int 3 as "3" and float 3.0 as "3.0", so mixed types broke exact saves.
+func _canon_zombie(zombie: Dictionary) -> void:
+    zombie["health"] = int(zombie["health"])
+    zombie["floor"] = int(zombie.get("floor", 0))
+    zombie["speed"] = float(zombie.get("speed", 1.0))
+    zombie["pos"] = [float(zombie["pos"][0]), float(zombie["pos"][1])]
 
 func request_restart() -> void:
     # On phone, guard live runs against an accidental reset.
@@ -353,11 +362,14 @@ func _restore_snapshot(data: Dictionary) -> bool:
     stamina = float(data["stamina"])
     world_seconds = maxf(0.0, float(data.get("world_seconds", 0.0)))
     escaped = bool(data.get("escaped", false))
-    inventory = old_inventory.duplicate(true)
+    inventory = {}
+    for item_id in old_inventory.keys():
+        inventory[item_id] = int(old_inventory[item_id])
     looted_objects = old_loot.duplicate(true)
     fixture_states = old_states.duplicate(true)
     zombies = old_zombies.duplicate(true)
     for zombie in zombies:
+        _canon_zombie(zombie)
         zombie["attack_cooldown"] = maxf(0.0, float(zombie.get("attack_cooldown", 0.0)))
     _reset_pointers()
     message = "Loaded pilot world: items and searched furniture preserved"

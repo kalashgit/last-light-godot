@@ -156,6 +156,7 @@ func restart_pilot() -> void:
     dev_zombie_counter = 0
     zombies = layout["zombies"].duplicate(true)
     for zombie in zombies:
+        _canon_zombie(zombie)
         zombie["attack_cooldown"] = 0.0
     health = 100.0
     stamina = 100.0
@@ -660,7 +661,7 @@ func god_spawn(spawn_id: String) -> String:
         "state": {}, "art_status": "PROVISIONAL_PROCEDURAL"}
     if entry.get("gameplay_item_id") != null:
         inst["item_id"] = str(entry["gameplay_item_id"])
-    spawned.append(inst)
+    spawned.append(canon_spawn(inst))
     _taint("spawned %s as %s" % [entry["name"], iid])
     return iid
 
@@ -726,6 +727,7 @@ func god_reset_building(instance_id: String) -> bool:
     for z in layout["zombies"]:
         if str(z["building_id"]) == key:
             var fresh: Dictionary = z.duplicate(true)
+            _canon_zombie(fresh)
             fresh["attack_cooldown"] = 0.0
             z_kept.append(fresh)
     zombies = z_kept
@@ -792,6 +794,36 @@ func perf_stats() -> Dictionary:
 
 # ------------------------------------------------------ builder / recipes
 
+## Canonical numeric types for authored data that round-trips through JSON
+## (recipes, saves): identical in-memory form before and after reload on
+## Godot 4.3 and 4.7.
+static func canon_building(b: Dictionary) -> Dictionary:
+    var c: Dictionary = b.duplicate(true)
+    for k in ["footprint", "front_door"]:
+        if c.has(k):
+            var arr: Array = []
+            for v in c[k]:
+                arr.append(float(v))
+            c[k] = arr
+    c["door_out"] = [int(c.get("door_out", [0, 1])[0]), int(c.get("door_out", [0, 1])[1])]
+    c["rotation"] = int(c.get("rotation", 0))
+    c["stories"] = int(c.get("stories", 1))
+    return c
+
+static func canon_spawn(sp: Dictionary) -> Dictionary:
+    var c: Dictionary = sp.duplicate(true)
+    c["pos"] = [float(c["pos"][0]), float(c["pos"][1])]
+    c["size"] = [float(c["size"][0]), float(c["size"][1])]
+    c["floor"] = int(c.get("floor", 0))
+    c["solid"] = bool(c.get("solid", false))
+    return c
+
+static func canon_list(items: Array, kind: String) -> Array:
+    var out: Array = []
+    for it in items:
+        out.append(canon_building(it) if kind == "building" else canon_spawn(it))
+    return out
+
 func _custom_conflict(b: Dictionary, buildings: Array, base: Dictionary) -> String:
     var r: Rect2 = GENERATOR.rect_of(b["footprint"])
     if not GENERATOR.rect_of(base["bounds"]).grow(-1.0).encloses(r):
@@ -837,6 +869,7 @@ func god_place_building(archetype_id: String, rotation: int = 0) -> String:
         message = "No valid doorway for " + str(item["name"])
         return ""
     b.erase("size")
+    b = canon_building(b)
     custom_buildings.append(b)
     _apply_world(_compose_world(world_seed, custom_buildings), world_seed)
     _unstick_player()
@@ -861,12 +894,12 @@ func apply_layout_recipe(recipe: Dictionary, seed_override: int = -1) -> Array:
         return ["recipe targets a different base world"]
     var seed: int = int(recipe.get("seed", world_seed)) if seed_override < 0 else seed_override
     world_seed = seed
-    custom_buildings = recipe.get("custom_buildings", []).duplicate(true)
+    custom_buildings = canon_list(recipe.get("custom_buildings", []), "building")
     restart_pilot()
     custom_counter = int(recipe.get("custom_counter", custom_buildings.size()))
     var dropped: Array = layout_problems.duplicate()
     for s in recipe.get("spawned", []):
-        var inst: Dictionary = s.duplicate(true)
+        var inst: Dictionary = canon_spawn(s)
         var bid: String = str(inst.get("building_id", ""))
         var at: Vector2 = _vec(inst["pos"])
         if (not bid.is_empty() and building_by_instance(bid).is_empty()) or not walkable(at, bid, int(inst.get("floor", 0)), at):
@@ -982,7 +1015,7 @@ func _restore_snapshot(data: Dictionary) -> bool:
     if p.size() != 2:
         return false
     # Fully validated: commit (fail-closed above; nothing was mutated).
-    custom_buildings = data.get("custom_buildings", []).duplicate(true)
+    custom_buildings = canon_list(data.get("custom_buildings", []), "building")
     _apply_world(composed, int(data["seed"]))
     var incoming_player: Vector2 = _vec(p)
     if not incoming_inside.is_empty():
@@ -1010,12 +1043,9 @@ func _restore_snapshot(data: Dictionary) -> bool:
     fixture_states = data.get("fixture_states", {}).duplicate(true)
     zombies = data.get("zombies", []).duplicate(true)
     for zombie in zombies:
-        zombie["health"] = int(zombie["health"])
-        zombie["floor"] = int(zombie.get("floor", 0))
+        _canon_zombie(zombie)
         zombie["attack_cooldown"] = maxf(0.0, float(zombie.get("attack_cooldown", 0.0)))
-    spawned = data.get("spawned", []).duplicate(true)
-    for s in spawned:
-        s["floor"] = int(s.get("floor", 0))
+    spawned = canon_list(data.get("spawned", []), "spawn")
     spawn_counter = int(data.get("spawn_counter", 0))
     dev_zombie_counter = int(data.get("dev_zombie_counter", 0))
     dev_tainted = bool(data.get("dev_tainted", false))
