@@ -41,7 +41,9 @@ def world_bvh(ob, depsgraph):
         vertices=[tuple(transform@v.co) for v in mesh.vertices]
         polygons=[tuple(p.vertices) for p in mesh.polygons if len(p.vertices)>=3]
         assert polygons,ob.name
-        return BVHTree.FromPolygons(vertices,polygons,all_triangles=False,epsilon=0.00001)
+        centers=[tuple(sum(vertices[v][axis] for v in face)/len(face) for axis in range(3))
+                 for face in polygons]
+        return BVHTree.FromPolygons(vertices,polygons,all_triangles=False,epsilon=0.00001),centers
     finally:
         evaluated.to_mesh_clear()
 
@@ -61,12 +63,15 @@ def audit(output):
         depsgraph=bpy.context.evaluated_depsgraph_get()
         dynamic={k:world_bvh(ob,depsgraph) for k,ob in moving.items()}
         stationary={k:world_bvh(ob,depsgraph) for k,ob in guards.items()}
-        for part,dyn in dynamic.items():
-            for obstacle,static in stationary.items():
+        for part,(dyn,moving_centers) in dynamic.items():
+            for obstacle,(static,fixed_centers) in stationary.items():
                 overlaps=dyn.overlap(static)
                 if overlaps:
+                    moving_index,fixed_index=overlaps[0]
                     contact.append({"angle_deg":angle,"moving_part":part,
-                                    "fixed_part":obstacle,"triangle_pairs":len(overlaps)})
+                                    "fixed_part":obstacle,"triangle_pairs":len(overlaps),
+                                    "first_moving_polygon_center_xyz":moving_centers[moving_index],
+                                    "first_fixed_polygon_center_xyz":fixed_centers[fixed_index]})
     output.parent.mkdir(parents=True,exist_ok=True)
     verdict="CONTACT_DETECTED" if any(c["angle_deg"]>0 for c in contact) else "NO_SAMPLED_TRIANGLE_CONTACT"
     report={"schema_version":1,"status":"NONCANONICAL_F10_HERO_DOOR_CLEARANCE_AUDIT",
