@@ -1,6 +1,15 @@
 name: F10 experimental door clearance and GLB animation audit
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/f10-door-clearance-calibration.yml'
+      - 'tools/vehicle_factory/hero_*.py'
+      - 'tools/vehicle_factory/fleet_*.py'
+      - 'tools/blender_factory/render_v3_recovery.py'
+      - 'tests/factory/vehicles/test_f10_hero_door.py'
   push:
     branches:
       - chatgpt/f10-door-clearance-clean-20261109
