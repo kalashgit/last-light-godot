@@ -18,6 +18,11 @@ on:
         type: choice
         options: ['1', '2', '3', '4']
         default: '2'
+      continuation_batches:
+        description: Extra chained runs after this batch (hard cap 2)
+        type: choice
+        options: ['0', '1', '2']
+        default: '0'
 permissions:
   contents: read
 concurrency:
@@ -83,7 +88,9 @@ jobs:
       needs.preflight.result == 'success' &&
       needs.preflight.outputs.has_work == 'true' &&
       (needs.contracts.result == 'success' || needs.contracts.result == 'skipped') &&
-      (github.event_name != 'workflow_dispatch' || github.actor == 'kalashgit')
+      (github.event_name != 'workflow_dispatch' ||
+       (github.ref == 'refs/heads/main' &&
+        (github.actor == 'kalashgit' || github.actor == 'github-actions[bot]')))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -159,12 +166,14 @@ jobs:
       needs.blender-batch.result == 'success' &&
       (github.event_name == 'schedule' ||
        (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor == 'kalashgit') ||
-       (github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit'))
+       (github.event_name == 'workflow_dispatch' &&
+        github.ref == 'refs/heads/main' &&
+        (github.actor == 'kalashgit' || github.actor == 'github-actions[bot]')))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: write
-      actions: read
+      actions: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -204,3 +213,23 @@ jobs:
           git -C /tmp/foundry-publish add foundry_mass foundry_candidates
           git -C /tmp/foundry-publish commit -m 'chore(foundry): preserve technical candidates [skip ci]'
           git -C /tmp/foundry-publish push origin HEAD:refs/heads/foundry/technical-sprites-v1
+      # GITHUB_TOKEN workflow_dispatch is a GitHub-supported explicit exception.
+      # Never recurse on schedules; each founder-reviewed push is <=3 total
+      # batches. Every step rechecks the persisted cursor before re-dispatch.
+      - name: Continue finite technical production chain without a VPS
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHAIN_INPUT: ${{ inputs.continuation_batches || '0' }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == 'push' ]]; then remaining=2; else remaining="$CHAIN_INPUT"; fi
+          [[ "$remaining" =~ ^[012]$ ]] || { echo FOUNDRY_UNTRUSTED_CHAIN_DEPTH; exit 1; }
+          if (( remaining == 0 )); then echo FOUNDRY_CHAIN_LIMIT_REACHED; exit 0; fi
+          git fetch --no-tags origin refs/heads/foundry/technical-sprites-v1:refs/remotes/origin/foundry/technical-sprites-v1
+          git show origin/foundry/technical-sprites-v1:foundry_mass/state.json > /tmp/foundry-cursor-post-publish.json
+          completed=$(python3 -c "import json;d=json.load(open('/tmp/foundry-cursor-post-publish.json'));assert d['schema_version']==1 and d['golden_approved'] is False and len(d['completed'])<=360;print(len(d['completed']))")
+          if (( completed >= 360 )); then echo FOUNDRY_ALL_360_RENDERED; exit 0; fi
+          next=$((remaining-1))
+          echo "FOUNDRY_BOUNDED_CONTINUATION remaining=$next completed=$completed"
+          gh workflow run foundry-360-mass-production.yml --repo "$GITHUB_REPOSITORY" --ref main -f batch_size=2 -f continuation_batches="$next"
