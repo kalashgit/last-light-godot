@@ -25,7 +25,7 @@ EXPECTED_CLIPS = {
     "idle", "walk", "run", "sneak", "interact", "attack", "hurt", "death"
 }
 EXPECTED_WEARABLES = {
-    "shirt_body", "shirt_sleeves", "pants_loft", "waist_band"
+    "shirt_body", "shirt_sleeves", "shirt_collar", "pants_loft", "waist_band"
 }
 EXPECTED_FILES = (
     "calibration.png",
