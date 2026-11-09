@@ -89,7 +89,11 @@ def main():
       "door_swing_radius_proposal_m":.77,
       "collision_contract":"PROPOSAL_UNVALIDATED_WITH_ENGINE_OR_WALLS",
       "contents":"EMPTY_NO_BAKED_LOOT","rights_gate":"REVIEW_PENDING",
-      "founder_approval":False,"godot_tested":False,"iphone_verified":False}
+      "founder_visual_benchmark":{"approved":True,"date":"2026-11-09",
+        "scope":"F01 V10 visual benchmark only; not canonical or mass-production release"},
+      "founder_approval":False,"mass_production_eligible":False,
+      "godot_tested":False,"godot_isolated_fixture_ci":"42543992661",
+      "iphone_verified":False}
     (a.output/"atlas_metadata.json").write_text(json.dumps(metadata,indent=2)+"\n")
     print("F01_ATLAS_PACK_PASS",len(result),atlas.size,flush=True)
 

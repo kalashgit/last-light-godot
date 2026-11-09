@@ -66,6 +66,18 @@ The founder approved V10 as the **visual benchmark** on 2026-11-09. The followin
 
 **No automatic Golden approval or mass-production switch is granted by this visual approval.**
 
+## Post-approval integration handoff and remaining release gates
+
+| Owner | Exact integration contract | Gate to close |
+|---|---|---|
+| F11 shared materials | Inspect nine source finishes / 18 original base-color and roughness PNGs; verify glTF color-space and alpha semantics, UV consistency and native-scale contrast; map local F01 keys to approved shared material IDs. | F11 signed-off material IDs and image/PBR parity report |
+| F12 render bridge | Calibrate to the project's 80×40 px/m 2:1 world diamond and 30° camera; validate pivots, stable 7-frame atlas clips, alpha padding, unobscured crisper motion at gameplay scale and sprite memory budget. Do not substitute the current 128 px diagnostic for an approved sprite. | F12 validated atlas/metadata with camera, directions and frame events |
+| W05/W07 game interaction | Bind named main-door and crisper clips into actual game interaction authority; enforce closed-door drawer/freezer lock, real collision/occlusion, inventory permissions and save-state migration. The F01 isolated fixture provides a proposed state contract; it owns no real loot. | Real `main.tscn` enter/interact/loot/save/reload test, including unauthorized cases |
+| A00 registry | Verify original rights/provenance, de-duplicate canonical ID and revision, record V10 founder approval evidence without conflating it with Golden status. | Canonical signed master publication and audit trail |
+| Founder / mobile QA | Review F12 final at native size in the intended room and test touch hit areas, FPS and persistent interactions in Xogot on iPhone. | Final in-game acceptance and explicit mass-production authorization |
+
+**Gate evaluation at this revision:** founder visual benchmark **PASS**; Blender source and isolated Godot 4 fixture **PASS** as recorded; F11, F12, A00, live gameplay, iPhone and mass-production authorization **OPEN**.
+
 ## Known limitations
 
 - UV map semantics and PBR channel contracts remain F11 proposals, even though all relevant material images are now portable in glTF.
