@@ -107,3 +107,49 @@ def enamel(name,base=(.49,.55,.53),texture_folder=None):
             image_node.image=maps[tag]
             links.new(image_node.outputs["Color"],p.inputs[input_name])
     return mat
+
+
+def portable_finish(name,key,base,folder,roughness=.55,metallic=0.0,transmission=0.0,size=128):
+    """Original image-backed F01 PBR finish for Godot/glTF interchange.
+
+    RGB maps use subtle deterministic correlated wear; roughness is a distinct
+    grayscale image. The material remains editable in Blender, not a flat image.
+    F11 still owns final shared material IDs and art approval.
+    """
+    folder=Path(folder)
+    folder.mkdir(parents=True,exist_ok=True)
+    colors=[];roughs=[]
+    for y in range(size):
+        for x in range(size):
+            u=x/size;v=y/size
+            variation=(math.sin(2*math.pi*(u*4.0+v*.47))*.37+
+                       math.cos(2*math.pi*(v*7.0-u*.18))*.24+
+                       math.sin(2*math.pi*(u*27.0+v*23.0))*.13)
+            shade=1+variation*.028
+            colors.extend([max(0,min(1,c*shade)) for c in base]+[1.0])
+            value=max(.08,min(.98,roughness+variation*.023))
+            roughs.extend((value,value,value,1.0))
+    maps={}
+    for channel,pixels,space in (("basecolor",colors,"sRGB"),("roughness",roughs,"Non-Color")):
+        image=bpy.data.images.new(f"F01 {key} {channel}",width=size,height=size,alpha=True)
+        image.colorspace_settings.name=space
+        image.pixels.foreach_set(pixels)
+        assert image.pixels[0]>.03, (key,channel,"blank texture")
+        image.update()
+        image.filepath_raw=str(folder/f"f01_{key}_{channel}.png")
+        image.file_format="PNG";image.save();image.pack()
+        maps[channel]=image
+    mat=bpy.data.materials.new(name);mat.use_nodes=True
+    nodes=mat.node_tree.nodes;nodes.clear();links=mat.node_tree.links
+    out=nodes.new("ShaderNodeOutputMaterial");bsdf=nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Metallic"].default_value=metallic
+    bsdf.inputs["Roughness"].default_value=roughness
+    bsdf.inputs["Transmission Weight"].default_value=transmission
+    if transmission:
+        bsdf.inputs["IOR"].default_value=1.46
+    links.new(bsdf.outputs["BSDF"],out.inputs["Surface"])
+    for channel,socket in (("basecolor","Base Color"),("roughness","Roughness")):
+        tex=nodes.new("ShaderNodeTexImage");tex.image=maps[channel]
+        tex.label=f"Original {key} {channel}"
+        links.new(tex.outputs["Color"],bsdf.inputs[socket])
+    return mat
