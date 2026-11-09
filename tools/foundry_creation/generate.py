@@ -97,6 +97,16 @@ def locker(v,r,m):
         screws(f"door_{b}",x,-d/2-.033,h*.13,dw*.65,m)
     for x in (-w/2+.06,w/2-.06):
         box(f"ground_foot_{x:.2f}",(x,0,.028),(.075,d*.73,.056),m["steel"])
+    # A believable pressed-metal rear panel and side ribs are necessary:
+    # every 22.5-degree sprite must be recognizable, not a plain cuboid.
+    box("rear_steel_inset",(0,d/2+.016,h*.53),(w*.82,.021,h*.79),m["paint"],.009)
+    box("rear_maintenance_sticker",(0,d/2+.031,h*.76),(w*.42,.009,.13),m["light"],.005)
+    box("rear_maintenance_barcode",(0,d/2+.038,h*.74),(w*.28,.006,.024),m["dark"])
+    for side in (-1,1):
+        xx=side*(w/2+.012)
+        for level in (.20,.48,.75):
+            box(f"side_pressed_rib_{side}_{level}",(xx,0,h*level),(.014,d*.69,.026),m["light"],.004)
+        box(f"side_vertical_stiffener_{side}",(xx,d*.21,h*.5),(.019,.027,h*.66),m["steel"],.004)
     return (w,d,h)
 
 def chest(v,r,m):
