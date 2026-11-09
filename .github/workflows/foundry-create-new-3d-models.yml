@@ -37,7 +37,7 @@ jobs:
           args=()
           if test -f build/foundry_created/state.json; then args+=(--state build/foundry_created/state.json); fi
           python3 tools/foundry_creation/plan.py "${args[@]}" --batch-size 1 --output build/foundry_created/check.json
-          python3 -c "import json,os; p=json.load(open('build/foundry_created/check.json'));open(os.environ['GITHUB_OUTPUT'],'a').write('has_work='+str(bool(p['selected'])).lower()+'\\n')"
+          python3 -c "import json,os; p=json.load(open('build/foundry_created/check.json'));f=open(os.environ['GITHUB_OUTPUT'],'a');print('has_work='+str(bool(p['selected'])).lower(),file=f)"
   tests:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
