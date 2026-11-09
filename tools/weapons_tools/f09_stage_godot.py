@@ -83,6 +83,9 @@ def main():
     original={entry["id"] for entry in inventory["items"]}
     assert not original.intersection(IDS),"provisional fixture already canonical"
     factory_manifest=json.loads((factory_dst/"manifest.json").read_text())
+    graded=json.loads((SRC/"f09_f12_readability_report.json").read_text())
+    graded_by_id={row["asset_id"]:row for row in graded["headings"]}
+    assert set(graded_by_id)==set(IDS)
     for ident in IDS:
         recipe=selected[ident]
         inventory["items"].append({
@@ -90,19 +93,20 @@ def main():
             "category":"Tools","kind":"utility","weight_kg":0.55,
             "stack_max":1,
         })
-        src=SRC/ident/"world_sprite_96"
+        src=SRC/ident/"world_sprite_96_readable"
         target=factory_dst/"sprites"/ident
         target.mkdir(parents=True,exist_ok=True)
         frames=[]
         for heading in range(16):
             filename=f"h{heading:02}.png"
             shutil.copyfile(src/filename,target/filename)
+            contact=graded_by_id[ident]["frames"][heading]["ground_anchor_px"]
             frames.append({
                 "file":f"sprites/{ident}/{filename}",
                 "mode":"ground" if heading==0 else "held",
                 "angle_degrees":heading*22.5,
                 "size_px":[96,96],
-                "anchor_px":[48,48],
+                "anchor_px":contact,
                 "source_canvas_px":[384,384],
                 "crop_rect_px":[144,144,240,240]})
         factory_manifest["objects"].append({
