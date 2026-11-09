@@ -67,11 +67,18 @@ jobs:
           cp tools/factory/structures/godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
           cp tools/factory/structures/test_godot_collision_fixture.gd build/f02_godot/tools/factory/structures/
           cp tools/factory/structures/test_godot_door_physics.gd build/f02_godot/tools/factory/structures/
+          cp tools/factory/structures/test_godot_actual_house.gd build/f02_godot/tools/factory/structures/
+          mkdir -p build/f02_godot/scripts
+          cp scripts/house.gd build/f02_godot/scripts/house.gd
           python tools/factory/structures/collision_contract.py small_house --output build/f02_godot/tools/factory/structures/small_house.json
       - name: Parse and execute GDScript transform QA
         run: |
           /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
             --script res://tools/factory/structures/test_godot_collision_fixture.gd
+      - name: Check unchanged playable house gameplay interactions
+        run: |
+          /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
+            --script res://tools/factory/structures/test_godot_actual_house.gd
       - name: Execute Godot door physics closed-open-closed check
         run: |
           /tmp/Godot_v4.4.1-stable_linux.x86_64 --headless --path build/f02_godot \
