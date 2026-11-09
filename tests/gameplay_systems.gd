@@ -487,6 +487,39 @@ func test_full_loop() -> void:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(filename))
 
 
+## Gameplay events point at real clips/markers in the W02 presentation contract, and
+## timings referenced by the contract are the ones gameplay actually uses.
+func test_presentation_contract() -> void:
+	var contract: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/contracts/w02_gameplay_presentation_v1.json"))
+	for type: String in game.EVENT_CONTRACT:
+		var link: Array = game.EVENT_CONTRACT[type]
+		var actor: Dictionary = contract.actors.get(link[0], {})
+		check(actor.has("clips") and actor.clips.has(link[1]), "contract has clip for event " + type)
+		if not link[2].is_empty() and actor.has("clips") and actor.clips.has(link[1]):
+			var names: Array = []
+			for event: Dictionary in actor.clips[link[1]].events:
+				names.append(event.name)
+			check(link[2] in names, "contract clip %s carries marker %s" % [link[1], link[2]])
+	var loco: Dictionary = game.rules.locomotion
+	check(loco.walk_speed == game.WALK_SPEED and loco.sprint_speed == game.SPRINT_SPEED and loco.sneak_speed == game.SNEAK_SPEED, "contract locomotion speeds match gameplay constants")
+	fresh()
+	game.facing = Vector2.RIGHT
+	game._shove()
+	check(game.shove_cooldown == float(game.rules.combat.shove.cooldown), "shove uses contract-referenced cooldown")
+	var shoves: Array = events_of("shove")
+	check(shoves.size() == 1 and shoves[0].contract == {"actor": "player", "clip": "shove", "event": "shove_contact"}, "shove event carries contract link")
+	game.shove_cooldown = 0
+	game.attack_cooldown = 0
+	game._attack()
+	check(events_of("attack")[0].contract.event == "attack_contact", "attack event carries contract link")
+	fresh()
+	game.infected[0] = game.player + Vector2(.4, 0)
+	game.zombie_health[0] = 3
+	simulate(.5)
+	var strikes: Array = events_of("zombie_attack")
+	check(strikes.size() == 1 and absf(float(strikes[0].time) - float(game.rules.combat.zombie_attack_windup)) < 1.0 / 30.0, "zombie contact resolves at the contract wind-up time")
+
+
 func run() -> void:
 	root.size = Vector2i(1152, 720)
 	game = load("res://main.tscn").instantiate()
@@ -501,6 +534,7 @@ func run() -> void:
 	test_persistence()
 	test_migration()
 	test_full_loop()
+	test_presentation_contract()
 	print("GAMEPLAY SYSTEMS: %d checks, %d failures (headless synthetic input; iPhone/Xogot UNVERIFIED)" % [checks, failures.size()])
 	game.free()
 	quit(0 if failures.is_empty() else 1)

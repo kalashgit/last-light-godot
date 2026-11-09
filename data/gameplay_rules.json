@@ -54,7 +54,12 @@
 		"zombie_attack_range": 0.62,
 		"zombie_attack_windup": 0.4,
 		"zombie_attack_recovery": 0.8,
-		"zombie_attack_damage": 7.0
+		"zombie_attack_damage": 7.0,
+		"shove": {
+			"stamina": 12.0,
+			"cooldown": 0.8,
+			"reach": 1.15
+		}
 	},
 	"zombie_loot": [
 		{
@@ -76,5 +81,11 @@
 			"bandage": 12,
 			"disinfect": 12
 		}
+	},
+	"locomotion": {
+		"walk_speed": 2.2,
+		"sprint_speed": 3.6,
+		"sneak_speed": 0.95,
+		"zombie_speed": 0.72
 	}
 }

@@ -267,8 +267,25 @@ func _weapon_stats() -> Dictionary:
  if survival.equipped.is_empty(): return rules.combat.bare_hands
  return survival.definitions[survival.equipped]
 
+## Gameplay event -> W02 presentation contract (data/contracts/w02_gameplay_presentation_v1.json):
+## [actor, clip, event marker]. W07/W01 drive animation from these; "" means no gameplay marker.
+const EVENT_CONTRACT := {
+ "attack":["player","attack","attack_contact"],
+ "shove":["player","shove","shove_contact"],
+ "container_taken":["player","interact","interact_commit"],
+ "item_picked_up":["player","interact","interact_commit"],
+ "item_consumed":["player","interact","interact_commit"],
+ "player_damaged":["player","hurt",""],
+ "player_died":["player","death",""],
+ "zombie_attack":["infected","attack","attack_contact"],
+ "zombie_killed":["infected","death",""],
+}
+
 func _emit(event: Dictionary) -> void:
  event["time"]=elapsed
+ if EVENT_CONTRACT.has(event.type):
+  var link: Array=EVENT_CONTRACT[event.type]
+  event["contract"]={"actor":link[0],"clip":link[1],"event":link[2]}
  event_log.append(event)
  if event_log.size()>64: event_log.pop_front()
  gameplay_event.emit(event)
@@ -326,26 +343,28 @@ func receive_attack(attack: Dictionary) -> Dictionary:
  return result
 
 func _zombie_strike(i: int) -> void:
+ _emit({"type":"zombie_attack","source":i})
  receive_attack({"damage":float(rules.combat.zombie_attack_damage),"source":"zombie_%d"%i,"can_wound":true,"contaminated":true})
 
 func _shove() -> void:
  if health<=0 or paused or shove_cooldown>0: return
- if stamina<12:
+ if stamina<float(rules.combat.shove.stamina):
   _announce("Too exhausted to shove")
   return
- stamina-=12
+ stamina-=float(rules.combat.shove.stamina)
  vitals.exert(1.0)
  recovery_delay=.85
- shove_cooldown=.8
+ shove_cooldown=float(rules.combat.shove.cooldown)
  var hit:=false
  for i in range(infected.size()):
   var offset: Vector2=infected[i]-player
-  if zombie_health[i]>0 and offset.length()<1.15 and facing.dot(offset.normalized())>=.15 and not _line_blocked(player,infected[i]):
+  if zombie_health[i]>0 and offset.length()<float(rules.combat.shove.reach) and facing.dot(offset.normalized())>=.15 and not _line_blocked(player,infected[i]):
    infected[i]=_try_move(infected[i],offset.normalized()*.65,.17)
    zombies_hit_time[i]=.7
    zombie_attack_time[i]=0.0
    hit=true
    _emit({"type":"zombie_shoved","target":i})
+ _emit({"type":"shove","hit":hit})
  _announce("Pushed back — make space" if hit else "Shove missed")
 
 func _process(delta: float) -> void:

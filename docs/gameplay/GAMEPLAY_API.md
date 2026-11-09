@@ -50,7 +50,7 @@ game.vitals.status_text()    # vitals part only
 
 ## Gameplay events
 
-`signal gameplay_event(event: Dictionary)` on the main scene. Every event has `type` and `time` (seconds of simulated play). The last 64 are kept in `game.event_log`.
+`signal gameplay_event(event: Dictionary)` on the main scene. Every event has `type` and `time` (seconds of simulated play). The last 64 are kept in `game.event_log`. Events with animation meaning also carry `contract: {actor, clip, event}` linking them to the V2 presentation contract (`docs/gameplay/PRESENTATION_CONTRACT_V2.md`); `shove` and `zombie_attack` are emitted for that purpose.
 
 | type | fields | emitted when |
 |---|---|---|
