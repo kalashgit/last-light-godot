@@ -1,11 +1,6 @@
 name: M02 Autonomous Asset Factory V1 (protected candidate)
 
 on:
-  push:
-    branches: ['codex/m02-autonomous-asset-factory-v1']
-    paths:
-      - 'tools/autonomous_factory/**'
-      - '.github/workflows/m02-autonomous-factory-v1.yml'
   pull_request:
     paths:
       - 'tools/autonomous_factory/**'
@@ -47,7 +42,9 @@ jobs:
   blender-candidate:
     needs: contracts
     if: >-
-      github.event_name != 'pull_request' &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.head.repo.full_name == github.repository &&
+        github.head_ref == 'codex/m02-autonomous-asset-factory-v1')) &&
       (github.event_name != 'repository_dispatch' || github.actor == 'kalashgit') &&
       (github.event_name != 'repository_dispatch' || github.event.client_payload.asset == 'f01-refrigerator')
     runs-on: ${{ inputs.runner == 'isolated-self-hosted' && fromJSON('["self-hosted","linux","x64","last-light-isolated-blender"]') || fromJSON('"ubuntu-latest"') }}
@@ -119,11 +116,16 @@ jobs:
           name: m02-f01-unapproved-${{ github.run_id }}
           path: build/m02_f01_v1
       - name: Install candidate GLB in isolated fixture
-        run: cp build/m02_f01_v1/attempt_1/refrigerator_refined_calibration.glb tests/factory/furniture/godot_fixture/model.glb
+        run: |
+          cp build/m02_f01_v1/attempt_1/refrigerator_refined_calibration.glb tests/factory/furniture/godot_fixture/model.glb
+          cp build/m02_f01_v1/f12_atlas/atlas_000.png tests/factory/furniture/godot_fixture/m02_f12_cal01_atlas.png
+          cp tools/autonomous_factory/verify_f12_atlas.gd tests/factory/furniture/godot_fixture/verify_f12_atlas.gd
       - name: Real engine editor import
         run: godot --headless --path tests/factory/furniture/godot_fixture --editor --import
       - name: Real engine animation/interaction regression
         run: godot --headless --path tests/factory/furniture/godot_fixture --script res://verify_import.gd
+      - name: Real Godot PNG atlas import and dimension contract
+        run: godot --headless --path tests/factory/furniture/godot_fixture --script res://verify_f12_atlas.gd
 
   candidate-draft:
     needs: [contracts, blender-candidate, real-godot-fixture]

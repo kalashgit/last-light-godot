@@ -5,11 +5,6 @@ on:
   pull_request:
     paths:
       - '.github/workflows/m02-specialist-contracts.yml'
-      - 'tools/autonomous_factory/**'
-  push:
-    branches: ['codex/m02-autonomous-asset-factory-v1']
-    paths:
-      - '.github/workflows/m02-specialist-contracts.yml'
   workflow_dispatch:
 
 permissions:
@@ -17,9 +12,10 @@ permissions:
 
 jobs:
   source-contracts:
-    # Source checks are emitted by the feature-branch push; avoid duplicate
-    # compute for the corresponding PR synchronize event.
-    if: github.event_name != 'pull_request'
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.head_ref == 'codex/m02-autonomous-asset-factory-v1')
     strategy:
       fail-fast: false
       max-parallel: 2

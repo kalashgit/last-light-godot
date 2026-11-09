@@ -8,7 +8,7 @@ This is the orchestration foundation, **not yet a fully autonomous AI creative r
 
 ## Events and protection
 
-- `pull_request`: runs only pure-Python controller tests. No 3D generation or privileged writeback.
+- `pull_request`: always runs unprivileged controller tests; **only** an internal PR whose head repository matches this repository and whose head branch is exactly `codex/m02-autonomous-asset-factory-v1` may additionally run unprivileged Blender/Godot generation. Fork PRs cannot run the heavy candidate job. No privileged writeback.
 - `workflow_dispatch`: founder may launch a bounded refrigerator run, with `hosted` or an already configured hardened runner labelled `last-light-isolated-blender`.
 - `repository_dispatch`, type `last-light-m02-calibration-v1`: only `kalashgit` actor and exact `client_payload.asset=f01-refrigerator` execute production jobs. The caller must independently possess GitHub dispatch authorization.
 - Serial concurrency across the repository for this workflow, per-job timeouts, no production secrets in render jobs, read-only default GITHUB_TOKEN, three-day artifact retention.
@@ -54,7 +54,7 @@ Next integrations should use small source-specific adapters and tests, never a b
 
 `m02-specialist-contracts.yml` adds bounded pinned-source checks for F05, F06, F07 and F09. F07 is explicitly compile-only until a complete animation/Blender fixture is imported. F04/F08 remain blocked because a verified repository source branch and runnable contract were not identified by the current audit. F02/F03/F05/F06/F07/F09 candidate checks do not establish full gameplay integration or Golden approval.
 
-The F01 workflow has a restricted feature-branch `push` trigger so its Blender/Godot jobs can execute without enabling the workflow on protected `main`. Privileged issue/PR-report jobs stay restricted to founder-initiated dispatch and are disabled for push. All jobs default to read-only repository access and enforce finite timeouts, bounded parallelism and artifact retention. These temporary integration workflows remain draft and do not merge, deploy, or authorize canonical production.
+The F01 workflow has a restricted same-repository feature-branch **PR** event so its read-only Blender/Godot jobs execute without enabling the workflow on protected `main`. Privileged issue/PR-report jobs stay restricted to founder-initiated dispatch and are disabled for ordinary PRs. All jobs default to read-only repository access and enforce finite timeouts, bounded parallelism and artifact retention. These temporary integration workflows remain draft and do not merge, deploy, or authorize canonical production.
 
 ## November 9 hosted integration findings and controlled fixes
 
@@ -72,7 +72,7 @@ These are recorded provenance and actual CI failure causes, not fabricated engin
 
 ## Proven F01 gate and pending F10 compatibility probe
 
-F01 run [42585975737](https://github.com/kalashgit/last-light-godot/actions/runs/42585975737) subsequently passed **both real Blender candidate generation and real Godot 4 engine import/animation/interaction**, plus the F12 diagnostic and controller tests. The GH issue/draft-PR reporting jobs were intentionally skipped on the unprivileged branch `push` event. The source candidate remains noncanonical and subject to founder art review.
+F01 run [42585975737](https://github.com/kalashgit/last-light-godot/actions/runs/42585975737) subsequently passed **both real Blender candidate generation and real Godot 4 engine import/animation/interaction**, plus the F12 diagnostic and controller tests. The GH issue/draft-PR reporting jobs were intentionally skipped on the unprivileged integration event. The source candidate remains noncanonical and subject to founder art review.
 
 The F10 failure was traced to an **object-label mismatch**: its `fleet_render.cube/pipe` functions prepend `LL FLEET ` while its clearance and animation test lookup expects `F10 HERO `. A temporary, tightly scoped M02 pinned-checkout adapter renames only explicitly tagged F10 HERO Blender objects at creation time and records the shim in the artifact. The adapter changes no mesh, material, animation or parent transform. Clearance must still achieve zero genuine sampled collisions, and GLB/animation validations must pass; a successful name fix alone never passes F10.
 
@@ -88,12 +88,14 @@ The first real integrated engine run [42587865480](https://github.com/kalashgit/
 
 To reuse rather than recreate the downstream F12 sprite pipeline, the next revision checks out immutable F12 source `eba8e2c6d78bbc41b2de413d176d805b6c288337` with read-only credentials and feeds the four measured candidate PNGs to the actual specialist `inspect_pngs.py`, `atlas_layout.py` and `compose_atlas.py`. The shared QA then checks atlas integrity and pixel-exact correspondence. This packaging extension needs its own hosted engine run; its existence alone is not a passing test.
 
+The isolated Godot 4.6 fixture also imports the resulting **actual F12 atlas PNG** and checks for a loadable 1024×1024 `Texture2D`, in addition to its pre-existing GLB animation/interaction regression. This is a technical texture import gate, not a test of the full in-game tile atlas, character animation, or world scene.
+
 Local artifact-backed integration proof: against real F01 Blender PNGs downloaded from [run 42587865480](https://github.com/kalashgit/last-light-godot/actions/runs/42587865480), the original pinned F12 inspector returned `PNG_QA_PASS`, the original compositor produced one 1024px atlas containing four frames (directions 0,4,8,12), and M02's pixel-exact atlas + nine-material PBR gate passed. The original F12 `layout_sha256` was `9a28018ed050cefadc130ef4278092751f58cc72595f736e118795e93e32918e`. This demonstrates real F12 **post-processing**, but does not substitute for the new full hosted-workflow orchestration and gameplay scene tests.
 
 The current pinned F10 probe [42587865774](https://github.com/kalashgit/last-light-godot/actions/runs/42587865774) also uncovered actual clearance and animation defects once the name-only shim got through object lookup: `CONTACT_DETECTED 49` via evaluated Blender BVH, then Blender 5's `Action.fcurves` API failure. Neither is waived; owner repair contract is [issue #69](https://github.com/kalashgit/last-light-godot/issues/69).
 
 ## GitHub Actions cost deduplication
 
-Heavy F01 Blender/Godot candidate jobs and the pinned five-family renderer run only on an explicitly trusted branch `push` or a supported founder dispatch, **not** on the corresponding duplicate `pull_request` event. PR events still check the unprivileged Python control contracts. The separate source-only four-family matrix also avoids duplicate PR-triggered compute. These changes limit needless runner consumption while retaining short-lived evidence artifacts, job timeouts and branch-level concurrency. No GitHub billing amount has been retrieved from the owner's account, so do not conflate zero paid AI API calls with a verified zero Actions invoice.
+Heavy F01 Blender/Godot candidate jobs execute only on the exact M02 internal PR (with read-only permissions), or supported founder dispatch. Ordinary push events are intentionally absent to avoid a second run for the same commit. PRs from forks or competing branches cannot execute F01 Blender generation. These safeguards limit needless runner consumption while retaining short-lived evidence artifacts, job timeouts and branch-level concurrency. No GitHub billing amount has been retrieved from the owner's account, so do not conflate zero paid AI API calls with a verified zero Actions invoice.
 
-The pinned F02/F03/F10/F11/F12 and source-level F05/F06/F07/F09 matrices also stop re-running on every unrelated `tools/autonomous_factory/**` edit. Their expensive `push` triggers are scoped to changes to their own workflow definitions, while a founder can request an independent recheck through the supported manual-dispatch flow once that workflow is installed on an authorized default branch. This keeps a change to the F01 renderer from automatically regenerating all five pinned specialist fixtures.
+The pinned F02/F03/F10/F11/F12 and source-level F05/F06/F07/F09 matrices also stop re-running on every unrelated `tools/autonomous_factory/**` edit. Their PR event is scoped to changes to their own workflow definitions **and** the exact internal M02 branch. A founder may request an independent recheck through supported manual dispatch once the workflow is installed on an authorized default branch. This keeps changes to F01 rendering from automatically regenerating all five pinned specialist fixtures.

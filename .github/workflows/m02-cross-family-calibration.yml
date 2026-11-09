@@ -5,11 +5,6 @@ on:
   pull_request:
     paths:
       - '.github/workflows/m02-cross-family-calibration.yml'
-      - 'tools/autonomous_factory/**'
-  push:
-    branches: ['codex/m02-autonomous-asset-factory-v1']
-    paths:
-      - '.github/workflows/m02-cross-family-calibration.yml'
   workflow_dispatch:
 
 permissions:
@@ -21,9 +16,12 @@ concurrency:
 
 jobs:
   specialist-evidence:
-    # Heavy engines run once per trusted feature-branch push or founder dispatch.
-    # PR events are for read-only metadata review, not duplicate 5-way rendering.
-    if: github.event_name != 'pull_request'
+    # Only exact-branch, same-repo PRs may run these read-only pinned engines.
+    # Unrelated F01 source updates will not re-trigger a five-family matrix.
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.head_ref == 'codex/m02-autonomous-asset-factory-v1')
     strategy:
       fail-fast: false
       max-parallel: 2
