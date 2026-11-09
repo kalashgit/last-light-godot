@@ -93,3 +93,8 @@ def arm_sections(sign, width):
     ]
     return [(sign * x, 0, z, rx * width, ry * width, weight)
             for z, x, rx, ry, weight in rows]
+
+def sleeve_sections(sign, width):
+    """Long sleeve uses matching upper elbow/shoulder cross-sections."""
+    return [(x, y, z, rx * 1.17, ry * 1.17, blend)
+            for x, y, z, rx, ry, blend in arm_sections(sign, width)[3:]]
