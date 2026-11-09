@@ -99,17 +99,17 @@ def limb(name, a, b, radius, bone, mat):
 
 loft_chain('torso skin', torso_sections(body_width), 'chest', 'spine', skin)
 ellipsoid('underwear actual geometry', (0,0,.96),(.21*body_width,.155*body_width,.14),'pelvis',underwear)
-ellipsoid('head', (0,-.015,1.64),(.125,.117,.16),'head',skin)
-ellipsoid('hair cap test', (0,.012,1.76),(.127,.118,.065),'head',hair)
+ellipsoid('head', (0,-.015,1.64),(.119,.111,.149),'head',skin)
+ellipsoid('hair cap test', (0,.012,1.76),(.121,.113,.061),'head',hair)
 for side, sign in [('L',1),('R',-1)]:
     loft_chain('arm_skin_'+side, arm_sections(sign, limb_width),
                'upper_arm_'+side, 'forearm_'+side, skin)
     loft_chain('leg_skin_'+side, leg_sections(sign, 1.0, limb_width),
                'thigh_'+side, 'shin_'+side, skin)
     ellipsoid('hand '+side,(sign*.37,0,.88),
-              (.057*limb_width,.048*limb_width,.087),'hand_'+side,skin)
+              (.052*limb_width,.045*limb_width,.079),'hand_'+side,skin)
     ellipsoid('foot '+side,(sign*.12,-.105,.08),
-              (.09*limb_width,.17,.08),'foot_'+side,underwear)
+              (.087*limb_width,.145,.08),'foot_'+side,underwear)
 
 # Separate outer garments: fit envelopes scale with the selected physique.
 # Geometry remains rigid-weighted; shoulder/elbow deformation QA is not yet approved.
@@ -325,7 +325,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.7','gait_contract':'F05_COUNTERROTATION_V1','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.8','proportion_profile':'F05_ADULT_CALIBRATION_V1','gait_contract':'F05_COUNTERROTATION_V1','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
