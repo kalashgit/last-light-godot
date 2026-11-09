@@ -9,6 +9,8 @@ def audit(raw):
     manifest=json.loads((raw/"manifest.json").read_text())
     assert manifest["canonical_master_id"] is None
     assert manifest["status"]=="EXPERIMENTAL_DRIVER_DOOR_NOT_APPROVED"
+    assert manifest["cabin_opening"]=="separated_body_surface_with_recessed_floor_and_fixed_seat"
+    assert "inner_card" in manifest["moving_door_parts"]
     frames=manifest["frames"]
     assert [f["angle_deg"] for f in frames]==[0,22,44,66]
     assert [f["duration_ms"] for f in frames]==[100]*4
