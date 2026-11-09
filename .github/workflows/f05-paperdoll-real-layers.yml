@@ -1,0 +1,115 @@
+name: LAST LIGHT F05/F06 original Blender layered paperdoll acceptance (candidate)
+
+on:
+  pull_request:
+    paths:
+      - "tools/actor_factory/render_paperdoll_layers.py"
+      - "tools/actor_factory/validate_paperdoll_layers.py"
+      - ".github/workflows/f05-paperdoll-real-layers.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f05-real-layer-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-blender-layers:
+    name: F05/F06 original ${{ matrix.kind }} 3D to 2D to Godot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        kind: [survivor, infected]
+    steps:
+      - name: Checkout F05/F06 original procedural source branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout pinned verified paperdoll adapter PR103
+        uses: actions/checkout@v4
+        with:
+          repository: kalashgit/last-light-godot
+          ref: 8d63443a23f583c0dc560daed1ca98740934cc41
+          path: build/pinned-paperdoll-runtime
+          persist-credentials: false
+      - name: Install Blender CPU and image inspector
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy libegl1 libgl1-mesa-dri
+          blender --version | head -n 2
+      - name: Install offline PNG inspection tools
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install 'Pillow>=10,<15'
+      - name: Render original editable Blender actor and every separate wearable
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          MESA_LOADER_DRIVER_OVERRIDE: llvmpipe
+        run: |
+          set -euo pipefail
+          mkdir -p build/real-layered/${{ matrix.kind }}
+          blender -b --factory-startup -t 2 --python tools/actor_factory/render_paperdoll_layers.py -- \
+            --kind "${{ matrix.kind }}" \
+            --output "build/real-layered/${{ matrix.kind }}" \
+            2>&1 | tee "build/f05-${{ matrix.kind }}-blender.log"
+          grep -q 'LL_F05_LAYER_RENDER_COMPLETE' "build/f05-${{ matrix.kind }}-blender.log"
+      - name: Independently verify all native Blender sources and source PNGs
+        run: |
+          python tools/actor_factory/validate_paperdoll_layers.py --source "build/real-layered/${{ matrix.kind }}"
+      - name: Reopen native Blender source in actual Blender
+        run: |
+          blender -b "build/real-layered/${{ matrix.kind }}/editable/ll_biped_layered_pilot.blend" -t 2 \
+            --python-expr 'import bpy; m=[o for o in bpy.data.objects if o.type=="MESH" and "ll_layer_slot" in o]; assert len(m)>=25, len(m); assert any(o.get("ll_layer_slot")=="backpack" for o in m); print("LL_F05_BLENDER_REOPEN_PASS",len(m))'
+      - name: Pack actual Blender RGBA layers using exact pinned bridge
+        run: |
+          python build/pinned-paperdoll-runtime/tools/paperdoll_pack/pack.py \
+            --source "build/real-layered/${{ matrix.kind }}" \
+            --output build/pinned-paperdoll-runtime/build/paperdoll_package
+          python build/pinned-paperdoll-runtime/tools/paperdoll_pack/pack.py \
+            --verify --output build/pinned-paperdoll-runtime/build/paperdoll_package
+      - name: Install pinned Godot 4.3 for actual engine import
+        run: |
+          curl -fL --retry 3 -o /tmp/godot.zip \
+            "https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Import actual Blender source GLB and rendered RGBA atlases into Godot
+        run: |
+          mkdir -p build/pinned-paperdoll-runtime/tests/fixtures
+          cp "build/real-layered/${{ matrix.kind }}/editable/ll_biped_layered_pilot.glb" \
+            build/pinned-paperdoll-runtime/tests/fixtures/ll_biped_layered_pilot.glb
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime --editor --import --quit
+      - name: Exercise paperdoll with actual F05/F06 8-direction original Blender imagery
+        run: |
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime \
+            --script res://tests/foundry_paperdoll_package_smoke.gd
+      - name: Require 100 actual Blender-layer actors inside playable LAST LIGHT scene
+        run: |
+          set -euo pipefail
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless \
+            --path build/pinned-paperdoll-runtime \
+            --script res://tests/foundry_paperdoll_world_smoke.gd \
+            2>&1 | tee "build/f05-${{ matrix.kind }}-world.log"
+          grep -q 'LL_PAPERDOLL_WORLD_PASS assertions=15 characters=100' \
+            "build/f05-${{ matrix.kind }}-world.log"
+      - name: Archive non-Golden source, native renders and QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-light-real-paperdoll-${{ matrix.kind }}-${{ github.run_id }}
+          path: |
+            build/real-layered/${{ matrix.kind }}/
+            build/pinned-paperdoll-runtime/build/paperdoll_package/
+            build/f05-${{ matrix.kind }}-blender.log
+            build/f05-${{ matrix.kind }}-world.log
+          if-no-files-found: warn
+          retention-days: 14
