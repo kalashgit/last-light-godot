@@ -35,6 +35,18 @@ def sha256(path):
 
 def component(name, xyz, dims, material, bevel=0.006, parent=None):
     ob = hero.cube(name, xyz, dims, material, bevel=bevel)
+    # render_v3_recovery's weighted-normal helper requires this in Blender 4.0;
+    # otherwise it emits warnings and its modifier is not evaluated correctly.
+    ob.data.use_auto_smooth = True
+    if parent:
+        ob.parent = parent
+        ob.matrix_parent_inverse = parent.matrix_world.inverted()
+    return ob
+
+
+def hardware_pin(name, xyz, radius, length, material, parent=None, rotation=None):
+    ob = hero.cyl(name, xyz, radius, length, material, vertices=20, rotation=rotation)
+    ob.data.use_auto_smooth = True
     if parent:
         ob.parent = parent
         ob.matrix_parent_inverse = parent.matrix_world.inverted()
@@ -45,14 +57,18 @@ def main():
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--samples", type=int, default=12)
+    parser.add_argument("--samples", type=int, default=24)
     opt = parser.parse_args(args)
     output = opt.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
 
     scene = hero.setup()  # existing locked F12-predecessor 30-degree camera/light rig
     m = hero.materials("f01_fridge")
-    m["paint"]=enamel("F01 original aged enamel V5")
+    m["paint"]=enamel("F01 original aged mint enamel V9",base=(.49,.55,.53),
+                      texture_folder=output/"textures")
+    m["plastic"]=hero.mat("F01 original warm ivory cavity liner",(.73,.73,.65),rough=.65,wear=.025)
+    m["glass_edge"]=hero.mat("F01 glass edge cool jade",(.46,.68,.61),rough=.30,wear=.01)
+    m["drawer"]=hero.mat("F01 milky translucent drawer plastic",(.62,.71,.65),rough=.33,wear=.025)
     shelf_glass = hero.mat("F01 glass shelving pale green edge",(.70,.82,.78),rough=.16,wear=.015)
     glass_bsdf = shelf_glass.node_tree.nodes.get("Principled BSDF")
     if glass_bsdf:
@@ -68,9 +84,42 @@ def main():
     component("body.floor", (0,0,t/2+.035), (w-2*t,d,.07), m["paint"])
     # Liner, door seal, real shelf slabs and edge lips.
     component("liner.back", (0,d/2-t-.009,h/2), (w-2*t-.025,.018,h-.14), m["plastic"])
+    for side in (-1,1):
+        component(f"liner.side_wall.{side}",(side*(w/2-t-.012),0,h/2),(.016,d-.09,h-.16),m["plastic"],.004)
+        component(f"opening.frame.stile.{side}",(side*(w/2-.025),-d/2-.012,h/2),(.028,.018,h-.05),m["plastic"],.005)
+    for tag,z in (("head",h-.025),("threshold",.025)):
+        component(f"opening.frame.{tag}",(0,-d/2-.012,z),(w-.047,.018,.035),m["plastic"],.004)
     for n, z in enumerate((.40,.70,1.00,1.34)):
         component(f"shelf.{n}.glass", (0,.015,z), (w-2*t-.035,d-.15,.018),shelf_glass,.003)
-        component(f"shelf.{n}.front_lip", (0,-d/2+.08,z), (w-2*t-.035,.013,.032),m["chrome"],.002)
+        component(f"shelf.{n}.front_lip", (0,-d/2+.08,z), (w-2*t-.035,.013,.032),m["glass_edge"],.002)
+        for side in (-1,1):
+            component(f"shelf.{n}.wall_bracket.{side}",
+                      (side*(w/2-t-.029),.03,z-.023),(.035,.40,.019),m["plastic"],.005)
+    # Real separated lower bin: a shallow open-topped vessel, not a painted cube.
+    # Geometry is parented to its own sliding origin to allow future independent
+    # state animation; the door-open clip intentionally does not move this drawer.
+    slide = bpy.data.objects.new("slide_local.crisper_drawer",None)
+    bpy.context.collection.objects.link(slide)
+    slide.location=(0,-.04,.245)
+    slide.empty_display_size=.055
+    slide["motion_axis_local"]="-Y"
+    slide["proposed_travel_m"]=.19
+    for side in (-1,1):
+        component(f"crisper.fixed_slide_rail.{side}",
+                  (side*(w/2-t-.042),-.02,.215),(.028,.48,.021),m["chrome"],.003)
+    component("crisper.tray.floor",(0,-.034,.178),(.555,.446,.018),m["drawer"],.006,slide)
+    component("crisper.tray.front",(0,-.263,.270),(.555,.017,.184),m["drawer"],.008,slide)
+    component("crisper.tray.back",(0,.188,.270),(.555,.015,.184),m["drawer"],.005,slide)
+    for side in (-1,1):
+        component(f"crisper.tray.side.{side}",(side*.272,-.037,.270),(.015,.435,.184),m["drawer"],.005,slide)
+    component("crisper.tray.grip",(0,-.286,.323),(.207,.023,.023),m["plastic"],.011,slide)
+    component("crisper.tray.top_edge",(0,-.260,.362),(.54,.023,.014),m["plastic"],.005,slide)
+    # A separate molded freezer/chiller hood and accessible dial visually define
+    # the upper cold compartment without filling the hollow main refrigerator.
+    component("chiller.upper_hood",(0,.204,1.603),(.60,.19,.092),m["plastic"],.015)
+    component("chiller.lower_shadow_lip",(0,.085,1.549),(.57,.016,.014),m["glass_edge"],.003)
+    hardware_pin("control.thermostat_dial",(.210,-.005,1.551),.027,.022,m["black"],rotation=(math.pi/2,0,0))
+    hardware_pin("control.thermostat_center",(.210,-.022,1.551),.009,.025,m["plastic"],rotation=(math.pi/2,0,0))
     for side in (-1,1):
         component("opening.gasket.vertical",(side*(w/2-t-.008),-d/2-.005,h/2),(.014,.013,h-.12),m["rubber"],.001)
     for z in (.065,h-.05):
@@ -84,15 +133,26 @@ def main():
     component("door.enamel_panel",(0,-d/2-.056,h/2),(w-.014,.065,h-.075),m["paint"],.023,hinge)
     # Interior liner faces the cavity (+Y); it must not be painted on the exterior.
     component("door.inner_liner",(0,-d/2-.017,h/2),(w-.071,.015,h-.13),m["plastic"],.008,hinge)
+    for side in (-1,1):
+        component(f"door.inner_gasket.vertical.{side}",
+                  (side*(w/2-.035),-d/2-.005,h/2),(.014,.013,h-.13),m["rubber"],.002,hinge)
+    for z in (.10,h-.10):
+        component(f"door.inner_gasket.horizontal.{z:.2f}",
+                  (0,-d/2-.005,z),(w-.086,.013,.015),m["rubber"],.002,hinge)
     # Real shallow storage pockets, parented to the door, seen when fully open.
     for n,z in enumerate((.36,.73,1.11)):
         component(f"door.storage_bin.{n}.front_rail",(0,-d/2+.008,z),(.53,.026,.045),m["plastic"],.006,hinge)
         component(f"door.storage_bin.{n}.shelf",(0,-d/2+.024,z-.063),(.53,.10,.018),m["plastic"],.003,hinge)
     component("door.pull.vertical",(.295,-d/2-.11,h/2),(.025,.035,.38),m["chrome"],.009,hinge)
+    for z in (h/2-.18,h/2+.18):
+        component(f"door.pull.standoff.{z:.3f}",(.295,-d/2-.088,z),(.035,.055,.032),m["steel"],.011,hinge)
+    # A pressed metal face seam remains visible at native sprite scale.
+    component("door.lower_pressed_seam",(0,-d/2-.09,.220),(w-.11,.007,.004),m["steel"],.002,hinge)
     for z in (.17,h-.16):
         component("door.hinge_pin",(hinge_xyz[0],hinge_xyz[1],z),(.03,.03,.063),m["steel"],.006)
     for z in (.03,.07,.11):
         component("compressor.vent_louver",(0,-d/2-.029,z),(.40,.012,.008),m["black"],.002)
+    component("compressor.dark_recess",(0,-d/2-.027,.078),(.43,.006,.115),m["black"],.002)
     # Low-profile pressed sheet-metal junctions and feet add physical detail.
     for x in (-.29,.29):
         component("body.adjustable_floor_foot",(x,.22,.022),(.08,.08,.044),m["rubber"],.009)
@@ -130,7 +190,7 @@ def main():
     bpy.ops.object.select_all(action="DESELECT")
     # Include hinge transform and world-ground anchor; otherwise Blender can
     # export a visually valid GLB with ZERO animation clips or reusable pivots.
-    for obj in objs+[hinge,ground]:
+    for obj in objs+[hinge,slide,ground]:
         obj.select_set(True)
     bpy.context.view_layer.objects.active=objs[0]
     glb=output/"refrigerator_refined_calibration.glb"
@@ -146,17 +206,43 @@ def main():
     scene.frame_set(7)
     # Deterministic checks of actual Blender hierarchy and full travel.
     doors=[o for o in scene.objects if o.name.startswith("door.") and o.type=="MESH" and o.parent==hinge]
-    assert len(doors)==9 and all(o.parent==hinge for o in doors)
+    tray=[o for o in scene.objects if o.name.startswith("crisper.tray.") and o.type=="MESH" and o.parent==slide]
+    assert len(doors)>=9 and all(o.parent==hinge for o in doors)
+    assert len(tray)==7 and all(o.parent==slide for o in tray)
+    assert slide["proposed_travel_m"]==.19
     assert abs(math.degrees(hinge.rotation_euler.z)+105)<.01
-    assert sum(o.name.startswith("shelf.") for o in scene.objects)==8
+    assert sum(o.name.endswith(".glass") and o.name.startswith("shelf.") for o in scene.objects)==4
+    assert sum(".wall_bracket." in o.name and o.name.startswith("shelf.") for o in scene.objects)==8
+    # Actual ray intersection is the strongest cheap regression test of a hollow
+    # appliance: closed door blocks the cavity; open door reveals the rear liner.
+    test_ray_start=(0,-1.40,1.20)
+    test_ray_direction=(0,1,0)
+    scene.frame_set(1)
+    hit_closed=scene.ray_cast(bpy.context.evaluated_depsgraph_get(),test_ray_start,test_ray_direction)
+    scene.frame_set(7)
+    hit_open=scene.ray_cast(bpy.context.evaluated_depsgraph_get(),test_ray_start,test_ray_direction)
+    assert hit_closed[0] and hit_closed[-2].name=="door.enamel_panel",hit_closed
+    assert hit_open[0] and hit_open[-2].name=="liner.back",hit_open
     assert all((output/f"hinge_open_{i:02d}.png").stat().st_size>1000 for i in range(7))
-    files=[source,glb]+[output/f"hinge_open_{i:02d}.png" for i in range(7)]
+    texture_files=sorted((output/"textures").glob("*.png"))
+    assert len(texture_files)==2
+    color_image=bpy.data.images.get("F01 original enamel basecolor")
+    assert color_image is not None
+    assert max(color_image.pixels[0],color_image.pixels[1],color_image.pixels[2])>.30, "Empty/black enamel texture"
+    assert len(gltf_doc.get("textures",[]))>=2,"Portable PBR images were lost in GLB export"
+    files=[source,glb]+texture_files+[output/f"hinge_open_{i:02d}.png" for i in range(7)]
     report={"type":"NONCANONICAL_CALIBRATION_NOT_APPROVED","family":"F01","source_not_overwritten":True,
       "canonical_candidate":"ll_furniture_refrigerator","reference_revision":"A00-20261108-B001-r1",
       "camera":"existing render_v3_recovery.setup, 30-degree elevation", "frame_timing_proposed_ms":75,
       "hinge_range_deg":[0,-105],"frames":7,"mesh_count":len(objs),"door_meshes":len(doors),
-      "real_cavity":True,"material_finish":"CALIBRATION_NOT_F11_VALIDATED",
-      "checks":{"door_parenting":True,"shelf_pairs":True,"animation_end_angle":True,"render_files":True},
+      "crisper_tray_meshes":len(tray),"crisper_slide_travel_proposed_m":.19,
+      "real_cavity":True,"material_finish":"IMAGE_BACKED_ENAMEL_CALIBRATION_NOT_F11_VALIDATED",
+      "portable_texture_count":len(gltf_doc.get("textures",[])),
+      "original_texture_images":[str(p.relative_to(output)) for p in texture_files],
+      "checks":{"door_parenting":True,"crisper_separate_sliding_rig":True,
+                "shelf_pairs":True,"animation_end_angle":True,"render_files":True,
+                "closed_door_raycast":hit_closed[-2].name,
+                "open_cavity_raycast":hit_open[-2].name},
       "glb_animation_clips":len(clips),"glb_hinge_pivot_exported":True,
       "sha256":{p.name:sha256(p) for p in files}}
     (output/"calibration_report.json").write_text(json.dumps(report,indent=2)+"\n")
