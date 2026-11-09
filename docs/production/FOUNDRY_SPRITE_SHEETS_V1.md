@@ -36,6 +36,9 @@ packing work runs on CPU with Pillow without Blender or paid AI execution.
 - A tail of **fewer than 40 verified assets waits** for another admitted
   candidate batch; the packer never fills the page with duplicates or invented
   art, never advances the cursor for a held tail, and emits a waiting report.
+  The thumbnail stage also rejects exact duplicate RGBA artwork under different
+  canonical IDs; those records require semantic review instead of padding the
+  forty-item quota.
   For technical calibration only, legacy smaller batches still work without
   inventory-sheet mode. A batch of 80 emits two complete 40-item inventory
   pages; each runtime atlas may require multiple separate 2048px pages.
