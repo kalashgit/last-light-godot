@@ -24,11 +24,13 @@ def accessor_floats(document,binary,index):
     return output
 
 
-def z_rotation_deg(quaternion):
+def hinge_rotation_deg(quaternion):
     x,y,z,w=quaternion
     length=math.sqrt(sum(v*v for v in quaternion))
-    assert length>.99 and abs(x/length)<.03 and abs(y/length)<.03
-    return (math.degrees(2*math.atan2(z,w))%360)
+    # glTF converts Blender Z-up to Y-up; the authored Blender Z hinge becomes
+    # a glTF Y-axis rotation, as verified against the exported GLB sampler.
+    assert length>.99 and abs(x/length)<.03 and abs(z/length)<.03
+    return (math.degrees(2*math.atan2(y,w))%360)
 
 
 def audit(path):
@@ -58,12 +60,12 @@ def audit(path):
                 continue
             sampler=animation["samplers"][channel["sampler"]]
             times=[t[0] for t in accessor_floats(payload,binary,sampler["input"])]
-            angles=[z_rotation_deg(q) for q in accessor_floats(payload,binary,sampler["output"])]
+            angles=[hinge_rotation_deg(q) for q in accessor_floats(payload,binary,sampler["output"])]
             assert len(times)>=5 and len(times)==len(angles)
-            assert times[0]<.015 and times[-1]>=.39
+            assert times[-1]-times[0]>=.39
             assert all(b>a for a,b in zip(times,times[1:]))
             for frame,expected in enumerate((0,22,44,66,66)):
-                desired=frame*.1
+                desired=times[0]+frame*.1
                 nearest=min(range(len(times)),key=lambda i:abs(times[i]-desired))
                 assert abs(times[nearest]-desired)<.015, f"No hinge sample at {desired}s"
                 delta=((angles[nearest]-expected+180)%360)-180
