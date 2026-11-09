@@ -85,8 +85,13 @@ def verify(output: Path):
                 # must never inflate the reproducible calibration archive.
                 if p.is_file() and p != archives and p.suffix != ".blend1":
                     archive.write(p, p.relative_to(output))
-        qa["archive"] = {"file": archives.name, "sha256": hash_file(archives)}
-        (output / "qa_report.json").write_text(json.dumps(qa, indent=2)+"\n")
+        # Immutable receipt lives outside ZIP to avoid circular SHA claims.
+        receipt = {"archive_file": archives.name,
+                   "archive_sha256": hash_file(archives),
+                   "archived_qa_report_sha256": hash_file(output / "qa_report.json"),
+                   "receipt_policy": "EXTERNAL_IMMUTABLE_ARCHIVE_RECEIPT"}
+        (output / "archive_receipt.json").write_text(
+            json.dumps(receipt, indent=2) + chr(10))
     return qa
 
 
