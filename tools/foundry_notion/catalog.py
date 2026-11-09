@@ -67,18 +67,23 @@ def validate(catalog: dict) -> None:
             raise ValueError("Unreviewed world research may not become gameplay-complete")
 
 
-def plan(catalog: dict, completed: list[str] | None = None, batch_size: int = 4) -> dict:
+def plan(catalog: dict, completed: list[str] | None = None, batch_size: int = 4,
+         deferred: list[str] | None = None) -> dict:
     validate(catalog)
     if not isinstance(batch_size, int) or not 1 <= batch_size <= 10:
         raise ValueError("Work-order batch must contain 1 to 10 masters")
     done = completed or []
+    parked = deferred or []
     masters = catalog["production_masters"]
     identities = {r["content_id"] for r in masters}
     if len(done) != len(set(done)) or not set(done).issubset(identities):
         raise ValueError("Unknown or duplicate completed work order")
+    if (len(parked) != len(set(parked)) or not set(parked).issubset(identities)
+            or set(parked).intersection(done)):
+        raise ValueError("Deferred work orders must be known, unique and not completed")
     ready = [r for r in masters if r["semantic_verification"] == "Canonical Verified"
              and r["queue"] and r["work_order"] and r["stage"] != "Blocked"
-             and r["content_id"] not in done]
+             and r["content_id"] not in done and r["content_id"] not in parked]
     # Preserve Notion's A00-B001, B002, ... deliberately curated sequence
     # within a priority tier. In particular, F01's refrigerator Golden
     # calibration precedes less critical P0 small props.
@@ -103,6 +108,7 @@ def plan(catalog: dict, completed: list[str] | None = None, batch_size: int = 4)
         "schema_version": 1, "catalog_sha256": hashlib.sha256(payload).hexdigest(),
         "snapshot_date": catalog["snapshot_date"], "queue_status": "READY" if orders else "NO_ADMITTED_WORK",
         "orders": orders, "eligible_remaining": len(ready)-len(orders),
+        "deferred_not_completed": parked,
         "master_count": len(masters), "legacy_source_models_pending_golden": 360,
         "unverified_master_count": sum(r["semantic_verification"] != "Canonical Verified" for r in masters),
         "reference_records_not_assets": len(catalog["source_references"]),
@@ -115,11 +121,14 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--catalog", type=Path, required=True)
     p.add_argument("--completed", type=Path)
+    p.add_argument("--deferred", type=Path,
+                   help="JSON list of in-progress candidate IDs, excluded without false completion")
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--batch-size", type=int, default=4)
     a = p.parse_args()
     completed = json.loads(a.completed.read_text()) if a.completed and a.completed.exists() else []
-    doc = plan(json.loads(a.catalog.read_text()), completed, a.batch_size)
+    deferred = json.loads(a.deferred.read_text()) if a.deferred and a.deferred.exists() else []
+    doc = plan(json.loads(a.catalog.read_text()), completed, a.batch_size, deferred)
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(doc, indent=2) + "\n")
     print(f"FOUNDRY_NOTION_PLAN orders={len(doc['orders'])} remaining={doc['eligible_remaining']}")
