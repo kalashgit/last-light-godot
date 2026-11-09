@@ -66,7 +66,11 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/foundry/source
-          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir build/foundry/source
+          if gh release view foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release download foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" --pattern 'Last_Light_3D_Masters_All_360.zip' --dir build/foundry/source
+          else
+            gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir build/foundry/source
+          fi
           test -s "$SOURCE_ARCHIVE"
       - name: Read candidate-branch progress cursor
         if: github.event_name != 'pull_request'
@@ -116,6 +120,17 @@ jobs:
         with:
           name: foundry-360-candidates-${{ github.run_id }}
           path: build/foundry/candidates
+      - name: Mirror immutable source in a nonpublished draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! gh release view foundry-360-source-v1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            mkdir -p /tmp/foundry-source
+            gh run download 42460745955 --repo "$GITHUB_REPOSITORY" --name last-light-360-editable-3d-masters-geometry-only-v1 --dir /tmp/foundry-source
+            test -s /tmp/foundry-source/Last_Light_3D_Masters_All_360.zip
+            gh release create foundry-360-source-v1               /tmp/foundry-source/Last_Light_3D_Masters_All_360.zip               --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft               --title 'Foundry 360 source masters — internal archive (DO NOT PUBLISH)'               --notes 'Immutable recovered editable-model archive used only for technical sprite batches. Keep this release draft. No Golden approval.'
+          fi
       - name: Preserve candidates in isolated branch
         run: |
           set -euo pipefail
