@@ -46,6 +46,37 @@ jobs:
           python-version: '3.11'
       - run: python -m unittest discover -s tests/autonomous_factory -p test_foundry_ai_worker.py -v
 
+  live-failure-replay:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read-only replay of historical M02 F10 failed CI run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python tools/autonomous_factory/foundry_ai_worker.py --run-id 42608938487 > /tmp/foundry-replay.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          obj=json.loads(Path('/tmp/foundry-replay.json').read_text())
+          assert obj['status']=='DRY_RUN', obj
+          assert 'foundry-correction-run:42608938487' in obj['body']
+          assert 'job/' in obj['body']
+          assert 'Do not merge' in obj['body']
+          print('FOUNDRY_LIVE_READONLY_REPLAY_PASS', obj['title'])
+          PY
+
   correction-queue:
     if: >-
       (github.event_name == 'workflow_run' &&
