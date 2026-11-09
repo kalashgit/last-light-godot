@@ -1,0 +1,235 @@
+name: F12 Blender Calibration and Sprite Contracts
+on:
+  push:
+    branches:
+      - chatgpt/f12-clean-blender-ci-20261109
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+  pull_request:
+    paths:
+      - 'tools/factory/render_bridge/**'
+      - 'tests/factory/render_bridge/**'
+      - '.github/workflows/f12-render-bridge-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Compile Python source
+        run: python -m compileall -q tools/factory/render_bridge tests/factory/render_bridge
+      - name: Run F12 contracts
+        run: python -m unittest discover -s tests/factory/render_bridge -v
+
+  blender-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          python -m pip install 'Pillow>=10,<13'
+      - name: Capture Blender version
+        run: blender --version | head -n 2
+      - name: Render genuine CAL-01 fixture
+        run: |
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/calibrate.py -- --output "$RUNNER_TEMP/f12-calibration"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_calibration_only.blend"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_cube_rgba.png"
+          test -s "$RUNNER_TEMP/f12-calibration/CAL-01_report.json"
+      - name: Verify actual Blender render and calibrated report
+        env:
+          F12_CAL_REPORT: ${{ runner.temp }}/f12-calibration/CAL-01_report.json
+        run: |
+          python -m unittest discover -s tests/factory/render_bridge -p test_calibration.py -v
+      - name: Upload calibration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-cal01-real-blender-evidence
+          path: ${{ runner.temp }}/f12-calibration/
+          if-no-files-found: warn
+          retention-days: 7
+
+  directional-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          python -m pip install 'Pillow>=10,<13'
+      - name: Generate noncanonical Blender source and 16 real headings
+        run: |
+          mkdir -p "$RUNNER_TEMP/f12-smoke"
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/make_directional_fixture.py -- --output "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend"
+          blender --python-exit-code 3 -b -t 2 --factory-startup --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-smoke/CAL02_ONLY.blend" --object CAL02_ONLY_Root --output "$RUNNER_TEMP/f12-smoke/frames" --headings 16 --width 256 --height 256 --samples 8
+      - name: Validate 16 headings and PNG alpha
+        run: |
+          python tools/factory/render_bridge/verify_headings.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --headings 16
+          python tools/factory/render_bridge/inspect_pngs.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-smoke/frames"
+      - name: Compose real RGBA atlas and verify output
+        run: |
+          python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-smoke/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-smoke/frames" --output-dir "$RUNNER_TEMP/f12-smoke/atlas" --page-size 2048 --padding 2
+          python -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-smoke/atlas/atlas.json"; d=json.loads(p.read_text()); assert len(d["frames"])==16; assert d["pages"]>=1; print("F12_ATLAS_SMOKE_PASS",len(d["frames"]))'
+      - name: Upload directional evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-cal02-noncanonical-16heading-smoke
+          path: ${{ runner.temp }}/f12-smoke/
+          if-no-files-found: warn
+          retention-days: 7
+
+  f10-source-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender Pillow and numpy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13'
+      - name: Verify and checkout independent F10 production source branch
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin refs/heads/chatgpt/f10-door-clearance-clean-20261109
+          git worktree add --detach "$RUNNER_TEMP/f10-source" FETCH_HEAD
+          git -C "$RUNNER_TEMP/f10-source" rev-parse HEAD | tee "$RUNNER_TEMP/f10-source-commit.txt"
+          test -s "$RUNNER_TEMP/f10-source/tools/vehicle_factory/hero_hatchback.py"
+      - name: Build actual F10 source and render using F12 calibrated bridge
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/f12-f10"
+          cp "$RUNNER_TEMP/f10-source-commit.txt" "$RUNNER_TEMP/f12-f10/f10-source-commit.txt"
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python tools/factory/render_bridge/f10_source_adapter.py -- --source-root "$RUNNER_TEMP/f10-source" --output "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend"
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python tools/factory/render_bridge/render_headings.py -- --blend "$RUNNER_TEMP/f12-f10/F10_HERO_QA_ONLY.blend" --object F12_F10_HERO_ROOT_QA_ONLY --output "$RUNNER_TEMP/f12-f10/frames" --headings 16 --width 384 --height 384 --samples 12
+      - name: Inspect all 16 actual hatchback headings and package atlas
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/verify_headings.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --headings 16
+          python tools/factory/render_bridge/inspect_pngs.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames"
+          python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/atlas" --page-size 2048 --padding 2
+      - name: Build native gameplay-size visual review and measure source pivot
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/gameplay_review.py --manifest "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/gameplay_review"
+          python - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-f10/gameplay_review/visual_review.json"
+          r=json.loads(p.read_text())
+          assert r["headings"]==16
+          assert r["max_world_pivot_drift_px"]<=0.001
+          assert r["min_silhouette_pixels"]>100
+          print("F12_GAMEPLAY_REVIEW_METRICS_PASS",r["max_world_pivot_drift_px"],r["min_silhouette_pixels"])
+          PY
+      - name: Trim all F10 frames losslessly and compose memory-efficient anchored atlas
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/trim_frames.py "$RUNNER_TEMP/f12-f10/frames/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/frames" --output-dir "$RUNNER_TEMP/f12-f10/trimmed" --margin 2
+          python tools/factory/render_bridge/compose_atlas.py "$RUNNER_TEMP/f12-f10/trimmed/manifest.json" --source-dir "$RUNNER_TEMP/f12-f10/trimmed" --output-dir "$RUNNER_TEMP/f12-f10/trimmed_atlas" --page-size 1024 --padding 2
+          python - <<'PY'
+          import os,json,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"f12-f10"
+          t=json.loads((p/"trimmed/trim_audit.json").read_text())
+          a=json.loads((p/"trimmed_atlas/atlas.json").read_text())
+          old=json.loads((p/"atlas/atlas.json").read_text())
+          assert len(a["frames"])==16
+          assert all("anchor_local_px" in f for f in a["frames"])
+          assert t["pixel_reduction_fraction"]>0.4
+          old_rgba8=old["pages"]*old["page_size"]**2*4
+          new_rgba8=a["pages"]*a["page_size"]**2*4
+          assert new_rgba8<old_rgba8, (old_rgba8,new_rgba8)
+          report={"original_rgba8_bytes":old_rgba8,"trimmed_rgba8_bytes":new_rgba8,"trimmed_pages":a["pages"],"pixel_reduction":t["pixel_reduction_fraction"]}
+          (p/"atlas_memory_qa.json").write_text(json.dumps(report,indent=2)+"\n")
+          assert json.loads((p/"atlas_memory_qa.json").read_text()) == report
+          print("F12_TRIMMED_IPHONE_MEMORY_PROXY_PASS",json.dumps(report))
+          PY
+      - name: Upload real F10 hatchback candidate evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f12-real-f10-hatchback-source-16-headings
+          path: ${{ runner.temp }}/f12-f10/
+          if-no-files-found: warn
+          retention-days: 7
+
+  godot-f10-atlas-import:
+    needs: f10-source-bridge
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-real-f10-hatchback-source-16-headings
+          path: build/f12-f10
+      - name: Install atlas into independent Godot 4 QA fixture
+        run: |
+          set -eu
+          mkdir -p tests/factory/render_bridge/godot_fixture/atlas
+          cp build/f12-f10/atlas/atlas.json tests/factory/render_bridge/godot_fixture/atlas/
+          cp build/f12-f10/atlas/atlas_*.png tests/factory/render_bridge/godot_fixture/atlas/
+      - name: Run Godot 4 import and 80x40 sprite contract
+        run: |
+          godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
+          godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
+      - name: Validate trimmed atlas with local pivot compensation in Godot
+        run: |
+          cp build/f12-f10/trimmed_atlas/atlas.json tests/factory/render_bridge/godot_fixture/atlas/atlas.json
+          cp build/f12-f10/trimmed_atlas/atlas_*.png tests/factory/render_bridge/godot_fixture/atlas/
+          godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
+          godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
+
+  godot-actual-game-scene:
+    needs: f10-source-bridge
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-real-f10-hatchback-source-16-headings
+          path: build/f12-f10/
+      - name: Import actual project assets and F10 test atlas in Godot 4
+        run: |
+          godot --headless --path . --editor --import
+      - name: Exercise actual LAST LIGHT main.tscn with 16 imported sprite headings
+        run: |
+          godot --headless --path . --script res://tests/factory/render_bridge/godot_gameplay_probe.gd
+      - name: Repeat actual LAST LIGHT scene probe with reduced-memory grounded atlas
+        run: |
+          set -eu
+          cp build/f12-f10/trimmed_atlas/atlas.json build/f12-f10/atlas/atlas.json
+          cp build/f12-f10/trimmed_atlas/atlas_*.png build/f12-f10/atlas/
+          godot --headless --path . --script res://tests/factory/render_bridge/godot_gameplay_probe.gd

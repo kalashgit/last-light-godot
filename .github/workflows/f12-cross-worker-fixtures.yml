@@ -1,0 +1,196 @@
+name: F12 Cross-Worker Calibration Fixtures
+
+on:
+  push:
+    branches:
+      - chatgpt/f12-clean-blender-ci-20261109
+    paths:
+      - '.github/workflows/f12-cross-worker-fixtures.yml'
+      - 'tools/factory/render_bridge/terrain_seam.py'
+  pull_request:
+    paths:
+      - '.github/workflows/f12-cross-worker-fixtures.yml'
+      - 'tools/factory/render_bridge/terrain_seam.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terrain-cal05:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pixel processing dependency
+        run: python -m pip install 'Pillow>=10,<13'
+      - name: Generate and verify exact shared edge
+        run: |
+          set -euo pipefail
+          python tools/factory/render_bridge/terrain_seam.py --output build/f12-cal05
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("build/f12-cal05/report.json").read_text())
+          assert d["overlap_pixels"] == 0
+          assert d["row_gap_count"] == 0
+          assert d["tile_pixels"] == [80,40]
+          assert d["neighbor_delta_pixels"] == [40,20]
+          print("F12_CAL05_SEAM_QA_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f12-cal05-grass-asphalt-seam
+          path: build/f12-cal05/
+          if-no-files-found: warn
+          retention-days: 7
+
+  f07-cow-cal03:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy libegl1 libgl1 libgbm1
+          python -m pip install 'Pillow>=10,<13'
+      - name: Checkout independent F07 source without modifying it
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin refs/heads/chatgpt/f07-animal-factory-calibration
+          git worktree add --detach "$RUNNER_TEMP/f07-source" FETCH_HEAD
+          mkdir -p build/f12-cal03
+          git -C "$RUNNER_TEMP/f07-source" rev-parse HEAD > build/f12-cal03/f07-source-commit.txt
+      - name: Adapt F07's render backend to deterministic CPU Cycles without modifying source checkout
+        run: |
+          python - <<'PY'
+          import os,json
+          from pathlib import Path
+          source=Path(os.environ["RUNNER_TEMP"])/"f07-source/tools/factory/animals/calibrate.py"
+          original=source.read_text()
+          needle="scene.render.engine='BLENDER_EEVEE'"
+          assert original.count(needle)==1,"F07 engine site changed; re-audit first"
+          patched=original.replace(needle,"scene.render.engine='CYCLES'\n    scene.cycles.samples=8\n    scene.cycles.use_denoising=False")
+          target=Path("build/f12-cal03/f07_cpu_render_adapted.py")
+          target.write_text(patched)
+          (target.parent/"render_backend_adaptation.json").write_text(json.dumps({
+              "source_script":"tools/factory/animals/calibrate.py",
+              "source_branch":"chatgpt/f07-animal-factory-calibration",
+              "changes":["BLENDER_EEVEE to CYCLES","8 CPU samples","denoising disabled"],
+              "geometry_or_rig_changed":False,
+              "canonical_approval":False
+          },indent=2))
+          PY
+      - name: Render real F07 cow geometry eight headings three poses with CPU backend
+        run: |
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python "$(pwd)/build/f12-cal03/f07_cpu_render_adapted.py" -- "$(pwd)/build/f12-cal03" --only cow
+      - name: Validate cow pose/headings, report and transparent images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json
+          p=Path("build/f12-cal03")
+          d=json.loads((p/"qa.json").read_text())
+          names=sorted((p/"frames").glob("cow_*.png"))
+          assert len(names)==24, f"Expected 8 directions x 3 poses, got {len(names)}"
+          assert (p/"f07_noncanonical_calibration.blend").is_file()
+          for f in names:
+              with Image.open(f) as im:
+                  assert im.mode=="RGBA", f
+                  assert im.getchannel("A").getbbox() is not None, f
+          print("F12_CAL03_F07_COW_8X3_PASS",len(names))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f12-cal03-real-f07-cow-candidate
+          path: build/f12-cal03/
+          if-no-files-found: warn
+          retention-days: 7
+
+  f01-fridge-cal04:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Blender and Pillow
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          python -m pip install 'Pillow>=10,<13' 'numpy>=1.24,<3'
+      - name: Checkout independent F01 refrigerator source
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin refs/heads/chatgpt/f01-furniture-production
+          git worktree add --detach "$RUNNER_TEMP/f01-source" FETCH_HEAD
+          mkdir -p build/f12-cal04
+          git -C "$RUNNER_TEMP/f01-source" rev-parse HEAD > build/f12-cal04/f01-source-commit.txt
+      - name: Generate actual F01 refrigerator and door/crisper animations
+        run: |
+          blender --python-exit-code 3 -b --factory-startup -t 2 --python "$RUNNER_TEMP/f01-source/tools/factory/furniture/refrigerator_calibration.py" -- --output "$(pwd)/build/f12-cal04" --samples 4
+      - name: Verify editable .blend, GLB and 14 actual RGBA animation images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from PIL import Image
+          p=Path("build/f12-cal04")
+          d=json.loads((p/"calibration_report.json").read_text())
+          assert d["type"]=="NONCANONICAL_CALIBRATION_NOT_APPROVED"
+          assert len(list(p.glob("*.blend")))>0
+          assert len(list(p.glob("*.glb")))>0
+          for stem in ("hinge_open","crisper_open"):
+              pngs=sorted(p.glob(stem+"_*.png"))
+              assert len(pngs)==7,(stem,len(pngs))
+              for f in pngs:
+                  with Image.open(f) as image:
+                      assert image.mode=="RGBA",f
+                      assert image.getchannel("A").getbbox(),f
+          print("F12_CAL04_F01_FRIDGE_2X7_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f12-cal04-real-f01-refrigerator-candidate
+          path: build/f12-cal04/
+          if-no-files-found: warn
+          retention-days: 7
+
+  godot-f01-fridge-animations:
+    needs: f01-fridge-cal04
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-cal04-real-f01-refrigerator-candidate
+          path: build/f12-cal04
+      - name: Retrieve original F01 isolated interaction contract
+        run: |
+          set -eu
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --depth=1 origin refs/heads/chatgpt/f01-furniture-production
+          git worktree add --detach /tmp/f01-source-fixture FETCH_HEAD
+          mkdir -p tests/factory/render_bridge/f01_fixture
+          cp /tmp/f01-source-fixture/tests/factory/furniture/godot_fixture/* tests/factory/render_bridge/f01_fixture/
+          cp build/f12-cal04/refrigerator_refined_calibration.glb tests/factory/render_bridge/f01_fixture/model.glb
+      - name: Import exact newly generated refrigerator GLB
+        run: |
+          godot --headless --path tests/factory/render_bridge/f01_fixture --editor --import
+      - name: Verify independently animated door crisper freezer and interaction states
+        run: |
+          godot --headless --path tests/factory/render_bridge/f01_fixture --script res://verify_import.gd
