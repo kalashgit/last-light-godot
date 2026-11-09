@@ -22,7 +22,21 @@ def pack(raw,dest):
         sheet.paste(background.convert("RGB"),(idx*w,30))
         ImageDraw.Draw(sheet).text((idx*w+5,8),f"OPEN {m['frames'][idx]['angle_deg']:02d} deg",fill="white")
     sheet.save(dest/"door_open_review.png")
+    # Inspect all four exported poses at native gameplay sprite width.
+    native_width=214
+    native_height=max(1,round(h*native_width/w))
+    native=Image.new("RGB",(native_width*4,native_height+24),(68,78,72))
+    native_draw=ImageDraw.Draw(native)
+    for idx,frame in enumerate(frames):
+        cell=frame.crop(crop).resize((native_width,native_height),Image.Resampling.NEAREST)
+        layer=Image.new("RGBA",(native_width,native_height),(68,78,72,255))
+        layer.alpha_composite(cell)
+        native.paste(layer.convert("RGB"),(idx*native_width,24))
+        native_draw.text((idx*native_width+4,6),
+                         f"{m['frames'][idx]['angle_deg']:02d}deg",fill="white")
+    native.save(dest/"door_open_gameplay_214px.png")
     print("F10_DOOR_SHEET",w,h)
+    print("F10_DOOR_GAMEPLAY_SHEET",native_width,native_height)
 
 
 if __name__=="__main__":
