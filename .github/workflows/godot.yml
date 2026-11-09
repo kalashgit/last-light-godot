@@ -6,6 +6,9 @@ jobs:
     container: barichello/godot-ci:4.6.3
     steps:
       - uses: actions/checkout@v4
+      # tests/run.sh also runs Python unit tests and (when available) the Xvfb
+      # render-parity check; the Godot CI image ships neither.
+      - run: apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3 xvfb xauth >/dev/null
       - run: bash tests/run.sh
   factory-assets:
     runs-on: ubuntu-latest

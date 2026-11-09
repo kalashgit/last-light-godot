@@ -66,8 +66,12 @@ func _reflow() -> void:
  if game == null or launcher == null: return
  var safe: Rect2 = game.get_viewport_rect()
  var size := safe.size
- launcher.position = Vector2(size.x - 202, 78)
- launcher.size = Vector2(150, 44)
+ # W08: anchor the developer launcher under the HUD's INVENTORY button so it can
+ # never cover (and swallow touches for) PAUSE or the zoom buttons.
+ game._layout_controls()
+ var inventory_button: Rect2 = game.control_rects.get("inventory", Rect2(Vector2(size.x - 202, 34), Vector2(150, 44)))
+ launcher.position = Vector2(inventory_button.position.x, inventory_button.end.y + 8)
+ launcher.size = Vector2(inventory_button.size.x, 40)
  if shade != null:
   # PRESET_FULL_RECT already fills the viewport; assigning size causes warnings.
   pass
