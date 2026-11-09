@@ -1,0 +1,39 @@
+name: LAST LIGHT modular paperdoll and Y-sort acceptance (candidate)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/foundry_paperdoll.gd"
+      - "scenes/foundry_paperdoll_sort_lab.tscn"
+      - "tests/foundry_paperdoll_smoke.gd"
+      - ".github/workflows/foundry-paperdoll-godot-qa.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: paperdoll-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  godot-headless-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install pinned Godot 4.3 stable CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o /tmp/godot.zip \
+            "https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.3-stable_linux.x86_64
+          /tmp/Godot_v4.3-stable_linux.x86_64 --headless --version
+      - name: Import resources and reject parse errors
+        run: /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --editor --import --quit
+      - name: Exercise paperdoll and depth scene with real Godot
+        run: timeout --signal=TERM --kill-after=5s 75s /tmp/Godot_v4.3-stable_linux.x86_64 --headless --path . --script res://tests/foundry_paperdoll_smoke.gd

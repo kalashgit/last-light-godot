@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/foundry_paperdoll.gd" id="1_paperdoll"]
+
+[node name="FoundryPaperdollSortingLab" type="Node2D"]
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="WorldDepth" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="RearWall" type="Node2D" parent="WorldDepth"]
+position = Vector2(160, 110)
+
+[node name="Zombie" type="Node2D" parent="WorldDepth"]
+position = Vector2(160, 170)
+script = ExtResource("1_paperdoll")
+
+[node name="FrontCrate" type="Node2D" parent="WorldDepth"]
+position = Vector2(160, 230)
+
+[node name="RoofAndForeground" type="Node2D" parent="."]
+z_index = 10
