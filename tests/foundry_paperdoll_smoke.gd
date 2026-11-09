@@ -32,7 +32,7 @@ func _run() -> void:
     var lab := packed.instantiate() as Node2D
     root.add_child(lab)
     var sorted := lab.get_node("WorldDepth") as Node2D
-    var actor := lab.get_node("WorldDepth/Zombie") as Node2D
+    var actor = lab.get_node("WorldDepth/Zombie")
     check(sorted.y_sort_enabled, "native world Y sorting enabled")
     check(not actor.y_sort_enabled, "character layers sorted as one rooted actor")
     check(lab.get_node("WorldDepth/RearWall").position.y < actor.position.y, "rear occluder is behind feet")
