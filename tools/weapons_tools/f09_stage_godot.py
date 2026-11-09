@@ -56,6 +56,8 @@ def main():
         (ROOT/"tools"/"weapons_tools"/"f09_main_game_fixture.gd").read_text())
     (DST/"real_pickup_fixture.gd").write_text(
         (ROOT/"tools"/"weapons_tools"/"f09_real_pickup_fixture.gd").read_text())
+    (DST/"graphical_house_fixture.gd").write_text(
+        (ROOT/"tools"/"weapons_tools"/"f09_graphical_house_fixture.gd").read_text())
     (DST/"f09_candidate_16_heading_atlas.png").write_bytes(
         (SRC/"f09_candidate_16_heading_atlas.png").read_bytes())
     (DST/"f09_candidate_16_heading_atlas.json").write_bytes(
