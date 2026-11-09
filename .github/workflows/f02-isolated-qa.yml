@@ -102,6 +102,23 @@ jobs:
             --subject all --output-dir build/f02_blender
       - name: Verify generated Blender and sprite artifacts
         run: python tools/factory/structures/qa_package.py --output-dir build/f02_blender
+      - name: Validate immutable archive receipt and source membership
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, zipfile
+          out = Path('build/f02_blender')
+          archive = out / 'f02_noncanonical_calibration.zip'
+          receipt = json.loads((out / 'archive_receipt.json').read_text())
+          assert receipt['archive_sha256'] == hashlib.sha256(archive.read_bytes()).hexdigest()
+          with zipfile.ZipFile(archive) as z:
+              assert z.read('qa_report.json') == (out / 'qa_report.json').read_bytes()
+              names = z.namelist()
+              assert len([n for n in names if n.endswith('.blend')]) == 5
+              assert len([n for n in names if n.endswith('.glb')]) == 5
+              assert 'f02_contact_sheet.png' in names
+          print('F02 ARCHIVE PASS: receipt and 5 blend + 5 glb verified')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
