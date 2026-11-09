@@ -1,0 +1,65 @@
+name: LAST LIGHT W06 F12 -> V2 package -> Godot bridge (calibration only)
+
+on:
+  pull_request:
+    paths:
+      - "tools/asset_qa/**"
+      - "tests/asset_qa/**"
+      - "tests/godot_atlas_v2/**"
+      - "tools/production_integration_v2/**"
+      - ".github/workflows/w06-f12-v2-bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # F12 PR #62 head, pinned. Update deliberately, never float.
+  F12_COMMIT: ab250895b5787c4ca1187007c2f18d63c7a5b2f1
+
+jobs:
+  bridge-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout F12 render bridge at pinned commit (read-only consumer)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.F12_COMMIT }}
+          path: f12_src
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned Blender-as-module and Pillow
+        run: |
+          python -m pip install "bpy==4.4.0" "numpy<2" "Pillow>=10,<12"
+          python -c "import bpy; print('bpy', bpy.app.version_string)"
+      - name: Shared V2 contract tests
+        run: python -m unittest discover -s tests/production_integration_v2 -v
+      - name: Install pinned Godot 4.3 stable
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" \
+            --output /tmp/godot43.zip
+          unzip -q /tmp/godot43.zip -d /tmp/godot43
+          chmod +x /tmp/godot43/Godot_v4.3-stable_linux.x86_64
+      - name: End-to-end bridge (real Blender render, V2 validation, Godot import)
+        env:
+          PY_BPY: python
+          F12_SRC: ${{ github.workspace }}/f12_src
+          GODOT: /tmp/godot43/Godot_v4.3-stable_linux.x86_64
+          OUT: ${{ runner.temp }}/w06_e2e
+        run: bash tools/asset_qa/f12_v2_bridge/run_e2e.sh
+      - name: Upload calibration evidence (not Golden, not production)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w06-f12-v2-bridge-calibration-evidence
+          path: |
+            ${{ runner.temp }}/w06_e2e/pkg*/
+            ${{ runner.temp }}/w06_e2e/contact_sheet_*.png
+            ${{ runner.temp }}/w06_e2e/godot_*.log
+            ${{ runner.temp }}/w06_e2e/cal/CAL-01_report.json
+          retention-days: 14
+          if-no-files-found: warn
