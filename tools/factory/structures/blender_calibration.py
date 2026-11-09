@@ -169,6 +169,17 @@ def render_frames(bpy, plan, groups, directory):
                                                       round((1-pivot.y)*512, 3)],
                          "duration_ms": duration_ms})
     render("roof_on")
+    # Review-only reverse angle exposes the actual front entry. Preserve
+    # canonical F12 gameplay-facing camera for roof_on and roof_cut.
+    original_pos = scene.camera.location.copy()
+    original_rot = scene.camera.rotation_euler.copy()
+    w, h = plan.footprint
+    target = Vector((w/2, h/2, 1.35))
+    scene.camera.location = target + Vector((9, 9, 12.727922 * math.tan(math.pi/6)))
+    scene.camera.rotation_euler = (target - scene.camera.location).to_track_quat("-Z", "Y").to_euler()
+    render("entrance_view")
+    scene.camera.location = original_pos
+    scene.camera.rotation_euler = original_rot
     for obj, _ in groups["roof"]:
         obj.hide_render = True
     render("roof_cut")
