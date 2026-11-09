@@ -199,7 +199,7 @@ for clip,(frames,duration) in clips.items():
     action.use_fake_user=True
 
 # Per-frame floor-contact solution in locomotion calibration clips. The
-# lowest evaluated foot sole rests ~2 mm above Z=0 without penetration.
+# lowest evaluated foot sole targets ~12 mm above Z=0 before NLA interpolation; the exhaustive\n# frame-and-half-frame QA independently limits rendered hover and penetration.
 # This is a root-height-only calibration, not real planted-foot IK.
 for clip in ('idle', 'walk', 'run', 'sneak'):
     rig.animation_data.action = bpy.data.actions['F05_CAL_' + clip]
@@ -220,7 +220,7 @@ for clip in ('idle', 'walk', 'run', 'sneak'):
                 floor = min(floor, *( (matrix @ vert.co).z for vert in mesh.vertices ))
             finally:
                 foot.to_mesh_clear()
-        root.location = (0,0, max(-.05, min(.30, .002 - floor)))
+        root.location = (0,0, max(-.05, min(.30, .012 - floor)))
         root.keyframe_insert(data_path='location',frame=frame)
     root.location = (0,0,0)
 
