@@ -85,7 +85,7 @@ func _run() -> void:
         if pos.distance_to(arrival) > 0.01:
             _fail("district jump wrong arrival")
             return
-    if str(world.get("SAVE_PATH")) != "user://ll_neighborhood_60_showcase_v1.json":
+    if str(world.get_script().get_script_constant_map().get("SAVE_PATH", "")) != "user://ll_neighborhood_60_showcase_v1.json":
         _fail("save path can collide with playable house")
         return
     print("NEIGHBORHOOD_60_PASS archetypes=60 house_street=3 zones=6 entry_exit=PASS loot=PASS collision=PASS save_isolated=PASS")
