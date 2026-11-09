@@ -3,7 +3,7 @@ extends SceneTree
 ## Loads provisional fixed-scale 16-direction tool sprites into real Sprite2D
 ## nodes; does not touch main.tscn or the master inventory runtime.
 
-const ROOT := "res://build/f09_integration_fixture"
+const ROOT := "res://sprites"
 const IDS := [
     "ll_tools_adjustable_wrench",
     "ll_tools_socket_handle",
@@ -21,7 +21,7 @@ func _run() -> void:
     var bounds := Rect2(Vector2.ZERO, Vector2(1152, 720))
     for row in range(3):
         for heading in range(16):
-            var path: String = "%s/%s/world_sprite_96/h%02d.png" % [ROOT, IDS[row], heading]
+            var path: String = "%s/%s/h%02d.png" % [ROOT, IDS[row], heading]
             var img := Image.new()
             if img.load(ProjectSettings.globalize_path(path)) != OK:
                 push_error("F09_MISSING_WORLD_SPRITE: " + path)
@@ -47,9 +47,28 @@ func _run() -> void:
                 quit(24)
                 return
             checked += 1
+    var imported_models := 0
+    for ident in IDS:
+        var glb: String = "res://models/%s.glb" % ident
+        var packed := ResourceLoader.load(glb)
+        if not (packed is PackedScene):
+            push_error("F09_GLB_IMPORT_FAILED " + glb)
+            quit(26)
+            return
+        var candidate: Node = packed.instantiate()
+        if candidate == null:
+            push_error("F09_GLB_INSTANTIATION_FAILED " + glb)
+            quit(27)
+            return
+        get_root().add_child(candidate)
+        imported_models += 1
+        candidate.queue_free()
+    if imported_models != 3:
+        quit(28)
+        return
     if checked != 48 or stage.get_child_count() != 48:
         quit(25)
         return
-    print("F09_GODOT_SCENE_SMOKE_PASS sprites=", checked,
+    print("F09_GODOT_SCENE_SMOKE_PASS baked_models=",imported_models," sprites=", checked,
           " stage=",stage.name," headings=16 tools=3")
     quit(0)
