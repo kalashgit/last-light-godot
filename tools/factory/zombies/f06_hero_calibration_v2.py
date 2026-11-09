@@ -31,7 +31,7 @@ parser.add_argument('--preview-only',action='store_true')
 parser.add_argument('--validate-crops',action='store_true')
 parser.add_argument('--render-profile',choices=('legacy_provisional','f12_cal01'),
                     default='legacy_provisional')
-parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned'),
+parser.add_argument('--geometry-profile',choices=('v2_baseline','v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'),
                     default='v2_baseline')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 out = Path(args.output).resolve()
@@ -415,6 +415,121 @@ def refine_v6_continuous_skinning(profile,rig):
         multi_bone_elliptic_shell('V6 skinned trouser leg '+side,leg,
                                  ('thigh_'+side,'shin_'+side),trousers,rig)
 
+def refine_v7_anatomy_and_infection(profile,rig):
+    """Original readable face/hand sculpt proxies, saved as editable source geometry."""
+    to_replace=('head / cheek and cranial volume','jaw and chin','nose',
+                'left recessed eye','right recessed eye','uneven hair cap',
+                'lower lip / slack jaw','cheekbone ','ear cartilage ','hand ')
+    for obj in list(bpy.data.objects):
+        if obj.type=='MESH' and obj.name.startswith(to_replace):
+            bpy.data.objects.remove(obj,do_unlink=True)
+    face=mat('V7 ashen desaturated dermis / F11 provisional',profile['skin'],.85,.09)
+    shadow=mat('V7 deep orbital recess / F11 provisional',(.092,.095,.086),.98,.015)
+    hair=mat('V7 uneven brittle hair / F11 provisional',(.13,.125,.115),.96,.08)
+    # A ten-ring sculpt proxy gives the skull a jaw, cheek, temple and cranium.
+    rings=[]
+    for z,rx,ry,cy,shift in ((1.499,.049,.050,-.017,-.003),
+                             (1.528,.074,.070,-.017,-.006),
+                             (1.561,.098,.084,-.013,-.009),
+                             (1.601,.114,.105,-.009,-.007),
+                             (1.644,.124,.111,-.004,-.006),
+                             (1.662,.126,.113,-.002,-.005),
+                             (1.678,.130,.116,.002,-.004),
+                             (1.693,.131,.117,.004,-.003),
+                             (1.710,.126,.116,.006,0),
+                             (1.730,.119,.113,.008,.003),
+                             (1.765,.103,.099,.010,.005),
+                             (1.791,.078,.072,.011,.006),
+                             (1.809,.019,.031,.012,.006)):
+        rings.append((shift,cy,z,rx,ry,(1,)))
+    skullmat=mat('V7 skull orbital gradient / F11 provisional',profile['skin'],.86,.065)
+    skull=multi_bone_elliptic_shell('V7 sculpted skull and jaw',rings,('head',),skullmat,rig)
+    del skull['F06_V6_SKINNED']
+    skull['F06_V7_SKULL']=True
+    # Carve eye socket hollows into the underlying cranium; no button-like
+    # dark sphere can float in front of the face. Darken faces within hollows.
+    socket_count=0
+    for vertex in skull.data.vertices:
+        x,y,z=vertex.co
+        if y<-.067 and 1.655<z<1.715:
+            dx=min(abs(x-.064),abs(x+.064))
+            field=math.exp(-((dx/.036)**2+((z-1.684)/.023)**2))
+            vertex.co.y+=.035*field
+            if field>.23:socket_count+=1
+        if y<-.060 and 1.608<z<1.670:
+            bridge=math.exp(-((x/.035)**2+((z-1.636)/.038)**2))
+            vertex.co.y-=.022*bridge
+    # Smooth per-vertex pigment gradient. A polygon-wise dark-material patch
+    # created visible squares at art-review resolution, so use interpolated
+    # vertex attributes instead. This is an original, fully editable source.
+    orbit_attribute=skull.data.vertex_colors.new(name='orbital_ao')
+    for polygon in skull.data.polygons:
+        for loop_id in polygon.loop_indices:
+            vert=skull.data.vertices[skull.data.loops[loop_id].vertex_index]
+            x,y,z=vert.co
+            dx=min(abs(x-.064),abs(x+.064))
+            field=math.exp(-((dx/.038)**2+((z-1.685)/.027)**2)) if y<-.065 else 0
+            shade=1-.45*field
+            orbit_attribute.data[loop_id].color=(shade,shade,shade,1)
+    node_tree=skullmat.node_tree
+    bsdf=next(node for node in node_tree.nodes if node.type=='BSDF_PRINCIPLED')
+    prior=next(link for link in node_tree.links if link.to_node==bsdf and link.to_socket.name=='Base Color')
+    prior_socket=prior.from_socket
+    node_tree.links.remove(prior)
+    vertex_color=node_tree.nodes.new('ShaderNodeAttribute')
+    vertex_color.attribute_name='orbital_ao'
+    multiply=node_tree.nodes.new('ShaderNodeMixRGB')
+    multiply.blend_type='MULTIPLY'
+    multiply.inputs['Fac'].default_value=1
+    node_tree.links.new(prior_socket,multiply.inputs[1])
+    node_tree.links.new(vertex_color.outputs['Color'],multiply.inputs[2])
+    node_tree.links.new(multiply.outputs['Color'],bsdf.inputs['Base Color'])
+    skull['F06_V7_ORBITS_CARVED']=socket_count
+    skull.modifiers.new('V7 softened facial topology','SUBSURF').levels=1
+    # Stronger, asymmetric eye sockets and broken brow rhythm are visible when
+    # rendered at the designated art inspection zoom, but remain real geometry.
+    for side,sign in (('L',1),('R',-1)):
+        x=sign*.066
+        ball('V7 irregular ear '+side,(sign*.126,.005,1.644),
+             (.017,.014,.031),'head',face,rig,14,10)
+        stitch_fold('V7 angular upper brow '+side,
+                    [(sign*.092,-.105,1.711),(sign*.056,-.119,1.716),
+                     (sign*.031,-.111,1.707)],.011,'head',face,rig)
+    # A low-profile tapered cartilaginous bridge has an anatomical transition
+    # from brow to nostrils; avoid the previous disconnected ellipsoid nose.
+    nose_points=[(0,-.105,1.682),(-.025,-.111,1.653),
+                 (.025,-.111,1.653),(-.024,-.119,1.613),
+                 (.024,-.119,1.613),(0,-.143,1.614),
+                 (0,-.105,1.593)]
+    nose_faces=[(0,1,5),(0,5,2),(1,3,5),(2,5,4),
+                (3,6,5),(4,5,6),(0,2,4,6,3,1)]
+    mesh_part('V7 sculpted nasal cartilage',nose_points,nose_faces,'head',face,rig)
+    ball('V7 recessed mouth cavity',(0,-.096,1.554),
+         (.036,.003,.009),'head',shadow,rig,16,8)
+    hair_rings=[(0,.015,1.734,.114,.101,(1,)),
+                (.002,.016,1.757,.108,.094,(1,)),
+                (.005,.015,1.781,.080,.068,(1,)),
+                (.006,.015,1.802,.025,.027,(1,))]
+    scalp=multi_bone_elliptic_shell('V7 continuous broken scalp hair',hair_rings,
+                                   ('head',),hair,rig)
+    del scalp['F06_V6_SKINNED']
+    scalp.modifiers.new('V7 softened scalp topology','SUBSURF').levels=1
+    # Three large articulated-looking finger shapes survive silhouette downscale
+    # better than microscopic individual fingernails.
+    for side,sign in (('L',1),('R',-1)):
+        ball('V7 hand palm '+side,(sign*.377,-.018,.897),
+             (.053,.049,.071),'hand_'+side,face,rig,14,8)
+        for digit,(dx,dz,length) in enumerate(((-.032,.013,.074),
+                                                (0,-.004,.102),
+                                                (.035,.004,.077))):
+            segment('V7 dangling finger '+side+str(digit),
+                    (sign*(.377+dx),-.028,.854+dz),
+                    (sign*(.384+dx),-.050,.854+dz-length),.016,
+                    'hand_'+side,face,rig,10)
+    for obj in bpy.data.objects:
+        if obj.type=='MESH' and obj.name.startswith('V7 '):
+            for polygon in obj.data.polygons:polygon.use_smooth=True
+
 def appearance(profile,rig):
     rng=random.Random(profile['seed'])
     skin=mat('Pallid skin / F11 provisional',profile['skin'],.78,.13)
@@ -493,7 +608,7 @@ def pose(rig,clip,frame,profile):
     spine=rig.pose.bones['spine']
     spine.rotation_euler=(profile['stance'] + (.09*math.sin(phase) if clip in ('idle','shamble') else 0),0,.10)
     rig.pose.bones['head'].rotation_euler=(-.12,0,-.18)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
         # Controlled silhouette differences rather than every zombie sharing one gait.
         is_crawler=profile['outfit']=='ripped'
         rig.pose.bones['shoulder_L'].rotation_euler.z=.16 if is_crawler else .09
@@ -553,13 +668,15 @@ def export_variant(profile_name,profile):
     for obj in list(bpy.data.objects):
         if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
     appearance(profile,rig)
-    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned'):
+    if args.geometry_profile in ('v3_refined','v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
         refine_v3_anatomy_and_wear(profile,rig)
-    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned'):
+    if args.geometry_profile in ('v4_readable','v5_weighted','v6_skinned','v7_anatomical'):
         refine_v4_readability(profile,rig)
-    if args.geometry_profile in ('v5_weighted','v6_skinned'):
+    if args.geometry_profile in ('v5_weighted','v6_skinned','v7_anatomical'):
         refine_v5_weighted_joints(profile,rig)
-    if args.geometry_profile=='v6_skinned':refine_v6_continuous_skinning(profile,rig)
+    if args.geometry_profile in ('v6_skinned','v7_anatomical'):
+        refine_v6_continuous_skinning(profile,rig)
+    if args.geometry_profile=='v7_anatomical':refine_v7_anatomy_and_infection(profile,rig)
     scene=bpy.context.scene
     turntable=bpy.data.objects.new('F06_DIRECTION_TURNTABLE',None)
     bpy.context.collection.objects.link(turntable)
