@@ -158,6 +158,25 @@ def roof(plan: Plan, w: int, h: int, style="gable", material="shingle"):
                      WALL_HEIGHT + rise/2, w+2*overhang, length, .11,
                      material, "roof", "roof",
                      (round(-side*theta, 6), 0, 0))
+        # Eave fascia and shallow folded-metal gutters add readable depth
+        # without occupying doors, windows, or runtime collision volumes.
+        for side in (-1, 1):
+            eave_y = h/2 + side*run
+            plan.box(f"fascia_eave_{side}", w/2, eave_y,
+                     WALL_HEIGHT-.045, w+2*overhang, .11, .19,
+                     "trim", "roof_trim", "roof")
+            plan.box(f"gutter_eave_{side}", w/2, eave_y+side*.085,
+                     WALL_HEIGHT-.14, w+2*overhang+.08, .095, .065,
+                     "steel", "roof_trim", "roof")
+        if material == "metal_roof":
+            # Sparse standing seams instead of uniformly smooth panels.
+            for side in (-1, 1):
+                for rib in range(1, w):
+                    plan.box(f"standing_seam_{side}_{rib}", float(rib),
+                             h/2 + side*run/2, WALL_HEIGHT+rise/2+.07,
+                             .025, max(.10, length-.14), .025,
+                             "metal_roof", "roof_trim", "roof",
+                             (round(-side*theta, 6), 0, 0))
         plan.box("ridge_cap", w/2, h/2, WALL_HEIGHT+rise+.04,
                  w+2*overhang, .16, .11, "steel", "ridge", "roof")
         plan.socket("roof_cut_anchor", w/2, h/2, WALL_HEIGHT + rise)
