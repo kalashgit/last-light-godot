@@ -74,8 +74,8 @@ jobs:
           cp build/f10/panel_qa/bonnet/bonnet.glb "$PROJECT/generated/bonnet.glb"
           cp build/f10/panel_qa/rear_hatch/rear_hatch.glb "$PROJECT/generated/rear_hatch.glb"
           GODOT=build/f10/godotbin/Godot_v4.5.1-stable_linux.x86_64
-          "$GODOT" --headless --editor --path "$PROJECT" --import --quit 2>&1 | tee build/f10/panel_qa/godot_import.log
-          "$GODOT" --headless --path "$PROJECT" --script res://interaction_headless.gd 2>&1 | tee build/f10/panel_qa/godot_interaction.log
+          timeout 90s "$GODOT" --headless --editor --path "$PROJECT" --import --quit 2>&1 | tee build/f10/panel_qa/godot_import.log
+          timeout 30s "$GODOT" --headless --path "$PROJECT" --script res://interaction_headless.gd 2>&1 | tee build/f10/panel_qa/godot_interaction.log
           for target in door bonnet rear_hatch; do grep -q "F10_GODOT_PLAYER_INTERACTION_PASS $target" build/f10/panel_qa/godot_interaction.log; done
           grep -q 'F10_GODOT_REMOTE_INTERACTION_REJECTED' build/f10/panel_qa/godot_interaction.log
           ! grep -E '(SCRIPT ERROR|Parse Error|Assertion failed|Failed to load)' build/f10/panel_qa/godot_import.log build/f10/panel_qa/godot_interaction.log
