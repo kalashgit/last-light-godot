@@ -146,3 +146,25 @@ jobs:
           path: ${{ runner.temp }}/f12-f10/
           if-no-files-found: warn
           retention-days: 7
+
+  godot-f10-atlas-import:
+    needs: f10-source-bridge
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.6.3
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: f12-real-f10-hatchback-source-16-headings
+          path: build/f12-f10
+      - name: Install atlas into independent Godot 4 QA fixture
+        run: |
+          set -eu
+          mkdir -p tests/factory/render_bridge/godot_fixture/atlas
+          cp build/f12-f10/atlas/atlas.json tests/factory/render_bridge/godot_fixture/atlas/
+          cp build/f12-f10/atlas/atlas_*.png tests/factory/render_bridge/godot_fixture/atlas/
+      - name: Run Godot 4 import and 80x40 sprite contract
+        run: |
+          godot --headless --path tests/factory/render_bridge/godot_fixture --editor --import
+          godot --headless --path tests/factory/render_bridge/godot_fixture --script res://verify_atlas.gd
