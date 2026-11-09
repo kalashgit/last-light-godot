@@ -62,8 +62,7 @@ def main():
                        "status":"CROSS_FAMILY_FIXTURE_NOT_APPROVED"})
     (BASE/"cross_family_validation.json").write_text(json.dumps({
         "checked":result,"f11_approved":False,"f12_approved":False,
-        "godot_gameplay_approved":False},indent=2)+"
-")
+        "godot_gameplay_approved":False},indent=2)+"\n")
     print("F09_CROSS_FAMILY_FILE_QA_PASS",len(result),"tools",flush=True)
 
 if __name__=="__main__":
