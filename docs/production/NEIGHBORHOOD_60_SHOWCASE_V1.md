@@ -34,3 +34,20 @@ The current A00/F01–F12 registry includes first-pass and calibration assets; t
 **Next concrete milestone:** verify the three-house interior journey and navigation on iPhone, then enrich house layouts/containers before filling all 60 shells with full quality content. Preserve identical archetype IDs and positions while swapping in F02 geometry and F01 props.
 
 **No merge, deploy or mass-production authorization is granted by this branch.**
+
+## Actual executed Godot CI and portrait screenshot
+
+**Headless gameplay fixture + screenshot runner:** https://github.com/kalashgit/last-light-godot/actions/runs/42539018988
+
+**Original 720×1152 Godot screenshot artifact:** https://github.com/kalashgit/last-light-godot/actions/runs/42539018988/artifacts/13640423246
+
+Actual automated evidence:
+
+```
+Ran 7 tests in 0.002s
+OK
+NEIGHBORHOOD_60_PASS archetypes=60 house_street=3 zones=6 entry_exit=PASS loot=PASS collision=PASS save_isolated=PASS
+NEIGHBORHOOD_GODOT_CAPTURE_PASS res://preview/neighborhood_60/three_house_street_godot.png 720x1152
+```
+
+The real screenshot visibly shows the small house (gable), large house (hip), and duplex (split two-gable), doors/windows, connected pavement and prototype mobile controls. This screenshot is **not** an assertion of Golden visual quality or iPhone/Xogot verification. It was captured by Godot 4.3 on a Linux virtual display. Remaining known limitations include extremely simplified architectural geometry, schematic roof/surface materials, no realistic room furniture, no true apartment/story interiors, incomplete zombie systems and no real-device performance evidence.
