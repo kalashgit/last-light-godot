@@ -13,7 +13,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector, Matrix
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections, torso_sections
+from f05_geometry import loft_chain, leg_sections, arm_sections, sleeve_sections, torso_sections, collar_sections
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True)
@@ -114,6 +114,8 @@ for side, sign in [('L',1),('R',-1)]:
 # Geometry remains rigid-weighted; shoulder/elbow deformation QA is not yet approved.
 loft_chain('wearable_shirt_body', torso_sections(body_width, garment=True),
            'chest', 'spine', shirt)
+loft_chain('wearable_shirt_collar', collar_sections(body_width),
+           'neck', 'chest', seam)
 for side, sign in [('L',1),('R',-1)]:
     loft_chain('wearable_shirt_sleeve_'+side, sleeve_sections(sign, limb_width),
                'upper_arm_'+side, 'forearm_'+side, shirt)
@@ -316,7 +318,7 @@ try:
     bpy.ops.export_scene.gltf(filepath=str(out/'f05_noncanonical_calibration.glb'),export_format='GLB',use_selection=True,export_animations=True,export_nla_strips=True)
 except Exception as exc:
     glb_error = str(exc)
-manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.5','wearable_layers':['shirt_body','shirt_sleeves','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
+manifest={'status':'CALIBRATION_ONLY','physique':args.physique,'body_width_factor':body_width,'limb_width_factor':limb_width,'canonical_master_id':None,'rig_version':'F05_CAL_0.6','wearable_layers':['shirt_body','shirt_sleeves','shirt_collar','pants_loft','waist_band'],'continuous_limb_shells':True,'floor_contact':'ROOT_HEIGHT_CALIBRATION','nla_floor_shift_m':round(floor_origin_adjustment,6),
           'blender_version':bpy.app.version_string,'bones':[v[0] for v in specs],
           'sockets':list(sockets),'clips':{k:{'frames':v[0],'ms_per_frame':v[1],
           'contract':'PROVISIONAL_W07_APPROVAL_REQUIRED'} for k,v in clips.items()},
