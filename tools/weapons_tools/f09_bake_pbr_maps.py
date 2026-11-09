@@ -72,13 +72,45 @@ def _normal_bake(mesh, directory):
             material.node_tree.nodes.remove(target)
     return image
 
+def _ambient_occlusion_bake(mesh,directory):
+    """Real Cycles ambient-occlusion bake on the same packed UV islands."""
+    scene=bpy.context.scene
+    image=bpy.data.images.new("ambient_occlusion_baked",width=512,height=512,alpha=False)
+    image.colorspace_settings.name="Non-Color"
+    image.generated_color=(1.0,1.0,1.0,1.0)
+    nodes_created=[]
+    try:
+        for material in mesh.data.materials:
+            if material is None:continue
+            nodes=material.node_tree.nodes
+            target=nodes.new("ShaderNodeTexImage")
+            target.name="F09_REAL_AO_BAKE_TARGET"
+            target.image=image
+            nodes.active=target
+            nodes_created.append((material,target))
+        assert nodes_created
+        scene.render.bake.use_clear=True
+        bpy.ops.object.bake(type="AO")
+        image.filepath_raw=str((directory/"ambient_occlusion_baked.png").resolve())
+        image.file_format="PNG"
+        image.save()
+        assert (directory/"ambient_occlusion_baked.png").stat().st_size>3000
+    finally:
+        for material,target in nodes_created:
+            material.node_tree.nodes.remove(target)
+    return image
+
+
 def bake_auxiliary(mesh,folder):
     rough=_scalar_bake(mesh,folder,"roughness_baked","Roughness")
     metal=_scalar_bake(mesh,folder,"metallic_baked","Metallic")
     normal=_normal_bake(mesh,folder)
+    ao=_ambient_occlusion_bake(mesh,folder)
     r=np.array(rough.pixels[:],dtype=np.float32).reshape(512,512,4)
     m=np.array(metal.pixels[:],dtype=np.float32).reshape(512,512,4)
+    a=np.array(ao.pixels[:],dtype=np.float32).reshape(512,512,4)
     packed=np.ones_like(r)
+    packed[:,:,0]=a[:,:,0]
     packed[:,:,1]=r[:,:,0]
     packed[:,:,2]=m[:,:,0]
     img=bpy.data.images.new("f09_preview_orm",width=512,height=512,alpha=False)
@@ -106,10 +138,10 @@ def bake_auxiliary(mesh,folder):
         links.new(separate.outputs["Blue"],bsdf.inputs["Metallic"])
         normal_tex=nodes.new("ShaderNodeTexImage")
         normal_tex.image=normal
-        normal_node=nodes.new("ShaderNodeNormalMap")
+        # glTF exporter recognizes this named node-group input as AO.\n        group=bpy.data.node_groups.get("glTF Settings")\n        if group is None:\n            group=bpy.data.node_groups.new("glTF Settings","ShaderNodeTree")\n            group.inputs.new("NodeSocketFloat","Occlusion")\n        settings=nodes.new("ShaderNodeGroup")\n        settings.node_tree=group\n        links.new(separate.outputs["Red"],settings.inputs["Occlusion"])\n        normal_node=nodes.new("ShaderNodeNormalMap")
         links.new(normal_tex.outputs["Color"],normal_node.inputs["Color"])
         links.new(normal_node.outputs["Normal"],bsdf.inputs["Normal"])
-    return {"roughness":"roughness_baked.png","metallic":"metallic_baked.png",
+    return {"ambient_occlusion":"ambient_occlusion_baked.png",\n            "ao_channel":"REAL_CYCLES_AO_BAKE",\n            "roughness":"roughness_baked.png","metallic":"metallic_baked.png",
             "orm":"occlusion_roughness_metallic.png",
             "normal":"normal_tangent_baked.png",
             "pbr_map_resolution":[512,512],
