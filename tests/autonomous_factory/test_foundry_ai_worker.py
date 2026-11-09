@@ -30,6 +30,36 @@ class TestFoundryCorrection(unittest.TestCase):
         self.assertNotIn("malicious\n", body)
         self.assertLess(len(title), 160)
 
+    def test_scheduled_new_source_failure_is_eligible(self):
+        run = copy.deepcopy(RUN)
+        run["name"] = "Foundry original editable model factory"
+        run["head_branch"] = "main"
+        run["event"] = "schedule"
+        self.assertTrue(worker.eligible(run).allowed)
+        title, body = worker.failure_issue(run, JOBS)
+        self.assertIn("targeting `main`", body)
+        self.assertIn("Source branch: `main`", body)
+        self.assertTrue(title.startswith("[Foundry AI] Repair"))
+
+    def test_scheduled_original_360_failure_is_eligible(self):
+        run = copy.deepcopy(RUN)
+        run["name"] = "Foundry 360 continuous Blender sprite batch"
+        run["head_branch"] = "main"
+        run["event"] = "schedule"
+        self.assertTrue(worker.eligible(run).allowed)
+
+    def test_new_factory_pr_cannot_trigger_privileged_issue(self):
+        run = copy.deepcopy(RUN)
+        run["name"] = "Foundry original editable model factory"
+        run["head_branch"] = "main"
+        run["event"] = "pull_request"
+        self.assertFalse(worker.eligible(run).allowed)
+
+    def test_m02_scheduled_main_not_eligible(self):
+        run = copy.deepcopy(RUN)
+        run["event"] = "schedule"
+        self.assertFalse(worker.eligible(run).allowed)
+
     def test_only_allowlisted_workflows(self):
         run = copy.deepcopy(RUN)
         run["name"] = "Other workflow"
