@@ -41,7 +41,7 @@ class NativeGameplaySheetTests(unittest.TestCase):
         self.assertEqual(result["headings"],16)
         self.assertEqual(result["max_world_pivot_drift_px"],0)
         with Image.open(self.root/"out/f10_gameplay_16_headings_1x.png") as sheet:
-            self.assertEqual(sheet.size,(760,640))
+            self.assertEqual(sheet.size,(1024,768))
     def test_reject_tampered_frame(self):
         self.write()
         (self.source/"heading_00.png").write_bytes(b"modified")
