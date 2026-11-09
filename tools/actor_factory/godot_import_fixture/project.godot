@@ -1,0 +1,9 @@
+config_version=5
+
+[application]
+config/name="LAST LIGHT F05 Native GLB Import Gate"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
