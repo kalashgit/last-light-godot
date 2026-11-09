@@ -47,11 +47,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # PR: first 2 smoke models. Explicit manual dispatch: all 23 in six
-        # independent windows of up to 4. Neither mode admits production art.
-        start: ${{ fromJSON(github.event_name == 'workflow_dispatch' && '[0,4,8,12,16,20]' || '[0]') }}
+        # Six bounded independent windows cover all 23 original proposals.
+        # Each GLB/BLEND/render artifact is strictly non-Golden and non-admitted.
+        start: [0, 4, 8, 12, 16, 20]
     env:
-      MAX_MODELS: ${{ github.event_name == 'workflow_dispatch' && '4' || '2' }}
+      MAX_MODELS: '4'
     steps:
       - uses: actions/checkout@v4
         with:

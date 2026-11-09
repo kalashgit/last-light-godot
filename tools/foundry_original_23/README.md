@@ -36,11 +36,10 @@ python -m tools.foundry_original_23.postprocess --renders build/original_23/rend
 ```
 
 GitHub workflow `foundry-original-23-technical-preview.yml` installs Blender,
-generates editable `.blend` + `.glb` for first two IDs on a PR, renders 16
-directions, packs **64×64 transparent inventory sprites**, archives review
-contact sheets and JSON SHA256 receipts. Manually dispatching it *after the
-workflow is available on the default branch* runs six bounded windows of up
-to four distinct assets, covering all 23. This workflow has read-only GitHub
+generates editable `.blend` + `.glb` for all 23 IDs in six bounded independent
+windows of up to four IDs on the draft PR, renders 16 directions, packs
+**64×64 transparent inventory sprites**, archives review contact sheets and
+JSON SHA256 receipts. This workflow has read-only GitHub
 permissions; no publish, merge, deployment, API image generation or R2 costs.
 
 ## How a 23–45 candidate becomes a true 40-item sheet input
