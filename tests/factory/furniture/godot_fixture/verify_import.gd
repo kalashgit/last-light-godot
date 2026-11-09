@@ -31,9 +31,10 @@ func _initialize() -> void:
 	root.add_child(instance)
 	var players := instance.find_children("*", "AnimationPlayer", true, false)
 	var mesh_nodes := instance.find_children("*", "MeshInstance3D", true, false)
-	var door := instance.find_child("hinge_local.main_door", true, false) as Node3D
-	var crisper := instance.find_child("slide_local.crisper_drawer", true, false) as Node3D
-	var freezer := instance.find_child("hinge_local.freezer_flap", true, false) as Node3D
+	# Godot 4 sanitizes Blender/glTF node dots to underscores on scene import.
+	var door := instance.find_child("hinge_local_main_door", true, false) as Node3D
+	var crisper := instance.find_child("slide_local_crisper_drawer", true, false) as Node3D
+	var freezer := instance.find_child("hinge_local_freezer_flap", true, false) as Node3D
 	var imported_pivots: Array[String] = []
 	for node in instance.find_children("*", "Node3D", true, false):
 		var found_name := str(node.name)
@@ -69,8 +70,8 @@ func _initialize() -> void:
 	var fresh := (packed as PackedScene).instantiate()
 	root.add_child(fresh)
 	var fresh_player := fresh.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
-	var fresh_door := fresh.find_child("hinge_local.main_door", true, false) as Node3D
-	var fresh_drawer := fresh.find_child("slide_local.crisper_drawer", true, false) as Node3D
+	var fresh_door := fresh.find_child("hinge_local_main_door", true, false) as Node3D
+	var fresh_drawer := fresh.find_child("slide_local_crisper_drawer", true, false) as Node3D
 	var fresh_door_rest := fresh_door.quaternion
 	var fresh_drawer_rest := fresh_drawer.position
 	_play_until_near_end(fresh_player, crisper_clip)
