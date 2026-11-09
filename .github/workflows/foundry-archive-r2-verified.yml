@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: foundry-r2-archive-serialized
   cancel-in-progress: false
@@ -23,6 +24,7 @@ jobs:
     timeout-minutes: 40
     permissions:
       contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,16 +43,29 @@ jobs:
           set -euo pipefail
           mkdir -p build/foundry_r2
           if [[ "$SOURCE_CLASS" == 'legacy-360' ]]; then
-            tag='foundry-360-source-v1'
+            # The authoritative 360-source ZIP lives inside this immutable
+            # Actions artifact, not a GitHub Release. Never scan latest runs.
+            run_id='42460745955'
+            artifact_id='13609641055'
+            artifact_name='last-light-360-editable-3d-masters-geometry-only-v1'
+            expected_inner_sha='0336fe22715835aee0f676e4ef825dfe8d43cc5c20c1ba78298255309cb37d4a'
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id" | jq -e \
+              --arg name "$artifact_name" \
+              '.expired == false and .name == $name and .size_in_bytes == 109843548 and .digest == "sha256:fc2307651a1d4c3899af70bb2eeae452a4be901f7a308c40cfe1bfe99b5b61d6" and .workflow_run.id == 42460745955 and .workflow_run.head_sha == "d636474a8c2fa89c039cf1a9531b20b521126cf2"'
+            gh run download "$run_id" --repo "$GITHUB_REPOSITORY" \
+              --name "$artifact_name" --dir build/foundry_r2
             asset='Last_Light_3D_Masters_All_360.zip'
+            printf '%s  %s\n' "$expected_inner_sha" "build/foundry_r2/$asset" | sha256sum --check --status
+            mv "build/foundry_r2/$asset" build/foundry_r2/source.zip
+            tag='foundry-legacy360-run-42460745955'
           else
             [[ "$CREATED_RUN_ID" =~ ^[0-9]{1,18}$ ]] || exit 2
             tag="foundry-created-$CREATED_RUN_ID"
             asset='foundry_new_sources.zip'
+            gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft,assets | jq -e --arg asset "$asset" '.isDraft == true and (.assets | any(.name == $asset))'
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$asset" --dir build/foundry_r2
+            mv "build/foundry_r2/$asset" build/foundry_r2/source.zip
           fi
-          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft,assets | jq -e --arg asset "$asset" '.isDraft == true and (.assets | any(.name == $asset))'
-          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$asset" --dir build/foundry_r2
-          mv "build/foundry_r2/$asset" build/foundry_r2/source.zip
           echo "source_tag=$tag" >> "$GITHUB_ENV"
       - name: Upload private R2 object and verify FULL readback SHA256
         env:
