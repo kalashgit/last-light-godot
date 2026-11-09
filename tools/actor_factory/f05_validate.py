@@ -24,6 +24,9 @@ EXPECTED_SOCKETS = {
 EXPECTED_CLIPS = {
     "idle", "walk", "run", "sneak", "interact", "attack", "hurt", "death"
 }
+EXPECTED_WEARABLES = {
+    "shirt_body", "shirt_sleeves", "pants_upper", "pants_lower", "waist_band"
+}
 EXPECTED_FILES = (
     "calibration.png",
     "f05_noncanonical_calibration.blend",
@@ -53,6 +56,8 @@ def validate(directory):
         errors.append("Missing required skeleton bones")
     if not EXPECTED_SOCKETS.issubset(set(manifest.get("sockets", []))):
         errors.append("Missing required attachment sockets")
+    if not EXPECTED_WEARABLES.issubset(set(manifest.get("wearable_layers", []))):
+        errors.append("Missing required garment calibration layers")
     clips = manifest.get("clips", {})
     if not EXPECTED_CLIPS.issubset(set(clips)):
         errors.append("Missing required calibration animation actions")
