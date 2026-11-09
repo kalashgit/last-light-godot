@@ -142,6 +142,7 @@ func play_anim(anim: String, direction: int, restart: bool = true) -> bool:
     animation = anim
     heading = direction
     playing = true
+    _apply_directional_layer_order()
     _apply_frame()
     return true
 
@@ -259,8 +260,28 @@ func restore_state(state: Dictionary) -> bool:
     frame = decoded_frame
     playing = state["playing"]
     _elapsed = 0.0
+    _apply_directional_layer_order()
     _apply_frame()
     return true
+
+func _apply_directional_layer_order() -> void:
+    # Native Y-sort handles actor roots; ordered paperdoll layers handle
+    # foreground/background body parts INSIDE each actor.
+    if not _sprites.has("backpack"):
+        return
+    var names = _spec.get("direction_names", [])
+    if not names is Array or names.size() != int(_spec.get("directions", 0)):
+        return # Legacy sheets without named headings retain old order.
+    var heading_name: String = str(names[heading])
+    var pack: Sprite2D = _sprites["backpack"]
+    if heading_name in ["front", "front_right", "front_left"]:
+        move_child(pack, 0) # Body and shirt occlude rear pack.
+    else:
+        move_child(pack, get_child_count() - 1)
+        if _sprites.has("effects"):
+            move_child(_sprites["effects"], get_child_count() - 1)
+    # Artistic refinement: future independent front straps/back shell masks.
+
 
 func _exact_nonnegative_integer(value: Variant) -> bool:
     if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
