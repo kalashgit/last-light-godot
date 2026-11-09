@@ -62,7 +62,8 @@ func _validate_data() -> bool:
     if neighborhood.get("schema", "") != "last_light.neighborhood_60_prototype.v1":
         validation_error = "Invalid neighborhood schema"
         return false
-    if neighborhood.get("tile_pixel_basis", []) != [80, 40]:
+    var tile_basis: Array = neighborhood.get("tile_pixel_basis", [])
+    if tile_basis.size() != 2 or int(tile_basis[0]) != 80 or int(tile_basis[1]) != 40:
         validation_error = "Invalid 80x40 projection"
         return false
     if str(neighborhood.get("status", "")) != "LAYOUT_PROTOTYPE_NO_GOLDEN_ART":
