@@ -1,0 +1,64 @@
+name: M02 Asset Factory Calibration Pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      asset:
+        description: Original F01 procedural calibration asset
+        type: choice
+        required: true
+        default: stool
+        options: [stool, cabinet, table]
+      runner:
+        description: GitHub-hosted or separately registered trusted self-hosted Blender runner
+        type: choice
+        required: true
+        default: github
+        options: [github, hybrid]
+  pull_request:
+    paths:
+      - '.github/workflows/m02-asset-factory-pilot.yml'
+      - 'tools/asset_factory/**'
+      - 'tests/asset_factory/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m02-factory-${{ github.ref }}-${{ github.event.inputs.asset || 'stool' }}
+  cancel-in-progress: false
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/asset_factory -v
+
+  render:
+    needs: contract
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ${{ inputs.runner == 'hybrid' && fromJSON('["self-hosted","linux","x64","blender","last-light-trusted"]') || fromJSON('"ubuntu-latest"') }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender on GitHub runner
+        if: inputs.runner == 'github'
+        run: sudo apt-get update && sudo apt-get install -y blender
+      - name: Verify Blender executable
+        run: blender --version
+      - name: Generate candidate and transparent PNG
+        run: blender -b -t 2 --python tools/asset_factory/pilot_blender.py -- --output "$RUNNER_TEMP/last-light-pilot" --asset "${{ inputs.asset }}"
+      - name: Verify fail-closed artifact contract
+        run: python3 tools/asset_factory/validate_pilot.py "$RUNNER_TEMP/last-light-pilot" --asset "${{ inputs.asset }}"
+      - name: Upload short-lived unapproved candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: unapproved-f01-${{ inputs.asset }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/last-light-pilot/
+          retention-days: 3
+          if-no-files-found: error
