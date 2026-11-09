@@ -126,14 +126,14 @@ ellipsoid('wearable_waist_band', (0,0,1.035),
 
 # Explicitly noncanonical calibration props; imported from no outside source.
 ellipsoid('backpack test', (0,.19,1.31),(.19*body_width,.12,.27),'chest',fabric)
-limb('held tool proxy',(.37,0,.83),(.37,0,1.23),.021,'hand_R',steel)
+limb('held tool proxy',(-.37,0,.83),(-.37,0,1.23),.021,'hand_R',steel)
 
 # Socket empties are attached to named bones, not silently baked into sprites.
-sockets = {'floor_feet':('root',(0,0,0)), 'hand_R':('hand_R',(.37,0,.89)),
-           'hand_L':('hand_L',(-.37,0,.89)), 'backpack':('chest',(0,.18,1.30)),
+sockets = {'floor_feet':('root',(0,0,0)), 'hand_R':('hand_R',(-.37,0,.89)),
+           'hand_L':('hand_L',(.37,0,.89)), 'backpack':('chest',(0,.18,1.30)),
            'headwear':('head',(0,0,1.78)), 'waist':('pelvis',(0,0,.96)),
-           'holster':('pelvis',(.2,0,.95)), 'held_item_tip':('hand_R',(.37,0,1.23)),
-           'attack_contact':('hand_R',(.37,0,1.23)), 'depth_sort':('root',(0,0,.9))}
+           'holster':('pelvis',(.2,0,.95)), 'held_item_tip':('hand_R',(-.37,0,1.23)),
+           'attack_contact':('hand_R',(-.37,0,1.23)), 'depth_sort':('root',(0,0,.9))}
 for name,(bone,point) in sockets.items():
     ob=bpy.data.objects.new('socket_'+name,None)
     bpy.context.collection.objects.link(ob)
