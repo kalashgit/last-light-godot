@@ -20,13 +20,15 @@ func _capture() -> void:
     game.set("god_mode",true)
     game.set("player",Vector2(4.9,9.35))
     var drops: Array[Dictionary]=[]
+    var game_survival: Object=game.get("survival")
+    var game_art: Object=game.get("art")
     for index in range(IDS.size()):
         var ident: String=IDS[index]
-        if not game.survival.definitions.has(ident):
+        if not (game_survival.get("definitions") as Dictionary).has(ident):
             push_error("F09_VISUAL_MISSING_CANDIDATE_DEFINITION "+ident)
             quit(82)
             return
-        game.art._cache(ident)
+        game_art.call("_cache",ident)
         drops.append({"id":ident,"count":1,
             "pos":Vector2(3.7+index*.65,8.75)})
     game.set("drops",drops)
