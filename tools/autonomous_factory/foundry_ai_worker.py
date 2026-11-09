@@ -128,6 +128,26 @@ class GitHub:
                 return None
         raise RuntimeError("Cannot guarantee deduplication: too many issues")
 
+    def correction_issues_last_day(self) -> int:
+        """Bound issue write volume to avoid automation storms."""
+        cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=1)
+        count = 0
+        for page in range(1, 4):
+            issues = self.request(f"/issues?state=all&per_page=100&page={page}")
+            for issue in issues:
+                try:
+                    created = dt.datetime.fromisoformat(
+                        issue.get("created_at", "").replace("Z", "+00:00"))
+                except (ValueError, TypeError):
+                    continue
+                if created < cutoff:
+                    return count
+                if "foundry-correction-run:" in (issue.get("body") or ""):
+                    count += 1
+            if len(issues) < 100:
+                return count
+        raise RuntimeError("Cannot enforce daily issue cap: too many issues")
+
     def copilot_assignments_last_day(self, current_issue: int) -> int:
         cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=1)
         count = 0
@@ -185,6 +205,10 @@ def main() -> int:
         return 0
     issue = gh.issue_for_run(args.run_id)
     if issue is None:
+        if gh.correction_issues_last_day() >= 6:
+            print(json.dumps({"status": "ISSUE_DAILY_LIMIT", "run_id": args.run_id,
+                              "reason": "max six correction issues per 24h"}))
+            return 0
         issue = gh.create_issue(title, body)
         status = "ISSUE_CREATED"
     else:
