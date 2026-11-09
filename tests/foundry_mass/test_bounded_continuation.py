@@ -16,7 +16,7 @@ class FiniteProductionTests(unittest.TestCase):
                 self.assertIn("github.ref == 'refs/heads/main'", s)
                 self.assertIn("github.actor == 'kalashgit'", s)
                 self.assertIn("github.actor == 'github-actions[bot]'", s)
-                self.assertIn("cancel-in-progress: false", s)
+                self.assertTrue("cancel-in-progress: false" in s or "cancel-in-progress: ${{ github.event_name == 'pull_request' }}" in s)
                 self.assertIn("github.event_name == 'schedule'", s)
                 self.assertIn("github.event_name == 'pull_request'", s)
     def test_no_unbounded_dispatch_and_no_schedule_chain(self):
