@@ -27,6 +27,24 @@ approved. For now this flow refines **existing exported original 3D geometry**;
 it does not fabricate a new high-quality 3D mesh directly from a source sprite.
 Future original-mesh recipe authoring remains an independent review step.
 
+### First actual CI evidence — 2026-11-09
+
+[Controlled pilot #42684519982](https://github.com/kalashgit/last-light-godot/actions/runs/42684519982)
+completed the complete technical path successfully. Its `foundry-controlled-review`
+artifact contains original render metadata, sixteen 64-logical-pixel styled
+directions, the packed PNG/metadata and independent pixel-reconstruction QA,
+actual headless Godot import, a Blender geometry/material audit, and a founder
+contact sheet. This is **not** a Golden-40 asset acceptance.
+
+**Actual visual assessment:** the first mattress contact sheet is nearly all
+white, with little visible fabric structure. The original GLB has 5 meshes,
+746 vertices, 732 triangles, 2 named materials (`fabric_2_damaged`,
+`steel_0_used`) and **zero image-texture nodes**. The immediate production
+blocker is the F11 original material/texture refinement and F12 world-scale
+calibration. The visual must not be promoted, reused as an approved sprite,
+or silently multiplied over the research corpus. The automated stage certifies
+data integrity, not texture quality or Golden style.
+
 ## Connected stages
 
 1. **Notion gate:** `tools/foundry_flow/plan.py` validates snapshot + R03;
