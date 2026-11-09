@@ -107,6 +107,8 @@ jobs:
         with:
           name: f02-blender-calibration-evidence
           path: |
+            build/f02_blender/f02_noncanonical_calibration.zip
+            build/f02_blender/archive_receipt.json
             build/f02_blender/f02_contact_sheet.png
             build/f02_blender/qa_report.json
             build/f02_blender/run_report.json
