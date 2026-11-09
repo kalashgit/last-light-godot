@@ -17,9 +17,11 @@ import render_v3_recovery as base
 from hero_hatchback import build,BONNET_HINGE,HATCH_HINGE
 
 CLIPS={
-    "bonnet":{"hinge":BONNET_HINGE,"open_deg":56,"sign":-1,"heading":45,
+    # Match the fixed F12 three-quarter viewpoint rather than presenting a
+    # near-profile view that hides the bonnet aperture and window thickness.
+    "bonnet":{"hinge":BONNET_HINGE,"open_deg":56,"sign":-1,"heading":0,
               "arg":"bonnet_deg"},
-    "rear_hatch":{"hinge":HATCH_HINGE,"open_deg":70,"sign":1,"heading":225,
+    "rear_hatch":{"hinge":HATCH_HINGE,"open_deg":70,"sign":1,"heading":180,
                   "arg":"rear_hatch_deg"},
 }
 
