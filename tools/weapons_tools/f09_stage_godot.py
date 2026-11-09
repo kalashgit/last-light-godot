@@ -17,6 +17,23 @@ def main():
     # Reuse the real LAST LIGHT gameplay source, without changing it.
     # This is an isolated copy, not the main game's running scene.
     shutil.copytree(ROOT/"scripts",DST/"scripts",dirs_exist_ok=True)
+    # Candidate-only F12 ground-contact treatment. This patch is applied to
+    # the cloned house.gd for QA; NEVER changes the source gameplay script.
+    house_script=DST/"scripts"/"house.gd"
+    house_source=house_script.read_text()
+    original_drop=' else:\\n  art._sprite(self,id,drop.pos)'
+    assert house_source.count(original_drop)==1, "house drop drawing contract changed"
+    candidate_drop=''' else:
+  if id in ["ll_tools_adjustable_wrench","ll_tools_socket_handle","ll_tools_hand_saw"]:
+   # Soft world-plane contact shadow, not a halo or oversized selection mark.
+   var foot: Vector2 = _screen(drop.pos)
+   var oval := PackedVector2Array()
+   for k in range(16):
+    var theta := TAU * float(k) / 16.0
+    oval.append(foot + Vector2(cos(theta)*11.0,sin(theta)*3.0))
+   draw_colored_polygon(oval,Color(0.03,0.04,0.04,0.29))
+  art._sprite(self,id,drop.pos)'''
+    house_script.write_text(house_source.replace(original_drop,candidate_drop))
     shutil.copytree(ROOT/"data",DST/"data",dirs_exist_ok=True)
     shutil.copyfile(ROOT/"main.tscn",DST/"main.tscn")
     # Real in-game lookup tables refer to these canonical Golden 40 icons.
