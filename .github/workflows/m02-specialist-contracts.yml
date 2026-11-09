@@ -2,6 +2,10 @@ name: M02 Pinned F05 F06 F07 F09 Specialist Contracts
 # Source-level admission only; animation and gameplay approvals remain separate.
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/m02-specialist-contracts.yml'
+      - 'tools/autonomous_factory/**'
   push:
     branches: ['codex/m02-autonomous-asset-factory-v1']
     paths:

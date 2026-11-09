@@ -47,7 +47,9 @@ jobs:
   blender-candidate:
     needs: contracts
     if: >-
-      github.event_name != 'pull_request' &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.head.repo.full_name == github.repository &&
+        github.head_ref == 'codex/m02-autonomous-asset-factory-v1')) &&
       (github.event_name != 'repository_dispatch' || github.actor == 'kalashgit') &&
       (github.event_name != 'repository_dispatch' || github.event.client_payload.asset == 'f01-refrigerator')
     runs-on: ${{ inputs.runner == 'isolated-self-hosted' && fromJSON('["self-hosted","linux","x64","last-light-isolated-blender"]') || fromJSON('"ubuntu-latest"') }}
