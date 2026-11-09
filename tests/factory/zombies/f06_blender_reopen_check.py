@@ -25,6 +25,16 @@ for name in expected:
     assert len(action.fcurves)>0,name
 weighted=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_WEIGHTED_JOINT')]
 continuous=[o for o in bpy.data.objects if o.type=='MESH' and o.get('F06_V6_SKINNED')]
+anatomy=[o for o in bpy.data.objects if o.type=='MESH' and o.name.startswith('V7 ')]
+if anatomy:
+    assert bpy.data.objects.get('V7 sculpted skull and jaw') is not None
+    assert len([o for o in anatomy if 'dangling finger' in o.name])==6
+    assert bpy.data.objects['V7 sculpted skull and jaw'].get('F06_V7_ORBITS_CARVED',0)>0
+    assert not any('hollow orbit' in o.name for o in anatomy)
+    assert not any(o.name.startswith(('head / cheek and cranial volume',
+                                     'uneven hair cap','jaw and chin'))
+                   for o in bpy.data.objects if o.type=='MESH'), 'old head proxy duplicated'
+    print('F06_V7_FACE_HAND_SOURCE_PASS',len(anatomy),'original sculpt elements')
 if continuous:
     assert len(continuous)==5,('expected torso plus four complete limbs',len(continuous))
     assert not any(o.name.startswith(('V5 deforming ','upper sleeve ','forearm ',
@@ -87,4 +97,10 @@ if continuous:
     assert len(imported)>=5,('V6 skinned meshes missing in GLB',len(imported))
     assert all(len(o.vertex_groups)>=2 for o in imported),'V6 GLB skin groups missing'
     print('F06_V6_GLTF_SKINNING_PASS',len(imported),'continuous skinned meshes')
+if anatomy:
+    assert any(o.type=='MESH' and 'V7 sculpted skull and jaw' in o.name
+               for o in bpy.context.scene.objects),'V7 sculpted head missing in GLB'
+    assert len([o for o in bpy.context.scene.objects
+                if o.type=='MESH' and 'V7 dangling finger' in o.name])==6
+    print('F06_V7_HEAD_HAND_GLTF_PASS')
 print('F06_V2_BLENDER_REOPEN_PASS',path,len(expected),'actions','GLB import PASS')
