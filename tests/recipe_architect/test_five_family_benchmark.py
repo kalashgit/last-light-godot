@@ -1,6 +1,7 @@
 """Truthful benchmark orchestration tests; no model accuracy claim here."""
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -32,6 +33,24 @@ class FiveFamilyBenchmarkTests(unittest.TestCase):
                 self.assertTrue((packet / case["source_file"]).exists())
                 self.assertTrue(case["source_sha256"])
             self.assertEqual(status["ready_recipe_count"], 4)
+            for case_id, required in {
+                "food_avocado_0027": {"pear_shaped_fruit_body", "skin_nodule_r0_c0"},
+                "furniture_shelf_0181": {"left_triangular_brace", "left_diagonal_brace_beam", "front_plank_fascia"},
+                "clothing_apron_0001": {"vertical_pink_stripe_0", "vertical_pink_stripe_6", "motif_waffle_cone", "ice_cream_scoop_pink"},
+                "backpack_0045": {"rounded_top_shell", "outer_front_seam_left", "front_pocket_pull_tab"},
+            }.items():
+                recipe = json.loads((packet / "cases" / case_id / "recipe.json").read_text())
+                components = {c["name"]: c for c in recipe["components"]}
+                self.assertTrue(required <= set(components), (case_id, required - set(components)))
+                self.assertEqual(recipe["identity"]["generation_method"], "pixel_inspected_seed")
+                self.assertEqual(recipe["identity"]["recipe_version"], 2)
+                self.assertFalse(recipe["quality"]["golden_approved"])
+            apron = json.loads((packet / "cases/clothing_apron_0001/recipe.json").read_text())
+            self.assertEqual(apron["render"]["camera_azimuth_deg"], 275)
+            self.assertEqual(sum(c["name"].startswith("vertical_pink_stripe_") for c in apron["components"]), 7)
+            shelf = json.loads((packet / "cases/furniture_shelf_0181/recipe.json").read_text())
+            brace = next(c for c in shelf["components"] if c["name"] == "left_triangular_brace")
+            self.assertEqual(brace["rotation_deg"], [90, 0, 90])
             with self.assertRaisesRegex(ValueError, "human truth missing"):
                 run(packet, Path(temp) / "results",
                     endpoint="http://127.0.0.1:8080/v1/chat/completions",

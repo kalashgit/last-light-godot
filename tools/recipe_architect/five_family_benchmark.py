@@ -238,6 +238,14 @@ def review_sheet(packet: Path) -> Path:
             backdrop = Image.new("RGBA", art.size, (230, 231, 232, 255))
             art = Image.alpha_composite(backdrop, art)
         art.thumbnail((248, 248), Image.Resampling.LANCZOS)
+        # Blender outputs are currently 128x128; the source crops are mostly
+        # 150-220px. The former contact sheet displayed tiny 128px previews
+        # alongside much larger references, exaggerating scale differences.
+        # Normalize the entire render frame for a fair review at equal size.
+        if not white and max(art.size) < 248:
+            factor = 248 / max(art.size)
+            art = art.resize((round(art.width * factor), round(art.height * factor)),
+                             Image.Resampling.LANCZOS)
         frame = Image.new("RGB", (265, 254), "#ffffff" if white else "#e6e7e8")
         frame.paste(art.convert("RGB"), ((frame.width-art.width)//2,
                                          (frame.height-art.height)//2))
