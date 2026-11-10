@@ -25,6 +25,11 @@ for remote access. Existing Golden art and the Godot playable game are untouched
   downloads, QA/provenance metadata and a review-note JSON download. The
   review-note export explicitly has `founder_golden_approved: false` because
   a browser download is not an authenticated approval event.
+- `export_offline_preview` makes an optional self-contained HTML file that can
+  be opened on a phone without a server. It bundles only generated rendered
+  views and reviewed GLB/Blend bytes from the isolated workspace, not the
+  restricted input source images. It is a convenient **preview**, not a
+  deployed multiplayer or authenticated dashboard.
 
 **Important:** review capacity of **100** does not alter the existing worker's
 **3-real-Blender-builds-per-run** cap, source-extraction cap or model-inference
@@ -65,6 +70,19 @@ To operate it from an iPhone, the next independent step is an authenticated
 private web deployment or secure tunnel with owner authorization. The intended
 future UI shell can use Meta's MIT-licensed **Astryx** React/StyleX system;
 this zero-dependency pilot is **not** claiming to have installed Astryx.
+
+For a standalone inspection file on iPhone, after creating the workspace:
+
+```bash
+python -m tools.recipe_architect.export_offline_preview \
+  --data-root /private/ll_mesh_review \
+  --out /private/LAST_LIGHT_mesh_review_offline.html
+```
+
+This single HTML file includes the 16 rendered views for each imported object.
+Its built-in geometry downloads refer to embedded base64 content. It does not
+call an online service. Native iOS Safari preview behavior remains unverified;
+the responsive layout must still receive owner on-device QA.
 
 ## Review of conditional founder battery feedback
 

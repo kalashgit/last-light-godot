@@ -10,6 +10,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from tools.recipe_architect.export_offline_preview import export
 from tools.recipe_architect.mesh_workspace import (
     import_batch_rooms, plan_reference_rooms,
 )
@@ -145,6 +146,43 @@ class MeshWorkspaceTests(unittest.TestCase):
             self.assertEqual(Path(obj.translate_path("/manifest.json")), root / "manifest.json")
             self.assertEqual(Path(obj.translate_path("/rooms/../../../etc/passwd")), root / "__not_served__")
             self.assertEqual(Path(obj.translate_path("/AGENTS.md")), root / "__not_served__")
+
+    def test_portable_html_from_verified_batch_only_embeds_rendered_assets(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            report = self.synthetic_receipt(root)
+            vault = root / "vault"
+            import_batch_rooms(report_path=report, out=vault)
+            html_file = root / "review.html"
+            result = export(vault, html_file)
+            html = html_file.read_text()
+            self.assertEqual(result["room_count"], 1)
+            self.assertIn("data:image/png;base64,", html)
+            self.assertIn("data:model/gltf-binary;base64,", html)
+            self.assertIn("window.__LL_MESH_OFFLINE_MANIFEST=", html)
+            self.assertIn("LAST LIGHT", html)
+            self.assertNotIn("src=\"app.js\"", html)
+            self.assertFalse(result["contains_reference_pixels"])
+            self.assertFalse(result["founder_golden_approved"])
+            with self.assertRaises(FileExistsError):
+                export(vault, html_file)
+
+    def test_portable_html_refuses_forged_golden_and_image_escape(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            vault = root / "vault"
+            plan_reference_rooms(start=1, count=10, out=vault)
+            manifest_file = vault / "manifest.json"
+            m = json.loads(manifest_file.read_text())
+            m["rooms"][0]["golden_approved"] = True
+            manifest_file.write_text(json.dumps(m))
+            with self.assertRaisesRegex(ValueError, "Golden"):
+                export(vault, root / "no.html")
+            m["rooms"][0]["golden_approved"] = False
+            m["rooms"][0]["preview"] = "../../private_source.png"
+            manifest_file.write_text(json.dumps(m))
+            with self.assertRaisesRegex(ValueError, "outside"):
+                export(vault, root / "no.html")
 
 
 if __name__ == "__main__":

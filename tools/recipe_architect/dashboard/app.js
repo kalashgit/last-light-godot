@@ -121,9 +121,12 @@ function exportReviewNote() {
 }
 async function init() {
   try {
-    const response = await fetch("manifest.json", {cache: "no-store"});
-    if (!response.ok) throw new Error(`Manifest HTTP ${response.status}`);
-    const data = await response.json();
+    let data = window.__LL_MESH_OFFLINE_MANIFEST;
+    if (!data) {
+      const response = await fetch("manifest.json", {cache: "no-store"});
+      if (!response.ok) throw new Error(`Manifest HTTP ${response.status}`);
+      data = await response.json();
+    }
     if (data.schema !== "last-light.mesh-workspace.v1" || !Array.isArray(data.rooms) || data.rooms.length > 100) throw new Error("Unrecognized workspace data");
     current.rooms = data.rooms;
     $("total").textContent = String(data.room_count);
