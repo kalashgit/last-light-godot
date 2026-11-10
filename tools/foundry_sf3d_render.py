@@ -92,7 +92,7 @@ def main() -> None:
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.view_settings.view_transform = "Standard"
-    if hasattr(scene, "eevee"):
+    if hasattr(scene, "eevee") and hasattr(scene.eevee, "taa_render_samples"):
         scene.eevee.taa_render_samples = 32
     for heading in range(16):
         root.rotation_euler.z = math.radians(heading * 22.5)
