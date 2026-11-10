@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "catalog_sha256": "85acc503a47511b87480a6a3434f2eb99a49f86706e6cb24aa9f3b9b60785875",
+  "total": 512,
+  "completed_before": [
+    "ll_generated_industrial_locker_000",
+    "ll_generated_tool_chest_000",
+    "ll_generated_warehouse_shelf_000",
+    "ll_generated_utility_cabinet_000",
+    "ll_generated_portable_generator_000",
+    "ll_generated_vending_machine_000",
+    "ll_generated_street_dumpster_000",
+    "ll_generated_raised_planter_000",
+    "ll_generated_industrial_locker_001",
+    "ll_generated_tool_chest_001",
+    "ll_generated_warehouse_shelf_001",
+    "ll_generated_utility_cabinet_001",
+    "ll_generated_portable_generator_001",
+    "ll_generated_vending_machine_001"
+  ],
+  "batch_count": 2,
+  "batch": [
+    {
+      "asset_id": "ll_generated_street_dumpster_001",
+      "archetype": "street_dumpster",
+      "family": "F08",
+      "seed": 1005623811,
+      "blend_sha256": "2fe222e0f898b5f3877aefc20f82e6f16f55450b7e7ee775607182a5e04803af",
+      "glb_sha256": "cc4ef197a88042bee643a887831ddad67e9516a8e4be1e5d42c59a76b68ade1e",
+      "atlas_sha256": "7133e66aad0b31baaa96e7e72175169b4334f97a407dc51b3c5ac762a9b8ba4c",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    },
+    {
+      "asset_id": "ll_generated_raised_planter_001",
+      "archetype": "raised_planter",
+      "family": "F04",
+      "seed": 823751509,
+      "blend_sha256": "4adedc59ffaaf12e2817d777abe7c6e1adfbeafb56427a9f6abd29cbacf87efb",
+      "glb_sha256": "7b1d8ae5446f8844ada016d25c1df5aba87d39081e39bf2288b8e98390657aab",
+      "atlas_sha256": "79d109274d490db61bc786b2687682f7b5e5aa2861495050f81c6f5cb8db2c76",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    }
+  ],
+  "archive_sha256": "8a9e7388e2d55c244e60ffb5958c83bf67b7697242f4148015cefaeccf904839",
+  "archive_size_bytes": 721396,
+  "source_editable": true,
+  "golden_approved": false,
+  "canonical_promoted": false,
+  "gameplay_integrated": false,
+  "release_tag": "foundry-created-42913305590",
+  "release_archive": "foundry_new_sources.zip",
+  "release_state": "DRAFT_DO_NOT_PUBLISH",
+  "run_id": "42913305590"
+}
