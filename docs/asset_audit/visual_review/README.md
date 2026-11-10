@@ -2,7 +2,10 @@
 
 ## Purpose
 
-One searchable visual catalog for the existing **21,025** external file-page references. The initial scope is the **6,072** R02 second-pass cases; choose “All 21,025 references” to switch. This is a *research review interface*, not an alternate canonical asset database.
+One searchable visual catalog for the existing **21,025** external file-page references. The default scope is now the **4,590-priority** visual queue: 1,051 unresolved R02 visual cases plus **3,539 model images recovered from the formerly unreviewed composition category**. Choose “New model-image evidence only”, “Proposed physical item masters” (3,114), “6,072 second-pass cases”, or “All 21,025 references” to change focus. This is a *research review interface*, not an alternate canonical asset database.
+
+R07 finds **3,348 item-model images** and **251 vehicle-model images** among the 21,025 wiki file pages. Sixty had already been evaluated in R02, leaving **3,539 unreviewed model-image references**. Of those, 1,423 item-model filenames match an inventory-icon filename after a limited normalization, 1,866 do not, and 250 are vehicle-model images. These are **images of models, not unique mesh-file counts**. A missing exact icon match is not proof that a new original LAST LIGHT mesh is necessary; inspect states, colors, packaging, attachment, existing models, and gameplay need.
+The R07 pass also reads an identity-only snapshot of the 360 existing geometry candidates and finds **44 strict lexical model-name links**. These are *collision-prevention hints*, not proof that the geometry is art-approved or usable. The stored snapshot is `../a00_r07_existing_geometry_360.json`, derived from the geometry branch's immutable commit. No Blender binaries are copied into this desk.
 
 ## Opening
 
@@ -12,8 +15,8 @@ One searchable visual catalog for the existing **21,025** external file-page ref
 
 ## Reviewing
 
-1. Search/filter by source ID, name, proposed root, family, parent/model link, status or classification.
-2. Open a card to inspect the proposed class, original research category and provenance. Use the original-file-page link for source verification.
+1. Begin with the priority queue or the new model-evidence filter, then search by source ID, name, proposed root, family, parent/model link, status or classification.
+2. Open a card to inspect the proposed class, original research category and provenance. R07 entries show provisional model identity and an exact-name matching inventory-icon link when one exists. Use original-file-page links for visual evidence.
 3. Enter a reviewer identifier. Optionally select a corrected classification and add a reason.
 4. Choose **Accept classification**, **Reject classification** (requires reason), or **Needs evidence**.
 5. Decisions persist in IndexedDB *on this device/browser only*. They do not automatically sync to Notion or GitHub. **Export decisions** regularly, especially on mobile.
@@ -22,6 +25,7 @@ One searchable visual catalog for the existing **21,025** external file-page ref
 ## Machine-consumable handoff
 
 The R03 evidence queue is a *review priority list*, not an approved asset list.
+The R07 model-image queue is a second independent evidence queue (3,539 records), not a set of new model definitions. Inspect `../a00_r07_model_gap_summary.json`; its compressed full ledger is `../a00_r07_model_evidence_queue.jsonl.gz.base64`.
 The branch stores `a00_r03_evidence_groups.jsonl.gz.base64` as base64-encoded gzip
 to keep the 5,173 provisional groups compact. Reconstruct locally with:
 
@@ -53,6 +57,7 @@ Commit a validated review JSONL through a dedicated reviewed pull request before
 ## Reproduction and tests
 
 ```bash
+python docs/asset_audit/a00_r07_model_gap_audit.py
 python docs/asset_audit/visual_review/build_catalog.py
 python docs/asset_audit/visual_review/make_standalone.py
 python docs/asset_audit/visual_review/test_review.py

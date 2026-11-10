@@ -6,6 +6,11 @@
   <meta name="theme-color" content="#111518">
   <title>LAST LIGHT / Asset Review Desk</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .metric-row { max-width: 1020px; }
+    .media-panel #paired-icon-link { display: block; margin-top: 10px; font-size: 12px; }
+    @media(max-width:600px) { .metric:nth-child(5) { padding-left: 0; border-left: 0; } }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -16,10 +21,11 @@
     <section class="intro">
       <div class="eyebrow"><span class="pulse"></span> RESEARCH EVIDENCE / CLASSIFICATION QA</div>
       <h1>Visual asset catalog<span class="dot">.</span></h1>
-      <p>Inspect source references, verify proposed relationships and record classification decisions. Original art remains research-only; a classification approval is <strong>not</strong> Golden approval.</p>
+      <p>Inspect source references, verify proposed relationships and record classification decisions. The priority queue now includes previously missed item and vehicle model views. These are <strong>model-image evidence, not proven unique meshes</strong>. Classification approval is not Golden approval.</p>
       <div class="metric-row">
         <div class="metric"><b id="total-count">—</b><span>Source records</span></div>
         <div class="metric"><b id="flagged-count">—</b><span>Second-pass cases</span></div>
+        <div class="metric"><b id="model-count">—</b><span>Recovered model images</span></div>
         <div class="metric"><b id="reviewed-count">0</b><span>Your decisions</span></div>
         <div class="metric"><b id="remaining-count">—</b><span>Unreviewed in scope</span></div>
       </div>
@@ -30,7 +36,7 @@
         <label class="field-label" for="search">Search records</label>
         <div class="searchbox"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Name, ID, master, family…" autocomplete="off"></div>
         <label class="field-label" for="scope">Coverage</label>
-        <select id="scope"><option value="r02">6,072 second-pass cases</option><option value="all">All 21,025 references</option></select>
+        <select id="scope"><option value="priority">Priority: unverified model images + visual unknowns</option><option value="models">New model-image evidence only</option><option value="physical">Proposed physical item masters</option><option value="r02">6,072 second-pass cases</option><option value="all">All 21,025 references</option></select>
         <label class="field-label" for="classification">Proposed classification</label>
         <select id="classification"><option value="all">All classifications</option></select>
         <label class="field-label" for="family">Production family</label>
@@ -52,7 +58,7 @@
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
       <div class="modal-heading"><div class="eyebrow" id="detail-meta">SOURCE REFERENCE</div><button id="close-detail" class="close-button" aria-label="Close">×</button></div>
       <div class="modal-grid">
-        <div class="media-panel"><div class="detail-image-wrap"><img id="detail-image" alt="Research-only source preview"><div id="image-failed" class="image-failed hidden">Thumbnail unavailable from source host.<br>Open the original file page below.</div></div><a id="original-link" target="_blank" rel="noopener noreferrer">View original source page ↗</a><p>Reference only · Do not copy source artwork into LAST LIGHT.</p></div>
+        <div class="media-panel"><div class="detail-image-wrap"><img id="detail-image" alt="Research-only source preview"><div id="image-failed" class="image-failed hidden">Thumbnail unavailable from source host. Open the original file page below.</div></div><a id="original-link" target="_blank" rel="noopener noreferrer">View original source page ↗</a><a id="paired-icon-link" target="_blank" rel="noopener noreferrer" class="hidden">Compare matching item icon ↗</a><p>Reference only · Do not copy source artwork into LAST LIGHT.</p></div>
         <div class="detail-panel"><h2 id="detail-title"></h2><div class="statusline"><span class="pill" id="detail-class"></span><span class="pill muted" id="detail-family"></span></div><dl class="facts" id="detail-facts"></dl><div class="decision-form"><h3>Your classification decision</h3><label class="field-label" for="reviewer">Reviewer identifier</label><input id="reviewer" placeholder="Your name or review ID" maxlength="80"><label class="field-label" for="override">Correct classification</label><select id="override"></select><label class="field-label" for="notes">Evidence / reason</label><textarea id="notes" rows="3" maxlength="2000" placeholder="Explain any correction, merge or rejection…"></textarea><div class="decision-actions"><button class="button accept" id="accept">✓ Accept classification</button><button class="button reject" id="reject">✕ Reject classification</button><button class="button subtle" id="needs-evidence">? Needs evidence</button></div><p class="fineprint">Saved on this device until exported. Machine workers consume exported decisions only after validation and GitHub review. No action changes Notion Golden approval.</p><div class="decision-message" id="decision-message" role="status"></div></div></div>
       </div>
       <div class="modal-navigation"><button class="link-button" id="previous">← Previous</button><span id="detail-position"></span><button class="link-button" id="next">Next →</button></div>

@@ -1,0 +1,37 @@
+{
+  "schema": "A00_R07_MODEL_IMAGE_GAP_AUDIT_V1",
+  "method": "Existing 21,025-record B001\u2013B008 metadata only; no new source crawl or binary game model extraction",
+  "total_source_file_pages": 21025,
+  "r02_semantically_triaged": 6072,
+  "source_file_pages_not_in_r02": 14953,
+  "item_model_images_total": 3348,
+  "vehicle_model_images_total": 251,
+  "unique_model_image_source_page_ids": 3599,
+  "model_image_pages_already_in_r02": 60,
+  "new_model_evidence_review_queue": 3539,
+  "evidence_buckets": {
+    "ITEM_MODEL_IMAGE_WITHOUT_EXACT_ICON_LINK": 1866,
+    "ITEM_MODEL_IMAGE_WITH_ICON_LINK": 1423,
+    "VEHICLE_MODEL_IMAGE_REQUIRES_ARCHETYPE_REVIEW": 250
+  },
+  "distinct_provisional_model_stems": 3531,
+  "provisional_family_queue_counts": {
+    "F01": 1,
+    "F05": 320,
+    "F09": 2968,
+    "F10": 250
+  },
+  "existing_geometry_manifest_total": 360,
+  "existing_geometry_source_ref": "c0bb2d0b41026a2f996baa1e52cef74994ac643f",
+  "model_images_with_strict_360_name_link": 44,
+  "can_validate_4807_unique_3d_models": false,
+  "cannot_infer_from_wiki_images": [
+    "Count of unique game model binaries",
+    "Count of distinct LAST LIGHT Blender meshes needed",
+    "Final gameplay necessity or art rights",
+    "Whether unnamed game model files lack wiki imagery"
+  ],
+  "production_status": "EVIDENCE_ONLY_NOT_CANONICAL_NOT_GOLDEN",
+  "ledger_sha256": "4996751b65e9d93474c7b2f437ebe1dde913a3728469ff57a3709daea459c444",
+  "ledger_rows": 3539
+}
