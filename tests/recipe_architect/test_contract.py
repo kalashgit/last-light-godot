@@ -10,7 +10,8 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from tools.recipe_architect.contract import validate
+from tools.recipe_architect.contract import validate, sha256
+from tools.recipe_architect.color_landmarks import discover
 from tools.recipe_architect.seed_recipes import SEEDS
 from tools.recipe_architect.visual_qa import compare, fitted_point
 from tools.recipe_architect.vision import model_inspection, pixel_report, recipe_from_analysis
@@ -157,6 +158,53 @@ class RecipeArchitectContractTests(unittest.TestCase):
             self.assertEqual(aligned["landmark_error"], 0)
             self.assertGreater(aligned["score"], displaced["score"])
             self.assertEqual(displaced["defects"][0]["component"], "positive_terminal_post")
+
+    def test_auto_color_landmark_reads_source_pixels_not_white_patches(self):
+        with tempfile.TemporaryDirectory() as d:
+            directory = Path(d)
+            source = Image.new("RGBA", (128, 128))
+            drawing = ImageDraw.Draw(source)
+            drawing.rectangle((10, 10, 118, 118), fill=(45, 45, 42, 255))
+            drawing.rectangle((73, 28, 87, 50), fill=(181, 46, 19, 255))
+            drawing.rectangle((22, 25, 48, 39), fill=(255, 255, 255, 255))
+            path = directory / "source.png"
+            source.save(path)
+            r = copy.deepcopy(self.recipe)
+            r["identity"]["source_sha256"] = sha256(path)
+            projection = {"schema": "last-light.recipe-projections.v1", "heading": 0, "resolution": 128,
+                          "components": {"positive_terminal_post": {"origin_px": [84, 45]}}}
+            report = discover(path, r, path, projection)
+            self.assertEqual([m["component"] for m in report["landmarks"]], ["positive_terminal_post"])
+            self.assertLess(abs(report["landmarks"][0]["xy"][0] - .63), .06)
+            self.assertFalse(report["semantic_model_inference"])
+
+            drawing.rectangle((73, 28, 87, 50), fill=(100, 100, 100, 255))
+            source.save(path)
+            r["identity"]["source_sha256"] = sha256(path)
+            report = discover(path, r, path, projection)
+            self.assertEqual(report["landmarks"], [])
+
+    def test_auto_color_landmark_abstains_on_ambiguous_blobs(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "ambiguous.png"
+            im = Image.new("RGBA", (128, 128), (42, 42, 42, 255))
+            drawing = ImageDraw.Draw(im)
+            drawing.rectangle((40, 30, 49, 47), fill=(180, 42, 16, 255))
+            drawing.rectangle((77, 30, 86, 47), fill=(180, 42, 16, 255))
+            im.save(path)
+            r = copy.deepcopy(self.recipe)
+            r["identity"]["source_sha256"] = sha256(path)
+            projection = {"schema": "last-light.recipe-projections.v1", "heading": 0, "resolution": 128,
+                          "components": {"positive_terminal_post": {"origin_px": [63, 40]}}}
+            result = discover(path, r, path, projection)
+            self.assertEqual(result["landmarks"], [])
+            self.assertTrue(any(d["status"] == "skip_ambiguous_color_blobs" for d in result["decisions"]))
+
+    def test_auto_color_landmark_rejects_source_drift(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "changed.png"
+            Image.new("RGBA", (128, 128), "red").save(p)
+            with self.assertRaises(ValueError): discover(p, self.recipe, p, {})
 
 
 if __name__ == "__main__": unittest.main()

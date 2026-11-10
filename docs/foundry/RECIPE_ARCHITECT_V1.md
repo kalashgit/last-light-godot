@@ -100,6 +100,38 @@ the best geometry. Singular camera projections stop safely. This is targeted
 **geometric visual repair**, not automated visual understanding: the architect
 must not invent 2D anchor evidence from filenames or text.
 
+### Optional CPU-derived, provisional color landmarks (LL-119 / LL-127)
+
+The additional `--auto-color-landmarks` flag first renders the candidate from
+its validated recipe, then inspects the **actual source RGBA pixels** for a
+connected color region matching a distinctive, saturated and relatively unique
+recipe material. It uses source SHA verification and the actual Blender camera
+projection to match that region with one dominant observed component. Plain
+gray, ambiguous multi-part materials, equally plausible color regions and
+missing/distant matches cause a documented abstention. A white cutout artifact
+is excluded by the saturation gate, not interpreted as geometry.
+
+If evidence exists, the measured provisional anchor is recorded in
+`provisional_color_landmarks.json` and can drive the same bounded
+rerender/rollback loop. No semantic vision-model inference is claimed; this
+heuristic requires a **pre-existing reviewed recipe and material prior**. Its
+confidence is not statistically calibrated. It is not a general 2D-to-3D
+reconstructor, and missing or uncertain components still require visual
+reasoning. An additional guard rejects landmark-driven edits that regress the
+raw pixel-comparison score by more than 0.015.
+
+```bash
+python3 -m tools.recipe_architect.pilot \
+  --recipe data/foundry_recipe_architect/vehicle_battery_recipe_v1.json \
+  --source /PRIVATE/vehicle_battery/isolated_source.png \
+  --out /PRIVATE/build/recipe-battery-autocolor \
+  --max-iterations 4 --auto-color-landmarks
+```
+
+The private founder source is needed to test its real-image usefulness; the
+automated Blender regression uses synthetic source pixels and is labeled as
+such. See `RECIPE_ARCHITECT_COLOR_LANDMARKS_20261110.md` for measurements.
+
 The original comparison score is an imperfect proxy:
 it measures alpha overlap, aspect ratio, edge alignment, and median color, but
 does not understand brand typography, physically accurate occluded back faces,

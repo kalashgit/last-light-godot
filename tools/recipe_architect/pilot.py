@@ -99,12 +99,15 @@ def propose_component_shift(recipe: dict, comparison: dict) -> tuple[dict, dict]
     return None
 
 
-def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max_iterations: int = 2) -> dict:
+def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max_iterations: int = 2,
+            auto_color_landmarks: bool = False) -> dict:
     if not 0 <= max_iterations <= 5: raise ValueError("max corrections must be <= 5")
     out = out.resolve()
     source = source.resolve()
     initial = json.loads(recipe.read_text())
     validate(initial, source, full_schema=True)
+    if auto_color_landmarks and initial["visual_analysis"].get("landmarks"):
+        raise ValueError("auto pixel landmarks cannot overwrite existing observed landmarks")
     history = []
 
     def attempt(doc, index, variant):
@@ -122,6 +125,28 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
 
     best = copy.deepcopy(initial)
     current = attempt(best, 0, "base")
+    auto_report = None
+    if auto_color_landmarks:
+        from .color_landmarks import discover
+        base_folder = out / "iteration_00_base"
+        projection = json.loads((base_folder / "component_projections.json").read_text())
+        auto_report = discover(source, best, base_folder / "heading_00.png", projection)
+        dump(out / "provisional_color_landmarks.json", auto_report)
+        if auto_report["landmarks"]:
+            best["visual_analysis"]["landmarks"] = auto_report["landmarks"]
+            validate(best, source, full_schema=True)
+            # No new Blender execution is claimed here: the *same* heading-zero
+            # image is re-compared against newly inspected source-color pixels.
+            current = compare(source, base_folder / "heading_00.png", out / "initial_anchored_comparison",
+                              auto_report["landmarks"], projection)
+            history.append({"index": 0, "decision": "provisional_color_landmarks_attached",
+                            "new_blender_execution": False, "comparison": current,
+                            "evidence": "provisional_color_landmarks.json"})
+        else:
+            history.append({"index": 0, "decision": "no_unambiguous_color_landmarks",
+                            "new_blender_execution": False,
+                            "evidence": "provisional_color_landmarks.json"})
+    start_score = current["score"]
     stopped = "iteration_bound"
     for iteration in range(1, max_iterations + 1):
         if best["visual_analysis"].get("landmarks"):
@@ -133,9 +158,12 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
             trial["identity"]["recipe_version"] += 1
             trial["identity"]["generation_method"] = "reviewed_revision"
             result = attempt(trial, iteration, "part_" + change["component"])
-            if result["score"] <= current["score"] + .002:
+            if (result["score"] <= current["score"] + .002 or
+                    result["pixel_score"] < current["pixel_score"] - .015):
                 history.append({"index": iteration, "decision": "rejected_no_measured_improvement",
-                                "before_score": current["score"], "trial_score": result["score"], **change})
+                                "before_score": current["score"], "trial_score": result["score"],
+                                "pixel_regression": result["pixel_score"] < current["pixel_score"] - .015,
+                                **change})
                 stopped = "no_measured_improvement"
                 break
             best, current = trial, result
@@ -176,13 +204,21 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
     from foundry_sf3d_sprite_qa import pack
     sprites = pack(final, final / "sprites")
     accepted = [e for e in history if e.get("decision") == "accepted_better_recipe"]
+    is_founder_original = best["identity"]["source_rights"] == "founder_original_pending_review"
     report = {
         "schema": "last-light.recipe-architect-pilot.v1", "candidate_id": best["identity"]["candidate_id"],
-        "founder_original_sha256": sha256(source), "source_private": True,
+        "source_sha256": sha256(source), "source_reference_id": best["identity"]["source_reference_id"],
+        "source_rights": best["identity"]["source_rights"],
+        "founder_original_sha256": sha256(source) if is_founder_original else None,
+        "source_private": is_founder_original,
         "vision_method": initial["visual_analysis"]["provider"],
         "autonomous_model_inference_run": False,
-        "initial_score": history[0]["comparison"]["score"], "final_score": final_visual["score"],
-        "accepted_corrections": len(accepted), "attempts": len([e for e in history if "comparison" in e]) - 1,
+        "auto_color_landmarks_requested": auto_color_landmarks,
+        "provisional_color_landmarks": auto_report["landmarks"] if auto_report else [],
+        "autonomous_semantic_vision_run": False,
+        "initial_score": start_score, "final_score": final_visual["score"],
+        "accepted_corrections": len(accepted),
+        "attempts": len([e for e in history if "execution" in e]) - 1,
         "stop_reason": stopped, "correction_history": history, "final_glb": glb,
         "geometry": json.loads((final / "geometry_qa.json").read_text()),
         "sprites": sprites, "final_visual": final_visual, "final_execution": evidence,
@@ -204,5 +240,7 @@ if __name__ == "__main__":
     p.add_argument("--out", required=True, type=Path)
     p.add_argument("--blender", default="blender")
     p.add_argument("--max-iterations", type=int, default=2)
+    p.add_argument("--auto-color-landmarks", action="store_true",
+                   help="opt-in CPU color-based provisional component anchors; NOT semantic AI vision")
     a = p.parse_args()
-    execute(a.recipe, a.source, a.out, a.blender, a.max_iterations)
+    execute(a.recipe, a.source, a.out, a.blender, a.max_iterations, a.auto_color_landmarks)
