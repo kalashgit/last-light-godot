@@ -76,7 +76,9 @@ def prepare(order_file: Path, out: Path) -> dict:
         edge = max(cut.size)
         square = Image.new("RGBA", (edge, edge), (0, 0, 0, 0))
         square.alpha_composite(cut, ((edge - cut.width) // 2, (edge - cut.height) // 2))
-        square.thumbnail((448, 448), Image.Resampling.LANCZOS)
+        # SF3D expects the object to occupy most of the frame. Thumbnail()
+        # never enlarges small source sprites and would leave a tiny object.
+        square = square.resize((448, 448), Image.Resampling.LANCZOS)
         canvas = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
         canvas.alpha_composite(square, ((512 - square.width) // 2, (512 - square.height) // 2))
         canvas.save(out / "input.png")
