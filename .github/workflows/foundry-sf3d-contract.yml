@@ -1,0 +1,40 @@
+name: LAST LIGHT SF3D isolated image-to-sprite contract (no GPU)
+
+on:
+  pull_request:
+    paths:
+      - 'tools/foundry_sf3d_experiment.py'
+      - 'tools/foundry_sf3d_render.py'
+      - 'tools/foundry_sf3d_sprite_qa.py'
+      - 'tests/foundry_sf3d/test_sf3d_experiment.py'
+      - 'docs/foundry/FOUNDRY_SF3D_EXPERIMENT.md'
+      - '.github/workflows/foundry-sf3d-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sf3d-contract-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cpu-contract-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded small CPU test dependency only
+        run: python -m pip install 'Pillow==12.3.0'
+      - name: Syntax-check experiment and Blender script without executing GPU
+        run: |
+          python -m py_compile tools/foundry_sf3d_experiment.py tools/foundry_sf3d_render.py tools/foundry_sf3d_sprite_qa.py
+      - name: Run adversarial image rights, GLB, and sprite QA tests
+        run: |
+          python -m unittest discover -s tests/foundry_sf3d -p test_sf3d_experiment.py -v
+          echo LL_SF3D_CPU_CONTRACT_PASS_NO_GPU_NO_GOLDEN
