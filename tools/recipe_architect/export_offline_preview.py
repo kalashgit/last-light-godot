@@ -56,14 +56,16 @@ def export(data_root: Path, out: Path) -> dict:
     template = (UI / "index.html").read_text()
     style = (UI / "style.css").read_text()
     script = (UI / "app.js").read_text()
-    if '</style' in style.lower() or '</script' in script.lower():
+    viewer = (UI / "glb_viewer.js").read_text()
+    if '</style' in style.lower() or '</script' in script.lower() or '</script' in viewer.lower():
         raise ValueError("embedded style/script unexpectedly contains closing tag")
     # Prevent a provisional source label from terminating the inline script.
     payload = json.dumps(portable, separators=(",", ":"), ensure_ascii=True).replace("<", "\\u003c")
     result = template.replace('<link rel="stylesheet" href="style.css">', f"<style>{style}</style>")
     result = result.replace('<script src="app.js" defer></script>', "")
+    result = result.replace('<script src="glb_viewer.js" defer></script>', "")
     result = result.replace("</body>",
-                            f"<script>window.__LL_MESH_OFFLINE_MANIFEST={payload};\n{script}</script>\n</body>")
+                            f"<script>window.__LL_MESH_OFFLINE_MANIFEST={payload};\n{viewer}\n{script}</script>\n</body>")
     if len(result.encode()) > MAX_EMBED_BYTES:
         raise ValueError("portable preview exceeds 15 MB bound")
     out.parent.mkdir(parents=True, exist_ok=True)

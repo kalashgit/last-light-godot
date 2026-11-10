@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0a111c">
   <title>LAST LIGHT / Mesh Workspace</title>
   <link rel="stylesheet" href="style.css">
+  <script src="glb_viewer.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -37,7 +38,7 @@
   </div>
   <dialog id="detail" class="detail">
     <div class="detail-head"><div><div class="eyebrow" id="detail-ref">ASSET ROOM</div><h2 id="detail-title">Model</h2></div><button id="close" class="close" type="button" aria-label="Close detail">×</button></div>
-    <div class="detail-body"><div class="viewer"><div class="viewer-top"><span>ISOLATED OBJECT PREVIEW</span><span id="view-label">—</span></div><div class="viewer-main" id="viewer-main"><span id="viewer-placeholder">No rendered geometry yet</span><img id="heading-img" alt="Directional isometric render" hidden></div><div class="viewer-controls"><button id="rotate-left" type="button">↶</button><input type="range" id="angle" min="0" max="15" value="0" aria-label="Directional angle"><button id="rotate-right" type="button">↷</button></div></div>
+    <div class="detail-body"><div class="viewer"><div class="viewer-top"><span>ISOLATED OBJECT PREVIEW</span><span id="view-label">—</span></div><div class="viewer-tabs"><button id="mode-3d" type="button" aria-pressed="false">Interactive 3D</button><button id="mode-frames" type="button" aria-pressed="true">16-angle renders</button></div><div class="viewer-main" id="viewer-main"><span id="viewer-placeholder">No rendered geometry yet</span><img id="heading-img" alt="Directional isometric render" hidden><canvas id="glb-canvas" aria-label="Interactive three-dimensional asset model; drag to rotate, scroll to zoom" hidden></canvas><span id="glb-message" class="glb-message" hidden></span></div><div class="viewer-controls" id="frame-controls"><button id="rotate-left" type="button">↶</button><input type="range" id="angle" min="0" max="15" value="0" aria-label="Directional angle"><button id="rotate-right" type="button">↷</button></div><div class="viewer-hint" id="viewer-hint">Swipe or drag in 3D mode to orbit · Zoom <button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="zoom-in" type="button" aria-label="Zoom in">+</button></div></div>
     <div class="facts"><div class="state-pill" id="detail-state">—</div><dl><div><dt>Candidate</dt><dd id="detail-id">—</dd></div><div><dt>Reference</dt><dd id="detail-source">—</dd></div><div><dt>Source integrity</dt><dd id="detail-integrity">—</dd></div><div><dt>Model geometry</dt><dd id="detail-geometry">—</dd></div><div><dt>Reference comparison</dt><dd id="detail-compare">—</dd></div><div><dt>Golden</dt><dd id="detail-approval">Not approved</dd></div></dl><div class="detail-actions"><a id="download-glb" class="primary-link" hidden>Download GLB</a><a id="download-blend" class="secondary-link" hidden>Editable Blender</a><button id="export-note" type="button">Export review note</button></div><p class="approval-warning">Approval only applies after verifying the exact file checksum against the original reference. Downloading a model or passing technical QA never grants Golden.</p></div></div>
   </dialog>
 </body>

@@ -21,7 +21,7 @@ def handler_for(data_root: Path):
     class Preview(SimpleHTTPRequestHandler):
         def translate_path(self, path):
             decoded = unquote(urlsplit(path).path)
-            if decoded in ("/", "/index.html", "/app.js", "/style.css"):
+            if decoded in ("/", "/index.html", "/app.js", "/glb_viewer.js", "/style.css"):
                 target = UI / ("index.html" if decoded == "/" else decoded.lstrip("/"))
             elif decoded == "/manifest.json" or decoded.startswith("/rooms/"):
                 target = source / decoded.lstrip("/")
