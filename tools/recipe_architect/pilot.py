@@ -9,6 +9,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 import subprocess
 import sys
 from pathlib import Path
@@ -58,6 +59,46 @@ def inspect_glb(path: Path) -> dict:
             "binary_bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(), "valid_glb_structure": True}
 
 
+def propose_component_shift(recipe: dict, comparison: dict) -> tuple[dict, dict] | None:
+    """Solve a bounded Blender-local XY translation from observed 2D landmarks.
+
+    Only documented pixel landmarks may drive this repair. With a single
+    orthographic image, Z is underconstrained and is deliberately kept fixed.
+    The subsequent real Blender render must prove improvement before adoption.
+    """
+    candidates = sorted(comparison.get("landmarks", []),
+                        key=lambda item: item["error"] * item["confidence"], reverse=True)
+    for candidate in candidates:
+        if candidate["error"] <= .015:
+            continue
+        part = next((c for c in recipe["components"] if c["name"] == candidate["component"]), None)
+        if part is None or part["op"] == "boolean_cut" or not part["observed"]:
+            continue
+        (ax, ay), (bx, by) = candidate["local_xy_axes"]
+        determinant = ax * by - bx * ay
+        if not math.isfinite(determinant) or abs(determinant) < 1e-5:
+            continue
+        dx, dy = candidate["delta_xy"]
+        shift_x = (dx * by - bx * dy) / determinant
+        shift_y = (ax * dy - dx * ay) / determinant
+        magnitude = math.hypot(shift_x, shift_y)
+        if not math.isfinite(magnitude) or magnitude < 1e-5:
+            continue
+        # Do not move components more than the pre-approved per-iteration
+        # geometric correction bound; huge displacements need human review.
+        bound = recipe["tuning"]["scale_step"]
+        fraction = min(1., bound / magnitude)
+        adjustment = [round(shift_x * fraction, 6), round(shift_y * fraction, 6)]
+        trial = copy.deepcopy(recipe)
+        moved = next(c for c in trial["components"] if c["name"] == candidate["component"])
+        for axis in range(2):
+            moved["location"][axis] = round(moved["location"][axis] + adjustment[axis], 6)
+        return trial, {"change": "component_location_xy", "component": candidate["component"],
+                       "delta_local_m": adjustment, "before_landmark_error": candidate["error"],
+                       "z_unchanged": True}
+    return None
+
+
 def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max_iterations: int = 2) -> dict:
     if not 0 <= max_iterations <= 5: raise ValueError("max corrections must be <= 5")
     out = out.resolve()
@@ -72,7 +113,9 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
         validate(doc, source, full_schema=True)
         dump(file, doc)
         evidence = run_blender(blender, file, folder, headings=1, export=False)
-        visual = compare(source, folder / "heading_00.png", folder)
+        projected = json.loads((folder / "component_projections.json").read_text())
+        visual = compare(source, folder / "heading_00.png", folder,
+                         doc["visual_analysis"].get("landmarks", []), projected)
         history.append({"index": index, "variant": variant, "recipe": str(file),
                         "scale": doc["render"]["assembly_scale"], "comparison": visual, "execution": evidence})
         return visual
@@ -81,6 +124,24 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
     current = attempt(best, 0, "base")
     stopped = "iteration_bound"
     for iteration in range(1, max_iterations + 1):
+        if best["visual_analysis"].get("landmarks"):
+            proposal = propose_component_shift(best, current)
+            if proposal is None:
+                stopped = "no_actionable_landmark_displacement"
+                break
+            trial, change = proposal
+            trial["identity"]["recipe_version"] += 1
+            trial["identity"]["generation_method"] = "reviewed_revision"
+            result = attempt(trial, iteration, "part_" + change["component"])
+            if result["score"] <= current["score"] + .002:
+                history.append({"index": iteration, "decision": "rejected_no_measured_improvement",
+                                "before_score": current["score"], "trial_score": result["score"], **change})
+                stopped = "no_measured_improvement"
+                break
+            best, current = trial, result
+            history.append({"index": iteration, "decision": "accepted_better_recipe",
+                            "score": current["score"], **change})
+            continue
         # Diagnose rendered silhouette's projected aspect; test real geometry
         # amendments rather than changing a score without rerendering.
         direction = 1 if current["reference_aspect"] > current["render_aspect"] else -1
@@ -106,7 +167,9 @@ def execute(recipe: Path, source: Path, out: Path, blender: str = "blender", max
     final_recipe = final / "recipe.json"
     dump(final_recipe, best)
     evidence = run_blender(blender, final_recipe, final, headings=16, export=True, timeout=480)
-    final_visual = compare(source, final / "heading_00.png", final / "visual")
+    final_visual = compare(source, final / "heading_00.png", final / "visual",
+                           best["visual_analysis"].get("landmarks", []),
+                           json.loads((final / "component_projections.json").read_text()))
     glb = inspect_glb(final / "candidate.glb")
     # Reuse existing 16-heading/64px atlas QA instead of another packing engine.
     sys.path.insert(0, str(ROOT / "tools"))

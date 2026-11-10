@@ -109,6 +109,17 @@ def validate(recipe: dict, source: Path | None = None, full_schema: bool = False
             if p["name"] in chain: raise ValueError("parent cycle")
             chain.add(p["name"])
             p = next(x for x in recipe["components"] if x["name"] == p["parent"])
+    landmark_names = set()
+    for landmark in recipe["visual_analysis"].get("landmarks", []):
+        name = landmark["component"]
+        if name in landmark_names or name not in names:
+            raise ValueError("landmark must name one unique existing component")
+        part = next(c for c in recipe["components"] if c["name"] == name)
+        if part["op"] == "boolean_cut" or not part["observed"]:
+            raise ValueError("landmark must refer to visible, non-cutter geometry")
+        landmark_names.add(name)
+        vector(landmark["xy"], "landmark.xy", 2, 0, 1)
+        finite(landmark["confidence"], "landmark.confidence", .5, 1)
     vector(recipe["render"]["assembly_scale"], "assembly_scale", 3, .5, 1.5)
     return recipe
 

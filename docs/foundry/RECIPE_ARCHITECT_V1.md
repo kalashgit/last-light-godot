@@ -22,7 +22,9 @@ Founder original PNG (private, SHA-pinned)
      text mesh, boolean subtraction; PBR material nodes and editable hierarchy
   -> real .blend and multi-mesh .glb, transparent 128px isometric PNGs
   -> alpha/silhouette, aspect, edge and median-color comparison
-  -> up to five bounded scale corrections, each actually rebuilt and rerendered
+  -> up to five bounded corrections (component landmark shifts when a reviewer
+     supplies genuine observed 2D anchors; otherwise assembly-scale fallback)
+     each actually rebuilt, rerendered and scored
   -> preserve best measured candidate, 16-heading atlas + native 64px inventory
   -> technical record; founder-only Golden decision remains closed
 ```
@@ -79,13 +81,44 @@ The future local open-source VLM can implement the same interface.
    `best/sprites/world_atlas_16.png`, `best/sprites/inventory_64.png`,
    `best/visual/reference_vs_render.png`, and `pilot_report.json`.
 
-The correction system explores opposing real `assembly_scale` adjustments in
-bounded 3D geometry (not a reinterpreted score) and stops if no candidate
-improves the saved incumbent by at least 0.002. Its score is an imperfect proxy:
+Without annotated landmarks, the correction system explores opposing real
+`assembly_scale` adjustments in bounded 3D geometry (not a reinterpreted score).
+When a trusted human review or genuine vision inspection supplies a 2D anchor
+for a **specific observed physical component**, optional
+`visual_analysis.landmarks` records normalized `[x, y]` after the same centered,
+alpha-cropped 128px normalization as the reference comparison. The landmark
+must correspond to the Blender component's **origin**, not an arbitrary corner.
+The schema rejects duplicates, nonexistent names, cutter targets and unobserved
+parts. Blender records actual heading-zero camera projections and local XY
+screen-space basis vectors in `component_projections.json`.
+
+The correction solver converts a measured pixel displacement into a bounded
+local XY translation of the named component, keeping Z unchanged because one
+camera view underdetermines depth. It then runs Blender again, measures pixel
+and anchor scores, accepts only an improvement greater than 0.002, and preserves
+the best geometry. Singular camera projections stop safely. This is targeted
+**geometric visual repair**, not automated visual understanding: the architect
+must not invent 2D anchor evidence from filenames or text.
+
+The original comparison score is an imperfect proxy:
 it measures alpha overlap, aspect ratio, edge alignment, and median color, but
 does not understand brand typography, physically accurate occluded back faces,
 surface fidelity, human preference, or 3D printability. Improvements must be
 independently reviewed. It records every attempted candidate and Blender log.
+
+An independent reproducible regression uses a **Blender-generated synthetic
+reference**, deliberately corrupts the positive terminal's position and
+measures whether the part-level loop repairs actual re-rendered geometry:
+
+```bash
+PYTHONPATH=. python3 tests/recipe_architect/landmark_blender_regression.py \
+  --out /tmp/ll-landmark-regression --iterations 3
+```
+
+This synthetic regression does **not** validate automatic founder-image
+landmark detection or imply Golden/F12 admission. Do not add its generated
+reference to the founder original catalog. A real founder-image round requires
+reviewed terminal-anchor coordinates and the original private PNG.
 
 ## Honest acceptance limits
 
