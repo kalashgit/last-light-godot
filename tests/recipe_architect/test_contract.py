@@ -12,9 +12,9 @@ sys.path.insert(0, str(ROOT))
 
 from tools.recipe_architect.contract import validate
 from tools.recipe_architect.seed_recipes import SEEDS
-from tools.recipe_architect.visual_qa import compare
+from tools.recipe_architect.visual_qa import compare, fitted_point
 from tools.recipe_architect.vision import model_inspection, pixel_report, recipe_from_analysis
-from tools.recipe_architect.pilot import inspect_glb
+from tools.recipe_architect.pilot import inspect_glb, propose_component_shift
 
 
 class RecipeArchitectContractTests(unittest.TestCase):
@@ -103,6 +103,60 @@ class RecipeArchitectContractTests(unittest.TestCase):
             p = Path(d) / "empty.glb"
             p.write_bytes(b"glTF")
             with self.assertRaises(ValueError): inspect_glb(p)
+
+    def test_landmarks_must_be_observed_and_unique(self):
+        r = copy.deepcopy(self.recipe)
+        r["visual_analysis"]["landmarks"] = [{"component": "positive_terminal_post", "xy": [.7, .2], "confidence": .9}]
+        validate(r, full_schema=True)
+        r["visual_analysis"]["landmarks"].append(copy.deepcopy(r["visual_analysis"]["landmarks"][0]))
+        with self.assertRaises(ValueError): validate(r, full_schema=True)
+        r["visual_analysis"]["landmarks"][1]["component"] = "unknown_part"
+        with self.assertRaises(ValueError): validate(r, full_schema=True)
+        r["visual_analysis"]["landmarks"].pop()
+        r["visual_analysis"]["landmarks"][0]["component"] = "main_battery_casing"
+        r["components"][0]["observed"] = False
+        with self.assertRaises(ValueError): validate(r, full_schema=True)
+
+    def test_component_shift_solves_projected_defect_with_bound(self):
+        comparison = {"landmarks": [{"component": "positive_terminal_post", "confidence": .95,
+                                    "error": .1, "delta_xy": [.1, -.05],
+                                    "local_xy_axes": [[1, 0], [0, 1]]}]}
+        proposal = propose_component_shift(self.recipe, comparison)
+        self.assertIsNotNone(proposal)
+        trial, change = proposal
+        self.assertEqual(change["component"], "positive_terminal_post")
+        self.assertEqual(change["change"], "component_location_xy")
+        self.assertLessEqual(sum(v * v for v in change["delta_local_m"]) ** .5, .090001)
+        a = next(c for c in self.recipe["components"] if c["name"] == "positive_terminal_post")
+        b = next(c for c in trial["components"] if c["name"] == "positive_terminal_post")
+        self.assertEqual(a["location"][2], b["location"][2])
+        self.assertEqual(self.recipe, SEEDS["vehicle_battery"]())
+
+    def test_component_shift_refuses_singular_camera_projection(self):
+        comparison = {"landmarks": [{"component": "positive_terminal_post", "confidence": .95,
+                                    "error": .1, "delta_xy": [.1, -.05],
+                                    "local_xy_axes": [[1, 0], [2, 0]]}]}
+        self.assertIsNone(propose_component_shift(self.recipe, comparison))
+
+    def test_landmark_comparison_measures_render_position(self):
+        with tempfile.TemporaryDirectory() as d:
+            directory = Path(d)
+            im = Image.new("RGBA", (128, 128))
+            ImageDraw.Draw(im).rectangle((20, 20, 108, 108), fill="grey")
+            im.save(directory / "reference.png")
+            projection = {"schema": "last-light.recipe-projections.v1", "heading": 0, "resolution": 128,
+                          "components": {"positive_terminal_post": {"origin_px": [64, 64],
+                                            "local_xy_axes_px_per_m": [[60, 0], [0, 60]]}}}
+            target = fitted_point([64, 64], im)
+            aligned = compare(directory / "reference.png", directory / "reference.png",
+                              landmarks=[{"component": "positive_terminal_post", "xy": target, "confidence": 1}],
+                              projection=projection)
+            displaced = compare(directory / "reference.png", directory / "reference.png",
+                                landmarks=[{"component": "positive_terminal_post", "xy": [.8, .6], "confidence": 1}],
+                                projection=projection)
+            self.assertEqual(aligned["landmark_error"], 0)
+            self.assertGreater(aligned["score"], displaced["score"])
+            self.assertEqual(displaced["defects"][0]["component"], "positive_terminal_post")
 
 
 if __name__ == "__main__": unittest.main()

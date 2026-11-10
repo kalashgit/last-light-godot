@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 import bpy
+from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -265,6 +266,32 @@ def main():
         for obj in meshes: obj.select_set(True)
         bpy.context.view_layer.objects.active = meshes[0]
         bpy.ops.export_scene.gltf(filepath=str((args.output / "candidate.glb").resolve()), export_format="GLB", use_selection=True)
+    # Actual Blender projection evidence. Recipe-provided 2D landmarks are
+    # observations; these values are measured from generated geometry/camera.
+    # Capture at heading zero, before applying any directional rotation.
+    scene = bpy.context.scene
+    bpy.context.view_layer.update()
+    projected = {}
+    for name, obj in components.items():
+        origin = obj.matrix_world.translation.copy()
+        parent_to_world = (obj.parent.matrix_world @ obj.matrix_parent_inverse).to_3x3() if obj.parent else None
+
+        def screen(point):
+            p = world_to_camera_view(scene, camera, point)
+            return [round(p.x * recipe["render"]["resolution"], 6),
+                    round((1 - p.y) * recipe["render"]["resolution"], 6)]
+
+        pixel = screen(origin)
+        axes = []
+        for axis in (Vector((1, 0, 0)), Vector((0, 1, 0))):
+            delta = parent_to_world @ axis if parent_to_world else axis
+            shifted = screen(origin + delta)
+            axes.append([round(shifted[k] - pixel[k], 6) for k in range(2)])
+        projected[name] = {"origin_px": pixel, "local_xy_axes_px_per_m": axes,
+                           "depth": round(world_to_camera_view(scene, camera, origin).z, 5)}
+    (args.output / "component_projections.json").write_text(json.dumps({
+        "schema": "last-light.recipe-projections.v1", "heading": 0,
+        "resolution": recipe["render"]["resolution"], "components": projected}, indent=2, sort_keys=True) + "\n")
     for heading in range(args.headings):
         # Keep the light fixed in screen/world space while rotating the object.
         root.rotation_euler.z = math.radians(22.5 * heading)
