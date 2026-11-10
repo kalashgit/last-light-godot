@@ -114,7 +114,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--source-dir", type=Path, default=SOURCE_DIR)
     p.add_argument("--start", type=int, default=1)
-    p.add_argument("--count", type=int, choices=(10, 20, 40, 50, 60, 100), default=10)
+    p.add_argument("--count", type=int, choices=(10, 20, 40, 50, 60, 100, 200), default=10)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     result = extract(args.source_dir, start=args.start, count=args.count, out=args.out)

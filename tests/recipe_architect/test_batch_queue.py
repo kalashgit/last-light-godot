@@ -57,6 +57,21 @@ class BatchQueueTests(unittest.TestCase):
                 sheet_crops.extract(SOURCE_DIR, start=360, count=100,
                                     out=Path(tmp) / "invalid")
 
+    def test_200_planned_private_mesh_slots_do_not_dispatch_200_builds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            manifest, queue = self.prepared(Path(tmp), 200)
+            data = json.loads((queue / "queue.json").read_text())
+            self.assertEqual(len(data["jobs"]), 200)
+            self.assertEqual(data["queue_capacity"], 200)
+            self.assertEqual(data["max_builds_per_dispatch"], 3)
+            self.assertFalse(any((queue / "jobs").rglob("*.glb")))
+            overview = batch_queue.status(queue)
+            self.assertTrue(overview["batch_size_200_enabled_for_planning"])
+            self.assertFalse(overview["safe_to_unconditionally_build_200"])
+            with self.assertRaisesRegex(ValueError, "resource/time"):
+                batch_queue.dispatch(queue, manifest, endpoint=ENDPOINT,
+                                     model="Qwen2.5-VL-3B", max_jobs=200)
+
     def test_three_job_wave_checkpoints_without_golden(self):
         with tempfile.TemporaryDirectory() as tmp:
             manifest, queue = self.prepared(Path(tmp))

@@ -10,12 +10,23 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from tools.recipe_architect.component_geometry_optimize import (
-    measured_contacts, normalize_rect, optimize, rect_error, validate_target, variants,
+    guided_variants, measured_contacts, normalize_rect, optimize, rect_error, validate_target, variants,
 )
 from tools.recipe_architect.seed_recipes import SEEDS
 
 
 class ComponentGeometryMutationTests(unittest.TestCase):
+    def test_untrusted_model_hint_changes_only_trial_priority(self):
+        recipe = SEEDS["vehicle_battery"]()
+        hints = {"component": "main_battery_casing", "suggested_parameter": "size_z",
+                 "suggested_direction": "decrease"}
+        proposals = guided_variants(recipe, hints)
+        self.assertEqual(proposals[0][1]["parameter"], "size_z")
+        self.assertLess(proposals[0][1]["factor"], 1)
+        self.assertTrue(all(x[1]["shape_changed"] for x in proposals))
+        with self.assertRaisesRegex(ValueError, "permitted"):
+            guided_variants(recipe, {**hints, "suggested_parameter": "arbitrary_python"})
+
     def test_box_geometry_resizes_but_source_and_other_parts_unchanged(self):
         recipe = SEEDS["vehicle_battery"]()
         original = copy.deepcopy(recipe)
