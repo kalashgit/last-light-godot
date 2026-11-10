@@ -4,7 +4,7 @@
   "r02_count": 6072,
   "r07_model_count": 3539,
   "snapshot": "89d3633af5cb61fbced334e2edfdc1dfd29be23bd0581db7a45d8aa1da76484f",
-  "catalog_sha256": "cac2d06773d0caafd99c7f5d445549cb7e29bf1817698dec9e517e553d3056c5",
-  "compressed_sha256": "c0c9d4aadb246c2391a0ab816efdfbf352d3738ba3b2f883a883272c29b05746",
-  "compressed_bytes": 802677
+  "catalog_sha256": "d4a706d1bea12cbd2104ff5538981dea1e4085a86b738feccaf63b0a508473d0",
+  "compressed_sha256": "fb45b258a17167befcab8da96228d8832cc1487b3f06115bb140a211460f6719",
+  "compressed_bytes": 802680
 }

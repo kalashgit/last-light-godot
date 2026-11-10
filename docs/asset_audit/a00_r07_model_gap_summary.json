@@ -16,8 +16,9 @@
   },
   "distinct_provisional_model_stems": 3531,
   "provisional_family_queue_counts": {
+    "F01": 1,
     "F05": 320,
-    "F09": 2969,
+    "F09": 2968,
     "F10": 250
   },
   "existing_geometry_manifest_total": 360,
@@ -31,6 +32,6 @@
     "Whether unnamed game model files lack wiki imagery"
   ],
   "production_status": "EVIDENCE_ONLY_NOT_CANONICAL_NOT_GOLDEN",
-  "ledger_sha256": "a93bc499650ef69d982ee569d288867f95214639beabf477a87b9db15f339c1a",
+  "ledger_sha256": "4996751b65e9d93474c7b2f437ebe1dde913a3728469ff57a3709daea459c444",
   "ledger_rows": 3539
 }
