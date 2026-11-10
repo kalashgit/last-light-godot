@@ -1,4 +1,4 @@
-"""Checkpointed 10–100 sheet-reference queue with three-job execution waves.
+"""Checkpointed 10–200 sheet-reference queue with three-job execution waves.
 
 Every job is an independent, verified private crop -> local VLM -> procedural
 Blender -> render comparison attempt. Only a running *local* vision endpoint may
@@ -30,7 +30,7 @@ from .pilot import ROOT, dump
 
 SCHEMA = "last-light.recipe-architect-100-queue.v1"
 INPUT_SCHEMA = "last-light.local-vlm-sheet-crops.v1"
-SUPPORTED = (10, 20, 40, 50, 60, 100)
+SUPPORTED = (10, 20, 40, 50, 60, 100, 200)
 MAX_PER_DISPATCH = 3
 MAX_ATTEMPTS = 2
 MIN_FREE_MEMORY = 1_500_000_000
@@ -47,7 +47,7 @@ def _source_records(manifest_path: Path) -> tuple[dict, dict[str, dict]]:
         manifest.get("whole_sheet_isolation_used") is not True or
         not isinstance(rows, list) or len(rows) not in SUPPORTED or
         manifest.get("extracted") != len(rows)):
-        raise ValueError("queue requires a complete verified 10–100 isolated crop manifest")
+        raise ValueError("queue requires a complete verified 10–200 isolated crop manifest")
     root = manifest_path.parent.resolve()
     indexed = {}
     seen_positions = set()
@@ -99,7 +99,7 @@ def initialize(crop_manifest: Path, out: Path) -> dict:
     queue = {
         "schema": SCHEMA, "source_manifest_sha256": src["sha256"],
         "source_collection_id": src["manifest"]["source_collection_id"],
-        "sheet_reference_count": len(jobs), "queue_capacity": 100,
+        "sheet_reference_count": len(jobs), "queue_capacity": 200,
         "max_builds_per_dispatch": MAX_PER_DISPATCH,
         "source_crops_embedded": False, "local_vision_required": True,
         "automatic_golden_approval": False, "canonical_admission": False,
@@ -195,6 +195,8 @@ def dispatch(queue_dir: Path, crop_manifest: Path, *, endpoint: str, model: str,
         if (queue.get("schema") != SCHEMA or
             queue.get("source_manifest_sha256") != src["sha256"] or
             queue.get("sheet_reference_count") != len(records) or
+            queue.get("queue_capacity") not in (100, 200) or
+            queue.get("max_builds_per_dispatch") != MAX_PER_DISPATCH or
             queue.get("automatic_golden_approval") is not False or
             queue.get("canonical_admission") is not False or
             queue.get("production_scaling_gate_passed") is not False):
@@ -312,15 +314,17 @@ def status(queue_dir: Path) -> dict:
         "distinct_unverified_families_in_technical_pass": len(families - {None}),
         "technical_passes_required_for_scale_trial": 10,
         "held_out_quality_and_artistic_approval_verified": False,
-        "batch_size_100_enabled_for_planning": len(jobs) == 100,
+        "batch_size_100_enabled_for_planning": len(jobs) >= 100,
+        "batch_size_200_enabled_for_planning": len(jobs) == 200,
         "builds_per_dispatch_hard_cap": MAX_PER_DISPATCH,
         "safe_to_unconditionally_build_100": False,
+        "safe_to_unconditionally_build_200": False,
         "golden_approved": False,
     }
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="100-reference queue, at most three builds per dispatch")
+    p = argparse.ArgumentParser(description="10–200 reference planning queue, at most three builds per dispatch")
     sub = p.add_subparsers(dest="action", required=True)
     setup = sub.add_parser("init")
     setup.add_argument("--crop-manifest", type=Path, required=True)

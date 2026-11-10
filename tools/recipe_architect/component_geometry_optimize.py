@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import math
 import subprocess
@@ -25,6 +26,11 @@ from .pilot import dump, inspect_glb, run_blender
 from .visual_qa import compare, normalization_fit
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def recipe_digest(recipe: dict) -> str:
+    """Stable binding for a vision observation to one exact recipe."""
+    return hashlib.sha256(json.dumps(recipe, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def variants(recipe: dict, component: str, *, step: float = .18) -> list[tuple[dict, dict]]:
@@ -73,6 +79,21 @@ def variants(recipe: dict, component: str, *, step: float = .18) -> list[tuple[d
             proposals.append((trial, {"component": component, "parameter": param,
                                       "factor": round(factor, 6), "shape_changed": True}))
     return proposals
+
+
+def guided_variants(recipe: dict, target: dict, *, step: float = .18) -> list[tuple[dict, dict]]:
+    """Prioritize untrusted VLM hints without granting them acceptance authority."""
+    suggestions = variants(recipe, target["component"], step=step)
+    parameter = target.get("suggested_parameter")
+    direction = target.get("suggested_direction")
+    if parameter is not None or direction is not None:
+        if (not any(item["parameter"] == parameter for _, item in suggestions) or
+                direction not in ("increase", "decrease", "unknown")):
+            raise ValueError("vision hint must identify a permitted bounded mutation")
+        suggestions.sort(key=lambda item: (item[1]["parameter"] != parameter,
+                           direction != "unknown" and
+                           (item[1]["factor"] > 1) != (direction == "increase")))
+    return suggestions
 
 
 def normalize_rect(rect: list[float], image: Image.Image, *, size: int = 128) -> list[float]:
@@ -137,12 +158,27 @@ def measured_contacts(projections: Path, target: dict) -> dict[str, float]:
 
 
 def validate_target(target: dict, recipe: dict, source: Path) -> None:
-    if (target.get("schema") != "last-light.manual-component-geometry-target.v1" or
-            target.get("source_sha256") != sha256(source) or
+    provenance = target.get("provenance")
+    valid_origin = (
+        (provenance == "manual_source_image_estimate" and
+         target.get("schema") == "last-light.manual-component-geometry-target.v1") or
+        (provenance == "local_vlm_component_detection" and
+         target.get("schema") == "last-light.vlm-component-geometry-target.v1")
+    )
+    if (not valid_origin or target.get("source_sha256") != sha256(source) or
             target.get("candidate_id") != recipe["identity"]["candidate_id"] or
-            target.get("provenance") != "manual_source_image_estimate" or
             target.get("approval") != "NOT_GOLDEN"):
         raise ValueError("target must be pinned to observed source and candidate")
+    if provenance == "local_vlm_component_detection":
+        audit = target.get("vision_inference")
+        if (not isinstance(audit, dict) or audit.get("recipe_sha256") != recipe_digest(recipe) or
+                audit.get("source_sha256") != sha256(source) or
+                audit.get("network_scope") != "loopback_only" or
+                audit.get("pixels_supplied") is not True or
+                audit.get("actual_local_vision_request_completed") is not True or
+                not isinstance(audit.get("baseline_render_sha256"), str) or
+                len(audit["baseline_render_sha256"]) != 64):
+            raise ValueError("missing source/recipe-bound local vision inference receipt")
     part = next((c for c in recipe["components"] if c["name"] == target.get("component")), None)
     observations = {item["component"] for item in recipe["visual_analysis"]["observations"]}
     if part is None or not part["observed"] or part["name"] not in observations:
@@ -212,7 +248,8 @@ def optimize(recipe_file: Path, source: Path, target_file: Path, out: Path, *,
     validate(starting, source, full_schema=True)
     target = json.loads(target_file.read_text())
     validate_target(target, starting, source)
-    suggestions = variants(starting, target["component"], step=step)[:max_previews]
+    # The real Blender metric, contact gate and raycast still decide acceptance.
+    suggestions = guided_variants(starting, target, step=step)[:max_previews]
     fresh_output(out)
     out.mkdir(parents=True, exist_ok=False)
 
@@ -260,7 +297,8 @@ def optimize(recipe_file: Path, source: Path, target_file: Path, out: Path, *,
               "measured_feature_gain": gain,
               "status": "ACCEPTED_GEOMETRY_REVIEW_CANDIDATE" if accepted else "HOLD_NO_BOUNDED_GEOMETRY_GAIN",
               "shape_changed": accepted, "golden_approved": False,
-              "independent_vision_model_used": False, "automatic_game_admission": False}
+              "independent_vision_model_used": target["provenance"] == "local_vlm_component_detection",
+              "automatic_game_admission": False}
     if accepted:
         proposal, mutation, _, _ = winner
         final = out / "revised_real_mesh"
