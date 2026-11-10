@@ -1,0 +1,24 @@
+{
+  "schema": "last-light.five-family-vision-benchmark-cases.v1",
+  "approval": "NOT_GOLDEN",
+  "cases": [
+    {"case_id": "weapon_axe_0035", "family": "weapons_tools", "sheet_position": 35,
+     "working_label": "long axe", "existing_recipe": "ref_0035_wood_handle_hatchet.json",
+     "provisional_annotation": "ref_0035_steel_blade_wedge.json"},
+    {"case_id": "food_avocado_0027", "family": "food", "sheet_position": 27,
+     "working_label": "dark green avocado", "provisional_component": "pear_shaped_fruit_body",
+     "provisional_source_bbox_px": [6, 3, 118, 129]},
+    {"case_id": "furniture_shelf_0181", "family": "furniture", "sheet_position": 181,
+     "working_label": "wooden wall shelf", "provisional_component": "horizontal_shelf_plank",
+     "provisional_source_bbox_px": [7, 25, 194, 72]},
+    {"case_id": "clothing_apron_0001", "family": "clothing_armor", "sheet_position": 1,
+     "working_label": "ice cream apron", "provisional_component": "flared_lower_apron_skirt",
+     "provisional_source_bbox_px": [29, 136, 121, 209]},
+    {"case_id": "backpack_0045", "family": "backpacks_containers", "sheet_position": 45,
+     "working_label": "black daypack", "provisional_component": "large_front_pocket",
+     "provisional_source_bbox_px": [55, 98, 145, 172]},
+    {"case_id": "container_case_0044", "family": "backpacks_containers", "sheet_position": 44,
+     "working_label": "slatted wooden case", "existing_recipe": "ref_0044_wooden_tool_case.json",
+     "provisional_annotation": "ref_0044_brass_latch_upper.json"}
+  ]
+}

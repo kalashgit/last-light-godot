@@ -32,6 +32,10 @@ def digest(path: Path) -> str:
 
 
 def family(label: str) -> str:
+    # "hat" inside "hatchet" previously mislabeled this physical weapon as
+    # clothing. Resolve the exact collision before broad substring matching.
+    if "hatchet" in label:
+        return "weapons_and_parts"
     if any(word in label for word in ("backpack", "rucksack", "daypack", "school pack", "hiking pack", "messenger bag", "field backpack")):
         return "bags_equipment"
     if any(word in label for word in ("helmet", "apron", "armor", "guard", "coveralls", "jacket", "vest", "balaclava", "mask", "gloves", "robe", "jersey", "shorts", "cap", "beret", "hat", "boots", "bandana", "swimsuit")):
@@ -42,6 +46,8 @@ def family(label: str) -> str:
         return "weapons_and_parts"
     if any(word in label for word in ("food", "apple", "avocado", "banana", "beans", "berries", "bread", "beef", "bacon", "fruit", "bagel", "meat", "sweets", "roll", "biscuit", "cheese", "pepper", "grapes", "strawberry")):
         return "food_organic"
+    if any(word in label for word in ("shelf", "bed frame", "sofa", "armchair", "dining chair", "dining table", "wardrobe", "cabinet", "dresser", "bookcase")):
+        return "furniture_fixtures"
     if any(word in label for word in ("box", "tin", "case", "crate", "bucket", "bottle", "can", "pan", "flask", "carton", "sack", "tray")):
         return "containers_packages"
     return "tools_props_misc"
@@ -55,6 +61,7 @@ def parts_for(kind: str) -> list[str]:
         "weapons_and_parts": ["structural core", "distinct working end", "fasteners or grip", "physically plausible thickness"],
         "food_organic": ["nonuniform organic silhouette", "material-specific surface", "condition variants where applicable"],
         "containers_packages": ["empty interior volume", "real wall thickness", "lid or opening mechanism", "original generic labeling"],
+        "furniture_fixtures": ["load-bearing frame", "individual surfaces and supports", "attachment joints", "plausible physical thickness"],
         "tools_props_misc": ["independent original main body", "functional subcomponents", "physically plausible material boundaries"],
     }[kind]
 
