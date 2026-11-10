@@ -63,7 +63,8 @@ def main() -> None:
     camera = bpy.data.objects.new("LL_2_1_Orthographic_Camera", camera_data)
     bpy.context.collection.objects.link(camera)
     target = Vector((0, 0, 0.9))
-    camera.location = (3.8, -5.2, 4.2)
+    # Equal X/Y azimuth, 35.264-degree elevation: true 2:1 isometric projection.
+    camera.location = (4.0, -4.0, 4.9)
     direction = target - camera.location
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
     camera_data.type = "ORTHO"
