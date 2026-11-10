@@ -39,8 +39,11 @@ for remote access. Existing Golden art and the Godot playable game are untouched
   animations, transparent materials or advanced PBR. It does not modify models.
 
 **Important:** review capacity of **100** does not alter the existing worker's
-**3-real-Blender-builds-per-run** cap, source-extraction cap or model-inference
-limits. It does not mean 100 unique models were produced or reviewed.
+**3-real-Blender-builds-per-run** cap or model-inference limits. A later
+100-reference *private* crop-and-queue layer now exists, but its dispatcher
+also honors the 3-job limit until quality gates pass. It does not mean 100
+unique models were produced or reviewed. See
+`RECIPE_ARCHITECT_100_ASSET_BATCH_V1.md`.
 
 ## Real local demonstration
 

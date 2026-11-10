@@ -17,6 +17,7 @@ from tools.foundry_reference_sheets.plan import plan
 
 from .batch import fresh_output
 from .pilot import dump
+from .sheet_isolation import SheetIsolator
 
 
 def border_risk(image: Image.Image) -> dict:
@@ -49,22 +50,30 @@ def extract(source_dir: Path, *, start: int, count: int, out: Path) -> dict:
     if intake["golden_3d_approved"] != 0 or selected["production_model_admitted"]:
         raise ValueError("unreviewed intake must not claim admission")
     crops = []
+    isolators: dict[str, SheetIsolator] = {}
+    sheet_specs = {Path(s["file"]).name: s for s in
+                   json.loads((source_dir / "sheets_manifest_v1.json").read_text())["sheets"]}
     for job in selected["jobs"]:
         # The manifest's public *relative* path is not a filesystem authority.
         # Only the verified basename inside the pinned sheets/ directory is used.
         source = source_dir / "sheets" / Path(job["sheet_path"]).name
         if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != job["sheet_sha256"]:
             raise ValueError("reference sheet drift")
+        spec = sheet_specs[source.name]
         with Image.open(source) as sheet:
             box = job["cell_box_xyxy"]
-            crop = sheet.crop(tuple(box)).convert("RGBA")
-            if crop.width < 16 or crop.height < 16 or crop.width > 2048 or crop.height > 2048:
-                raise ValueError("cell outside bounded image dimensions")
-            risk = border_risk(crop)
-            file_name = f"ref_{job['sheet_index']:04d}.png"
-            location = out / "crops" / file_name
-            location.parent.mkdir(parents=True, exist_ok=True)
-            crop.save(location, format="PNG")
+            old_cell = sheet.crop(tuple(box))
+            risk = border_risk(old_cell)
+            if source.name not in isolators:
+                isolators[source.name] = SheetIsolator(sheet, rows=spec["rows"],
+                                                       columns=spec["columns"])
+        crop, isolated_qa = isolators[source.name].isolate(job["cell_row"], job["cell_column"])
+        if crop.width < 16 or crop.height < 16 or crop.width > 2048 or crop.height > 2048:
+            raise ValueError("isolated crop outside bounded image dimensions")
+        file_name = f"ref_{job['sheet_index']:04d}.png"
+        location = out / "crops" / file_name
+        location.parent.mkdir(parents=True, exist_ok=True)
+        crop.save(location, format="PNG")
         crops.append({
             "reference_id": job["reference_id"],
             "sheet_position": job["sheet_index"],
@@ -77,7 +86,10 @@ def extract(source_dir: Path, *, start: int, count: int, out: Path) -> dict:
             "family_suggestion_unverified": job["model_family_suggestion"],
             "source_rights": "founder_original_pending_review",
             "crop_boundary_qa": risk,
-            "review_status": "NEEDS_VISUAL_IDENTITY_RIGHTS_AND_GEOMETRY_REVIEW",
+            "isolated_crop_qa": isolated_qa,
+            "review_status": ("ISOLATED_PENDING_SEMANTIC_RIGHTS_AND_GEOMETRY_REVIEW"
+                              if isolated_qa["safe_for_unattended_proposal"] else
+                              "NEEDS_MANUAL_ISOLATION_AND_SEMANTIC_REVIEW"),
             "golden_approved": False,
         })
     result = {
@@ -89,6 +101,9 @@ def extract(source_dir: Path, *, start: int, count: int, out: Path) -> dict:
         "output_crops_are_private_reference_only": True,
         "crops_with_possible_border_contamination": sum(
             crop["crop_boundary_qa"]["possible_neighbor_or_truncation"] for crop in crops),
+        "isolated_crops_eligible_for_local_vlm": sum(
+            crop["isolated_crop_qa"]["safe_for_unattended_proposal"] for crop in crops),
+        "whole_sheet_isolation_used": True,
         "crops": crops,
     }
     dump(out / "crop_manifest.json", result)
@@ -99,7 +114,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--source-dir", type=Path, default=SOURCE_DIR)
     p.add_argument("--start", type=int, default=1)
-    p.add_argument("--count", type=int, choices=(10, 20, 40), default=10)
+    p.add_argument("--count", type=int, choices=(10, 20, 40, 50, 60, 100), default=10)
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     result = extract(args.source_dir, start=args.start, count=args.count, out=args.out)

@@ -28,11 +28,16 @@ def check_crop_for_unattended(source: Path, manifest: Path | None, reference_id:
     if len(rows) != 1:
         raise ValueError("source crop checksum/reference ID not in manifest")
     entry = rows[0]
-    if entry["crop_boundary_qa"]["possible_neighbor_or_truncation"]:
+    isolation = entry.get("isolated_crop_qa")
+    if isolation is not None:
+        if not isolation.get("safe_for_unattended_proposal", False):
+            raise ValueError("uncertain sheet isolation needs human review")
+    elif entry["crop_boundary_qa"]["possible_neighbor_or_truncation"]:
         raise ValueError("border-contaminated source needs human isolation review")
     if entry["golden_approved"] or entry["canonical_asset_id"] is not None:
         raise ValueError("unreviewed sheet intake cannot confer approvals")
     return {"provided_isolated_image": False, "sheet_crop_verified": True,
+            "whole_sheet_isolation_verified": isolation is not None,
             "sheet_position_not_canonical_id": entry["sheet_position"]}
 
 

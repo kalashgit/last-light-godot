@@ -28,9 +28,11 @@ multi-family benchmark before choosing a generator.
    validated F09 founder reference manifest (390 pictures, known 191–200 gap).
    Source SHA-256, cell coordinates and reference position survive in a local
    `crop_manifest.json`. Position is **never** an A00 canonical asset ID.
-2. **Isolation warning:** no automatic background removal. A conservative
-   border heuristic flags suspect crops, retains original bytes, and blocks
-   unattended construction from those crops in `autonomous_job`.
+2. **Updated source isolation:** the follow-up 100-asset queue adds verified
+   whole-sheet connected-component isolation. A conservative older border
+   heuristic remains as diagnostic evidence. The new `isolated_crop_qa`
+   determines whether a single object is safe to present to the local VLM;
+   ambiguous cases are held. See `RECIPE_ARCHITECT_100_ASSET_BATCH_V1.md`.
 3. **Local visual reasoning:** `local_vlm.request_proposal` sends actual PNG/JPEG
    pixels to **only** an explicitly configured loopback model endpoint. One
    request, no implicit remote provider, no API key, no paid inference, a
@@ -51,14 +53,11 @@ multi-family benchmark before choosing a generator.
 
 ## Actual source quality findings
 
-2026-11-10: from the eight F09 founder sheets, 40 source cells were extracted
-for references **001–040**. **36/40** were flagged for potential border content,
-adjacent-object fragments or truncated objects. Manual visual inspection
-confirmed clipped silhouettes or neighboring fragments in examples 001, 008
-and 024. This is *not* a segmentation-accuracy score and may overflag; it is
-strong evidence that naively treating rectangular JPEG cells as clean objects
-is unsafe. No real model inference or new 3D geometry is claimed for these
-crops. They remain technical input previews only.
+2026-11-10 initial grid crop: 36/40 references 001–040 were flagged for
+potential border contamination. A later whole-sheet isolation prototype
+reduced holds to **7/390** distinct sheet objects across the full original
+collection, while preserving their numbered source positions. This is an
+isolation eligibility count, NOT a mesh fidelity or VLM inference score.
 
 ## Reproduction and prerequisites
 
@@ -107,10 +106,10 @@ blocked until a human validates a clean single-object crop.
 
 ## Autonomous batching and scheduling: gated design, not enabled
 
-Once held-out visual QA demonstrates accurate *distinct physical components*,
-add a reviewed FIFO queue of 10–40 items with a unique run ID, no duplicate
-master meshes, one worker, a compute-minute cap and per-image uncertainty
-stops. A conditional GitHub Actions cron such as `17,47 * * * *` can request
+The 100-item private FIFO with verified crops and three-job checkpointed
+dispatch is now implemented. Once held-out visual QA demonstrates accurate
+*distinct physical components*, a conditional GitHub Actions cron such as
+`17,47 * * * *` can request
 an approved batch twice hourly, but only once the workflow lives on the
 default branch. GitHub schedule can be delayed, and hosted runners cannot
 reach a private phone's localhost VLM. A ChatGPT recurring task alone does

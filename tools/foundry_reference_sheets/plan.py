@@ -13,11 +13,11 @@ from .build import SOURCE_DIR, build
 
 
 def plan(records: list[dict], start: int, count: int) -> dict:
-    if not 1 <= start <= 400 or count not in (10, 20, 40):
-        raise ValueError("Only bounded 10, 20 or 40 reference authoring jobs")
+    if not 1 <= start <= 400 or count not in (10, 20, 40, 50, 60, 100):
+        raise ValueError("Only bounded 10, 20, 40, 50, 60 or 100 reference authoring jobs")
     selected = [r for r in records if r["sheet_index"] >= start][:count]
-    if not selected:
-        raise ValueError("No pictured references in requested range")
+    if len(selected) != count:
+        raise ValueError("Requested more reference jobs than verified pictured slots")
     if any(r["admission"]["production_model_admitted"] or r["admission"]["founder_3d_golden_approved"] for r in selected):
         raise ValueError("Unexpected approval bits in reference-only queue")
     return {
@@ -37,7 +37,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-dir", type=Path, default=SOURCE_DIR)
     parser.add_argument("--start", type=int, default=1)
-    parser.add_argument("--batch-size", type=int, choices=(10, 20, 40), default=40)
+    parser.add_argument("--batch-size", type=int, choices=(10, 20, 40, 50, 60, 100), default=40)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     records, _ = build(args.source_dir)

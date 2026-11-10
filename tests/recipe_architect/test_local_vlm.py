@@ -135,6 +135,8 @@ class LocalVLMTests(unittest.TestCase):
             self.assertEqual(len(list((out / "crops").glob("*.png"))), 10)
             self.assertGreater(result["crops_with_possible_border_contamination"], 0)
             self.assertTrue(result["crops"][0]["crop_boundary_qa"]["possible_neighbor_or_truncation"])
+            self.assertTrue(result["crops"][0]["isolated_crop_qa"]["safe_for_unattended_proposal"])
+            self.assertEqual(result["isolated_crops_eligible_for_local_vlm"], 10)
             with self.assertRaises(FileExistsError):
                 sheet_crops.extract(sheet_crops.SOURCE_DIR, start=1, count=10, out=out)
 
@@ -144,17 +146,24 @@ class LocalVLMTests(unittest.TestCase):
                                           out=Path(d) / "gap")
             self.assertEqual([v["sheet_position"] for v in result["crops"]], list(range(201, 211)))
 
-    def test_unattended_job_refuses_border_contaminated_real_crop(self):
+    def test_unattended_job_accepts_verified_isolation_but_refuses_unsafe_crop(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d) / "crops"
             sheet_crops.extract(sheet_crops.SOURCE_DIR, start=1, count=10, out=out)
             first = out / "crops/ref_0001.png"
+            checked = autonomous_job.check_crop_for_unattended(
+                first, out / "crop_manifest.json", "LL-FGS-0001")
+            self.assertTrue(checked["whole_sheet_isolation_verified"])
+            manifest = out / "crop_manifest.json"
+            payload = json.loads(manifest.read_text())
+            payload["crops"][0]["isolated_crop_qa"]["safe_for_unattended_proposal"] = False
+            manifest.write_text(json.dumps(payload))
             with patch.object(autonomous_job, "request_proposal") as request:
-                with self.assertRaisesRegex(ValueError, "border-contaminated"):
+                with self.assertRaisesRegex(ValueError, "uncertain sheet isolation"):
                     autonomous_job.execute(first, reference_id="LL-FGS-0001",
                         rights="founder_original_pending_review", model="Qwen2.5-VL-3B",
                         endpoint="http://127.0.0.1:8090/v1/chat/completions",
-                        crop_manifest=out / "crop_manifest.json", out=Path(d) / "blocked")
+                        crop_manifest=manifest, out=Path(d) / "blocked")
                 request.assert_not_called()
 
     def test_mocked_vlm_to_blender_orchestration_is_not_live_inference(self):
