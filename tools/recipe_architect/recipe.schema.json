@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://last-light.invalid/schemas/recipe-architect-v1.json",
+  "title": "LAST LIGHT allowlisted construction recipe v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "identity", "visual_analysis", "components", "materials", "gameplay", "render", "quality", "tuning"],
+  "properties": {
+    "schema": {"const": "last-light.recipe-architect.v1"},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_id", "source_reference_id", "source_sha256", "source_rights", "asset_family", "recipe_version", "generation_method", "canonical_id"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/id"}, "source_reference_id": {"type": "string", "minLength": 6, "maxLength": 200},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_rights": {"enum": ["founder_original_pending_review", "verified_reusable", "unresolved"]},
+        "asset_family": {"$ref": "#/$defs/id"}, "recipe_version": {"type": "integer", "minimum": 1},
+        "generation_method": {"enum": ["pixel_inspected_seed", "vision_model_proposed", "reviewed_revision"]},
+        "canonical_id": {"type": "null"}
+      }
+    },
+    "visual_analysis": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "pixels_inspected", "image_dimensions", "probable_function", "category", "observations", "assumptions", "artifacts", "confidence"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 3}, "pixels_inspected": {"const": true},
+        "image_dimensions": {"$ref": "#/$defs/dim2"},
+        "probable_function": {"type": "string", "minLength": 5}, "category": {"$ref": "#/$defs/id"},
+        "observations": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/evidence"}},
+        "assumptions": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "artifacts": {"type": "array", "items": {"type": "string", "maxLength": 300}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "components": {"type": "array", "minItems": 3, "maxItems": 240, "items": {"$ref": "#/$defs/component"}},
+    "materials": {"type": "array", "minItems": 2, "maxItems": 40, "items": {"$ref": "#/$defs/material"}},
+    "gameplay": {
+      "type": "object", "additionalProperties": false,
+      "required": ["collision", "movable", "interactable_parts", "container_openings", "damage_states", "footprint_m", "animations", "attachment_points"],
+      "properties": {
+        "collision": {"enum": ["box", "convex", "none"]}, "movable": {"type": "boolean"},
+        "interactable_parts": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "container_openings": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "damage_states": {"type": "array", "items": {"type": "string"}},
+        "footprint_m": {"$ref": "#/$defs/dim2"},
+        "animations": {"type": "array", "items": {"type": "string"}},
+        "attachment_points": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["name", "position"], "properties": {"name": {"$ref": "#/$defs/id"}, "position": {"$ref": "#/$defs/vec3"}}}}
+      }
+    },
+    "render": {
+      "type": "object", "additionalProperties": false,
+      "required": ["headings", "resolution", "camera_azimuth_deg", "camera_elevation_deg", "orthographic_scale", "key_light", "assembly_scale"],
+      "properties": {
+        "headings": {"const": 16}, "resolution": {"enum": [128, 256]},
+        "camera_azimuth_deg": {"type": "number", "minimum": 0, "maximum": 360},
+        "camera_elevation_deg": {"type": "number", "minimum": 15, "maximum": 75},
+        "orthographic_scale": {"type": "number", "exclusiveMinimum": 1, "maximum": 8},
+        "key_light": {"const": "upper_left"},
+        "assembly_scale": {"$ref": "#/$defs/vec3"}
+      }
+    },
+    "quality": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected_silhouette", "qa_checks", "technical_status", "golden_approved", "founder_review"],
+      "properties": {
+        "expected_silhouette": {"type": "string", "minLength": 5},
+        "qa_checks": {"type": "array", "items": {"type": "string"}},
+        "technical_status": {"const": "CANDIDATE_PENDING_QA"}, "golden_approved": {"const": false},
+        "founder_review": {"const": "NOT_GOLDEN"}
+      }
+    },
+    "tuning": {"type": "object", "additionalProperties": false, "required": ["scale_step", "max_corrections"], "properties": {"scale_step": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.3}, "max_corrections": {"type": "integer", "minimum": 0, "maximum": 5}}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{2,70}$"},
+    "vec3": {"type": "array", "prefixItems": [{"type": "number"}, {"type": "number"}, {"type": "number"}], "minItems": 3, "maxItems": 3},
+    "dim2": {"type": "array", "prefixItems": [{"type": "number", "exclusiveMinimum": 0}, {"type": "number", "exclusiveMinimum": 0}], "minItems": 2, "maxItems": 2},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["component", "detail", "confidence"], "properties": {"component": {"$ref": "#/$defs/id"}, "detail": {"type": "string", "minLength": 3}, "confidence": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "material": {"type": "object", "additionalProperties": false, "required": ["name", "class", "rgba", "metallic", "roughness", "wear", "texture"], "properties": {
+      "name": {"$ref": "#/$defs/id"}, "class": {"enum": ["plastic", "metal", "rubber", "paint", "paper", "fabric", "ceramic", "food"]},
+      "rgba": {"type": "array", "items": {"type": "number", "minimum": 0, "maximum": 1}, "minItems": 4, "maxItems": 4},
+      "metallic": {"type": "number", "minimum": 0, "maximum": 1}, "roughness": {"type": "number", "minimum": 0, "maximum": 1},
+      "wear": {"type": "number", "minimum": 0, "maximum": 1}, "texture": {"enum": ["none", "fine_noise", "scuffed"]}
+    }},
+    "component": {"type": "object", "additionalProperties": false,
+      "required": ["name", "parent", "op", "material", "location", "rotation_deg", "geometry", "observed", "confidence", "modifiers", "topology"],
+      "properties": {
+        "name": {"$ref": "#/$defs/id"}, "parent": {"type": ["string", "null"]},
+        "op": {"enum": ["box", "cylinder", "lathe", "tube", "polygon_extrude", "text", "boolean_cut"]},
+        "material": {"$ref": "#/$defs/id"}, "location": {"$ref": "#/$defs/vec3"},
+        "rotation_deg": {"$ref": "#/$defs/vec3"}, "geometry": {"type": "object", "maxProperties": 10},
+        "observed": {"type": "boolean"}, "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "modifiers": {"type": "array", "items": {"enum": ["weighted_normals", "subdivide_1", "uv_unwrap"]}},
+        "topology": {"enum": ["closed", "surface", "text_mesh", "cutter"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,1095 @@
+{
+  "components": [
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "profile": [
+          [
+            0,
+            0.04
+          ],
+          [
+            0.22,
+            0.04
+          ],
+          [
+            0.32,
+            0.11
+          ],
+          [
+            0.34,
+            0.28
+          ],
+          [
+            0.34,
+            0.77
+          ],
+          [
+            0.31,
+            0.92
+          ],
+          [
+            0.21,
+            1.03
+          ],
+          [
+            0.105,
+            1.06
+          ],
+          [
+            0.105,
+            0.99
+          ],
+          [
+            0.2,
+            0.95
+          ],
+          [
+            0.28,
+            0.84
+          ],
+          [
+            0.29,
+            0.72
+          ],
+          [
+            0.29,
+            0.18
+          ],
+          [
+            0.17,
+            0.1
+          ],
+          [
+            0,
+            0.1
+          ]
+        ],
+        "scale_xy": [
+          1,
+          0.77
+        ],
+        "vertices": 48
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "olive_canvas",
+      "modifiers": [],
+      "name": "hollow_fabric_cover",
+      "observed": true,
+      "op": "lathe",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.105,
+        "radius": 0.122,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 32
+      },
+      "location": [
+        0,
+        0,
+        1.085
+      ],
+      "material": "olive_dark",
+      "modifiers": [],
+      "name": "neck_socket",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.19,
+        "radius": 0.15,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 36
+      },
+      "location": [
+        0,
+        0,
+        1.18
+      ],
+      "material": "top_cap",
+      "modifiers": [],
+      "name": "ribbed_screw_cap",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            0.136,
+            0.0,
+            1.276
+          ],
+          [
+            0.1339338544096603,
+            0.023616152162702526,
+            1.276
+          ],
+          [
+            0.12779819642688356,
+            0.04651473949229095,
+            1.276
+          ],
+          [
+            0.11777945491468367,
+            0.06799999999999999,
+            1.276
+          ],
+          [
+            0.10418204426418101,
+            0.08741911491736934,
+            1.276
+          ],
+          [
+            0.08741911491736935,
+            0.10418204426418101,
+            1.276
+          ],
+          [
+            0.06800000000000002,
+            0.11777945491468365,
+            1.276
+          ],
+          [
+            0.046514739492290964,
+            0.12779819642688353,
+            1.276
+          ],
+          [
+            0.023616152162702537,
+            0.1339338544096603,
+            1.276
+          ],
+          [
+            8.327598234202002e-18,
+            0.136,
+            1.276
+          ],
+          [
+            -0.023616152162702523,
+            0.1339338544096603,
+            1.276
+          ],
+          [
+            -0.046514739492290916,
+            0.12779819642688356,
+            1.276
+          ],
+          [
+            -0.06799999999999998,
+            0.11777945491468367,
+            1.276
+          ],
+          [
+            -0.08741911491736935,
+            0.10418204426418101,
+            1.276
+          ],
+          [
+            -0.104182044264181,
+            0.08741911491736938,
+            1.276
+          ],
+          [
+            -0.11777945491468364,
+            0.06800000000000005,
+            1.276
+          ],
+          [
+            -0.12779819642688353,
+            0.04651473949229097,
+            1.276
+          ],
+          [
+            -0.1339338544096603,
+            0.02361615216270252,
+            1.276
+          ],
+          [
+            -0.136,
+            1.6655196468404004e-17,
+            1.276
+          ],
+          [
+            -0.13393385440966032,
+            -0.023616152162702485,
+            1.276
+          ],
+          [
+            -0.12779819642688356,
+            -0.046514739492290944,
+            1.276
+          ],
+          [
+            -0.11777945491468365,
+            -0.06800000000000002,
+            1.276
+          ],
+          [
+            -0.10418204426418107,
+            -0.0874191149173693,
+            1.276
+          ],
+          [
+            -0.08741911491736938,
+            -0.104182044264181,
+            1.276
+          ],
+          [
+            -0.06800000000000006,
+            -0.11777945491468363,
+            1.276
+          ],
+          [
+            -0.04651473949229092,
+            -0.12779819642688356,
+            1.276
+          ],
+          [
+            -0.023616152162702526,
+            -0.1339338544096603,
+            1.276
+          ],
+          [
+            -2.4982794702606006e-17,
+            -0.136,
+            1.276
+          ],
+          [
+            0.023616152162702478,
+            -0.13393385440966032,
+            1.276
+          ],
+          [
+            0.046514739492290985,
+            -0.12779819642688353,
+            1.276
+          ],
+          [
+            0.06799999999999991,
+            -0.11777945491468372,
+            1.276
+          ],
+          [
+            0.08741911491736934,
+            -0.10418204426418103,
+            1.276
+          ],
+          [
+            0.10418204426418098,
+            -0.0874191149173694,
+            1.276
+          ],
+          [
+            0.11777945491468368,
+            -0.06799999999999996,
+            1.276
+          ],
+          [
+            0.12779819642688356,
+            -0.04651473949229094,
+            1.276
+          ],
+          [
+            0.1339338544096603,
+            -0.023616152162702533,
+            1.276
+          ]
+        ],
+        "radius": 0.011
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "brass_buckle",
+      "modifiers": [],
+      "name": "cap_top_ridge",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            0.146,
+            0.0,
+            1.097
+          ],
+          [
+            0.14378193193978236,
+            0.025352633939371826,
+            1.097
+          ],
+          [
+            0.13719512263474262,
+            0.04993494092554763,
+            1.097
+          ],
+          [
+            0.12643970895252804,
+            0.07299999999999998,
+            1.097
+          ],
+          [
+            0.11184248869537078,
+            0.09384699101423473,
+            1.097
+          ],
+          [
+            0.09384699101423474,
+            0.11184248869537078,
+            1.097
+          ],
+          [
+            0.07300000000000001,
+            0.12643970895252804,
+            1.097
+          ],
+          [
+            0.04993494092554764,
+            0.1371951226347426,
+            1.097
+          ],
+          [
+            0.02535263393937184,
+            0.14378193193978236,
+            1.097
+          ],
+          [
+            8.939921633775677e-18,
+            0.146,
+            1.097
+          ],
+          [
+            -0.025352633939371823,
+            0.14378193193978236,
+            1.097
+          ],
+          [
+            -0.049934940925547594,
+            0.13719512263474262,
+            1.097
+          ],
+          [
+            -0.07299999999999997,
+            0.12643970895252804,
+            1.097
+          ],
+          [
+            -0.09384699101423474,
+            0.11184248869537078,
+            1.097
+          ],
+          [
+            -0.11184248869537076,
+            0.09384699101423476,
+            1.097
+          ],
+          [
+            -0.126439708952528,
+            0.07300000000000005,
+            1.097
+          ],
+          [
+            -0.1371951226347426,
+            0.049934940925547656,
+            1.097
+          ],
+          [
+            -0.14378193193978236,
+            0.02535263393937182,
+            1.097
+          ],
+          [
+            -0.146,
+            1.7879843267551354e-17,
+            1.097
+          ],
+          [
+            -0.14378193193978236,
+            -0.02535263393937178,
+            1.097
+          ],
+          [
+            -0.13719512263474262,
+            -0.04993494092554762,
+            1.097
+          ],
+          [
+            -0.12643970895252804,
+            -0.07300000000000001,
+            1.097
+          ],
+          [
+            -0.11184248869537083,
+            -0.09384699101423467,
+            1.097
+          ],
+          [
+            -0.09384699101423476,
+            -0.11184248869537076,
+            1.097
+          ],
+          [
+            -0.07300000000000006,
+            -0.12643970895252798,
+            1.097
+          ],
+          [
+            -0.04993494092554761,
+            -0.13719512263474262,
+            1.097
+          ],
+          [
+            -0.025352633939371826,
+            -0.14378193193978236,
+            1.097
+          ],
+          [
+            -2.681976490132703e-17,
+            -0.146,
+            1.097
+          ],
+          [
+            0.025352633939371774,
+            -0.14378193193978236,
+            1.097
+          ],
+          [
+            0.04993494092554767,
+            -0.1371951226347426,
+            1.097
+          ],
+          [
+            0.0729999999999999,
+            -0.1264397089525281,
+            1.097
+          ],
+          [
+            0.09384699101423473,
+            -0.11184248869537079,
+            1.097
+          ],
+          [
+            0.11184248869537075,
+            -0.09384699101423477,
+            1.097
+          ],
+          [
+            0.12643970895252807,
+            -0.07299999999999994,
+            1.097
+          ],
+          [
+            0.13719512263474262,
+            -0.049934940925547615,
+            1.097
+          ],
+          [
+            0.14378193193978236,
+            -0.025352633939371833,
+            1.097
+          ]
+        ],
+        "radius": 0.009
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "olive_dark",
+      "modifiers": [],
+      "name": "cap_lower_seam",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": false,
+        "points": [
+          [
+            0.14,
+            0,
+            1.2
+          ],
+          [
+            0.23,
+            -0.02,
+            1.28
+          ],
+          [
+            0.3,
+            -0.025,
+            1.24
+          ],
+          [
+            0.3,
+            -0.025,
+            1.15
+          ],
+          [
+            0.22,
+            0,
+            1.12
+          ]
+        ],
+        "radius": 0.024
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "brass_buckle",
+      "modifiers": [],
+      "name": "right_cap_retain_loop",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": false,
+        "points": [
+          [
+            -0.26,
+            -0.16,
+            0.96
+          ],
+          [
+            -0.33,
+            -0.18,
+            0.79
+          ],
+          [
+            -0.29,
+            -0.19,
+            0.66
+          ],
+          [
+            -0.27,
+            -0.18,
+            0.39
+          ]
+        ],
+        "radius": 0.045
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "olive_dark",
+      "modifiers": [],
+      "name": "left_shoulder_strap",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": false,
+        "points": [
+          [
+            0.26,
+            -0.16,
+            0.96
+          ],
+          [
+            0.34,
+            -0.18,
+            0.78
+          ],
+          [
+            0.29,
+            -0.19,
+            0.62
+          ],
+          [
+            0.26,
+            -0.18,
+            0.39
+          ]
+        ],
+        "radius": 0.045
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "olive_dark",
+      "modifiers": [],
+      "name": "right_shoulder_strap",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.018,
+        "size": [
+          0.13,
+          0.055,
+          0.13
+        ]
+      },
+      "location": [
+        -0.286,
+        -0.196,
+        0.67
+      ],
+      "material": "brass_buckle",
+      "modifiers": [],
+      "name": "left_strap_clasp",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.008,
+        "size": [
+          0.085,
+          0.015,
+          0.087
+        ]
+      },
+      "location": [
+        -0.286,
+        -0.227,
+        0.67
+      ],
+      "material": "olive_canvas",
+      "modifiers": [],
+      "name": "left_clasp_inset",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.018,
+        "size": [
+          0.13,
+          0.055,
+          0.13
+        ]
+      },
+      "location": [
+        0.286,
+        -0.196,
+        0.67
+      ],
+      "material": "brass_buckle",
+      "modifiers": [],
+      "name": "right_strap_clasp",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.008,
+        "size": [
+          0.085,
+          0.015,
+          0.087
+        ]
+      },
+      "location": [
+        0.286,
+        -0.227,
+        0.67
+      ],
+      "material": "olive_canvas",
+      "modifiers": [],
+      "name": "right_clasp_inset",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": false,
+        "points": [
+          [
+            0,
+            -0.267,
+            0.16
+          ],
+          [
+            0,
+            -0.265,
+            0.41
+          ],
+          [
+            0,
+            -0.25,
+            0.72
+          ]
+        ],
+        "radius": 0.005
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "thread",
+      "modifiers": [],
+      "name": "front_center_canvas_stitch",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.6,
+      "geometry": {
+        "closed": false,
+        "points": [
+          [
+            -0.3,
+            -0.085,
+            0.17
+          ],
+          [
+            -0.32,
+            -0.09,
+            0.43
+          ],
+          [
+            -0.3,
+            -0.1,
+            0.7
+          ]
+        ],
+        "radius": 0.007
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "thread",
+      "modifiers": [],
+      "name": "left_side_wear_seam",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    }
+  ],
+  "gameplay": {
+    "animations": [
+      "unscrew_cap"
+    ],
+    "attachment_points": [
+      {
+        "name": "carry_ring",
+        "position": [
+          0.3,
+          0,
+          1.2
+        ]
+      }
+    ],
+    "collision": "box",
+    "container_openings": [
+      "neck_socket"
+    ],
+    "damage_states": [
+      "intact",
+      "worn",
+      "broken"
+    ],
+    "footprint_m": [
+      0.68,
+      0.53
+    ],
+    "interactable_parts": [
+      "ribbed_screw_cap"
+    ],
+    "movable": true
+  },
+  "identity": {
+    "asset_family": "water_canteen",
+    "candidate_id": "pilot_canvas_canteen_recipe_v1",
+    "canonical_id": null,
+    "generation_method": "pixel_inspected_seed",
+    "recipe_version": 1,
+    "source_reference_id": "founder_sheet_s01_slot_608_isolated_sha_pinned",
+    "source_rights": "founder_original_pending_review",
+    "source_sha256": "fca1136b0fdde382e83ffbe7478c93977259d021256959651d4ea14f35b0e73a"
+  },
+  "materials": [
+    {
+      "class": "fabric",
+      "metallic": 0,
+      "name": "olive_canvas",
+      "rgba": [
+        0.34,
+        0.3,
+        0.18,
+        1
+      ],
+      "roughness": 0.89,
+      "texture": "scuffed",
+      "wear": 0.28
+    },
+    {
+      "class": "fabric",
+      "metallic": 0,
+      "name": "olive_dark",
+      "rgba": [
+        0.18,
+        0.18,
+        0.105,
+        1
+      ],
+      "roughness": 0.9,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "metal",
+      "metallic": 0.64,
+      "name": "brass_buckle",
+      "rgba": [
+        0.53,
+        0.38,
+        0.16,
+        1
+      ],
+      "roughness": 0.49,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "plastic",
+      "metallic": 0,
+      "name": "top_cap",
+      "rgba": [
+        0.3,
+        0.25,
+        0.15,
+        1
+      ],
+      "roughness": 0.65,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "fabric",
+      "metallic": 0,
+      "name": "thread",
+      "rgba": [
+        0.48,
+        0.42,
+        0.25,
+        1
+      ],
+      "roughness": 0.92,
+      "texture": "fine_noise",
+      "wear": 0.12
+    }
+  ],
+  "quality": {
+    "expected_silhouette": "Tall olive vessel, distinct neck/cap, flanking straps, small side ring",
+    "founder_review": "NOT_GOLDEN",
+    "golden_approved": false,
+    "qa_checks": [
+      "source_sha",
+      "glb_geometry",
+      "alpha",
+      "16_distinct_headings",
+      "silhouette",
+      "color",
+      "manual_golden"
+    ],
+    "technical_status": "CANDIDATE_PENDING_QA"
+  },
+  "render": {
+    "assembly_scale": [
+      1,
+      1,
+      1
+    ],
+    "camera_azimuth_deg": 275,
+    "camera_elevation_deg": 35.264,
+    "headings": 16,
+    "key_light": "upper_left",
+    "orthographic_scale": 2.4,
+    "resolution": 128
+  },
+  "schema": "last-light.recipe-architect.v1",
+  "tuning": {
+    "max_corrections": 5,
+    "scale_step": 0.09
+  },
+  "visual_analysis": {
+    "artifacts": [
+      "RGBA segmentation has uneven cutout edges; treat missing/white pixels as uncertain, not new geometry"
+    ],
+    "assumptions": [
+      {
+        "component": "hollow_fabric_cover",
+        "confidence": 0.57,
+        "detail": "Unseen back and water container wall are approximated as hollow lathed shell"
+      },
+      {
+        "component": "olive_canvas",
+        "confidence": 0.5,
+        "detail": "Exact surface pattern and seams are guessed, not source texture"
+      }
+    ],
+    "category": "water_canteen",
+    "confidence": 0.84,
+    "image_dimensions": [
+      170,
+      230
+    ],
+    "observations": [
+      {
+        "component": "hollow_fabric_cover",
+        "confidence": 0.95,
+        "detail": "Tall olive-brown rounded flask/canvas cover, narrower at shoulders"
+      },
+      {
+        "component": "ribbed_screw_cap",
+        "confidence": 0.97,
+        "detail": "Wide ribbed cylindrical cap and narrower neck at top"
+      },
+      {
+        "component": "right_cap_retain_loop",
+        "confidence": 0.89,
+        "detail": "Small metallic ring projecting to right of cap"
+      },
+      {
+        "component": "left_strap_clasp",
+        "confidence": 0.92,
+        "detail": "Paired vertical fabric straps with rectangular front fasteners"
+      }
+    ],
+    "pixels_inspected": true,
+    "probable_function": "Portable carried vessel for drinking water",
+    "provider": "chatgpt_visual_inspection_2026_11_10"
+  }
+}

@@ -1,0 +1,783 @@
+{
+  "components": [
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "profile": [
+          [
+            0,
+            0.065
+          ],
+          [
+            0.38,
+            0.065
+          ],
+          [
+            0.47,
+            0.086
+          ],
+          [
+            0.52,
+            0.12
+          ],
+          [
+            0.57,
+            0.23
+          ],
+          [
+            0.57,
+            0.275
+          ],
+          [
+            0.535,
+            0.29
+          ],
+          [
+            0.508,
+            0.245
+          ],
+          [
+            0.47,
+            0.16
+          ],
+          [
+            0.38,
+            0.13
+          ],
+          [
+            0,
+            0.13
+          ]
+        ],
+        "vertices": 64
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "cast_iron",
+      "modifiers": [],
+      "name": "hollow_cast_iron_bowl",
+      "observed": true,
+      "op": "lathe",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            0.562,
+            0.0,
+            0.278
+          ],
+          [
+            0.553461957192861,
+            0.09759027584881486,
+            0.278
+          ],
+          [
+            0.5281072528816806,
+            0.19221532054902585,
+            0.278
+          ],
+          [
+            0.4867062769268546,
+            0.28099999999999997,
+            0.278
+          ],
+          [
+            0.4305169770328657,
+            0.3612466366438351,
+            0.278
+          ],
+          [
+            0.36124663664383516,
+            0.4305169770328657,
+            0.278
+          ],
+          [
+            0.2810000000000001,
+            0.48670627692685453,
+            0.278
+          ],
+          [
+            0.1922153205490259,
+            0.5281072528816805,
+            0.278
+          ],
+          [
+            0.0975902758488149,
+            0.553461957192861,
+            0.278
+          ],
+          [
+            3.441257505604063e-17,
+            0.562,
+            0.278
+          ],
+          [
+            -0.09759027584881484,
+            0.553461957192861,
+            0.278
+          ],
+          [
+            -0.1922153205490257,
+            0.5281072528816806,
+            0.278
+          ],
+          [
+            -0.2809999999999999,
+            0.4867062769268546,
+            0.278
+          ],
+          [
+            -0.36124663664383516,
+            0.4305169770328657,
+            0.278
+          ],
+          [
+            -0.4305169770328656,
+            0.3612466366438352,
+            0.278
+          ],
+          [
+            -0.4867062769268545,
+            0.2810000000000002,
+            0.278
+          ],
+          [
+            -0.5281072528816805,
+            0.19221532054902593,
+            0.278
+          ],
+          [
+            -0.553461957192861,
+            0.09759027584881483,
+            0.278
+          ],
+          [
+            -0.562,
+            6.882515011208126e-17,
+            0.278
+          ],
+          [
+            -0.5534619571928611,
+            -0.09759027584881469,
+            0.278
+          ],
+          [
+            -0.5281072528816806,
+            -0.1922153205490258,
+            0.278
+          ],
+          [
+            -0.48670627692685453,
+            -0.2810000000000001,
+            0.278
+          ],
+          [
+            -0.4305169770328659,
+            -0.3612466366438349,
+            0.278
+          ],
+          [
+            -0.3612466366438352,
+            -0.4305169770328656,
+            0.278
+          ],
+          [
+            -0.28100000000000025,
+            -0.4867062769268544,
+            0.278
+          ],
+          [
+            -0.19221532054902574,
+            -0.5281072528816806,
+            0.278
+          ],
+          [
+            -0.09759027584881486,
+            -0.553461957192861,
+            0.278
+          ],
+          [
+            -1.0323772516812188e-16,
+            -0.562,
+            0.278
+          ],
+          [
+            0.09759027584881465,
+            -0.5534619571928611,
+            0.278
+          ],
+          [
+            0.192215320549026,
+            -0.5281072528816805,
+            0.278
+          ],
+          [
+            0.28099999999999964,
+            -0.4867062769268548,
+            0.278
+          ],
+          [
+            0.3612466366438351,
+            -0.43051697703286573,
+            0.278
+          ],
+          [
+            0.43051697703286557,
+            -0.3612466366438353,
+            0.278
+          ],
+          [
+            0.48670627692685464,
+            -0.28099999999999986,
+            0.278
+          ],
+          [
+            0.5281072528816806,
+            -0.19221532054902576,
+            0.278
+          ],
+          [
+            0.553461957192861,
+            -0.09759027584881488,
+            0.278
+          ]
+        ],
+        "radius": 0.018
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "worn_rim",
+      "modifiers": [],
+      "name": "rolled_metal_lip",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.005,
+        "radius": 0.38,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 64
+      },
+      "location": [
+        0,
+        0,
+        0.132
+      ],
+      "material": "inner_patina",
+      "modifiers": [],
+      "name": "interior_seasoned_surface",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.095,
+        "points": [
+          [
+            -0.21,
+            -0.115
+          ],
+          [
+            0.18,
+            -0.09
+          ],
+          [
+            0.42,
+            -0.065
+          ],
+          [
+            0.42,
+            0.065
+          ],
+          [
+            0.18,
+            0.09
+          ],
+          [
+            -0.21,
+            0.115
+          ]
+        ]
+      },
+      "location": [
+        0,
+        0.775,
+        0.245
+      ],
+      "material": "cast_iron",
+      "modifiers": [],
+      "name": "tapered_handle_shank",
+      "observed": true,
+      "op": "polygon_extrude",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        90
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.02,
+        "size": [
+          0.12,
+          0.075,
+          0.25
+        ],
+        "target": "tapered_handle_shank"
+      },
+      "location": [
+        0,
+        1.14,
+        0.245
+      ],
+      "material": "cast_iron",
+      "modifiers": [],
+      "name": "handle_hanging_slot",
+      "observed": true,
+      "op": "boolean_cut",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        90
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.015,
+        "size": [
+          0.17,
+          0.1,
+          0.044
+        ]
+      },
+      "location": [
+        0,
+        -0.565,
+        0.265
+      ],
+      "material": "worn_rim",
+      "modifiers": [],
+      "name": "opposite_pour_spout",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            0.39,
+            0.0,
+            0.066
+          ],
+          [
+            0.38407502367476115,
+            0.06772278929010284,
+            0.066
+          ],
+          [
+            0.3664801221065043,
+            0.1333878558970108,
+            0.066
+          ],
+          [
+            0.3377499074759311,
+            0.19499999999999998,
+            0.066
+          ],
+          [
+            0.29875733281640143,
+            0.2506871677777503,
+            0.066
+          ],
+          [
+            0.25068716777775035,
+            0.29875733281640143,
+            0.066
+          ],
+          [
+            0.19500000000000006,
+            0.3377499074759311,
+            0.066
+          ],
+          [
+            0.13338785589701085,
+            0.36648012210650427,
+            0.066
+          ],
+          [
+            0.06772278929010286,
+            0.38407502367476115,
+            0.066
+          ],
+          [
+            2.3880612583373387e-17,
+            0.39,
+            0.066
+          ],
+          [
+            -0.06772278929010282,
+            0.38407502367476115,
+            0.066
+          ],
+          [
+            -0.13338785589701072,
+            0.3664801221065043,
+            0.066
+          ],
+          [
+            -0.19499999999999992,
+            0.3377499074759311,
+            0.066
+          ],
+          [
+            -0.25068716777775035,
+            0.29875733281640143,
+            0.066
+          ],
+          [
+            -0.2987573328164014,
+            0.2506871677777504,
+            0.066
+          ],
+          [
+            -0.33774990747593103,
+            0.19500000000000015,
+            0.066
+          ],
+          [
+            -0.36648012210650427,
+            0.13338785589701085,
+            0.066
+          ],
+          [
+            -0.38407502367476115,
+            0.06772278929010281,
+            0.066
+          ],
+          [
+            -0.39,
+            4.7761225166746774e-17,
+            0.066
+          ],
+          [
+            -0.3840750236747612,
+            -0.06772278929010271,
+            0.066
+          ],
+          [
+            -0.3664801221065043,
+            -0.13338785589701077,
+            0.066
+          ],
+          [
+            -0.3377499074759311,
+            -0.19500000000000006,
+            0.066
+          ],
+          [
+            -0.29875733281640154,
+            -0.2506871677777502,
+            0.066
+          ],
+          [
+            -0.2506871677777504,
+            -0.2987573328164014,
+            0.066
+          ],
+          [
+            -0.19500000000000017,
+            -0.337749907475931,
+            0.066
+          ],
+          [
+            -0.13338785589701074,
+            -0.3664801221065043,
+            0.066
+          ],
+          [
+            -0.06772278929010284,
+            -0.38407502367476115,
+            0.066
+          ],
+          [
+            -7.164183775012016e-17,
+            -0.39,
+            0.066
+          ],
+          [
+            0.0677227892901027,
+            -0.3840750236747612,
+            0.066
+          ],
+          [
+            0.1333878558970109,
+            -0.36648012210650427,
+            0.066
+          ],
+          [
+            0.19499999999999976,
+            -0.33774990747593125,
+            0.066
+          ],
+          [
+            0.2506871677777503,
+            -0.2987573328164015,
+            0.066
+          ],
+          [
+            0.2987573328164013,
+            -0.25068716777775046,
+            0.066
+          ],
+          [
+            0.33774990747593114,
+            -0.19499999999999987,
+            0.066
+          ],
+          [
+            0.3664801221065043,
+            -0.13338785589701077,
+            0.066
+          ],
+          [
+            0.38407502367476115,
+            -0.06772278929010285,
+            0.066
+          ]
+        ],
+        "radius": 0.008
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "inner_patina",
+      "modifiers": [],
+      "name": "underbase_concentric_seam",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    }
+  ],
+  "gameplay": {
+    "animations": [],
+    "attachment_points": [
+      {
+        "name": "handle_grab",
+        "position": [
+          0,
+          1.06,
+          0.245
+        ]
+      }
+    ],
+    "collision": "convex",
+    "container_openings": [],
+    "damage_states": [
+      "intact",
+      "worn",
+      "broken"
+    ],
+    "footprint_m": [
+      1.15,
+      1.15
+    ],
+    "interactable_parts": [
+      "tapered_handle_shank"
+    ],
+    "movable": true
+  },
+  "identity": {
+    "asset_family": "cookware_pan",
+    "candidate_id": "pilot_cast_iron_skillet_recipe_v1",
+    "canonical_id": null,
+    "generation_method": "pixel_inspected_seed",
+    "recipe_version": 1,
+    "source_reference_id": "founder_sheet_s01_slot_626_isolated_sha_pinned",
+    "source_rights": "founder_original_pending_review",
+    "source_sha256": "5b336ee3f34297afab52475de8bd21a5f956b765e5d4f719a91fa7eab03e8802"
+  },
+  "materials": [
+    {
+      "class": "metal",
+      "metallic": 0.66,
+      "name": "cast_iron",
+      "rgba": [
+        0.13,
+        0.12,
+        0.105,
+        1
+      ],
+      "roughness": 0.83,
+      "texture": "scuffed",
+      "wear": 0.42
+    },
+    {
+      "class": "metal",
+      "metallic": 0.67,
+      "name": "worn_rim",
+      "rgba": [
+        0.26,
+        0.23,
+        0.19,
+        1
+      ],
+      "roughness": 0.81,
+      "texture": "scuffed",
+      "wear": 0.38
+    },
+    {
+      "class": "metal",
+      "metallic": 0.59,
+      "name": "inner_patina",
+      "rgba": [
+        0.19,
+        0.17,
+        0.135,
+        1
+      ],
+      "roughness": 0.89,
+      "texture": "scuffed",
+      "wear": 0.58
+    }
+  ],
+  "quality": {
+    "expected_silhouette": "Wide hollow low bowl with pronounced rim and one long perforated handle",
+    "founder_review": "NOT_GOLDEN",
+    "golden_approved": false,
+    "qa_checks": [
+      "source_sha",
+      "glb_geometry",
+      "alpha",
+      "16_distinct_headings",
+      "silhouette",
+      "color",
+      "manual_golden"
+    ],
+    "technical_status": "CANDIDATE_PENDING_QA"
+  },
+  "render": {
+    "assembly_scale": [
+      1,
+      1,
+      1
+    ],
+    "camera_azimuth_deg": 315,
+    "camera_elevation_deg": 35.264,
+    "headings": 16,
+    "key_light": "upper_left",
+    "orthographic_scale": 3.05,
+    "resolution": 128
+  },
+  "schema": "last-light.recipe-architect.v1",
+  "tuning": {
+    "max_corrections": 5,
+    "scale_step": 0.09
+  },
+  "visual_analysis": {
+    "artifacts": [
+      "RGBA segmentation has uneven cutout edges; treat missing/white pixels as uncertain, not new geometry"
+    ],
+    "assumptions": [
+      {
+        "component": "hollow_cast_iron_bowl",
+        "confidence": 0.68,
+        "detail": "Hidden base and thickness inferred as cast iron; scratch texture procedural"
+      },
+      {
+        "component": "opposite_pour_spout",
+        "confidence": 0.44,
+        "detail": "Small pour lip position plausible but not distinctly resolved"
+      }
+    ],
+    "category": "cookware_pan",
+    "confidence": 0.84,
+    "image_dimensions": [
+      197,
+      187
+    ],
+    "observations": [
+      {
+        "component": "hollow_cast_iron_bowl",
+        "confidence": 0.99,
+        "detail": "Wide blackened shallow circular iron pan, empty concave interior"
+      },
+      {
+        "component": "rolled_metal_lip",
+        "confidence": 0.91,
+        "detail": "Raised uneven rim with brown worn edge highlights"
+      },
+      {
+        "component": "tapered_handle_shank",
+        "confidence": 0.97,
+        "detail": "Single long cast handle going toward upper right; hole near handle tip"
+      },
+      {
+        "component": "interior_seasoned_surface",
+        "confidence": 0.92,
+        "detail": "Brown/gray mottled seasoned interior surface"
+      }
+    ],
+    "pixels_inspected": true,
+    "probable_function": "Open, empty frying vessel heated on a stovetop",
+    "provider": "chatgpt_visual_inspection_2026_11_10"
+  }
+}

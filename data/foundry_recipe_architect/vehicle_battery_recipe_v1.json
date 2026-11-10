@@ -1,0 +1,1284 @@
+{
+  "components": [
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.035,
+        "size": [
+          1.48,
+          0.85,
+          0.84
+        ]
+      },
+      "location": [
+        0,
+        0,
+        0.45
+      ],
+      "material": "black_polymer",
+      "modifiers": [
+        "weighted_normals"
+      ],
+      "name": "main_battery_casing",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.012,
+        "size": [
+          1.55,
+          0.9,
+          0.13
+        ]
+      },
+      "location": [
+        0,
+        0,
+        0.085
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "bottom_retaining_foot",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.008,
+        "size": [
+          1.52,
+          0.89,
+          0.028
+        ]
+      },
+      "location": [
+        0,
+        0,
+        0.83
+      ],
+      "material": "silver_trim",
+      "modifiers": [],
+      "name": "lid_seam",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.033,
+        "size": [
+          1.6,
+          0.94,
+          0.14
+        ]
+      },
+      "location": [
+        0,
+        0,
+        0.91
+      ],
+      "material": "graphite_panel",
+      "modifiers": [],
+      "name": "stepped_lid_shell",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.006,
+        "size": [
+          1.4,
+          0.78,
+          0.022
+        ]
+      },
+      "location": [
+        0,
+        0.045,
+        0.985
+      ],
+      "material": "black_polymer",
+      "modifiers": [],
+      "name": "upper_recess_inset",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.01,
+        "size": [
+          0.43,
+          0.32,
+          0.018
+        ]
+      },
+      "location": [
+        -0.25,
+        0.16,
+        1.012
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "left_top_service_panel",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.01,
+        "size": [
+          0.43,
+          0.32,
+          0.018
+        ]
+      },
+      "location": [
+        0.26,
+        0.16,
+        1.012
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "right_top_service_panel",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.004,
+        "size": [
+          0.35,
+          0.2,
+          0.008
+        ]
+      },
+      "location": [
+        -0.25,
+        0.15,
+        1.024
+      ],
+      "material": "black_polymer",
+      "modifiers": [],
+      "name": "left_top_panel_etch",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.004,
+        "size": [
+          0.35,
+          0.2,
+          0.008
+        ]
+      },
+      "location": [
+        0.26,
+        0.15,
+        1.024
+      ],
+      "material": "black_polymer",
+      "modifiers": [],
+      "name": "right_top_panel_etch",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.055,
+        "radius": 0.126,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 32
+      },
+      "location": [
+        -0.57,
+        -0.05,
+        1.035
+      ],
+      "material": "silver_trim",
+      "modifiers": [],
+      "name": "negative_terminal_base",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.21,
+        "radius": 0.086,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 32
+      },
+      "location": [
+        -0.57,
+        -0.05,
+        1.145
+      ],
+      "material": "terminal_lead",
+      "modifiers": [],
+      "name": "negative_terminal_post",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            -0.48,
+            -0.05,
+            1.244
+          ],
+          [
+            -0.48136730222890123,
+            -0.03437166400997627,
+            1.244
+          ],
+          [
+            -0.4854276641292682,
+            -0.01921818710068982,
+            1.244
+          ],
+          [
+            -0.4920577136594005,
+            -0.005000000000000011,
+            1.244
+          ],
+          [
+            -0.501056000119292,
+            0.007850884871788526,
+            1.244
+          ],
+          [
+            -0.5121491151282114,
+            0.01894399988070801,
+            1.244
+          ],
+          [
+            -0.5249999999999999,
+            0.027942286340599462,
+            1.244
+          ],
+          [
+            -0.5392181871006898,
+            0.034572335870731746,
+            1.244
+          ],
+          [
+            -0.5543716640099762,
+            0.03863269777109872,
+            1.244
+          ],
+          [
+            -0.57,
+            0.039999999999999994,
+            1.244
+          ],
+          [
+            -0.5856283359900237,
+            0.03863269777109872,
+            1.244
+          ],
+          [
+            -0.6007818128993101,
+            0.034572335870731746,
+            1.244
+          ],
+          [
+            -0.6149999999999999,
+            0.027942286340599476,
+            1.244
+          ],
+          [
+            -0.6278508848717885,
+            0.01894399988070801,
+            1.244
+          ],
+          [
+            -0.6389439998807079,
+            0.007850884871788547,
+            1.244
+          ],
+          [
+            -0.6479422863405995,
+            -0.004999999999999977,
+            1.244
+          ],
+          [
+            -0.6545723358707317,
+            -0.019218187100689805,
+            1.244
+          ],
+          [
+            -0.6586326977710987,
+            -0.03437166400997628,
+            1.244
+          ],
+          [
+            -0.6599999999999999,
+            -0.04999999999999999,
+            1.244
+          ],
+          [
+            -0.6586326977710987,
+            -0.06562833599002371,
+            1.244
+          ],
+          [
+            -0.6545723358707317,
+            -0.08078181289931018,
+            1.244
+          ],
+          [
+            -0.6479422863405995,
+            -0.095,
+            1.244
+          ],
+          [
+            -0.638943999880708,
+            -0.10785088487178851,
+            1.244
+          ],
+          [
+            -0.6278508848717885,
+            -0.11894399988070802,
+            1.244
+          ],
+          [
+            -0.615,
+            -0.12794228634059945,
+            1.244
+          ],
+          [
+            -0.6007818128993101,
+            -0.13457233587073175,
+            1.244
+          ],
+          [
+            -0.5856283359900237,
+            -0.1386326977710987,
+            1.244
+          ],
+          [
+            -0.57,
+            -0.14,
+            1.244
+          ],
+          [
+            -0.5543716640099763,
+            -0.1386326977710987,
+            1.244
+          ],
+          [
+            -0.5392181871006897,
+            -0.13457233587073175,
+            1.244
+          ],
+          [
+            -0.525,
+            -0.1279422863405995,
+            1.244
+          ],
+          [
+            -0.5121491151282114,
+            -0.11894399988070803,
+            1.244
+          ],
+          [
+            -0.501056000119292,
+            -0.10785088487178857,
+            1.244
+          ],
+          [
+            -0.49205771365940043,
+            -0.09499999999999997,
+            1.244
+          ],
+          [
+            -0.4854276641292682,
+            -0.08078181289931018,
+            1.244
+          ],
+          [
+            -0.48136730222890123,
+            -0.06562833599002374,
+            1.244
+          ]
+        ],
+        "radius": 0.01
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "silver_trim",
+      "modifiers": [],
+      "name": "negative_terminal_lip",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.05,
+        "radius": 0.124,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 32
+      },
+      "location": [
+        0.57,
+        -0.05,
+        1.035
+      ],
+      "material": "silver_trim",
+      "modifiers": [],
+      "name": "positive_terminal_base",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "depth": 0.2,
+        "radius": 0.089,
+        "scale_xy": [
+          1,
+          1
+        ],
+        "vertices": 32
+      },
+      "location": [
+        0.57,
+        -0.05,
+        1.15
+      ],
+      "material": "positive_copper",
+      "modifiers": [],
+      "name": "positive_terminal_post",
+      "observed": true,
+      "op": "cylinder",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "closed": true,
+        "points": [
+          [
+            0.6659999999999999,
+            -0.05,
+            1.245
+          ],
+          [
+            0.6645415442891719,
+            -0.03332977494397469,
+            1.245
+          ],
+          [
+            0.6602104915954472,
+            -0.017166066240735807,
+            1.245
+          ],
+          [
+            0.6531384387633061,
+            -0.0020000000000000087,
+            1.245
+          ],
+          [
+            0.6435402665394219,
+            0.011707610529907764,
+            1.245
+          ],
+          [
+            0.6317076105299078,
+            0.023540266539421886,
+            1.245
+          ],
+          [
+            0.618,
+            0.033138438763306105,
+            1.245
+          ],
+          [
+            0.6028339337592642,
+            0.04021049159544719,
+            1.245
+          ],
+          [
+            0.5866702250560253,
+            0.044541544289171967,
+            1.245
+          ],
+          [
+            0.57,
+            0.046,
+            1.245
+          ],
+          [
+            0.5533297749439746,
+            0.044541544289171967,
+            1.245
+          ],
+          [
+            0.5371660662407358,
+            0.040210491595447206,
+            1.245
+          ],
+          [
+            0.522,
+            0.03313843876330612,
+            1.245
+          ],
+          [
+            0.5082923894700921,
+            0.023540266539421886,
+            1.245
+          ],
+          [
+            0.4964597334605781,
+            0.011707610529907785,
+            1.245
+          ],
+          [
+            0.4868615612366939,
+            -0.001999999999999967,
+            1.245
+          ],
+          [
+            0.47978950840455276,
+            -0.017166066240735793,
+            1.245
+          ],
+          [
+            0.475458455710828,
+            -0.0333297749439747,
+            1.245
+          ],
+          [
+            0.474,
+            -0.04999999999999999,
+            1.245
+          ],
+          [
+            0.47545845571082795,
+            -0.06667022505602528,
+            1.245
+          ],
+          [
+            0.47978950840455276,
+            -0.08283393375926419,
+            1.245
+          ],
+          [
+            0.48686156123669383,
+            -0.09800000000000002,
+            1.245
+          ],
+          [
+            0.49645973346057803,
+            -0.11170761052990774,
+            1.245
+          ],
+          [
+            0.5082923894700921,
+            -0.12354026653942188,
+            1.245
+          ],
+          [
+            0.5219999999999999,
+            -0.13313843876330608,
+            1.245
+          ],
+          [
+            0.5371660662407358,
+            -0.1402104915954472,
+            1.245
+          ],
+          [
+            0.5533297749439746,
+            -0.14454154428917199,
+            1.245
+          ],
+          [
+            0.57,
+            -0.14600000000000002,
+            1.245
+          ],
+          [
+            0.5866702250560252,
+            -0.14454154428917199,
+            1.245
+          ],
+          [
+            0.6028339337592642,
+            -0.14021049159544718,
+            1.245
+          ],
+          [
+            0.6179999999999999,
+            -0.13313843876330617,
+            1.245
+          ],
+          [
+            0.6317076105299078,
+            -0.1235402665394219,
+            1.245
+          ],
+          [
+            0.6435402665394219,
+            -0.1117076105299078,
+            1.245
+          ],
+          [
+            0.6531384387633061,
+            -0.09799999999999998,
+            1.245
+          ],
+          [
+            0.6602104915954472,
+            -0.08283393375926419,
+            1.245
+          ],
+          [
+            0.6645415442891719,
+            -0.06667022505602532,
+            1.245
+          ]
+        ],
+        "radius": 0.012
+      },
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "material": "positive_copper",
+      "modifiers": [],
+      "name": "positive_terminal_lip",
+      "observed": true,
+      "op": "tube",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.014,
+        "size": [
+          1.09,
+          0.018,
+          0.235
+        ]
+      },
+      "location": [
+        0,
+        -0.44,
+        0.565
+      ],
+      "material": "paper_label",
+      "modifiers": [],
+      "name": "front_label_plate",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.001,
+        "size": [
+          1.03,
+          0.005,
+          0.014
+        ]
+      },
+      "location": [
+        0,
+        -0.454,
+        0.67
+      ],
+      "material": "black_ink",
+      "modifiers": [],
+      "name": "front_label_top_rule",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.001,
+        "size": [
+          1.03,
+          0.005,
+          0.013
+        ]
+      },
+      "location": [
+        0,
+        -0.454,
+        0.46
+      ],
+      "material": "black_ink",
+      "modifiers": [],
+      "name": "front_label_mid_rule",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "extrude": 0.001,
+        "size": 0.135,
+        "value": "NORTHRIDGE"
+      },
+      "location": [
+        -0.47,
+        -0.463,
+        0.53
+      ],
+      "material": "black_ink",
+      "modifiers": [],
+      "name": "brand_label",
+      "observed": true,
+      "op": "text",
+      "parent": null,
+      "rotation_deg": [
+        90,
+        0,
+        0
+      ],
+      "topology": "text_mesh"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "extrude": 0.001,
+        "size": 0.155,
+        "value": "12V 60Ah"
+      },
+      "location": [
+        -0.34,
+        -0.463,
+        0.315
+      ],
+      "material": "paper_label",
+      "modifiers": [],
+      "name": "capacity_label",
+      "observed": true,
+      "op": "text",
+      "parent": null,
+      "rotation_deg": [
+        90,
+        0,
+        0
+      ],
+      "topology": "text_mesh"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.004,
+        "size": [
+          0.035,
+          0.02,
+          0.74
+        ]
+      },
+      "location": [
+        -0.735,
+        -0.425,
+        0.47
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "left_vertical_corner_reinforcement",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.004,
+        "size": [
+          0.035,
+          0.02,
+          0.74
+        ]
+      },
+      "location": [
+        0.735,
+        -0.425,
+        0.47
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "right_vertical_corner_reinforcement",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.005,
+        "size": [
+          1.51,
+          0.029,
+          0.04
+        ]
+      },
+      "location": [
+        0,
+        -0.454,
+        0.085
+      ],
+      "material": "silver_trim",
+      "modifiers": [],
+      "name": "bottom_front_rail",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    },
+    {
+      "confidence": 0.85,
+      "geometry": {
+        "bevel": 0.004,
+        "size": [
+          0.025,
+          0.78,
+          0.028
+        ]
+      },
+      "location": [
+        0.752,
+        0,
+        0.26
+      ],
+      "material": "edge_graphite",
+      "modifiers": [],
+      "name": "right_side_lower_rib",
+      "observed": true,
+      "op": "box",
+      "parent": null,
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "topology": "closed"
+    }
+  ],
+  "gameplay": {
+    "animations": [],
+    "attachment_points": [
+      {
+        "name": "negative_cable",
+        "position": [
+          -0.57,
+          -0.05,
+          1.24
+        ]
+      },
+      {
+        "name": "positive_cable",
+        "position": [
+          0.57,
+          -0.05,
+          1.24
+        ]
+      }
+    ],
+    "collision": "box",
+    "container_openings": [],
+    "damage_states": [
+      "intact",
+      "worn",
+      "broken"
+    ],
+    "footprint_m": [
+      1.55,
+      0.9
+    ],
+    "interactable_parts": [
+      "negative_terminal_post",
+      "positive_terminal_post"
+    ],
+    "movable": true
+  },
+  "identity": {
+    "asset_family": "electrical_battery",
+    "candidate_id": "pilot_vehicle_battery_recipe_v1",
+    "canonical_id": null,
+    "generation_method": "pixel_inspected_seed",
+    "recipe_version": 1,
+    "source_reference_id": "founder_sheet_s01_slot_614_isolated_sha_pinned",
+    "source_rights": "founder_original_pending_review",
+    "source_sha256": "e69103e64deb44dcc7213ae142b9767b8f0fa2eeb44b05a2f0557025ca8c33b7"
+  },
+  "materials": [
+    {
+      "class": "plastic",
+      "metallic": 0,
+      "name": "black_polymer",
+      "rgba": [
+        0.055,
+        0.059,
+        0.057,
+        1
+      ],
+      "roughness": 0.62,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "plastic",
+      "metallic": 0,
+      "name": "edge_graphite",
+      "rgba": [
+        0.15,
+        0.17,
+        0.17,
+        1
+      ],
+      "roughness": 0.54,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "plastic",
+      "metallic": 0,
+      "name": "graphite_panel",
+      "rgba": [
+        0.095,
+        0.105,
+        0.102,
+        1
+      ],
+      "roughness": 0.7,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "metal",
+      "metallic": 0.67,
+      "name": "terminal_lead",
+      "rgba": [
+        0.24,
+        0.27,
+        0.28,
+        1
+      ],
+      "roughness": 0.45,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "metal",
+      "metallic": 0.55,
+      "name": "positive_copper",
+      "rgba": [
+        0.62,
+        0.15,
+        0.065,
+        1
+      ],
+      "roughness": 0.39,
+      "texture": "fine_noise",
+      "wear": 0.12
+    },
+    {
+      "class": "paper",
+      "metallic": 0,
+      "name": "paper_label",
+      "rgba": [
+        0.83,
+        0.79,
+        0.63,
+        1
+      ],
+      "roughness": 0.83,
+      "texture": "none",
+      "wear": 0.12
+    },
+    {
+      "class": "paint",
+      "metallic": 0,
+      "name": "black_ink",
+      "rgba": [
+        0.08,
+        0.076,
+        0.064,
+        1
+      ],
+      "roughness": 0.86,
+      "texture": "none",
+      "wear": 0.12
+    },
+    {
+      "class": "metal",
+      "metallic": 0.52,
+      "name": "silver_trim",
+      "rgba": [
+        0.31,
+        0.34,
+        0.35,
+        1
+      ],
+      "roughness": 0.46,
+      "texture": "fine_noise",
+      "wear": 0.12
+    }
+  ],
+  "quality": {
+    "expected_silhouette": "Low broad rectangular battery with two distinct top posts and a pale central front label",
+    "founder_review": "NOT_GOLDEN",
+    "golden_approved": false,
+    "qa_checks": [
+      "source_sha",
+      "glb_geometry",
+      "alpha",
+      "16_distinct_headings",
+      "silhouette",
+      "color",
+      "manual_golden"
+    ],
+    "technical_status": "CANDIDATE_PENDING_QA"
+  },
+  "render": {
+    "assembly_scale": [
+      0.89,
+      1,
+      1
+    ],
+    "camera_azimuth_deg": 315,
+    "camera_elevation_deg": 35.264,
+    "headings": 16,
+    "key_light": "upper_left",
+    "orthographic_scale": 2.35,
+    "resolution": 128
+  },
+  "schema": "last-light.recipe-architect.v1",
+  "tuning": {
+    "max_corrections": 5,
+    "scale_step": 0.09
+  },
+  "visual_analysis": {
+    "artifacts": [
+      "RGBA segmentation has uneven cutout edges; treat missing/white pixels as uncertain, not new geometry"
+    ],
+    "assumptions": [
+      {
+        "component": "main_battery_casing",
+        "confidence": 0.53,
+        "detail": "Back face and internal cell structure unobserved; assume sealed battery case"
+      },
+      {
+        "component": "negative_terminal_post",
+        "confidence": 0.65,
+        "detail": "Terminal metallurgy and exact height inferred from small sprite"
+      }
+    ],
+    "category": "electrical_battery",
+    "confidence": 0.84,
+    "image_dimensions": [
+      189,
+      174
+    ],
+    "observations": [
+      {
+        "component": "main_battery_casing",
+        "confidence": 0.99,
+        "detail": "Dark almost-black rectangular enclosure; front and right faces visible"
+      },
+      {
+        "component": "stepped_lid_shell",
+        "confidence": 0.94,
+        "detail": "Flat top with raised rim and recessed rectangular service areas"
+      },
+      {
+        "component": "negative_terminal_post",
+        "confidence": 0.96,
+        "detail": "Dark lead-gray cylindrical post on upper left"
+      },
+      {
+        "component": "positive_terminal_post",
+        "confidence": 0.99,
+        "detail": "Bright red-orange cylindrical post on upper right"
+      },
+      {
+        "component": "front_label_plate",
+        "confidence": 0.98,
+        "detail": "Light tan frontal label with dark NORTHRIDGE and 12V 60Ah lettering"
+      },
+      {
+        "component": "bottom_retaining_foot",
+        "confidence": 0.85,
+        "detail": "Thin stepped lower band and corner trim"
+      }
+    ],
+    "pixels_inspected": true,
+    "probable_function": "Stores electrical energy in a 12-volt vehicle system",
+    "provider": "chatgpt_visual_inspection_2026_11_10"
+  }
+}
