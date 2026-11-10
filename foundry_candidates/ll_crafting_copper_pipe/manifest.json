@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_copper_pipe",
+  "source_glb_sha256": "e050f4a82baef76757ac60431e668b927378eb0375ddacce7e3c99883d5d7b47",
+  "atlas_sha256": "7caa6b24cf218e38c65fd9ed2b7ebddc7c139fa562941cb2dbbb1b07aa56765a",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2576255,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

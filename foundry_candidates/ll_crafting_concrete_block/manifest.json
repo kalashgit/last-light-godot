@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_concrete_block",
+  "source_glb_sha256": "153507fa8f3307b4d2c2006825ef34793b74c868538cdc318e8f6ce2ce08a013",
+  "atlas_sha256": "b62ec1e7edb9692e4983c721e5f95334c83744cb849a5288bfab72a0e1f68e51",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2532350,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

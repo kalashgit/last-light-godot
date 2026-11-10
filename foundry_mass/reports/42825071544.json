@@ -1,0 +1,42 @@
+{
+  "run_id": "42825071544",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 14,
+  "remaining": 346,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_concrete_block",
+      "source_glb_sha256": "153507fa8f3307b4d2c2006825ef34793b74c868538cdc318e8f6ce2ce08a013",
+      "atlas_sha256": "b62ec1e7edb9692e4983c721e5f95334c83744cb849a5288bfab72a0e1f68e51",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2532350,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_copper_pipe",
+      "source_glb_sha256": "e050f4a82baef76757ac60431e668b927378eb0375ddacce7e3c99883d5d7b47",
+      "atlas_sha256": "7caa6b24cf218e38c65fd9ed2b7ebddc7c139fa562941cb2dbbb1b07aa56765a",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2576255,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

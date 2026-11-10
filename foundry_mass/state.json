@@ -14,9 +14,11 @@
     "ll_crafting_canvas_roll",
     "ll_crafting_cement_sack",
     "ll_crafting_charcoal_bag",
-    "ll_crafting_cloth_roll"
+    "ll_crafting_cloth_roll",
+    "ll_crafting_concrete_block",
+    "ll_crafting_copper_pipe"
   ],
-  "last_run_id": "42758146735",
+  "last_run_id": "42825071544",
   "golden_approved": false,
-  "remaining": 348
+  "remaining": 346
 }
