@@ -1,0 +1,95 @@
+name: Recipe Architect owner CPU candidate batch
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/recipe-architect-owner-batch.yml'
+      - 'tools/recipe_architect/batch.py'
+      - 'tests/recipe_architect/test_batch.py'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Plan only or generate a bounded technical candidate batch'
+        type: choice
+        options: ['plan', 'build']
+        default: 'plan'
+        required: true
+      preset:
+        description: 'Existing validated recipe seed; all uses up to limit'
+        type: choice
+        options: ['battery', 'canteen', 'skillet', 'all']
+        default: 'battery'
+        required: true
+      limit:
+        description: 'Hard maximum three candidates in one manual run'
+        type: choice
+        options: ['1', '2', '3']
+        default: '1'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recipe-architect-owner-${{ github.event_name == 'pull_request' && github.head_ref || 'manual' }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check 'Pillow>=10,<12' 'numpy>=1.26,<3' 'jsonschema>=4,<5'
+      - run: python -m unittest discover -s tests/recipe_architect -v
+      - run: python -m tools.recipe_architect.batch --mode plan --preset all --limit 3 --out build/batch-plan --run-id pull_request
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recipe-architect-contract-${{ github.run_id }}
+          path: build/batch-plan/batch_report.json
+          retention-days: 3
+
+  owner_dispatch:
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'kalashgit' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BATCH_MODE: ${{ inputs.mode }}
+      BATCH_PRESET: ${{ inputs.preset }}
+      BATCH_LIMIT: ${{ inputs.limit }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check 'Pillow>=10,<12' 'numpy>=1.26,<3' 'jsonschema>=4,<5'
+      - run: python -m unittest discover -s tests/recipe_architect -v
+      - name: Install CPU Blender for actual mesh builds
+        if: env.BATCH_MODE == 'build'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender -b --factory-startup --python-exit-code 3 --python-expr 'import bpy; print("LL_BLENDER", bpy.app.version_string)'
+      - name: Plan or build only pinned allowlisted candidates
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python -m tools.recipe_architect.batch \
+            --mode "$BATCH_MODE" --preset "$BATCH_PRESET" --limit "$BATCH_LIMIT" \
+            --out build/recipe_architect_owner_batch --run-id "$RUN_ID"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: recipe-architect-owner-candidates-${{ github.run_id }}
+          path: build/recipe_architect_owner_batch/
+          retention-days: 3
+          if-no-files-found: warn
