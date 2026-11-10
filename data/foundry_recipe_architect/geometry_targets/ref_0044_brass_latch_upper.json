@@ -1,0 +1,13 @@
+{
+  "schema": "last-light.manual-component-geometry-target.v1",
+  "candidate_id": "sheet_001_050_44_wooden_tool_case_v1",
+  "source_sha256": "5e0713c8390894159975e02e95f60fb3529bc9c436890f0130944565d94b818c",
+  "component": "brass_latch_upper",
+  "required_visible_components": ["case_lid_rim", "top_lid_plank_01", "brass_latch_upper"],
+  "contact_neighbors": ["brass_latch_lower"],
+  "source_bbox_px": [140, 78, 156, 106],
+  "confidence": 0.70,
+  "provenance": "manual_source_image_estimate",
+  "approval": "NOT_GOLDEN",
+  "annotation_note": "Approximate upper brass clasp/plate from founder slot 44, not the entire latch assembly. Pending founder spot-check."
+}

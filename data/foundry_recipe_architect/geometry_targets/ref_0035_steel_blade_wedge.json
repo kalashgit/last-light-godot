@@ -1,0 +1,13 @@
+{
+  "schema": "last-light.manual-component-geometry-target.v1",
+  "candidate_id": "sheet_001_050_35_wood_handle_hatchet_v1",
+  "source_sha256": "464351ee5db2f55d80ae21ea9b916616eadccb60ad98c9485f603832a5ba495b",
+  "component": "steel_blade_wedge",
+  "required_visible_components": ["wood_handle", "head_socket", "steel_blade_wedge"],
+  "contact_neighbors": ["head_socket"],
+  "source_bbox_px": [151, 17, 209, 85],
+  "confidence": 0.72,
+  "provenance": "manual_source_image_estimate",
+  "approval": "NOT_GOLDEN",
+  "annotation_note": "Approximate steel blade outside the haft/socket, taken from founder sprite slot 35. Not a machine segmentation or precise bounding-box label."
+}

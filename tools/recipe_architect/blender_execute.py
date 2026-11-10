@@ -282,12 +282,27 @@ def main():
                     round((1 - p.y) * recipe["render"]["resolution"], 6)]
 
         pixel = screen(origin)
+        # The visual optimizer needs measured physical component extents, not
+        # estimates copied from the untrusted recipe. Sample actual Blender
+        # mesh vertices after parenting/booleans; bevel modifiers may extend
+        # these bounds slightly, which the optimizer treats as uncertainty.
+        vertices_world = [obj.matrix_world @ vertex.co for vertex in obj.data.vertices]
+        vertices_px = [screen(point) for point in vertices_world]
+        component_bbox = [round(min(point[0] for point in vertices_px), 6),
+                          round(min(point[1] for point in vertices_px), 6),
+                          round(max(point[0] for point in vertices_px), 6),
+                          round(max(point[1] for point in vertices_px), 6)]
+        world_bbox = [[round(min(v[axis] for v in vertices_world), 6) for axis in range(3)],
+                      [round(max(v[axis] for v in vertices_world), 6) for axis in range(3)]]
         axes = []
         for axis in (Vector((1, 0, 0)), Vector((0, 1, 0))):
             delta = parent_to_world @ axis if parent_to_world else axis
             shifted = screen(origin + delta)
             axes.append([round(shifted[k] - pixel[k], 6) for k in range(2)])
-        projected[name] = {"origin_px": pixel, "local_xy_axes_px_per_m": axes,
+        projected[name] = {"origin_px": pixel, "bbox_px": component_bbox,
+                           "world_bbox_m": world_bbox,
+                           "bbox_method": "actual_blender_mesh_vertices_pre_bevel",
+                           "local_xy_axes_px_per_m": axes,
                            "depth": round(world_to_camera_view(scene, camera, origin).z, 5)}
     (args.output / "component_projections.json").write_text(json.dumps({
         "schema": "last-light.recipe-projections.v1", "heading": 0,
