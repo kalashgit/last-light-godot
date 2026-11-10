@@ -1,0 +1,42 @@
+{
+  "run_id": "42897090523",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 16,
+  "remaining": 344,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_corrugated_metal",
+      "source_glb_sha256": "0deb870f6b324d0cd4a8f4fc1d9c363917018cddb6dc48d58e279eebcb421da8",
+      "atlas_sha256": "67a801374aacd4215d6d7415ad746a0efe5977f5829638314f552f6178cca1f6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2579345,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_duct_tape",
+      "source_glb_sha256": "0451b218c670b80e8f873eecfaaa2f2c24a7aa062080f0f8612c51aefced486a",
+      "atlas_sha256": "121dcc20622928688f10a84fcaa47ffe6b67398705d0c620211d6797b811e61a",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2569414,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

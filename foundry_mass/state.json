@@ -16,9 +16,11 @@
     "ll_crafting_charcoal_bag",
     "ll_crafting_cloth_roll",
     "ll_crafting_concrete_block",
-    "ll_crafting_copper_pipe"
+    "ll_crafting_copper_pipe",
+    "ll_crafting_corrugated_metal",
+    "ll_crafting_duct_tape"
   ],
-  "last_run_id": "42825071544",
+  "last_run_id": "42897090523",
   "golden_approved": false,
-  "remaining": 346
+  "remaining": 344
 }

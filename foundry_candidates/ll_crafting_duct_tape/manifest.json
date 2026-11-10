@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_duct_tape",
+  "source_glb_sha256": "0451b218c670b80e8f873eecfaaa2f2c24a7aa062080f0f8612c51aefced486a",
+  "atlas_sha256": "121dcc20622928688f10a84fcaa47ffe6b67398705d0c620211d6797b811e61a",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2569414,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
