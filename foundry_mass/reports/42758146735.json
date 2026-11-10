@@ -1,0 +1,42 @@
+{
+  "run_id": "42758146735",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 12,
+  "remaining": 348,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_charcoal_bag",
+      "source_glb_sha256": "8cdc4fba0cccd765e1ed0b4cb605b862b569904c0965f5b289d3b262ae980056",
+      "atlas_sha256": "842bc67e674ceb0b54e1b3c211f9b25a54bdfbaf7bef597d1204c7b5c2ecb6ca",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2642607,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_cloth_roll",
+      "source_glb_sha256": "b68ee4173b236e900b138f5aaac06b44eb638b060df2855ad9776a05516a18d3",
+      "atlas_sha256": "614cb1f1d4503f34f9f060f430c7791a2725006e439065ce85ee3fa6b0a7f6fe",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2621134,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_cloth_roll",
+  "source_glb_sha256": "b68ee4173b236e900b138f5aaac06b44eb638b060df2855ad9776a05516a18d3",
+  "atlas_sha256": "614cb1f1d4503f34f9f060f430c7791a2725006e439065ce85ee3fa6b0a7f6fe",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2621134,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

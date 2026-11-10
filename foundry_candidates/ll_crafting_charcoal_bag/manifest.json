@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_charcoal_bag",
+  "source_glb_sha256": "8cdc4fba0cccd765e1ed0b4cb605b862b569904c0965f5b289d3b262ae980056",
+  "atlas_sha256": "842bc67e674ceb0b54e1b3c211f9b25a54bdfbaf7bef597d1204c7b5c2ecb6ca",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2642607,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

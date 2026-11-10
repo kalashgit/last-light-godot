@@ -12,9 +12,11 @@
     "ll_crafting_bracket_pack",
     "ll_crafting_cable_coil",
     "ll_crafting_canvas_roll",
-    "ll_crafting_cement_sack"
+    "ll_crafting_cement_sack",
+    "ll_crafting_charcoal_bag",
+    "ll_crafting_cloth_roll"
   ],
-  "last_run_id": "42721835175",
+  "last_run_id": "42758146735",
   "golden_approved": false,
-  "remaining": 350
+  "remaining": 348
 }
