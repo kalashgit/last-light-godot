@@ -8,6 +8,12 @@ from validate_decisions import source_catalog,validate
 cat=source_catalog()
 assert len(cat['records'])==21025
 assert sum(r['r02'] for r in cat['records'])==6072
+assert cat['r07_model_count']==3539
+assert sum(bool(r['model_evidence']) for r in cat['records'])==3539
+assert not any(r['r02'] and r['model_evidence'] for r in cat['records'])
+assert sum(r['proposal']=='NEEDS_VISUAL_EVIDENCE' and r['r02'] for r in cat['records'])==1051
+assert sum(bool(r['model_evidence']) or (r['r02'] and r['proposal']=='NEEDS_VISUAL_EVIDENCE') for r in cat['records'])==4590
+assert sum(r['proposal']=='PHYSICAL_MASTER_CANDIDATE' and r['r02'] for r in cat['records'])==3114
 assert len({r['id'] for r in cat['records']})==21025
 assert len({r['sig'] for r in cat['records']})==21025
 sample=cat['records'][0]
@@ -34,4 +40,4 @@ with tempfile.TemporaryDirectory() as td:
     try:validate(p)
     except ValueError:pass
     else:raise AssertionError('Unauthorized rights approval accepted')
-print('PASS: 21,025/6,072 catalog integrity and reviewed decision validator')
+print('PASS: 21,025/6,072 catalog, 3,539 model-image gap, 4,590 priority queue, and decision validator')

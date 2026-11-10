@@ -35,14 +35,20 @@ def signature(page_id, title):
 def main():
     first_pass = list(rows(files()))
     second_pass = {r["id"]: r for r in rows(sorted(ROOT.glob("a00_r02_review_*.jsonl")))}
+    model_queue_path = ROOT / "a00_r07_model_evidence_queue.jsonl.gz.base64"
+    queue_bytes = gzip.decompress(base64.b64decode(model_queue_path.read_text(encoding="ascii")))
+    model_queue = {r["source_page_id"]: r for r in map(json.loads, queue_bytes.decode("utf-8").splitlines())}
     assert len(first_pass) == 21025
     assert len({r["source_page_id"] for r in first_pass}) == 21025
     assert len(second_pass) == 6072
+    assert len(model_queue) == 3539
+    assert not (set(model_queue) & set(second_pass))
 
     compact = []
     for r in first_pass:
         i = r["source_page_id"]
         s = second_pass.get(i)
+        model_evidence = model_queue.get(i)
         title = r["source_title"].removeprefix("File:")
         entry = {
             "id": i,
@@ -50,29 +56,32 @@ def main():
             "url": r["source_url"],
             "category": r["primary_class"],
             "proposal": s["decision"] if s else r["primary_class"],
-            "family": s["family"] if s else r.get("suggested_queue"),
-            "key": s["key"] if s else (r.get("proposed_parent_stem") or ""),
+            "family": s["family"] if s else (r.get("suggested_queue") or (model_evidence["provisional_queue"] if model_evidence else None)),
+            "key": s["key"] if s else ((model_evidence["provisional_model_stem"] if model_evidence else None) or r.get("proposed_parent_stem") or ""),
             "parent": s["parent_id"] if s and s["parent_id"] is not None else r.get("parent_source_page_id"),
             "canonical": (s.get("master") if s else None) or r.get("master_id"),
-            "models": s["model_ids"] if s else [],
+            "models": s["model_ids"] if s else (model_evidence["existing_360_exact_lexical_ids"] if model_evidence else []),
             "categories": [x.removeprefix("Category:") for x in r.get("source_categories", []) if "copyright" not in x.casefold()],
             "reason": r.get("reason") or "",
             "rights": r.get("rights", "source_research_only"),
             "r02": bool(s),
             "confidence": s["confidence"] if s else None,
+            "model_evidence": model_evidence["evidence_class"] if model_evidence else None,
+            "icon_links": model_evidence["exact_normalized_icon_source_ids"] if model_evidence else [],
+            "model_root": model_evidence["provisional_model_stem"] if model_evidence else None,
             "sig": signature(i, title),
         }
         compact.append(entry)
     digest = hashlib.sha256("\n".join(f'{r["id"]}:{r["sig"]}' for r in compact).encode()).hexdigest()
-    payload = {"schema": "A00_VISUAL_CATALOG_V1", "archive_count": len(compact), "r02_count": len(second_pass), "snapshot": digest, "records": compact}
+    payload = {"schema": "A00_VISUAL_CATALOG_V1", "archive_count": len(compact), "r02_count": len(second_pass), "r07_model_count": len(model_queue), "snapshot": digest, "records": compact}
     encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     # Browser-native gzip extraction reduces the 21k-entry transfer ~85%; this
     # also works from a local folder without fetch(file://...) access.
     compressed = gzip.compress(encoded, compresslevel=9, mtime=0)
     embedded = base64.b64encode(compressed).decode("ascii")
     (OUT / "catalog_embed.js").write_text(f'window.__A00_CATALOG_GZIP = "{embedded}";\n', encoding="ascii")
-    (OUT / "catalog_manifest.json").write_text(json.dumps({"schema": payload["schema"], "archive_count": len(compact), "r02_count": len(second_pass), "snapshot": digest, "catalog_sha256": hashlib.sha256(encoded).hexdigest(), "compressed_sha256": hashlib.sha256(compressed).hexdigest(), "compressed_bytes": len(compressed)}, indent=2) + "\n", encoding="utf-8")
-    print(f"Catalog: {len(compact)} sources, {len(second_pass)} R02 records, snapshot {digest[:14]}")
+    (OUT / "catalog_manifest.json").write_text(json.dumps({"schema": payload["schema"], "archive_count": len(compact), "r02_count": len(second_pass), "r07_model_count": len(model_queue), "snapshot": digest, "catalog_sha256": hashlib.sha256(encoded).hexdigest(), "compressed_sha256": hashlib.sha256(compressed).hexdigest(), "compressed_bytes": len(compressed)}, indent=2) + "\n", encoding="utf-8")
+    print(f"Catalog: {len(compact)} sources, {len(second_pass)} R02 records, {len(model_queue)} recovered model views, snapshot {digest[:14]}")
 
 
 if __name__ == "__main__":

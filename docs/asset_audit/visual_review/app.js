@@ -8,6 +8,19 @@ const state = { catalog: null, byId: new Map(), decisions: new Map(), matches: [
 function imageURL(name) { return "https://pzwiki.net/wiki/Special:Redirect/file/" + encodeURIComponent(name.replace(/ /g,"_")); }
 function sourceURL(r) { return /^https:\/\/pzwiki\.net\/wiki\/File:/i.test(r.url) ? r.url : "https://pzwiki.net/wiki/Category:Files"; }
 function prettify(s) { return (s || "Unrouted").replace(/_/g," ").replace(/\b\w/g, c=>c.toUpperCase()); }
+function inScope(r, scope) {
+  if(scope==="priority") return !!r.model_evidence || (r.r02 && r.proposal==="NEEDS_VISUAL_EVIDENCE");
+  if(scope==="models") return !!r.model_evidence;
+  if(scope==="physical") return r.r02 && r.proposal==="PHYSICAL_MASTER_CANDIDATE";
+  if(scope==="r02") return r.r02;
+  return true;
+}
+function displayClass(r) {
+  if(r.model_evidence==="ITEM_MODEL_IMAGE_WITH_ICON_LINK") return "Model image · matching icon";
+  if(r.model_evidence==="ITEM_MODEL_IMAGE_WITHOUT_EXACT_ICON_LINK") return "Model image · no exact icon";
+  if(r.model_evidence==="VEHICLE_MODEL_IMAGE_REQUIRES_ARCHETYPE_REVIEW") return "Vehicle model image · archetype needed";
+  return prettify(r.proposal);
+}
 
 function openDB() {
   return new Promise((resolve, reject) => {
@@ -38,6 +51,7 @@ async function boot() {
     }
     $("total-count").textContent = state.catalog.archive_count.toLocaleString();
     $("flagged-count").textContent = state.catalog.r02_count.toLocaleString();
+    $("model-count").textContent = state.catalog.r07_model_count.toLocaleString();
     const types = [...new Set(state.catalog.records.map(r=>r.proposal))].sort();
     $("classification").insertAdjacentHTML("beforeend",types.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(prettify(t))}</option>`).join(""));
     $("override").innerHTML = REVIEW_CHOICES.map(t=>`<option value="${t}">${prettify(t)}</option>`).join("");
@@ -51,7 +65,7 @@ function bind() {
   for(const id of ["scope","classification","family","review-state","has-parent","has-model","sort"]) $(id).addEventListener("change",filter);
   $("search").addEventListener("input",filter);
   $("load-more").addEventListener("click",()=>renderPage(true));
-  $("reset-filters").addEventListener("click",()=> {$("search").value="";$("scope").value="r02";$("classification").value="all";$("family").value="all";$("review-state").value="all";$("has-parent").checked=false;$("has-model").checked=false;filter();});
+  $("reset-filters").addEventListener("click",()=> {$("search").value="";$("scope").value="priority";$("classification").value="all";$("family").value="all";$("review-state").value="all";$("has-parent").checked=false;$("has-model").checked=false;filter();});
   $("close-detail").addEventListener("click",closeDetail);
   $("dialog").addEventListener("click",e=> { if(e.target===$("dialog")) closeDetail(); });
   document.addEventListener("keydown",e=> {if(e.key==="Escape") closeDetail();if(!$("dialog").classList.contains("hidden") && e.target.tagName!=="INPUT"&&e.target.tagName!=="TEXTAREA"){if(e.key==="ArrowLeft")navigate(-1);if(e.key==="ArrowRight")navigate(1);}});
@@ -69,26 +83,26 @@ function filter() {
   if(!state.catalog)return;
   const q=$("search").value.trim().toLowerCase(), scope=$("scope").value, cls=$("classification").value, family=$("family").value, review=$("review-state").value;
   state.matches = state.catalog.records.filter(r=> {
-    if(scope==="r02"&&!r.r02)return false;
+    if(!inScope(r,scope))return false;
     if(cls!=="all"&&r.proposal!==cls)return false;
     if(family!=="all"&&r.family!==family)return false;
     if($("has-parent").checked&&!r.parent)return false;
     if($("has-model").checked&&!r.models?.length)return false;
     const d=state.decisions.get(r.id);
     if(review!=="all" && (review==="unreviewed" ? !!d : d?.decision!==review)) return false;
-    if(q&&!`${r.id} ${r.name} ${r.key} ${r.canonical||""} ${r.family||""} ${r.proposal} ${r.categories.join(" ")}`.toLowerCase().includes(q))return false;
+    if(q&&!`${r.id} ${r.name} ${r.key} ${r.canonical||""} ${r.family||""} ${r.proposal} ${r.model_evidence||""} ${r.model_root||""} ${r.categories.join(" ")}`.toLowerCase().includes(q))return false;
     return true;
   });
   if($("sort").value==="name") state.matches.sort((a,b)=>a.name.localeCompare(b.name));
   if($("sort").value==="confidence") state.matches.sort((a,b)=>(a.confidence??0)-(b.confidence??0));
   $("result-title").textContent = `${state.matches.length.toLocaleString()} references`;
-  $("result-summary").textContent = scope==="r02" ? "R02 review focus" : "Full source archive";
+  $("result-summary").textContent = ({priority:"Model gap + visual unknowns",models:"R07 recovered 3D-model-image evidence",physical:"R02 physical candidates",r02:"R02 review focus",all:"Full source archive"})[scope];
   state.displayed=0;$("cards").replaceChildren();renderPage(false);updateMetrics();
 }
 function updateMetrics() {
   $("reviewed-count").textContent=state.decisions.size.toLocaleString();
-  const inScope=state.catalog.records.filter(r=>$("scope").value==="all"||r.r02);
-  $("remaining-count").textContent=(inScope.length-inScope.filter(r=>state.decisions.has(r.id)).length).toLocaleString();
+  const scopedRecords=state.catalog.records.filter(r=>inScope(r,$("scope").value));
+  $("remaining-count").textContent=(scopedRecords.length-scopedRecords.filter(r=>state.decisions.has(r.id)).length).toLocaleString();
 }
 function renderPage(append) {
   if(!append){$("cards").replaceChildren();state.displayed=0;}
@@ -97,7 +111,7 @@ function renderPage(append) {
   for(const r of slice){
     const card=document.createElement("button");card.className="asset-card";card.type="button";
     const decision=state.decisions.get(r.id);
-    card.innerHTML=`<div class="card-image"><span class="fallback">◈</span><img loading="lazy" alt="" referrerpolicy="no-referrer"><span class="card-badge">#${r.id}</span>${decision?`<span class="card-reviewed">${escapeHTML(decision.decision)}</span>`:""}</div><div class="card-body"><strong title="${escapeHTML(r.name)}">${escapeHTML(r.name)}</strong><div class="meta">${escapeHTML(r.family||"—")} · ${r.r02?"R02":"Census"}</div><div class="class">${escapeHTML(prettify(r.proposal))}</div></div>`;
+    card.innerHTML=`<div class="card-image"><span class="fallback">◈</span><img loading="lazy" alt="" referrerpolicy="no-referrer"><span class="card-badge">#${r.id}</span>${decision?`<span class="card-reviewed">${escapeHTML(decision.decision)}</span>`:""}</div><div class="card-body"><strong title="${escapeHTML(r.name)}">${escapeHTML(r.name)}</strong><div class="meta">${escapeHTML(r.family||"—")} · ${r.model_evidence?"R07 model":r.r02?"R02":"Census"}</div><div class="class">${escapeHTML(displayClass(r))}</div></div>`;
     const img=card.querySelector("img");img.src=imageURL(r.name);img.onerror=()=>{img.remove();};
     card.addEventListener("click",()=>openDetail(state.matches.indexOf(r)));frag.appendChild(card);
   }
@@ -110,15 +124,19 @@ function openDetail(index) {
   state.selected=index;
   const r=state.matches[index];if(!r)return;
   $("dialog").classList.remove("hidden");document.body.style.overflow="hidden";
-  $("detail-meta").textContent=`FILE PAGE #${r.id} · ${r.r02?"R02 SEMANTIC PASS":"SOURCE CENSUS"}`;
+  $("detail-meta").textContent=`FILE PAGE #${r.id} · ${r.model_evidence?"R07 MODEL EVIDENCE":r.r02?"R02 SEMANTIC PASS":"SOURCE CENSUS"}`;
   $("detail-title").textContent=r.name;
-  $("detail-class").textContent=prettify(r.proposal);
+  $("detail-class").textContent=displayClass(r);
   $("detail-family").textContent=r.family||"Queue unresolved";
   const img=$("detail-image");$("image-failed").classList.add("hidden");img.classList.remove("hidden");img.onerror=()=>{img.classList.add("hidden");$("image-failed").classList.remove("hidden");};img.src=imageURL(r.name);
   $("original-link").href=sourceURL(r);
+  const linkedIcon=state.byId.get(r.icon_links?.[0]);
+  $("paired-icon-link").classList.toggle("hidden",!linkedIcon);
+  if(linkedIcon) $("paired-icon-link").href=sourceURL(linkedIcon);
   const parent=state.byId.get(r.parent);
   const facts=[
     ["Source class",prettify(r.category)], ["Proposed root",r.key||"Not assigned"],
+    ...(r.model_evidence?[["Recovered model-image class",prettify(r.model_evidence)],["Possible model identity",r.model_root],["Exact icon links",r.icon_links?.join(", ")||"None (not proof of a unique mesh)"],["R07 gate","Unverified reference image. Visually inspect; no new Blender master admitted."]]:[]),
     ["Parent",parent?`#${parent.id} · ${parent.name}`:(r.parent?`#${r.parent} · unknown parent` :"Not linked")],
     ["Canonical ID",r.canonical||"Not admitted"], ["Existing 360",r.models?.join(", ")||"No source-name match"],
     ["Confidence",r.confidence==null?"Unscored":`${Math.round(r.confidence*100)}% metadata heuristic`],
