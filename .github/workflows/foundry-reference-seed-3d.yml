@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/seed_3d_factory.py'
       - 'tools/validate_seed_batch.py'
+      - 'tools/verify_semantic_glb.py'
       - 'tools/convert_glb_to_blend.py'
       - 'tests/foundry_reference_sheets/godot_glb_candidate_smoke.gd'
       - 'data/foundry_reference_catalog/supplement_20261110/**'
@@ -31,13 +32,16 @@ jobs:
           python-version: '3.12'
       - name: Install bounded, pinned offline original-model dependencies
         run: python -m pip install 'numpy==2.3.5' 'trimesh==4.11.1' 'Pillow==12.3.0'
+      - name: Regression test portable GLB content fingerprints
+        run: python -m unittest discover -s tests/foundry_reference_sheets -p test_semantic_glb.py -v
       - name: Reproduce 40 independent GLB sources and 2D sprite atlases
         run: |
           set -euo pipefail
           python tools/seed_3d_factory.py --output build/refseed-batch001
           python tools/validate_seed_batch.py build/refseed-batch001
-      - name: Verify every expected source recipe and optional pinned binary hashes
+      - name: Independently verify semantic GLB contents despite JSON float spelling drift
         run: |
+          set -euo pipefail
           python - <<'PY'
           import json
           from pathlib import Path
@@ -47,9 +51,11 @@ jobs:
           assert len(a['assets'])==len(b['assets'])==40
           for x,y in zip(a['assets'],b['assets']):
               assert (x['candidate_id'],x['recipe_key'],x['parts'],x['triangles'])==(y['candidate_id'],y['recipe_key'],y['parts'],y['triangles'])
-              assert x['glb_sha256']==y['glb_sha256'], 'non-deterministic source hash: '+x['recipe_key']
-          print('LL_REFERENCE_PINNED_SOURCE_SHA_PASS',len(a['assets']))
+          print('LL_REFERENCE_40_SOURCE_CONTRACT_PASS',len(a['assets']))
           PY
+          python tools/verify_semantic_glb.py build/refseed-batch001/models \
+            --source tools/seed_3d_factory.py \
+            --verify data/foundry_reference_catalog/supplement_20261110/seed_batch_001_semantic_index.json
       - name: Install actual Blender for editable source conversion
         run: |
           sudo apt-get update -qq
@@ -70,7 +76,7 @@ jobs:
       - name: Independently verify editable source signatures and GLB origins
         run: |
           python - <<'PY'
-          import json,hashlib
+          import json
           from pathlib import Path
           root=Path('build/refseed-batch001')
           master=json.loads((root/'candidate_manifest.json').read_text())
