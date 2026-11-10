@@ -1,6 +1,7 @@
 "use strict";
 const $ = (id) => document.getElementById(id);
-const current = { rooms: [], filtered: [], page: 0, size: 40, selected: null, angle: 0 };
+const current = { rooms: [], filtered: [], page: 0, size: 40, selected: null,
+  angle: 0, mode: "frames", viewer: null, lastGlb: null, ticket: 0 };
 function stateName(room) {
   if (room.golden_approved) return "Golden approved";
   if (room.technical_pass) return "Technical model · review needed";
@@ -66,14 +67,55 @@ function displayAngle() {
   const image = $("heading-img");
   const list = room.headings || [];
   const available = list.length === 16;
-  image.hidden = !available;
-  $("viewer-placeholder").hidden = available;
+  image.hidden = !available || current.mode === "3d";
+  $("viewer-placeholder").hidden = available || current.mode === "3d";
   $("angle").disabled = !available;
   $("rotate-left").disabled = !available;
   $("rotate-right").disabled = !available;
   $("angle").value = String(current.angle);
-  $("view-label").textContent = available ? `${current.angle + 1} / 16 · ${(current.angle * 22.5).toFixed(1)}°` : "No geometry";
+  if (current.mode !== "3d") $("view-label").textContent = available ? `${current.angle + 1} / 16 · ${(current.angle * 22.5).toFixed(1)}°` : "No geometry";
   if (available) image.src = list[current.angle];
+}
+function setMode(mode) {
+  const room = current.selected;
+  if (!room) return;
+  const enabled = Boolean(room.files?.glb);
+  current.mode = mode === "3d" && enabled ? "3d" : "frames";
+  const orbit = current.mode === "3d";
+  $("mode-3d").disabled = !enabled;
+  $("mode-3d").setAttribute("aria-pressed", String(orbit));
+  $("mode-frames").setAttribute("aria-pressed", String(!orbit));
+  $("glb-canvas").hidden = !orbit;
+  $("frame-controls").hidden = orbit;
+  $("viewer-hint").hidden = !orbit;
+  $("zoom-in").disabled = !orbit;
+  $("zoom-out").disabled = !orbit;
+  $("glb-message").hidden = !orbit;
+  displayAngle();
+  if (!orbit) { current.ticket++; return; }
+  $("view-label").textContent = "3D model · orbit";
+  const ticket = ++current.ticket;
+  try {
+    if (!current.viewer) current.viewer = new window.LLGlbViewer.Viewer($("glb-canvas"));
+    if (current.lastGlb === room.files.glb && current.viewer.model) {
+      $("glb-message").hidden = true;
+      current.viewer.drawSoon();
+      return;
+    }
+    $("glb-message").textContent = "Loading real 3D geometry…";
+    current.viewer.load(room.files.glb).then(model => {
+      if (ticket !== current.ticket || current.selected !== room || current.mode !== "3d") return;
+      current.lastGlb = room.files.glb;
+      $("glb-message").hidden = true;
+      $("view-label").textContent = `${model.meshObjects} meshes · ${model.triangles.toLocaleString()} tris`;
+      current.viewer.drawSoon();
+    }).catch(error => {
+      if (ticket !== current.ticket) return;
+      $("glb-message").textContent = `3D unavailable: ${error.message}. Use 16-angle renders.`;
+    });
+  } catch (error) {
+    $("glb-message").textContent = `3D unsupported: ${error.message}. Use 16-angle renders.`;
+  }
 }
 function safeDownload(anchorId, room, key) {
   const path = room.files?.[key];
@@ -96,8 +138,8 @@ function openRoom(room) {
   $("detail-approval").textContent = room.golden_approved ? "Founder approved" : "Pending exact-file founder review";
   safeDownload("download-glb", room, "glb");
   safeDownload("download-blend", room, "blend");
-  displayAngle();
   $("detail").showModal();
+  setMode(room.files?.glb ? "3d" : "frames");
 }
 function exportReviewNote() {
   const room = current.selected;
@@ -147,7 +189,15 @@ $("state").addEventListener("change", filterRooms);
 $("page-size").addEventListener("change", event => {current.size = Number(event.target.value);current.page = 0;renderCards()});
 $("prev").addEventListener("click", () => {current.page -= 1;renderCards()});
 $("next").addEventListener("click", () => {current.page += 1;renderCards()});
-$("close").addEventListener("click", () => $("detail").close());
+$("close").addEventListener("click", () => { current.ticket++; $("detail").close(); });
+$("mode-3d").addEventListener("click", () => setMode("3d"));
+$("mode-frames").addEventListener("click", () => setMode("frames"));
+for (const [id, factor] of [["zoom-in", 1.18], ["zoom-out", 1 / 1.18]])
+  $(id).addEventListener("click", () => {
+    if (!current.viewer || current.mode !== "3d") return;
+    current.viewer.zoom = Math.min(3, Math.max(0.45, current.viewer.zoom * factor));
+    current.viewer.drawSoon();
+  });
 $("angle").addEventListener("input", event => {current.angle = Number(event.target.value);displayAngle()});
 $("rotate-left").addEventListener("click", () => {current.angle = (current.angle + 15) % 16;displayAngle()});
 $("rotate-right").addEventListener("click", () => {current.angle = (current.angle + 1) % 16;displayAngle()});

@@ -160,8 +160,11 @@ class MeshWorkspaceTests(unittest.TestCase):
             self.assertIn("data:image/png;base64,", html)
             self.assertIn("data:model/gltf-binary;base64,", html)
             self.assertIn("window.__LL_MESH_OFFLINE_MANIFEST=", html)
+            self.assertIn("root.LLGlbViewer={Viewer,parseGLB", html)
+            self.assertIn("Interactive 3D", html)
             self.assertIn("LAST LIGHT", html)
             self.assertNotIn("src=\"app.js\"", html)
+            self.assertNotIn("src=\"glb_viewer.js\"", html)
             self.assertFalse(result["contains_reference_pixels"])
             self.assertFalse(result["founder_golden_approved"])
             with self.assertRaises(FileExistsError):

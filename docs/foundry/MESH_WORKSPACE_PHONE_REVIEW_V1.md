@@ -30,6 +30,13 @@ for remote access. Existing Golden art and the Godot playable game are untouched
   views and reviewed GLB/Blend bytes from the isolated workspace, not the
   restricted input source images. It is a convenient **preview**, not a
   deployed multiplayer or authenticated dashboard.
+- The asset detail now includes a dependency-free interactive **GLB WebGL
+  geometry viewer**. It parses real indexed glTF 2.0 triangle meshes, applies
+  node transforms and base material colors, then lets the owner drag to orbit
+  and use explicit zoom controls. The existing 16 directional reference renders
+  remain a selectable fallback. The viewer is read-only, 120k-triangle and
+  12MB-GLB bounded; currently it does not render texture maps, rigging,
+  animations, transparent materials or advanced PBR. It does not modify models.
 
 **Important:** review capacity of **100** does not alter the existing worker's
 **3-real-Blender-builds-per-run** cap, source-extraction cap or model-inference
@@ -111,6 +118,8 @@ QA remain separate.
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests/recipe_architect -q
 node --check tools/recipe_architect/dashboard/app.js
+node --check tools/recipe_architect/dashboard/glb_viewer.js
+node --test tests/recipe_architect/test_glb_viewer_node.cjs
 ```
 
 Costs: **€0** additional spending, no GPU, no hosted model calls, no cron,
