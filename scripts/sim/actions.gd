@@ -1,0 +1,877 @@
+class_name Actions
+extends RefCounted
+## Context interactions between the player and the world: doors, windows, containers,
+## furniture, trees, water, farming, building and crafting.
+
+# ------------------------------------------------------------------ target discovery
+## returns interaction targets near the player, best first.
+static func targets(sim: Sim) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var px: int = floori(p.pos.x)
+	var py: int = floori(p.pos.y)
+	var f: Vector2 = p.facing
+	var out: Array = []
+	# edges of the player's tile
+	var edges: Array = [
+		[px, py, 0, Vector2(0, -1), p.pos.y - py], [px, py + 1, 0, Vector2(0, 1), py + 1 - p.pos.y],
+		[px, py, 1, Vector2(-1, 0), p.pos.x - px], [px + 1, py, 1, Vector2(1, 0), px + 1 - p.pos.x]]
+	for e in edges:
+		var wid: int = w.wall(e[0], e[1], e[2])
+		if wid == 0:
+			continue
+		var shape: int = wid & 3
+		var st: int = w.edge_state(e[0], e[1], e[2])
+		var fence: bool = Defs.wall_is_fence(wid)
+		if shape == Defs.WS_SOLID and not fence and (st & Defs.ES_PLANK_MASK) == 0 and Defs.wall_mat(wid) != Defs.WM_BUILT_PLANK:
+			continue
+		if shape == Defs.WS_ARCH:
+			continue
+		var dist: float = e[4]
+		if dist > 0.8:
+			continue
+		var dv: Vector2 = e[3]
+		out.append({"kind": "edge", "x": e[0], "y": e[1], "side": e[2], "dir": dv, "score": f.dot(dv) * 1.2 + (0.9 - dist)})
+	# objects / ground items / water around
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var x: int = px + dx
+			var y: int = py + dy
+			var c := Vector2(x + 0.5, y + 0.5)
+			var to: Vector2 = c - p.pos
+			var d: float = to.length()
+			var dirv: Vector2 = to / d if d > 0.01 else f
+			if (dx != 0 or dy != 0) and not w.los(p.pos.x, p.pos.y, c.x, c.y):
+				continue
+			var base: float = f.dot(dirv) * 0.8 + (1.6 - d) * 0.5
+			var cell: int = w.obj(x, y)
+			if cell != 0:
+				var od: Dictionary = Defs.obj(Defs.o_id(cell))
+				if od.has("c") or od.has("use") or od.has("scrap"):
+					out.append({"kind": "obj", "x": x, "y": y, "score": base + (0.25 if od.has("c") or od.has("use") else -0.4)})
+			if not w.items_at(x, y).is_empty():
+				out.append({"kind": "ground", "x": x, "y": y, "score": base + 0.1 - (0.3 if dx != 0 or dy != 0 else 0.0)})
+			var g: int = w.ground(x, y)
+			if Defs.ground_is_water(g) and (dx == 0 or dy == 0):
+				out.append({"kind": "water", "x": x, "y": y, "score": base - 0.2})
+			elif g == Defs.G_SOIL and cell == 0 and (dx == 0 or dy == 0):
+				out.append({"kind": "soil", "x": x, "y": y, "score": base - 0.3})
+	# corpses
+	for cy in range((py - 2) >> 4, ((py + 2) >> 4) + 1):
+		for cx in range((px - 2) >> 4, ((px + 2) >> 4) + 1):
+			var ch: Chunk = w.chunk(cx, cy)
+			if ch == null:
+				continue
+			for cp in ch.corpses:
+				var cpos := Vector2(cp["x"], cp["y"])
+				var d2: float = cpos.distance_to(p.pos)
+				if d2 < 1.3:
+					out.append({"kind": "corpse", "corpse": cp, "x": floori(cpos.x), "y": floori(cpos.y), "score": 0.6 - d2 * 0.3 + f.dot((cpos - p.pos).normalized()) * 0.3})
+	out.sort_custom(func(a, b): return float(a["score"]) > float(b["score"]))
+	return out
+
+static func target_name(sim: Sim, t: Dictionary) -> String:
+	var w: World = sim.world
+	match t["kind"]:
+		"edge":
+			var wid: int = w.wall(t["x"], t["y"], t["side"])
+			var shape: int = wid & 3
+			if Defs.wall_is_fence(wid):
+				return "Gate" if shape == Defs.WS_DOOR else String(Defs.WALL_MATS[wid >> 2][3]).capitalize()
+			return ["Wall", "Window", "Door", "Doorway"][shape]
+		"obj":
+			return Defs.obj(Defs.o_id(w.obj(t["x"], t["y"]))).get("n", "Object")
+		"ground": return "Items on the ground"
+		"water": return "Water"
+		"soil": return "Tilled soil"
+		"corpse": return "Corpse"
+	return ""
+
+# ------------------------------------------------------------------ options
+static func _opt(label: String, fn: Callable) -> Dictionary:
+	return {"label": label, "fn": fn}
+
+static func options(sim: Sim, t: Dictionary) -> Array:
+	match t["kind"]:
+		"edge": return _edge_options(sim, t)
+		"obj": return _obj_options(sim, t)
+		"ground": return [_opt("Pick up items", func(): sim.ui_events.append({"type": "loot"}))]
+		"corpse": return [_opt("Search corpse", func(): sim.ui_events.append({"type": "loot", "focus": t["corpse"]}))]
+		"water": return _water_options(sim, t)
+		"soil": return _soil_options(sim, t)
+	return []
+
+## press of the INTERACT button. full_menu = long press.
+static func interact(sim: Sim, full_menu: bool = false) -> void:
+	var p: Player = sim.player
+	if not p.alive:
+		return
+	if p.sleeping:
+		sim.wake("You get up.")
+		return
+	var ts: Array = targets(sim)
+	if ts.is_empty():
+		sim.say("Nothing to interact with here", Color(0.7, 0.7, 0.7))
+		return
+	var t: Dictionary = ts[0]
+	var opts: Array = options(sim, t)
+	if opts.is_empty():
+		return
+	if opts.size() == 1 or (not full_menu and t["kind"] == "edge" and opts[0].get("quick", false)):
+		(opts[0]["fn"] as Callable).call()
+	else:
+		sim.ui_events.append({"type": "menu", "title": target_name(sim, t), "options": opts})
+
+# ------------------------------------------------------------------ edges
+static func _other_side(sim: Sim, x: int, y: int, side: int) -> Vector2i:
+	var px: int = floori(sim.player.pos.x)
+	var py: int = floori(sim.player.pos.y)
+	if side == 1:
+		return Vector2i(x - 1 if px >= x else x, py)
+	return Vector2i(px, y - 1 if py >= y else y)
+
+static func _edge_options(sim: Sim, t: Dictionary) -> Array:
+	var w: World = sim.world
+	var p: Player = sim.player
+	var x: int = t["x"]
+	var y: int = t["y"]
+	var side: int = t["side"]
+	var wid: int = w.wall(x, y, side)
+	var st: int = w.edge_state(x, y, side)
+	var shape: int = wid & 3
+	var fence: bool = Defs.wall_is_fence(wid)
+	var planks: int = (st & Defs.ES_PLANK_MASK) >> Defs.ES_PLANK_SHIFT
+	var out: Array = []
+	var other: Vector2i = _other_side(sim, x, y, side)
+	var inside: bool = w.bld(floori(p.pos.x), floori(p.pos.y)) != 0
+	if shape == Defs.WS_DOOR:
+		var open: bool = (st & Defs.ES_OPEN) != 0
+		var broken: bool = (st & Defs.ES_BROKEN) != 0
+		if not broken and planks == 0:
+			if open:
+				var o: Dictionary = _opt("Close", func(): _toggle_door(sim, x, y, side))
+				o["quick"] = true
+				out.append(o)
+			elif (st & Defs.ES_LOCKED) != 0 and not inside:
+				var o2: Dictionary = _opt("Locked — try the door", func():
+					sim.say("Locked. Break a window, pry it open, or bash it down.", Color(1.0, 0.85, 0.6))
+					sim.emit_fx("locked", p.pos))
+				o2["quick"] = true
+				out.append(o2)
+				if Inv.has_tag(p.inv, "crowbar"):
+					out.append(_opt("Pry open with crowbar", func():
+						p.start_action("Prying door", 4.5, func():
+							w.set_edge_state(x, y, side, (st & ~Defs.ES_LOCKED) | Defs.ES_OPEN)
+							sim.noise(p.pos, 12.0)
+							sim.emit_fx("door", p.pos))))
+			else:
+				var o3: Dictionary = _opt("Open", func(): _toggle_door(sim, x, y, side))
+				o3["quick"] = true
+				out.append(o3)
+				if not fence and inside:
+					if (st & Defs.ES_LOCKED) != 0:
+						out.append(_opt("Unlock", func(): w.set_edge_state(x, y, side, st & ~Defs.ES_LOCKED)))
+					else:
+						out.append(_opt("Lock", func(): w.set_edge_state(x, y, side, st | Defs.ES_LOCKED)))
+	elif shape == Defs.WS_WINDOW:
+		var wopen: bool = (st & Defs.ES_OPEN) != 0
+		var wbroken: bool = (st & Defs.ES_BROKEN) != 0
+		if planks == 0:
+			if wopen or wbroken:
+				out.append(_opt("Climb through", func(): _climb(sim, x, y, side, 1.6, wbroken)))
+			if not wbroken:
+				out.append(_opt("Close window" if wopen else "Open window", func():
+					w.set_edge_state(x, y, side, st ^ Defs.ES_OPEN)
+					sim.emit_fx("door", p.pos)
+					sim.noise(p.pos, 3.0)))
+				if not wopen:
+					out.append(_opt("Smash window", func():
+						w.damage_edge(x, y, side, 999.0)
+						sim.emit_fx("glass", p.pos)
+						sim.noise(p.pos, 16.0)
+						if p.weapon.is_empty() and randf() < 0.4:
+							p.add_wound(2 + randi() % 2, "scratch", "broken glass")))
+			if (st & Defs.ES_CURTAIN) == 0 and Inv.count(p.inv, "sheet") > 0:
+				out.append(_opt("Hang sheet as curtain", func():
+					if Inv.take(p.inv, "sheet", 1):
+						w.set_edge_state(x, y, side, st | Defs.ES_CURTAIN)))
+			elif (st & Defs.ES_CURTAIN) != 0:
+				out.append(_opt("Take down curtain", func():
+					w.set_edge_state(x, y, side, st & ~Defs.ES_CURTAIN)
+					Inv.add(p.inv, Items.make("sheet", 1))))
+	elif fence and shape == Defs.WS_SOLID:
+		var tex: int = Defs.WALL_MATS[wid >> 2][0]
+		if tex == Defs.WT_CHAIN:
+			out.append(_opt("Climb fence", func(): _climb(sim, x, y, side, 3.0, false)))
+		elif tex == Defs.WT_HEDGE:
+			out.append(_opt("Push through hedge", func(): _climb(sim, x, y, side, 2.2, false)))
+		else:
+			var oh: Dictionary = _opt("Hop over", func(): _climb(sim, x, y, side, 0.8, false))
+			oh["quick"] = true
+			out.append(oh)
+	# barricading (doors, windows)
+	if not fence and (shape == Defs.WS_DOOR or shape == Defs.WS_WINDOW):
+		if planks < 4 and Inv.count(p.inv, "plank") >= 1 and Inv.count(p.inv, "nails") >= 2 and Inv.has_tag(p.inv, "hammer"):
+			out.append(_opt("Barricade (1 plank, 2 nails)", func():
+				p.start_action("Barricading", 3.0 - p.skill_level("carpentry") * 0.15, func():
+					if Inv.count(p.inv, "plank") < 1 or Inv.count(p.inv, "nails") < 2:
+						return
+					Inv.take(p.inv, "plank", 1)
+					Inv.take(p.inv, "nails", 2)
+					var cur: int = w.edge_state(x, y, side)
+					var n: int = ((cur & Defs.ES_PLANK_MASK) >> Defs.ES_PLANK_SHIFT) + 1
+					w.set_edge_state(x, y, side, (cur & ~Defs.ES_PLANK_MASK & ~Defs.ES_OPEN) | (n << Defs.ES_PLANK_SHIFT))
+					sim.noise(p.pos, 13.0)
+					sim.emit_fx("build", p.pos)
+					p.add_xp("carpentry", 10.0))))
+		if planks > 0 and (Inv.has_tag(p.inv, "hammer") or Inv.has_tag(p.inv, "crowbar")):
+			out.append(_opt("Remove a plank", func():
+				p.start_action("Removing plank", 2.5, func():
+					var cur: int = w.edge_state(x, y, side)
+					var n: int = (cur & Defs.ES_PLANK_MASK) >> Defs.ES_PLANK_SHIFT
+					if n <= 0:
+						return
+					w.set_edge_state(x, y, side, (cur & ~Defs.ES_PLANK_MASK) | ((n - 1) << Defs.ES_PLANK_SHIFT))
+					Inv.add(p.inv, Items.make("plank", 1))
+					sim.noise(p.pos, 8.0))))
+	# player-built structures can be dismantled
+	if Defs.wall_mat(wid) == Defs.WM_BUILT_PLANK or (Defs.wall_mat(wid) == Defs.WM_PICKET and Inv.has_tag(p.inv, "hammer")):
+		if Inv.has_tag(p.inv, "hammer"):
+			out.append(_opt("Dismantle", func():
+				p.start_action("Dismantling", 4.0, func():
+					w.set_wall(x, y, side, 0)
+					Inv.add(p.inv, Items.make("plank", 1 + (1 if p.skill_level("carpentry") >= 2 else 0)))
+					sim.noise(p.pos, 10.0)
+					p.add_xp("carpentry", 5.0))))
+	return out
+
+static func _toggle_door(sim: Sim, x: int, y: int, side: int) -> void:
+	var w: World = sim.world
+	var st: int = w.edge_state(x, y, side)
+	if (st & Defs.ES_OPEN) != 0:
+		# don't close on top of something standing in the doorway? (edges are thin: always fine)
+		w.set_edge_state(x, y, side, st & ~Defs.ES_OPEN)
+	else:
+		w.set_edge_state(x, y, side, (st | Defs.ES_OPEN) & ~Defs.ES_LOCKED)
+	sim.emit_fx("door", sim.player.pos)
+	sim.noise(sim.player.pos, 2.0 if sim.player.sneaking else 4.0)
+
+static func _climb(sim: Sim, x: int, y: int, side: int, dur: float, glass: bool) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var o: Vector2i = _other_side(sim, x, y, side)
+	if w.tile_blocked(o.x, o.y):
+		sim.say("Something blocks the other side", Color(0.9, 0.8, 0.6))
+		return
+	if p.over_weight() > 6.0:
+		sim.say("You are carrying too much to climb", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Climbing", dur * (1.3 if p.fatigue > 70.0 else 1.0), func():
+		if w.tile_blocked(o.x, o.y):
+			return
+		p.pos = Vector2(o.x + 0.5, o.y + 0.5)
+		p.endurance = maxf(0.0, p.endurance - dur * 5.0)
+		sim.noise(p.pos, 5.0)
+		sim.emit_fx("step", p.pos)
+		if glass and randf() < 0.22:
+			p.add_wound(2 + randi() % 4, "laceration" if randf() < 0.35 else "scratch", "broken glass")
+		elif dur > 2.0 and randf() < 0.03 + p.over_weight() * 0.02:
+			p.add_wound(4 + randi() % 2, "fracture", "bad landing")
+		p.add_xp("fitness", 2.0))
+
+# ------------------------------------------------------------------ objects
+static func _obj_options(sim: Sim, t: Dictionary) -> Array:
+	var w: World = sim.world
+	var p: Player = sim.player
+	var x: int = t["x"]
+	var y: int = t["y"]
+	var cell: int = w.obj(x, y)
+	var id: int = Defs.o_id(cell)
+	var d: Dictionary = Defs.obj(id)
+	var a: Vector2i = w.anchor_of(x, y)
+	var use: String = d.get("use", "")
+	var out: Array = []
+	if d.has("c"):
+		out.append(_opt("Search %s" % String(d["n"]).to_lower(), func(): sim.ui_events.append({"type": "loot", "focus": a})))
+	match use:
+		"bed":
+			out.append(_opt("Sleep", func(): sim.start_sleep(1.0 if id != Defs.O_SOFA and id != Defs.O_BEDROLL else 0.8)))
+			if id == Defs.O_BEDROLL:
+				out.append(_opt("Roll up bedroll", func():
+					w.remove_object(x, y)
+					Inv.add(p.inv, Items.make("bedroll_item", 1))))
+		"rest":
+			out.append(_opt("Sleep (uncomfortable)", func(): sim.start_sleep(0.6)))
+		"sink":
+			if sim.has_water():
+				out.append(_opt("Drink", func(): _drink_source(sim, false, 999)))
+				out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
+			else:
+				out.append(_opt("Dry — the water is off", func(): sim.say("Not a drop.", Color(0.8, 0.8, 0.9))))
+		"stove":
+			out.append(_opt("Cook", func(): sim.ui_events.append({"type": "craft", "cat": "Cooking"})))
+		"workbench":
+			out.append(_opt("Craft", func(): sim.ui_events.append({"type": "craft", "cat": "Carpentry"})))
+		"tree":
+			if Inv.has_tag(p.inv, "axe"):
+				out.append(_opt("Chop down", func(): _chop(sim, x, y)))
+			out.append(_opt("Gather branches", func(): _forage(sim, x, y, true)))
+		"forage":
+			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
+		"berries":
+			if Defs.o_part(cell) == 0:
+				out.append(_opt("Pick berries", func():
+					p.start_action("Picking berries", 3.0, func():
+						Inv.add(p.inv, Items.make("berries", 2 + randi() % 3 + p.skill_level("foraging") / 3, sim.hour))
+						w.set_obj(x, y, Defs.ocell(Defs.O_BERRY_BUSH, 0, 1))
+						w.set_ent(x, y, {"k": "berry", "h": sim.hour})
+						p.add_xp("foraging", 8.0))))
+			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
+		"car":
+			out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
+		"gas_pump":
+			out.append(_opt("Fill gas can", func():
+				if not sim.has_power(x, y):
+					sim.say("The pump is dead without power", Color(0.9, 0.8, 0.6))
+					return
+				_fill_gas(sim, 8)))
+		"campfire":
+			out.append_array(_fire_options(sim, a.x, a.y))
+		"rain_barrel":
+			var e: Dictionary = w.ent(x, y)
+			var units: int = int(e.get("w", 0.0))
+			out.append(_opt("Drink rainwater (%d left)" % units, func(): _drink_barrel(sim, x, y)))
+			out.append(_opt("Fill water containers", func(): _fill_barrel(sim, x, y)))
+		"generator":
+			out.append_array(_gen_options(sim, x, y))
+		"crop":
+			out.append_array(_crop_options(sim, x, y))
+		"fridge":
+			pass
+	if d.has("scrap") and Inv.has_tag(p.inv, "hammer"):
+		out.append(_opt("Dismantle", func(): _dismantle(sim, x, y)))
+	if id == Defs.O_WOOD_CRATE or id == Defs.O_RAIN_BARREL or id == Defs.O_CAMPFIRE:
+		out.append(_opt("Remove", func():
+			p.start_action("Removing", 2.5, func(): w.remove_object(x, y))))
+	return out
+
+static func _dismantle(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	p.start_action("Dismantling", 5.0 - p.skill_level("carpentry") * 0.25, func():
+		var cell: int = w.obj(x, y)
+		if cell == 0:
+			return
+		var d: Dictionary = Defs.obj(Defs.o_id(cell))
+		var lvl: int = p.skill_level("carpentry")
+		for sc in d.get("scrap", []):
+			var n: int = int(ceil(float(sc[1]) * clampf(0.5 + lvl * 0.1, 0.5, 1.0)))
+			if n > 0:
+				w.drop_item(floori(p.pos.x), floori(p.pos.y), Items.make(sc[0], n, sim.hour))
+		w.remove_object(x, y)
+		sim.noise(p.pos, 11.0)
+		sim.emit_fx("build", p.pos)
+		p.add_xp("carpentry", 12.0))
+
+static func _chop(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	if p.endurance < 8.0:
+		sim.say("Too exhausted to chop", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Chopping", 1.6, func():
+		var cell: int = w.obj(x, y)
+		var id: int = Defs.o_id(cell)
+		if cell == 0 or Defs.obj(id).get("use", "") != "tree":
+			return
+		var c: Chunk = w.chunk_at(x, y)
+		var i: int = World.idx(x, y)
+		var hp: float = c.obj_hp.get(i, float(Defs.obj(id)["hp"]))
+		hp -= 32.0 + p.skill_level("axe") * 5.0
+		p.endurance -= 7.0
+		sim.noise(p.pos, 13.0)
+		sim.emit_fx("thump", p.pos)
+		p.add_xp("axe", 4.0)
+		p.add_xp("strength", 1.5)
+		var axe: Dictionary = Inv.find_tag(p.inv, "axe")
+		if hp <= 0.0:
+			c.obj_hp.erase(i)
+			w.set_obj(x, y, Defs.O_STUMP)
+			var logs: int = 1 if id == Defs.O_TREE_DEAD else (2 + randi() % 2)
+			w.drop_item(x, y, Items.make("log", logs))
+			w.drop_item(x, y, Items.make("branch", 1 + randi() % 3))
+			sim.say("Timber!", Color(0.8, 0.9, 0.7))
+			sim.emit_fx("break", p.pos)
+		else:
+			c.obj_hp[i] = hp
+			c.touched = true
+			_chop(sim, x, y))
+
+static func _forage(sim: Sim, x: int, y: int, branches: bool) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var e: Dictionary = w.ent(x, y)
+	if e.get("k", "") == "forage":
+		sim.say("Nothing left to find here for now", Color(0.8, 0.8, 0.8))
+		return
+	p.start_action("Gathering" if branches else "Foraging", 3.5, func():
+		var lvl: int = p.skill_level("foraging")
+		w.set_ent(x, y, {"k": "forage", "h": sim.hour})
+		p.add_xp("foraging", 6.0)
+		var r: float = randf() - lvl * 0.04
+		var found: String = ""
+		var n := 1
+		if branches:
+			found = "branch"
+			n = 1 + randi() % 2
+		elif r < 0.18: found = "berries"
+		elif r < 0.3: found = "mushroom"
+		elif r < 0.45: found = "branch"
+		elif r < 0.56: found = "stone"
+		elif r < 0.6: found = ["seeds_potato", "seeds_cabbage", "seeds_carrot", "seeds_tomato"][randi() % 4]
+		if found == "":
+			sim.say("You find nothing useful", Color(0.8, 0.8, 0.8))
+			return
+		Inv.add(p.inv, Items.make(found, n, sim.hour))
+		sim.say("Found: %s" % Items.def(found)["n"], Color(0.75, 0.9, 0.7))
+		sim.emit_fx("pickup", p.pos))
+
+static func _siphon(sim: Sim, ax: int, ay: int) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
+	if can.is_empty():
+		sim.say("You need a gas can", Color(0.9, 0.8, 0.6))
+		return
+	var e: Dictionary = w.ent(ax, ay)
+	if e.is_empty():
+		e = {"k": "car", "fuel": Rng.h2(ax, ay, sim.seed_v + 55) % 7}
+		w.set_ent(ax, ay, e)
+	if int(e["fuel"]) <= 0:
+		sim.say("The tank is dry", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Siphoning fuel", 5.0, func():
+		var room: int = int(Items.def(can["id"])["maxuses"]) - int(can.get("u", 0))
+		var n: int = mini(room, int(e["fuel"]))
+		can["u"] = int(can.get("u", 0)) + n
+		e["fuel"] = int(e["fuel"]) - n
+		sim.say("Siphoned %d units of fuel" % n, Color(0.8, 0.9, 0.7)))
+
+static func _fill_gas(sim: Sim, n: int) -> void:
+	var p: Player = sim.player
+	var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
+	if can.is_empty():
+		sim.say("You need a gas can", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Pumping fuel", 4.0, func():
+		can["u"] = int(Items.def(can["id"])["maxuses"])
+		sim.say("Gas can filled", Color(0.8, 0.9, 0.7)))
+
+# ------------------------------------------------------------------ water
+static func _drink_source(sim: Sim, tainted: bool, units: int) -> void:
+	var p: Player = sim.player
+	if p.thirst < 3.0:
+		sim.say("You are not thirsty", Color(0.8, 0.8, 0.9))
+		return
+	p.start_action("Drinking", 2.2, func():
+		p.thirst = maxf(0.0, p.thirst - 60.0)
+		if tainted and randf() < 0.5:
+			p.sick = minf(100.0, p.sick + 26.0)
+			sim.say("The water tastes foul. Your stomach churns.", Color(0.8, 1.0, 0.6))
+		sim.emit_fx("eat", p.pos))
+
+## fill empty bottles / top up containers. returns units used
+static func _fill(sim: Sim, tainted: bool, units: int) -> int:
+	var p: Player = sim.player
+	var used := 0
+	var n: int = Inv.count(p.inv, "empty_bottle")
+	n = mini(n, units / 5)
+	if n > 0:
+		Inv.take(p.inv, "empty_bottle", n)
+		for i in range(n):
+			var it: Dictionary = Items.make("water_bottle", 1)
+			if tainted: it["d"] = 1
+			p.inv.append(it)
+		used += n * 5
+	for it in p.inv:
+		var d: Dictionary = Items.def(it["id"])
+		if d.has("water") and it.has("u"):
+			var mx: int = int(d.get("maxuses", d.get("uses", 0)))
+			var need: int = mx - int(it["u"])
+			if need > 0 and used + need <= units:
+				it["u"] = mx
+				used += need
+				if tainted: it["d"] = 1
+				elif it["id"] == "water_bottle" and int(it["u"]) == mx and need == mx: it.erase("d")
+	if used == 0:
+		sim.say("Nothing to fill", Color(0.8, 0.8, 0.9))
+	else:
+		sim.say("Filled your water containers", Color(0.7, 0.85, 1.0))
+		sim.emit_fx("pickup", p.pos)
+	return used
+
+static func _water_options(sim: Sim, t: Dictionary) -> Array:
+	var p: Player = sim.player
+	var out: Array = [
+		_opt("Drink (untreated)", func(): _drink_source(sim, true, 999)),
+		_opt("Fill water containers (untreated)", func(): _fill(sim, true, 999))]
+	if Inv.has_tag(p.inv, "fishing"):
+		out.append(_opt("Fish", func():
+			p.start_action("Fishing", 8.0, func():
+				var ch: float = 0.35 + p.skill_level("fishing") * 0.06
+				p.add_xp("fishing", 10.0)
+				if randf() < ch:
+					Inv.add(p.inv, Items.make("raw_fish", 1, sim.hour))
+					sim.say("You caught a fish", Color(0.7, 0.9, 1.0))
+					sim.emit_fx("pickup", p.pos)
+				else:
+					sim.say("Nothing bites", Color(0.8, 0.8, 0.8)))))
+	return out
+
+static func _drink_barrel(sim: Sim, x: int, y: int) -> void:
+	var e: Dictionary = sim.world.ent(x, y)
+	if float(e.get("w", 0.0)) < 1.0:
+		sim.say("The collector is empty", Color(0.8, 0.8, 0.9))
+		return
+	e["w"] = float(e["w"]) - 1.0
+	_drink_source(sim, randf() < 0.3, 1)
+
+static func _fill_barrel(sim: Sim, x: int, y: int) -> void:
+	var e: Dictionary = sim.world.ent(x, y)
+	var have: int = int(e.get("w", 0.0))
+	if have < 1:
+		sim.say("The collector is empty", Color(0.8, 0.8, 0.9))
+		return
+	var used: int = _fill(sim, true, have)
+	e["w"] = float(e["w"]) - used
+
+# ------------------------------------------------------------------ fire / generator
+static func _fire_options(sim: Sim, x: int, y: int) -> Array:
+	var w: World = sim.world
+	var p: Player = sim.player
+	var e: Dictionary = w.ent(x, y)
+	if e.is_empty():
+		e = {"k": "fire", "fuel": 0.0, "lit": false}
+		w.set_ent(x, y, e)
+	var out: Array = []
+	var fuel_item: Dictionary = {}
+	for it in p.inv:
+		if Items.def(it["id"]).has("fuel") and not p.is_equipped(it):
+			fuel_item = it
+			break
+	if not fuel_item.is_empty():
+		out.append(_opt("Add fuel: %s" % Items.def(fuel_item["id"])["n"], func():
+			var one: Dictionary = Inv.split(p.inv, fuel_item, 1)
+			e["fuel"] = float(e["fuel"]) + float(Items.def(one["id"])["fuel"])
+			sim.say("Fuel for about %.1f hours" % float(e["fuel"]), Color(1.0, 0.85, 0.6))))
+	if not e["lit"]:
+		out.append(_opt("Light fire", func():
+			var lighter: Dictionary = Inv.find_tag(p.inv, "fire")
+			if lighter.is_empty():
+				sim.say("You need a lighter or matches", Color(0.9, 0.8, 0.6))
+				return
+			if float(e["fuel"]) <= 0.0:
+				sim.say("Add fuel first", Color(0.9, 0.8, 0.6))
+				return
+			if float(sim.weather["rain"]) > 0.5 and w.bld(x, y) == 0:
+				sim.say("It is raining too hard", Color(0.9, 0.8, 0.6))
+				return
+			p.start_action("Lighting fire", 2.5, func():
+				Inv.use_charge(p.inv, lighter)
+				e["lit"] = true
+				w.set_obj(x, y, Defs.ocell(Defs.O_CAMPFIRE, 0, 1))
+				sim.fires.append(Vector2i(x, y)))))
+	else:
+		out.append(_opt("Cook", func(): sim.ui_events.append({"type": "craft", "cat": "Cooking"})))
+		out.append(_opt("Put out", func():
+			e["lit"] = false
+			w.set_obj(x, y, Defs.ocell(Defs.O_CAMPFIRE, 0, 0))
+			sim.fires.erase(Vector2i(x, y))))
+	return out
+
+static func _gen_options(sim: Sim, x: int, y: int) -> Array:
+	var w: World = sim.world
+	var p: Player = sim.player
+	var e: Dictionary = w.ent(x, y)
+	if e.is_empty():
+		e = {"k": "gen", "fuel": 0.0, "on": false}
+		w.set_ent(x, y, e)
+	var out: Array = []
+	out.append(_opt("Turn off" if e["on"] else "Turn on (%.0f h fuel)" % float(e["fuel"]), func():
+		if not e["on"] and float(e["fuel"]) <= 0.0:
+			sim.say("The generator needs fuel", Color(0.9, 0.8, 0.6))
+			return
+		e["on"] = not e["on"]
+		if e["on"]:
+			sim.generators.append(Vector2i(x, y))
+			sim.say("The generator rattles to life", Color(0.8, 0.9, 0.7))
+		else:
+			sim.generators.erase(Vector2i(x, y))))
+	out.append(_opt("Refuel", func():
+		var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
+		if can.is_empty() or int(can.get("u", 0)) <= 0:
+			sim.say("You need a gas can with fuel", Color(0.9, 0.8, 0.6))
+			return
+		p.start_action("Refuelling", 3.0, func():
+			e["fuel"] = float(e["fuel"]) + float(int(can["u"])) * 6.0
+			can["u"] = 0)))
+	out.append(_opt("Pick up", func():
+		if e["on"]:
+			sim.say("Turn it off first", Color(0.9, 0.8, 0.6))
+			return
+		p.start_action("Lifting generator", 3.0, func():
+			w.remove_object(x, y)
+			Inv.add(p.inv, Items.make("generator_item", 1)))))
+	return out
+
+# ------------------------------------------------------------------ farming
+static func _crop_ent(sim: Sim, x: int, y: int) -> Dictionary:
+	var w: World = sim.world
+	var e: Dictionary = w.ent(x, y)
+	if e.is_empty():
+		var cell: int = w.obj(x, y)
+		var crop: String = Defs.obj(Defs.o_id(cell)).get("crop", "potato")
+		var stage: int = Defs.o_part(cell)
+		e = {"k": "crop", "t": crop, "s": stage, "g": float(Farming.GROW_HOURS[crop]) * float(mini(stage, 3)) / 3.0, "w": 40.0}
+		w.set_ent(x, y, e)
+	return e
+
+static func _crop_options(sim: Sim, x: int, y: int) -> Array:
+	var w: World = sim.world
+	var p: Player = sim.player
+	var e: Dictionary = _crop_ent(sim, x, y)
+	var out: Array = []
+	var stage: int = e["s"]
+	if stage == 3:
+		out.append(_opt("Harvest %s" % e["t"], func():
+			p.start_action("Harvesting", 3.0, func():
+				var yr: Array = Farming.YIELD[e["t"]]
+				var n: int = randi_range(yr[0], yr[1]) + p.skill_level("farming") / 2
+				Inv.add(p.inv, Items.make(e["t"], n, sim.hour))
+				if randf() < 0.5 + p.skill_level("farming") * 0.05:
+					Inv.add(p.inv, Items.make("seeds_" + String(e["t"]), 1 + randi() % 2))
+				w.set_ent(x, y, {})
+				w.set_obj(x, y, 0)
+				p.add_xp("farming", 25.0)
+				sim.say("Harvested %d %s" % [n, e["t"]], Color(0.75, 0.9, 0.7))
+				sim.emit_fx("pickup", p.pos))))
+	var can: Dictionary = Inv.find_tag(p.inv, "watering")
+	if stage < 3 and not can.is_empty():
+		out.append(_opt("Water plant", func():
+			if int(can.get("u", 0)) <= 0:
+				sim.say("The watering can is empty", Color(0.9, 0.8, 0.6))
+				return
+			p.start_action("Watering", 1.5, func():
+				can["u"] = int(can["u"]) - 1
+				e["w"] = minf(100.0, float(e["w"]) + 45.0)
+				p.add_xp("farming", 3.0))))
+	if stage < 3 and e.get("f", 0) == 0 and Inv.count(p.inv, "fertilizer") > 0:
+		out.append(_opt("Fertilise", func():
+			var f: Dictionary = Inv.find(p.inv, "fertilizer")
+			if not f.is_empty():
+				Inv.use_charge(p.inv, f)
+				e["f"] = 1))
+	out.append(_opt("Inspect", func():
+		var info: String = "%s: %s" % [String(e["t"]).capitalize(), Farming.STAGE_NAMES[stage]]
+		if p.skill_level("farming") >= 1 and stage < 3:
+			info += ", water %d%%" % int(e["w"])
+			var left: float = float(Farming.GROW_HOURS[e["t"]]) - float(e["g"])
+			info += ", ~%d h to harvest" % int(left)
+		elif stage < 3:
+			info += ", soil is %s" % ("dry" if float(e["w"]) < 15.0 else "moist")
+		sim.say(info, Color(0.8, 0.9, 0.75))))
+	out.append(_opt("Dig up", func():
+		w.set_ent(x, y, {})
+		w.set_obj(x, y, 0)))
+	return out
+
+static func _soil_options(sim: Sim, t: Dictionary) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var x: int = t["x"]
+	var y: int = t["y"]
+	var out: Array = []
+	for it in p.inv:
+		var d: Dictionary = Items.def(it["id"])
+		if d.has("seed"):
+			var crop: String = d["seed"]
+			var seed_item: Dictionary = it
+			out.append(_opt("Plant %s" % crop, func():
+				p.start_action("Planting", 2.5, func():
+					if w.obj(x, y) != 0 or not p.inv.has(seed_item):
+						return
+					Inv.use_charge(p.inv, seed_item)
+					w.set_obj(x, y, Defs.ocell(int(Farming.CROP_OBJ[crop]), 0, 0))
+					w.set_ent(x, y, {"k": "crop", "t": crop, "s": 0, "g": 0.0, "w": 25.0})
+					p.add_xp("farming", 8.0))))
+	if out.is_empty():
+		out.append(_opt("Tilled soil — you need seeds", func(): sim.say("You have no seeds to plant", Color(0.8, 0.8, 0.8))))
+	return out
+
+# ------------------------------------------------------------------ containers near the player
+## returns Array of {"label", "items": Array, "cap": float, "kind", "x","y"}
+static func nearby_containers(sim: Sim) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var px: int = floori(p.pos.x)
+	var py: int = floori(p.pos.y)
+	var out: Array = []
+	var seen: Dictionary = {}
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var x: int = px + dx
+			var y: int = py + dy
+			if (dx != 0 or dy != 0) and not w.los(p.pos.x, p.pos.y, x + 0.5, y + 0.5):
+				continue
+			var cell: int = w.obj(x, y)
+			if cell != 0:
+				var d: Dictionary = Defs.obj(Defs.o_id(cell))
+				if d.has("c"):
+					var a: Vector2i = w.anchor_of(x, y)
+					if not seen.has(a):
+						seen[a] = true
+						out.append({"label": d["n"], "items": w.container_at(x, y), "cap": float(d.get("cap", 20)), "kind": "obj", "x": a.x, "y": a.y,
+							"cold": (Defs.o_id(cell) == Defs.O_FRIDGE or Defs.o_id(cell) == Defs.O_FREEZER) and sim.has_power(x, y)})
+			if dx != 0 or dy != 0:
+				var gi: Array = w.items_at(x, y)
+				if not gi.is_empty():
+					out.append({"label": "Ground nearby", "items": gi, "cap": 9999.0, "kind": "ground", "x": x, "y": y})
+	for cy in range((py - 2) >> 4, ((py + 2) >> 4) + 1):
+		for cx in range((px - 2) >> 4, ((px + 2) >> 4) + 1):
+			var ch: Chunk = w.chunk(cx, cy)
+			if ch == null:
+				continue
+			for cp in ch.corpses:
+				if Vector2(cp["x"], cp["y"]).distance_to(p.pos) < 1.4:
+					if not cp.has("loot"):
+						var rng: RandomNumberGenerator = Rng.make(Rng.h2(int(float(cp["x"]) * 16.0), int(float(cp["y"]) * 16.0), sim.seed_v + int(float(cp["h"]) * 10.0)))
+						cp["loot"] = Loot.roll("corpse", "", rng, sim.hour, float(sim.settings["loot"]))
+						ch.touched = true
+					out.append({"label": "Corpse", "items": cp["loot"], "cap": 20.0, "kind": "corpse", "x": floori(cp["x"]), "y": floori(cp["y"]), "ref": cp})
+	# the tile under the player is always available as "Ground"
+	var c0: Chunk = w.chunk_at(px, py)
+	if c0 != null:
+		var gi2: int = World.idx(px, py)
+		if not c0.items.has(gi2):
+			c0.items[gi2] = []
+		out.push_front({"label": "Ground", "items": c0.items[gi2], "cap": 9999.0, "kind": "ground", "x": px, "y": py})
+	return out
+
+# ------------------------------------------------------------------ crafting & building
+## where a build recipe would be placed: {"ok", "x", "y", "side", "why"}
+static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var b: Dictionary = r["build"]
+	if b.has("wall"):
+		var e: Vector3i = p.front_edge()
+		if w.wall(e.x, e.y, e.z) != 0:
+			return {"ok": false, "why": "There is already something on that edge", "x": e.x, "y": e.y, "side": e.z}
+		if not w.is_loaded(e.x, e.y):
+			return {"ok": false, "why": "Out of reach"}
+		return {"ok": true, "x": e.x, "y": e.y, "side": e.z}
+	var ft: Vector2i = p.front_tile()
+	if b.has("ground"):
+		var g: int = w.ground(ft.x, ft.y)
+		if b.get("natural", 0) == 1 and not Defs.ground_is_natural(g):
+			return {"ok": false, "why": "You can only dig in soil or grass", "x": ft.x, "y": ft.y, "side": -1}
+		if w.obj(ft.x, ft.y) != 0 or Defs.ground_is_water(g) or g == Defs.G_VOID:
+			return {"ok": false, "why": "The tile in front is not clear", "x": ft.x, "y": ft.y, "side": -1}
+		if g == int(b["ground"]):
+			return {"ok": false, "why": "Already done here", "x": ft.x, "y": ft.y, "side": -1}
+		return {"ok": true, "x": ft.x, "y": ft.y, "side": -1}
+	var id: int = b["obj"]
+	var fs: Vector2i = Defs.obj_size(id, 0)
+	for j in range(fs.y):
+		for i in range(fs.x):
+			if w.tile_blocked(ft.x + i, ft.y + j) or w.obj(ft.x + i, ft.y + j) != 0 or Defs.ground_is_water(w.ground(ft.x + i, ft.y + j)):
+				return {"ok": false, "why": "Not enough clear space in front of you", "x": ft.x, "y": ft.y, "side": -1}
+	return {"ok": true, "x": ft.x, "y": ft.y, "side": -1}
+
+static func craft(sim: Sim, r: Dictionary) -> bool:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var why: String = Recipes.missing(r, p, sim.near_heat(p.pos))
+	if why != "":
+		sim.say("Can't make that: " + why, Color(1.0, 0.8, 0.5))
+		return false
+	if r.has("build"):
+		var bt: Dictionary = build_target(sim, r)
+		if not bt["ok"]:
+			sim.say(bt["why"], Color(1.0, 0.8, 0.5))
+			return false
+	var skill: String = ""
+	if r.has("xp"):
+		skill = r["xp"][0]
+	var dur: float = float(r["time"]) * (1.0 - (p.skill_level(skill) * 0.04 if skill != "" else 0.0))
+	var hammering: bool = (r["tools"] as Array).has("hammer")
+	p.start_action(r["n"], dur, func():
+		if Recipes.missing(r, p, sim.near_heat(p.pos)) != "":
+			return
+		var target: Dictionary = {}
+		if r.has("build"):
+			target = build_target(sim, r)
+			if not target["ok"]:
+				sim.say(target["why"], Color(1.0, 0.8, 0.5))
+				return
+		for inp in r["in"]:
+			if inp[0] == "water":
+				p.consume_water(int(inp[1]))
+			else:
+				for k in range(int(inp[1])):
+					var it: Dictionary = Inv.find(p.inv, inp[0])
+					if it.is_empty():
+						break
+					p.unequip(it) if int(it.get("n", 1)) <= 1 else null
+					if it.has("u") and inp[0] == "disinfectant":
+						Inv.use_charge(p.inv, it)
+					else:
+						Inv.split(p.inv, it, 1)
+		if r.get("special", "") == "purify":
+			for it in p.inv:
+				if it.has("d") and Items.def(it["id"]).has("water"):
+					it.erase("d")
+			sim.say("The water is safe to drink now", Color(0.7, 0.85, 1.0))
+		for o in r.get("out", []):
+			Inv.add_new(p.inv, o[0], int(o[1]), sim.hour)
+		if r.has("build"):
+			var b: Dictionary = r["build"]
+			if b.has("wall"):
+				w.set_wall(target["x"], target["y"], target["side"], Defs.wall(int(b["wall"]), int(b.get("shape", 0))), int(b.get("state", 0)))
+			elif b.has("ground"):
+				w.set_ground(target["x"], target["y"], int(b["ground"]))
+				var oc: int = w.obj(target["x"], target["y"])
+				if oc != 0:
+					w.set_obj(target["x"], target["y"], 0)
+			else:
+				var id: int = b["obj"]
+				var fs: Vector2i = Defs.obj_size(id, 0)
+				for j in range(fs.y):
+					for i in range(fs.x):
+						w.set_obj(int(target["x"]) + i, int(target["y"]) + j, Defs.ocell(id, 0, j * fs.x + i))
+				if id == Defs.O_RAIN_BARREL:
+					w.set_ent(target["x"], target["y"], {"k": "barrel", "w": 0.0})
+				elif id == Defs.O_CAMPFIRE:
+					w.set_ent(target["x"], target["y"], {"k": "fire", "fuel": 1.0, "lit": false})
+		if r.has("xp"):
+			p.add_xp(r["xp"][0], float(r["xp"][1]))
+		if hammering:
+			sim.noise(p.pos, 13.0)
+		sim.emit_fx("build" if r.has("build") or hammering else "pickup", p.pos))
+	return true
+
+## place a carried placeable item (generator, bedroll) in front of the player
+static func place_item(sim: Sim, it: Dictionary) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var d: Dictionary = Items.def(it["id"])
+	var id: int = d["place"]
+	var ft: Vector2i = p.front_tile()
+	if w.tile_blocked(ft.x, ft.y) or w.obj(ft.x, ft.y) != 0:
+		sim.say("No room in front of you", Color(1.0, 0.8, 0.5))
+		return
+	Inv.split(p.inv, it, 1)
+	w.set_obj(ft.x, ft.y, Defs.ocell(id, 0, 0))
+	if id == Defs.O_GENERATOR:
+		w.set_ent(ft.x, ft.y, {"k": "gen", "fuel": 0.0, "on": false})
+	sim.emit_fx("build", p.pos)

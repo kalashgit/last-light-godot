@@ -13,6 +13,7 @@ var ev_unloaded: Array = []          # chunk keys unloaded since last poll
 var ev_tiles: Array = []             # Vector2i tiles whose visuals changed
 var ev_ground: Array = []            # Vector2i chunk keys whose ground layer changed
 var store_loader: Callable           # optional: func(key) -> Dictionary  (disk region lookup)
+var on_unload: Callable              # optional: func(chunk) called before a chunk is stored
 var hour := 0.0
 var loot_mult := 1.0
 
@@ -475,6 +476,8 @@ func unload_chunk(k: Vector2i) -> void:
 	var c: Chunk = chunks.get(k)
 	if c == null:
 		return
+	if on_unload.is_valid():
+		on_unload.call(c)
 	if c.touched or c.modified or c.spawned:
 		store[k] = c.save_data()
 	chunks.erase(k)
