@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_glass_pane",
+  "source_glb_sha256": "1f05a3a70574aa616f800e8e9cf6643c3133cc1a54f52db3aea0a4764626dab2",
+  "atlas_sha256": "59172cdd15b414e9f2e3e7f3f32168b59d856e87f5caa8f25e6582a9a3a63438",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2532350,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

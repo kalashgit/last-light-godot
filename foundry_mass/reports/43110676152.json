@@ -1,0 +1,42 @@
+{
+  "run_id": "43110676152",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 22,
+  "remaining": 338,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_glass_pane",
+      "source_glb_sha256": "1f05a3a70574aa616f800e8e9cf6643c3133cc1a54f52db3aea0a4764626dab2",
+      "atlas_sha256": "59172cdd15b414e9f2e3e7f3f32168b59d856e87f5caa8f25e6582a9a3a63438",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2532350,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_glue_bottle",
+      "source_glb_sha256": "6ab9a8f6686845b96dedf23108273128f23aff078d3eed888e5211dbfe64bbd0",
+      "atlas_sha256": "a8cb185ed407cd535ca305bf541e0a6053cd9d4a510a9194c6819fe552ae2329",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2626458,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

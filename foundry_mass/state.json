@@ -22,9 +22,11 @@
     "ll_crafting_epoxy_tubes",
     "ll_crafting_fence_slat",
     "ll_crafting_firewood",
-    "ll_crafting_floorboard"
+    "ll_crafting_floorboard",
+    "ll_crafting_glass_pane",
+    "ll_crafting_glue_bottle"
   ],
-  "last_run_id": "42981944176",
+  "last_run_id": "43110676152",
   "golden_approved": false,
-  "remaining": 340
+  "remaining": 338
 }

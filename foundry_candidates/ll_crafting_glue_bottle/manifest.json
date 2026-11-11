@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_glue_bottle",
+  "source_glb_sha256": "6ab9a8f6686845b96dedf23108273128f23aff078d3eed888e5211dbfe64bbd0",
+  "atlas_sha256": "a8cb185ed407cd535ca305bf541e0a6053cd9d4a510a9194c6819fe552ae2329",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2626458,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
