@@ -136,16 +136,17 @@ static func _gen_ground(g: int) -> void:
 						p.img.set_pixel(xx, yy, _ground_color(g, int(floor(wx * 32.0)) + 64, int(floor(wy * 32.0)) + 64, s))
 			Art.ground[g].append(Art.world.add(p.img, ox, oy))
 		else:
-			var p2 := Painter.new(64, 32)
-			for yy in range(32):
-				for xx in range(64):
-					var a2: float = (xx + 0.5 - 32.0) / 32.0
-					var b2: float = (yy + 0.5) / 16.0
+			# slightly inflated diamond: neighbours overlap by ~1px so no seams show at fractional zoom
+			var p2 := Painter.new(68, 36)
+			for yy in range(36):
+				for xx in range(68):
+					var a2: float = (xx + 0.5 - 34.0) / 32.0
+					var b2: float = (yy + 0.5 - 2.0) / 16.0
 					var wx2: float = (a2 + b2) * 0.5
 					var wy2: float = (b2 - a2) * 0.5
-					if wx2 >= 0.0 and wx2 < 1.0 and wy2 >= 0.0 and wy2 < 1.0:
-						p2.img.set_pixel(xx, yy, _ground_color(g, int(wx2 * 32.0), int(wy2 * 32.0), s))
-			Art.ground[g].append(Art.world.add(p2.img, 32, 0))
+					if wx2 >= -0.036 and wx2 < 1.036 and wy2 >= -0.036 and wy2 < 1.036:
+						p2.img.set_pixel(xx, yy, _ground_color(g, int(floor(clampf(wx2, 0.0, 0.999) * 32.0)), int(floor(clampf(wy2, 0.0, 0.999) * 32.0)), s))
+			Art.ground[g].append(Art.world.add(p2.img, 34, 2))
 
 # ------------------------------------------------------------------ walls
 static func _tex_mat(t: int) -> int:

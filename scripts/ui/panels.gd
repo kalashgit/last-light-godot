@@ -1,0 +1,720 @@
+class_name Panels
+extends CanvasLayer
+## All menus: title, new game, inventory / looting, character (health + skills),
+## crafting, map, pause, context action sheets and the death screen.
+## Built from Control nodes in code; the simulation is paused while one is open.
+
+var main: Node
+var sim: Sim
+var current := ""
+var root: Control
+var dim: ColorRect
+var box: PanelContainer
+var body: VBoxContainer
+var sheet: PanelContainer
+var sheet_body: VBoxContainer
+
+var _cont_i := 0
+var _focus: Variant = null
+var _craft_cat := "Survival"
+var _char_tab := "health"
+var _map_r := 8
+var _menu_title := ""
+var _menu_opts: Array = []
+var _ng_occ := "unemployed"
+var _ng_zombies := 1
+var _ng_loot := 1
+var _ng_inf := true
+var _ng_seed := ""
+var _confirm_new := false
+
+func _ready() -> void:
+	layer = 10
+	root = Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.theme = UiKit.theme
+	root.visible = false
+	add_child(root)
+	dim = ColorRect.new()
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.color = Color(0, 0, 0, 0.62)
+	root.add_child(dim)
+	box = PanelContainer.new()
+	root.add_child(box)
+	body = VBoxContainer.new()
+	box.add_child(body)
+	sheet = PanelContainer.new()
+	sheet.visible = false
+	root.add_child(sheet)
+	sheet_body = VBoxContainer.new()
+	sheet.add_child(sheet_body)
+
+func is_open() -> bool:
+	return current != ""
+
+func open(what: String, args: Dictionary = {}) -> void:
+	current = what
+	root.visible = true
+	sheet.visible = false
+	if what == "inv":
+		_focus = args.get("focus", null)
+		_cont_i = -1
+	if what == "craft" and args.has("cat"):
+		_craft_cat = args["cat"]
+	if what == "menu":
+		_menu_title = args.get("title", "")
+		_menu_opts = args.get("options", [])
+	if what == "newgame":
+		_ng_seed = str(randi() % 1000000)
+	_confirm_new = false
+	rebuild()
+
+func close() -> void:
+	current = ""
+	root.visible = false
+	sheet.visible = false
+	for ch in body.get_children():
+		ch.queue_free()
+	if main != null:
+		main.on_panel_closed()
+
+func layout() -> void:
+	var safe: Rect2 = main.safe_rect()
+	var m := 14.0
+	var w: float = minf(safe.size.x - m * 2.0, 1040.0)
+	var full: bool = current == "inv" or current == "craft" or current == "char" or current == "map" or current == "newgame"
+	var h: float = safe.size.y - m * 2.0
+	box.custom_minimum_size = Vector2(w, 0)
+	box.size = Vector2(w, h if full else 0.0)
+	if not full:
+		box.reset_size()
+		h = minf(box.size.y, safe.size.y - m * 2.0)
+		box.size = Vector2(w, h)
+	box.position = Vector2(safe.position.x + (safe.size.x - w) * 0.5, safe.position.y + (safe.size.y - h) * 0.5)
+	var sw: float = minf(safe.size.x - 40.0, 560.0)
+	sheet.custom_minimum_size = Vector2(sw, 0)
+	sheet.reset_size()
+	sheet.position = Vector2(safe.position.x + (safe.size.x - sw) * 0.5, safe.end.y - sheet.size.y - 20.0)
+
+func rebuild() -> void:
+	for ch in body.get_children():
+		body.remove_child(ch)
+		ch.queue_free()
+	match current:
+		"title": _build_title()
+		"newgame": _build_newgame()
+		"inv": _build_inv()
+		"char": _build_char()
+		"craft": _build_craft()
+		"map": _build_map()
+		"pause": _build_pause()
+		"menu": _build_menu()
+		"death": _build_death()
+		"help": _build_help()
+	dim.color.a = 0.0 if current == "title" or current == "newgame" else 0.62
+	layout.call_deferred()
+
+func _header(title: String, closable: bool = true) -> void:
+	var hb := HBoxContainer.new()
+	var l: Label = UiKit.label(title, 26, UiKit.ACCENT)
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(l)
+	if closable:
+		var b: Button = UiKit.button("Close", close, 52)
+		b.custom_minimum_size = Vector2(120, 52)
+		hb.add_child(b)
+	body.add_child(hb)
+
+# ------------------------------------------------------------------ title / new game
+func _build_title() -> void:
+	var sp := Control.new()
+	sp.custom_minimum_size = Vector2(0, 20)
+	body.add_child(sp)
+	var t: Label = UiKit.label("LAST  LIGHT", 54, UiKit.ACCENT)
+	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.add_child(t)
+	var s: Label = UiKit.label("an isometric survival story with no happy ending", 18, UiKit.DIM)
+	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.add_child(s)
+	var sp2 := Control.new()
+	sp2.custom_minimum_size = Vector2(0, 24)
+	body.add_child(sp2)
+	if SaveGame.exists(main.SLOT):
+		var sm: String = SaveGame.summary(main.SLOT)
+		body.add_child(UiKit.button("Continue\n" + sm, func(): main.continue_game(), 84))
+	body.add_child(UiKit.button("New Game", func():
+		if SaveGame.exists(main.SLOT) and not _confirm_new:
+			_confirm_new = true
+			rebuild()
+		else:
+			open("newgame"), 66))
+	if _confirm_new:
+		body.add_child(UiKit.label("Starting a new game replaces the current save. Tap New Game again to confirm.", 17, UiKit.BAD))
+	body.add_child(UiKit.button("How to Play", func(): open("help"), 58))
+	body.add_child(UiKit.label("Every tile, wall, tree, face and icon is painted by code when the game starts. The world is generated from a seed and never ends.", 15, UiKit.DIM))
+
+func _build_help() -> void:
+	_header("How to Play", false)
+	var lines: Array = [
+		"MOVE — drag anywhere on the lower-left of the screen. RUN and SNEAK are toggles.",
+		"USE — interacts with whatever you face: doors, windows, containers, beds, taps, trees, crops. HOLD it for all options (lock, barricade, climb, dismantle…).",
+		"ATTACK — swings your weapon, fires a gun, or shoves when unarmed. Attacking a window or door breaks it.",
+		"BAG — loot nearby containers and manage what you carry. Tap an item on the left to take it; tap one of yours for actions.",
+		"BODY — wounds, bandaging, needs and skills.  MAKE — crafting, cooking and building.  MAP — everywhere you have been.",
+		"The infected hunt by sight and sound. Running, gunshots, breaking glass and alarms carry a long way. Sneak, close doors, hang sheets over windows.",
+		"Eat, drink, sleep. Bandage bleeding wounds. A bite always ends the same way.",
+		"The power and the water will fail. Collect rain, grow food, board up a home.",
+		"Keyboard: WASD move, Shift run, C sneak, Space attack, E use (hold for options), I/H/B/M panels, F light, R reload, Esc menu.",
+	]
+	var vb := VBoxContainer.new()
+	for ln in lines:
+		vb.add_child(UiKit.label(ln, 18))
+	var sc: ScrollContainer = UiKit.scroll(vb)
+	sc.custom_minimum_size = Vector2(0, 560)
+	body.add_child(sc)
+	body.add_child(UiKit.button("Back", func():
+		if sim != null and main.state == "play": open("pause")
+		else: open("title")))
+
+func _choice(label: String, opts: Array, sel: int, cb: Callable) -> void:
+	body.add_child(UiKit.label(label, 17, UiKit.DIM))
+	var hb := HBoxContainer.new()
+	for i in range(opts.size()):
+		var idx: int = i
+		var b: Button = UiKit.button(opts[i], func(): cb.call(idx), 50)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if i == sel:
+			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+		hb.add_child(b)
+	body.add_child(hb)
+
+func _build_newgame() -> void:
+	_header("New Survivor", false)
+	body.add_child(UiKit.label("Who were you before?", 17, UiKit.DIM))
+	var vb := VBoxContainer.new()
+	for k in Player.OCCUPATIONS.keys():
+		var o: Dictionary = Player.OCCUPATIONS[k]
+		var key: String = k
+		var b: Button = UiKit.button("%s\n%s" % [o["n"], o["d"]], func():
+			_ng_occ = key
+			rebuild(), 74)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.add_theme_font_size_override("font_size", 18)
+		if k == _ng_occ:
+			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+		vb.add_child(b)
+	body.add_child(UiKit.scroll(vb))
+	_choice("Infected population", ["Sparse", "Normal", "Dense", "Overrun"], _ng_zombies, func(i):
+		_ng_zombies = i
+		rebuild())
+	_choice("Loot", ["Scarce", "Normal", "Plentiful"], _ng_loot, func(i):
+		_ng_loot = i
+		rebuild())
+	_choice("The Grey Fever (bites)", ["Always fatal", "Disabled"], 0 if _ng_inf else 1, func(i):
+		_ng_inf = i == 0
+		rebuild())
+	var hb := HBoxContainer.new()
+	var sl: Label = UiKit.label("World seed", 17, UiKit.DIM)
+	sl.autowrap_mode = TextServer.AUTOWRAP_OFF
+	sl.custom_minimum_size = Vector2(110, 0)
+	hb.add_child(sl)
+	var le := LineEdit.new()
+	le.text = _ng_seed
+	le.custom_minimum_size = Vector2(160, 50)
+	le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	le.text_changed.connect(func(t): _ng_seed = t)
+	hb.add_child(le)
+	var rb: Button = UiKit.button("Random", func():
+		_ng_seed = str(randi() % 1000000)
+		rebuild(), 50)
+	rb.custom_minimum_size = Vector2(130, 50)
+	hb.add_child(rb)
+	body.add_child(hb)
+	var hb2 := HBoxContainer.new()
+	var back: Button = UiKit.button("Back", func(): open("title"), 64)
+	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb2.add_child(back)
+	var go: Button = UiKit.button("Begin", func():
+		var sv: int = _ng_seed.hash() if not _ng_seed.is_valid_int() else int(_ng_seed)
+		main.new_game(sv, _ng_occ, {"zombies": [0.5, 1.0, 1.7, 2.6][_ng_zombies], "loot": [0.6, 1.0, 1.6][_ng_loot], "infection": _ng_inf}), 64)
+	go.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	go.size_flags_stretch_ratio = 2.0
+	hb2.add_child(go)
+	body.add_child(hb2)
+
+# ------------------------------------------------------------------ inventory
+func _item_row(it: Dictionary, prefix: String, cb: Callable, cold: bool = false) -> Button:
+	var d: Dictionary = Items.def(it["id"])
+	var txt: String = prefix + Items.describe(it, sim.hour)
+	var b: Button = UiKit.button(txt, cb, 54)
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", 17)
+	var ih: int = Art.item_icon.get(it["id"], -1)
+	if ih >= 0:
+		b.icon = Art.icons.atlas_tex(ih)
+		b.expand_icon = true
+		b.add_theme_constant_override("icon_max_width", 36)
+	var fs: int = Items.fresh_state(it, sim.hour)
+	if fs == 2: b.add_theme_color_override("font_color", UiKit.BAD)
+	elif fs == 1: b.add_theme_color_override("font_color", Color(0.85, 0.8, 0.5))
+	return b
+
+func _build_inv() -> void:
+	var p: Player = sim.player
+	var conts: Array = Actions.nearby_containers(sim)
+	if _cont_i < 0:
+		_cont_i = 0
+		# prefer the focused container, else the first non-empty one that is not the ground
+		for i in range(conts.size()):
+			var c: Dictionary = conts[i]
+			if _focus is Vector2i and c["kind"] == "obj" and Vector2i(c["x"], c["y"]) == _focus:
+				_cont_i = i
+				break
+			if _focus is Dictionary and c["kind"] == "corpse" and is_same(c["ref"], _focus):
+				_cont_i = i
+				break
+		if _focus == null:
+			for i in range(1, conts.size()):
+				if not (conts[i]["items"] as Array).is_empty():
+					_cont_i = i
+					break
+	_cont_i = clampi(_cont_i, 0, conts.size() - 1)
+	var cur: Dictionary = conts[_cont_i]
+	_header("Inventory")
+	var cols := HBoxContainer.new()
+	cols.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	# ---- left: nearby container
+	var left := VBoxContainer.new()
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var sel: Button = UiKit.button("◀  %s  (%d/%d)  ▶" % [cur["label"], _cont_i + 1, conts.size()], func():
+		_cont_i = (_cont_i + 1) % conts.size()
+		rebuild(), 54)
+	sel.add_theme_font_size_override("font_size", 18)
+	left.add_child(sel)
+	var items: Array = cur["items"]
+	var hb := HBoxContainer.new()
+	var wl: Label = UiKit.label("%.1f kg%s" % [Inv.weight(items), "  ❄ cold" if cur.get("cold", false) else ""], 15, UiKit.DIM)
+	wl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(wl)
+	if items.size() > 0:
+		hb.add_child(UiKit.button(" Take all ", func():
+			for it in items.duplicate():
+				items.erase(it)
+				Inv.add(p.inv, it)
+			_after_move(cur)
+			rebuild(), 44))
+	left.add_child(hb)
+	var lv := VBoxContainer.new()
+	if items.is_empty():
+		lv.add_child(UiKit.label("Empty", 17, UiKit.DIM))
+	for it in items:
+		var item: Dictionary = it
+		lv.add_child(_item_row(item, "", func():
+			items.erase(item)
+			Inv.add(p.inv, item)
+			_after_move(cur)
+			sim.emit_fx("pickup", p.pos)
+			rebuild()))
+	left.add_child(UiKit.scroll(lv))
+	cols.add_child(left)
+	# ---- right: carried
+	var right := VBoxContainer.new()
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var cw: float = p.carried()
+	var cap: float = p.capacity()
+	var yl: Label = UiKit.label("You carry  %.1f / %.0f kg" % [cw, cap], 18, UiKit.BAD if cw > cap else UiKit.TEXT)
+	yl.custom_minimum_size = Vector2(0, 54)
+	yl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	right.add_child(yl)
+	right.add_child(UiKit.bar(cw / cap * 100.0, UiKit.BAD if cw > cap else UiKit.ACCENT, 12))
+	var rv := VBoxContainer.new()
+	var sorted: Array = p.inv.duplicate()
+	sorted.sort_custom(func(a, b):
+		var ea: bool = p.is_equipped(a)
+		var eb: bool = p.is_equipped(b)
+		if ea != eb: return ea
+		var ca: String = Items.def(a["id"]).get("cat", "")
+		var cb: String = Items.def(b["id"]).get("cat", "")
+		if ca != cb: return ca < cb
+		return String(Items.def(a["id"]).get("n", "")) < String(Items.def(b["id"]).get("n", "")))
+	if sorted.is_empty():
+		rv.add_child(UiKit.label("Your pockets are empty", 17, UiKit.DIM))
+	for it in sorted:
+		var item2: Dictionary = it
+		rv.add_child(_item_row(item2, "▣ " if p.is_equipped(item2) else "", func(): _item_sheet(item2, cur)))
+	right.add_child(UiKit.scroll(rv))
+	cols.add_child(right)
+	body.add_child(cols)
+
+func _after_move(cont: Dictionary) -> void:
+	var w: World = sim.world
+	if cont["kind"] == "ground":
+		w.ground_items_changed(cont["x"], cont["y"])
+	else:
+		var c: Chunk = w.chunk_at(cont["x"], cont["y"])
+		if c != null:
+			c.touched = true
+
+func _sheet_open(title: String, opts: Array) -> void:
+	for ch in sheet_body.get_children():
+		sheet_body.remove_child(ch)
+		ch.queue_free()
+	sheet_body.add_child(UiKit.label(title, 20, UiKit.ACCENT))
+	for o in opts:
+		var fn: Callable = o[1]
+		sheet_body.add_child(UiKit.button(o[0], func():
+			sheet.visible = false
+			fn.call(), 56))
+	sheet_body.add_child(UiKit.button("Cancel", func(): sheet.visible = false, 50))
+	sheet.visible = true
+	layout.call_deferred()
+
+func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
+	var p: Player = sim.player
+	var d: Dictionary = Items.def(it["id"])
+	var opts: Array = []
+	if d.has("wpn") or d.has("gun") or d.has("bag") or d.has("wear"):
+		var lbl: String = "Unequip" if p.is_equipped(it) else ("Wear" if d.has("bag") or d.has("wear") else "Equip")
+		opts.append([lbl, func():
+			p.equip(it)
+			rebuild()])
+	if d.has("hunger") or d.has("thirst") or d.has("smoke"):
+		var why: String = p.can_eat(it)
+		var verb: String = "Drink" if d["cat"] == "drink" else ("Smoke" if d.has("smoke") else "Eat")
+		opts.append([verb if why == "" else "%s (%s)" % [verb, why], func():
+			close()
+			p.consume(it)])
+	if d.has("med") or d.has("disinfect"):
+		var kind: String = d.get("med", "disinfect")
+		if kind == "antibiotics" or kind == "painkillers" or kind == "vitamins":
+			opts.append(["Take", func():
+				close()
+				p.use_med(it)])
+		else:
+			opts.append(["Treat a wound…", func(): open("char")])
+	if d.has("book") or d.has("read"):
+		opts.append(["Read", func():
+			close()
+			p.read_item(it)])
+	if d.has("place"):
+		opts.append(["Place in front of you", func():
+			close()
+			Actions.place_item(sim, it)])
+	if d.has("light"):
+		opts.append(["Turn off" if p.light_on else "Turn on", func():
+			main.hud.toggle_light()
+			rebuild()])
+	if d.has("noise_maker"):
+		opts.append(["Set off and drop (lures the infected)", func():
+			var one: Dictionary = Inv.split(p.inv, it, 1)
+			sim.world.drop_item(floori(p.pos.x), floori(p.pos.y), one)
+			sim.alarms.append([p.pos, 18.0])
+			sim.say("The alarm clock starts ringing", Color(1.0, 0.8, 0.5))
+			close()])
+	if cont["kind"] != "ground":
+		opts.append(["Put in %s" % String(cont["label"]).to_lower(), func():
+			if Inv.weight(cont["items"]) + Items.weight(it) > float(cont["cap"]):
+				sim.say("It won't fit", UiKit.BAD)
+			else:
+				p.unequip(it)
+				p.inv.erase(it)
+				Inv.add(cont["items"], it)
+				_after_move(cont)
+			rebuild()])
+	opts.append(["Drop", func():
+		p.unequip(it)
+		p.inv.erase(it)
+		sim.world.drop_item(floori(p.pos.x), floori(p.pos.y), it)
+		rebuild()])
+	if int(it.get("n", 1)) > 1:
+		opts.append(["Drop one", func():
+			var one: Dictionary = Inv.split(p.inv, it, 1)
+			sim.world.drop_item(floori(p.pos.x), floori(p.pos.y), one)
+			rebuild()])
+	var info: String = "%s — %.2f kg" % [Items.describe(it, sim.hour), Items.weight(it)]
+	if d.has("wpn"):
+		var w: Dictionary = d["wpn"]
+		info += "\nDamage %d–%d, reach %.1f, %s" % [int(w["dmg"][0]), int(w["dmg"][1]), float(w["range"]), w["type"]]
+	elif d.has("gun"):
+		info += "\nDamage %d–%d, range %d, very loud" % [int(d["gun"]["dmg"][0]), int(d["gun"]["dmg"][1]), int(d["gun"]["range"])]
+	elif d.has("hunger"):
+		info += "\nRestores %d hunger" % int(d["hunger"])
+	_sheet_open(info, opts)
+
+# ------------------------------------------------------------------ character
+func _stat(name: String, v: float, col: Color) -> void:
+	var hb := HBoxContainer.new()
+	var l: Label = UiKit.label(name, 17)
+	l.custom_minimum_size = Vector2(130, 0)
+	hb.add_child(l)
+	var b: ProgressBar = UiKit.bar(v, col, 18)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	hb.add_child(b)
+	body.add_child(hb)
+
+func _build_char() -> void:
+	var p: Player = sim.player
+	_header("Survivor")
+	var tabs := HBoxContainer.new()
+	for t in [["health", "Health"], ["skills", "Skills"]]:
+		var key: String = t[0]
+		var b: Button = UiKit.button(t[1], func():
+			_char_tab = key
+			rebuild(), 50)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if key == _char_tab:
+			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+		tabs.add_child(b)
+	body.add_child(tabs)
+	if _char_tab == "skills":
+		body.add_child(UiKit.label("%s — day %d — %d infected killed" % [Player.OCCUPATIONS[p.occupation]["n"], sim.day(), p.kills], 17, UiKit.DIM))
+		var vb := VBoxContainer.new()
+		for s in Player.SKILLS:
+			var lvl: int = p.skill_level(s)
+			var xp: float = p.skills[s]
+			var hb := HBoxContainer.new()
+			var l: Label = UiKit.label("%s  %d" % [String(s).capitalize().replace("_", " "), lvl], 18)
+			l.custom_minimum_size = Vector2(190, 0)
+			hb.add_child(l)
+			var frac := 100.0
+			if lvl < 10:
+				var a: float = Player.XP_LEVELS[lvl]
+				var b2: float = Player.XP_LEVELS[lvl + 1]
+				frac = (xp - a) / (b2 - a) * 100.0
+			var pb: ProgressBar = UiKit.bar(frac, UiKit.GOOD, 16)
+			pb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			pb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			hb.add_child(pb)
+			vb.add_child(hb)
+		body.add_child(UiKit.scroll(vb))
+		return
+	_stat("Health", p.hp, Color(0.75, 0.3, 0.26))
+	_stat("Stamina", p.endurance, Color(0.82, 0.76, 0.45))
+	_stat("Hunger", p.hunger, Color(0.8, 0.6, 0.3))
+	_stat("Thirst", p.thirst, Color(0.4, 0.6, 0.85))
+	_stat("Fatigue", p.fatigue, Color(0.6, 0.55, 0.75))
+	_stat("Pain", p.pain, Color(0.85, 0.4, 0.5))
+	var cond: Array = []
+	if p.temp < -25.0: cond.append("cold")
+	if p.temp > 25.0: cond.append("overheated")
+	if p.wet > 30.0: cond.append("wet")
+	if p.sick > 20.0: cond.append("nauseous")
+	if p.infection > 0.5: cond.append("burning with fever")
+	elif p.infection > 0.25: cond.append("feverish")
+	if p.painkiller_h > 0.0: cond.append("on painkillers")
+	body.add_child(UiKit.label("Condition: " + (", ".join(cond) if cond.size() > 0 else "stable"), 17, UiKit.BAD if p.infection > 0.25 else UiKit.DIM))
+	var vb2 := VBoxContainer.new()
+	if p.wounds.is_empty():
+		vb2.add_child(UiKit.label("No wounds.", 18, UiKit.GOOD))
+	for wd in p.wounds:
+		var wound: Dictionary = wd
+		var def: Array = Player.WOUND[wound["type"]]
+		var bits: Array = []
+		if float(wound["bleed_h"]) > 0.0 and not wound["band"] and not wound["stitch"]: bits.append("bleeding")
+		if wound["band"]: bits.append("bandaged" if float(wound["dirty"]) < 24.0 else "dirty bandage")
+		if wound["stitch"]: bits.append("stitched")
+		if wound["splint"]: bits.append("splinted")
+		if wound["inf"]: bits.append("infected")
+		if wound["dis"]: bits.append("disinfected")
+		vb2.add_child(UiKit.label("%s — %s%s" % [Player.PARTS[int(wound["part"])], def[4], ("  (" + ", ".join(bits) + ")") if bits.size() > 0 else ""], 18,
+			UiKit.BAD if bits.has("bleeding") or bits.has("infected") else UiKit.TEXT))
+		var hb2 := HBoxContainer.new()
+		if not wound["band"] and wound["type"] != "fracture":
+			var bandage: Dictionary = Inv.find(p.inv, "bandage")
+			if bandage.is_empty(): bandage = Inv.find(p.inv, "rag")
+			if not bandage.is_empty():
+				hb2.add_child(UiKit.button("Bandage (%s)" % Items.def(bandage["id"])["n"], func():
+					close()
+					p.use_med(bandage, wound), 48))
+		elif wound["band"]:
+			hb2.add_child(UiKit.button("Remove bandage", func():
+				close()
+				p.remove_bandage(wound), 48))
+		if not wound["dis"] and wound["type"] != "fracture":
+			var dis: Dictionary = Inv.find(p.inv, "disinfectant")
+			if dis.is_empty(): dis = Inv.find(p.inv, "whiskey")
+			if not dis.is_empty():
+				hb2.add_child(UiKit.button("Disinfect", func():
+					close()
+					p.use_med(dis, wound), 48))
+		if not wound["stitch"] and (wound["type"] == "laceration" or wound["type"] == "deep" or wound["type"] == "bite"):
+			var sk: Dictionary = Inv.find(p.inv, "suture_kit")
+			if not sk.is_empty():
+				hb2.add_child(UiKit.button("Stitch", func():
+					close()
+					p.use_med(sk, wound), 48))
+		if wound["type"] == "fracture" and not wound["splint"]:
+			var spl: Dictionary = Inv.find(p.inv, "splint")
+			if not spl.is_empty():
+				hb2.add_child(UiKit.button("Splint", func():
+					close()
+					p.use_med(spl, wound), 48))
+		if hb2.get_child_count() > 0:
+			vb2.add_child(hb2)
+		else:
+			hb2.free()
+			if not wound["band"]:
+				vb2.add_child(UiKit.label("   nothing to treat it with", 15, UiKit.DIM))
+	var pills := HBoxContainer.new()
+	for id in ["painkillers", "antibiotics", "vitamins"]:
+		var it: Dictionary = Inv.find(p.inv, id)
+		if not it.is_empty():
+			pills.add_child(UiKit.button("Take %s" % String(Items.def(id)["n"]).to_lower(), func():
+				close()
+				p.use_med(it), 48))
+	if pills.get_child_count() > 0:
+		vb2.add_child(pills)
+	else:
+		pills.free()
+	body.add_child(UiKit.scroll(vb2))
+
+# ------------------------------------------------------------------ crafting
+func _build_craft() -> void:
+	var p: Player = sim.player
+	_header("Make & Build")
+	var tabs := HBoxContainer.new()
+	for c in Recipes.cats():
+		var cat: String = c
+		var b: Button = UiKit.button(cat, func():
+			_craft_cat = cat
+			rebuild(), 50)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.add_theme_font_size_override("font_size", 16)
+		if cat == _craft_cat:
+			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+		tabs.add_child(b)
+	body.add_child(tabs)
+	var heat: bool = sim.near_heat(p.pos)
+	if _craft_cat == "Cooking":
+		body.add_child(UiKit.label("Heat source nearby" if heat else "No heat source: stand next to a lit campfire or a powered stove", 16, UiKit.GOOD if heat else UiKit.BAD))
+	var vb := VBoxContainer.new()
+	for r in Recipes.LIST:
+		if r["cat"] != _craft_cat:
+			continue
+		var recipe: Dictionary = r
+		var why: String = Recipes.missing(recipe, p, heat)
+		var needs: Array = []
+		for inp in recipe["in"]:
+			needs.append("%d %s" % [int(inp[1]), "water" if inp[0] == "water" else String(Items.def(inp[0]).get("n", inp[0]))])
+		for t in recipe["tools"]:
+			needs.append("[%s]" % String(t).replace("_", " "))
+		var txt: String = "%s%s\n%s" % [recipe["n"], "  (placed in the world)" if recipe.has("build") else "", ", ".join(needs)]
+		if why != "":
+			txt += "   —   " + why
+		var b2: Button = UiKit.button(txt, func():
+			if why != "":
+				sim.say("Can't make that: " + why, UiKit.BAD)
+				return
+			close()
+			if recipe.has("build"):
+				main.hud.placing = recipe
+			else:
+				Actions.craft(sim, recipe), 70)
+		b2.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b2.add_theme_font_size_override("font_size", 17)
+		if why != "":
+			b2.add_theme_color_override("font_color", UiKit.DIM)
+		vb.add_child(b2)
+	body.add_child(UiKit.scroll(vb))
+
+# ------------------------------------------------------------------ map
+func _build_map() -> void:
+	var p: Player = sim.player
+	_header("Map — %s" % sim.clock_text())
+	var R: int = _map_r
+	var n: int = (R * 2 + 1) * 16
+	# drawn in the same 2:1 projection as the game view, so "up" on the map is "up" on screen
+	var img := Image.create(n * 2, n, false, Image.FORMAT_RGB8)
+	img.fill(Color(0.05, 0.06, 0.06))
+	var pc := Vector2i(floori(p.pos.x) >> 4, floori(p.pos.y) >> 4)
+	var pal: Array = []
+	for hx in Defs.GROUND_MAP:
+		pal.append(Color(String(hx)))
+	for cy in range(-R, R + 1):
+		for cx in range(-R, R + 1):
+			var k := Vector2i(pc.x + cx, pc.y + cy)
+			if not sim.world.explored.has(k):
+				continue
+			var px: PackedByteArray = sim.world.explored[k]
+			var ox: int = (cx + R) * 16
+			var oy: int = (cy + R) * 16
+			for i in range(256):
+				var v: int = px[i]
+				var col: Color = Color(0.72, 0.42, 0.3) if v == 100 else (Color(0.16, 0.28, 0.15) if v == 101 else pal[v])
+				var tx: int = ox + (i & 15)
+				var ty: int = oy + (i >> 4)
+				img.set_pixel(tx - ty + n - 1, (tx + ty) >> 1, col)
+	var mtx: int = floori(p.pos.x) - (pc.x - R) * 16
+	var mty: int = floori(p.pos.y) - (pc.y - R) * 16
+	var mx: int = mtx - mty + n - 1
+	var my: int = (mtx + mty) >> 1
+	for d in range(-3, 4):
+		if mx + d >= 0 and mx + d < n * 2: img.set_pixel(mx + d, my, Color.WHITE)
+		if my + d >= 0 and my + d < n: img.set_pixel(mx, my + d, Color.WHITE)
+	var tr := TextureRect.new()
+	tr.texture = ImageTexture.create_from_image(img)
+	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	tr.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	tr.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_child(tr)
+	body.add_child(UiKit.label("White cross: you. Red: buildings. Dark grey: roads. Explored chunks: %d" % sim.world.explored.size(), 15, UiKit.DIM))
+	var hb := HBoxContainer.new()
+	var zi: Button = UiKit.button("Zoom in", func():
+		_map_r = maxi(3, _map_r / 2)
+		rebuild(), 52)
+	zi.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var zo: Button = UiKit.button("Zoom out", func():
+		_map_r = mini(32, _map_r * 2)
+		rebuild(), 52)
+	zo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(zi)
+	hb.add_child(zo)
+	body.add_child(hb)
+
+# ------------------------------------------------------------------ pause / context / death
+func _build_pause() -> void:
+	_header("Paused — %s" % sim.clock_text(), false)
+	body.add_child(UiKit.button("Resume", close, 66))
+	body.add_child(UiKit.button("Save Game", func():
+		var ok: bool = main.save_now()
+		sim.say("Game saved" if ok else "SAVE FAILED", UiKit.GOOD if ok else UiKit.BAD)
+		close()))
+	body.add_child(UiKit.button("How to Play", func(): open("help")))
+	body.add_child(UiKit.button("Performance overlay: %s" % ("on" if main.hud.debug else "off"), func():
+		main.hud.debug = not main.hud.debug
+		rebuild()))
+	body.add_child(UiKit.button("Tester mode (invulnerable): %s" % ("on" if sim.settings.get("god", false) else "off"), func():
+		sim.settings["god"] = not sim.settings.get("god", false)
+		rebuild()))
+	body.add_child(UiKit.button("Save and Quit to Title", func():
+		main.save_now()
+		main.to_title()))
+
+func _build_menu() -> void:
+	_header(_menu_title, false)
+	for o in _menu_opts:
+		var fn: Callable = o["fn"]
+		body.add_child(UiKit.button(o["label"], func():
+			close()
+			fn.call(), 60))
+	body.add_child(UiKit.button("Cancel", close, 52))
+
+func _build_death() -> void:
+	var p: Player = sim.player
+	var t: Label = UiKit.label("THIS IS HOW YOU DIED", 34, UiKit.BAD)
+	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.add_child(t)
+	var hrs: float = sim.hour - Sim.START_HOUR
+	var l: Label = UiKit.label("%s.\n\nYou survived %d days and %d hours.\nInfected killed: %d\nOccupation: %s" % [p.death_cause, int(hrs / 24.0), int(fposmod(hrs, 24.0)), p.kills, Player.OCCUPATIONS[p.occupation]["n"]], 20)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.add_child(l)
+	body.add_child(UiKit.button("New Survivor", func():
+		SaveGame.delete(main.SLOT)
+		main.state = "title"
+		open("newgame"), 66))
+	body.add_child(UiKit.button("Title Screen", func():
+		SaveGame.delete(main.SLOT)
+		main.to_title()))
