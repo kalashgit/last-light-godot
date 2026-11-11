@@ -18,9 +18,11 @@
     "ll_crafting_concrete_block",
     "ll_crafting_copper_pipe",
     "ll_crafting_corrugated_metal",
-    "ll_crafting_duct_tape"
+    "ll_crafting_duct_tape",
+    "ll_crafting_epoxy_tubes",
+    "ll_crafting_fence_slat"
   ],
-  "last_run_id": "42897090523",
+  "last_run_id": "42935066846",
   "golden_approved": false,
-  "remaining": 344
+  "remaining": 342
 }

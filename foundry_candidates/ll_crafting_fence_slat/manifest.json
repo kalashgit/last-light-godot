@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_fence_slat",
+  "source_glb_sha256": "26356f4c2f8da85dbe552dbae750e2934243c5049d80e810c4fc8774cd34f084",
+  "atlas_sha256": "fcf7a5b5d392d689ec5433da7e59e858a80c442d7d7e21a589302a2e70c7d2d7",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2537120,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

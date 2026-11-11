@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_epoxy_tubes",
+  "source_glb_sha256": "2fb6ce21e13c2133130b24ce47be42acff292473a2ba5ca0e966e08bf6808d41",
+  "atlas_sha256": "37455119cbf43a2df36034ce1d832ce05c27ae82bf2be0943dc9e000c71e038d",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2669360,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
