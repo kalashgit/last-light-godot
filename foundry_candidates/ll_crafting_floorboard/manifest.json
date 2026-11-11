@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_floorboard",
+  "source_glb_sha256": "5ec7b81104f590ba50a1b6fee32343ea72b4040a2749f9017805c2ea0dfd3e63",
+  "atlas_sha256": "e2ba21d021784e248bfeea835c85bfe0c26428c1841480f09785b808af6ead61",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2537120,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

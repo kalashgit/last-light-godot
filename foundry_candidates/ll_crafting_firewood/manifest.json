@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_firewood",
+  "source_glb_sha256": "918d854258a08fe020d878d5684250d853b361018f2b9f9ed8a0b64436bfa5dd",
+  "atlas_sha256": "8b56ed9f674fd3b28122863d5c07ff1e83fc4ced6143f7c2640d61c53a1b5660",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2588885,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

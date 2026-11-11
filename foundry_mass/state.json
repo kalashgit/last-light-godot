@@ -20,9 +20,11 @@
     "ll_crafting_corrugated_metal",
     "ll_crafting_duct_tape",
     "ll_crafting_epoxy_tubes",
-    "ll_crafting_fence_slat"
+    "ll_crafting_fence_slat",
+    "ll_crafting_firewood",
+    "ll_crafting_floorboard"
   ],
-  "last_run_id": "42935066846",
+  "last_run_id": "42981944176",
   "golden_approved": false,
-  "remaining": 342
+  "remaining": 340
 }
