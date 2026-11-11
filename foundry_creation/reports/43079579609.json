@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "catalog_sha256": "85acc503a47511b87480a6a3434f2eb99a49f86706e6cb24aa9f3b9b60785875",
+  "total": 512,
+  "completed_before": [
+    "ll_generated_industrial_locker_000",
+    "ll_generated_tool_chest_000",
+    "ll_generated_warehouse_shelf_000",
+    "ll_generated_utility_cabinet_000",
+    "ll_generated_portable_generator_000",
+    "ll_generated_vending_machine_000",
+    "ll_generated_street_dumpster_000",
+    "ll_generated_raised_planter_000",
+    "ll_generated_industrial_locker_001",
+    "ll_generated_tool_chest_001",
+    "ll_generated_warehouse_shelf_001",
+    "ll_generated_utility_cabinet_001",
+    "ll_generated_portable_generator_001",
+    "ll_generated_vending_machine_001",
+    "ll_generated_street_dumpster_001",
+    "ll_generated_raised_planter_001",
+    "ll_generated_industrial_locker_002",
+    "ll_generated_tool_chest_002",
+    "ll_generated_warehouse_shelf_002",
+    "ll_generated_utility_cabinet_002"
+  ],
+  "batch_count": 2,
+  "batch": [
+    {
+      "asset_id": "ll_generated_portable_generator_002",
+      "archetype": "portable_generator",
+      "family": "F08",
+      "seed": 807626424,
+      "blend_sha256": "2b8a7359d820801badb49ed155abd8c7a1394f9a64a0f038ed3762ec36274d95",
+      "glb_sha256": "da3a49b4cc059a17b1c6643cf4c27966af11243e6b55ff524d1616d9d3b169d2",
+      "atlas_sha256": "994f715cc14a79364b670418ae165956276cc465e59c5ef3d386fa696635b582",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    },
+    {
+      "asset_id": "ll_generated_vending_machine_002",
+      "archetype": "vending_machine",
+      "family": "F08",
+      "seed": 2857914659,
+      "blend_sha256": "85136f094bac0612851098f9beae6d47517f9a854b445f4c33c226994f040b0f",
+      "glb_sha256": "b513e78a3e1756b8dc8bcb4cf85e55bede0d330b9ceda2f279bd55768ed67142",
+      "atlas_sha256": "6dfe7a04bd1f5dcfe3aadf26bd88113a41f3b0f39ead66a54fc5de9c21cb99f2",
+      "status": "UNAPPROVED_NEW_EDITABLE_3D_CANDIDATE"
+    }
+  ],
+  "archive_sha256": "f1b41282e48e83b2955e74d0df08cc4d56426725df508b0861d30fbd47786ab9",
+  "archive_size_bytes": 613220,
+  "source_editable": true,
+  "golden_approved": false,
+  "canonical_promoted": false,
+  "gameplay_integrated": false,
+  "release_tag": "foundry-created-43079579609",
+  "release_archive": "foundry_new_sources.zip",
+  "release_state": "DRAFT_DO_NOT_PUBLISH",
+  "run_id": "43079579609"
+}
