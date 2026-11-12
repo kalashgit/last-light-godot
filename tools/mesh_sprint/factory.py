@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-VERSION = 'll-mesh-sprint-0.1.0'
+VERSION = 'll-mesh-sprint-0.2.0-geometry'
 FAMILIES = ('avocado', 'backpack', 'axe', 'armor', 'shelf', 'bottle',
             'barrel', 'crate', 'helmet', 'medkit', 'chair', 'canister')
 IDENT = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,110}\Z')
@@ -37,6 +37,10 @@ COLORS = {
  'wood_light': (153,111,70,255), 'black': (38,43,43,255),
  'leather': (95,58,39,255), 'red': (135,46,47,255), 'white': (197,201,184,255),
  'plastic': (181,175,139,255), 'glass': (110,155,143,240),
+ 'flesh_green':(105,145,55,255),'pit_shadow':(70,82,28,255),
+ 'pit_light':(146,94,56,255),'skin_dark':(25,53,29,255),
+ 'seam':(42,53,46,255),'stitch':(165,168,135,255),
+ 'wood_grain':(114,82,51,255),'wood_dark':(71,48,31,255),
  'olive': (102,104,68,255), 'paint': (70,86,96,255), 'paint_light': (122,130,126,255)
 }
 
@@ -172,16 +176,16 @@ class MeshBuilder:
             j=(i+1)%n;f.extend([[i,j,j+n],[i,j+n,i+n]])
         self.add(material,v,f)
 
-    def transform_variant(self, seed):
+    def transform_variant(self, seed, strength=1.0):
         """Small deterministic, coherent profile/scale variation across ALL parts.
 
         This deliberately creates geometry diversity; it does NOT create distinct
         semantic items or substitute for reference-matched authored recipes.
         """
         rng=np.random.default_rng(seed)
-        sx,sy,sz=rng.uniform(.92,1.08,3)
-        shear=rng.uniform(-.055,.055)
-        bend=rng.uniform(-.03,.03)
+        sx,sy,sz=1.0+(rng.uniform(-.08,.08,3)*strength)
+        shear=rng.uniform(-.055,.055)*strength
+        bend=rng.uniform(-.03,.03)*strength
         for material,meshes in self.groups.items():
             for i,(v,f) in enumerate(meshes):
                 vv=v.copy()
@@ -309,7 +313,35 @@ def compile_parts(b,row):
         if not isinstance(part,dict):raise ValueError('Invalid part')
         op=part.get('op') or part.get('operator')
         mat=part.get('material','steel')
-        if op=='box':b.box(part['location'],part['dimensions'],mat)
+        if op=='superloft':
+            try:
+                from tools.mesh_sprint.quality_geometry import superloft
+            except ImportError:
+                from quality_geometry import superloft
+            superloft(b,mat,part['sections'],n=int(part.get('segments',36)),
+                      exponent=float(part.get('exponent',2.8)),
+                      noise_seed=int(row.get('seed',0)),
+                      center_x=float(part.get('center_x',0.0)))
+        elif op=='ribbon':
+            try:
+                from tools.mesh_sprint.quality_geometry import ribbon
+            except ImportError:
+                from quality_geometry import ribbon
+            ribbon(b,mat,part['points'],part['widths'],
+                   thickness=float(part.get('thickness',.009)))
+        elif op=='beam':
+            try:
+                from tools.mesh_sprint.quality_geometry import beam
+            except ImportError:
+                from quality_geometry import beam
+            beam(b,mat,part['start'],part['end'],float(part['width']),float(part['depth']))
+        elif op=='forge_blade':
+            try:
+                from tools.mesh_sprint.quality_geometry import _head_bevel
+            except ImportError:
+                from quality_geometry import _head_bevel
+            _head_bevel(b,part['x'],part['top_z'],part['bottom_z'],part['thickness'],mat)
+        elif op=='box':b.box(part['location'],part['dimensions'],mat)
         elif op=='ellipsoid':b.ellipsoid(part['location'],part['radii'],mat,
                                        int(part.get('segments',16)),int(part.get('rings',9)),float(part.get('boxiness',1)))
         elif op=='lathe':b.rings(part['profile'],part.get('location',[0,0,0]),mat,int(part.get('segments',16)),
@@ -325,6 +357,11 @@ def normalize(row):
     x['asset_id']=str(x.get('asset_id') or x.get('id') or '').strip()
     if not IDENT.fullmatch(x['asset_id']):raise ValueError('Invalid asset_id')
     x['family']=str(x.get('family') or x.get('geometry_family') or '').strip().lower()
+    if x.get('require_detailed') and x.get('parts'):
+        parts=x['parts'] if isinstance(x['parts'],list) else json.loads(x['parts'])
+        advanced={'superloft','ribbon','beam','forge_blade','lathe','tube','polygon_prism'}
+        if not any(p.get('op',p.get('operator')) in advanced for p in parts if isinstance(p,dict)):
+            raise ValueError('Strict detailed geometry: primitive-only custom recipe rejected')
     if not x.get('parts') and x['family'] not in FAMILIES:raise ValueError(f'Unsupported/unknown family {x["family"]}: recipe required')
     for key in ('seed','variant'):
         x[key]=int(x.get(key) or 0)
@@ -353,14 +390,24 @@ def process_one(args):
         b=MeshBuilder()
         if row.get('parts'): compile_parts(b,row)
         else:
-            create_family(b,row)
-            b.transform_variant(row['seed'])
+            if row['family'] in FAMILIES:
+                try:
+                    from tools.mesh_sprint.quality_geometry import BUILDERS
+                except ImportError:
+                    from quality_geometry import BUILDERS
+                BUILDERS[row['family']](b,seed=row['seed'],variant=row['variant'])
+                b.transform_variant(row['seed'],strength=.06)
+            else:
+                create_family(b,row)
+                b.transform_variant(row['seed'])
         glb,metrics=b.export()
         sha=hashlib.sha256(glb).hexdigest()
         meta={'asset_id':key,'family':row['family'],'recipe_version':row['recipe_version'],
               'factory_version':VERSION,'recipe_sha256':recipe_hash,'sha256':sha,
               'source_reference':str(row.get('source_reference') or ''),
               'technical_qa':'passed','review_state':'generated_candidate',
+              'geometry_tier':('custom_recipe_unreviewed' if row.get('parts') else 'detailed_procedural'),
+              'visual_qa':'not_tested','gameplay_qa':'not_tested',
               'golden_approved':False,'identity_verified':False,**metrics}
         dest.parent.mkdir(parents=True,exist_ok=True);side.parent.mkdir(parents=True,exist_ok=True)
         # Atomic replace survives interruptions, preserves last valid candidate for resume.
@@ -447,11 +494,15 @@ def main(argv=None):
     src.add_argument('--demo',type=int,metavar='N',help='Synthetic throughput benchmark, NOT 2000 unique catalog assets')
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--workers',type=int,default=min(4,max(1,os.cpu_count() or 1)))
+    p.add_argument('--require-detailed',action='store_true',
+                   help='Reject primitive-only custom recipes; no visual approval implied')
     p.add_argument('--seed',type=int,default=17)
     p.add_argument('--budget-seconds',type=int,default=900)
     opts=p.parse_args(argv)
     if opts.demo is not None and not 1<=opts.demo<=100000: p.error('--demo must be 1..100000')
     rows=demo_rows(opts.demo,opts.seed) if opts.demo is not None else load_rows(opts.input)
+    if opts.require_detailed:
+        rows=[{**row,'require_detailed':True} for row in rows]
     report=run(rows,opts.out,opts.workers,opts.budget_seconds)
     print(json.dumps(report,indent=2))
     return 0 if report['failed']==0 else 2
