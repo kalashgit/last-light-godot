@@ -52,7 +52,7 @@ Farming, foraging, fishing, trapping, tree felling, barricading, weather and sea
 
 ## Not built
 
-Driving vehicles, upper floors, NPC survivors, multiplayer, fire spread. These are deliberate omissions for now, not hidden gaps.
+Multiplayer; towing; per-part vehicle repair beyond engine/battery/tyres wear; windows and furniture variety on upper floors (they are one open room per house); survivors with schedules, bases or factions (they wait, follow, fight, trade once, or attack); livestock other than hens; hunting animals in the open. See [COVERAGE_MATRIX.md](COVERAGE_MATRIX.md) for the system-by-system status.
 
 ## Not verified
 

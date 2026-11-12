@@ -69,7 +69,7 @@ Measured downtown at 0.9× zoom on the software rasteriser used for tests: ~260 
 
 Files are Godot `Variant` blobs, ZSTD-compressed, written to a temp file and renamed. Tile arrays (`g…r`) are only stored for chunks whose tiles were actually modified; everything else is regenerated from the seed.
 
-**Schema version** is `SaveGame.SCHEMA` (currently 3). `SaveGame.migrate()` upgrades older metadata in place: v1 → v2 added the persistent alarm list and RNG state; v2 → v3 added traits, body weight, mood, the sandbox options, the flyover schedule and tutorial state (all default on load; migrated saves get no flyover and no tutorial).
+**Schema version** is `SaveGame.SCHEMA` (currently 4). `SaveGame.migrate()` upgrades older metadata in place: v1 → v2 added the persistent alarm list and RNG state; v2 → v3 added traits, body weight, mood, the sandbox options, the flyover schedule and tutorial state (all default on load; migrated saves get no flyover and no tutorial); v3 → v4 added the driven vehicle, burning tiles, survivors (per chunk), lives-in-this-world, clothing slots and the 17-part body. Every write goes to a temp file, is read back, and the previous file is kept as `.bak`; a file that fails to parse is replaced from its backup on load.
 
 Cellars are stored like any chunk: they live at the same x and `y + World.UNDER` (131072 tiles), i.e. chunk row `cy + 8192`. Numeric ids in `Defs` (ground, wall materials, objects) and item id strings are part of the format: append, never renumber. The V3.6 prototype had no save file, so there is nothing to migrate from it.
 

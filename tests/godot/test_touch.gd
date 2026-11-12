@@ -186,6 +186,67 @@ func _process(_dt: float) -> bool:
 				ok(main.panels.current == "craft" and p.action.is_empty(), "the drag did not trigger the row underneath")
 			main.panels.close()
 		200:
+			touch(1, main.hud._btn["speed"][0], true)
+			touch(1, main.hud._btn["speed"][0], false)
+		203:
+			ok(sim.speed == 2, "the time button fast-forwards (x%d)" % sim.speed)
+			var h0: float = sim.hour
+			main._play(1.0 / 30.0)
+			ok(sim.hour - h0 > 0.0, "and the clock runs")
+			var zt: Zombie = sim.zombies.spawn(p.pos + Vector2(2, 0), 0)
+			zt.state = Zombie.CHASE
+			sim.settings["god"] = true
+		205:
+			ok(sim.speed == 1, "fast-forward drops out when something is chasing you")
+			sim.zombies.list.clear()
+			sim.noises.clear()
+			touch(1, main.hud._btn["call"][0], true)
+			touch(1, main.hud._btn["call"][0], false)
+		207:
+			ok(sim.noises.size() > 0, "CALL makes a noise the infected can hear")
+			ok(main.hud._btn.has("shove"), "a SHOVE button appears while a weapon is drawn")
+			p.attack_cd = 0.0
+			p.swing_t = 0.0
+			if main.hud._btn.has("shove"):
+				touch(1, main.hud._btn["shove"][0], true)
+				touch(1, main.hud._btn["shove"][0], false)
+		209:
+			ok(p.force_shove and p.swing_t > 0.0, "SHOVE starts a shove, not a weapon swing")
+			Inv.add_new(p.inv, "pistol", 1)
+		214:
+			var hi := -1
+			for k in range(main.hud._hot.size()):
+				if main.hud._hot[k]["id"] == "pistol": hi = k
+			ok(hi >= 0, "weapons carried show up in the hotbar (%d slots)" % main.hud._hot.size())
+			if hi >= 0:
+				touch(1, main.hud._btn["hot%d" % hi][0], true)
+				touch(1, main.hud._btn["hot%d" % hi][0], false)
+		216:
+			ok(not p.weapon.is_empty() and p.weapon["id"] == "pistol", "tapping a hotbar slot draws that weapon")
+			for id in ["inv", "char", "craft", "map", "pause"]:
+				main.open_panel(id)
+				var opened: bool = main.panels.is_open() and main.panels.current == id
+				main.panels.close()
+				ok(opened and not main.panels.is_open(), "the %s panel opens and closes" % id)
+			var v := Vehicle.new()
+			v.sim = sim
+			v.pos = p.pos
+			v.ent = {"k": "car", "fuel": 5.0, "eng": 0.8, "bat": 1, "key": 1, "hot": 0, "tire": 1.0}
+			sim.vehicle = v
+		219:
+			ok(not main.hud._btn.has("run") and not main.hud._btn.has("shove"), "on-foot buttons are hidden while driving")
+			touch(1, main.hud._btn["attack"][0], true)
+		222:
+			ok(sim.brake, "holding the big button brakes")
+			touch(1, main.hud._btn["attack"][0], false)
+			sim.log.clear()
+			touch(2, main.hud._btn["interact"][0], true)
+			touch(2, main.hud._btn["interact"][0], false)
+		225:
+			ok(not sim.brake, "releasing it lets go of the brake")
+			ok(sim.vehicle == null or sim.log.size() > 0, "EXIT gets out, or says why it cannot")
+			sim.vehicle = null
+		228:
 			print("")
 			print("RESULT: %d checks, %d failed" % [checks, fails])
 			SaveGame.delete(main.SLOT)

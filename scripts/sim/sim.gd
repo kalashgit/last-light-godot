@@ -361,6 +361,20 @@ func new_survivor(occupation: String, trait_list: Array = [], start_kind: String
 			zombies.list.erase(zz)
 	say("Day %d. Someone else is still alive." % day(), Color(0.9, 0.85, 0.7))
 
+## is anything hunting the survivor right now? (fast-forward drops back to normal speed)
+func threatened() -> bool:
+	if not burning.is_empty() and player.alive:
+		for k in burning.keys():
+			if Vector2(k.x + 0.5, k.y + 0.5).distance_squared_to(player.pos) < 25.0:
+				return true
+	for z in zombies.list:
+		if (z.state == Zombie.CHASE or z.state == Zombie.ATTACK or z.state == Zombie.THUMP) and z.pos.distance_squared_to(player.pos) < 196.0:
+			return true
+	for n in npcs.list:
+		if n.state == NpcSim.HOSTILE and n.pos.distance_squared_to(player.pos) < 144.0:
+			return true
+	return false
+
 # ------------------------------------------------------------------ main tick
 func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false) -> void:
 	var dh: float = dt * time_scale * 24.0 / (float(settings["day_min"]) * 60.0)
@@ -721,7 +735,7 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 			"trap":
 				if String(e.get("caught", "")) == "":
 					# snares work best far from people and with bait
-					var chance: float = (0.03 + 0.012 * player.skill_level("trapping")) * dh
+					var chance: float = (0.03 + 0.012 * player.skill_level("trapping") + 0.006 * player.skill_level("tracking")) * dh
 					if e.get("bait", 0) == 1: chance *= 2.2
 					if c.zone >= 2: chance *= 0.25
 					if not catch_up and Vector2(x + 0.5, y + 0.5).distance_to(player.pos) < 10.0: chance *= 0.15

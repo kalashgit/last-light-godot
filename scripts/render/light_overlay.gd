@@ -71,6 +71,8 @@ func update(sim: Sim, view: WorldView, dt: float) -> void:
 	var amb: Color = ambient_for(sim)
 	if sim.underground():
 		amb = Color(0.07, 0.075, 0.09)
+	elif World.level(sim.player.pos.y) == 2:
+		amb = amb * 0.8
 	else:
 		# sandbox: how dark the nights get
 		var dk: float = float(sim.settings.get("dark", 1.0))
@@ -94,6 +96,11 @@ func update(sim: Sim, view: WorldView, dt: float) -> void:
 			var fs: Vector2 = view.world_to_screen(fp.x, fp.y, 10.0)
 			pos.append(Vector3(fs.x, fs.y, 330.0 * z))
 			col.append(Vector3(0.95, 0.92, 0.78) * dark)
+		if sim.vehicle != null and sim.vehicle.lights:
+			var hp: Vector2 = sim.vehicle.pos + Vehicle.DIRS[sim.vehicle.heading] * 6.0
+			var hs: Vector2 = view.world_to_screen(hp.x, hp.y, 10.0)
+			pos.append(Vector3(hs.x, hs.y, 420.0 * z))
+			col.append(Vector3(1.0, 0.96, 0.82) * dark)
 		for f in sim.fires:
 			if pos.size() >= MAX_LIGHTS: break
 			var s2: Vector2 = view.world_to_screen(f.x + 0.5, f.y + 0.5, 10.0)
@@ -123,4 +130,4 @@ func update(sim: Sim, view: WorldView, dt: float) -> void:
 	mat.set_shader_parameter("lights", pos)
 	mat.set_shader_parameter("colors", col)
 	mat.set_shader_parameter("screen_size", size)
-	fog.color.a = 0.0 if sim.underground() else float(sim.weather["fog"]) * 0.42
+	fog.color.a = 0.0 if World.level(sim.player.pos.y) != 0 else float(sim.weather["fog"]) * 0.42

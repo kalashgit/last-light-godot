@@ -26,6 +26,15 @@ var _stamp := 0
 var _wall_tints: Array = []
 var _cam_pos := Vector2.ZERO
 var _roof_uv := PackedVector2Array()
+var _nviews: Dictionary = {}      # npc id -> EntityView
+var _vparts: Array = []           # CarPart nodes for the driven car
+
+class CarPart extends Node2D:
+	var h := -1
+	var tint := Color.WHITE
+	func _draw() -> void:
+		if h >= 0:
+			Art.world.draw(self, h, Vector2.ZERO, tint)
 
 func _ready() -> void:
 	for m in Defs.WALL_MATS:
@@ -75,6 +84,14 @@ func clear() -> void:
 	for id in _zviews.keys():
 		(_zviews[id] as Node).queue_free()
 	_zviews.clear()
+	for id in _nviews.keys():
+		(_nviews[id] as Node).queue_free()
+	_nviews.clear()
+	for cp in _vparts:
+		(cp as Node).queue_free()
+	_vparts.clear()
+	if fx != null:
+		fx.flames = []
 	cut_bld = 0
 
 # ------------------------------------------------------------------ chunk nodes
@@ -238,6 +255,11 @@ func sync(dt: float) -> void:
 	_ghost.scale = _pview.scale
 	_ghost.look = p.look
 	_ghost.set_frame(p.anim, p.anim_t, p.dir8, prog, wl, 0.0)
+	_pview.visible = sim.vehicle == null
+	_ghost.visible = sim.vehicle == null
+	_sync_vehicle()
+	_sync_npcs()
+	fx.flames = sim.burning.keys()
 	# zombies
 	var vr2: float = VIEW_RADIUS * VIEW_RADIUS
 	for z in sim.zombies.list:
@@ -295,6 +317,61 @@ func sync(dt: float) -> void:
 	cam.zoom = Vector2(zoom, zoom)
 	_consume_fx()
 
+func _sync_vehicle() -> void:
+	var v: Vehicle = sim.vehicle
+	if v == null:
+		for cp in _vparts:
+			(cp as CarPart).visible = false
+		return
+	while _vparts.size() < 8:
+		var n := CarPart.new()
+		n.z_as_relative = false
+		_ents.add_child(n)
+		_vparts.append(n)
+	var s: Vector2 = v.size()
+	var a: Vector2 = v.anchor_f()
+	var tint: Color = CAR_COLORS[Rng.h2(v.tint_key.x, v.tint_key.y, 71) % CAR_COLORS.size()]
+	var k := 0
+	for j in range(int(s.y)):
+		for i in range(int(s.x)):
+			var cp: CarPart = _vparts[k]
+			var h: int = Art.obj_spr.get(Defs.ocell(Defs.O_CAR, v.heading, k), -1)
+			if cp.h != h or cp.tint != tint:
+				cp.h = h
+				cp.tint = tint
+				cp.queue_redraw()
+			cp.visible = true
+			cp.position = Iso.to_screen(a.x + i, a.y + j)
+			cp.z_index = _z(floori(a.x + i + 0.5) + floori(a.y + j + 0.5), 1)
+			k += 1
+
+func _sync_npcs() -> void:
+	var p: Player = sim.player
+	var vr2: float = VIEW_RADIUS * VIEW_RADIUS
+	for n in sim.npcs.list:
+		if n.pos.distance_squared_to(p.pos) > vr2:
+			continue
+		var v: EntityView = _nviews.get(n.id)
+		if v == null:
+			v = EntityView.new()
+			v.z_as_relative = false
+			v.look = n.look
+			_ents.add_child(v)
+			_nviews[n.id] = v
+		v.stamp = _stamp
+		v.position = Iso.to_screen(n.pos.x, n.pos.y)
+		v.z_index = _z(floori(n.pos.x) + floori(n.pos.y), 1)
+		var np := -1.0
+		if n.swing > 0.0:
+			np = clampf(1.0 - n.swing / 0.4, 0.0, 0.99)
+		v.modulate = Color(1.0, 0.8, 0.8) if n.state == NpcSim.HOSTILE else Color.WHITE
+		v.set_frame(n.anim, n.anim_t + n.id * 0.41, n.d8, np, 2 if n.state == NpcSim.HOSTILE else 1, n.flash)
+	for id in _nviews.keys():
+		var v2: EntityView = _nviews[id]
+		if v2.stamp != _stamp:
+			v2.queue_free()
+			_nviews.erase(id)
+
 func _consume_fx() -> void:
 	for e in sim.fx:
 		var sp: Vector2 = Iso.to_screen((e["p"] as Vector2).x, (e["p"] as Vector2).y) + Vector2(0, -24)
@@ -321,6 +398,13 @@ func _consume_fx() -> void:
 				shake = maxf(shake, 0.4)
 			"levelup":
 				fx.note(sp + Vector2(0, -30), "SKILL UP", Color(0.6, 1.0, 0.6))
+			"fire":
+				fx.burst(sp + Vector2(0, 14), 3, Color(1.0, 0.62, 0.2, 0.9), 26.0, 0.7, 2.5, 70.0)
+				fx.burst(sp, 2, Color(0.2, 0.2, 0.2, 0.55), 18.0, 1.2, 4.0, 110.0)
+			"engine":
+				fx.burst(sp + Vector2(0, 18), 2, Color(0.35, 0.35, 0.35, 0.5), 16.0, 0.6, 3.0, 30.0)
+			"call":
+				fx.note(sp + Vector2(0, -30), "!", Color(1.0, 0.9, 0.6))
 	# note: sim.fx is cleared by Main after audio has also consumed it
 
 func screen_to_world(screen_pos: Vector2) -> Vector2:

@@ -51,3 +51,18 @@ Turn on **II → Performance overlay** while testing; it shows FPS, frame and si
 
 ## 7. Audio
 - [ ] Footsteps, hits, doors, glass, groans and gunshots are audible and not harsh. (Generated sounds have only been checked for errors, never listened to.)
+
+## 8. Added in the final pass (vehicles, fire, survivors, upper floors)
+- [ ] Hotbar slots under the top buttons draw the tapped weapon; they do not cover any text you need.
+- [ ] SHOVE (with a weapon out) pushes without swinging; CALL whispers while sneaking and shouts otherwise.
+- [ ] The 1x button cycles 2x / 4x and snaps back to 1x when something chases you.
+- [ ] USE on a car → Drive (or Hotwire / Install battery / Refuel first). The HUD switches to BRAKE / EXIT with speed and fuel.
+- [ ] Steering with the stick feels controllable: pushing along the car's heading accelerates, across it turns a quarter, against it reverses. Note how it feels: ____
+- [ ] The car sorts correctly in front of / behind buildings and trees while moving.
+- [ ] Hitting infected knocks them down; hitting a wall stops the car and hurts the engine. EXIT refuses while moving.
+- [ ] Headlights light the road at night. Engine sound is audible and not unpleasant.
+- [ ] Set a fire (hold USE on a corpse with a lighter → Burn): flames animate, spread to grass/furniture, light the night, go out on their own. Frame rate with ~50 burning tiles: ____
+- [ ] Find a house with stairs: Go upstairs / Go downstairs both work; the upper room is visible (roof cut away) and walkable.
+- [ ] Meet a survivor (some houses): Talk, "Come with me", "Wait here", Give food. They follow through doors and fight beside you.
+- [ ] Die → "Wake up as someone else in this world" starts a new survivor; the old body/gear can be found again.
+- [ ] Farm: the chicken coop gives eggs; the well gives water after the mains fail.

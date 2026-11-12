@@ -30,7 +30,7 @@ var _ng_tab := "who"
 var _ng_traits: Array = []
 var _ng_start := 0
 var _ng_look: Array = [0, 2, 1, 0]
-var _ng_sand := {"zombies": 1, "zspeed": 1, "respawn": 1, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
+var _ng_sand := {"sprinters": 0, "zombies": 1, "zspeed": 1, "respawn": 1, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
 	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1}
 var _confirm_new := false
 var _relayout_frames := 0
@@ -313,6 +313,7 @@ func _build_newgame() -> void:
 			vb.add_child(hb0)
 		add.call("Infected population", "zombies", ["Sparse", "Normal", "Dense", "Overrun"])
 		add.call("Infected speed", "zspeed", ["Slow", "Normal", "Fast"])
+		add.call("Sprinters among them", "sprinters", ["None", "A few", "Many"])
 		add.call("Infected return to cleared areas", "respawn", ["Never", "Slowly"])
 		add.call("The Grey Fever (bites)", "infection", ["Always fatal", "Disabled"])
 		add.call("Loot", "loot", ["Scarce", "Normal", "Plentiful"])
@@ -358,7 +359,7 @@ func _build_newgame() -> void:
 			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [24.0, 48.0, 96.0][int(S2["day"])],
 			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
 			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
-			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1,
+			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])],
 		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start], _ng_look.duplicate()), 64)
 	go.size_flags_stretch_ratio = 2.0
 	hb2.add_child(go)
@@ -894,7 +895,10 @@ func _build_death() -> void:
 	var l: Label = UiKit.label("%s.\n\nYou survived %d days and %d hours.\nInfected killed: %d\nOccupation: %s" % [p.death_cause, int(hrs / 24.0), int(fposmod(hrs, 24.0)), p.kills, Player.OCCUPATIONS[p.occupation]["n"]], 20)
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.add_child(l)
-	body.add_child(UiKit.button("New Survivor", func():
+	body.add_child(UiKit.button("Wake up as someone else in this world", func():
+		main.respawn(), 66))
+	body.add_child(UiKit.label("The world stays as you left it. What you carried is still on your body — if you can reach it.", 15, UiKit.DIM))
+	body.add_child(UiKit.button("New World", func():
 		SaveGame.delete(main.SLOT)
 		main.state = "title"
 		open("newgame"), 66))

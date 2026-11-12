@@ -5,7 +5,7 @@ extends RefCounted
 ##   r_<x>_<y>.sav       chunk records grouped into 32x32-chunk regions
 ## Only chunks that differ from the deterministic generator output are stored.
 
-const SCHEMA := 3
+const SCHEMA := 4
 const REGION_SHIFT := 5
 
 static var _cache: Dictionary = {}      # region key -> Dictionary of chunk records
@@ -153,6 +153,10 @@ static func migrate(meta: Dictionary) -> Dictionary:
 		st["flyover"] = 0
 		meta["settings"] = st
 		meta["v"] = 3
+	if int(meta["v"]) == 3:
+		# v4 adds the driven vehicle, burning tiles, survivors, the count of lives in this world,
+		# clothing slots and the 17-part body. All default on load; old wounds are remapped by Player.
+		meta["v"] = 4
 	if int(meta["v"]) > SCHEMA:
 		return {}
 	return meta

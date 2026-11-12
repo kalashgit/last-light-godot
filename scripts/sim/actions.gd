@@ -69,6 +69,9 @@ static func targets(sim: Sim) -> Array:
 				var d2: float = cpos.distance_to(p.pos)
 				if d2 < 1.3:
 					out.append({"kind": "corpse", "corpse": cp, "x": floori(cpos.x), "y": floori(cpos.y), "score": 0.6 - d2 * 0.3 + f.dot((cpos - p.pos).normalized()) * 0.3})
+	var nn = sim.npcs.nearest(p.pos, 1.7)
+	if nn != null and nn.state != NpcSim.HOSTILE:
+		out.append({"kind": "npc", "npc": nn, "x": floori(nn.pos.x), "y": floori(nn.pos.y), "score": 0.75 + f.dot((nn.pos - p.pos).normalized()) * 0.5})
 	out.sort_custom(func(a, b): return float(a["score"]) > float(b["score"]))
 	return out
 
@@ -88,6 +91,7 @@ static func target_name(sim: Sim, t: Dictionary) -> String:
 		"soil": return "Tilled soil"
 		"sand": return "Sand"
 		"corpse": return "Corpse"
+		"npc": return String(t["npc"].name)
 	return ""
 
 # ------------------------------------------------------------------ options
@@ -103,6 +107,7 @@ static func options(sim: Sim, t: Dictionary) -> Array:
 		"water": return _water_options(sim, t)
 		"soil": return _soil_options(sim, t)
 		"sand": return [_opt("Dig sand", func(): _dig(sim, "sand"))]
+		"npc": return sim.npcs.options(t["npc"])
 	return []
 
 ## press of the INTERACT button. full_menu = long press.
@@ -112,6 +117,9 @@ static func interact(sim: Sim, full_menu: bool = false) -> void:
 		return
 	if p.sleeping:
 		sim.wake("You get up.")
+		return
+	if sim.vehicle != null:
+		exit_vehicle(sim)
 		return
 	if not p.dragging.is_empty():
 		_drop_corpse(sim)
@@ -367,6 +375,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 						p.add_xp("foraging", 8.0))))
 			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
 		"car":
+			out.append_array(_car_options(sim, a.x, a.y))
 			out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
 			out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
 		"gas_pump":
@@ -395,6 +404,13 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		"well":
 			out.append(_opt("Draw water and drink", func(): _drink_source(sim, false, 999)))
 			out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
+		"stairs":
+			if World.level(p.pos.y) == 0:
+				out.append(_opt("Go upstairs", func(): _use_stairs(sim, World.UNDER * 2, "You climb to the upper floor.")))
+			else:
+				out.append(_opt("Go downstairs", func(): _use_stairs(sim, -World.UNDER * 2, "You come back down.")))
+		"coop":
+			out.append_array(_coop_options(sim, x, y))
 		"hatch":
 			out.append(_opt("Climb down to the cellar", func(): _use_stairs(sim, World.UNDER)))
 		"ladder":
@@ -518,7 +534,159 @@ static func _corpse_options(sim: Sim, t: Dictionary) -> Array:
 				sim.say("%d bodies burn. Keep clear of the flames." % n, Color(1.0, 0.8, 0.5)))))
 	return out
 
-static func _use_stairs(sim: Sim, dy: int) -> void:
+# ------------------------------------------------------------------ vehicles
+static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
+	var p: Player = sim.player
+	var e: Dictionary = Vehicle.car_ent(sim, ax, ay)
+	var out: Array = []
+	var can_start: bool = int(e.get("key", 0)) == 1 or int(e.get("hot", 0)) == 1
+	if can_start:
+		out.append(_opt("Drive", func():
+			if int(e.get("bat", 0)) == 0:
+				sim.say("You turn the key. Nothing — the battery is dead or missing.", Color(0.9, 0.8, 0.6))
+				return
+			if float(e.get("eng", 0.0)) <= 0.05:
+				sim.say("The engine is wrecked. It needs repair before it will turn over.", Color(0.9, 0.8, 0.6))
+				return
+			p.cancel_action()
+			sim.vehicle = Vehicle.enter(sim, ax, ay)
+			sim.brake = false
+			sim.noise(p.pos, 14.0)
+			sim.emit_fx("engine", p.pos)
+			if float(e.get("fuel", 0.0)) <= 0.0:
+				sim.say("You get in. The tank is empty.", Color(0.9, 0.8, 0.6))
+			else:
+				sim.say("The engine catches. Steer with the stick; USE to get out.", Color(0.75, 0.9, 0.7))))
+	else:
+		out.append(_opt("Hotwire (no key)", func(): _hotwire(sim, e)))
+	if int(e.get("bat", 0)) == 0 and Inv.count(p.inv, "car_battery") > 0:
+		out.append(_opt("Install car battery", func():
+			p.start_action("Fitting battery", 5.0, func():
+				var b: Dictionary = Inv.find(p.inv, "car_battery")
+				if b.is_empty(): return
+				Inv.split(p.inv, b, 1)
+				e["bat"] = 1
+				p.add_xp("mechanics", 10.0)
+				sim.say("Battery connected.", Color(0.75, 0.9, 0.7)))))
+	var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
+	if not can.is_empty() and int(can.get("u", 0)) > 0 and float(e.get("fuel", 0.0)) < Vehicle.TANK - 0.5:
+		out.append(_opt("Refuel from gas can", func():
+			p.start_action("Refuelling", 4.0, func():
+				var n: float = minf(float(int(can.get("u", 0))), Vehicle.TANK - float(e.get("fuel", 0.0)))
+				can["u"] = int(can.get("u", 0)) - int(ceil(n))
+				e["fuel"] = float(e.get("fuel", 0.0)) + n
+				sim.say("Tank: %d / %d" % [int(float(e["fuel"])), int(Vehicle.TANK)], Color(0.75, 0.9, 0.7)))))
+	if float(e.get("eng", 1.0)) < 0.95 and Inv.has_tag(p.inv, "wrench") and Inv.count(p.inv, "scrap_metal") > 0:
+		out.append(_opt("Repair engine (1 scrap metal)", func():
+			p.start_action("Repairing engine", 9.0 - p.skill_level("mechanics") * 0.5, func():
+				var sm: Dictionary = Inv.find(p.inv, "scrap_metal")
+				if sm.is_empty(): return
+				Inv.split(p.inv, sm, 1)
+				e["eng"] = minf(1.0, float(e.get("eng", 0.0)) + 0.14 + 0.03 * p.skill_level("mechanics"))
+				p.add_xp("mechanics", 22.0)
+				sim.noise(p.pos, 8.0)
+				sim.emit_fx("build", p.pos)
+				sim.say("Engine condition: %d%%" % int(float(e["eng"]) * 100.0), Color(0.75, 0.9, 0.7)))))
+	out.append(_opt("Look it over", func():
+		sim.say("Fuel %d/%d · engine %d%% · tyres %d%% · battery %s · %s" % [int(float(e.get("fuel", 0.0))), int(Vehicle.TANK), int(float(e.get("eng", 0.0)) * 100.0),
+			int(float(e.get("tire", 1.0)) * 100.0), "ok" if int(e.get("bat", 0)) == 1 else "dead", "key in the ignition" if int(e.get("key", 0)) == 1 else ("hotwired" if int(e.get("hot", 0)) == 1 else "no key")], Color(0.85, 0.88, 0.8))))
+	return out
+
+static func _hotwire(sim: Sim, e: Dictionary) -> void:
+	var p: Player = sim.player
+	var skilled: bool = p.occupation == "burglar" or (p.skill_level("mechanics") >= 2 and p.skill_level("electrical") >= 1)
+	if not skilled and not Inv.has_tag(p.inv, "screwdriver"):
+		sim.say("Without Mechanics 2 and Electrical 1 you would need at least a screwdriver to try.", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Hotwiring", 6.0 if skilled else 12.0, func():
+		var chance: float = 0.7 + 0.05 * p.skill_level("electrical") if skilled else 0.18
+		sim.noise(p.pos, 7.0)
+		p.add_xp("electrical", 12.0)
+		if randf() < chance:
+			e["hot"] = 1
+			sim.say("The dash lights flicker on. It will start now.", Color(0.75, 0.9, 0.7))
+		else:
+			sim.say("Sparks, and nothing. Try again.", Color(0.9, 0.8, 0.6)))
+
+static func exit_vehicle(sim: Sim) -> bool:
+	var v: Vehicle = sim.vehicle
+	var p: Player = sim.player
+	if v == null:
+		return false
+	if absf(v.speed) > 1.2:
+		sim.say("Stop the car first (BRAKE)", Color(0.9, 0.8, 0.6))
+		return false
+	if not v.park():
+		sim.say("No room to park here — roll forward a little", Color(0.9, 0.8, 0.6))
+		return false
+	sim.vehicle = null
+	sim.brake = false
+	# step out on whichever side is free
+	var side: Vector2 = Vector2(Vehicle.DIRS[v.heading].y, -Vehicle.DIRS[v.heading].x)
+	var half: float = 1.0 + 0.6
+	for sgn in [1.0, -1.0]:
+		for along in [0.0, 1.0, -1.0, 1.6, -1.6]:
+			var t: Vector2 = v.pos + side * half * sgn + Vehicle.DIRS[v.heading] * along
+			t = Vector2(floorf(t.x) + 0.5, floorf(t.y) + 0.5)
+			if not sim.world.blocked(t.x, t.y, Player.R):
+				p.pos = t
+				sim.emit_fx("door", p.pos)
+				sim.say("You get out.", Color(0.8, 0.85, 0.9))
+				return true
+	# boxed in on both sides: climb out over the bonnet
+	var f: Vector2 = v.pos + Vehicle.DIRS[v.heading] * 2.6
+	p.pos = Vector2(floorf(f.x) + 0.5, floorf(f.y) + 0.5)
+	return true
+
+# ------------------------------------------------------------------ animals
+static func _coop_options(sim: Sim, x: int, y: int) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var e: Dictionary = w.ent(x, y)
+	if e.is_empty():
+		var hv: int = Rng.h2(x, y, sim.seed_v + 61)
+		e = {"k": "coop", "hens": 2 + hv % 3, "eggs": float((hv >> 4) % 4), "fed": 30.0, "starve": 0.0}
+		w.set_ent(x, y, e)
+	var out: Array = []
+	var hens: int = int(e.get("hens", 0))
+	var eggs: int = int(float(e.get("eggs", 0.0)))
+	out.append(_opt("Collect eggs (%d)" % eggs, func():
+		if eggs <= 0:
+			sim.say("No eggs yet. %d hens, %s." % [hens, "fed" if float(e.get("fed", 0.0)) > 0.0 else "hungry"], Color(0.85, 0.85, 0.75))
+			return
+		p.start_action("Collecting eggs", 2.5, func():
+			Inv.add_new(p.inv, "egg", eggs, sim.hour)
+			e["eggs"] = float(e.get("eggs", 0.0)) - float(eggs)
+			p.add_xp("animal_care", 6.0 * eggs)
+			sim.say("%d eggs." % eggs, Color(0.75, 0.9, 0.7)))))
+	var feed: Dictionary = {}
+	for it in p.inv:
+		if String(Items.def(it["id"]).get("cat", "")) == "seed" or String(it["id"]) == "canned_corn" or String(it["id"]) == "cabbage":
+			feed = it
+			break
+	if hens > 0 and not feed.is_empty():
+		out.append(_opt("Feed the hens (%s)" % Items.def(feed["id"])["n"], func():
+			Inv.split(p.inv, feed, 1)
+			e["fed"] = minf(240.0, float(e.get("fed", 0.0)) + 60.0 + 6.0 * p.skill_level("animal_care"))
+			e["starve"] = 0.0
+			p.add_xp("animal_care", 10.0)
+			sim.say("The hens crowd the feed. Good for about %d days." % int(float(e["fed"]) / 24.0), Color(0.75, 0.9, 0.7))))
+	if hens > 0:
+		out.append(_opt("Take a hen for the pot", func():
+			if not Inv.has_tag(p.inv, "knife"):
+				sim.say("You need a knife", Color(0.9, 0.8, 0.6))
+				return
+			p.start_action("Butchering", 6.0 - p.skill_level("butchering") * 0.3, func():
+				e["hens"] = int(e.get("hens", 0)) - 1
+				Inv.add_new(p.inv, "raw_chicken", 1 + (1 if p.skill_level("butchering") >= 3 else 0), sim.hour)
+				p.add_xp("butchering", 25.0)
+				sim.noise(p.pos, 6.0)
+				sim.say("One less hen.", Color(0.85, 0.85, 0.75)))))
+	out.append(_opt("Look in", func():
+		sim.say("%d hens, %d eggs, feed for %d hours." % [hens, eggs, int(maxf(0.0, float(e.get("fed", 0.0))))], Color(0.85, 0.88, 0.8))))
+	return out
+
+static func _use_stairs(sim: Sim, dy: int, msg: String = "") -> void:
 	var p: Player = sim.player
 	p.start_action("Climbing", 1.6, func():
 		var dest := Vector2(p.pos.x, p.pos.y + dy)
@@ -533,7 +701,11 @@ static func _use_stairs(sim: Sim, dy: int) -> void:
 		p.pos = t
 		sim._process_world_events()
 		sim.emit_fx("step", p.pos)
-		sim.say("You climb down into the dark." if dy > 0 else "You climb back up.", Color(0.8, 0.85, 0.9)))
+		for n in sim.npcs.list:
+			if n.state == NpcSim.FOLLOW and n.pos.distance_to(Vector2(t.x, t.y - dy)) < 6.0:
+				n.pos = t
+				n.path = PackedVector2Array()
+		sim.say(msg if msg != "" else ("You climb down into the dark." if dy > 0 else "You climb back up."), Color(0.8, 0.85, 0.9)))
 
 static func _salvage_car(sim: Sim, ax: int, ay: int) -> void:
 	var p: Player = sim.player

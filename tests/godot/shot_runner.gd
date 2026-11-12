@@ -226,10 +226,38 @@ func _process(_dt: float) -> bool:
 			main.view.zoom = 1.1
 		860: shot("24_overgrown_after_ten_weeks")
 		862:
+			# a car on the road, a survivor beside it, and a fire in the verge
+			sim.hour = 24.0 * 70.0 + 20.5
+			var wv: World = sim.world
+			var ox: int = floori(p.pos.x)
+			var oy: int = floori(p.pos.y)
+			for yy in range(oy - 5, oy + 9):
+				for xx in range(ox - 5, ox + 7):
+					if wv.obj(xx, yy) != 0: wv.set_obj(xx, yy, 0)
+					wv.set_wall(xx, yy, 0, 0)
+					wv.set_wall(xx, yy, 1, 0)
+			for jj in range(4):
+				for ii in range(2):
+					wv.set_obj(ox + 1 + ii, oy + jj, Defs.ocell(Defs.O_CAR, 0, jj * 2 + ii))
+			var ce: Dictionary = Vehicle.car_ent(sim, ox + 1, oy)
+			ce["key"] = 1; ce["bat"] = 1; ce["fuel"] = 7.0; ce["eng"] = 0.9
+			for k2 in range(3):
+				wv.set_obj(ox - 3, oy + k2, Defs.ocell(Defs.O_BOOKSHELF, 0, 0))
+				sim.ignite(ox - 3, oy + k2, 3.0)
+			sim.npcs.list.clear()
+			var nn = sim.npcs.spawn(Vector2(ox + 4.5, oy + 2.5), false)
+			nn.state = NpcSim.FOLLOW
+			sim.vehicle = Vehicle.enter(sim, ox + 1, oy)
+			main.view.zoom = 1.6
+		875: shot("25_driving_fire_survivor_dusk")
+		877:
+			sim.burning.clear()
+			sim.fires.clear()
+			Actions.exit_vehicle(sim)
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		880: shot("20_death")
-		882:
+		895: shot("20_death")
+		897:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

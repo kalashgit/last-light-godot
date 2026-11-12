@@ -33,6 +33,7 @@ var _target := ""
 var _target_t := 0.0
 var _fps_t := 0.0
 var _frame_ms := 0.0
+var _hot: Array = []              # quick-slot weapons shown in the hotbar
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -56,13 +57,28 @@ func _layout() -> void:
 	_btn.clear()
 	_btn["attack"] = [Vector2(r - 86, b - 100), 62.0]
 	_btn["interact"] = [Vector2(r - 214, b - 78), 50.0]
-	_btn["run"] = [Vector2(r - 66, b - 230), 40.0]
-	_btn["sneak"] = [Vector2(r - 168, b - 198), 40.0]
 	var p: Player = sim.player
-	if not Inv.find(p.inv, "flashlight").is_empty() or not Inv.find(p.inv, "candle").is_empty():
-		_btn["light"] = [Vector2(r - 262, b - 176), 32.0]
-	if p.weapon_def().has("gun"):
-		_btn["reload"] = [Vector2(r - 300, b - 64), 32.0]
+	_hot.clear()
+	if sim.vehicle == null:
+		_btn["run"] = [Vector2(r - 66, b - 230), 40.0]
+		_btn["sneak"] = [Vector2(r - 168, b - 198), 40.0]
+		if not Inv.find(p.inv, "flashlight").is_empty() or not Inv.find(p.inv, "candle").is_empty():
+			_btn["light"] = [Vector2(r - 262, b - 176), 32.0]
+		if p.weapon_def().has("gun"):
+			_btn["reload"] = [Vector2(r - 300, b - 64), 32.0]
+		if not p.weapon_def().is_empty():
+			_btn["shove"] = [Vector2(r - 52, b - 318), 34.0]
+		_btn["call"] = [Vector2(r - 136, b - 290), 30.0]
+		# hotbar: the first four weapons carried, one tap to draw
+		for it in p.inv:
+			var idf: Dictionary = Items.def(it["id"])
+			if idf.has("wpn") or idf.has("gun"):
+				_hot.append(it)
+				if _hot.size() >= 4:
+					break
+		for hi in range(_hot.size()):
+			_btn["hot%d" % hi] = [Vector2(r - 104 - hi * 60, t + 112), 27.0]
+	_btn["speed"] = [Vector2(r - 34, t + 238), 26.0]
 	var names: Array = ["menu", "map", "craft", "char", "inv"]
 	for i in range(names.size()):
 		_btn[names[i]] = [Vector2(r - 40 - i * 68, t + 40), 31.0]
@@ -119,6 +135,14 @@ func _touch_down(i: int, pos: Vector2) -> void:
 			if p.sneaking: run_on = false
 		"light": toggle_light()
 		"reload": p.reload()
+		"shove": p.try_shove()
+		"call": p.call_out(not p.sneaking)
+		"speed": cycle_speed()
+		"hot0", "hot1", "hot2", "hot3":
+			var hi: int = int(id.substr(3))
+			if hi < _hot.size():
+				p.equip(_hot[hi])
+				sim.emit_fx("equip", p.pos)
 		"zoom_in": view.zoom = clampf(view.zoom * 1.2, 0.8, 3.0)
 		"zoom_out": view.zoom = clampf(view.zoom / 1.2, 0.8, 3.0)
 		"inv", "char", "craft", "map":
@@ -188,6 +212,13 @@ func _world_tap(pos: Vector2) -> void:
 	if d.length() < 1.7:
 		Actions.interact(sim, false)
 
+func cycle_speed() -> void:
+	if sim.threatened():
+		sim.speed = 1
+		sim.say("Not while something is hunting you", Color(0.9, 0.8, 0.6))
+		return
+	sim.speed = 2 if sim.speed == 1 else (4 if sim.speed == 2 else 1)
+
 func toggle_light() -> void:
 	var p: Player = sim.player
 	if p.light_on:
@@ -220,6 +251,12 @@ func _key(ev: InputEventKey) -> void:
 				if p.sneaking: run_on = false
 			KEY_R: p.reload()
 			KEY_F: toggle_light()
+			KEY_V: p.try_shove()
+			KEY_G: p.call_out(not p.sneaking)
+			KEY_T: cycle_speed()
+			KEY_1, KEY_2, KEY_3, KEY_4:
+				var ki: int = ev.keycode - KEY_1
+				if ki < _hot.size(): p.equip(_hot[ki])
 			KEY_I, KEY_TAB: main.open_panel("inv")
 			KEY_H: main.open_panel("char")
 			KEY_B: main.open_panel("craft")
@@ -253,7 +290,8 @@ func poll(dt: float) -> void:
 		move = _stick_vec if _stick_vec.length() > 0.14 else Vector2.ZERO
 	else:
 		move = kv.normalized()
-	if _attack_touch >= 0 or _key_attack:
+	sim.brake = sim.vehicle != null and (_attack_touch >= 0 or _key_attack)
+	if sim.vehicle == null and (_attack_touch >= 0 or _key_attack):
 		p.try_attack()
 	if _interact_touch >= 0 and not _interact_fired:
 		_interact_t += dt
@@ -272,7 +310,9 @@ func poll(dt: float) -> void:
 		_target = ""
 		if p.alive and not p.busy():
 			var ts: Array = Actions.targets(sim)
-			if ts.size() > 0:
+			if sim.vehicle != null:
+				_target = "Get out"
+			elif ts.size() > 0:
 				var opts: Array = Actions.options(sim, ts[0])
 				if opts.size() > 0:
 					_target = String(opts[0]["label"]) if (opts.size() == 1 or opts[0].get("quick", false)) else Actions.target_name(sim, ts[0])
@@ -382,12 +422,36 @@ func _draw() -> void:
 	_round_btn("menu", "II", Color(0.25, 0.25, 0.25), false, 16)
 	_round_btn("zoom_in", "+", Color(0.2, 0.22, 0.22), false, 20)
 	_round_btn("zoom_out", "–", Color(0.2, 0.22, 0.22), false, 20)
+	_round_btn("speed", "%dx" % sim.speed, Color(0.3, 0.3, 0.2), sim.speed > 1, 15)
+	for hi in range(_hot.size()):
+		var hid: String = "hot%d" % hi
+		var hit: Dictionary = _hot[hi]
+		_round_btn(hid, "", Color(0.22, 0.24, 0.24), is_same(p.weapon, hit), 12)
+		var hh: int = Art.item_icon.get(hit["id"], -1)
+		if hh >= 0:
+			var hc: Vector2 = _btn[hid][0]
+			draw_texture_rect_region(tex, Rect2(hc - Vector2(18, 18), Vector2(36, 36)), Art.icons.rects[hh])
 	# action buttons
 	var atk: String = "ATTACK"
 	if wd.has("gun"): atk = "FIRE"
 	elif wd.is_empty(): atk = "SHOVE"
-	_round_btn("attack", atk, Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)
-	_round_btn("interact", "USE", Color(0.7, 0.6, 0.36), _interact_touch >= 0, 17)
+	var veh: Vehicle = sim.vehicle
+	if veh != null:
+		_round_btn("attack", "BRAKE", Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)
+		_round_btn("interact", "EXIT", Color(0.7, 0.6, 0.36), _interact_touch >= 0, 17)
+		var vx: float = size.x * 0.5 - 130.0
+		var vy: float = safe.end.y - (300.0 if portrait else 70.0)
+		draw_rect(Rect2(vx - 10, vy - 26, 280, 62), Color(0.04, 0.05, 0.05, 0.6))
+		_txt("%d km/h%s" % [int(absf(veh.speed) * 9.0), "  R" if veh.speed < -0.1 else ""], Vector2(vx, vy), 20, UiKit.ACCENT)
+		_txt("engine %d%%" % int(float(veh.ent.get("eng", 0.0)) * 100.0), Vector2(vx + 140, vy), 15, UiKit.DIM)
+		_txt("fuel", Vector2(vx, vy + 24), 14, UiKit.DIM)
+		var fu: float = float(veh.ent.get("fuel", 0.0)) / Vehicle.TANK
+		_bar(Vector2(vx + 40, vy + 12), 210, 12, fu, Color(0.8, 0.3, 0.25) if fu < 0.15 else Color(0.82, 0.76, 0.45))
+	else:
+		_round_btn("attack", atk, Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)
+		_round_btn("interact", "USE", Color(0.7, 0.6, 0.36), _interact_touch >= 0, 17)
+	_round_btn("shove", "SHOVE", Color(0.5, 0.36, 0.26), false, 11)
+	_round_btn("call", "CALL", Color(0.36, 0.34, 0.44), false, 11)
 	_round_btn("run", "RUN", Color(0.3, 0.42, 0.5), run_on, 14)
 	_round_btn("sneak", "SNEAK", Color(0.32, 0.4, 0.3), p.sneaking, 12)
 	_round_btn("light", "LIGHT", Color(0.7, 0.66, 0.36), p.light_on, 11)
@@ -417,9 +481,9 @@ func _draw() -> void:
 		_txt("Placing: %s — face the spot, then BUILD" % placing["n"], Vector2(0, safe.end.y - (318.0 if portrait else 164.0)), 16, UiKit.ACCENT, HORIZONTAL_ALIGNMENT_CENTER, size.x)
 	var gt: String = sim.guide_text()
 	if gt != "" and not p.sleeping:
-		_txt(gt, Vector2(20, safe.position.y + (118.0 if not portrait else 150.0)), 16, Color(0.7, 0.9, 1.0), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
+		_txt(gt, Vector2(20, safe.position.y + (118.0 if not portrait else 178.0)), 16, Color(0.7, 0.9, 1.0), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
 	if sim.fly_active and not sim.underground():
-		_txt("AIRCRAFT OVERHEAD — get indoors and stay quiet", Vector2(20, safe.position.y + (96.0 if not portrait else 128.0)), 15, Color(1.0, 0.7, 0.45), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
+		_txt("AIRCRAFT OVERHEAD — get indoors and stay quiet", Vector2(20, safe.position.y + (96.0 if not portrait else 200.0)), 15, Color(1.0, 0.7, 0.45), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
 	# message log (above the controls in portrait, under the top bar in landscape)
 	var ly: float = safe.end.y - 360.0 if portrait else safe.position.y + 146.0
 	var shown := 0

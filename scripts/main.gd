@@ -124,7 +124,11 @@ func _play(dt: float) -> void:
 	if not panels.is_open():
 		hud.poll(dt)
 		var s0: int = Time.get_ticks_usec()
-		sim.tick(dt, hud.move, hud.want_run())
+		if sim.speed > 1 and (sim.threatened() or not sim.player.alive):
+			sim.speed = 1
+			sim.say("Time snaps back to normal.", Color(1.0, 0.8, 0.5))
+		for _k in range(sim.speed):
+			sim.tick(dt, hud.move, hud.want_run())
 		sim_ms = lerpf(sim_ms, (Time.get_ticks_usec() - s0) / 1000.0, 0.1)
 		_hint_t += dt
 		if _hints.size() > 0 and _hint_t >= float(_hints[0][0]):
@@ -142,7 +146,7 @@ func _play(dt: float) -> void:
 			light.flash_pos = e["p"]
 	sim.fx.clear()
 	light.update(sim, view, dt)
-	weather.intensity = 0.0 if sim.underground() else float(sim.weather["rain"])
+	weather.intensity = 0.0 if World.level(sim.player.pos.y) != 0 else float(sim.weather["rain"])
 	weather.flyover = sim.fly_active and not sim.underground()
 	for ev in sim.ui_events:
 		match ev["type"]:
@@ -199,6 +203,16 @@ func new_game(world_seed: int, occupation: String, opts: Dictionary, trait_list:
 		[20.0, "Search this house first: food, water, bandages, and anything to swing."],
 		[30.0, "They hunt by sight and sound. SNEAK is quiet. Running and gunfire are not."],
 	]
+
+## permadeath for the person, not for the world: a new survivor wakes up somewhere else in it
+func respawn() -> void:
+	if sim == null:
+		return
+	var old: Player = sim.player
+	var kinds: Array = ["house", "farm", "cabin", "downtown"]
+	sim.new_survivor(old.occupation, [], kinds[sim.lives % kinds.size()])
+	_start(sim)
+	save_now()
 
 func continue_game() -> void:
 	var s: Sim = SaveGame.load_game(SLOT)

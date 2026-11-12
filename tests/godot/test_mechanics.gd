@@ -393,7 +393,7 @@ func _init() -> void:
 	ok(l != null and absf(l.player.weight - 77.7) < 0.001 and absf(l.player.unhappy - 33.0) < 0.001, "weight and mood restored")
 	ok(l != null and l.player.traits.size() == 6 and l.player.skill_level("fitness") == p.skill_level("fitness"), "traits restored and still applied")
 	ok(l != null and l.flags.has("x") and l.guide_i == sim.guide_i, "story flags and tutorial progress restored")
-	ok(SaveGame.migrate({"v": 2, "seed": 1, "player": {}, "settings": {}}).get("v", 0) == 3, "schema 2 saves migrate to 3")
+	ok(SaveGame.migrate({"v": 2, "seed": 1, "player": {}, "settings": {}}).get("v", 0) == SaveGame.SCHEMA, "schema 2 saves migrate to the current schema")
 	SaveGame.delete("mech_slot")
 
 	print("")

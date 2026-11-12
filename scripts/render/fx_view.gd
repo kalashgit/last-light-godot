@@ -10,6 +10,7 @@ var hl_tile := Vector2i(-99999, 0)
 var hl_edge := -1            # -1 tile, 0 north edge, 1 west edge
 var hl_ok := true
 var hl_on := false
+var flames: Array = []       # Vector2i tiles currently on fire
 
 func burst(p: Vector2, n: int, color: Color, speed: float, life: float, size: float = 2.0, up: float = 30.0) -> void:
 	for i in range(n):
@@ -26,7 +27,7 @@ func flash_line(a: Vector2, b: Vector2) -> void:
 	flashes.append([a, b, 0.07])
 
 func _process(dt: float) -> void:
-	var busy: bool = parts.size() > 0 or texts.size() > 0 or flashes.size() > 0 or hl_on
+	var busy: bool = parts.size() > 0 or texts.size() > 0 or flashes.size() > 0 or hl_on or flames.size() > 0
 	var i: int = parts.size() - 1
 	while i >= 0:
 		var p: Array = parts[i]
@@ -67,6 +68,17 @@ func _draw() -> void:
 				draw_line(tp + Vector2(0, -k * 20.0), b + Vector2(0, -k * 20.0), col, 2.0)
 			draw_line(tp, tp + Vector2(0, -40.0), col, 2.0)
 			draw_line(b, b + Vector2(0, -40.0), col, 2.0)
+	if flames.size() > 0:
+		var ft: float = Time.get_ticks_msec() / 1000.0
+		for fk in flames:
+			var base: Vector2 = Iso.to_screen(fk.x + 0.5, fk.y + 0.5)
+			for j in range(3):
+				var ph: float = ft * (7.0 + j * 2.3) + fk.x * 1.7 + fk.y * 2.9 + j * 2.1
+				var hgt: float = 26.0 + sin(ph) * 7.0 - j * 6.0
+				var wdt: float = 13.0 - j * 3.0
+				var ox: float = (j - 1) * 9.0 + sin(ph * 0.7) * 2.0
+				var col2: Color = [Color(0.95, 0.32, 0.08, 0.85), Color(1.0, 0.6, 0.12, 0.9), Color(1.0, 0.9, 0.45, 0.9)][j]
+				draw_colored_polygon(PackedVector2Array([base + Vector2(ox - wdt, 2), base + Vector2(ox + sin(ph * 1.3) * 4.0, -hgt), base + Vector2(ox + wdt, 2)]), col2)
 	for p in parts:
 		var a: float = clampf(float(p[2]) / float(p[3]) * 2.0, 0.0, 1.0)
 		var c: Color = p[4]
