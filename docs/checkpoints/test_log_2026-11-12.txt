@@ -2,7 +2,7 @@
 #### import: ok
 ==== worldgen
 start=(184.5, 209.5) lot=[P: (178, 199), S: (20, 15)]
-generated 576 chunks in 727 ms (avg 1.26215277777778 ms, worst 86.64 ms)
+generated 576 chunks in 679 ms (avg 1.17881944444444 ms, worst 85.902 ms)
 deterministic=true
 start blocked=false indoors=true btype=house
 #### worldgen: ok
@@ -12,7 +12,7 @@ start blocked=false indoors=true btype=house
   PASS  chunks streamed around spawn (25)
   PASS  occupation skills applied
   PASS  occupation items + weapon equipped
-  PASS  zombies populated loaded area (37)
+  PASS  zombies populated loaded area (43)
   PASS  no zombies inside the safe start radius
   PASS  player moves with joystick input (2.32 tiles)
   PASS  collision never leaves the player inside a wall
@@ -29,13 +29,13 @@ start blocked=false indoors=true btype=house
   PASS  combat grants weapon XP
   PASS  kill leaves a corpse
   PASS  zombie notices and chases the player
-  PASS  zombie attack damages the player (100 -> 96)
+  PASS  zombie attack damages the player (100 -> 95)
   PASS  attack leaves a wound
   PASS  zombie investigates a noise it cannot see (state investigate)
   PASS  reload fills the magazine (12)
   PASS  pistol kills at range (1 shots)
   PASS  shots consume ammunition
-  PASS  player survived the combat tests (hp 96)
+  PASS  player survived the combat tests (hp 95)
   PASS  open wound bleeds over time
   PASS  bandage applied to wound
   PASS  bandaged wound stops bleeding
@@ -56,7 +56,7 @@ start blocked=false indoors=true btype=house
   PASS  ground tilled
   PASS  seed planted
   PASS  crop grows to maturity (stage 3)
-  PASS  harvest yields potatoes (3)
+  PASS  harvest yields potatoes (5)
   PASS  A* finds a route back to the start house (5 steps, 136 iterations)
   PASS  clock advances (0.084 h in 10 s)
   PASS  power is on at the start
@@ -77,13 +77,13 @@ start blocked=false indoors=true btype=house
   PASS  changes survive chunk unload / reload
   PASS  second save (with unloaded chunk store) succeeds
 == long soak (zombie AI, streaming, 3 simulated minutes)
-  soak: 5400 ticks in 2903 ms (avg 0.538 ms, worst 97.968 ms), zombies=111 { "idle": 96, "chase": 2, "wander": 13 } chunks=49 stored=0
+  soak: 5400 ticks in 2453 ms (avg 0.454 ms, worst 70.285 ms), zombies=115 { "idle": 96, "wander": 18, "chase": 1 } chunks=49 stored=0
   PASS  average sim tick under 8 ms
   PASS  chunk streaming unloads distant chunks
 RESULT: 71 checks, 0 failed
 #### simulation: ok
 ==== touch
-LAST LIGHT: art generated in 3474 ms (2083 sprites)
+== touch controls (viewport (1152, 1152))
   PASS  joystick drag produces full right input (1.00, 0.00)
   PASS  player walks while the stick is held (1.75 tiles)
   PASS  screen-right maps to world (+x, -y)
@@ -100,22 +100,25 @@ LAST LIGHT: art generated in 3474 ms (2083 sprites)
   PASS  BAG button opens the inventory
   PASS  simulation is paused while a panel is open
   PASS  two-finger pinch zooms the camera (1.50 -> 3.00)
-RESULT: 16 checks, 0 failed
+  PASS  crafting panel has a scroll list
+  PASS  dragging on a list row scrolls the list (1312 px)
+  PASS  the drag did not trigger the row underneath
+RESULT: 19 checks, 0 failed
 #### touch: ok
 ==== boot main
-LAST LIGHT: art generated in 3327 ms (2083 sprites)
+LAST LIGHT: art generated in 3237 ms (2083 sprites)
 #### boot main: ok
 ==== soak (bot)
-LAST LIGHT: art generated in 3302 ms (2083 sprites)
-soak: frames=4500 day=1 hour=12.3 kills=0 zombies=40 { "idle": 24, "chase": 9, "investigate": 1, "wander": 6 }
-soak: chunks=63 views=63 zviews=0 explored=140 inv=2 hp=100
-soak: main frame avg=0.74 ms  sim avg=0.69 ms
+LAST LIGHT: art generated in 3419 ms (2083 sprites)
+soak: frames=4500 day=1 hour=11 kills=0 zombies=35 { "idle": 26, "chase": 2, "wander": 7 }
+soak: chunks=64 views=64 zviews=0 explored=113 inv=2 hp=100
+soak: main frame avg=0.61 ms  sim avg=0.5 ms
 RESULT: soak ok
   PASS  chunk views match loaded chunks and stay bounded
 #### soak (bot): ok
 ==== render portrait
 ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
-LAST LIGHT: art generated in 4588 ms (2083 sprites)
+LAST LIGHT: art generated in 4848 ms (2083 sprites)
 shot 01_title (720, 1152)
 shot 02_newgame (720, 1152)
 shot 03_spawn_indoors (720, 1152)
@@ -127,7 +130,7 @@ shot 08_craft (720, 1152)
 shot 09_map (720, 1152)
 shot 10_night_rain_flashlight (720, 1152)
 shot 11_downtown (720, 1152)
-perf downtown: draw_calls=690 primitives=13083 objects=4241 nodes=2619 tex_mem_mb=25.9 static_mem_mb=77.5 sim_ms=0.62
+perf downtown: draw_calls=264 primitives=13327 objects=3935 nodes=2619 tex_mem_mb=25.9 static_mem_mb=73.6 sim_ms=0.65
 shot 12_wilderness (720, 1152)
 shot 13_item_actions (720, 1152)
 shot 14_wounds (720, 1152)
@@ -142,7 +145,7 @@ shot 20_death (720, 1152)
 #### render portrait: ok
 ==== render landscape
 ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
-LAST LIGHT: art generated in 4755 ms (2083 sprites)
+LAST LIGHT: art generated in 4405 ms (2083 sprites)
 shot 01_title (1152, 720)
 shot 02_newgame (1152, 720)
 shot 03_spawn_indoors (1152, 720)
@@ -154,7 +157,7 @@ shot 08_craft (1152, 720)
 shot 09_map (1152, 720)
 shot 10_night_rain_flashlight (1152, 720)
 shot 11_downtown (1152, 720)
-perf downtown: draw_calls=718 primitives=13837 objects=4618 nodes=2620 tex_mem_mb=25.9 static_mem_mb=77.5 sim_ms=0.6
+perf downtown: draw_calls=257 primitives=13939 objects=4211 nodes=2620 tex_mem_mb=25.9 static_mem_mb=73.6 sim_ms=0.63
 shot 12_wilderness (1152, 720)
 shot 13_item_actions (1152, 720)
 shot 14_wounds (1152, 720)
@@ -163,7 +166,7 @@ shot 16_context_menu (1152, 720)
 shot 17_sleeping (1152, 720)
 shot 18_pause (1152, 720)
 save ok=true
-continue ok=true wounds=3
+continue ok=true wounds=2
 shot 19_after_continue (1152, 720)
 shot 20_death (1152, 720)
 #### render landscape: ok

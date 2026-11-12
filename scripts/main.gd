@@ -21,6 +21,8 @@ var _boot_label: Label
 var _autosave_t := 0.0
 var _hud_layer: CanvasLayer
 var _boot_t0 := 0
+var _hints: Array = []
+var _hint_t := 0.0
 
 func _ready() -> void:
 	UiKit.make_theme()
@@ -124,6 +126,10 @@ func _play(dt: float) -> void:
 		var s0: int = Time.get_ticks_usec()
 		sim.tick(dt, hud.move, hud.want_run())
 		sim_ms = lerpf(sim_ms, (Time.get_ticks_usec() - s0) / 1000.0, 0.1)
+		_hint_t += dt
+		if _hints.size() > 0 and _hint_t >= float(_hints[0][0]):
+			sim.say(_hints[0][1], Color(0.75, 0.86, 0.95))
+			_hints.pop_front()
 		_autosave_t += dt
 		if _autosave_t > AUTOSAVE_SEC and sim.player.alive:
 			_autosave_t = 0.0
@@ -169,6 +175,8 @@ func _start(s: Sim) -> void:
 	view.attach(sim)
 	state = "play"
 	_autosave_t = 0.0
+	_hints = []
+	_hint_t = 0.0
 	panels.close()
 	if sim.dead:
 		panels.open("death")
@@ -182,6 +190,12 @@ func new_game(world_seed: int, occupation: String, opts: Dictionary) -> void:
 	s.new_game(occupation)
 	_start(s)
 	save_now()
+	_hints = [
+		[5.0, "Drag in the lower-left to move. USE opens doors and searches furniture."],
+		[12.0, "Hold USE for every option. BAG shows what is nearby and what you carry."],
+		[20.0, "Search this house first: food, water, bandages, and anything to swing."],
+		[30.0, "They hunt by sight and sound. SNEAK is quiet. Running and gunfire are not."],
+	]
 
 func continue_game() -> void:
 	var s: Sim = SaveGame.load_game(SLOT)

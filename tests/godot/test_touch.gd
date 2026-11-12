@@ -8,6 +8,16 @@ var fails := 0
 var checks := 0
 var p0 := Vector2.ZERO
 var door := Vector3i(-1, -1, -1)
+var sc: ScrollContainer = null
+
+func _find_scroll(n: Node) -> ScrollContainer:
+	for ch in n.get_children():
+		if ch is ScrollContainer:
+			return ch
+		var r: ScrollContainer = _find_scroll(ch)
+		if r != null:
+			return r
+	return null
 
 func ok(cond: bool, what: String) -> void:
 	checks += 1
@@ -144,6 +154,38 @@ func _process(_dt: float) -> bool:
 			touch(5, Vector2.ZERO, false)
 			touch(6, Vector2.ZERO, false)
 		180:
+			# list scrolling: a finger that lands on a row must scroll the list, not press the row
+			main.panels.open("craft", {"cat": "Carpentry"})
+		186:
+			sc = _find_scroll(main.panels.body)
+			ok(sc != null, "crafting panel has a scroll list")
+			if sc != null:
+				# make sure the list is longer than the panel on any screen size
+				for k in range(24):
+					sc.get_child(0).add_child(UiKit.button("filler row %d" % k, func(): main.panels.close()))
+		187:
+			if sc != null:
+				print("    touchscreen=", DisplayServer.is_touchscreen_available(), " list height=", sc.get_child(0).size.y, " view=", sc.size.y)
+				var c: Vector2 = sc.get_global_rect().get_center()
+				touch(7, c + Vector2(0, 120), true)
+		188:
+			if sc != null:
+				var c2: Vector2 = sc.get_global_rect().get_center()
+				drag(7, c2 + Vector2(0, 60), Vector2(0, -60))
+		190:
+			if sc != null:
+				var c3: Vector2 = sc.get_global_rect().get_center()
+				drag(7, c3 + Vector2(0, -80), Vector2(0, -140))
+		192:
+			if sc != null:
+				var c4: Vector2 = sc.get_global_rect().get_center()
+				touch(7, c4 + Vector2(0, -80), false)
+		196:
+			if sc != null:
+				ok(sc.scroll_vertical > 20, "dragging on a list row scrolls the list (%d px)" % sc.scroll_vertical)
+				ok(main.panels.current == "craft" and p.action.is_empty(), "the drag did not trigger the row underneath")
+			main.panels.close()
+		200:
 			print("")
 			print("RESULT: %d checks, %d failed" % [checks, fails])
 			SaveGame.delete(main.SLOT)

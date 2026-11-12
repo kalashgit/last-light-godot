@@ -56,7 +56,7 @@ Depth sorting in an isometric view with edge walls is done by **tile diagonal**:
 - The infected are only drawn while in your field of view and line of sight.
 - Lighting is one full-screen multiply-blend quad with up to 16 lights (ambient by time of day and weather, the survivor's own glow, flashlight, fires, lamps while powered, muzzle flashes). No `Light2D`, no screen reads.
 
-Measured downtown at 0.9× zoom on the software rasteriser used for tests: ~690 draw calls, ~13k primitives, 26 MB of textures. **Frame rate on an actual iPhone has not been measured.**
+Measured downtown at 0.9× zoom on the software rasteriser used for tests: ~260 draw calls (each strip's roof tiles go out as one triangle array), ~13k primitives, 26 MB of textures. **Frame rate on an actual iPhone has not been measured.**
 
 ## Save format
 

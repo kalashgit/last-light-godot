@@ -67,7 +67,7 @@ GODOT=/path/to/godot tools/godot/run_tests.sh            # headless
 GODOT=/path/to/godot tools/godot/run_tests.sh --shots out # + rendered screenshots (needs xvfb-run)
 ```
 
-Import/parse, world generation, a 71-check gameplay simulation, a 16-check synthetic multi-touch test against the real scene, a boot test and a bot soak. All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
+Import/parse, world generation, a 71-check gameplay simulation, a 19-check synthetic multi-touch test against the real scene, a boot test and a bot soak. All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
 
 ## Originality
 

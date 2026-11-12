@@ -487,9 +487,13 @@ func _draw_wall(s: Strip, pos: Vector2, wid: int, st: int, orient: int, x: int, 
 			A.draw(s, Art.ov["planks%d" % planks][orient], pos)
 
 func _draw_roof(s: Strip) -> void:
+	# all roof tiles of a strip go out as ONE triangle array (one draw call per strip)
 	var c: Chunk = s.c
-	var tex: Texture2D = Art.world.texture
 	var H: float = Iso.WALL_H
+	var pts := PackedVector2Array()
+	var cols := PackedColorArray()
+	var uvs := PackedVector2Array()
+	var idx := PackedInt32Array()
 	for lx in range(maxi(0, s.dl - 15), mini(15, s.dl) + 1):
 		var ly: int = s.dl - lx
 		var i: int = ly * 16 + lx
@@ -502,8 +506,18 @@ func _draw_roof(s: Strip) -> void:
 		var h1: float = H + ((r >> 2) & 3) * 11.0
 		var h2: float = H + ((r >> 4) & 3) * 11.0
 		var h3: float = H + ((r >> 6) & 3) * 11.0
-		var pts := PackedVector2Array([pos + Vector2(0, -h0), pos + Vector2(32, 16 - h1), pos + Vector2(0, 32 - h2), pos + Vector2(-32, 16 - h3)])
 		var k: float = clampf(0.92 + (h3 - h1) * 0.018 + (h0 - h2) * 0.012, 0.62, 1.2)
 		var base: Color = ROOF_COLORS[(b >> 3) % ROOF_COLORS.size()]
 		var col := Color(base.r * k, base.g * k, base.b * k)
-		s.draw_polygon(pts, PackedColorArray([col, col, col, col]), _roof_uv, tex)
+		var n: int = pts.size()
+		# 0.5 px overlap hides hairlines between neighbouring roof tiles
+		pts.append(pos + Vector2(0, -h0 - 0.5))
+		pts.append(pos + Vector2(32.5, 16 - h1))
+		pts.append(pos + Vector2(0, 32.5 - h2))
+		pts.append(pos + Vector2(-32.5, 16 - h3))
+		for q in range(4):
+			cols.append(col)
+			uvs.append(_roof_uv[q])
+		idx.append_array(PackedInt32Array([n, n + 1, n + 2, n, n + 2, n + 3]))
+	if pts.size() > 0:
+		RenderingServer.canvas_item_add_triangle_array(s.get_canvas_item(), idx, pts, cols, uvs, PackedInt32Array(), PackedFloat32Array(), Art.world.texture.get_rid())

@@ -71,6 +71,8 @@ static func button(text: String, cb: Callable, min_h: int = 58) -> Button:
 	b.focus_mode = Control.FOCUS_NONE
 	b.clip_text = true
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# PASS lets a finger that starts on a row still drag-scroll the list it sits in
+	b.mouse_filter = Control.MOUSE_FILTER_PASS
 	if cb.is_valid():
 		b.pressed.connect(cb)
 	return b
