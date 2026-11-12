@@ -339,6 +339,31 @@ func _tick_events(dt: float) -> void:
 				guide_i = -1
 				say("You know the basics now. Stay quiet, stay fed, stay alive.", Color(0.6, 0.9, 0.6))
 
+## what a battery radio picks up: the automated emergency loop
+func radio_report() -> void:
+	if underground():
+		say("Nothing but static down here.", Color(0.8, 0.8, 0.7))
+		return
+	var col := Color(0.75, 0.85, 0.95)
+	var wx: String = "clear skies"
+	if float(weather["rain"]) > 0.3: wx = "heavy rain"
+	elif float(weather["cloud"]) > 0.65: wx = "overcast, rain likely"
+	elif float(weather["fog"]) > 0.2: wx = "fog"
+	say("\"…automated emergency broadcast. Conditions: %s, %d degrees.\"" % [wx, int(round(float(weather["temp"])))], col)
+	if hour < power_off_h:
+		var days: float = (power_off_h - hour) / 24.0
+		if days < 3.0:
+			say("\"Grid operators report critical staffing. Expect power loss within days.\"", col)
+		else:
+			say("\"Utilities remain in service. Conserve water and fuel.\"", col)
+	else:
+		say("\"…this station is running on reserve power…\"", col)
+	if fly_active:
+		say("\"Air units are sweeping your sector now. Stay indoors.\"", Color(1.0, 0.75, 0.5))
+	elif fly_next_h - hour < 30.0 and fly_next_h - hour > 0.0:
+		say("\"Aerial survey flights are scheduled for this area within the day.\"", Color(1.0, 0.75, 0.5))
+	noise(player.pos, 5.0)
+
 func guide_text() -> String:
 	if guide_i < 0 or guide_i >= GUIDE.size():
 		return ""

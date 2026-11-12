@@ -182,13 +182,15 @@ func _start(s: Sim) -> void:
 	if sim.dead:
 		panels.open("death")
 
-func new_game(world_seed: int, occupation: String, opts: Dictionary, trait_list: Array = [], start_kind: String = "house") -> void:
+func new_game(world_seed: int, occupation: String, opts: Dictionary, trait_list: Array = [], start_kind: String = "house", look: Array = []) -> void:
 	SaveGame.delete(SLOT)
 	var s := Sim.new(world_seed)
 	for k in opts.keys():
 		s.settings[k] = opts[k]
 	s.world.store_loader = SaveGame.loader(SLOT)
 	s.new_game(occupation, trait_list, start_kind)
+	if look.size() == 4:
+		s.player.look = look
 	_start(s)
 	save_now()
 	_hints = [

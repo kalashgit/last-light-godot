@@ -306,6 +306,9 @@ func _init() -> void:
 	ok(s3.log.size() > logn, "distant events are reported: \"%s\"" % s3.log[s3.log.size() - 1][0])
 	ok(Sim.compass(Vector2.ZERO, Vector2(-1, -1)) == "north" and Sim.compass(Vector2.ZERO, Vector2(1, -1)) == "east", "compass directions match the screen")
 
+	var ln: int = s3.log.size()
+	s3.radio_report()
+	ok(s3.log.size() >= ln + 2, "a radio picks up the emergency broadcast: %s" % s3.log[s3.log.size() - 1][0])
 	print("== sandbox")
 	var s4 := Sim.new(888)
 	s4.settings["util"] = 3

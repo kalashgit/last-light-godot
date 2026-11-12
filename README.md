@@ -32,12 +32,16 @@ Each finger is tracked independently, so you can move, attack and interact at th
 ## What is in the game
 
 - **World** — unbounded, deterministic, chunk-streamed. Regions hold hamlets, towns and cities joined by highways; towns have street grids, zoned blocks, houses with generated floor plans and furniture, and 15 kinds of shops and civic buildings; the countryside has forests, lakes, farms with crop fields, cabins and camps.
+- **Character** — 15 occupations, 39 traits on a points budget, appearance, four start locations, 21 skills.
+- **Body and mind** — calories and body weight, exercise, boredom, misery, stress, drink, head colds.
 - **Survival** — hunger, thirst, fatigue, stamina, panic, pain, body temperature, wetness, sickness; six body parts with scratches, lacerations, bites, deep wounds and fractures that bleed, get infected and need bandaging, disinfecting, stitching or splinting; the Grey Fever from bites.
 - **The infected** — see (range depends on light, weather, sneaking and cover) and hear (footsteps, doors, glass, gunshots, alarms, each other); path around obstacles, batter down doors, windows, barricades and player-built walls, climb through broken windows, and wander in from outside your view in growing packs. Shamblers, fast ones, crawlers and brutes.
 - **Combat** — melee with reach, swing time, knockback, knockdown, crits, stealth kills and weapon wear; shoving and stomping; firearms with magazines, spread, range and a very loud report.
-- **Items** — 130+ items, weight and carry capacity, bags, clothing, perishable food that goes stale and rots, refrigeration while the power lasts, 45 loot tables keyed to container and building type.
-- **Crafting and building** — 33 recipes: cooking on stoves and campfires, carpentry, weapons, first aid; place walls, doors, window frames, fences, floors, crates, beds, rain collectors; barricade doors and windows; dismantle furniture; fell trees.
-- **Farming, foraging, fishing** — till, plant, water, fertilise, harvest; crops keep growing while you are away.
+- **Items** — 148 items, weight and carry capacity, bags, clothing that tears and can be patched, weapons that wear and can be repaired, perishable food, refrigeration while the power lasts, 50 loot tables.
+- **Crafting and building** — 54 recipes in 8 groups: cooking, carpentry, weapons, tailoring, repair, workbench metal and electrical work; place walls, doors, fences, floors, crates, shelves, beds, rain collectors, compost bins; barricade; dismantle; fell trees.
+- **Farming, foraging, fishing, trapping** — till, plant, water, fertilise, harvest, compost; set baited snares in open country.
+- **Places and events** — cellars under houses, randomized scenes left by other survivors, an aircraft flyover that stirs up the dead, distant gunshots and alarms, alarms you can cut, streets that overgrow over the weeks.
+- **Custom sandbox** — 15 world rules on the new-game screen, and guided first objectives.
 - **The long game** — day/night, weather and seasons, the power grid and the water mains both fail some days in, generators, building alarms, 13 skills with XP and skill books, 9 starting occupations, permadeath.
 - **Persistence** — autosave (every 2.5 min, on pause, and whenever the app is backgrounded); only chunks that differ from the generator are stored.
 
@@ -58,7 +62,7 @@ docs/                           architecture, checkpoints, iPhone checklist
 legacy/                         the earlier prototypes (not used by the game)
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the engine design and save format, and [docs/checkpoints/](docs/checkpoints/) for what has and has not been verified.
+See [docs/MECHANICS.md](docs/MECHANICS.md) for every mechanic and the test that covers it, [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the engine design and save format, and [docs/checkpoints/](docs/checkpoints/) for what has and has not been verified.
 
 ## Tests
 
@@ -67,7 +71,7 @@ GODOT=/path/to/godot tools/godot/run_tests.sh            # headless
 GODOT=/path/to/godot tools/godot/run_tests.sh --shots out # + rendered screenshots (needs xvfb-run)
 ```
 
-Import/parse, world generation, a 71-check gameplay simulation, a 19-check synthetic multi-touch test against the real scene, a boot test and a bot soak. All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
+Import/parse, world generation, a 71-check gameplay simulation, 68 checks of the character / event / crafting mechanics, a 19-check synthetic multi-touch test against the real scene, a boot test and a bot soak. All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
 
 ## Originality
 

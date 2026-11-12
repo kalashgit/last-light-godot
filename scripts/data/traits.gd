@@ -21,7 +21,7 @@ static func _static_init() -> void:
 	_t("iron_gut", "Iron Stomach", 1, "Bad food and bad water rarely make you ill.", {"sick_food": 0.35}, ["weak_gut"])
 	_t("light_eater", "Small Appetite", 2, "Hunger builds 25% slower.", {"hunger": 0.75}, ["big_eater"])
 	_t("camel", "Slow to Thirst", 2, "Thirst builds 25% slower.", {"thirst": 0.75}, ["thirsty"])
-	_t("wakeful", "Light Sleeper's Stamina", 2, "You tire slowly and need less sleep.", {"fatigue": 0.75}, ["sleepy"])
+	_t("wakeful", "Tireless", 2, "You tire slowly and need less sleep.", {"fatigue": 0.75}, ["sleepy"])
 	_t("brave", "Steady Nerves", 3, "Panic builds at half the rate.", {"panic": 0.5}, ["coward"])
 	_t("organized", "Organised", 2, "Carry 3 kg more.", {"cap": 3.0}, ["messy"])
 	_t("deft", "Deft Hands", 2, "Timed actions take 20% less time.", {"action": 0.8}, ["thumbs"])

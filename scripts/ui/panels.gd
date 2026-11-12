@@ -29,6 +29,7 @@ var _ng_seed := ""
 var _ng_tab := "who"
 var _ng_traits: Array = []
 var _ng_start := 0
+var _ng_look: Array = [0, 2, 1, 0]
 var _ng_sand := {"zombies": 1, "zspeed": 1, "respawn": 1, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
 	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1}
 var _confirm_new := false
@@ -244,6 +245,32 @@ func _build_newgame() -> void:
 				b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
 			vb.add_child(b)
 		body.add_child(UiKit.scroll(vb))
+		# appearance: a live preview painted from the same procedural layers the game uses
+		var ap := HBoxContainer.new()
+		var holder := Control.new()
+		holder.custom_minimum_size = Vector2(96, 118)
+		var pv := EntityView.new()
+		pv.look = _ng_look
+		pv.position = Vector2(48, 108)
+		pv.scale = Vector2(2.2, 2.2)
+		pv.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		pv.set_frame("s_idle", 0.0, 0, -1.0, 0, 0.0)
+		holder.add_child(pv)
+		ap.add_child(holder)
+		var grid := GridContainer.new()
+		grid.columns = 2
+		grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var parts: Array = [["Skin", 0, 4], ["Shirt", 1, 10], ["Trousers", 2, 6], ["Hair", 3, 6]]
+		for part in parts:
+			var slot: int = part[1]
+			var count: int = part[2]
+			var ab: Button = UiKit.button("%s %d/%d" % [part[0], int(_ng_look[slot]) + 1, count], func():
+				_ng_look[slot] = (int(_ng_look[slot]) + 1) % count
+				rebuild(), 50)
+			ab.add_theme_font_size_override("font_size", 17)
+			grid.add_child(ab)
+		ap.add_child(grid)
+		body.add_child(ap)
 		_choice("Where do you wake up?", ["Suburb", "Downtown", "Farm", "Cabin"], _ng_start, func(i):
 			_ng_start = i
 			rebuild())
@@ -332,7 +359,7 @@ func _build_newgame() -> void:
 			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
 			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
 			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1,
-		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start]), 64)
+		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start], _ng_look.duplicate()), 64)
 	go.size_flags_stretch_ratio = 2.0
 	hb2.add_child(go)
 	body.add_child(hb2)
@@ -508,6 +535,10 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 		opts.append(["Turn off" if p.light_on else "Turn on", func():
 			main.hud.toggle_light()
 			rebuild()])
+	if d.has("radio"):
+		opts.append(["Listen to the emergency band", func():
+			close()
+			sim.radio_report()])
 	if d.has("noise_maker"):
 		opts.append(["Set off and drop (lures the infected)", func():
 			var one: Dictionary = Inv.split(p.inv, it, 1)
