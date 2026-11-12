@@ -1,0 +1,43 @@
+name: LAST LIGHT Godot House Smoke
+on:
+  pull_request:
+    paths:
+      - "scripts/house.gd"
+      - "main.tscn"
+      - "project.godot"
+      - ".github/workflows/house-godot-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  godot-house-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Godot 4.3
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.3.0
+          use-dotnet: false
+          include-templates: false
+      - name: Import project and parse scripts
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --editor --import --quit 2>&1 | tee /tmp/godot-import.log
+          if grep -Ei 'SCRIPT ERROR|Parse Error|Failed to load script|ERROR:' /tmp/godot-import.log; then
+            echo "::error::Godot import logged an error"
+            exit 1
+          fi
+      - name: Smoke default playable main.tscn
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --quit-after 120 2>&1 | tee /tmp/godot-play.log
+          if grep -Ei 'SCRIPT ERROR|Parse Error|Failed to load script|ERROR:' /tmp/godot-play.log; then
+            echo "::error::Godot runtime logged an error"
+            exit 1
+          fi

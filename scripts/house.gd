@@ -212,16 +212,56 @@ func _draw_wall(a: Vector2, b: Vector2, height: float, tint: Color) -> void:
  _quad(A, B, _screen(b, height), _screen(a, height), tint)
  draw_line(_screen(a, height), _screen(b, height), Color("344b42"), 2)
 
+# Render-only helpers: visual geometry follows the same tile positions as collisions.
+# These methods never alter item, door, wall, or inventory state.
+func _block_iso(a: Vector2, b: Vector2, height: float, top: Color, right: Color, left: Color) -> void:
+ var east := Vector2(b.x, a.y)
+ var west := Vector2(a.x, b.y)
+ _quad(_screen(east), _screen(b), _screen(b, height), _screen(east, height), right)
+ _quad(_screen(west), _screen(b), _screen(b, height), _screen(west, height), left)
+ _quad(_screen(a, height), _screen(east, height), _screen(b, height), _screen(west, height), top)
+
 func _draw_object(item: Dictionary) -> void:
  var a: Vector2 = item.pos
  var b: Vector2 = a + item.size
- var h := 21.0
- var tint: Color = item.tint
- _quad(_screen(Vector2(b.x, a.y)), _screen(b), _screen(b, h), _screen(Vector2(b.x, a.y), h), tint.darkened(.26))
- _quad(_screen(Vector2(a.x, b.y)), _screen(b), _screen(b, h), _screen(Vector2(a.x, b.y), h), tint.darkened(.4))
- _quad(_screen(a, h), _screen(Vector2(b.x, a.y), h), _screen(b, h), _screen(Vector2(a.x, b.y), h), tint)
+ var center: Vector2 = a + item.size * 0.5
+ var name: String = str(item.name)
+ var floor_center := _screen(center)
+ draw_ellipse_approx(floor_center + Vector2(0, 6), Vector2(maxf(14, item.size.x * TX * 0.68), maxf(7, item.size.y * TY * .86)), Color(0, .04, .03, .26))
+ if name == "BED":
+  _block_iso(a, b, 12, Color("675348"), Color("574439"), Color("4c4037"))
+  _block_iso(a + Vector2(.11, .10), b - Vector2(.11, .10), 15, Color("c3c3b1"), Color("928c81"), Color("a49d8e"))
+  _quad(_screen(a + Vector2(.09, .34), 17), _screen(Vector2(b.x-.09, a.y+.34), 17), _screen(Vector2(b.x-.09, b.y-.07), 17), _screen(Vector2(a.x+.09,b.y-.07), 17), Color("637d86"))
+  _block_iso(a + Vector2(.16, .07), a + Vector2(.61,.30), 19, Color("e1dace"), Color("beb4a7"), Color("b0aaa0"))
+  draw_line(_screen(a + Vector2(.14,.42), 17), _screen(b - Vector2(.13,.15), 17), Color("9caeb0"), 1.8)
+ elif name == "SOFA":
+  _block_iso(a,b,14,Color("786f5b"),Color("554f44"),Color("5e5346"))
+  _block_iso(a,Vector2(b.x,a.y+.18),28,Color("81735e"),Color("655646"),Color("584d41"))
+  _block_iso(a,Vector2(a.x+.13,b.y),22,Color("887866"),Color("655548"),Color("59483e"))
+  _block_iso(Vector2(b.x-.13,a.y),b,22,Color("887866"),Color("5e4d41"),Color("634c40"))
+  _block_iso(a + Vector2(.14,.24), b - Vector2(.14,.10), 17, Color("9c8a70"), Color("665545"),Color("5e5247"))
+  draw_line(_screen(a + Vector2(.7,.23), 18),_screen(a + Vector2(.7,b.y-a.y-.12),18),Color("5d5449"),1.6)
+ elif name == "KITCHEN COUNTER":
+  _block_iso(a,b,32,Color("908271"),Color("5e594e"),Color("656054"))
+  _block_iso(a + Vector2(-.05,-.03),b + Vector2(.04,.05),35,Color("bdb5a3"),Color("817b6f"),Color("817569"))
+  var basin := _screen(center + Vector2(.17,0),36)
+  draw_ellipse_approx(basin,Vector2(11,5),Color("465b5a"))
+  draw_ellipse_approx(basin,Vector2(7,3),Color("9ea8a3"))
+  draw_line(basin + Vector2(-2,-7), basin + Vector2(2,-11), Color("d1d0c2"),2)
+  draw_line(_screen(b + Vector2(-.09,0),15),_screen(b+Vector2(-.09,0),25),Color("b9a48a"),2)
+ elif name == "MEDICINE CABINET":
+  _block_iso(a,b,51,Color("c0c6b9"),Color("667b77"),Color("86918a"))
+  var door_center := _screen(center,32)
+  draw_rect(Rect2(door_center + Vector2(-14,-23), Vector2(24,38)),Color("c0c7bb"))
+  draw_rect(Rect2(door_center + Vector2(-11,-20), Vector2(18,32)),Color("778e8b"))
+  draw_line(door_center+Vector2(-2,-15), door_center+Vector2(-2,5), Color("e0dcc9"),2)
+  draw_line(door_center+Vector2(-9,-5), door_center+Vector2(5,-5),Color("e0dcc9"),2)
+  draw_circle(door_center+Vector2(10,2),2.1,Color("f6dca2"))
+ else:
+  _block_iso(a,b,20,item.tint,item.tint.darkened(.26),item.tint.darkened(.4))
  if not item.searched:
-  _text("+", _screen(a + item.size / 2, 33), 17, Color("edd18d"))
+  var glint := _screen(center,32 if name!="MEDICINE CABINET" else 59)
+  draw_circle(glint + Vector2(9,-5),2,Color("e9cd91"))
 
 func _draw_character(location: Vector2, is_player: bool, phase: float, hurt: bool = false) -> void:
  var p: Vector2 = _screen(location)
@@ -241,49 +281,109 @@ func draw_ellipse_approx(center: Vector2, radii: Vector2, color: Color) -> void:
   vertices.append(center + Vector2(cos(a) * radii.x, sin(a) * radii.y))
  _poly(vertices, color)
 
+func _interior_visual_state() -> String:
+ # Only a player INSIDE the physical building removes roof/occluding walls.
+ # A player touching the door, exterior wall, or porch never triggers cutaway.
+ if Rect2(.35,.35,8.30,7.30).has_point(player):
+  return "INSIDE"
+ if HOME.grow(.95).has_point(player):
+  return "EDGE"
+ return "OUTSIDE"
+
+func _draw_room_floor(tile: Vector2) -> void:
+ var is_top := tile.y < 4.0
+ var is_left := tile.x < 4.5
+ var kitchen := is_top and is_left
+ var bedroom := is_top and not is_left
+ var living := not is_top and is_left
+ var main_col := Color("89948d") if kitchen else Color("917d6b") if bedroom else Color("806c5e") if living else Color("9caaa6")
+ var contrast := Color("adbaad") if kitchen else Color("c0a688") if bedroom else Color("a78f78") if living else Color("c6cfbf")
+ var east := tile + Vector2(1,0)
+ var south := tile + Vector2(1,1)
+ var west := tile + Vector2(0,1)
+ _quad(_screen(tile),_screen(east),_screen(south),_screen(west),main_col if int(tile.x+tile.y)%3!=0 else contrast)
+ if kitchen or (not kitchen and not bedroom and not living):
+  draw_line(_screen(tile + Vector2(.5,0)),_screen(tile + Vector2(.5,1)),Color("e7e3d1",.28),1)
+ else:
+  for j in range(2):
+   var phase := float(j+1)/3.0
+   draw_line(_screen(tile + Vector2(0,phase)),_screen(tile + Vector2(1,phase)),Color("dbc9a6",.23),1.0)
+  draw_line(_screen(tile+Vector2(.58,0)),_screen(tile+Vector2(.58,.5)),Color("473e35",.20),1)
+
 func _draw_house() -> void:
- var inside := HOME.has_point(player)
+ var state := _interior_visual_state()
+ var inside := state == "INSIDE"
  for y in range(8):
   for x in range(9):
-   var tile := Vector2(x, y)
-   var tint := Color("7b7264") if x < 4 else Color("8b8273")
-   if y >= 4:
-    tint = Color("6d766b") if x < 4 else Color("6a7e80")
-   _quad(_screen(tile), _screen(tile + Vector2(1, 0)), _screen(tile + Vector2(1, 1)), _screen(tile + Vector2(0, 1)), tint)
+   _draw_room_floor(Vector2(x,y))
  if inside:
-  for item in items:
-   _draw_object(item)
+  # Render the far walls, retain every floor and item. Only foreground wall
+  # faces occluding the camera are cut away after *actual interior entry*.
   for wall in walls:
    var a: Vector2 = wall.a
    var b: Vector2 = wall.b
-   # Remove only camera-facing exterior walls; far walls stay solid.
-   if wall.exterior and (absf(a.y - 8) < .001 and absf(b.y - 8) < .001 or absf(a.x - 9) < .001 and absf(b.x - 9) < .001):
+   if wall.exterior and (is_equal_approx(a.y,8.0) and is_equal_approx(b.y,8.0) or is_equal_approx(a.x,9.0) and is_equal_approx(b.x,9.0)):
     continue
-   _draw_wall(a, b, WALL_HEIGHT if wall.exterior else 45, Color("5d7168") if wall.exterior else Color("56645a"))
+   var height := WALL_HEIGHT if wall.exterior else 41.0
+   _draw_wall(a,b,height,Color("c0ac92") if wall.exterior else Color("9e9884"))
+   draw_line(_screen(a,9),_screen(b,9),Color("e9d5b7",.8),2.0)
+   draw_line(_screen(a,height-5),_screen(b,height-5),Color("e4d7bf",.42),1.0)
+   if wall.exterior:
+    for k in range(1,9):
+     var pt: Vector2 = a.lerp(b,float(k)/9.0)
+     draw_line(_screen(pt,14),_screen(pt,height-8),Color("725a48",.12),1.0)
+  for item in items:
+   _draw_object(item)
   for door in doors:
-   var c: Vector2 = (door.a + door.b) / 2
    if not door.open:
-    _draw_wall(door.a, door.b, 38, Color("875d43"))
+    _draw_wall(door.a,door.b,35,Color("80624b"))
+    draw_line(_screen(door.a,36),_screen(door.b,36),Color("d5b997"),2)
    else:
-    draw_circle(_screen(c), 6, Color("b0deb2"))
-   _text("OPEN" if door.open else "DOOR", _screen(c, 49), 12, Color("bce2c1") if door.open else Color("ebcea0"))
+    var mid: Vector2 = (door.a + door.b)*.5
+    draw_circle(_screen(mid),4,Color("b1d7b0"))
  else:
-  # Full opaque roof and walls. Geometry remains unchanged for collision.
+  # OUTSIDE and EDGE ALWAYS render full structure regardless of proximity.
   for wall in walls:
-   _draw_wall(wall.a, wall.b, WALL_HEIGHT, Color("6c8077") if wall.exterior else Color("697970"))
-  var a := _screen(Vector2(0, 0), 70)
-  var b := _screen(Vector2(9, 0), 70)
-  var c := _screen(Vector2(9, 8), 70)
-  var d := _screen(Vector2(0, 8), 70)
-  var ridge_a := _screen(Vector2(4.5, 0), 110)
-  var ridge_b := _screen(Vector2(4.5, 8), 110)
-  _quad(a, ridge_a, ridge_b, d, Color("586669"))
-  _quad(ridge_a, b, c, ridge_b, Color("394c51"))
-  _text("LAST LIGHT / SAFEHOUSE", _screen(Vector2(3.0, 3), 132), 13)
-  var front: Dictionary = doors[0]
-  var center: Vector2 = (front.a + front.b) / 2
-  _text("OPEN" if front.open else "DOOR", _screen(center, 80), 14)
-
+   if wall.exterior:
+    _draw_wall(wall.a,wall.b,WALL_HEIGHT,Color("aeaa93"))
+   else:
+    _draw_wall(wall.a,wall.b,WALL_HEIGHT,Color("7b806b"))
+  for k in range(1,11):
+   var t := float(k)/11.0
+   var front_pt := Vector2(t*9,8)
+   var rear_pt := Vector2(t*9,0)
+   draw_line(_screen(front_pt,12),_screen(front_pt,WALL_HEIGHT-10),Color("f2e7cd",.19),1)
+   draw_line(_screen(rear_pt,12),_screen(rear_pt,WALL_HEIGHT-10),Color("e1d4bc",.14),1)
+  # Window glass, frames and sill on the real front facade.
+  for wx in [2.1,7.25]:
+   var left := Vector2(wx-.48,8)
+   var right := Vector2(wx+.48,8)
+   _quad(_screen(left,29),_screen(right,29),_screen(right,53),_screen(left,53),Color("3f666d"))
+   draw_line(_screen(left,54),_screen(right,54),Color("e9d6b9"),2.5)
+   draw_line(_screen(left,28),_screen(right,28),Color("dfcab0"),2.5)
+   draw_line(_screen(Vector2(wx,8),29),_screen(Vector2(wx,8),53),Color("e9d6b9"),1.8)
+   draw_line(_screen(left,41),_screen(right,41),Color("e0ccb3"),1.6)
+  # Two pitched roof planes and repeated original shingles on a 2:1 iso grid.
+  var a := _screen(Vector2(0,0),71)
+  var b := _screen(Vector2(9,0),71)
+  var c := _screen(Vector2(9,8),71)
+  var d := _screen(Vector2(0,8),71)
+  var ridge_a := _screen(Vector2(4.5,0),116)
+  var ridge_b := _screen(Vector2(4.5,8),116)
+  _quad(a,ridge_a,ridge_b,d,Color("606a60"))
+  _quad(ridge_a,b,c,ridge_b,Color("414d4b"))
+  draw_line(ridge_a,ridge_b,Color("a6a99a"),3)
+  for j in range(1,9):
+   var t := float(j)/9.0
+   draw_line(a.lerp(ridge_a,t),d.lerp(ridge_b,t),Color("ccd0b8",.21),1)
+   draw_line(ridge_a.lerp(b,t),ridge_b.lerp(c,t),Color("172a2b",.36),1)
+  for j in range(1,7):
+   var t := float(j)/7.0
+   draw_line(a.lerp(d,t),ridge_a.lerp(ridge_b,t),Color("d4cbb9",.14),1)
+   draw_line(ridge_a.lerp(ridge_b,t),b.lerp(c,t),Color("dfddd1",.14),1)
+  # Chimney and skylight are dedicated geometry, not placeholder blocks.
+  _block_iso(Vector2(2.6,2.0),Vector2(3.15,2.50),130,Color("9e8b7b"),Color("766759"),Color("66564b"))
+  draw_line(_screen(Vector2(2.54,2.10),130),_screen(Vector2(3.2,2.10),130),Color("d3c4b0"),3)
 func _draw_ui() -> void:
  var size := get_viewport_rect().size
  var dark := Color("0b1c19")
