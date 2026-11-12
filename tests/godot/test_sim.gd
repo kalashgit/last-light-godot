@@ -18,6 +18,7 @@ func run(sim: Sim, seconds: float, move := Vector2.ZERO, run_flag := false) -> v
 		t += 1.0 / 30.0
 
 func _init() -> void:
+	seed(20261112)      # the game uses the global RNG for combat rolls: make the run repeatable
 	print("== new game")
 	var sim := Sim.new(4242)
 	sim.new_game("builder")
@@ -342,16 +343,17 @@ func _init() -> void:
 func _find_open(sim: Sim) -> Vector2:
 	var w: World = sim.world
 	var c := sim.safe_pos
-	for r in range(3, 30):
+	for r in range(3, 60):
 		for a in range(16):
 			var q: Vector2 = c + Vector2(cos(a / 16.0 * TAU), sin(a / 16.0 * TAU)) * r
 			var x := floori(q.x)
 			var y := floori(q.y)
 			var good := w.bld(x, y) == 0 and Defs.ground_is_natural(w.ground(x, y))
 			for dy in range(-1, 2):
-				for dx in range(-1, 2):
+				for dx in range(-1, 6):      # 3x3 to build in plus a clear lane to the east for approaching zombies
 					if w.obj(x + dx, y + dy) != 0 or w.tile_blocked(x + dx, y + dy) or w.wall(x + dx, y + dy, 0) != 0 or w.wall(x + dx, y + dy, 1) != 0 or not Defs.ground_is_natural(w.ground(x + dx, y + dy)):
 						good = false
 			if good:
 				return Vector2(x + 0.5, y + 0.5)
+	print("  FAIL  no open test area found near the start")
 	return c
