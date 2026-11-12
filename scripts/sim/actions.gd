@@ -190,7 +190,7 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 						sim.emit_fx("glass", p.pos)
 						sim.noise(p.pos, 16.0)
 						if p.weapon.is_empty() and randf() < 0.4:
-							p.add_wound(2 + randi() % 2, "scratch", "broken glass")))
+							p.add_wound(9 + randi() % 2, "glass" if randf() < 0.3 else "scratch", "broken glass")))
 			if (st & Defs.ES_CURTAIN) == 0 and Inv.count(p.inv, "sheet") > 0:
 				out.append(_opt("Hang sheet as curtain", func():
 					if Inv.take(p.inv, "sheet", 1):
@@ -299,9 +299,9 @@ static func _climb(sim: Sim, x: int, y: int, side: int, dur: float, glass: bool)
 		sim.noise(p.pos, 5.0)
 		sim.emit_fx("step", p.pos)
 		if glass and randf() < 0.22:
-			p.add_wound(2 + randi() % 4, "laceration" if randf() < 0.35 else "scratch", "broken glass")
+			p.add_wound([7, 8, 9, 10, 11, 12, 13, 14][randi() % 8], "glass" if randf() < 0.4 else "scratch", "broken glass")
 		elif dur > 2.0 and randf() < 0.03 + p.over_weight() * 0.02:
-			p.add_wound(4 + randi() % 2, "fracture", "bad landing")
+			p.add_wound(13 + randi() % 2, "fracture", "bad landing")
 		p.add_xp("fitness", 2.0))
 
 # ------------------------------------------------------------------ objects
@@ -953,20 +953,24 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 					else:
 						Inv.split(p.inv, it, 1)
 		var sp: String = r.get("special", "")
-		if sp == "patch" and not p.worn.is_empty():
+		if sp == "patch" and not Recipes.patch_target(p).is_empty():
 			var tl: int = p.skill_level("tailoring")
-			p.worn["c"] = minf(1.0, float(p.worn.get("c", 1.0)) + 0.25 + tl * 0.04)
-			if int(p.worn.get("pt", 0)) < 3 and tl >= 1:
-				p.worn["pt"] = int(p.worn.get("pt", 0)) + 1
+			var garment: Dictionary = Recipes.patch_target(p)
+			garment["c"] = minf(1.0, float(garment.get("c", 1.0)) + 0.25 + tl * 0.04)
+			if int(garment.get("pt", 0)) < 3 and tl >= 1:
+				garment["pt"] = int(garment.get("pt", 0)) + 1
 			sim.say("Patched. It will take a few more bites.", Color(0.75, 0.9, 0.7))
 		elif (sp == "repair_tape" or sp == "repair_glue" or sp == "sharpen") and not p.weapon.is_empty():
 			var ml: int = p.skill_level("maintenance")
 			var times: int = int(p.weapon.get("rp", 0))
-			var base: float = 0.35 if sp == "repair_tape" else (0.5 if sp == "repair_glue" else 0.22)
-			p.weapon["c"] = minf(1.0, float(p.weapon.get("c", 1.0)) + base * (1.0 + ml * 0.06) / (1.0 + times * 0.5))
-			if sp != "sharpen":
+			if sp == "sharpen":
+				p.weapon["sh"] = minf(1.0, float(p.weapon.get("sh", 1.0)) + 0.5 + ml * 0.06)
+				sim.say("The edge is keen again (%d%%)." % int(float(p.weapon["sh"]) * 100.0), Color(0.75, 0.9, 0.7))
+			else:
+				var base: float = 0.35 if sp == "repair_tape" else 0.5
+				p.weapon["c"] = minf(1.0, float(p.weapon.get("c", 1.0)) + base * (1.0 + ml * 0.06) / (1.0 + times * 0.5))
 				p.weapon["rp"] = times + 1
-			sim.say("Condition now %d%%. Each repair holds a little less." % int(float(p.weapon["c"]) * 100.0), Color(0.75, 0.9, 0.7))
+				sim.say("Condition now %d%%. Each repair holds a little less." % int(float(p.weapon["c"]) * 100.0), Color(0.75, 0.9, 0.7))
 		if r.get("special", "") == "purify":
 			for it in p.inv:
 				if it.has("d") and Items.def(it["id"]).has("water"):

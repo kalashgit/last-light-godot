@@ -517,7 +517,7 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 			p.consume(it)])
 	if d.has("med") or d.has("disinfect"):
 		var kind: String = d.get("med", "disinfect")
-		if kind == "antibiotics" or kind == "painkillers" or kind == "vitamins" or kind == "sleep":
+		if kind == "antibiotics" or kind == "painkillers" or kind == "vitamins" or kind == "sleep" or kind == "calm" or kind == "antidep":
 			opts.append(["Take", func():
 				close()
 				p.use_med(it)])
@@ -575,7 +575,10 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 	elif d.has("hunger"):
 		info += "\nRestores %d hunger, about %d kcal" % [int(d["hunger"]), int(Items.kcal(d))]
 	elif d.has("wear"):
-		info += "\nWarmth %d, stops %d%% of attacks" % [int(d["wear"]["warm"]), int((float(d["wear"]["def"]) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + int(it.get("pt", 0)) * 0.04) * 100.0)]
+		var covers: Array = []
+		for pi in d["wear"].get("parts", [2, 3, 5, 6, 7, 8]):
+			covers.append(String(Player.PARTS[int(pi)]).to_lower())
+		info += "\nWarmth %d, stops %d%% of attacks to: %s" % [int(d["wear"]["warm"]), int((float(d["wear"]["def"]) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + int(it.get("pt", 0)) * 0.04) * 100.0), ", ".join(covers)]
 	_sheet_open(info, opts)
 
 # ------------------------------------------------------------------ character
@@ -641,7 +644,11 @@ func _build_char() -> void:
 	_stat("Misery", p.unhappy, Color(0.5, 0.55, 0.75))
 	_stat("Stress", p.stress, Color(0.8, 0.6, 0.4))
 	var reserve: String = "starving" if p.kcal < -1200.0 else ("running low" if p.kcal < 0.0 else ("plenty" if p.kcal > 1800.0 else "adequate"))
-	body.add_child(UiKit.label("Body: %.1f kg (%s) — energy reserve %s" % [p.weight, p.weight_note(), reserve], 17, UiKit.DIM))
+	body.add_child(UiKit.label("Body: %.1f kg (%s) — energy reserve %s — protein %s" % [p.weight, p.weight_note(), reserve, p.protein_note()], 17, UiKit.DIM))
+	var wn: Array = []
+	for wit in p.worn_items():
+		wn.append("%s %d%%" % [Items.def(wit["id"])["n"], int(float(wit.get("c", 1.0)) * 100.0)])
+	body.add_child(UiKit.label("Wearing: " + (", ".join(wn) if wn.size() > 0 else "nothing protective"), 16, UiKit.DIM))
 	var ex := HBoxContainer.new()
 	ex.add_child(UiKit.button("Exercise: push-ups", func():
 		close()
@@ -679,6 +686,13 @@ func _build_char() -> void:
 		vb2.add_child(UiKit.label("%s — %s%s" % [Player.PARTS[int(wound["part"])], def[4], ("  (" + ", ".join(bits) + ")") if bits.size() > 0 else ""], 18,
 			UiKit.BAD if bits.has("bleeding") or bits.has("infected") else UiKit.TEXT))
 		var hb2 := HBoxContainer.new()
+		if wound.get("glass", false):
+			bits.append("glass still in it")
+			var tw: Dictionary = Inv.find_tag(p.inv, "tweezers")
+			if not tw.is_empty():
+				hb2.add_child(UiKit.button("Remove glass (tweezers)", func():
+					close()
+					p.use_med({"id": "tweezers"}, wound), 48))
 		if not wound["band"] and wound["type"] != "fracture":
 			var bandage: Dictionary = Inv.find(p.inv, "bandage")
 			if bandage.is_empty(): bandage = Inv.find(p.inv, "rag")
@@ -692,12 +706,13 @@ func _build_char() -> void:
 				p.remove_bandage(wound), 48))
 		if not wound["dis"] and wound["type"] != "fracture":
 			var dis: Dictionary = Inv.find(p.inv, "disinfectant")
+			if dis.is_empty(): dis = Inv.find(p.inv, "alcohol_wipes")
 			if dis.is_empty(): dis = Inv.find(p.inv, "whiskey")
 			if not dis.is_empty():
 				hb2.add_child(UiKit.button("Disinfect", func():
 					close()
 					p.use_med(dis, wound), 48))
-		if not wound["stitch"] and (wound["type"] == "laceration" or wound["type"] == "deep" or wound["type"] == "bite"):
+		if not wound["stitch"] and not wound.get("glass", false) and (wound["type"] == "laceration" or wound["type"] == "deep" or wound["type"] == "bite" or wound["type"] == "glass"):
 			var sk: Dictionary = Inv.find(p.inv, "suture_kit")
 			if not sk.is_empty():
 				hb2.add_child(UiKit.button("Stitch", func():
@@ -716,7 +731,7 @@ func _build_char() -> void:
 			if not wound["band"]:
 				vb2.add_child(UiKit.label("   nothing to treat it with", 15, UiKit.DIM))
 	var pills := HBoxContainer.new()
-	for id in ["painkillers", "antibiotics", "vitamins", "sleeping_pills"]:
+	for id in ["painkillers", "antibiotics", "vitamins", "sleeping_pills", "beta_blockers", "antidepressants"]:
 		var it: Dictionary = Inv.find(p.inv, id)
 		if not it.is_empty():
 			pills.add_child(UiKit.button("Take %s" % String(Items.def(id)["n"]).to_lower(), func():

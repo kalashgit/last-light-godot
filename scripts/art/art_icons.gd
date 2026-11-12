@@ -263,6 +263,25 @@ static func _icon(shape: String, a: Color, b: Color) -> Painter:
 		"jacket":
 			p.poly(PackedVector2Array([Vector2(8, 4), Vector2(16, 4), Vector2(22, 9), Vector2(19, 13), Vector2(17, 11), Vector2(17, 21), Vector2(7, 21), Vector2(7, 11), Vector2(5, 13), Vector2(2, 9)]), a)
 			p.rect(12, 5, 1, 16, b)
+		"glove":
+			p.rect(8, 9, 9, 11, a)
+			p.rect(5, 11, 3, 5, a)
+			for k in range(4):
+				p.rect(8 + k * 2 + (1 if k > 1 else 0), 4, 2, 6, a)
+			p.rect(8, 18, 9, 2, b)
+		"boot":
+			p.rect(8, 4, 6, 12, a)
+			p.rect(8, 14, 12, 5, a)
+			p.rect(8, 19, 12, 2, b)
+			p.rect(8, 4, 6, 2, b)
+		"trousers":
+			p.rect(7, 4, 11, 4, a)
+			p.rect(7, 8, 5, 13, a)
+			p.rect(13, 8, 5, 13, a)
+			p.rect(7, 4, 11, 1, b)
+		"cap":
+			p.ball(12, 12, 8, 6, a, 41, 0.05)
+			p.rect(4, 14, 16, 3, b)
 		"seeds":
 			p.rect(7, 5, 10, 15, b)
 			p.ball(12, 12, 3, 4, a, 30, 0.05)
@@ -284,7 +303,7 @@ static func _icon(shape: String, a: Color, b: Color) -> Painter:
 ## moodle pictograms (white glyph, tinted by severity colour in HUD)
 static func _gen_moodles() -> void:
 	var w := Color.WHITE
-	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored", "sad", "stress", "drunk"]
+	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored", "sad", "stress", "drunk", "strain", "windchill", "discomfort"]
 	for nm in names:
 		var p := Painter.new(S, S)
 		match nm:
@@ -332,6 +351,15 @@ static func _gen_moodles() -> void:
 				p.line(12, 6, 10, 11, Color(1, 1, 1, 0.2), 2); p.line(10, 11, 14, 13, Color(1, 1, 1, 0.2), 2); p.line(14, 13, 12, 18, Color(1, 1, 1, 0.2), 2)
 			"stuffed":
 				p.ellipse(12, 13, 8, 7, w); p.rect(11, 3, 2, 4, w)
+			"strain":
+				p.ellipse(9, 11, 5, 4, w); p.rect(12, 9, 8, 4, w); p.rect(4, 13, 4, 8, w); p.ellipse(18, 8, 3, 3, w)
+			"windchill":
+				p.line(3, 7, 16, 7, w, 2); p.line(16, 7, 19, 4, w, 2)
+				p.line(3, 12, 20, 12, w, 2)
+				p.line(3, 17, 14, 17, w, 2); p.line(14, 17, 17, 20, w, 2)
+			"discomfort":
+				p.rect(6, 4, 12, 3, w); p.rect(4, 7, 16, 11, w); p.rect(9, 18, 6, 3, w)
+				p.rect(8, 10, 8, 2, Color(1, 1, 1, 0.2))
 			"sad":
 				p.ellipse(12, 12, 9, 9, w)
 				p.rect(7, 8, 3, 3, Color(1, 1, 1, 0.2)); p.rect(14, 8, 3, 3, Color(1, 1, 1, 0.2))

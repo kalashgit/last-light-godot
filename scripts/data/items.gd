@@ -126,6 +126,10 @@ static func _static_init() -> void:
 	_i("car_battery", "Car Battery", "tool", 5.0, ["battery", "2a2c2e", "c0392b"], {})
 	_i("glue", "Wood Glue", "material", 0.2, ["bottle", "e0c860", "f0f0f0"], {"uses": 4})
 	_i("sleeping_pills", "Sleeping Tablets", "med", 0.1, ["pills", "8a9ad0", "f0f0f0"], {"med": "sleep", "uses": 4})
+	_i("beta_blockers", "Beta Blockers", "med", 0.1, ["pills", "7ab07a", "f0f0f0"], {"med": "calm", "uses": 6})
+	_i("antidepressants", "Antidepressants", "med", 0.1, ["pills", "d0a0d0", "f0f0f0"], {"med": "antidep", "uses": 6})
+	_i("alcohol_wipes", "Alcohol Wipes", "med", 0.1, ["box", "e8f0f0", "5aa0a0"], {"med": "disinfect", "uses": 5})
+	_i("tweezers", "Tweezers", "med", 0.05, ["needle", "c8ccd0", "9aa0a4"], {"tags": ["tweezers"], "med": "tweezers"})
 	# ---------------- materials
 	_i("nails", "Nails", "material", 0.01, ["nails", "9aa0a4", "6a7074"], {"stackmax": 500})
 	_i("log", "Log", "material", 4.0, ["log", "7a5a38", "c8a870"], {"fuel": 4.0})
@@ -151,7 +155,18 @@ static func _static_init() -> void:
 	_i("leather_jacket", "Leather Jacket", "clothing", 1.6, ["jacket", "4a3a2a", "2a2018"], {"wear": {"warm": 10, "def": 0.35}})
 	_i("winter_coat", "Winter Coat", "clothing", 1.8, ["jacket", "8a3a30", "5a2a20"], {"wear": {"warm": 24, "def": 0.2}})
 	_i("raincoat", "Raincoat", "clothing", 0.6, ["jacket", "d8c040", "a89030"], {"wear": {"warm": 4, "def": 0.05, "dry": 1}})
-	_i("padded_jacket", "Padded Jacket", "clothing", 1.8, ["jacket", "6a6a58", "4a4a3c"], {"wear": {"warm": 16, "def": 0.3}})
+	_i("padded_jacket", "Padded Jacket", "clothing", 1.8, ["jacket", "6a6a58", "4a4a3c"], {"wear": {"warm": 16, "def": 0.3, "heavy": 1}})
+	_i("wool_hat", "Wool Hat", "clothing", 0.1, ["cap", "8a4a40", "6a3a30"], {"wear": {"slot": "head", "parts": [0], "warm": 8, "def": 0.05}})
+	_i("hard_hat", "Hard Hat", "clothing", 0.5, ["cap", "e0b030", "b08a20"], {"wear": {"slot": "head", "parts": [0], "warm": 2, "def": 0.5, "heavy": 1}})
+	_i("riot_helmet", "Riot Helmet", "clothing", 1.4, ["cap", "3a3d40", "8fb0c4"], {"wear": {"slot": "head", "parts": [0, 1], "warm": 6, "def": 0.8, "heavy": 2}})
+	_i("scarf", "Scarf", "clothing", 0.2, ["rag", "a83a3a", "7a2a2a"], {"wear": {"slot": "neck", "parts": [1], "warm": 7, "def": 0.12}})
+	_i("leather_gloves", "Leather Gloves", "clothing", 0.2, ["glove", "5a3a28", "3a2618"], {"wear": {"slot": "hands", "parts": [9, 10], "warm": 5, "def": 0.45}})
+	_i("work_gloves", "Work Gloves", "clothing", 0.2, ["glove", "c8a850", "8a6a30"], {"wear": {"slot": "hands", "parts": [9, 10], "warm": 3, "def": 0.3}})
+	_i("jeans", "Jeans", "clothing", 0.6, ["trousers", "3c5a8a", "2c4266"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 6, "def": 0.14}})
+	_i("padded_trousers", "Padded Trousers", "clothing", 1.4, ["trousers", "6a6a58", "4a4a3c"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 10, "def": 0.32, "heavy": 1}})
+	_i("boots", "Work Boots", "clothing", 1.2, ["boot", "4a3626", "2a2018"], {"wear": {"slot": "feet", "parts": [13, 14, 15, 16], "warm": 6, "def": 0.5}})
+	_i("sneakers", "Running Shoes", "clothing", 0.5, ["boot", "e0e0e0", "c0392b"], {"wear": {"slot": "feet", "parts": [15, 16], "warm": 2, "def": 0.15}})
+	_i("leather", "Leather Hide", "material", 0.8, ["sheet", "8a5a38", "6a4428"], {})
 	# ---------------- seeds & farming
 	_i("seeds_potato", "Potato Seeds", "seed", 0.05, ["seeds", "a88858", "f0ece0"], {"seed": "potato"})
 	_i("seeds_cabbage", "Cabbage Seeds", "seed", 0.05, ["seeds", "7aa860", "f0ece0"], {"seed": "cabbage"})
@@ -188,6 +203,10 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 		it["u"] = d["uses"]
 	if (d.has("wpn") and d["cat"] != "material") or d.has("wear"):
 		it["c"] = 1.0
+	if d.has("wpn") and d["cat"] != "material":
+		var wt: String = d["wpn"]["type"]
+		if wt == "blade" or wt == "axe" or wt == "spear":
+			it["sh"] = 1.0
 	if d.has("gun"):
 		it["c"] = 1.0
 		it["u"] = 0
@@ -198,6 +217,18 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 ## items that carry per-instance state and therefore never stack
 static func is_unique(d: Dictionary) -> bool:
 	return d.has("uses") or d.has("gun") or d.has("wear") or (d.has("wpn") and d.get("cat", "") != "material")
+
+## protein contribution of a food (0..40), from an explicit value or a guess by what it is
+static func protein(d: Dictionary) -> float:
+	if d.has("prot"):
+		return float(d["prot"])
+	var icon: String = d.get("icon", [""])[0]
+	var h: float = float(d.get("hunger", 0))
+	if icon == "meat" or icon == "fish" or icon == "egg":
+		return h * 0.9
+	if icon == "can" or icon == "jar" or icon == "pot":
+		return h * 0.5
+	return h * 0.15
 
 ## food energy in kcal (explicit, or estimated from how filling it is)
 static func kcal(d: Dictionary) -> float:
@@ -256,6 +287,10 @@ static func describe(it: Dictionary, hour: float) -> String:
 		bits.append("%d/%d" % [int(it["u"]), mx])
 	if it.has("c") and float(it["c"]) < 0.999:
 		bits.append("%d%%" % int(float(it["c"]) * 100.0))
+	if it.has("sh") and float(it["sh"]) < 0.6:
+		bits.append("dull" if float(it["sh"]) > 0.25 else "blunt")
+	if int(it.get("pt", 0)) > 0:
+		bits.append("patched")
 	if bits.size() > 0:
 		s += " (" + ", ".join(bits) + ")"
 	if int(it.get("n", 1)) > 1:

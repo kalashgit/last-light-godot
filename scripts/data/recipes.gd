@@ -83,6 +83,19 @@ static func _static_init() -> void:
 	# ---- farming
 	_r("till", "Dig furrow", "Farming", {"tools": ["dig"], "build": {"ground": Defs.G_SOIL, "natural": 1}, "time": 4.0, "xp": ["farming", 4]})
 
+## the worn garment most in need of a needle
+static func patch_target(p: Player) -> Dictionary:
+	var best: Dictionary = {}
+	var worst := 2.0
+	for it in p.worn_items():
+		var c: float = float(it.get("c", 1.0))
+		if c >= 0.999 and int(it.get("pt", 0)) >= 3:
+			continue
+		if c < worst:
+			worst = c
+			best = it
+	return best
+
 static func by_id(id: String) -> Dictionary:
 	for r in LIST:
 		if r["id"] == id:
@@ -116,19 +129,23 @@ static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool 
 	if sp == "purify" and not p.has_tainted_water():
 		return "no tainted water"
 	if sp == "patch":
-		if p.worn.is_empty():
+		if p.worn_items().is_empty():
 			return "wear the clothing you want to patch"
-		if float(p.worn.get("c", 1.0)) >= 0.999 and int(p.worn.get("pt", 0)) >= 3:
+		if patch_target(p).is_empty():
 			return "nothing left to patch"
 	if sp == "repair_tape" or sp == "repair_glue" or sp == "sharpen":
 		var wd: Dictionary = p.weapon_def()
 		if not wd.has("wpn"):
 			return "equip the weapon to repair"
+		var typ: String = wd["wpn"]["type"]
+		if sp == "sharpen":
+			if typ != "blade" and typ != "axe" and typ != "spear":
+				return "only edged weapons can be sharpened"
+			if float(p.weapon.get("sh", 1.0)) >= 0.95:
+				return "the edge is already keen"
+			return ""
 		if float(p.weapon.get("c", 1.0)) >= 0.98:
 			return "it is in good condition"
-		var typ: String = wd["wpn"]["type"]
-		if sp == "sharpen" and typ != "blade" and typ != "axe" and typ != "spear":
-			return "only edged weapons can be sharpened"
 		if sp == "repair_glue" and typ == "blade":
 			return "glue will not hold a blade"
 	return ""

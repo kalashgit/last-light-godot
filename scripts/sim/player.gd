@@ -2,7 +2,20 @@ class_name Player
 extends RefCounted
 ## Survivor state and rules: movement, combat, needs, wounds, infection, skills.
 
-const PARTS := ["Head", "Torso", "Left arm", "Right arm", "Left leg", "Right leg"]
+const PARTS := ["Head", "Neck", "Upper torso", "Lower torso", "Groin", "Left upper arm", "Right upper arm", "Left forearm", "Right forearm",
+	"Left hand", "Right hand", "Left thigh", "Right thigh", "Left shin", "Right shin", "Left foot", "Right foot"]
+## how often each part is struck (standing attacker / crawler)
+const HIT_WEIGHTS := [1.0, 0.7, 2.2, 1.5, 0.4, 1.2, 1.2, 1.6, 1.6, 1.0, 1.0, 1.0, 1.0, 0.9, 0.9, 0.3, 0.3]
+const HIT_WEIGHTS_LOW := [0.0, 0.0, 0.1, 0.3, 0.3, 0.0, 0.0, 0.2, 0.2, 0.3, 0.3, 1.5, 1.5, 3.0, 3.0, 2.0, 2.0]
+const SLOTS := ["head", "neck", "torso", "hands", "legs", "feet"]
+## saves from before the 17-part body used 6 parts
+const OLD_PART_MAP := [0, 2, 7, 8, 11, 12]
+
+static func is_arm(part: int) -> bool:
+	return part >= 5 and part <= 10
+
+static func is_leg(part: int) -> bool:
+	return part >= 11
 const SKILLS := ["fitness", "strength", "sneaking", "blunt", "blade", "axe", "spear", "aiming", "reloading", "maintenance", "carpentry", "cooking", "farming",
 	"first_aid", "foraging", "fishing", "trapping", "tailoring", "electrical", "metalworking", "mechanics"]
 const BASE_TRAIT_POINTS := 2
@@ -19,6 +32,7 @@ const WOUND := {
 	"deep": [20.0, 12.0, 100.0, 28.0, "Deep wound"],
 	"fracture": [0.0, 0.0, 200.0, 40.0, "Fracture"],
 	"burn": [0.0, 0.0, 90.0, 25.0, "Burn"],
+	"glass": [6.0, 3.0, 45.0, 20.0, "Lodged glass"],
 }
 const OCCUPATIONS := {
 	"unemployed": {"n": "Drifter", "d": "No special training, but 6 extra trait points.", "skills": {"fitness": 1, "sneaking": 1, "foraging": 1}, "items": [["granola_bar", 2]], "pts": 6},
@@ -61,7 +75,15 @@ var wounds: Array = []
 var inv: Array = []
 var weapon: Dictionary = {}
 var bag: Dictionary = {}
-var worn: Dictionary = {}
+var worn: Dictionary = {}       # torso garment
+var gear: Dictionary = {}       # other clothing by slot: head, neck, hands, legs, feet
+var windchill := 0.0
+var arm_strain := 0.0           # muscle fatigue from swinging (0..100)
+var calm_h := 0.0               # hours of beta-blocker effect left
+var antidep_h := 0.0            # hours of antidepressant effect left
+var protein := 50.0             # 0..100 recent protein intake
+var corpse_exp := 0.0           # exposure to rotting bodies
+var dragging: Dictionary = {}   # corpse being dragged
 var skills: Dictionary = {}
 var read: Dictionary = {}
 var occupation := "unemployed"
@@ -152,6 +174,16 @@ func setup_occupation(occ: String, trait_list: Array = []) -> void:
 				it["u"] = int(Items.def(it["id"])["gun"]["mag"])
 
 # ------------------------------------------------------------------ skills
+var xp_boost: Dictionary = {}       # skill -> multiplier earned by studying its manual (applies below level 5)
+
+func skill_level_raw(s: String) -> int:
+	var xp: float = skills.get(s, 0.0)
+	var lvl := 0
+	for i in range(XP_LEVELS.size()):
+		if xp >= float(XP_LEVELS[i]):
+			lvl = i
+	return lvl
+
 func skill_level(s: String) -> int:
 	var xp: float = skills.get(s, 0.0)
 	var lvl := 0
@@ -160,13 +192,16 @@ func skill_level(s: String) -> int:
 			lvl = i
 	if not _tfx.is_empty():
 		lvl = clampi(lvl + int(_tfx.get("+skill_" + s, 0.0)), 0, 10)
-	if s == "strength" and weight < 62.0:
+	if s == "strength" and weight < 68.0:
 		lvl = maxi(lvl - 1, 0)
 	return lvl
 
 func add_xp(s: String, amount: float) -> void:
 	var before: int = skill_level(s)
-	skills[s] = float(skills.get(s, 0.0)) + amount * tmod("xp") * float(sim.settings.get("xp", 1.0))
+	var pm: float = 1.0
+	if s == "strength" or s == "fitness":
+		pm = 0.7 if protein < 20.0 else (1.25 if protein > 65.0 else 1.0)
+	skills[s] = float(skills.get(s, 0.0)) + amount * tmod("xp") * float(sim.settings.get("xp", 1.0)) * pm * float(xp_boost.get(s, 1.0) if skill_level_raw(s) < 5 else 1.0)
 	var after: int = skill_level(s)
 	if after > before:
 		sim.say("%s reached level %d" % [s.capitalize().replace("_", " "), after], Color(0.6, 0.9, 0.6))
@@ -183,12 +218,44 @@ func carried() -> float:
 	return Inv.weight(inv)
 
 func is_equipped(it: Dictionary) -> bool:
-	return is_same(it, weapon) or is_same(it, bag) or is_same(it, worn)
+	if is_same(it, weapon) or is_same(it, bag) or is_same(it, worn):
+		return true
+	for k in gear.keys():
+		if is_same(gear[k], it):
+			return true
+	return false
 
 func unequip(it: Dictionary) -> void:
 	if is_same(it, weapon): weapon = {}
 	if is_same(it, bag): bag = {}
 	if is_same(it, worn): worn = {}
+	for k in gear.keys():
+		if is_same(gear[k], it):
+			gear.erase(k)
+
+## every garment currently worn
+func worn_items() -> Array:
+	var out: Array = []
+	if not worn.is_empty() and inv.has(worn):
+		out.append(worn)
+	for k in gear.keys():
+		if inv.has(gear[k]):
+			out.append(gear[k])
+	return out
+
+## the garment protecting a body part ({} if bare)
+func cover_item(part: int) -> Dictionary:
+	for it in worn_items():
+		var wd: Dictionary = Items.def(it["id"]).get("wear", {})
+		if (wd.get("parts", [2, 3, 5, 6, 7, 8]) as Array).has(part):
+			return it
+	return {}
+
+func discomfort() -> float:
+	var h := 0.0
+	for it in worn_items():
+		h += float(Items.def(it["id"]).get("wear", {}).get("heavy", 0.0))
+	return h
 
 func water_units() -> int:
 	var n := 0
@@ -308,8 +375,11 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		regen *= 1.0 + float(skill_level("fitness")) * 0.05
 		if hunger > 70.0 or thirst > 70.0: regen *= 0.6
 		if fatigue > 70.0: regen *= 0.6
-		if weight > 95.0: regen *= 0.8
-		if weight < 65.0: regen *= 0.85
+		if weight > 100.0: regen *= 0.75
+		elif weight > 85.0: regen *= 0.9
+		if weight < 68.0: regen *= 0.8
+		elif weight < 75.0: regen *= 0.92
+		regen *= 1.0 - minf(discomfort() * 0.05, 0.3)
 		endurance = minf(100.0 if weight >= 60.0 else 85.0, endurance + regen * dt)
 	if running:
 		kcal -= dt * 0.11
@@ -340,10 +410,10 @@ func speed_factor() -> float:
 	if fatigue > 80.0: f *= 0.85
 	if pain > 60.0: f *= 0.82
 	if slow_t > 0.0: f *= 0.5
-	if weight > 108.0: f *= 0.92
+	if weight > 100.0: f *= 0.92
 	if drunk > 70.0: f *= 0.9
 	for wd in wounds:
-		if int(wd["part"]) >= 4:
+		if is_leg(int(wd["part"])):
 			if wd["type"] == "fracture": f *= 0.6 if not wd.get("splint", false) else 0.8
 			elif wd["type"] != "scratch": f *= 0.9
 	return f
@@ -377,7 +447,9 @@ func try_attack() -> bool:
 		dir8 = Iso.dir8(facing)
 	var typ: String = st["type"]
 	var lvl: int = skill_level(typ) if typ != "shove" and typ != "spear" else skill_level("strength")
-	swing_dur = float(st["swing"]) * (1.0 - lvl * 0.03) * (1.25 if fatigue > 75.0 else 1.0)
+	swing_dur = float(st["swing"]) * (1.0 - lvl * 0.03) * (1.25 if fatigue > 75.0 else 1.0) * (1.0 + arm_strain / 250.0)
+	if typ != "shove":
+		arm_strain = minf(100.0, arm_strain + (1.0 + float(d.get("w", 0.3)) * 0.9) * (1.0 - skill_level("fitness") * 0.04))
 	swing_t = swing_dur
 	swing_done = false
 	swing_kind = "shove" if typ == "shove" else "attack"
@@ -414,7 +486,10 @@ func _resolve_melee() -> void:
 		if typ == "shove" and down:
 			dmg = randf_range(12.0, 22.0) * (1.0 + strn * 0.05)
 		if down: dmg *= 1.5
-		var crit_ch: float = float(st["crit"]) + lvl * 0.02 - panic * 0.0015
+		dmg *= 1.0 - arm_strain / 400.0
+		var sharp: float = float(weapon.get("sh", 1.0)) if (typ == "blade" or typ == "axe" or typ == "spear") else 1.0
+		dmg *= 0.55 + 0.45 * sharp
+		var crit_ch: float = (float(st["crit"]) + lvl * 0.02 - panic * 0.0015) * (0.4 + 0.6 * sharp)
 		var unaware: bool = zz.state <= Zombie.WANDER
 		if unaware and (typ == "blade" or typ == "spear"):
 			crit_ch += 0.45
@@ -446,6 +521,9 @@ func _wear_weapon(amount: float) -> void:
 		return
 	var maint: int = skill_level("maintenance")
 	weapon["c"] = float(weapon.get("c", 1.0)) - amount * (1.0 - maint * 0.05) / dur
+	if weapon.has("sh"):
+		# an edge dulls about twice as fast as the tool wears out
+		weapon["sh"] = maxf(0.0, float(weapon["sh"]) - amount * (1.0 - maint * 0.04) / (dur * 0.5))
 	if randf() < 0.25:
 		add_xp("maintenance", 1.0)
 	if float(weapon["c"]) <= 0.0:
@@ -494,7 +572,7 @@ func _hit_scenery(st: Dictionary) -> void:
 			sim.noise(pos, 16.0)
 			sim.say("You smash the window", Color(0.8, 0.85, 0.9))
 			if typ == "shove" and randf() < 0.35:
-				add_wound(2 + randi() % 2, "laceration" if randf() < 0.4 else "scratch", "broken glass")
+				add_wound(9 + randi() % 2, "glass" if randf() < 0.4 else "scratch", "broken glass")
 		return
 	if shape == Defs.WS_ARCH:
 		return
@@ -576,8 +654,9 @@ func reload() -> void:
 # ------------------------------------------------------------------ damage & wounds
 func add_wound(part: int, type: String, cause: String = "") -> void:
 	var w: Array = WOUND[type]
-	wounds.append({"part": part, "type": type, "bleed_h": w[1], "heal": w[2], "band": false, "dirty": 0.0,
-		"inf": false, "dis": false, "stitch": false, "splint": false})
+	part = clampi(part, 0, PARTS.size() - 1)
+	wounds.append({"part": part, "type": type, "bleed_h": w[1] * (1.6 if part == 1 else 1.0), "heal": w[2], "band": false, "dirty": 0.0,
+		"inf": false, "dis": false, "stitch": false, "splint": false, "glass": type == "glass"})
 	if cause != "":
 		sim.say("%s: %s (%s)" % [PARTS[part], w[4], cause], Color(1.0, 0.5, 0.45))
 
@@ -592,15 +671,17 @@ func take_zombie_hit(z: Zombie) -> void:
 	sim.emit_fx("hurt", pos)
 	panic = minf(100.0, panic + 14.0 * tmod("panic") * (1.5 if tadd("squeamish") > 0.0 else 1.0))
 	stress = minf(100.0, stress + 6.0)
-	if not worn.is_empty() and inv.has(worn):
-		if randf() < clothing_def():
+	var part: int = Rng.pick_weighted(sim.rng, HIT_WEIGHTS_LOW if z.kind == 2 else HIT_WEIGHTS)
+	var cover: Dictionary = cover_item(part)
+	if not cover.is_empty():
+		if randf() < clothing_def(part):
 			hp -= 1.5
-			var cname: String = Items.def(worn["id"])["n"]
-			worn["c"] = float(worn.get("c", 1.0)) - 0.12
-			if float(worn["c"]) <= 0.0:
+			var cname: String = Items.def(cover["id"])["n"]
+			cover["c"] = float(cover.get("c", 1.0)) - 0.12
+			if float(cover["c"]) <= 0.0:
 				sim.say("Your %s is torn to shreds" % cname, Color(1.0, 0.6, 0.4))
-				inv.erase(worn)
-				worn = {}
+				unequip(cover)
+				inv.erase(cover)
 			else:
 				sim.say("Your %s stopped the attack" % cname, Color(0.8, 0.85, 0.7))
 			return
@@ -609,10 +690,6 @@ func take_zombie_hit(z: Zombie) -> void:
 		hp -= 2.0
 		sim.say("The blow glances off", Color(0.8, 0.85, 0.7))
 		return
-	var weights: Array = [1.0, 3.0, 2.0, 2.0, 1.5, 1.5]
-	if z.kind == 2:
-		weights = [0.0, 0.3, 0.3, 0.3, 3.0, 3.0]
-	var part: int = Rng.pick_weighted(sim.rng, weights)
 	var r: float = randf()
 	if shrug < 0.0:
 		r = minf(1.0, r - shrug)
@@ -686,7 +763,7 @@ func tick_needs(dh: float) -> void:
 			wd["bleed_h"] = float(wd["bleed_h"]) - dh
 		if wd["band"]:
 			wd["dirty"] = float(wd["dirty"]) + dh
-		var heal_rate: float = (1.5 if wd["band"] else 1.0) * (1.8 if wd["stitch"] or wd["splint"] else 1.0) * (1.0 + fa * 0.03) * tmod("heal") * (1.15 if hunger < 15.0 else 1.0)
+		var heal_rate: float = (1.5 if wd["band"] else 1.0) * (1.8 if wd["stitch"] or wd["splint"] else 1.0) * (1.0 + fa * 0.03) * tmod("heal") * (1.15 if hunger < 15.0 else 1.0) * (0.85 if protein < 20.0 else 1.0) * (0.0 if wd.get("glass", false) else 1.0)
 		if wd["inf"]:
 			heal_rate = 0.0
 			hp -= dh * 0.6
@@ -717,7 +794,8 @@ func tick_needs(dh: float) -> void:
 	if temp < -80.0: drain += 4.0
 	elif temp < -50.0: drain += 1.0
 	if temp > 85.0: drain += 2.0
-	if weight < 52.0: drain += 1.0
+	if weight < 55.0: drain += 1.0
+	if corpse_exp > 60.0: drain += 3.0
 	# the fever
 	if infection >= 0.0:
 		infection += dh / infection_span
@@ -740,7 +818,16 @@ func tick_needs(dh: float) -> void:
 	var ambient: float = sim.weather["temp"]
 	var eff: float = ambient + (6.0 if indoors else 0.0)
 	var wear_d: Dictionary = Items.def(worn["id"]).get("wear", {}) if not worn.is_empty() else {}
-	eff += float(wear_d.get("warm", 0.0)) * (1.0 if ambient < 22.0 else 0.4)
+	var warm := 0.0
+	for wit in worn_items():
+		warm += float(Items.def(wit["id"]).get("wear", {}).get("warm", 0.0))
+	eff += warm * (1.0 if ambient < 22.0 else 0.4)
+	# wind strips heat from anyone standing in the open
+	var wind: float = sim.weather.get("wind", 0.0)
+	windchill = 0.0
+	if not indoors and ambient < 14.0 and wind > 0.25:
+		windchill = wind * 7.0 * clampf(1.0 - warm / 40.0, 0.35, 1.0)
+		eff -= windchill
 	eff -= wet * 0.09
 	if sim.near_fire(pos): eff += 14.0
 	if running: eff += 3.0
@@ -792,12 +879,30 @@ func moodles() -> Array:
 	if stress > 30.0: m.append(["stress", 1 + int(stress > 50.0) + int(stress > 70.0) + int(stress > 88.0), "Stressed"])
 	if drunk > 20.0: m.append(["drunk", 1 + int(drunk > 45.0) + int(drunk > 70.0), "Drunk"])
 	if hunger < 6.0 and sim.hour - last_meal_h < 3.0: m.append(["stuffed", 1, "Well fed"])
+	if arm_strain > 30.0 or strain > 0.0: m.append(["strain", 1 + int(arm_strain > 55.0) + int(arm_strain > 80.0), "Muscle strain"])
+	if windchill > 1.5: m.append(["windchill", 1 + int(windchill > 3.0) + int(windchill > 5.0), "Wind chill"])
+	var dsc: float = discomfort()
+	if dsc >= 1.0: m.append(["discomfort", 1 + int(dsc >= 2.0) + int(dsc >= 3.0), "Uncomfortable gear"])
+	if corpse_exp > 25.0: m.append(["sick", 1 + int(corpse_exp > 45.0) + int(corpse_exp > 60.0), "Sickened by the dead"])
 	return m
 
 ## body weight, mood, drink, colds and cravings (dh = game hours)
 func _tick_body(dh: float) -> void:
 	# ---- nutrition: the reserve drains constantly and drags body weight with it
 	kcal -= dh * (55.0 if sleeping else 88.0)
+	protein = maxf(0.0, protein - dh * 1.6)
+	arm_strain = maxf(0.0, arm_strain - dh * (16.0 if sleeping else 9.0))
+	calm_h = maxf(0.0, calm_h - dh)
+	antidep_h = maxf(0.0, antidep_h - dh)
+	if calm_h > 0.0:
+		panic = maxf(0.0, panic - dh * 120.0)
+	if antidep_h > 0.0:
+		unhappy = maxf(0.0, unhappy - dh * 3.5)
+	if infection >= 0.1:
+		stress = minf(100.0, stress + dh * 2.5)      # the first sign is a dread you cannot place
+	var dsc: float = discomfort()
+	if dsc > 0.0:
+		unhappy = minf(100.0, unhappy + dh * dsc * 0.4)
 	if kcal > 1800.0:
 		weight = minf(140.0, weight + dh * 0.018)
 		kcal -= dh * 60.0
@@ -833,11 +938,12 @@ func _tick_body(dh: float) -> void:
 			sim.say("Your cold has cleared up", Color(0.75, 0.9, 0.7))
 
 ## clothing protection: chance that the worn garment stops an attack
-func clothing_def() -> float:
-	if worn.is_empty():
+func clothing_def(part: int = 2) -> float:
+	var it: Dictionary = cover_item(part)
+	if it.is_empty():
 		return 0.0
-	var wdf: Dictionary = Items.def(worn["id"]).get("wear", {})
-	return float(wdf.get("def", 0.0)) * clampf(float(worn.get("c", 1.0)) + 0.25, 0.3, 1.0) + float(worn.get("pt", 0)) * 0.04
+	var wdf: Dictionary = Items.def(it["id"]).get("wear", {})
+	return float(wdf.get("def", 0.0)) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + float(it.get("pt", 0)) * 0.04
 
 ## real-time part of having a cold (called from update)
 func _sneeze(dt: float) -> void:
@@ -851,11 +957,17 @@ func _sneeze(dt: float) -> void:
 		sim.say("You sneeze", Color(0.8, 0.8, 1.0))
 
 func weight_note() -> String:
-	if weight < 55.0: return "emaciated"
-	if weight < 65.0: return "underweight"
-	if weight > 108.0: return "obese"
-	if weight > 95.0: return "overweight"
+	if weight < 60.0: return "emaciated"
+	if weight < 68.0: return "very underweight"
+	if weight < 75.0: return "underweight"
+	if weight > 100.0: return "obese"
+	if weight > 85.0: return "overweight"
 	return "healthy"
+
+func protein_note() -> String:
+	if protein < 20.0: return "low"
+	if protein > 65.0: return "high"
+	return "adequate"
 
 ## push-ups build strength, squats build fitness. Overdoing it strains muscles.
 func exercise(kind: String) -> void:
@@ -866,7 +978,7 @@ func exercise(kind: String) -> void:
 		sim.say("You are in no state to exercise", Color(0.9, 0.8, 0.6))
 		return
 	for wd in wounds:
-		if wd["type"] == "fracture" or (wd["type"] != "scratch" and ((kind == "pushups" and int(wd["part"]) in [2, 3]) or (kind == "squats" and int(wd["part"]) >= 4))):
+		if wd["type"] == "fracture" or (wd["type"] != "scratch" and ((kind == "pushups" and is_arm(int(wd["part"]))) or (kind == "squats" and is_leg(int(wd["part"]))))):
 			sim.say("Not with that injury", Color(0.9, 0.8, 0.6))
 			return
 	var skill: String = "strength" if kind == "pushups" else "fitness"
@@ -921,6 +1033,7 @@ func consume(it: Dictionary) -> void:
 		fatigue = clampf(fatigue + float(d.get("fatigue", 0)), 0.0, 100.0)
 		panic = maxf(0.0, panic - float(d.get("calm", 0)) * 2.0)
 		kcal += Items.kcal(d) * mul
+		protein = minf(100.0, protein + Items.protein(d) * mul)
 		sim.flags["ate"] = true
 		if d.has("hunger"): last_meal_h = sim.hour
 		unhappy = clampf(unhappy - float(d.get("calm", 0)) * 1.2 + float(d.get("sad", 0)) + (12.0 if fs == 2 else (4.0 if fs == 1 else 0.0)), 0.0, 100.0)
@@ -1017,9 +1130,33 @@ func use_med(it: Dictionary, wound: Dictionary = {}) -> void:
 				if not inv.has(it): return
 				fatigue = maxf(0.0, fatigue - 14.0)
 				Inv.use_charge(inv, it))
+		"calm":
+			start_action("Taking beta blockers", 1.2, func():
+				if not inv.has(it): return
+				calm_h = 6.0
+				panic = maxf(0.0, panic - 40.0)
+				Inv.use_charge(inv, it))
+		"antidep":
+			start_action("Taking antidepressants", 1.2, func():
+				if not inv.has(it): return
+				antidep_h = 30.0
+				Inv.use_charge(inv, it)
+				sim.say("They take a while to work", Color(0.8, 0.8, 1.0)))
+		"tweezers":
+			if wound.is_empty(): return
+			start_action("Removing glass", dur * 1.6, func():
+				if not wounds.has(wound): return
+				wound["glass"] = false
+				wound["bleed_h"] = maxf(float(wound["bleed_h"]), 2.0)
+				wound["band"] = false
+				add_xp("first_aid", 12.0)
+				sim.say("The shard comes out. Bandage it.", Color(0.75, 0.9, 0.7)))
 		"sleep":
 			start_action("Taking sleeping tablets", 1.2, func():
 				if not inv.has(it): return
+				if drunk > 40.0:
+					sim.say("Tablets on top of that much drink. Your breathing slows…", Color(1.0, 0.5, 0.45))
+					hurt(55.0, "Mixed sleeping tablets with alcohol")
 				fatigue = minf(100.0, fatigue + 30.0)
 				panic = maxf(0.0, panic - 40.0)
 				stress = maxf(0.0, stress - 20.0)
@@ -1060,7 +1197,13 @@ func equip(it: Dictionary) -> void:
 	if d.has("bag"):
 		bag = {} if is_same(bag, it) else it
 	elif d.has("wear"):
-		worn = {} if is_same(worn, it) else it
+		var slot: String = d["wear"].get("slot", "torso")
+		if slot == "torso":
+			worn = {} if is_same(worn, it) else it
+		elif gear.has(slot) and is_same(gear[slot], it):
+			gear.erase(slot)
+		else:
+			gear[slot] = it
 	elif d.has("wpn") or d.has("gun"):
 		weapon = {} if is_same(weapon, it) else it
 	sim.emit_fx("equip", pos)
@@ -1073,7 +1216,20 @@ func save() -> Dictionary:
 		"wi": inv.find(weapon), "bi": inv.find(bag), "ci": inv.find(worn), "skills": skills, "read": read,
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
-		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h}
+		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp,
+		"boost": xp_boost, "parts": PARTS.size()}
+
+func _gear_idx() -> Dictionary:
+	var g: Dictionary = {}
+	for k in gear.keys():
+		var i: int = inv.find(gear[k])
+		if i >= 0:
+			g[k] = i
+	return g
+
+func _unused() -> Dictionary:
+	return {}
 
 func load(d: Dictionary) -> void:
 	pos = d["pos"]
@@ -1122,3 +1278,18 @@ func load(d: Dictionary) -> void:
 	ex_log = d.get("ex_log", [])
 	last_meal_h = d.get("meal", -99.0)
 	set_traits(d.get("traits", []))
+	gear = {}
+	var gi: Dictionary = d.get("gear", {})
+	for k in gi.keys():
+		var idx: int = gi[k]
+		if idx >= 0 and idx < inv.size():
+			gear[k] = inv[idx]
+	arm_strain = d.get("arm", 0.0)
+	calm_h = d.get("calm_h", 0.0)
+	antidep_h = d.get("antidep_h", 0.0)
+	protein = d.get("protein", 50.0)
+	corpse_exp = d.get("corpse", 0.0)
+	xp_boost = d.get("boost", {})
+	if int(d.get("parts", 6)) == 6:
+		for wd in wounds:
+			wd["part"] = OLD_PART_MAP[clampi(int(wd["part"]), 0, 5)]

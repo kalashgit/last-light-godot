@@ -425,7 +425,13 @@ func _update_weather(dh: float) -> void:
 	else:
 		fog = maxf(0.0, fog - dh * 0.6)
 	weather["fog"] = fog
+	var wind: float = weather.get("wind", 0.2)
+	wind = clampf(wind + rng.randf_range(-0.25, 0.25) * dh * 2.0 + (0.25 + rain * 0.35 - wind) * 0.05, 0.0, 1.0)
+	weather["wind"] = wind
 	weather["temp"] = temperature_base() - rain * 3.0 - c * 2.0
+	# rain below freezing is snow; heavy rain with a gale is a storm
+	weather["snow"] = rain if float(weather["temp"]) <= 0.5 else 0.0
+	weather["storm"] = rain > 0.75 and wind > 0.6 and float(weather["temp"]) > 3.0
 	if hour >= power_off_h and not _power_said:
 		_power_said = true
 		say("The lights flicker and die. The power grid is down.", Color(1.0, 0.8, 0.5))
