@@ -78,24 +78,24 @@ static func _static_init() -> void:
 	_i("suture_kit", "Suture Kit", "med", 0.1, ["needle", "c8c8c8", "3c3c3c"], {"med": "stitch"})
 	_i("splint", "Splint", "med", 0.4, ["plank", "a88858", "f0ece0"], {"med": "splint"})
 	# ---------------- melee weapons
-	_i("kitchen_knife", "Kitchen Knife", "weapon", 0.3, ["knife", "c8ccd0", "3a3a3a"], {"wpn": {"dmg": [14, 24], "range": 1.05, "swing": 0.5, "dur": 28, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.18, "spr": 2}, "tags": ["knife"]})
-	_i("hunting_knife", "Hunting Knife", "weapon", 0.4, ["knife", "b0b8c0", "5a3a28"], {"wpn": {"dmg": [18, 30], "range": 1.1, "swing": 0.5, "dur": 90, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.25, "spr": 2}, "tags": ["knife"]})
-	_i("machete", "Machete", "weapon", 1.0, ["machete", "b0b8c0", "3a3a3a"], {"wpn": {"dmg": [26, 40], "range": 1.35, "swing": 0.65, "dur": 120, "kb": 0.5, "type": "blade", "noise": 4, "crit": 0.2, "spr": 2}, "tags": ["knife"]})
-	_i("baseball_bat", "Baseball Bat", "weapon", 1.2, ["bat", "b08a58", "8a6a40"], {"wpn": {"dmg": [20, 32], "range": 1.5, "swing": 0.75, "dur": 110, "kb": 1.1, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1, "two": 1}})
-	_i("nail_bat", "Nailed Bat", "weapon", 1.4, ["bat", "b08a58", "9aa0a4"], {"wpn": {"dmg": [26, 42], "range": 1.5, "swing": 0.8, "dur": 90, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.16, "spr": 1, "two": 1}})
-	_i("crowbar", "Crowbar", "weapon", 1.6, ["crowbar", "a03c30", "55585a"], {"wpn": {"dmg": [18, 30], "range": 1.45, "swing": 0.8, "dur": 400, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}, "tags": ["crowbar"]})
-	_i("pipe", "Lead Pipe", "weapon", 1.5, ["pipe", "8a9094", "6a7074"], {"wpn": {"dmg": [18, 28], "range": 1.4, "swing": 0.8, "dur": 180, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}})
-	_i("golf_club", "Golf Club", "weapon", 0.9, ["pipe", "c8ccd0", "3a3a3a"], {"wpn": {"dmg": [14, 24], "range": 1.6, "swing": 0.7, "dur": 40, "kb": 0.8, "type": "blunt", "noise": 5, "crit": 0.1, "spr": 1}})
-	_i("frying_pan", "Frying Pan", "weapon", 1.0, ["pan", "3a3d40", "55585a"], {"wpn": {"dmg": [12, 20], "range": 1.15, "swing": 0.65, "dur": 80, "kb": 0.7, "type": "blunt", "noise": 8, "crit": 0.08, "spr": 1}, "tags": ["pan"]})
-	_i("hammer", "Hammer", "weapon", 0.9, ["hammer", "8a6a40", "6a7074"], {"wpn": {"dmg": [12, 22], "range": 1.1, "swing": 0.6, "dur": 220, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.12, "spr": 3}, "tags": ["hammer"]})
-	_i("axe", "Wood Axe", "weapon", 2.2, ["axe", "8a6a40", "9aa0a4"], {"wpn": {"dmg": [36, 60], "range": 1.45, "swing": 1.0, "dur": 130, "kb": 0.9, "type": "axe", "noise": 7, "crit": 0.2, "spr": 3, "two": 1}, "tags": ["axe"]})
-	_i("hatchet", "Hatchet", "weapon", 1.1, ["axe", "a03c30", "9aa0a4"], {"wpn": {"dmg": [22, 36], "range": 1.15, "swing": 0.7, "dur": 110, "kb": 0.6, "type": "axe", "noise": 6, "crit": 0.18, "spr": 3}, "tags": ["axe"]})
-	_i("shovel", "Shovel", "weapon", 1.8, ["shovel", "8a6a40", "6a7074"], {"wpn": {"dmg": [18, 30], "range": 1.6, "swing": 0.95, "dur": 120, "kb": 1.2, "type": "blunt", "noise": 6, "crit": 0.08, "spr": 1, "two": 1}, "tags": ["shovel", "dig"]})
-	_i("spear", "Crafted Spear", "weapon", 0.9, ["spear", "8a6a40", "c8ccd0"], {"wpn": {"dmg": [24, 40], "range": 1.9, "swing": 0.7, "dur": 22, "kb": 0.5, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
-	_i("plank", "Plank", "material", 1.2, ["plank", "b08a58", "8a6a40"], {"wpn": {"dmg": [8, 16], "range": 1.4, "swing": 0.9, "dur": 14, "kb": 0.8, "type": "blunt", "noise": 6, "crit": 0.05, "spr": 1}, "fuel": 1.2})
-	_i("screwdriver", "Screwdriver", "tool", 0.2, ["screwdriver", "c0392b", "9aa0a4"], {"wpn": {"dmg": [8, 16], "range": 0.95, "swing": 0.5, "dur": 60, "kb": 0.1, "type": "blade", "noise": 2, "crit": 0.2, "spr": 2}, "tags": ["screwdriver"]})
-	_i("wrench", "Wrench", "tool", 0.8, ["wrench", "8a9094", "6a7074"], {"wpn": {"dmg": [12, 20], "range": 1.05, "swing": 0.65, "dur": 250, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["wrench"]})
-	_i("metal_spear", "Pipe Spear", "weapon", 1.6, ["spear", "8a9094", "c8ccd0"], {"wpn": {"dmg": [28, 46], "range": 1.9, "swing": 0.75, "dur": 90, "kb": 0.6, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
+	_i("kitchen_knife", "Kitchen Knife", "weapon", 0.3, ["knife", "c8ccd0", "3a3a3a"], {"wpn": {"sk": "short_blade", "dmg": [14, 24], "range": 1.05, "swing": 0.5, "dur": 28, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.18, "spr": 2}, "tags": ["knife"]})
+	_i("hunting_knife", "Hunting Knife", "weapon", 0.4, ["knife", "b0b8c0", "5a3a28"], {"wpn": {"sk": "short_blade", "dmg": [18, 30], "range": 1.1, "swing": 0.5, "dur": 90, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.25, "spr": 2}, "tags": ["knife"]})
+	_i("machete", "Machete", "weapon", 1.0, ["machete", "b0b8c0", "3a3a3a"], {"wpn": {"sk": "long_blade", "dmg": [26, 40], "range": 1.35, "swing": 0.65, "dur": 120, "kb": 0.5, "type": "blade", "noise": 4, "crit": 0.2, "spr": 2}, "tags": ["knife"]})
+	_i("baseball_bat", "Baseball Bat", "weapon", 1.2, ["bat", "b08a58", "8a6a40"], {"wpn": {"sk": "long_blunt", "dmg": [20, 32], "range": 1.5, "swing": 0.75, "dur": 110, "kb": 1.1, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1, "two": 1}})
+	_i("nail_bat", "Nailed Bat", "weapon", 1.4, ["bat", "b08a58", "9aa0a4"], {"wpn": {"sk": "long_blunt", "dmg": [26, 42], "range": 1.5, "swing": 0.8, "dur": 90, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.16, "spr": 1, "two": 1}})
+	_i("crowbar", "Crowbar", "weapon", 1.6, ["crowbar", "a03c30", "55585a"], {"wpn": {"sk": "long_blunt", "dmg": [18, 30], "range": 1.45, "swing": 0.8, "dur": 400, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}, "tags": ["crowbar"]})
+	_i("pipe", "Lead Pipe", "weapon", 1.5, ["pipe", "8a9094", "6a7074"], {"wpn": {"sk": "long_blunt", "dmg": [18, 28], "range": 1.4, "swing": 0.8, "dur": 180, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}})
+	_i("golf_club", "Golf Club", "weapon", 0.9, ["pipe", "c8ccd0", "3a3a3a"], {"wpn": {"sk": "long_blunt", "dmg": [14, 24], "range": 1.6, "swing": 0.7, "dur": 40, "kb": 0.8, "type": "blunt", "noise": 5, "crit": 0.1, "spr": 1}})
+	_i("frying_pan", "Frying Pan", "weapon", 1.0, ["pan", "3a3d40", "55585a"], {"wpn": {"sk": "short_blunt", "dmg": [12, 20], "range": 1.15, "swing": 0.65, "dur": 80, "kb": 0.7, "type": "blunt", "noise": 8, "crit": 0.08, "spr": 1}, "tags": ["pan"]})
+	_i("hammer", "Hammer", "weapon", 0.9, ["hammer", "8a6a40", "6a7074"], {"wpn": {"sk": "short_blunt", "dmg": [12, 22], "range": 1.1, "swing": 0.6, "dur": 220, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.12, "spr": 3}, "tags": ["hammer"]})
+	_i("axe", "Wood Axe", "weapon", 2.2, ["axe", "8a6a40", "9aa0a4"], {"wpn": {"sk": "axe", "dmg": [36, 60], "range": 1.45, "swing": 1.0, "dur": 130, "kb": 0.9, "type": "axe", "noise": 7, "crit": 0.2, "spr": 3, "two": 1}, "tags": ["axe"]})
+	_i("hatchet", "Hatchet", "weapon", 1.1, ["axe", "a03c30", "9aa0a4"], {"wpn": {"sk": "axe", "dmg": [22, 36], "range": 1.15, "swing": 0.7, "dur": 110, "kb": 0.6, "type": "axe", "noise": 6, "crit": 0.18, "spr": 3}, "tags": ["axe"]})
+	_i("shovel", "Shovel", "weapon", 1.8, ["shovel", "8a6a40", "6a7074"], {"wpn": {"sk": "long_blunt", "dmg": [18, 30], "range": 1.6, "swing": 0.95, "dur": 120, "kb": 1.2, "type": "blunt", "noise": 6, "crit": 0.08, "spr": 1, "two": 1}, "tags": ["shovel", "dig"]})
+	_i("spear", "Crafted Spear", "weapon", 0.9, ["spear", "8a6a40", "c8ccd0"], {"wpn": {"sk": "spear", "dmg": [24, 40], "range": 1.9, "swing": 0.7, "dur": 22, "kb": 0.5, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
+	_i("plank", "Plank", "material", 1.2, ["plank", "b08a58", "8a6a40"], {"wpn": {"sk": "long_blunt", "dmg": [8, 16], "range": 1.4, "swing": 0.9, "dur": 14, "kb": 0.8, "type": "blunt", "noise": 6, "crit": 0.05, "spr": 1}, "fuel": 1.2})
+	_i("screwdriver", "Screwdriver", "tool", 0.2, ["screwdriver", "c0392b", "9aa0a4"], {"wpn": {"sk": "short_blade", "dmg": [8, 16], "range": 0.95, "swing": 0.5, "dur": 60, "kb": 0.1, "type": "blade", "noise": 2, "crit": 0.2, "spr": 2}, "tags": ["screwdriver"]})
+	_i("wrench", "Wrench", "tool", 0.8, ["wrench", "8a9094", "6a7074"], {"wpn": {"sk": "short_blunt", "dmg": [12, 20], "range": 1.05, "swing": 0.65, "dur": 250, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["wrench"]})
+	_i("metal_spear", "Pipe Spear", "weapon", 1.6, ["spear", "8a9094", "c8ccd0"], {"wpn": {"sk": "spear", "dmg": [28, 46], "range": 1.9, "swing": 0.75, "dur": 90, "kb": 0.6, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
 	# ---------------- firearms
 	_i("pistol", "9mm Pistol", "weapon", 0.9, ["pistol", "3a3d40", "55585a"], {"gun": {"dmg": [60, 110], "range": 11.0, "ammo": "ammo_9mm", "mag": 12, "noise": 55, "cool": 0.45, "spr": 4, "spread": 0.07}})
 	_i("revolver", "Revolver", "weapon", 1.0, ["pistol", "6a7074", "5a3a28"], {"gun": {"dmg": [80, 140], "range": 12.0, "ammo": "ammo_9mm", "mag": 6, "noise": 60, "cool": 0.7, "spr": 4, "spread": 0.06}})
@@ -133,7 +133,7 @@ static func _static_init() -> void:
 	# ---------------- materials
 	_i("nails", "Nails", "material", 0.01, ["nails", "9aa0a4", "6a7074"], {"stackmax": 500})
 	_i("log", "Log", "material", 4.0, ["log", "7a5a38", "c8a870"], {"fuel": 4.0})
-	_i("branch", "Sturdy Branch", "material", 0.5, ["stick", "7a5a38", "5a4028"], {"fuel": 0.5, "wpn": {"dmg": [6, 12], "range": 1.3, "swing": 0.7, "dur": 10, "kb": 0.5, "type": "blunt", "noise": 4, "crit": 0.05, "spr": 1}})
+	_i("branch", "Sturdy Branch", "material", 0.5, ["stick", "7a5a38", "5a4028"], {"fuel": 0.5, "wpn": {"sk": "long_blunt", "dmg": [6, 12], "range": 1.3, "swing": 0.7, "dur": 10, "kb": 0.5, "type": "blunt", "noise": 4, "crit": 0.05, "spr": 1}})
 	_i("stone", "Stone", "material", 0.6, ["stone", "8a8a86", "6a6a66"], {"tags": ["whetstone"]})
 	_i("scrap_metal", "Scrap Metal", "material", 0.8, ["metal", "8a9094", "6a5a4a"], {})
 	_i("wire", "Wire", "material", 0.2, ["wire", "b87840", "8a5a30"], {})
@@ -146,6 +146,23 @@ static func _static_init() -> void:
 	_i("charcoal", "Charcoal", "material", 1.0, ["bag", "3a3d40", "c0392b"], {"fuel": 6.0})
 	_i("gunpowder", "Gunpowder", "material", 0.2, ["jar", "3a3d40", "8a8a86"], {})
 	_i("fertilizer", "Fertilizer", "material", 1.0, ["bag", "8a6a40", "4a7a3a"], {"uses": 4})
+	_i("clay", "Lump of Clay", "material", 0.8, ["stone", "9a6a4a", "7a4a30"], {})
+	_i("sand", "Bag of Sand", "material", 1.0, ["bag", "d8c898", "b0a070"], {})
+	_i("metal_bar", "Iron Bar", "material", 1.2, ["metal", "6a7074", "9aa0a4"], {})
+	_i("wooden_handle", "Carved Handle", "material", 0.3, ["stick", "b08a58", "8a6a40"], {"fuel": 0.3})
+	_i("brick", "Fired Brick", "material", 0.9, ["box", "a8553c", "8a4030"], {})
+	_i("unfired_pot", "Unfired Clay Pot", "material", 1.2, ["pot", "9a6a4a", "7a4a30"], {})
+	_i("clay_pot", "Clay Pot", "tool", 1.2, ["pot", "b8704a", "8a4a30"], {"tags": ["pot"]})
+	_i("glass_pane", "Pane of Glass", "material", 1.0, ["sheet", "b8d8e8", "8fb0c4"], {})
+	_i("glass_jar", "Glass Jar", "material", 0.2, ["jar", "c8e0e8", "9aa0a4"], {})
+	_i("stone_knife", "Flint Knife", "weapon", 0.3, ["knife", "8a8a86", "7a5a38"], {"wpn": {"sk": "short_blade", "dmg": [10, 18], "range": 1.0, "swing": 0.5, "dur": 20, "kb": 0.1, "type": "blade", "noise": 3, "crit": 0.15, "spr": 2}, "tags": ["knife"]})
+	_i("stone_axe", "Stone Axe", "weapon", 1.6, ["axe", "7a5a38", "8a8a86"], {"wpn": {"sk": "axe", "dmg": [22, 36], "range": 1.3, "swing": 0.95, "dur": 45, "kb": 0.7, "type": "axe", "noise": 7, "crit": 0.12, "spr": 3}, "tags": ["axe"]})
+	_i("stone_hammer", "Stone Hammer", "weapon", 1.2, ["hammer", "7a5a38", "8a8a86"], {"wpn": {"sk": "short_blunt", "dmg": [10, 18], "range": 1.05, "swing": 0.7, "dur": 50, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["hammer"]})
+	_i("herbs", "Medicinal Herbs", "med", 0.1, ["veg", "5a8a4a", "8ab06a"], {"med": "disinfect", "disinfect": 0.6, "fresh": 96, "rot": 200})
+	_i("plant_cure", "Mildew Spray", "tool", 0.5, ["bottle", "e8e8d8", "5a8a4a"], {"uses": 4, "tags": ["plant_cure"]})
+	_i("bleach", "Bleach", "tool", 1.0, ["bottle", "f0f0f0", "3c6a9a"], {"uses": 6, "tags": ["bleach"]})
+	_i("bucket", "Bucket", "drink", 0.8, ["pot", "7a8088", "5a8aa8"], {"thirst": 22, "uses": 0, "maxuses": 20, "water": 1})
+	_i("burnt_food", "Burnt Food", "food", 0.3, ["meat", "2a2420", "1a1614"], {"hunger": 6, "sad": 10, "kcal": 60})
 	# ---------------- bags & clothing
 	_i("tote_bag", "Tote Bag", "bag", 0.2, ["pack", "c8b898", "a89878"], {"bag": 5})
 	_i("school_bag", "School Bag", "bag", 0.5, ["pack", "3c6a9a", "2c4a6a"], {"bag": 9})
@@ -188,6 +205,20 @@ static func _static_init() -> void:
 	_i("pillow", "Pillow", "misc", 0.4, ["sheet", "f0ece0", "d8d4c8"], {})
 	_i("alarm_clock", "Alarm Clock", "misc", 0.3, ["radio", "c0392b", "f0ece0"], {"noise_maker": 30})
 	_i("empty_can", "Tin Can", "misc", 0.1, ["can", "9aa0a4", "8a9094"], {})
+	_make_manuals()
+
+## skills that have a study manual (generated below)
+const MANUAL_SKILLS := ["sprinting", "lightfooted", "nimble", "sneaking", "axe", "long_blunt", "short_blunt", "long_blade", "short_blade", "spear", "maintenance", "reloading",
+	"fishing", "trapping", "tracking", "tailoring", "electrical", "metalworking", "mechanics", "masonry", "blacksmithing", "carving", "knapping", "pottery", "glassmaking", "animal_care", "butchering"]
+static var MANUALS: Array = ["book_carpentry", "book_cooking", "book_farming", "book_firstaid", "book_foraging", "book_aiming"]
+
+static func _make_manuals() -> void:
+	for sk in MANUAL_SKILLS:
+		var id: String = "book_" + sk
+		var hue: float = float(hash(sk) % 360) / 360.0
+		var c: Color = Color.from_hsv(hue, 0.45, 0.6)
+		_i(id, "%s Manual" % sk.capitalize().replace("_", " "), "book", 0.5, ["book", c.to_html(false), "f0ece0"], {"book": sk})
+		MANUALS.append(id)
 
 static func def(id: String) -> Dictionary:
 	return DB.get(id, {})

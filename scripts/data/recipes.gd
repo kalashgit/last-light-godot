@@ -80,6 +80,42 @@ static func _static_init() -> void:
 	_r("salvage_radio", "Strip a radio for parts", "Workshop", {"in": [["radio", 1]], "tools": ["screwdriver"], "out": [["wire", 1], ["scrap_metal", 1], ["battery", 1]], "time": 5.0, "xp": ["electrical", 14]})
 	_r("salvage_clock", "Strip an alarm clock for parts", "Workshop", {"in": [["alarm_clock", 1]], "tools": ["screwdriver"], "out": [["wire", 1], ["battery", 1]], "time": 4.0, "xp": ["electrical", 10]})
 	_r("noise_lure", "Wire up a noise lure", "Workshop", {"in": [["radio", 1], ["battery", 1], ["wire", 1]], "tools": ["screwdriver"], "skill": ["electrical", 2], "out": [["alarm_clock", 2]], "time": 6.0, "xp": ["electrical", 20]})
+	# ---- primitive tools: carving and knapping need almost nothing
+	_r("carve_handle", "Carve a handle", "Primitive", {"in": [["branch", 1]], "tools": ["knife"], "out": [["wooden_handle", 1]], "time": 5.0, "xp": ["carving", 12]})
+	_r("knap_knife", "Knap a flint knife", "Primitive", {"in": [["stone", 2]], "out": [["stone_knife", 1]], "time": 6.0, "xp": ["knapping", 14]})
+	_r("knap_axe", "Bind a stone axe", "Primitive", {"in": [["stone", 2], ["wooden_handle", 1], ["rope", 1]], "skill": ["knapping", 1], "out": [["stone_axe", 1]], "time": 8.0, "xp": ["knapping", 25]})
+	_r("knap_hammer", "Bind a stone hammer", "Primitive", {"in": [["stone", 1], ["wooden_handle", 1], ["rag", 2]], "out": [["stone_hammer", 1]], "time": 7.0, "xp": ["knapping", 18]})
+	_r("carve_spear", "Carve and fire-harden a spear", "Primitive", {"in": [["branch", 2]], "tools": ["knife"], "skill": ["carving", 2], "near": "heat", "out": [["spear", 2]], "time": 8.0, "xp": ["carving", 22]})
+	# ---- masonry
+	_r("stone_fence", "Stack a low stone wall", "Masonry", {"in": [["stone", 4]], "build": {"wall": Defs.WM_STONE, "shape": Defs.WS_SOLID}, "time": 7.0, "xp": ["masonry", 14]})
+	_r("stone_wall", "Mortar a stone wall", "Masonry", {"in": [["stone", 6], ["clay", 2]], "skill": ["masonry", 1], "build": {"wall": Defs.WM_BRICK_GREY, "shape": Defs.WS_SOLID}, "time": 11.0, "xp": ["masonry", 30]})
+	_r("brick_wall", "Lay a brick wall", "Masonry", {"in": [["brick", 8], ["clay", 2]], "skill": ["masonry", 2], "build": {"wall": Defs.WM_BRICK_RED, "shape": Defs.WS_SOLID}, "time": 11.0, "xp": ["masonry", 34]})
+	_r("kiln", "Build a kiln", "Masonry", {"in": [["stone", 8], ["clay", 4]], "skill": ["masonry", 1], "build": {"obj": Defs.O_KILN}, "time": 12.0, "xp": ["masonry", 40]})
+	_r("forge", "Build a forge and anvil", "Masonry", {"in": [["stone", 10], ["clay", 4], ["scrap_metal", 4]], "skill": ["masonry", 2], "build": {"obj": Defs.O_FORGE}, "time": 14.0, "xp": ["masonry", 50]})
+	_r("well", "Dig and line a well", "Masonry", {"in": [["stone", 12], ["rope", 1], ["plank", 2]], "tools": ["dig"], "skill": ["masonry", 3], "build": {"obj": Defs.O_WELL}, "time": 16.0, "xp": ["masonry", 60]})
+	# ---- pottery and glass (kiln; each firing burns charcoal)
+	_r("shape_pot", "Shape a clay pot", "Kiln", {"in": [["clay", 2]], "out": [["unfired_pot", 1]], "time": 6.0, "xp": ["pottery", 14]})
+	_r("fire_pot", "Fire a clay pot", "Kiln", {"in": [["unfired_pot", 1], ["charcoal", 1]], "near": "kiln", "out": [["clay_pot", 1]], "time": 8.0, "xp": ["pottery", 22]})
+	_r("fire_bricks", "Fire bricks", "Kiln", {"in": [["clay", 3], ["charcoal", 1]], "near": "kiln", "out": [["brick", 6]], "time": 8.0, "xp": ["pottery", 16]})
+	_r("glass_pane", "Melt sand into a pane", "Kiln", {"in": [["sand", 3], ["charcoal", 1]], "near": "kiln", "skill": ["glassmaking", 1], "out": [["glass_pane", 1]], "time": 9.0, "xp": ["glassmaking", 26]})
+	_r("glass_jars", "Blow glass jars", "Kiln", {"in": [["sand", 2], ["charcoal", 1]], "near": "kiln", "out": [["glass_jar", 2]], "time": 8.0, "xp": ["glassmaking", 20]})
+	_r("glass_bottles", "Blow bottles", "Kiln", {"in": [["sand", 2], ["charcoal", 1]], "near": "kiln", "skill": ["glassmaking", 2], "out": [["empty_bottle", 2]], "time": 8.0, "xp": ["glassmaking", 24]})
+	_r("charcoal", "Burn logs to charcoal", "Kiln", {"in": [["log", 2]], "near": "kiln", "out": [["charcoal", 1]], "time": 9.0, "xp": ["pottery", 8]})
+	# ---- blacksmithing (forge)
+	_r("smelt_bar", "Smelt scrap into an iron bar", "Smithing", {"in": [["scrap_metal", 3], ["charcoal", 1]], "near": "forge", "out": [["metal_bar", 1]], "time": 9.0, "xp": ["blacksmithing", 18]})
+	_r("forge_nails2", "Draw nails from a bar", "Smithing", {"in": [["metal_bar", 1]], "tools": ["hammer"], "near": "forge", "out": [["nails", 40]], "time": 7.0, "xp": ["blacksmithing", 14]})
+	_r("forge_knife", "Forge a knife", "Smithing", {"in": [["metal_bar", 1], ["wooden_handle", 1]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 1], "out": [["hunting_knife", 1]], "time": 10.0, "xp": ["blacksmithing", 30]})
+	_r("forge_hammer", "Forge a hammer", "Smithing", {"in": [["metal_bar", 1], ["wooden_handle", 1]], "near": "forge", "out": [["hammer", 1]], "time": 9.0, "xp": ["blacksmithing", 24]})
+	_r("forge_axe", "Forge an axe", "Smithing", {"in": [["metal_bar", 2], ["wooden_handle", 1]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 2], "out": [["axe", 1]], "time": 12.0, "xp": ["blacksmithing", 40]})
+	_r("forge_machete", "Forge a machete", "Smithing", {"in": [["metal_bar", 2], ["wooden_handle", 1]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 3], "out": [["machete", 1]], "time": 12.0, "xp": ["blacksmithing", 45]})
+	_r("forge_crowbar", "Forge a crowbar", "Smithing", {"in": [["metal_bar", 2]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 2], "out": [["crowbar", 1]], "time": 11.0, "xp": ["blacksmithing", 35]})
+	# ---- preserving and remedies
+	_r("pickle", "Pickle vegetables", "Cooking", {"in": [["glass_jar", 1], ["cabbage", 1], ["carrot", 1], ["water", 1]], "near": "heat", "skill": ["cooking", 2], "out": [["pickles", 1]], "time": 7.0, "xp": ["cooking", 20]})
+	_r("jam", "Boil berries into preserves", "Cooking", {"in": [["glass_jar", 1], ["berries", 4]], "near": "heat", "skill": ["cooking", 1], "out": [["preserves", 1]], "time": 7.0, "xp": ["cooking", 18]})
+	_r("plant_cure", "Mix mildew spray", "Farming", {"in": [["milk", 1], ["water", 1]], "out": [["plant_cure", 1]], "time": 3.0, "xp": ["farming", 8]})
+	_r("bleach_water", "Purify tainted water with bleach", "Survival", {"tools": ["bleach"], "special": "purify_bleach", "time": 2.0})
+	_r("leather_pad", "Pad trousers with leather", "Tailoring", {"in": [["jeans", 1], ["leather", 2]], "tools": ["sewing"], "skill": ["tailoring", 3], "out": [["padded_trousers", 1]], "time": 10.0, "xp": ["tailoring", 32]})
+	_r("leather_gloves", "Sew leather gloves", "Tailoring", {"in": [["leather", 1]], "tools": ["sewing"], "skill": ["tailoring", 2], "out": [["leather_gloves", 1]], "time": 8.0, "xp": ["tailoring", 24]})
 	# ---- farming
 	_r("till", "Dig furrow", "Farming", {"tools": ["dig"], "build": {"ground": Defs.G_SOIL, "natural": 1}, "time": 4.0, "xp": ["farming", 4]})
 
@@ -103,10 +139,10 @@ static func by_id(id: String) -> Dictionary:
 	return {}
 
 static func cats() -> Array:
-	return ["Survival", "Carpentry", "Weapons", "Cooking", "Farming", "Tailoring", "Repair", "Workshop"]
+	return ["Survival", "Carpentry", "Weapons", "Cooking", "Farming", "Tailoring", "Repair", "Workshop", "Primitive", "Masonry", "Kiln", "Smithing"]
 
-## returns "" when craftable, else the reason
-static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool = false) -> String:
+## returns "" when craftable, else the reason. `stations` lists other workstations within reach ("kiln", "forge").
+static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool = false, stations: Array = []) -> String:
 	for inp in r["in"]:
 		var id: String = inp[0]
 		if id == "water":
@@ -125,8 +161,12 @@ static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool 
 		return "needs a lit campfire or working stove"
 	if r.get("near", "") == "bench" and not near_bench:
 		return "needs a workbench within reach"
+	if r.get("near", "") == "kiln" and not stations.has("kiln"):
+		return "needs a kiln within reach"
+	if r.get("near", "") == "forge" and not stations.has("forge"):
+		return "needs a forge within reach"
 	var sp: String = r.get("special", "")
-	if sp == "purify" and not p.has_tainted_water():
+	if (sp == "purify" or sp == "purify_bleach") and not p.has_tainted_water():
 		return "no tainted water"
 	if sp == "patch":
 		if p.worn_items().is_empty():

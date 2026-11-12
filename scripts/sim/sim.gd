@@ -168,6 +168,18 @@ func near_workbench(p: Vector2) -> bool:
 				return true
 	return false
 
+## other workstations within two steps: "kiln", "forge"
+func stations(p: Vector2) -> Array:
+	var out: Array = []
+	var px: int = floori(p.x)
+	var py: int = floori(p.y)
+	for dy in range(-2, 3):
+		for dx in range(-2, 3):
+			var id: int = Defs.o_id(world.obj(px + dx, py + dy))
+			if id == Defs.O_KILN and not out.has("kiln"): out.append("kiln")
+			elif id == Defs.O_FORGE and not out.has("forge"): out.append("forge")
+	return out
+
 ## does the building at this tile have an armed alarm the player has not dealt with yet
 func alarm_armed(x: int, y: int) -> bool:
 	var b: int = world.bld(x, y)
@@ -492,9 +504,19 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 					e["w"] = minf(100.0, float(e["w"]) + rain * 40.0 * dh)
 				var stage: int = e["s"]
 				if stage < 3:
-					if float(e["w"]) > 5.0:
+					var warm_enough: bool = float(weather["temp"]) > 4.0 or not outdoors
+					if e.get("ill", 0) == 0 and float(e["w"]) > 85.0 and randf() < dh * 0.012:
+						e["ill"] = 1          # standing water breeds mildew
+						e["ill_h"] = 0.0
+					if e.get("ill", 0) == 1:
+						e["ill_h"] = float(e.get("ill_h", 0.0)) + dh
+						if float(e["ill_h"]) > 60.0:
+							e["dry"] = 99.0
+					elif float(e["w"]) > 5.0 and warm_enough:
 						e["g"] = float(e["g"]) + dh * (1.4 if e.get("f", 0) == 1 else 1.0)
 						e["dry"] = 0.0
+					elif float(e["w"]) > 5.0:
+						pass                  # too cold to grow, but not dying
 					else:
 						e["dry"] = float(e.get("dry", 0.0)) + dh
 					e["w"] = maxf(0.0, float(e["w"]) - dh * 1.6)

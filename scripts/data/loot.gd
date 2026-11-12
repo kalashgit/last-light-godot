@@ -10,7 +10,7 @@ static func _static_init() -> void:
 	T["kitchen"] = {"rolls": [1, 4], "items": [["canned_beans", 8, 1, 2], ["canned_soup", 8, 1, 2], ["canned_tuna", 6, 1, 2], ["canned_corn", 6, 1, 2], ["canned_peaches", 4, 1, 1],
 		["chips", 5, 1, 1], ["crackers", 5, 1, 1], ["cereal", 5, 1, 1], ["peanut_butter", 3, 1, 1], ["rice", 3, 1, 1], ["pasta", 4, 1, 1], ["coffee", 3, 1, 1],
 		["can_opener", 4, 1, 1], ["kitchen_knife", 5, 1, 1], ["frying_pan", 3, 1, 1], ["cooking_pot", 3, 1, 1], ["empty_bottle", 4, 1, 1], ["water_bottle", 3, 1, 1],
-		["matches", 3, 1, 1], ["lighter", 2, 1, 1], ["garbage_bag", 4, 1, 3], ["candle", 3, 1, 2], ["dog_food", 2, 1, 1], ["chocolate", 3, 1, 1], ["granola_bar", 3, 1, 2]]}
+		["matches", 3, 1, 1], ["lighter", 2, 1, 1], ["garbage_bag", 4, 1, 3], ["candle", 3, 1, 2], ["dog_food", 2, 1, 1], ["chocolate", 3, 1, 1], ["granola_bar", 3, 1, 2], ["bleach", 2, 1, 1], ["glass_jar", 2, 1, 2]]}
 	T["kitchen_sink"] = {"rolls": [0, 2], "items": [["garbage_bag", 5, 1, 2], ["empty_bottle", 4, 1, 1], ["disinfectant", 1, 1, 1], ["rag", 4, 1, 2], ["wrench", 1, 1, 1], ["duct_tape", 1, 1, 1]]}
 	T["fridge"] = {"rolls": [1, 4], "items": [["milk", 5, 1, 1], ["cheese", 5, 1, 1], ["egg", 6, 2, 6], ["raw_steak", 3, 1, 2], ["raw_chicken", 3, 1, 1], ["apple", 5, 1, 3], ["orange", 4, 1, 3],
 		["tomato", 4, 1, 2], ["carrot", 4, 1, 3], ["cabbage", 2, 1, 1], ["soda", 5, 1, 3], ["beer", 5, 1, 4], ["juice", 4, 1, 2], ["water_bottle", 4, 1, 2], ["bread", 4, 1, 1]]}
@@ -26,7 +26,7 @@ static func _static_init() -> void:
 	T["sofa"] = {"rolls": [0, 1], "items": [["money", 5, 1, 12], ["lighter", 2, 1, 1], ["comic", 2, 1, 1], ["pillow", 4, 1, 1]]}
 	T["tv_stand"] = {"rolls": [0, 2], "items": [["battery", 5, 1, 2], ["comic", 3, 1, 1], ["novel", 3, 1, 1], ["radio", 2, 1, 1], ["wire", 2, 1, 1], ["duct_tape", 1, 1, 1]]}
 	T["bookshelf"] = {"rolls": [1, 4], "items": [["novel", 12, 1, 2], ["comic", 6, 1, 2], ["newspaper", 6, 1, 2], ["book_carpentry", 1.4, 1, 1], ["book_cooking", 1.4, 1, 1], ["book_farming", 1.4, 1, 1],
-		["book_firstaid", 1.4, 1, 1], ["book_foraging", 1.2, 1, 1], ["book_aiming", 0.8, 1, 1]]}
+		["book_firstaid", 1.4, 1, 1], ["book_foraging", 1.2, 1, 1], ["book_aiming", 0.8, 1, 1], ["@manual", 5, 1, 1]]}
 	T["bath_cabinet"] = {"rolls": [1, 3], "items": [["bandage", 6, 1, 3], ["painkillers", 5, 1, 1], ["disinfectant", 4, 1, 1], ["vitamins", 3, 1, 1], ["antibiotics", 1.5, 1, 1], ["scissors", 2, 1, 1],
 		["rag", 3, 1, 2], ["needle_thread", 1, 1, 1], ["suture_kit", 0.8, 1, 1], ["first_aid_kit", 0.8, 1, 1], ["tweezers", 2.5, 1, 1], ["alcohol_wipes", 3, 1, 1],
 		["beta_blockers", 1.2, 1, 1], ["antidepressants", 1.2, 1, 1], ["sleeping_pills", 1.5, 1, 1]]}
@@ -36,7 +36,7 @@ static func _static_init() -> void:
 	T["office"] = {"rolls": [0, 2], "items": [["newspaper", 8, 1, 3], ["scissors", 2, 1, 1], ["money", 2, 5, 80], ["duct_tape", 2, 1, 1], ["battery", 2, 1, 2], ["painkillers", 1, 1, 1]]}
 	T["crate"] = {"rolls": [1, 4], "items": [["nails", 8, 5, 30], ["plank", 6, 1, 3], ["duct_tape", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["scrap_metal", 4, 1, 2], ["wire", 3, 1, 2],
 		["canned_beans", 3, 1, 3], ["water_bottle", 3, 1, 3], ["charcoal", 2, 1, 1], ["garbage_bag", 3, 1, 4], ["battery", 2, 1, 3], ["hammer", 1.5, 1, 1], ["saw", 1.2, 1, 1]]}
-	T["farm"] = {"rolls": [2, 5], "items": [["seeds_potato", 6, 1, 3], ["seeds_cabbage", 6, 1, 3], ["seeds_carrot", 6, 1, 3], ["seeds_tomato", 6, 1, 3], ["trowel", 4, 1, 1], ["watering_can", 4, 1, 1],
+	T["farm"] = {"rolls": [2, 5], "items": [["bucket", 4, 1, 1], ["seeds_potato", 6, 1, 3], ["seeds_cabbage", 6, 1, 3], ["seeds_carrot", 6, 1, 3], ["seeds_tomato", 6, 1, 3], ["trowel", 4, 1, 1], ["watering_can", 4, 1, 1],
 		["shovel", 3, 1, 1], ["fertilizer", 4, 1, 2], ["rope", 3, 1, 1], ["axe", 1.5, 1, 1], ["nails", 4, 5, 25], ["potato", 3, 2, 6], ["gas_can", 1.5, 1, 1], ["tarp", 2, 1, 1]]}
 	T["cabin"] = {"rolls": [2, 5], "items": [["canned_beans", 5, 1, 3], ["jerky", 5, 1, 2], ["matches", 5, 1, 1], ["fishing_rod", 3, 1, 1], ["hunting_knife", 2.5, 1, 1], ["hatchet", 2.5, 1, 1],
 		["rifle", 0.8, 1, 1], ["rifle_rounds", 1.5, 3, 10], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["bedroll_item", 2, 1, 1], ["whiskey", 2, 1, 1], ["book_foraging", 1.5, 1, 1], ["candle", 3, 1, 2], ["water_bottle", 4, 1, 2]]}
@@ -59,9 +59,10 @@ static func _static_init() -> void:
 		["beta_blockers", 4, 1, 2], ["antidepressants", 4, 1, 2], ["sleeping_pills", 3, 1, 1]]}
 	T["store_hardware"] = {"rolls": [2, 5], "items": [["nails", 10, 20, 80], ["hammer", 5, 1, 1], ["saw", 4, 1, 1], ["screwdriver", 5, 1, 1], ["wrench", 4, 1, 1], ["duct_tape", 5, 1, 3], ["rope", 4, 1, 2],
 		["wire", 4, 1, 3], ["tarp", 4, 1, 2], ["flashlight", 4, 1, 1], ["battery", 5, 2, 6], ["crowbar", 2, 1, 1], ["axe", 2, 1, 1], ["shovel", 3, 1, 1], ["trowel", 3, 1, 1], ["watering_can", 2, 1, 1],
-		["seeds_potato", 2, 1, 3], ["seeds_cabbage", 2, 1, 3], ["seeds_carrot", 2, 1, 3], ["seeds_tomato", 2, 1, 3], ["fertilizer", 3, 1, 2], ["gas_can", 2, 1, 1], ["lighter", 3, 1, 2], ["candle", 3, 1, 3]]}
+		["seeds_potato", 2, 1, 3], ["seeds_cabbage", 2, 1, 3], ["seeds_carrot", 2, 1, 3], ["seeds_tomato", 2, 1, 3], ["fertilizer", 3, 1, 2], ["gas_can", 2, 1, 1], ["lighter", 3, 1, 2], ["candle", 3, 1, 3],
+		["bucket", 3, 1, 1], ["glue", 3, 1, 1], ["charcoal", 3, 1, 2], ["glass_pane", 1.5, 1, 2], ["work_gloves", 3, 1, 1]]}
 	T["store_books"] = {"rolls": [2, 5], "items": [["novel", 10, 1, 3], ["comic", 8, 1, 3], ["newspaper", 5, 1, 2], ["book_carpentry", 3, 1, 1], ["book_cooking", 3, 1, 1], ["book_farming", 3, 1, 1],
-		["book_firstaid", 3, 1, 1], ["book_foraging", 3, 1, 1], ["book_aiming", 2, 1, 1]]}
+		["book_firstaid", 3, 1, 1], ["book_foraging", 3, 1, 1], ["book_aiming", 2, 1, 1], ["@manual", 14, 1, 2]]}
 	T["store_gas"] = {"rolls": [1, 4], "items": [["chips", 7, 1, 3], ["chocolate", 6, 1, 3], ["granola_bar", 6, 1, 3], ["jerky", 5, 1, 2], ["soda", 6, 1, 3], ["water_bottle", 6, 1, 3], ["cigarettes", 5, 1, 3],
 		["lighter", 5, 1, 2], ["newspaper", 4, 1, 2], ["battery", 4, 1, 3], ["gas_can", 2, 1, 1], ["flashlight", 2, 1, 1], ["duct_tape", 2, 1, 1]]}
 	T["clothing"] = {"rolls": [1, 4], "items": [["jacket", 8, 1, 1], ["leather_jacket", 3, 1, 1], ["winter_coat", 4, 1, 1], ["raincoat", 4, 1, 1], ["school_bag", 4, 1, 1], ["backpack", 3, 1, 1],
@@ -139,6 +140,8 @@ static func roll(table: String, btype: String, rng: RandomNumberGenerator, hour:
 		var pick: Array = items[Rng.pick_weighted(rng, weights)]
 		var cnt: int = rng.randi_range(pick[2], pick[3])
 		var id: String = pick[0]
+		if id == "@manual":
+			id = Items.MANUALS[rng.randi() % Items.MANUALS.size()]
 		var d: Dictionary = Items.def(id)
 		if d.is_empty():
 			continue

@@ -56,6 +56,8 @@ static func targets(sim: Sim) -> Array:
 				out.append({"kind": "water", "x": x, "y": y, "score": base - 0.2})
 			elif g == Defs.G_SOIL and cell == 0 and (dx == 0 or dy == 0):
 				out.append({"kind": "soil", "x": x, "y": y, "score": base - 0.3})
+			elif g == Defs.G_SAND and dx == 0 and dy == 0 and Inv.has_tag(p.inv, "dig"):
+				out.append({"kind": "sand", "x": x, "y": y, "score": base - 0.6})
 	# corpses
 	for cy in range((py - 2) >> 4, ((py + 2) >> 4) + 1):
 		for cx in range((px - 2) >> 4, ((px + 2) >> 4) + 1):
@@ -84,6 +86,7 @@ static func target_name(sim: Sim, t: Dictionary) -> String:
 		"ground": return "Items on the ground"
 		"water": return "Water"
 		"soil": return "Tilled soil"
+		"sand": return "Sand"
 		"corpse": return "Corpse"
 	return ""
 
@@ -99,6 +102,7 @@ static func options(sim: Sim, t: Dictionary) -> Array:
 		"corpse": return [_opt("Search corpse", func(): sim.ui_events.append({"type": "loot", "focus": t["corpse"]}))]
 		"water": return _water_options(sim, t)
 		"soil": return _soil_options(sim, t)
+		"sand": return [_opt("Dig sand", func(): _dig(sim, "sand"))]
 	return []
 
 ## press of the INTERACT button. full_menu = long press.
@@ -191,6 +195,13 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 						sim.noise(p.pos, 16.0)
 						if p.weapon.is_empty() and randf() < 0.4:
 							p.add_wound(9 + randi() % 2, "glass" if randf() < 0.3 else "scratch", "broken glass")))
+			if wbroken and Inv.count(p.inv, "glass_pane") > 0:
+				out.append(_opt("Fit a new pane of glass", func():
+					p.start_action("Glazing", 6.0, func():
+						if Inv.take(p.inv, "glass_pane", 1):
+							w.set_edge_state(x, y, side, w.edge_state(x, y, side) & ~Defs.ES_BROKEN)
+							p.add_xp("glassmaking", 20.0)
+							p.add_xp("carpentry", 6.0))))
 			if (st & Defs.ES_CURTAIN) == 0 and Inv.count(p.inv, "sheet") > 0:
 				out.append(_opt("Hang sheet as curtain", func():
 					if Inv.take(p.inv, "sheet", 1):
@@ -374,6 +385,13 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append_array(_crop_options(sim, x, y))
 		"trap":
 			out.append_array(_trap_options(sim, x, y))
+		"kiln":
+			out.append(_opt("Use the kiln", func(): sim.ui_events.append({"type": "craft", "cat": "Kiln"})))
+		"forge":
+			out.append(_opt("Work the forge", func(): sim.ui_events.append({"type": "craft", "cat": "Smithing"})))
+		"well":
+			out.append(_opt("Draw water and drink", func(): _drink_source(sim, false, 999)))
+			out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 		"hatch":
 			out.append(_opt("Climb down to the cellar", func(): _use_stairs(sim, World.UNDER)))
 		"ladder":
@@ -384,6 +402,8 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			pass
 	if id == Defs.O_CAR_WRECK:
 		out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
+	if id == Defs.O_TV:
+		out.append(_opt("Watch the broadcast", func(): _watch_tv(sim, x, y)))
 	if d.has("scrap") and Inv.has_tag(p.inv, "hammer"):
 		out.append(_opt("Dismantle", func(): _dismantle(sim, x, y)))
 	if id == Defs.O_WOOD_CRATE or id == Defs.O_RAIN_BARREL or id == Defs.O_CAMPFIRE:
@@ -410,6 +430,27 @@ static func _dismantle(sim: Sim, x: int, y: int) -> void:
 		sim.noise(p.pos, 11.0)
 		sim.emit_fx("build", p.pos)
 		p.add_xp("carpentry", 12.0))
+
+## for the first days a public-access channel still loops practical lessons
+static func _watch_tv(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	if not sim.has_power(x, y):
+		sim.say("The screen stays dark. No power.", Color(0.8, 0.8, 0.8))
+		return
+	if sim.day() > 9:
+		sim.say("Only static. The last channel went off the air.", Color(0.8, 0.8, 0.8))
+		return
+	if int(sim.flags.get("tv_day", 0)) == sim.day():
+		sim.say("Today's programme has already looped. Try tomorrow.", Color(0.8, 0.8, 0.8))
+		return
+	var lessons: Array = ["cooking", "carpentry", "farming", "fishing", "trapping", "foraging", "first_aid", "tailoring", "electrical"]
+	var skill: String = lessons[(sim.day() - 1) % lessons.size()]
+	p.start_action("Watching a lesson on %s" % skill.replace("_", " "), 10.0, func():
+		sim.flags["tv_day"] = sim.day()
+		p.add_xp(skill, 45.0)
+		p.bored = maxf(0.0, p.bored - 30.0)
+		sim.noise(p.pos, 6.0)
+		sim.say("You pick up a few things about %s" % skill.replace("_", " "), Color(0.6, 0.9, 0.6)))
 
 static func _use_stairs(sim: Sim, dy: int) -> void:
 	var p: Player = sim.player
@@ -627,11 +668,32 @@ static func _fill(sim: Sim, tainted: bool, units: int) -> int:
 		sim.emit_fx("pickup", p.pos)
 	return used
 
+static func _dig(sim: Sim, what: String) -> void:
+	var p: Player = sim.player
+	p.start_action("Digging", 5.0, func():
+		Inv.add_new(p.inv, what, 1 + randi() % 2, sim.hour)
+		p.endurance = maxf(0.0, p.endurance - 12.0)
+		p.add_xp("pottery" if what == "clay" else "glassmaking", 4.0)
+		sim.say("Dug up some %s" % what, Color(0.75, 0.9, 0.7))
+		sim.emit_fx("pickup", p.pos))
+
 static func _water_options(sim: Sim, t: Dictionary) -> Array:
 	var p: Player = sim.player
 	var out: Array = [
 		_opt("Drink (untreated)", func(): _drink_source(sim, true, 999)),
 		_opt("Fill water containers (untreated)", func(): _fill(sim, true, 999))]
+	if Inv.has_tag(p.inv, "dig"):
+		out.append(_opt("Dig clay from the bank", func(): _dig(sim, "clay")))
+	if not p.weapon.is_empty() and Items.def(p.weapon["id"]).get("wpn", {}).get("type", "") == "spear":
+		out.append(_opt("Spear fish", func():
+			p.start_action("Spear fishing", 6.0, func():
+				p.add_xp("fishing", 8.0)
+				p.add_xp("spear", 4.0)
+				if randf() < 0.18 + p.skill_level("fishing") * 0.05 + p.skill_level("spear") * 0.03:
+					Inv.add(p.inv, Items.make("raw_fish", 1, sim.hour))
+					sim.say("You spear a fish", Color(0.7, 0.9, 1.0))
+				else:
+					sim.say("The fish are faster than you", Color(0.8, 0.8, 0.8)))))
 	if Inv.has_tag(p.inv, "fishing"):
 		out.append(_opt("Fish", func():
 			p.start_action("Fishing", 8.0, func():
@@ -788,6 +850,15 @@ static func _crop_options(sim: Sim, x: int, y: int) -> Array:
 				can["u"] = int(can["u"]) - 1
 				e["w"] = minf(100.0, float(e["w"]) + 45.0)
 				p.add_xp("farming", 3.0))))
+	if e.get("ill", 0) == 1:
+		var cure: Dictionary = Inv.find_tag(p.inv, "plant_cure")
+		if not cure.is_empty():
+			out.append(_opt("Treat mildew", func():
+				Inv.use_charge(p.inv, cure)
+				e["ill"] = 0
+				e["ill_h"] = 0.0
+				p.add_xp("farming", 10.0)
+				sim.say("Sprayed. The leaves should recover.", Color(0.75, 0.9, 0.7))))
 	if stage < 3 and e.get("f", 0) == 0 and Inv.count(p.inv, "fertilizer") > 0:
 		out.append(_opt("Fertilise", func():
 			var f: Dictionary = Inv.find(p.inv, "fertilizer")
@@ -795,7 +866,7 @@ static func _crop_options(sim: Sim, x: int, y: int) -> Array:
 				Inv.use_charge(p.inv, f)
 				e["f"] = 1))
 	out.append(_opt("Inspect", func():
-		var info: String = "%s: %s" % [String(e["t"]).capitalize(), Farming.STAGE_NAMES[stage]]
+		var info: String = "%s: %s%s" % [String(e["t"]).capitalize(), Farming.STAGE_NAMES[stage], " — MILDEW, needs spraying" if e.get("ill", 0) == 1 else ""]
 		if p.skill_level("farming") >= 1 and stage < 3:
 			info += ", water %d%%" % int(e["w"])
 			var left: float = float(Farming.GROW_HOURS[e["t"]]) - float(e["g"])
@@ -914,7 +985,7 @@ static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
 static func craft(sim: Sim, r: Dictionary) -> bool:
 	var p: Player = sim.player
 	var w: World = sim.world
-	var why: String = Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos))
+	var why: String = Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos), sim.stations(p.pos))
 	if why != "":
 		sim.say("Can't make that: " + why, Color(1.0, 0.8, 0.5))
 		return false
@@ -929,7 +1000,7 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 	var dur: float = float(r["time"]) * (1.0 - (p.skill_level(skill) * 0.04 if skill != "" else 0.0))
 	var hammering: bool = (r["tools"] as Array).has("hammer")
 	p.start_action(r["n"], dur, func():
-		if Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos)) != "":
+		if Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos), sim.stations(p.pos)) != "":
 			return
 		sim.flags["crafted"] = true
 		p.bored = maxf(0.0, p.bored - 4.0)
@@ -971,13 +1042,34 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 				p.weapon["c"] = minf(1.0, float(p.weapon.get("c", 1.0)) + base * (1.0 + ml * 0.06) / (1.0 + times * 0.5))
 				p.weapon["rp"] = times + 1
 				sim.say("Condition now %d%%. Each repair holds a little less." % int(float(p.weapon["c"]) * 100.0), Color(0.75, 0.9, 0.7))
+		if sp == "purify_bleach":
+			var bl: Dictionary = Inv.find_tag(p.inv, "bleach")
+			if not bl.is_empty():
+				Inv.use_charge(p.inv, bl)
+			for it in p.inv:
+				if it.has("d") and Items.def(it["id"]).has("water"):
+					it.erase("d")
+			sim.say("A few drops, a few minutes. The water is safe.", Color(0.7, 0.85, 1.0))
 		if r.get("special", "") == "purify":
 			for it in p.inv:
 				if it.has("d") and Items.def(it["id"]).has("water"):
 					it.erase("d")
 			sim.say("The water is safe to drink now", Color(0.7, 0.85, 1.0))
-		for o in r.get("out", []):
-			Inv.add_new(p.inv, o[0], int(o[1]), sim.hour)
+		var cooking: bool = r["cat"] == "Cooking" and r.get("near", "") == "heat" and not r.has("special")
+		var cl: int = p.skill_level("cooking")
+		if cooking and randf() < maxf(0.0, 0.16 - cl * 0.03):
+			# an unwatched pan
+			Inv.add_new(p.inv, "burnt_food", 1, sim.hour)
+			sim.say("You burn it.", Color(1.0, 0.7, 0.5))
+			if randf() < 0.25:
+				p.add_wound(9 + randi() % 2, "burn", "hot pan")
+		else:
+			for o in r.get("out", []):
+				Inv.add_new(p.inv, o[0], int(o[1]), sim.hour)
+				if cooking and cl > 0:
+					var made: Dictionary = Inv.find(p.inv, o[0])
+					if not made.is_empty():
+						made["q"] = 1.0 + cl * 0.04
 		if r.has("build"):
 			var b: Dictionary = r["build"]
 			if b.has("wall"):

@@ -108,7 +108,7 @@ func _init() -> void:
 		run(sim, 1.0)
 		swings += 1
 	ok(p.kills == kills0 + 1, "melee kills a zombie (%d swings)" % swings)
-	ok(p.skills["blunt"] > Player.XP_LEVELS[2], "combat grants weapon XP")
+	ok(p.skills["short_blunt"] > Player.XP_LEVELS[2], "combat grants weapon XP")
 	var corpse_found := false
 	var cc: Chunk = w.chunk_at(floori(p.pos.x), floori(p.pos.y))
 	for ch in w.chunks.values():

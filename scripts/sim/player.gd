@@ -16,8 +16,11 @@ static func is_arm(part: int) -> bool:
 
 static func is_leg(part: int) -> bool:
 	return part >= 11
-const SKILLS := ["fitness", "strength", "sneaking", "blunt", "blade", "axe", "spear", "aiming", "reloading", "maintenance", "carpentry", "cooking", "farming",
-	"first_aid", "foraging", "fishing", "trapping", "tailoring", "electrical", "metalworking", "mechanics"]
+const SKILLS := ["fitness", "strength", "sprinting", "lightfooted", "nimble", "sneaking",
+	"axe", "long_blunt", "short_blunt", "long_blade", "short_blade", "spear", "maintenance", "aiming", "reloading",
+	"carpentry", "metalworking", "mechanics", "electrical", "tailoring", "cooking", "masonry", "blacksmithing", "carving", "knapping", "pottery", "glassmaking",
+	"farming", "animal_care", "butchering", "first_aid", "fishing", "foraging", "tracking", "trapping"]
+const SKILL_GROUPS := [["Passive", 2], ["Agility", 4], ["Combat", 7], ["Firearms", 2], ["Crafting", 12], ["Husbandry", 3], ["Survival", 5]]
 const BASE_TRAIT_POINTS := 2
 const XP_LEVELS := [0, 50, 150, 300, 500, 750, 1050, 1400, 1800, 2250, 2750]
 const R := 0.2
@@ -36,20 +39,23 @@ const WOUND := {
 }
 const OCCUPATIONS := {
 	"unemployed": {"n": "Drifter", "d": "No special training, but 6 extra trait points.", "skills": {"fitness": 1, "sneaking": 1, "foraging": 1}, "items": [["granola_bar", 2]], "pts": 6},
-	"builder": {"n": "Construction Worker", "d": "Carpentry 3, Blunt 2. Hammer and nails.", "skills": {"carpentry": 3, "blunt": 2, "strength": 1}, "items": [["hammer", 1], ["nails", 30]]},
+	"builder": {"n": "Construction Worker", "d": "Carpentry 3, Short Blunt 2, Masonry 1. Hammer and nails.", "skills": {"carpentry": 3, "short_blunt": 2, "masonry": 1, "strength": 1}, "items": [["hammer", 1], ["nails", 30]]},
 	"nurse": {"n": "Nurse", "d": "First Aid 4. Bandages and disinfectant.", "skills": {"first_aid": 4}, "items": [["bandage", 4], ["disinfectant", 1], ["painkillers", 1]]},
 	"officer": {"n": "Police Officer", "d": "Aiming 3. Service pistol with one magazine.", "skills": {"aiming": 3, "fitness": 1}, "items": [["pistol", 1], ["ammo_9mm", 12]]},
-	"farmer": {"n": "Farmer", "d": "Farming 3, Foraging 2. Seeds and a trowel.", "skills": {"farming": 3, "foraging": 2}, "items": [["trowel", 1], ["seeds_potato", 4], ["seeds_cabbage", 4]]},
-	"chef": {"n": "Chef", "d": "Cooking 3, Blade 2. Kitchen knife.", "skills": {"cooking": 3, "blade": 2}, "items": [["kitchen_knife", 1], ["can_opener", 1]]},
+	"farmer": {"n": "Farmer", "d": "Farming 3, Animal Care 2, Foraging 1. Seeds and a trowel.", "skills": {"farming": 3, "animal_care": 2, "foraging": 1}, "items": [["trowel", 1], ["seeds_potato", 4], ["seeds_cabbage", 4]]},
+	"chef": {"n": "Chef", "d": "Cooking 3, Short Blade 2, Butchering 1. Kitchen knife.", "skills": {"cooking": 3, "short_blade": 2, "butchering": 1}, "items": [["kitchen_knife", 1], ["can_opener", 1]]},
 	"lumberjack": {"n": "Lumberjack", "d": "Axe 3, Strength 2. Hatchet.", "skills": {"axe": 3, "strength": 2}, "items": [["hatchet", 1]]},
-	"burglar": {"n": "Burglar", "d": "Sneaking 3, Blade 1. Crowbar.", "skills": {"sneaking": 3, "blade": 1}, "items": [["crowbar", 1], ["flashlight", 1]]},
-	"athlete": {"n": "Athlete", "d": "Fitness 4, Strength 1. Runs longer and recovers faster.", "skills": {"fitness": 4, "strength": 1}, "items": [["water_bottle", 1]]},
+	"burglar": {"n": "Burglar", "d": "Sneaking 3, Lightfooted 2. Crowbar; can hotwire any car.", "skills": {"sneaking": 3, "lightfooted": 2, "short_blade": 1}, "items": [["crowbar", 1], ["flashlight", 1]]},
+	"athlete": {"n": "Athlete", "d": "Fitness 4, Sprinting 3, Strength 1.", "skills": {"fitness": 4, "sprinting": 3, "strength": 1}, "items": [["water_bottle", 1]]},
 	"electrician": {"n": "Electrician", "d": "Electrical 4. Screwdriver; can defeat alarms and fix generators.", "skills": {"electrical": 4}, "items": [["screwdriver", 1], ["wire", 2]]},
 	"tailor": {"n": "Tailor", "d": "Tailoring 4. Needle and thread; clothes that last.", "skills": {"tailoring": 4}, "items": [["needle_thread", 1], ["scissors", 1], ["sheet", 2]]},
-	"trapper": {"n": "Trapper", "d": "Trapping 3, Fishing 2, Spear 1. Two snares.", "skills": {"trapping": 3, "fishing": 2, "spear": 1}, "items": [["snare", 2], ["hunting_knife", 1]]},
+	"trapper": {"n": "Trapper", "d": "Trapping 3, Tracking 3, Fishing 2, Butchering 1. Two snares.", "skills": {"trapping": 3, "tracking": 3, "fishing": 2, "butchering": 1, "spear": 1}, "items": [["snare", 2], ["hunting_knife", 1]]},
 	"mechanic": {"n": "Mechanic", "d": "Mechanics 3, Metalworking 2, Maintenance 1. Wrench.", "skills": {"mechanics": 3, "metalworking": 2, "maintenance": 1}, "items": [["wrench", 1], ["duct_tape", 1]]},
 	"veteran": {"n": "Veteran", "d": "Aiming 2, Reloading 2. Never panics.", "skills": {"aiming": 2, "reloading": 2}, "items": [["hunting_knife", 1]], "fx": {"panic": 0.0}},
-	"doctor": {"n": "Doctor", "d": "First Aid 5. A proper medical bag.", "skills": {"first_aid": 5}, "items": [["first_aid_kit", 1], ["suture_kit", 2], ["antibiotics", 1]]},
+	"doctor": {"n": "Doctor", "d": "First Aid 5. A proper medical bag.", "skills": {"first_aid": 5}, "items": [["first_aid_kit", 1], ["suture_kit", 2], ["antibiotics", 1], ["tweezers", 1]]},
+	"smith": {"n": "Blacksmith", "d": "Blacksmithing 4, Metalworking 2, Maintenance 2. Hammer.", "skills": {"blacksmithing": 4, "metalworking": 2, "maintenance": 2}, "items": [["hammer", 1], ["charcoal", 1]]},
+	"rancher": {"n": "Rancher", "d": "Animal Care 4, Butchering 2, Tracking 1.", "skills": {"animal_care": 4, "butchering": 2, "tracking": 1}, "items": [["hunting_knife", 1], ["rope", 1]]},
+	"potter": {"n": "Craftsperson", "d": "Pottery 3, Glassmaking 2, Carving 2, Knapping 2.", "skills": {"pottery": 3, "glassmaking": 2, "carving": 2, "knapping": 2}, "items": [["kitchen_knife", 1]]},
 }
 
 var sim: Sim
@@ -340,12 +346,12 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 			dir8 = Iso.dir8(facing)
 		running = want_run and not sneaking and endurance > 4.0 and mag > 0.5
 		var sp: float = WALK
-		if running: sp = RUN + float(skill_level("fitness")) * 0.06
+		if running: sp = RUN + float(skill_level("sprinting")) * 0.08
 		elif sneaking: sp = SNEAK + float(skill_level("sneaking")) * 0.05
 		sp *= minf(mag * 1.25, 1.0)
 		sp *= speed_factor()
 		if swing_t > 0.0:
-			sp *= 0.45
+			sp *= 0.45 + skill_level("nimble") * 0.04
 		var cell: int = w.obj(floori(pos.x), floori(pos.y))
 		if cell != 0 and Defs.obj(Defs.o_id(cell)).has("slow"):
 			sp *= 0.7
@@ -360,9 +366,12 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 			if _run_xp > 6.0:
 				_run_xp = 0.0
 				add_xp("fitness", 2.0)
+				add_xp("sprinting", 3.0)
 		if _step_t <= 0.0 and moving:
 			_step_t = 0.32 if running else (0.7 if sneaking else 0.46)
-			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise")
+			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise") * (1.0 - skill_level("lightfooted") * 0.05)
+			if not running and randf() < 0.06 and sim.zombies.count_threats(pos, 12.0) > 0:
+				add_xp("lightfooted", 1.5)
 			sim.noise(pos, noise_r)
 			sim.emit_fx("step", pos)
 			if sneaking and randf() < 0.05:
@@ -446,7 +455,7 @@ func try_attack() -> bool:
 		facing = (tgt.pos - pos).normalized()
 		dir8 = Iso.dir8(facing)
 	var typ: String = st["type"]
-	var lvl: int = skill_level(typ) if typ != "shove" and typ != "spear" else skill_level("strength")
+	var lvl: int = skill_level(st.get("sk", "strength"))
 	swing_dur = float(st["swing"]) * (1.0 - lvl * 0.03) * (1.25 if fatigue > 75.0 else 1.0) * (1.0 + arm_strain / 250.0)
 	if typ != "shove":
 		arm_strain = minf(100.0, arm_strain + (1.0 + float(d.get("w", 0.3)) * 0.9) * (1.0 - skill_level("fitness") * 0.04))
@@ -462,8 +471,7 @@ func _resolve_melee() -> void:
 	var st: Dictionary = melee_stats()
 	var typ: String = st["type"]
 	var rng: float = float(st["range"])
-	var skill: String = typ if (typ == "blunt" or typ == "blade" or typ == "axe") else "strength"
-	if typ == "spear": skill = "spear"
+	var skill: String = st.get("sk", "strength")
 	var lvl: int = skill_level(skill)
 	var strn: int = skill_level("strength")
 	var cands: Array = sim.zombies.in_cone(pos, facing, rng + 0.3, 0.45)
@@ -504,6 +512,7 @@ func _resolve_melee() -> void:
 		if typ != "shove":
 			add_xp(skill, 5.0 + (6.0 if zz.hp <= 0.0 else 0.0))
 			add_xp("strength", 1.5)
+			add_xp("nimble", 1.0)
 			_wear_weapon(1.0)
 			bored = maxf(0.0, bored - 1.5)
 		else:
@@ -1028,7 +1037,7 @@ func consume(it: Dictionary) -> void:
 			return
 		var fs: int = Items.fresh_state(it, sim.hour)
 		var mul: float = [1.0, 0.7, 0.35][fs]
-		hunger = clampf(hunger - float(d.get("hunger", 0)) * mul, 0.0, 100.0)
+		hunger = clampf(hunger - float(d.get("hunger", 0)) * mul * float(it.get("q", 1.0)), 0.0, 100.0)
 		thirst = clampf(thirst - float(d.get("thirst", 0)), 0.0, 100.0)
 		fatigue = clampf(fatigue + float(d.get("fatigue", 0)), 0.0, 100.0)
 		panic = maxf(0.0, panic - float(d.get("calm", 0)) * 2.0)
@@ -1180,9 +1189,10 @@ func read_item(it: Dictionary) -> void:
 			return
 		start_action("Studying", 12.0, func():
 			read[it["id"]] = true
-			add_xp(d["book"], 160.0)
+			xp_boost[d["book"]] = 3.0
+			add_xp(d["book"], 10.0)
 			bored = maxf(0.0, bored - 15.0)
-			sim.say("You learned a lot about %s" % String(d["book"]).replace("_", " "), Color(0.6, 0.9, 0.6)))
+			sim.say("Studied. %s experience is tripled until level 5." % String(d["book"]).capitalize().replace("_", " "), Color(0.6, 0.9, 0.6)))
 	else:
 		start_action("Reading", 6.0, func():
 			panic = maxf(0.0, panic - 25.0)
@@ -1259,7 +1269,14 @@ func load(d: Dictionary) -> void:
 	worn = inv[ci] if ci >= 0 and ci < inv.size() else {}
 	var sk: Dictionary = d.get("skills", {})
 	for k in sk.keys():
-		skills[k] = sk[k]
+		if k == "blunt":
+			skills["long_blunt"] = sk[k]
+			skills["short_blunt"] = sk[k]
+		elif k == "blade":
+			skills["long_blade"] = sk[k]
+			skills["short_blade"] = sk[k]
+		elif skills.has(k):
+			skills[k] = sk[k]
 	read = d.get("read", {})
 	occupation = d.get("occ", "unemployed")
 	look = d.get("look", look)

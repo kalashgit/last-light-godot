@@ -615,23 +615,31 @@ func _build_char() -> void:
 				if Traits.DB.has(tid): tn.append(Traits.DB[tid]["n"])
 			body.add_child(UiKit.label("Traits: " + ", ".join(tn), 16, UiKit.DIM))
 		var vb := VBoxContainer.new()
-		for s in Player.SKILLS:
-			var lvl: int = p.skill_level(s)
-			var xp: float = p.skills[s]
-			var hb := HBoxContainer.new()
-			var l: Label = UiKit.label("%s  %d" % [String(s).capitalize().replace("_", " "), lvl], 18)
-			l.custom_minimum_size = Vector2(190, 0)
-			hb.add_child(l)
-			var frac := 100.0
-			if lvl < 10:
-				var a: float = Player.XP_LEVELS[lvl]
-				var b2: float = Player.XP_LEVELS[lvl + 1]
-				frac = (xp - a) / (b2 - a) * 100.0
-			var pb: ProgressBar = UiKit.bar(frac, UiKit.GOOD, 16)
-			pb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			pb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-			hb.add_child(pb)
-			vb.add_child(hb)
+		var si := 0
+		for grp in Player.SKILL_GROUPS:
+			vb.add_child(UiKit.label(grp[0], 16, UiKit.ACCENT))
+			for gi in range(int(grp[1])):
+				var s: String = Player.SKILLS[si]
+				si += 1
+				var lvl: int = p.skill_level(s)
+				var xp: float = p.skills[s]
+				var hb := HBoxContainer.new()
+				var boosted: bool = p.xp_boost.has(s) and p.skill_level_raw(s) < 5
+				var l: Label = UiKit.label("%s  %d%s" % [String(s).capitalize().replace("_", " "), lvl, "  ×3" if boosted else ""], 17)
+				l.custom_minimum_size = Vector2(210, 0)
+				l.autowrap_mode = TextServer.AUTOWRAP_OFF
+				hb.add_child(l)
+				var frac := 100.0
+				var raw: int = p.skill_level_raw(s)
+				if raw < 10:
+					var a: float = Player.XP_LEVELS[raw]
+					var b2: float = Player.XP_LEVELS[raw + 1]
+					frac = (xp - a) / (b2 - a) * 100.0
+				var pb: ProgressBar = UiKit.bar(frac, UiKit.GOOD, 14)
+				pb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				pb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+				hb.add_child(pb)
+				vb.add_child(hb)
 		body.add_child(UiKit.scroll(vb))
 		return
 	_stat("Health", p.hp, Color(0.75, 0.3, 0.26))
@@ -755,6 +763,10 @@ func _build_craft() -> void:
 		rebuild())
 	var heat: bool = sim.near_heat(p.pos)
 	var bench: bool = sim.near_workbench(p.pos)
+	var stations: Array = sim.stations(p.pos)
+	if _craft_cat == "Kiln" or _craft_cat == "Smithing":
+		var need: String = "kiln" if _craft_cat == "Kiln" else "forge"
+		body.add_child(UiKit.label(("%s within reach" % need.capitalize()) if stations.has(need) else "Most of these need a %s within two steps. Build one under Masonry." % need, 16, UiKit.GOOD if stations.has(need) else UiKit.DIM))
 	if _craft_cat == "Workshop":
 		body.add_child(UiKit.label("Workbench within reach" if bench else "Some of these need a workbench within two steps (garages, hardware stores, barns)", 16, UiKit.GOOD if bench else UiKit.DIM))
 	if _craft_cat == "Cooking":
@@ -764,7 +776,7 @@ func _build_craft() -> void:
 		if r["cat"] != _craft_cat:
 			continue
 		var recipe: Dictionary = r
-		var why: String = Recipes.missing(recipe, p, heat, bench)
+		var why: String = Recipes.missing(recipe, p, heat, bench, stations)
 		var needs: Array = []
 		for inp in recipe["in"]:
 			needs.append("%d %s" % [int(inp[1]), "water" if inp[0] == "water" else String(Items.def(inp[0]).get("n", inp[0]))])

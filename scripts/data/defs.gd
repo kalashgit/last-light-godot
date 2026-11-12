@@ -248,7 +248,13 @@ const O_SNARE := 102
 const O_HATCH := 103
 const O_LADDER := 104
 const O_WEEDS := 105
-const O_COUNT := 106
+const O_KILN := 106
+const O_FORGE := 107
+const O_WELL := 108
+const O_COOP := 109
+const O_GRAVE := 110
+const O_TROUGH := 111
+const O_COUNT := 112
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -358,6 +364,12 @@ static func _static_init() -> void:
 	_o(O_HATCH, {"n": "Cellar hatch", "solid": 0.0, "sym": 1, "h": 8, "use": "hatch", "hp": 999})
 	_o(O_LADDER, {"n": "Ladder", "solid": 0.0, "h": 70, "use": "ladder", "hp": 999})
 	_o(O_WEEDS, {"n": "Weeds", "solid": 0.0, "sym": 1, "h": 12, "custom": 1, "hp": 5})
+	_o(O_KILN, {"n": "Kiln", "h": 46, "sym": 1, "use": "kiln", "hp": 400})
+	_o(O_FORGE, {"n": "Forge and anvil", "h": 34, "use": "forge", "hp": 500})
+	_o(O_WELL, {"n": "Well", "h": 44, "sym": 1, "use": "well", "hp": 600})
+	_o(O_COOP, {"n": "Chicken coop", "h": 36, "use": "coop", "c": "", "cap": 10, "scrap": [["plank", 3], ["nails", 4]]})
+	_o(O_GRAVE, {"n": "Grave", "solid": 0.0, "sym": 1, "h": 26, "hp": 999})
+	_o(O_TROUGH, {"n": "Feeding trough", "solid": 0.3, "h": 16, "use": "trough", "c": "", "cap": 20})
 
 static func obj(id: int) -> Dictionary:
 	return OBJ.get(id, {})
