@@ -1,0 +1,31 @@
+name: mesh-sprint-candidate-tests
+on:
+  push:
+    paths:
+      - 'tools/mesh_sprint/**'
+      - 'tests/test_factory.py'
+      - 'tests/test_verify.py'
+      - 'requirements.txt'
+      - '.github/workflows/mesh-sprint-tests.yml'
+  pull_request:
+    paths:
+      - 'tools/mesh_sprint/**'
+      - 'tests/test_factory.py'
+      - 'tests/test_verify.py'
+      - 'requirements.txt'
+      - '.github/workflows/mesh-sprint-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r tools/mesh_sprint/requirements.txt
+      - run: pytest -q tests/test_factory.py tests/test_verify.py
+      - name: Small real file smoke test
+        run: |
+          python tools/mesh_sprint/factory.py --demo 48 --out /tmp/ll-mesh-ci --workers 2
+          python tools/mesh_sprint/verify.py --root /tmp/ll-mesh-ci
