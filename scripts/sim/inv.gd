@@ -17,7 +17,7 @@ static func add_new(arr: Array, id: String, n: int = 1, hour: float = 0.0) -> vo
 	var d: Dictionary = Items.def(id)
 	if d.is_empty():
 		return
-	if d.has("uses") or d.has("wpn") or d.has("gun"):
+	if Items.is_unique(d):
 		for i in range(n):
 			arr.append(Items.make(id, 1, hour))
 	else:

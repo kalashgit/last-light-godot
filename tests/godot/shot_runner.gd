@@ -97,14 +97,76 @@ func _process(_dt: float) -> bool:
 			var node: Vector2i = sim.world.gen.region(0, 0)["node"]
 			p.pos = Vector2(node.x + 6.5, node.y + 6.5)
 			main.view.zoom = 0.9
-		260: shot("11_downtown")
+		260:
+			shot("11_downtown")
+			print("perf downtown: draw_calls=", Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+				" primitives=", Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
+				" objects=", Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME),
+				" nodes=", Performance.get_monitor(Performance.OBJECT_NODE_COUNT),
+				" tex_mem_mb=", snappedf(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, 0.1),
+				" static_mem_mb=", snappedf(Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0, 0.1),
+				" sim_ms=", snappedf(main.sim_ms, 0.01))
 		262:
 			# wilderness
 			p.pos = Vector2(40.5, 330.5)
 			main.view.zoom = 1.2
 		360: shot("12_wilderness")
 		362:
+			# exercise the remaining UI flows
+			main.hud.debug = false
+			p.pos = sim.safe_pos
+			main.view.zoom = 1.5
+			sim.hour = 14.0
+			Inv.add_new(p.inv, "canned_beans", 2)
+			Inv.add_new(p.inv, "bandage", 2)
+			Inv.add_new(p.inv, "plank", 6)
+			p.add_wound(2, "laceration")
+			p.add_wound(5, "bite")
+			p.hunger = 62.0
+			p.thirst = 80.0
+			p.panic = 50.0
+		380:
+			main.panels.open("inv")
+			main.panels._item_sheet(Inv.find(p.inv, "canned_beans"), Actions.nearby_containers(sim)[0])
+		386: shot("13_item_actions")
+		388: main.panels.open("char")
+		392: shot("14_wounds")
+		394:
+			main.panels.close()
+			main.hud.placing = Recipes.by_id("wall")
+			p.facing = Vector2(0, 1)
+		400: shot("15_build_placement")
+		402:
+			main.hud.placing = {}
+			var ts: Array = Actions.targets(sim)
+			print("targets near spawn: ", ts.size())
+			Actions.interact(sim, true)
+		408: shot("16_context_menu")
+		410:
+			main.panels.close()
+			p.fatigue = 70.0
+			p.panic = 0.0
+			sim.start_sleep(1.0)
+		430: shot("17_sleeping")
+		432:
+			sim.wake("test wake")
+			main.panels.open("pause")
+		436: shot("18_pause")
+		438:
+			main.panels.close()
 			var ok: bool = main.save_now()
 			print("save ok=", ok)
+			var pos_before: Vector2 = p.pos
+			main.to_title()
+			main.continue_game()
+			print("continue ok=", main.state == "play" and main.sim.player.pos.distance_to(pos_before) < 0.01, " wounds=", main.sim.player.wounds.size())
+		450: shot("19_after_continue")
+		452:
+			sim = main.sim
+			sim.settings["god"] = false
+			sim.player.die("Test death")
+		470: shot("20_death")
+		472:
+			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

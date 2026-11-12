@@ -565,3 +565,18 @@ func find_start() -> Dictionary:
 	var plan2: LotBuilder.LotPlan = lot_plan(best)
 	var br: Rect2i = best["r"]
 	return {"pos": Vector2(br.position.x + plan2.spawn.x + 0.5, br.position.y + plan2.spawn.y + 0.5), "lot": best}
+
+## generate (at most) one not-yet-cached lot plan near a position.
+## called once per frame so entering a new street never stalls on building generation.
+func prewarm_step(pos: Vector2, radius: float = 70.0) -> bool:
+	var rx: int = fdiv(floori(pos.x), REGION)
+	var ry: int = fdiv(floori(pos.y), REGION)
+	var R: Dictionary = region(rx, ry)
+	var pr := Rect2i(floori(pos.x - radius), floori(pos.y - radius), int(radius * 2.0), int(radius * 2.0))
+	for lot in R["lots"]:
+		if _lots.has(lot["id"]):
+			continue
+		if (lot["r"] as Rect2i).intersects(pr):
+			lot_plan(lot)
+			return true
+	return false

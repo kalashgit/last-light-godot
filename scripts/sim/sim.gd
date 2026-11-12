@@ -159,7 +159,8 @@ func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false
 	player.update(dt, move_screen, want_run)
 	player.tick_needs(dh)
 	zombies.update(dt)
-	world.stream(player.pos, 3, 1)
+	if world.stream(player.pos, 3, 1) == 0:
+		world.gen.prewarm_step(player.pos + player.facing * 30.0)
 	_process_world_events()
 	_weather_h += dh
 	if _weather_h >= 0.25:

@@ -27,7 +27,7 @@ run "boot main"     timeout 300 "$GODOT" --headless --path . --quit-after 400
 if [ "${1:-}" = "--shots" ] && [ -n "${2:-}" ]; then
   mkdir -p "$2"
   run "render portrait"  timeout 300 xvfb-run -a -s "-screen 0 1280x1280x24" "$GODOT" --path . --rendering-driver opengl3 -s tests/godot/shot_runner.gd -- "$2/portrait"
-  run "render landscape" timeout 300 xvfb-run -a -s "-screen 0 1280x1280x24" "$GODOT" --path . --rendering-driver opengl3 -s tests/godot/shot_runner.gd -- "$2/landscape" landscape
+  run "render landscape" timeout 300 xvfb-run -a -s "-screen 0 1280x1280x24" "$GODOT" --path . --rendering-driver opengl3 --resolution 1152x720 -s tests/godot/shot_runner.gd -- "$2/landscape"
 fi
 echo
 if [ $fail -ne 0 ]; then echo "TESTS FAILED"; exit 1; fi

@@ -70,6 +70,7 @@ static func button(text: String, cb: Callable, min_h: int = 58) -> Button:
 	b.custom_minimum_size = Vector2(0, min_h)
 	b.focus_mode = Control.FOCUS_NONE
 	b.clip_text = true
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if cb.is_valid():
 		b.pressed.connect(cb)
 	return b

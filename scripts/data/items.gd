@@ -174,7 +174,7 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 	var it := {"id": id, "n": n}
 	if d.has("uses"):
 		it["u"] = d["uses"]
-	if d.has("wpn"):
+	if d.has("wpn") and d["cat"] != "material":
 		it["c"] = 1.0
 	if d.has("gun"):
 		it["c"] = 1.0
@@ -182,6 +182,10 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 	if d.has("fresh"):
 		it["t"] = hour
 	return it
+
+## items that carry per-instance state and therefore never stack
+static func is_unique(d: Dictionary) -> bool:
+	return d.has("uses") or d.has("gun") or (d.has("wpn") and d.get("cat", "") != "material")
 
 static func weight(it: Dictionary) -> float:
 	var d: Dictionary = DB.get(it.get("id", ""), {})

@@ -69,8 +69,9 @@ func _layout() -> void:
 	_btn["zoom_in"] = [Vector2(r - 34, t + 118), 26.0]
 	_btn["zoom_out"] = [Vector2(r - 34, t + 178), 26.0]
 	if not placing.is_empty():
-		_btn["place_ok"] = [Vector2(safe.get_center().x - 80, b - 250), 52.0]
-		_btn["place_no"] = [Vector2(safe.get_center().x + 80, b - 250), 52.0]
+		var py: float = b - (250.0 if safe.size.y > safe.size.x else 96.0)
+		_btn["place_ok"] = [Vector2(safe.get_center().x - 70, py), 50.0]
+		_btn["place_no"] = [Vector2(safe.get_center().x + 70, py), 50.0]
 
 func _hit(pos: Vector2) -> String:
 	var best := ""
@@ -327,6 +328,7 @@ func _draw() -> void:
 	_layout()
 	var p: Player = sim.player
 	var size: Vector2 = get_viewport_rect().size
+	var portrait: bool = size.y > size.x
 	var x0: float = safe.position.x + 12
 	var y0: float = safe.position.y + 10
 	# low health vignette
@@ -399,15 +401,15 @@ func _draw() -> void:
 	if not p.action.is_empty():
 		var w: float = 300.0
 		var bx: float = size.x * 0.5 - w * 0.5
-		var by: float = safe.end.y - 330.0
+		var by: float = safe.end.y - (330.0 if portrait else 40.0)
 		_bar(Vector2(bx, by), w, 18, float(p.action["t"]) / float(p.action["dur"]), UiKit.ACCENT)
 		_txt(String(p.action["label"]), Vector2(bx, by - 8), 16, UiKit.TEXT, HORIZONTAL_ALIGNMENT_CENTER, w)
 	if not placing.is_empty():
 		_round_btn("place_ok", "BUILD", Color(0.3, 0.5, 0.3), false, 15)
 		_round_btn("place_no", "CANCEL", Color(0.5, 0.3, 0.28), false, 13)
-		_txt("Placing: %s — face the spot, then BUILD" % placing["n"], Vector2(0, safe.end.y - 318), 16, UiKit.ACCENT, HORIZONTAL_ALIGNMENT_CENTER, size.x)
-	# message log
-	var ly: float = safe.end.y - 360.0
+		_txt("Placing: %s — face the spot, then BUILD" % placing["n"], Vector2(0, safe.end.y - (318.0 if portrait else 164.0)), 16, UiKit.ACCENT, HORIZONTAL_ALIGNMENT_CENTER, size.x)
+	# message log (above the controls in portrait, under the top bar in landscape)
+	var ly: float = safe.end.y - 360.0 if portrait else safe.position.y + 150.0
 	var shown := 0
 	for i in range(sim.log.size() - 1, -1, -1):
 		var l: Array = sim.log[i]

@@ -379,8 +379,13 @@ func _wear_weapon(amount: float) -> void:
 	if float(weapon["c"]) <= 0.0:
 		sim.say("Your %s broke!" % d["n"], Color(1.0, 0.6, 0.4))
 		sim.emit_fx("break", pos)
-		inv.erase(weapon)
-		weapon = {}
+		if int(weapon.get("n", 1)) > 1:
+			# a stack of improvised weapons (planks, branches): only one snaps
+			weapon["n"] = int(weapon["n"]) - 1
+			weapon.erase("c")
+		else:
+			inv.erase(weapon)
+			weapon = {}
 
 func front_tile() -> Vector2i:
 	var px: int = floori(pos.x)

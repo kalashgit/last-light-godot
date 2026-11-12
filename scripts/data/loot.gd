@@ -122,7 +122,7 @@ static func roll(table: String, btype: String, rng: RandomNumberGenerator, hour:
 		var d: Dictionary = Items.def(id)
 		if d.is_empty():
 			continue
-		if d.has("uses") or d.has("wpn") or d.has("gun"):
+		if Items.is_unique(d):
 			for k in range(cnt):
 				var item: Dictionary = Items.make(id, 1, hour)
 				if d.has("uses") and int(d["uses"]) > 1:

@@ -122,6 +122,7 @@ func _header(title: String, closable: bool = true) -> void:
 	if closable:
 		var b: Button = UiKit.button("Close", close, 52)
 		b.custom_minimum_size = Vector2(120, 52)
+		b.size_flags_horizontal = Control.SIZE_SHRINK_END
 		hb.add_child(b)
 	body.add_child(hb)
 
@@ -228,6 +229,7 @@ func _build_newgame() -> void:
 		_ng_seed = str(randi() % 1000000)
 		rebuild(), 50)
 	rb.custom_minimum_size = Vector2(130, 50)
+	rb.size_flags_horizontal = Control.SIZE_SHRINK_END
 	hb.add_child(rb)
 	body.add_child(hb)
 	var hb2 := HBoxContainer.new()
@@ -297,12 +299,15 @@ func _build_inv() -> void:
 	wl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hb.add_child(wl)
 	if items.size() > 0:
-		hb.add_child(UiKit.button(" Take all ", func():
+		var ta: Button = UiKit.button("Take all", func():
 			for it in items.duplicate():
 				items.erase(it)
 				Inv.add(p.inv, it)
 			_after_move(cur)
-			rebuild(), 44))
+			rebuild(), 44)
+		ta.custom_minimum_size = Vector2(120, 44)
+		ta.size_flags_horizontal = Control.SIZE_SHRINK_END
+		hb.add_child(ta)
 	left.add_child(hb)
 	var lv := VBoxContainer.new()
 	if items.is_empty():
@@ -359,7 +364,11 @@ func _sheet_open(title: String, opts: Array) -> void:
 	for ch in sheet_body.get_children():
 		sheet_body.remove_child(ch)
 		ch.queue_free()
-	sheet_body.add_child(UiKit.label(title, 20, UiKit.ACCENT))
+	var tl: Label = UiKit.label(title, 18, UiKit.ACCENT)
+	tl.autowrap_mode = TextServer.AUTOWRAP_OFF
+	tl.clip_text = true
+	tl.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	sheet_body.add_child(tl)
 	for o in opts:
 		var fn: Callable = o[1]
 		sheet_body.add_child(UiKit.button(o[0], func():
