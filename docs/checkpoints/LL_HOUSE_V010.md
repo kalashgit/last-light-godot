@@ -18,7 +18,7 @@ Status: **draft integration** (not a final art approval).
 - Both tests are reproducible using `python prototypes/hollow-county/tests/test_architecture.py` with Playwright + Chromium installed.
 
 ## Godot / Xogot gate still required
-**Godot is not installed in this execution environment. The Godot GDScript update has NOT passed a Godot parser, engine or iPhone Xogot run.** Do not merge until it does.
+**Godot 4.3 GitHub Actions headless import and main-scene startup PASSED** ([CI run](https://github.com/kalashgit/last-light-godot/actions/runs/43210532517)). Godot was not installed locally; Xogot on a physical iPhone is still unverified. Do not merge until it does.
 
 1. In Xogot, import this branch and run `res://main.tscn`.
 2. Move outside along the front wall; the roof and front door must remain visible.
