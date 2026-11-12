@@ -1,0 +1,42 @@
+{
+  "run_id": "43212961756",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 26,
+  "remaining": 334,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_hinge_pack",
+      "source_glb_sha256": "d06f73aa9f0bc6cfd24c3e46c8788325894b32b2996d74b998c2952ad2ec7e86",
+      "atlas_sha256": "a99e41ce853f2077d46f1eea9354db79d7bb19dc94af1fd052128f3b5168315a",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2587605,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_insulation_tape",
+      "source_glb_sha256": "db07874251fe35535a55721e774d72a42640fdf335490cb9f91fdc1d97f57fe4",
+      "atlas_sha256": "ae4009bf3942871e5aae6270ee50f97c80c7d43470e30c6d9246ec09a52b7aa6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2610742,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_hinge_pack",
+  "source_glb_sha256": "d06f73aa9f0bc6cfd24c3e46c8788325894b32b2996d74b998c2952ad2ec7e86",
+  "atlas_sha256": "a99e41ce853f2077d46f1eea9354db79d7bb19dc94af1fd052128f3b5168315a",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2587605,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

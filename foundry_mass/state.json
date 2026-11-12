@@ -26,9 +26,11 @@
     "ll_crafting_glass_pane",
     "ll_crafting_glue_bottle",
     "ll_crafting_gravel_sack",
-    "ll_crafting_hardboard_panel"
+    "ll_crafting_hardboard_panel",
+    "ll_crafting_hinge_pack",
+    "ll_crafting_insulation_tape"
   ],
-  "last_run_id": "43147995324",
+  "last_run_id": "43212961756",
   "golden_approved": false,
-  "remaining": 336
+  "remaining": 334
 }

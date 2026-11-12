@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_insulation_tape",
+  "source_glb_sha256": "db07874251fe35535a55721e774d72a42640fdf335490cb9f91fdc1d97f57fe4",
+  "atlas_sha256": "ae4009bf3942871e5aae6270ee50f97c80c7d43470e30c6d9246ec09a52b7aa6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2610742,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
