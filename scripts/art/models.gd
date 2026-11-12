@@ -122,6 +122,14 @@ static func all() -> Dictionary:
 	m[Defs.O_PICNIC_TABLE] = legs(.2, .2, .8, .8, 14, dwood) + [b(.1, .2, 14, .9, .8, 16, wood, P.M_PLANK_H), b(.1, .02, 8, .9, .16, 10, wood, P.M_PLANK_H), b(.1, .84, 8, .9, .98, 10, wood, P.M_PLANK_H)]
 	m[Defs.O_GENERATOR] = [b(.2, .25, 0, .8, .75, 4, dark), b(.22, .28, 4, .78, .72, 18, "c2a030", P.M_METAL), b(.3, .34, 18, .62, .66, 23, "3a3d40"), b(.66, .4, 18, .74, .6, 26, "55585a"),
 		b(.24, .72, 7, .5, .73, 14, "2a2c2e", P.M_CORRUGATED)]
+	m[Defs.O_SHELF] = [b(.05, .2, 0, .11, .72, 54, dwood), b(.89, .2, 0, .95, .72, 54, dwood), b(.05, .2, 4, .95, .72, 6, wood, P.M_PLANK_H), b(.05, .2, 20, .95, .72, 22, wood, P.M_PLANK_H),
+		b(.05, .2, 36, .95, .72, 38, wood, P.M_PLANK_H), b(.05, .2, 52, .95, .72, 54, wood, P.M_PLANK_H), b(.05, .2, 0, .95, .24, 54, dwood, P.M_PLANK_V)]
+	m[Defs.O_COMPOST] = [b(.12, .12, 0, .88, .88, 20, "6a5236", P.M_CRATE), b(.16, .16, 19, .84, .84, 21, "3a2c1e", P.M_NOISE), b(.3, .3, 21, .5, .5, 22, "4a6a30", P.M_LEAF)]
+	m[Defs.O_HATCH] = [b(.18, .18, 0, .82, .82, 2, "6e5438", P.M_PLANK_H), b(.16, .16, 0, .84, .2, 3, "4a3826"), b(.16, .8, 0, .84, .84, 3, "4a3826"), b(.44, .62, 2, .56, .7, 3, "b5a060")]
+	var ladder: Array = [b(.3, .06, 0, .36, .12, 70, wood), b(.64, .06, 0, .7, .12, 70, wood)]
+	for rz in range(8, 66, 9):
+		ladder.append(b(.3, .06, rz, .7, .12, rz + 2, dwood))
+	m[Defs.O_LADDER] = ladder
 	m[Defs.O_CAR] = car("e8e8e8", "8fb0c4", false)
 	m[Defs.O_CAR_WRECK] = car("5a4a40", "151515", true)
 	return m

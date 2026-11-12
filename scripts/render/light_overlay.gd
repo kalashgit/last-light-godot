@@ -69,6 +69,15 @@ static func ambient_for(sim: Sim) -> Color:
 func update(sim: Sim, view: WorldView, dt: float) -> void:
 	var size: Vector2 = get_viewport().get_visible_rect().size
 	var amb: Color = ambient_for(sim)
+	if sim.underground():
+		amb = Color(0.07, 0.075, 0.09)
+	else:
+		# sandbox: how dark the nights get
+		var dk: float = float(sim.settings.get("dark", 1.0))
+		var lum: float = (amb.r + amb.g + amb.b) / 3.0
+		if lum < 0.6:
+			var f: float = clampf(1.0 - (dk - 1.0) * 1.6, 0.3, 1.9)
+			amb = Color(minf(amb.r * f, 1.0), minf(amb.g * f, 1.0), minf(amb.b * f, 1.0))
 	var p: Player = sim.player
 	var dark: float = 1.0 - (amb.r + amb.g + amb.b) / 3.0
 	var pos := PackedVector3Array()
@@ -114,4 +123,4 @@ func update(sim: Sim, view: WorldView, dt: float) -> void:
 	mat.set_shader_parameter("lights", pos)
 	mat.set_shader_parameter("colors", col)
 	mat.set_shader_parameter("screen_size", size)
-	fog.color.a = float(sim.weather["fog"]) * 0.42
+	fog.color.a = 0.0 if sim.underground() else float(sim.weather["fog"]) * 0.42

@@ -16,6 +16,13 @@ var store_loader: Callable           # optional: func(key) -> Dictionary  (disk 
 var on_unload: Callable              # optional: func(chunk) called before a chunk is stored
 var hour := 0.0
 var loot_mult := 1.0
+var growth := 1.0                    # overgrowth speed (sandbox)
+
+## cellars live in a mirror band of the map far to the "south": same x, y + UNDER
+const UNDER := 131072
+
+static func is_under(y: float) -> bool:
+	return y >= UNDER * 0.5
 
 var _lc: Chunk = null
 var _lkey := Vector2i(999999, 999999)
@@ -467,6 +474,9 @@ func load_chunk(cx: int, cy: int) -> Chunk:
 		c.load_data(data)
 		if c.modified:
 			c.map_px = WorldGen._minimap(c)
+	if not c.modified and growth > 0.0:
+		# nature takes the town back: only chunks the player never altered regrow
+		gen.overgrow(c, hour / 24.0 * growth)
 	chunks[k] = c
 	explored[k] = c.map_px
 	ev_loaded.append(c)

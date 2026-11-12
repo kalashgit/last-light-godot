@@ -284,7 +284,7 @@ static func _icon(shape: String, a: Color, b: Color) -> Painter:
 ## moodle pictograms (white glyph, tinted by severity colour in HUD)
 static func _gen_moodles() -> void:
 	var w := Color.WHITE
-	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored"]
+	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored", "sad", "stress", "drunk"]
 	for nm in names:
 		var p := Painter.new(S, S)
 		match nm:
@@ -332,6 +332,15 @@ static func _gen_moodles() -> void:
 				p.line(12, 6, 10, 11, Color(1, 1, 1, 0.2), 2); p.line(10, 11, 14, 13, Color(1, 1, 1, 0.2), 2); p.line(14, 13, 12, 18, Color(1, 1, 1, 0.2), 2)
 			"stuffed":
 				p.ellipse(12, 13, 8, 7, w); p.rect(11, 3, 2, 4, w)
+			"sad":
+				p.ellipse(12, 12, 9, 9, w)
+				p.rect(7, 8, 3, 3, Color(1, 1, 1, 0.2)); p.rect(14, 8, 3, 3, Color(1, 1, 1, 0.2))
+				p.line(8, 18, 12, 15, Color(1, 1, 1, 0.2), 2); p.line(12, 15, 16, 18, Color(1, 1, 1, 0.2), 2)
+			"stress":
+				p.line(4, 6, 9, 11, w, 2); p.line(9, 11, 5, 15, w, 2); p.line(5, 15, 10, 20, w, 2)
+				p.line(13, 4, 18, 9, w, 2); p.line(18, 9, 14, 13, w, 2); p.line(14, 13, 19, 18, w, 2)
+			"drunk":
+				p.rect(9, 3, 4, 5, w); p.rect(7, 8, 8, 13, w); p.rect(15, 11, 4, 2, w); p.rect(18, 11, 2, 7, w); p.rect(15, 16, 4, 2, w)
 			"bored":
 				p.ellipse(12, 12, 9, 9, w); p.rect(7, 9, 3, 1, Color(1, 1, 1, 0.2)); p.rect(14, 9, 3, 1, Color(1, 1, 1, 0.2)); p.rect(8, 16, 8, 1, Color(1, 1, 1, 0.2))
 		Art.misc["m_" + nm] = Art.icons.add(p.img, 0, 0, "", false)

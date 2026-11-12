@@ -142,7 +142,8 @@ func _play(dt: float) -> void:
 			light.flash_pos = e["p"]
 	sim.fx.clear()
 	light.update(sim, view, dt)
-	weather.intensity = float(sim.weather["rain"])
+	weather.intensity = 0.0 if sim.underground() else float(sim.weather["rain"])
+	weather.flyover = sim.fly_active and not sim.underground()
 	for ev in sim.ui_events:
 		match ev["type"]:
 			"loot": panels.open("inv", ev)
@@ -181,13 +182,13 @@ func _start(s: Sim) -> void:
 	if sim.dead:
 		panels.open("death")
 
-func new_game(world_seed: int, occupation: String, opts: Dictionary) -> void:
+func new_game(world_seed: int, occupation: String, opts: Dictionary, trait_list: Array = [], start_kind: String = "house") -> void:
 	SaveGame.delete(SLOT)
 	var s := Sim.new(world_seed)
 	for k in opts.keys():
 		s.settings[k] = opts[k]
 	s.world.store_loader = SaveGame.loader(SLOT)
-	s.new_game(occupation)
+	s.new_game(occupation, trait_list, start_kind)
 	_start(s)
 	save_now()
 	_hints = [

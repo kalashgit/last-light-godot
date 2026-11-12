@@ -83,6 +83,14 @@ static func _static_init() -> void:
 	T["car_wreck"] = {"rolls": [0, 2], "items": [["scrap_metal", 8, 1, 3], ["wire", 5, 1, 2], ["wrench", 1, 1, 1], ["rag", 3, 1, 2]]}
 	T["corpse"] = {"rolls": [0, 2], "items": [["money", 6, 1, 30], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["granola_bar", 2, 1, 1], ["bandage", 1.5, 1, 1], ["battery", 1.5, 1, 1], ["painkillers", 1, 1, 1],
 		["kitchen_knife", 0.6, 1, 1], ["ammo_9mm", 0.6, 2, 8], ["chocolate", 1.5, 1, 1], ["rag", 3, 1, 2], ["tote_bag", 0.6, 1, 1], ["jacket", 0.8, 1, 1], ["water_bottle", 1, 1, 1]]}
+	T["stash"] = {"rolls": [5, 8], "items": [["canned_beans", 8, 2, 5], ["canned_soup", 8, 2, 5], ["water_bottle", 8, 2, 4], ["bandage", 6, 2, 4], ["nails", 6, 20, 60], ["plank", 5, 2, 5],
+		["ammo_9mm", 4, 8, 24], ["shells", 3, 4, 12], ["battery", 4, 2, 4], ["painkillers", 4, 1, 2], ["antibiotics", 2, 1, 1], ["hammer", 3, 1, 1], ["rice", 4, 1, 2], ["candle", 4, 2, 4], ["jerky", 4, 1, 3], ["duct_tape", 3, 1, 2]]}
+	T["cellar"] = {"rolls": [1, 4], "items": [["preserves", 9, 1, 4], ["pickles", 8, 1, 4], ["whiskey", 4, 1, 1], ["beer", 4, 2, 6], ["canned_peaches", 5, 1, 3], ["potato", 4, 2, 6], ["candle", 5, 1, 3],
+		["plank", 4, 1, 4], ["nails", 5, 10, 40], ["charcoal", 3, 1, 1], ["glue", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 2, 1, 1], ["gas_can", 1.5, 1, 1], ["generator_item", 0.4, 1, 1], ["hunting_knife", 1, 1, 1], ["sleeping_pills", 1.5, 1, 1]]}
+	T["corpse_survivor"] = {"rolls": [2, 4], "must": [["backpack", 1, 1]], "items": [["water_bottle", 6, 1, 2], ["canned_beans", 6, 1, 3], ["granola_bar", 5, 1, 3], ["bandage", 5, 1, 3], ["flashlight", 4, 1, 1],
+		["hunting_knife", 3, 1, 1], ["matches", 4, 1, 1], ["painkillers", 3, 1, 1], ["battery", 3, 1, 2], ["novel", 2, 1, 1], ["crowbar", 1.5, 1, 1]]}
+	T["corpse_armed"] = {"rolls": [1, 3], "must": [["pistol", 1, 1], ["ammo_9mm", 6, 18]], "items": [["shells", 3, 2, 8], ["bandage", 4, 1, 2], ["whiskey", 2, 1, 1], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["shotgun", 1, 1, 1]]}
+	T["corpse_burglar"] = {"rolls": [1, 3], "must": [["crowbar", 1, 1], ["duffel_bag", 1, 1]], "items": [["money", 8, 40, 300], ["flashlight", 4, 1, 1], ["screwdriver", 4, 1, 1], ["cigarettes", 3, 1, 1], ["kitchen_knife", 2, 1, 1]]}
 	# building-type overrides: btype -> {table: replacement}
 	OVERRIDE["pharmacy"] = {"store_food": "store_pharmacy", "crate": "medical", "warehouse": "medical", "boxes": "store_pharmacy"}
 	OVERRIDE["hardware"] = {"store_food": "store_hardware", "crate": "tools", "warehouse": "tools"}
@@ -94,6 +102,8 @@ static func _static_init() -> void:
 	OVERRIDE["farm"] = {"crate": "farm", "tools": "farm"}
 	OVERRIDE["cabin"] = {"crate": "cabin", "kitchen": "cabin"}
 	OVERRIDE["camp"] = {"crate": "camp", "boxes": "camp"}
+	OVERRIDE["stash"] = {"crate": "stash"}
+	OVERRIDE["cellar"] = {"crate": "cellar", "warehouse": "cellar", "boxes": "cellar", "barrel": "cellar"}
 	OVERRIDE["clinic"] = {"crate": "medical", "warehouse": "medical"}
 	OVERRIDE["grocery"] = {"crate": "store_food", "warehouse": "store_food", "boxes": "store_food"}
 	OVERRIDE["diner"] = {"crate": "store_food", "warehouse": "store_food", "bar": "kitchen"}
@@ -111,6 +121,11 @@ static func roll(table: String, btype: String, rng: RandomNumberGenerator, hour:
 	n = int(round(float(n) * mult))
 	if mult > 0.0 and n == 0 and int(rolls[1]) > 0 and rng.randf() < 0.25 * mult:
 		n = 1
+	for m in t.get("must", []):
+		Inv.add_new(out, m[0], rng.randi_range(m[1], m[2]), hour)
+		var mi: Dictionary = out[out.size() - 1]
+		if Items.def(m[0]).has("gun"):
+			mi["u"] = rng.randi_range(1, int(Items.def(m[0])["gun"]["mag"]))
 	var items: Array = t["items"]
 	var weights: Array = []
 	for it in items:

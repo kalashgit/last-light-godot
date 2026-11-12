@@ -18,7 +18,7 @@ const L_FIXED := 5
 
 ## animation name -> frame count
 const ANIMS := {
-	"s_idle": 1, "s_walk": 6, "s_attack": 4, "s_shove": 3, "s_aim": 2, "s_hit": 1, "s_fall": 3, "s_lie": 1,
+	"s_idle": 1, "s_walk": 6, "s_attack": 4, "s_shove": 3, "s_aim": 2, "s_hit": 1, "s_fall": 3, "s_lie": 1, "s_work": 2, "s_squat": 2,
 	"z_idle": 2, "z_walk": 6, "z_attack": 3, "z_hit": 1, "z_fall": 3, "z_lie": 1, "z_crawl": 2,
 }
 const WEAPON_KINDS := 5     # 1 long, 2 short blade, 3 axe, 4 pistol, 5 long gun
@@ -93,6 +93,28 @@ static func _pose(kind: String, fi: int, n: int) -> Dictionary:
 			P.ll = 0.2
 			P.lr = -0.15
 			P.wd = Vector3(0.0, 1.0, 0.04 + fi * 0.2)
+		"s_work":
+			P.al = 0.95 - fi * 0.3
+			P.ar = 0.7 + fi * 0.3
+			P.el = 0.8
+			P.er = 0.8
+			P.abl = -0.1
+			P.abr = -0.1
+			P.lean = 0.22
+			P.weapon = false
+		"s_squat":
+			P.al = 1.45
+			P.ar = 1.45
+			P.el = 0.05
+			P.er = 0.05
+			P.weapon = false
+			if fi == 1:
+				P.ll = 1.0
+				P.lr = 1.0
+				P.kl = 1.9
+				P.kr = 1.9
+				P.bob = -9.5
+				P.lean = 0.4
 		"s_hit", "z_hit":
 			P.lean = -0.4
 			P.al = 0.7

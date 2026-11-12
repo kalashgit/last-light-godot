@@ -355,6 +355,13 @@ func _draw() -> void:
 		elif p.weapon.has("c"):
 			wname += "  %d%%" % int(float(p.weapon["c"]) * 100.0)
 	_txt(wname, Vector2(x0, y0 + 76), 15, UiKit.TEXT)
+	# how far the survivor can currently be heard: quiet / walking / loud
+	var nx: float = x0 + 226.0
+	var loud: float = clampf(p.noise_r / 9.0, 0.0, 1.0)
+	for k in range(3):
+		var on: bool = loud > [0.05, 0.4, 0.8][k]
+		draw_arc(Vector2(nx, y0 + 44), 6.0 + k * 5.0, -0.9, 0.9, 10, Color(0.95, 0.8, 0.4, 0.95) if on else Color(1, 1, 1, 0.16), 2.0)
+	draw_circle(Vector2(nx, y0 + 44), 2.5, Color(0.95, 0.8, 0.4, 0.9) if p.sneaking else Color(1, 1, 1, 0.5))
 	# moodles
 	var my: float = y0 + 92
 	var tex: Texture2D = Art.icons.texture
@@ -408,8 +415,13 @@ func _draw() -> void:
 		_round_btn("place_ok", "BUILD", Color(0.3, 0.5, 0.3), false, 15)
 		_round_btn("place_no", "CANCEL", Color(0.5, 0.3, 0.28), false, 13)
 		_txt("Placing: %s — face the spot, then BUILD" % placing["n"], Vector2(0, safe.end.y - (318.0 if portrait else 164.0)), 16, UiKit.ACCENT, HORIZONTAL_ALIGNMENT_CENTER, size.x)
+	var gt: String = sim.guide_text()
+	if gt != "" and not p.sleeping:
+		_txt(gt, Vector2(20, safe.position.y + (118.0 if not portrait else 150.0)), 16, Color(0.7, 0.9, 1.0), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
+	if sim.fly_active and not sim.underground():
+		_txt("AIRCRAFT OVERHEAD — get indoors and stay quiet", Vector2(20, safe.position.y + (96.0 if not portrait else 128.0)), 15, Color(1.0, 0.7, 0.45), HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
 	# message log (above the controls in portrait, under the top bar in landscape)
-	var ly: float = safe.end.y - 360.0 if portrait else safe.position.y + 150.0
+	var ly: float = safe.end.y - 360.0 if portrait else safe.position.y + 146.0
 	var shown := 0
 	for i in range(sim.log.size() - 1, -1, -1):
 		var l: Array = sim.log[i]
@@ -419,7 +431,7 @@ func _draw() -> void:
 		var c: Color = l[1]
 		c.a = clampf((7.0 - age) / 1.5, 0.0, 1.0)
 		_txt(String(l[0]), Vector2(20, ly), 16, c, HORIZONTAL_ALIGNMENT_CENTER, size.x - 40)
-		ly -= 24.0
+		ly += -24.0 if portrait else 22.0
 		shown += 1
 	# sleeping
 	if p.sleeping:

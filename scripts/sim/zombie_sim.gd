@@ -76,8 +76,14 @@ func on_chunk_loaded(c: Chunk) -> void:
 		c.touched = true
 		var dens: float = DENSITY[c.zone] * mult * growth()
 		var n: int = int(dens) + (1 if randf() < dens - floorf(dens) else 0)
-		_spawn_in_chunk(c, mini(n, 16))
-	elif sim.settings.get("respawn", true) and sim.hour - c.last_hour > 36.0:
+		if not World.is_under(c.cy * 16.0):
+			_spawn_in_chunk(c, mini(n, 16))
+		# scripted occupants (sealed rooms, cellar dwellers)
+		for sp in c.story_z:
+			var zp: Vector2 = sp
+			if zp.distance_to(sim.player.pos) > 6.0 and not sim.world.blocked(zp.x, zp.y, R):
+				spawn(zp)
+	elif sim.settings.get("respawn", true) and sim.hour - c.last_hour > 36.0 and not World.is_under(c.cy * 16.0):
 		# slow repopulation of areas the player left long ago
 		var target: float = DENSITY[c.zone] * mult * growth() * 0.5
 		var have: int = count_in_chunk(c.cx, c.cy)
@@ -276,6 +282,7 @@ func sight_range() -> float:
 	if p.light_on and light < 0.4: r *= 1.35
 	r *= 1.0 - float(sim.weather["fog"]) * 0.4
 	r *= 1.0 - float(sim.weather["rain"]) * 0.15
+	r *= p.tmod("spot")
 	return maxf(r, 2.0)
 
 func update(dt: float) -> void:
@@ -609,10 +616,10 @@ func _update_seen(z: Zombie, d2: float) -> void:
 		return
 	var to: Vector2 = z.pos - p.pos
 	var d: float = sqrt(d2)
-	if d > 3.0 and p.facing.dot(to) / d < -0.35:
+	if d > 3.0 and p.facing.dot(to) / d < (-0.35 if p.tmod("view") <= 1.0 else -0.6):
 		z.seen = false
 		return
-	var view: float = lerpf(5.5, 19.0, sim.daylight())
+	var view: float = lerpf(5.5 * p.tmod("dark"), 19.0, sim.daylight()) * p.tmod("view")
 	if p.light_on: view = maxf(view, 10.0)
 	if d > view and d > 2.5:
 		z.seen = false

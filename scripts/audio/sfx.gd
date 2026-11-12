@@ -7,6 +7,7 @@ var _streams: Dictionary = {}
 var _players: Array[AudioStreamPlayer] = []
 var _next := 0
 var _ambient_t := 0.0
+var _rotor_t := 0.0
 
 func _ready() -> void:
 	for i in range(10):
@@ -30,6 +31,10 @@ func _ready() -> void:
 	_make("alarm", 0.5, func(t, n): return sin(t * (880.0 if fmod(t, 0.25) < 0.125 else 660.0) * TAU) * 0.35)
 	_make("levelup", 0.35, func(t, n): return sin(t * (520.0 + floorf(t * 9.0) * 130.0) * TAU) * 0.25 * (1.0 - t / 0.35))
 	_make("zdie", 0.4, func(t, n): return (sin(t * (120.0 - t * 150.0) * TAU) * 0.5 + n * 0.3) * exp(-t * 7.0))
+	_make("rotor", 1.2, func(t, n): return (n * 0.5 + sin(t * 55.0 * TAU) * 0.4) * (0.35 + 0.65 * pow(absf(sin(t * 11.0 * PI)), 3.0)))
+	_make("sneeze", 0.3, func(t, n): return n * 0.6 * exp(-absf(t - 0.12) * 28.0) + sin(t * 420.0 * TAU) * 0.15 * exp(-t * 14.0))
+	_make("scream", 0.9, func(t, n): return (sin(t * (760.0 + sin(t * 31.0) * 90.0 - t * 240.0) * TAU) * 0.45 + n * 0.12) * sin(minf(t / 0.9, 1.0) * PI))
+	_make("bark", 0.22, func(t, n): return (sin(t * (300.0 - t * 500.0) * TAU) * 0.5 + n * 0.35) * exp(-t * 16.0))
 
 func _make(name: String, dur: float, f: Callable) -> void:
 	var n: int = int(dur * RATE)
@@ -64,7 +69,18 @@ func consume(sim: Sim, view: WorldView) -> void:
 	for e in sim.fx:
 		var k: String = e["k"]
 		var d: float = (e["p"] as Vector2).distance_to(pp)
-		if d > 26.0:
+		if k.begins_with("meta_"):
+			# distant events are heard from far beyond the screen
+			var mv: float = -8.0 - d * 0.25
+			match k:
+				"meta_gunshot": play("shot", mv - 4.0, 0.8)
+				"meta_scream": play("scream", mv)
+				"meta_dog":
+					play("bark", mv)
+				"meta_caralarm": play("alarm", mv - 4.0)
+				"meta_crash": play("glass", mv)
+			continue
+		if d > 26.0 and k != "rotor":
 			continue
 		var vol: float = -d * 0.9
 		match k:
@@ -87,6 +103,12 @@ func consume(sim: Sim, view: WorldView) -> void:
 			"click": play("click", -4.0)
 			"alarm": play("alarm", 0.0)
 			"levelup": play("levelup", -4.0)
+			"sneeze": play("sneeze", -2.0)
+			"rotor":
+				_rotor_t -= 1.0
+				if _rotor_t <= 0.0:
+					_rotor_t = 1.0
+					play("rotor", -3.0 - minf(d, 30.0) * 0.3)
 	if sim.alarms.size() > 0:
 		_ambient_t -= get_process_delta_time()
 		if _ambient_t <= 0.0:

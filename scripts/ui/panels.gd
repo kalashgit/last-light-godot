@@ -26,6 +26,11 @@ var _ng_zombies := 1
 var _ng_loot := 1
 var _ng_inf := true
 var _ng_seed := ""
+var _ng_tab := "who"
+var _ng_traits: Array = []
+var _ng_start := 0
+var _ng_sand := {"zombies": 1, "zspeed": 1, "respawn": 1, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
+	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1}
 var _confirm_new := false
 var _relayout_frames := 0
 
@@ -173,6 +178,10 @@ func _build_help() -> void:
 		"BODY — wounds, bandaging, needs and skills.  MAKE — crafting, cooking and building.  MAP — everywhere you have been.",
 		"The infected hunt by sight and sound. Running, gunshots, breaking glass and alarms carry a long way. Sneak, close doors, hang sheets over windows.",
 		"Eat, drink, sleep. Bandage bleeding wounds. A bite always ends the same way.",
+		"Your body keeps score: calories move your weight, boredom and misery slow your hands, a head cold makes you sneeze at the worst moment. BODY shows it all and lets you exercise.",
+		"Weapons and clothes wear out. MAKE → Repair tapes, glues and sharpens them; Tailoring patches what you wear.",
+		"Some houses hide a cellar hatch. Some were someone's last stand. When you hear rotor blades, get indoors.",
+		"Set snares in open country, compost what rots, strip cars and radios for parts at a workbench.",
 		"The power and the water will fail. Collect rain, grow food, board up a home.",
 		"Keyboard: WASD move, Shift run, C sneak, Space attack, E use (hold for options), I/H/B/M panels, F light, R reload, Esc menu.",
 	]
@@ -198,57 +207,132 @@ func _choice(label: String, opts: Array, sel: int, cb: Callable) -> void:
 		hb.add_child(b)
 	body.add_child(hb)
 
+func _tab_row(tabs: Array, cur: String, cb: Callable) -> void:
+	var flow := HFlowContainer.new()
+	for t in tabs:
+		var key: String = t[0]
+		var bt: Button = UiKit.button(t[1], func(): cb.call(key), 48)
+		bt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bt.custom_minimum_size = Vector2(maxf(92.0, String(t[1]).length() * 12.0 + 26.0), 48)
+		bt.add_theme_font_size_override("font_size", 17)
+		if key == cur:
+			bt.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+		flow.add_child(bt)
+	body.add_child(flow)
+
+func _ng_points() -> int:
+	return Traits.points(_ng_traits, Player.BASE_TRAIT_POINTS + int(Player.OCCUPATIONS[_ng_occ].get("pts", 0)))
+
 func _build_newgame() -> void:
 	_header("New Survivor", false)
-	body.add_child(UiKit.label("Who were you before?", 17, UiKit.DIM))
+	var pts: int = _ng_points()
+	_tab_row([["who", "Survivor"], ["traits", "Traits (%d pts)" % pts], ["world", "World"]], _ng_tab, func(k):
+		_ng_tab = k
+		rebuild())
 	var vb := VBoxContainer.new()
-	for k in Player.OCCUPATIONS.keys():
-		var o: Dictionary = Player.OCCUPATIONS[k]
-		var key: String = k
-		var b: Button = UiKit.button("%s\n%s" % [o["n"], o["d"]], func():
-			_ng_occ = key
-			rebuild(), 74)
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.add_theme_font_size_override("font_size", 18)
-		if k == _ng_occ:
-			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
-		vb.add_child(b)
-	body.add_child(UiKit.scroll(vb))
-	_choice("Infected population", ["Sparse", "Normal", "Dense", "Overrun"], _ng_zombies, func(i):
-		_ng_zombies = i
-		rebuild())
-	_choice("Loot", ["Scarce", "Normal", "Plentiful"], _ng_loot, func(i):
-		_ng_loot = i
-		rebuild())
-	_choice("The Grey Fever (bites)", ["Always fatal", "Disabled"], 0 if _ng_inf else 1, func(i):
-		_ng_inf = i == 0
-		rebuild())
-	var hb := HBoxContainer.new()
-	var sl: Label = UiKit.label("World seed", 17, UiKit.DIM)
-	sl.autowrap_mode = TextServer.AUTOWRAP_OFF
-	sl.custom_minimum_size = Vector2(110, 0)
-	hb.add_child(sl)
-	var le := LineEdit.new()
-	le.text = _ng_seed
-	le.custom_minimum_size = Vector2(160, 50)
-	le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	le.text_changed.connect(func(t): _ng_seed = t)
-	hb.add_child(le)
-	var rb: Button = UiKit.button("Random", func():
-		_ng_seed = str(randi() % 1000000)
-		rebuild(), 50)
-	rb.custom_minimum_size = Vector2(130, 50)
-	rb.size_flags_horizontal = Control.SIZE_SHRINK_END
-	hb.add_child(rb)
-	body.add_child(hb)
+	if _ng_tab == "who":
+		vb.add_child(UiKit.label("Who were you before?", 17, UiKit.DIM))
+		for k in Player.OCCUPATIONS.keys():
+			var o: Dictionary = Player.OCCUPATIONS[k]
+			var key: String = k
+			var b: Button = UiKit.button("%s\n%s" % [o["n"], o["d"]], func():
+				_ng_occ = key
+				rebuild(), 74)
+			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			b.add_theme_font_size_override("font_size", 18)
+			if k == _ng_occ:
+				b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+			vb.add_child(b)
+		body.add_child(UiKit.scroll(vb))
+		_choice("Where do you wake up?", ["Suburb", "Downtown", "Farm", "Cabin"], _ng_start, func(i):
+			_ng_start = i
+			rebuild())
+	elif _ng_tab == "traits":
+		vb.add_child(UiKit.label("Strengths cost points, flaws give them back. You need 0 or more to begin. Points left: %d" % pts, 17, UiKit.GOOD if pts >= 0 else UiKit.BAD))
+		for id in Traits.ORDER:
+			var t: Dictionary = Traits.DB[id]
+			var tid: String = id
+			var has: bool = _ng_traits.has(id)
+			var cost: int = t["cost"]
+			var blocked: bool = (not has) and Traits.conflicts(_ng_traits, id)
+			var b2: Button = UiKit.button("%s %s   (%s%d)\n%s" % ["▣" if has else "□", t["n"], "-" if cost > 0 else "+", absi(cost), t["d"]], func():
+				if _ng_traits.has(tid):
+					_ng_traits.erase(tid)
+				elif not Traits.conflicts(_ng_traits, tid):
+					_ng_traits.append(tid)
+				rebuild(), 70)
+			b2.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			b2.add_theme_font_size_override("font_size", 17)
+			b2.add_theme_color_override("font_color", UiKit.DIM if blocked else (Color(0.7, 0.9, 0.7) if cost > 0 else Color(0.95, 0.7, 0.62)))
+			if has:
+				b2.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+			vb.add_child(b2)
+		body.add_child(UiKit.scroll(vb))
+	else:
+		# sandbox: every rule of the world is adjustable
+		var S := _ng_sand
+		var add := func(label: String, key: String, opts: Array):
+			vb.add_child(UiKit.label(label, 16, UiKit.DIM))
+			var hb0 := HBoxContainer.new()
+			for i in range(opts.size()):
+				var idx: int = i
+				var ob: Button = UiKit.button(opts[i], func():
+					_ng_sand[key] = idx
+					rebuild(), 46)
+				ob.add_theme_font_size_override("font_size", 16)
+				if int(S[key]) == i:
+					ob.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+				hb0.add_child(ob)
+			vb.add_child(hb0)
+		add.call("Infected population", "zombies", ["Sparse", "Normal", "Dense", "Overrun"])
+		add.call("Infected speed", "zspeed", ["Slow", "Normal", "Fast"])
+		add.call("Infected return to cleared areas", "respawn", ["Never", "Slowly"])
+		add.call("The Grey Fever (bites)", "infection", ["Always fatal", "Disabled"])
+		add.call("Loot", "loot", ["Scarce", "Normal", "Plentiful"])
+		add.call("Length of a day", "day", ["24 min", "48 min", "96 min"])
+		add.call("Power and water fail", "util", ["Within days", "In a week or two", "After a month", "Never"])
+		add.call("Starting season", "season", ["Summer", "Autumn", "Winter", "Spring"])
+		add.call("Aircraft flyovers", "flyover", ["Never", "Once", "Recurring"])
+		add.call("Distant events (gunshots, alarms)", "meta", ["Off", "On"])
+		add.call("Nature reclaims the town", "growth", ["Off", "Normal", "Fast"])
+		add.call("Night darkness", "dark", ["Moonlit", "Normal", "Pitch black"])
+		add.call("Experience gain", "xp", ["Half", "Normal", "Double"])
+		add.call("Starter kit (bat, bag, food, bandages)", "kit", ["No", "Yes"])
+		add.call("Guided first steps", "guide", ["Off", "On"])
+		var hb := HBoxContainer.new()
+		var sl: Label = UiKit.label("World seed", 17, UiKit.DIM)
+		sl.autowrap_mode = TextServer.AUTOWRAP_OFF
+		sl.custom_minimum_size = Vector2(110, 0)
+		hb.add_child(sl)
+		var le := LineEdit.new()
+		le.text = _ng_seed
+		le.custom_minimum_size = Vector2(160, 50)
+		le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		le.text_changed.connect(func(t): _ng_seed = t)
+		hb.add_child(le)
+		var rb: Button = UiKit.button("Random", func():
+			_ng_seed = str(randi() % 1000000)
+			rebuild(), 50)
+		rb.custom_minimum_size = Vector2(130, 50)
+		rb.size_flags_horizontal = Control.SIZE_SHRINK_END
+		hb.add_child(rb)
+		vb.add_child(hb)
+		body.add_child(UiKit.scroll(vb))
 	var hb2 := HBoxContainer.new()
 	var back: Button = UiKit.button("Back", func(): open("title"), 64)
-	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hb2.add_child(back)
-	var go: Button = UiKit.button("Begin", func():
+	var go: Button = UiKit.button("Begin" if pts >= 0 else "Too many strengths (%d)" % pts, func():
+		if _ng_points() < 0:
+			return
 		var sv: int = _ng_seed.hash() if not _ng_seed.is_valid_int() else int(_ng_seed)
-		main.new_game(sv, _ng_occ, {"zombies": [0.5, 1.0, 1.7, 2.6][_ng_zombies], "loot": [0.6, 1.0, 1.6][_ng_loot], "infection": _ng_inf}), 64)
-	go.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var S2: Dictionary = _ng_sand
+		main.new_game(sv, _ng_occ, {
+			"zombies": [0.5, 1.0, 1.7, 2.6][int(S2["zombies"])], "zspeed": [0.8, 1.0, 1.3][int(S2["zspeed"])], "respawn": int(S2["respawn"]) == 1,
+			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [24.0, 48.0, 96.0][int(S2["day"])],
+			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
+			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
+			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1,
+		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start]), 64)
 	go.size_flags_stretch_ratio = 2.0
 	hb2.add_child(go)
 	body.add_child(hb2)
@@ -326,6 +410,7 @@ func _build_inv() -> void:
 		lv.add_child(_item_row(item, "", func():
 			items.erase(item)
 			Inv.add(p.inv, item)
+			sim.flags["took"] = true
 			_after_move(cur)
 			sim.emit_fx("pickup", p.pos)
 			rebuild()))
@@ -405,7 +490,7 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 			p.consume(it)])
 	if d.has("med") or d.has("disinfect"):
 		var kind: String = d.get("med", "disinfect")
-		if kind == "antibiotics" or kind == "painkillers" or kind == "vitamins":
+		if kind == "antibiotics" or kind == "painkillers" or kind == "vitamins" or kind == "sleep":
 			opts.append(["Take", func():
 				close()
 				p.use_med(it)])
@@ -457,7 +542,9 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 	elif d.has("gun"):
 		info += "\nDamage %d–%d, range %d, very loud" % [int(d["gun"]["dmg"][0]), int(d["gun"]["dmg"][1]), int(d["gun"]["range"])]
 	elif d.has("hunger"):
-		info += "\nRestores %d hunger" % int(d["hunger"])
+		info += "\nRestores %d hunger, about %d kcal" % [int(d["hunger"]), int(Items.kcal(d))]
+	elif d.has("wear"):
+		info += "\nWarmth %d, stops %d%% of attacks" % [int(d["wear"]["warm"]), int((float(d["wear"]["def"]) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + int(it.get("pt", 0)) * 0.04) * 100.0)]
 	_sheet_open(info, opts)
 
 # ------------------------------------------------------------------ character
@@ -488,6 +575,11 @@ func _build_char() -> void:
 	body.add_child(tabs)
 	if _char_tab == "skills":
 		body.add_child(UiKit.label("%s — day %d — %d infected killed" % [Player.OCCUPATIONS[p.occupation]["n"], sim.day(), p.kills], 17, UiKit.DIM))
+		if p.traits.size() > 0:
+			var tn: Array = []
+			for tid in p.traits:
+				if Traits.DB.has(tid): tn.append(Traits.DB[tid]["n"])
+			body.add_child(UiKit.label("Traits: " + ", ".join(tn), 16, UiKit.DIM))
 		var vb := VBoxContainer.new()
 		for s in Player.SKILLS:
 			var lvl: int = p.skill_level(s)
@@ -514,6 +606,19 @@ func _build_char() -> void:
 	_stat("Thirst", p.thirst, Color(0.4, 0.6, 0.85))
 	_stat("Fatigue", p.fatigue, Color(0.6, 0.55, 0.75))
 	_stat("Pain", p.pain, Color(0.85, 0.4, 0.5))
+	_stat("Boredom", p.bored, Color(0.6, 0.6, 0.55))
+	_stat("Misery", p.unhappy, Color(0.5, 0.55, 0.75))
+	_stat("Stress", p.stress, Color(0.8, 0.6, 0.4))
+	var reserve: String = "starving" if p.kcal < -1200.0 else ("running low" if p.kcal < 0.0 else ("plenty" if p.kcal > 1800.0 else "adequate"))
+	body.add_child(UiKit.label("Body: %.1f kg (%s) — energy reserve %s" % [p.weight, p.weight_note(), reserve], 17, UiKit.DIM))
+	var ex := HBoxContainer.new()
+	ex.add_child(UiKit.button("Exercise: push-ups", func():
+		close()
+		p.exercise("pushups"), 48))
+	ex.add_child(UiKit.button("Exercise: squats", func():
+		close()
+		p.exercise("squats"), 48))
+	body.add_child(ex)
 	var cond: Array = []
 	if p.temp < -25.0: cond.append("cold")
 	if p.temp > 25.0: cond.append("overheated")
@@ -522,6 +627,10 @@ func _build_char() -> void:
 	if p.infection > 0.5: cond.append("burning with fever")
 	elif p.infection > 0.25: cond.append("feverish")
 	if p.painkiller_h > 0.0: cond.append("on painkillers")
+	if p.cold_h > 0.0: cond.append("head cold (sneezing)")
+	if p.drunk > 20.0: cond.append("drunk")
+	if p.strain > 0.0: cond.append("strained muscles")
+	if p.tadd("smoker") > 0.0 and p.smoke_h > 6.0: cond.append("craving a cigarette")
 	body.add_child(UiKit.label("Condition: " + (", ".join(cond) if cond.size() > 0 else "stable"), 17, UiKit.BAD if p.infection > 0.25 else UiKit.DIM))
 	var vb2 := VBoxContainer.new()
 	if p.wounds.is_empty():
@@ -576,7 +685,7 @@ func _build_char() -> void:
 			if not wound["band"]:
 				vb2.add_child(UiKit.label("   nothing to treat it with", 15, UiKit.DIM))
 	var pills := HBoxContainer.new()
-	for id in ["painkillers", "antibiotics", "vitamins"]:
+	for id in ["painkillers", "antibiotics", "vitamins", "sleeping_pills"]:
 		var it: Dictionary = Inv.find(p.inv, id)
 		if not it.is_empty():
 			pills.add_child(UiKit.button("Take %s" % String(Items.def(id)["n"]).to_lower(), func():
@@ -592,19 +701,16 @@ func _build_char() -> void:
 func _build_craft() -> void:
 	var p: Player = sim.player
 	_header("Make & Build")
-	var tabs := HBoxContainer.new()
+	var ctabs: Array = []
 	for c in Recipes.cats():
-		var cat: String = c
-		var b: Button = UiKit.button(cat, func():
-			_craft_cat = cat
-			rebuild(), 50)
-		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.add_theme_font_size_override("font_size", 16)
-		if cat == _craft_cat:
-			b.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
-		tabs.add_child(b)
-	body.add_child(tabs)
+		ctabs.append([c, c])
+	_tab_row(ctabs, _craft_cat, func(k):
+		_craft_cat = k
+		rebuild())
 	var heat: bool = sim.near_heat(p.pos)
+	var bench: bool = sim.near_workbench(p.pos)
+	if _craft_cat == "Workshop":
+		body.add_child(UiKit.label("Workbench within reach" if bench else "Some of these need a workbench within two steps (garages, hardware stores, barns)", 16, UiKit.GOOD if bench else UiKit.DIM))
 	if _craft_cat == "Cooking":
 		body.add_child(UiKit.label("Heat source nearby" if heat else "No heat source: stand next to a lit campfire or a powered stove", 16, UiKit.GOOD if heat else UiKit.BAD))
 	var vb := VBoxContainer.new()
@@ -612,7 +718,7 @@ func _build_craft() -> void:
 		if r["cat"] != _craft_cat:
 			continue
 		var recipe: Dictionary = r
-		var why: String = Recipes.missing(recipe, p, heat)
+		var why: String = Recipes.missing(recipe, p, heat, bench)
 		var needs: Array = []
 		for inp in recipe["in"]:
 			needs.append("%d %s" % [int(inp[1]), "water" if inp[0] == "water" else String(Items.def(inp[0]).get("n", inp[0]))])

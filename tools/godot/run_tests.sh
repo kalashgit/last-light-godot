@@ -23,6 +23,7 @@ run() {
 run "import"        timeout 300 "$GODOT" --headless --path . --import
 run "worldgen"      timeout 300 "$GODOT" --headless --path . -s tests/godot/test_worldgen.gd
 run "simulation"    timeout 600 "$GODOT" --headless --path . -s tests/godot/test_sim.gd
+run "mechanics"     timeout 600 "$GODOT" --headless --path . -s tests/godot/test_mechanics.gd
 run "touch"         timeout 300 "$GODOT" --headless --fixed-fps 30 --path . -s tests/godot/test_touch.gd
 run "boot main"     timeout 300 "$GODOT" --headless --path . --quit-after 400
 run "soak (bot)"    timeout 600 "$GODOT" --headless --fixed-fps 30 --path . -s tests/godot/test_soak_main.gd

@@ -242,7 +242,13 @@ const O_CROP_CARROT := 95
 const O_CROP_TOMATO := 96
 const O_GENERATOR := 97
 const O_BEDROLL := 98
-const O_COUNT := 100
+const O_SHELF := 100
+const O_COMPOST := 101
+const O_SNARE := 102
+const O_HATCH := 103
+const O_LADDER := 104
+const O_WEEDS := 105
+const O_COUNT := 106
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -346,6 +352,12 @@ static func _static_init() -> void:
 	_o(O_CROP_TOMATO, {"n": "Tomato plant", "solid": 0.0, "sym": 1, "h": 30, "use": "crop", "custom": 1, "crop": "tomato"})
 	_o(O_GENERATOR, {"n": "Generator", "solid": 0.3, "h": 30, "use": "generator", "hp": 200})
 	_o(O_BEDROLL, {"n": "Bedroll", "solid": 0.0, "sym": 1, "h": 10, "use": "bed", "custom": 1})
+	_o(O_SHELF, {"n": "Storage shelf", "h": 58, "c": "", "cap": 45, "scrap": [["plank", 3], ["nails", 4]]})
+	_o(O_COMPOST, {"n": "Compost bin", "h": 30, "c": "", "cap": 20, "sym": 1, "use": "compost", "scrap": [["plank", 3], ["nails", 4]]})
+	_o(O_SNARE, {"n": "Snare trap", "solid": 0.0, "sym": 1, "h": 14, "use": "trap", "custom": 1, "hp": 10})
+	_o(O_HATCH, {"n": "Cellar hatch", "solid": 0.0, "sym": 1, "h": 8, "use": "hatch", "hp": 999})
+	_o(O_LADDER, {"n": "Ladder", "solid": 0.0, "h": 70, "use": "ladder", "hp": 999})
+	_o(O_WEEDS, {"n": "Weeds", "solid": 0.0, "sym": 1, "h": 12, "custom": 1, "hp": 5})
 
 static func obj(id: int) -> Dictionary:
 	return OBJ.get(id, {})

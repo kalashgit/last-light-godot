@@ -351,6 +351,8 @@ func lot_plan(lot: Dictionary) -> LotBuilder.LotPlan:
 
 # ------------------------------------------------------------------ chunks
 func gen_chunk(cx: int, cy: int) -> Chunk:
+	if World.is_under(cy * 16.0):
+		return _gen_under(cx, cy)
 	var c := Chunk.new(cx, cy)
 	var CS: int = Iso.CS
 	var x0: int = cx * CS
@@ -444,6 +446,9 @@ func gen_chunk(cx: int, cy: int) -> Chunk:
 								c.ground[i2] = D.G_ASPHALT
 						elif not D.ground_is_road(c.ground[i2]):
 							c.ground[i2] = D.G_GRAVEL
+	# ---- roadside stories: pile-ups and people who did not make it out of town
+	if has_road and not in_town and Rng.f2(cx, cy, seed_v + 901) < 0.05:
+		_road_story(c, x0, y0)
 	# ---- town streets
 	if in_town:
 		var streets: Array = R["streets"]
@@ -516,6 +521,18 @@ func gen_chunk(cx: int, cy: int) -> Chunk:
 				if plan.inside[pi] != 0:
 					c.bld[ci] = plan.bld_id
 					c.roof[ci] = plan.roof[pi]
+		for cp in plan.corpses:
+			var cw: Vector2i = lr.position + (cp[0] as Vector2i)
+			if crect.has_point(cw):
+				c.corpses.append(_story_corpse(cw, cp[1]))
+		for bc in plan.blood:
+			var bw: Vector2i = lr.position + (bc as Vector2i)
+			if crect.has_point(bw):
+				c.blood.append([bw.x + 0.5, bw.y + 0.5, Rng.h2(bw.x, bw.y, 5) % 4])
+		for zc in plan.zspawn:
+			var zw: Vector2i = lr.position + (zc as Vector2i)
+			if crect.has_point(zw):
+				c.story_z.append(Vector2(zw.x + 0.5, zw.y + 0.5))
 	# ---- zone + minimap
 	if in_town:
 		var node: Vector2i = R["node"]
@@ -542,25 +559,166 @@ static func _minimap(c: Chunk) -> PackedByteArray:
 		m[i] = v
 	return m
 
-## find the player's starting house: returns {"pos": Vector2, "lot": Dictionary}
-func find_start() -> Dictionary:
+func _story_corpse(cell: Vector2i, table: String) -> Dictionary:
+	var hv: int = Rng.h2(cell.x, cell.y, seed_v + 31)
+	return {"x": cell.x + 0.3 + (hv % 40) / 100.0, "y": cell.y + 0.3 + ((hv >> 8) % 40) / 100.0, "d": (hv >> 4) % 8,
+		"l": [hv % 4, (hv >> 3) % 10, (hv >> 7) % 6, (hv >> 11) % 6], "h": 0.0, "perm": 1, "lt": table}
+
+func _stamp_obj(c: Chunk, lx: int, ly: int, id: int, rot: int) -> bool:
+	var fs: Vector2i = Defs.obj_size(id, rot)
+	if lx < 0 or ly < 0 or lx + fs.x > 16 or ly + fs.y > 16:
+		return false
+	for j in range(fs.y):
+		for i in range(fs.x):
+			var k: int = (ly + j) * 16 + lx + i
+			if c.obj[k] != 0 or not Defs.ground_is_road(c.ground[k]):
+				return false
+	for j in range(fs.y):
+		for i in range(fs.x):
+			c.obj[(ly + j) * 16 + lx + i] = Defs.ocell(id, rot, j * fs.x + i)
+	return true
+
+func _road_story(c: Chunk, x0: int, y0: int) -> void:
+	var rng: RandomNumberGenerator = Rng.make(Rng.h2(c.cx, c.cy, seed_v + 903))
+	for ly in range(3, 11):
+		for lx in range(3, 11):
+			var g: int = c.ground[ly * 16 + lx]
+			if g != Defs.G_ASPHALT_LX and g != Defs.G_ASPHALT_LY:
+				continue
+			var along_x: bool = g == Defs.G_ASPHALT_LX
+			var placed := 0
+			if along_x:
+				if _stamp_obj(c, lx - 1, ly - 2, Defs.O_CAR_WRECK, 1): placed += 1
+				if _stamp_obj(c, lx + 1, ly + 1, Defs.O_CAR if rng.randf() < 0.6 else Defs.O_CAR_WRECK, 3): placed += 1
+			else:
+				if _stamp_obj(c, lx - 2, ly - 1, Defs.O_CAR_WRECK, 0): placed += 1
+				if _stamp_obj(c, lx + 1, ly + 1, Defs.O_CAR if rng.randf() < 0.6 else Defs.O_CAR_WRECK, 2): placed += 1
+			if placed == 0:
+				continue
+			for k in range(rng.randi_range(1, 3)):
+				var cl := Vector2i(lx + rng.randi_range(-3, 3), ly + rng.randi_range(-3, 3))
+				if cl.x < 0 or cl.y < 0 or cl.x > 15 or cl.y > 15 or c.obj[cl.y * 16 + cl.x] != 0:
+					continue
+				c.corpses.append(_story_corpse(Vector2i(x0 + cl.x, y0 + cl.y), "corpse_survivor" if k == 0 else "corpse"))
+				c.blood.append([x0 + cl.x + 0.5, y0 + cl.y + 0.5, k % 4])
+			return
+
+## cellar layout for a lot: Array of [Vector2i cell (lot coords), object cell]
+func _cellar_objects(plan: LotBuilder.LotPlan) -> Array:
+	var rng: RandomNumberGenerator = Rng.make(Rng.h2(plan.bld_id, 17, seed_v))
+	var out: Array = []
+	var r: Rect2i = plan.cellar
+	var kinds: Array = [Defs.O_METAL_SHELF, Defs.O_CRATE, Defs.O_BARREL, Defs.O_BOXES, Defs.O_CRATE, Defs.O_METAL_SHELF]
+	for x in range(r.position.x, r.end.x):
+		var cell := Vector2i(x, r.position.y)
+		if cell != plan.hatch and rng.randf() < 0.7:
+			out.append([cell, Defs.ocell(kinds[rng.randi() % kinds.size()], 0, 0)])
+	for y in range(r.position.y + 1, r.end.y):
+		var cell2 := Vector2i(r.position.x, y)
+		if cell2 != plan.hatch and rng.randf() < 0.5:
+			out.append([cell2, Defs.ocell(kinds[rng.randi() % kinds.size()], 1, 0)])
+	return out
+
+## the underground band: nothing but the cellars of the buildings above
+func _gen_under(cx: int, cy: int) -> Chunk:
+	var c := Chunk.new(cx, cy)
+	var x0: int = cx * 16
+	var y0: int = cy * 16
+	var sy0: int = y0 - World.UNDER
+	var srect := Rect2i(x0, sy0, 16, 16)
+	var R: Dictionary = region(fdiv(x0, REGION), fdiv(sy0, REGION))
+	var wall: int = Defs.wall(Defs.WM_CONCRETE, Defs.WS_SOLID)
+	for lot in R["lots"]:
+		var lr: Rect2i = lot["r"]
+		if not lr.grow(1).intersects(srect):
+			continue
+		var plan: LotBuilder.LotPlan = lot_plan(lot)
+		if plan.hatch.x < 0:
+			continue
+		var cr := Rect2i(lr.position + plan.cellar.position, plan.cellar.size)
+		var uid: int = plan.bld_id + 0x40000000
+		c.btype[uid] = "cellar"
+		for ly in range(16):
+			for lx in range(16):
+				var x: int = x0 + lx
+				var y: int = sy0 + ly
+				var i: int = ly * 16 + lx
+				var inside: bool = cr.has_point(Vector2i(x, y))
+				if inside:
+					c.ground[i] = Defs.G_CONCRETE
+					c.bld[i] = uid
+				if x >= cr.position.x and x < cr.end.x and (y == cr.position.y or y == cr.end.y):
+					c.wall_n[i] = wall
+				if y >= cr.position.y and y < cr.end.y and (x == cr.position.x or x == cr.end.x):
+					c.wall_w[i] = wall
+		for o in _cellar_objects(plan):
+			var w: Vector2i = lr.position + (o[0] as Vector2i)
+			if srect.has_point(w):
+				c.obj[(w.y - sy0) * 16 + (w.x - x0)] = o[1]
+		var hw: Vector2i = lr.position + plan.hatch
+		if srect.has_point(hw):
+			c.obj[(hw.y - sy0) * 16 + (hw.x - x0)] = Defs.ocell(Defs.O_LADDER, 0, 0)
+		if Rng.f2(plan.bld_id, 3, seed_v + 77) < 0.2:
+			var zc := Vector2i(cr.end.x - 1, cr.end.y - 1)
+			if srect.has_point(zc) and zc != hw:
+				c.story_z.append(Vector2(zc.x + 0.5, zc.y + World.UNDER + 0.5))
+	c.map_px.resize(Iso.CS2)
+	return c
+
+## vegetation creeps over lawns, pavements and roads as the weeks pass
+func overgrow(c: Chunk, days: float) -> void:
+	if World.is_under(c.cy * 16.0):
+		return
+	var g: float = clampf((days - 2.0) / 40.0, 0.0, 1.0)
+	if g <= 0.0:
+		return
+	var x0: int = c.cx * 16
+	var y0: int = c.cy * 16
+	for i in range(Iso.CS2):
+		if c.obj[i] != 0 or c.bld[i] != 0:
+			continue
+		var gr: int = c.ground[i]
+		var f: float = Rng.f2(x0 + (i & 15), y0 + (i >> 4), seed_v + 771)
+		if gr == Defs.G_GRASS and c.zone >= 2:
+			if f < g * 0.30: c.obj[i] = Defs.O_TALL_GRASS
+			elif f < g * 0.33: c.obj[i] = Defs.O_BUSH
+			elif f < g * 0.36: c.obj[i] = Defs.O_FLOWERS
+		elif gr == Defs.G_SIDEWALK or gr == Defs.G_CONCRETE:
+			if c.bld[i] == 0 and f < g * 0.12: c.obj[i] = Defs.O_WEEDS
+		elif Defs.ground_is_road(gr):
+			if f < g * 0.035: c.obj[i] = Defs.O_WEEDS
+
+## find the player's starting building. kind: house | downtown | farm | cabin
+func find_start(kind: String = "house") -> Dictionary:
 	var R: Dictionary = region(0, 0)
 	var node: Vector2i = R["node"]
 	var best: Dictionary = {}
 	var best_score := -1e9
-	for lot in R["lots"]:
-		if lot["k"] != "house" or lot.has("poi"):
-			continue
-		var r: Rect2i = lot["r"]
-		var d: float = Vector2(r.get_center() - node).length()
-		var score: float = -absf(d - float(R["half"]) * 0.8) + Rng.f2(r.position.x, r.position.y, seed_v + 401) * 6.0
-		if score > best_score:
-			var plan: LotBuilder.LotPlan = lot_plan(lot)
-			if plan.spawn.x < 0:
+	var want: String = "house" if kind == "downtown" else kind
+	for ry in range(-1, 2):
+		for rx in range(-1, 2):
+			if (rx != 0 or ry != 0) and (kind == "house" or kind == "downtown"):
 				continue
-			best_score = score
-			best = lot
+			for lot in region(rx, ry)["lots"]:
+				if lot["k"] != want:
+					continue
+				if (kind == "house" or kind == "downtown") and lot.has("poi"):
+					continue
+				var r: Rect2i = lot["r"]
+				var d: float = Vector2(r.get_center() - node).length()
+				var score: float = -d
+				if kind == "house":
+					score = -absf(d - float(R["half"]) * 0.8)
+				score += Rng.f2(r.position.x, r.position.y, seed_v + 401) * 6.0
+				if score > best_score:
+					var plan: LotBuilder.LotPlan = lot_plan(lot)
+					if plan.spawn.x < 0 or not plan.zspawn.is_empty() or plan.btype == "stash" or not plan.corpses.is_empty():
+						continue
+					best_score = score
+					best = lot
 	if best.is_empty():
+		if kind != "house":
+			return find_start("house")
 		return {"pos": Vector2(node) + Vector2(6.5, 6.5), "lot": {}}
 	var plan2: LotBuilder.LotPlan = lot_plan(best)
 	var br: Rect2i = best["r"]

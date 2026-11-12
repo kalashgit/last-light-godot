@@ -36,6 +36,19 @@ func _process(_dt: float) -> bool:
 			return false
 		if step == 2 and frame % 4 == 0:
 			shot("02_newgame")
+			main.panels._ng_tab = "traits"
+			main.panels._ng_traits = ["quiet", "brave", "smoker"]
+			main.panels.rebuild()
+			step = 3
+			return false
+		if step == 3 and frame % 4 == 0:
+			shot("02b_traits")
+			main.panels._ng_tab = "world"
+			main.panels.rebuild()
+			step = 4
+			return false
+		if step == 4 and frame % 4 == 0:
+			shot("02c_sandbox")
 			started = true
 			main.new_game(1337, "builder", {})
 			main.sim.zombies.wander_t = 9999.0
@@ -162,11 +175,61 @@ func _process(_dt: float) -> bool:
 			print("continue ok=", main.state == "play" and main.sim.player.pos.distance_to(pos_before) < 0.01, " wounds=", main.sim.player.wounds.size())
 		450: shot("19_after_continue")
 		452:
+			# cellar: find a house with a hatch and climb down
 			sim = main.sim
+			p = sim.player
+			sim.zombies.list.clear()
+			for lot in sim.world.gen.region(0, 0)["lots"]:
+				var plan: LotBuilder.LotPlan = sim.world.gen.lot_plan(lot)
+				if lot["k"] == "house" and plan.hatch.x >= 0:
+					var r2: Rect2i = lot["r"]
+					p.pos = Vector2(r2.position.x + plan.hatch.x + 0.5, r2.position.y + plan.hatch.y + 0.5)
+					break
+		470: shot("21_hatch_in_house")
+		472:
+			var ho: Array = Actions.options(sim, {"kind": "obj", "x": floori(p.pos.x), "y": floori(p.pos.y)})
+			if ho.size() > 0:
+				(ho[0]["fn"] as Callable).call()
+		540:
+			p.light_on = true
+			Inv.add_new(p.inv, "flashlight", 1)
+		560: shot("22_cellar")
+		562:
+			var lo: Array = Actions.options(sim, {"kind": "obj", "x": floori(p.pos.x), "y": floori(p.pos.y)})
+			for dy2 in range(-1, 2):
+				for dx2 in range(-1, 2):
+					if Defs.o_id(sim.world.obj(floori(p.pos.x) + dx2, floori(p.pos.y) + dy2)) == Defs.O_LADDER:
+						lo = Actions.options(sim, {"kind": "obj", "x": floori(p.pos.x) + dx2, "y": floori(p.pos.y) + dy2})
+			if lo.size() > 0:
+				(lo[0]["fn"] as Callable).call()
+			print("ladder options=", lo.size(), " action=", p.action.get("label", "none"), " dur=", p.action.get("dur", 0))
+		600: print("f600 action=", p.action.get("label", "none"), " t=", p.action.get("t", 0), " under=", sim.underground(), " panel=", main.panels.current)
+		690:
+			print("back on the surface=", not sim.underground())
+			p.light_on = false
+			var q3: Vector2 = p.pos
+			for r3 in range(3, 30):
+				if sim.world.bld(floori(q3.x), floori(q3.y + r3)) == 0 and not sim.world.blocked(q3.x, q3.y + r3, 0.2):
+					p.pos = Vector2(q3.x, q3.y + r3)
+					break
+			sim.fly_next_h = sim.hour
+			sim.hour = 14.0 + floorf(sim.hour / 24.0) * 24.0
+			sim.fly_next_h = sim.hour
+			p.start_action("Exercising: squats", 30.0, func(): pass)
+		760: shot("23_flyover_and_exercise")
+		762:
+			p.cancel_action()
+			sim.fly_active = false
+			sim.hour = 24.0 * 70.0 + 13.0
+			var node2: Vector2i = sim.world.gen.region(0, 0)["node"]
+			p.pos = Vector2(node2.x + 40.5, node2.y + 6.5)
+			main.view.zoom = 1.1
+		860: shot("24_overgrown_after_ten_weeks")
+		862:
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		470: shot("20_death")
-		472:
+		880: shot("20_death")
+		882:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

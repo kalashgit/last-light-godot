@@ -20,20 +20,20 @@ static func _static_init() -> void:
 	_i("canned_tuna", "Canned Tuna", "food", 0.3, ["can", "3c6a9a", "d0d8e0"], {"hunger": 18, "need": "can_opener"})
 	_i("canned_corn", "Canned Corn", "food", 0.5, ["can", "d0b040", "4a7a3a"], {"hunger": 20, "need": "can_opener"})
 	_i("canned_peaches", "Canned Peaches", "food", 0.5, ["can", "e09a50", "f0e0b0"], {"hunger": 18, "thirst": 10, "need": "can_opener"})
-	_i("dog_food", "Dog Food", "food", 0.6, ["can", "6a5a4a", "c0a070"], {"hunger": 22, "need": "can_opener", "sick": 4})
-	_i("chips", "Potato Chips", "food", 0.2, ["bag", "d0a030", "b03a30"], {"hunger": 10, "thirst": -6})
+	_i("dog_food", "Dog Food", "food", 0.6, ["can", "6a5a4a", "c0a070"], {"hunger": 22, "need": "can_opener", "sick": 4, "sad": 8})
+	_i("chips", "Potato Chips", "food", 0.2, ["bag", "d0a030", "b03a30"], {"hunger": 10, "thirst": -6, "kcal": 480})
 	_i("crackers", "Crackers", "food", 0.2, ["box", "c8a868", "8a4a30"], {"hunger": 9, "thirst": -3})
 	_i("cereal", "Cereal", "food", 0.4, ["box", "d07030", "f0d060"], {"hunger": 20, "thirst": -4})
-	_i("chocolate", "Chocolate Bar", "food", 0.1, ["bar", "5a3a28", "c0392b"], {"hunger": 8, "calm": 8})
+	_i("chocolate", "Chocolate Bar", "food", 0.1, ["bar", "5a3a28", "c0392b"], {"hunger": 8, "calm": 8, "kcal": 260})
 	_i("granola_bar", "Granola Bar", "food", 0.1, ["bar", "b08a50", "4a7a3a"], {"hunger": 9})
-	_i("peanut_butter", "Peanut Butter", "food", 0.4, ["jar", "a87838", "b03a30"], {"hunger": 26, "thirst": -6})
+	_i("peanut_butter", "Peanut Butter", "food", 0.4, ["jar", "a87838", "b03a30"], {"hunger": 26, "thirst": -6, "kcal": 900})
 	_i("jerky", "Beef Jerky", "food", 0.2, ["bag", "6a3a2a", "202020"], {"hunger": 14, "thirst": -5})
 	_i("rice", "Bag of Rice", "food", 1.0, ["bag", "e0dccc", "3c6a9a"], {"cook_only": 1})
 	_i("pasta", "Dry Pasta", "food", 0.5, ["box", "3c5a9a", "e0c860"], {"cook_only": 1})
 	_i("bread", "Bread", "food", 0.3, ["bread", "c89858", "a87838"], {"hunger": 16, "fresh": 72, "rot": 144})
 	_i("apple", "Apple", "food", 0.2, ["fruit", "b83a30", "4a7a3a"], {"hunger": 8, "thirst": 5, "fresh": 120, "rot": 216})
 	_i("orange", "Orange", "food", 0.2, ["fruit", "e08a30", "4a7a3a"], {"hunger": 8, "thirst": 8, "fresh": 144, "rot": 240})
-	_i("cabbage", "Cabbage", "food", 0.6, ["veg", "7aa860", "a8c888"], {"hunger": 14, "thirst": 5, "fresh": 96, "rot": 192})
+	_i("cabbage", "Cabbage", "food", 0.6, ["veg", "7aa860", "a8c888"], {"hunger": 14, "thirst": 5, "fresh": 96, "rot": 192, "kcal": 110})
 	_i("potato", "Potato", "food", 0.25, ["veg", "a88858", "8a6a40"], {"hunger": 9, "fresh": 336, "rot": 600})
 	_i("carrot", "Carrot", "food", 0.15, ["carrot", "e07a28", "4a7a3a"], {"hunger": 7, "thirst": 2, "fresh": 192, "rot": 360})
 	_i("tomato", "Tomato", "food", 0.2, ["fruit", "c83a28", "4a7a3a"], {"hunger": 7, "thirst": 6, "fresh": 96, "rot": 168})
@@ -52,14 +52,20 @@ static func _static_init() -> void:
 	_i("rice_bowl", "Cooked Rice", "food", 1.2, ["pot", "55585a", "e8e4d8"], {"hunger": 55, "fresh": 48, "rot": 96, "gives": "cooking_pot"})
 	_i("pasta_bowl", "Cooked Pasta", "food", 1.2, ["pot", "55585a", "e0c860"], {"hunger": 55, "fresh": 48, "rot": 96, "gives": "cooking_pot"})
 	_i("roast_veg", "Roasted Vegetables", "food", 0.5, ["veg", "a87838", "c85a28"], {"hunger": 26, "fresh": 48, "rot": 96})
+	_i("raw_rabbit", "Raw Rabbit", "food", 0.6, ["meat", "b8706a", "e8c8c0"], {"hunger": 16, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_rabbit"})
+	_i("cooked_rabbit", "Roast Rabbit", "food", 0.6, ["meat", "8a5a38", "5a3420"], {"hunger": 38, "fresh": 48, "rot": 96, "calm": 8, "kcal": 620})
+	_i("raw_bird", "Raw Game Bird", "food", 0.4, ["meat", "d8b0a0", "f0d8d0"], {"hunger": 12, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_bird"})
+	_i("cooked_bird", "Roast Game Bird", "food", 0.4, ["meat", "b88848", "8a5a30"], {"hunger": 26, "fresh": 48, "rot": 96, "kcal": 380})
+	_i("preserves", "Jar of Preserves", "food", 0.6, ["jar", "a83a4a", "e0c860"], {"hunger": 22, "thirst": 4, "calm": 10, "kcal": 520})
+	_i("pickles", "Pickled Vegetables", "food", 0.6, ["jar", "7a9a4a", "e8e8d0"], {"hunger": 18, "thirst": -4, "kcal": 160})
 	# ---------------- drinks
 	_i("water_bottle", "Water Bottle", "drink", 0.8, ["bottle", "7ab0d0", "d0e8f0"], {"thirst": 22, "uses": 5, "empty": "empty_bottle", "water": 1})
 	_i("empty_bottle", "Empty Bottle", "drink", 0.1, ["bottle", "c8d8e0", "e8f0f0"], {"fill": "water_bottle"})
-	_i("soda", "Soda Can", "drink", 0.35, ["can", "c0392b", "f0f0f0"], {"thirst": 26, "hunger": 3, "fatigue": -3})
+	_i("soda", "Soda Can", "drink", 0.35, ["can", "c0392b", "f0f0f0"], {"thirst": 26, "hunger": 3, "fatigue": -3, "kcal": 150})
 	_i("juice", "Juice Box", "drink", 0.3, ["box", "e08a30", "f0e060"], {"thirst": 24, "hunger": 4})
 	_i("milk", "Milk", "drink", 1.0, ["box", "f0f0ec", "3c6a9a"], {"thirst": 22, "hunger": 10, "fresh": 72, "rot": 120})
-	_i("beer", "Beer", "drink", 0.4, ["bottle", "7a5a28", "c8a850"], {"thirst": 12, "calm": 12, "fatigue": 4, "pain": -8})
-	_i("whiskey", "Whiskey", "drink", 0.7, ["bottle", "a8682a", "e0c080"], {"thirst": -4, "calm": 22, "fatigue": 6, "pain": -18, "uses": 4, "disinfect": 0.7})
+	_i("beer", "Beer", "drink", 0.4, ["bottle", "7a5a28", "c8a850"], {"thirst": 12, "calm": 12, "fatigue": 4, "pain": -8, "kcal": 150, "alcohol": 14})
+	_i("whiskey", "Whiskey", "drink", 0.7, ["bottle", "a8682a", "e0c080"], {"thirst": -4, "calm": 22, "fatigue": 6, "pain": -18, "uses": 4, "disinfect": 0.7, "kcal": 110, "alcohol": 32})
 	_i("coffee", "Instant Coffee", "drink", 0.2, ["jar", "5a3a28", "c0392b"], {"thirst": 4, "fatigue": -22, "uses": 4})
 	# ---------------- medical
 	_i("bandage", "Bandage", "med", 0.1, ["bandage", "f0ece0", "c8c4b8"], {"med": "bandage", "clean": 1})
@@ -89,6 +95,7 @@ static func _static_init() -> void:
 	_i("plank", "Plank", "material", 1.2, ["plank", "b08a58", "8a6a40"], {"wpn": {"dmg": [8, 16], "range": 1.4, "swing": 0.9, "dur": 14, "kb": 0.8, "type": "blunt", "noise": 6, "crit": 0.05, "spr": 1}, "fuel": 1.2})
 	_i("screwdriver", "Screwdriver", "tool", 0.2, ["screwdriver", "c0392b", "9aa0a4"], {"wpn": {"dmg": [8, 16], "range": 0.95, "swing": 0.5, "dur": 60, "kb": 0.1, "type": "blade", "noise": 2, "crit": 0.2, "spr": 2}, "tags": ["screwdriver"]})
 	_i("wrench", "Wrench", "tool", 0.8, ["wrench", "8a9094", "6a7074"], {"wpn": {"dmg": [12, 20], "range": 1.05, "swing": 0.65, "dur": 250, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["wrench"]})
+	_i("metal_spear", "Pipe Spear", "weapon", 1.6, ["spear", "8a9094", "c8ccd0"], {"wpn": {"dmg": [28, 46], "range": 1.9, "swing": 0.75, "dur": 90, "kb": 0.6, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
 	# ---------------- firearms
 	_i("pistol", "9mm Pistol", "weapon", 0.9, ["pistol", "3a3d40", "55585a"], {"gun": {"dmg": [60, 110], "range": 11.0, "ammo": "ammo_9mm", "mag": 12, "noise": 55, "cool": 0.45, "spr": 4, "spread": 0.07}})
 	_i("revolver", "Revolver", "weapon", 1.0, ["pistol", "6a7074", "5a3a28"], {"gun": {"dmg": [80, 140], "range": 12.0, "ammo": "ammo_9mm", "mag": 6, "noise": 60, "cool": 0.7, "spr": 4, "spread": 0.06}})
@@ -115,11 +122,15 @@ static func _static_init() -> void:
 	_i("radio", "Portable Radio", "tool", 0.7, ["radio", "55585a", "c8a850"], {"radio": 1})
 	_i("generator_item", "Generator", "tool", 28.0, ["generator", "c2a030", "3a3d40"], {"place": 97})
 	_i("bedroll_item", "Bedroll", "tool", 1.5, ["sheet", "4a6a4a", "c0b89c"], {"place": 98})
+	_i("snare", "Snare Trap", "tool", 0.3, ["wire", "8a6a40", "c8a870"], {"place": 102})
+	_i("car_battery", "Car Battery", "tool", 5.0, ["battery", "2a2c2e", "c0392b"], {})
+	_i("glue", "Wood Glue", "material", 0.2, ["bottle", "e0c860", "f0f0f0"], {"uses": 4})
+	_i("sleeping_pills", "Sleeping Tablets", "med", 0.1, ["pills", "8a9ad0", "f0f0f0"], {"med": "sleep", "uses": 4})
 	# ---------------- materials
 	_i("nails", "Nails", "material", 0.01, ["nails", "9aa0a4", "6a7074"], {"stackmax": 500})
 	_i("log", "Log", "material", 4.0, ["log", "7a5a38", "c8a870"], {"fuel": 4.0})
 	_i("branch", "Sturdy Branch", "material", 0.5, ["stick", "7a5a38", "5a4028"], {"fuel": 0.5, "wpn": {"dmg": [6, 12], "range": 1.3, "swing": 0.7, "dur": 10, "kb": 0.5, "type": "blunt", "noise": 4, "crit": 0.05, "spr": 1}})
-	_i("stone", "Stone", "material", 0.6, ["stone", "8a8a86", "6a6a66"], {})
+	_i("stone", "Stone", "material", 0.6, ["stone", "8a8a86", "6a6a66"], {"tags": ["whetstone"]})
 	_i("scrap_metal", "Scrap Metal", "material", 0.8, ["metal", "8a9094", "6a5a4a"], {})
 	_i("wire", "Wire", "material", 0.2, ["wire", "b87840", "8a5a30"], {})
 	_i("duct_tape", "Duct Tape", "material", 0.2, ["tape", "9aa0a4", "6a7074"], {"uses": 4})
@@ -140,6 +151,7 @@ static func _static_init() -> void:
 	_i("leather_jacket", "Leather Jacket", "clothing", 1.6, ["jacket", "4a3a2a", "2a2018"], {"wear": {"warm": 10, "def": 0.35}})
 	_i("winter_coat", "Winter Coat", "clothing", 1.8, ["jacket", "8a3a30", "5a2a20"], {"wear": {"warm": 24, "def": 0.2}})
 	_i("raincoat", "Raincoat", "clothing", 0.6, ["jacket", "d8c040", "a89030"], {"wear": {"warm": 4, "def": 0.05, "dry": 1}})
+	_i("padded_jacket", "Padded Jacket", "clothing", 1.8, ["jacket", "6a6a58", "4a4a3c"], {"wear": {"warm": 16, "def": 0.3}})
 	# ---------------- seeds & farming
 	_i("seeds_potato", "Potato Seeds", "seed", 0.05, ["seeds", "a88858", "f0ece0"], {"seed": "potato"})
 	_i("seeds_cabbage", "Cabbage Seeds", "seed", 0.05, ["seeds", "7aa860", "f0ece0"], {"seed": "cabbage"})
@@ -174,7 +186,7 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 	var it := {"id": id, "n": n}
 	if d.has("uses"):
 		it["u"] = d["uses"]
-	if d.has("wpn") and d["cat"] != "material":
+	if (d.has("wpn") and d["cat"] != "material") or d.has("wear"):
 		it["c"] = 1.0
 	if d.has("gun"):
 		it["c"] = 1.0
@@ -185,7 +197,13 @@ static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
 
 ## items that carry per-instance state and therefore never stack
 static func is_unique(d: Dictionary) -> bool:
-	return d.has("uses") or d.has("gun") or (d.has("wpn") and d.get("cat", "") != "material")
+	return d.has("uses") or d.has("gun") or d.has("wear") or (d.has("wpn") and d.get("cat", "") != "material")
+
+## food energy in kcal (explicit, or estimated from how filling it is)
+static func kcal(d: Dictionary) -> float:
+	if d.has("kcal"):
+		return float(d["kcal"])
+	return float(d.get("hunger", 0)) * 17.0
 
 static func weight(it: Dictionary) -> float:
 	var d: Dictionary = DB.get(it.get("id", ""), {})

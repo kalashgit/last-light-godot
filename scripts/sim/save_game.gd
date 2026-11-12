@@ -5,7 +5,7 @@ extends RefCounted
 ##   r_<x>_<y>.sav       chunk records grouped into 32x32-chunk regions
 ## Only chunks that differ from the deterministic generator output are stored.
 
-const SCHEMA := 2
+const SCHEMA := 3
 const REGION_SHIFT := 5
 
 static var _cache: Dictionary = {}      # region key -> Dictionary of chunk records
@@ -125,6 +125,14 @@ static func migrate(meta: Dictionary) -> Dictionary:
 		# v1 (pre-release) had no persistent alarm list or rng state
 		meta["alarms_done"] = meta.get("alarms_done", {})
 		meta["v"] = 2
+	if int(meta["v"]) == 2:
+		# v3 adds traits, body weight, mood, sandbox options, flyover schedule and tutorial state.
+		# Every new field has a default on load; old saves simply start without traits or events.
+		var st: Dictionary = meta.get("settings", {})
+		st["guide"] = false
+		st["flyover"] = 0
+		meta["settings"] = st
+		meta["v"] = 3
 	if int(meta["v"]) > SCHEMA:
 		return {}
 	return meta

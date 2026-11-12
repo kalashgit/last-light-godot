@@ -3,19 +3,30 @@ extends Node2D
 ## Rain streaks drawn in screen space.
 
 var intensity := 0.0
+var flyover := false
 var _t := 0.0
 
 func _process(dt: float) -> void:
 	_t += dt
-	if intensity > 0.02:
-		queue_redraw()
-	elif visible and intensity <= 0.02:
-		queue_redraw()
+	queue_redraw()
 
 func _draw() -> void:
+	var size: Vector2 = get_viewport_rect().size
+	if flyover:
+		# the shadow of the circling aircraft sweeps across the ground
+		var ph: float = fposmod(_t * 0.11, 1.0)
+		var cx: float = lerpf(-200.0, size.x + 200.0, ph)
+		var cy: float = size.y * (0.35 + 0.25 * sin(_t * 0.23))
+		var pts := PackedVector2Array()
+		for k in range(20):
+			var a: float = k / 20.0 * TAU
+			pts.append(Vector2(cx + cos(a) * 70.0, cy + sin(a) * 18.0))
+		draw_colored_polygon(pts, Color(0, 0, 0, 0.3))
+		var rot: float = _t * 21.0
+		draw_line(Vector2(cx, cy) + Vector2(cos(rot), sin(rot) * 0.3) * 120.0, Vector2(cx, cy) - Vector2(cos(rot), sin(rot) * 0.3) * 120.0, Color(0, 0, 0, 0.22), 5.0)
+		draw_line(Vector2(cx + 60, cy), Vector2(cx + 150, cy - 6), Color(0, 0, 0, 0.3), 9.0)
 	if intensity <= 0.02:
 		return
-	var size: Vector2 = get_viewport_rect().size
 	var n: int = int(intensity * 160.0)
 	var col := Color(0.72, 0.8, 0.9, 0.34)
 	for i in range(n):

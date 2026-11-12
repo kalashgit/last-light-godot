@@ -29,6 +29,7 @@ var touched := false                 # anything worth saving (zombies, items, co
 var spawned := false                 # initial zombie population has been rolled
 var last_hour := 0.0                 # game hour this chunk was last simulated
 var map_px := PackedByteArray()      # minimap palette index per tile
+var story_z: Array = []              # Vector2 positions of scripted zombies (first spawn only)
 
 func _init(chunk_x: int = 0, chunk_y: int = 0) -> void:
 	cx = chunk_x

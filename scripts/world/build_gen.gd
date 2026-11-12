@@ -108,7 +108,61 @@ static func _house_at(b: LotBuilder, rect: Rect2i, lock_chance: float = 0.3) -> 
 	b.windows(3, rng.randi() % 3)
 	for ri in range(base_room, b.rooms.size()):
 		_furnish_home(b, ri)
+	_house_story(b, base_room)
 	return front
+
+## cellars and the small tragedies people left behind
+static func _house_story(b: LotBuilder, base_room: int) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	var n: int = b.rooms.size()
+	# a hatch down to a cellar in about a third of homes
+	if b.hatch_c.x < 0 and rng.randf() < 0.36:
+		var order: Array = range(base_room, n)
+		order.reverse()
+		for ri in order:
+			var t: String = b.rooms[ri]["type"]
+			if t == "bathroom":
+				continue
+			var hc: Vector2i = b.place_free(ri, Defs.O_HATCH, 0, 0, 12)
+			if hc.x >= 0:
+				b.hatch_c = hc
+				break
+	var r: float = rng.randf()
+	if r < 0.06:
+		# someone fortified this place and never left
+		b.btype = "stash"
+		b.flag_openings(base_room, LotBuilder.F_PLANK)
+		b.place_wall(base_room, Defs.O_CRATE)
+		var c: Vector2i = b.free_cell(base_room + (1 if n - base_room > 1 else 0))
+		if c.x >= 0:
+			b.corpse_c.append([c, "corpse_survivor"])
+		if rng.randf() < 0.5:
+			var z: Vector2i = b.free_cell(base_room)
+			if z.x >= 0: b.zspawn_c.append(z)
+	elif r < 0.10:
+		# a last stand in the living room
+		for k in range(rng.randi_range(3, 5)):
+			var c2: Vector2i = b.free_cell(base_room)
+			if c2.x >= 0:
+				b.corpse_c.append([c2, "corpse"])
+				b.blood_c.append(c2)
+		var c3: Vector2i = b.free_cell(base_room)
+		if c3.x >= 0:
+			b.corpse_c.append([c3, "corpse_armed"])
+	elif r < 0.14:
+		# looted: the door was forced
+		b.flag_openings(base_room, LotBuilder.F_BROKEN, -1, true)
+		var c4: Vector2i = b.free_cell(base_room)
+		if c4.x >= 0:
+			b.corpse_c.append([c4, "corpse_burglar"])
+			b.blood_c.append(c4)
+	elif r < 0.18 and n - base_room >= 3:
+		# a room boarded shut from the outside, and what is still inside it
+		var ri2: int = n - 1
+		b.flag_openings(base_room, LotBuilder.F_PLANK, ri2, true)
+		for k in range(rng.randi_range(1, 3)):
+			var z2: Vector2i = b.free_cell(ri2)
+			if z2.x >= 0: b.zspawn_c.append(z2)
 
 static func _furnish_home(b: LotBuilder, ri: int) -> void:
 	var rng: RandomNumberGenerator = b.rng
@@ -548,6 +602,10 @@ static func _cabin(b: LotBuilder) -> void:
 	b.place_wall(last, Defs.O_BED)
 	b.place_wall(last, Defs.O_WARDROBE)
 	b.place_free(0, Defs.O_TABLE, 1)
+	if rng.randf() < 0.45:
+		var hc: Vector2i = b.place_free(0, Defs.O_HATCH, 0, 0, 12)
+		if hc.x >= 0:
+			b.hatch_c = hc
 	if door_out.x >= 0:
 		b.set_floor(Rect2i(door_out.x, door_out.y, 1, b.ch - door_out.y), Defs.G_DIRT)
 	b.put_yard(Defs.O_STUMP, x0 - 2, y1 - 2, 0)
@@ -568,5 +626,8 @@ static func _camp(b: LotBuilder) -> void:
 	b.put_yard(Defs.O_CRATE, cx, cy - 2, 0)
 	b.put_yard(Defs.O_BOXES, cx + 1, cy + 2, 0)
 	b.put_yard(Defs.O_STUMP, cx - 1, cy + 2, 0)
+	if rng.randf() < 0.5:
+		b.corpse_c.append([Vector2i(cx - 2, cy + 1), "corpse_survivor"])
+		b.blood_c.append(Vector2i(cx - 2, cy + 1))
 	for k in range(6):
 		b.put_yard(_pick(rng, [Defs.O_TREE_PINE, Defs.O_TREE_OAK, Defs.O_BUSH, Defs.O_ROCK]), rng.randi_range(0, b.cw - 1), rng.randi_range(0, b.ch - 1), 0)

@@ -29,6 +29,11 @@ class LotPlan:
 	var bld_id := 0
 	var btype := ""
 	var spawn := Vector2i(-1, -1)     # a free indoor cell (lot coords)
+	var hatch := Vector2i(-1, -1)     # cellar hatch cell (lot coords) or -1
+	var cellar := Rect2i()            # cellar room footprint (lot coords)
+	var corpses: Array = []           # [Vector2i cell, loot table]
+	var zspawn: Array = []            # Vector2i cells of scripted zombies
+	var blood: Array = []             # Vector2i cells with blood
 
 var cw: int
 var ch: int
@@ -45,6 +50,13 @@ var placements: Array = []
 var ext_mat: int = Defs.WM_SIDING_WHITE
 var flat_roof := false
 var btype := "house"
+var hatch_c := Vector2i(-1, -1)
+var corpse_c: Array = []
+var zspawn_c: Array = []
+var blood_c: Array = []
+const F_LOCK := 1
+const F_PLANK := 2
+const F_BROKEN := 4
 
 func _init(width: int, height: int, r: RandomNumberGenerator) -> void:
 	cw = width
@@ -87,11 +99,11 @@ func set_edge(a: Vector2i, b: Vector2i, kind: int, locked: bool = false) -> void
 	if a.y != b.y:
 		var i: int = maxi(a.y, b.y) * (cw + 1) + a.x
 		en[i] = kind
-		lock_n[i] = 1 if locked else 0
+		lock_n[i] = F_LOCK if locked else 0
 	else:
 		var i2: int = a.y * (cw + 1) + maxi(a.x, b.x)
 		ew[i2] = kind
-		lock_w[i2] = 1 if locked else 0
+		lock_w[i2] = F_LOCK if locked else 0
 
 func get_edge(a: Vector2i, b: Vector2i) -> int:
 	if a.y != b.y:
@@ -384,6 +396,41 @@ func _fence_edge(a: Vector2i, b: Vector2i, kind: int, gate_kind: int, gates: Arr
 		k = gate_kind
 	set_edge(a, b, k)
 
+## flag exterior windows/doors (or the doors of one room) of rooms >= base_room
+func flag_openings(base_room: int, flag: int, only_room: int = -1, doors_only: bool = false) -> void:
+	for v in range(ch + 1):
+		for u in range(cw + 1):
+			for which in range(2):
+				var kind: int = en[v * (cw + 1) + u] if which == 0 else ew[v * (cw + 1) + u]
+				if kind != E_DOOR and kind != E_WINDOW:
+					continue
+				if doors_only and kind != E_DOOR:
+					continue
+				var ra: int = room_at(u, v - 1) if which == 0 else room_at(u - 1, v)
+				var rb: int = room_at(u, v)
+				if only_room >= 0:
+					if ra != only_room and rb != only_room:
+						continue
+				else:
+					if (ra >= 0) == (rb >= 0):
+						continue
+					if maxi(ra, rb) < base_room:
+						continue
+				if which == 0:
+					lock_n[v * (cw + 1) + u] = flag
+				else:
+					lock_w[v * (cw + 1) + u] = flag
+
+## random walkable cell of a room (not furniture)
+func free_cell(ri: int) -> Vector2i:
+	var R: Rect2i = rooms[ri]["r"]
+	for t in range(30):
+		var u: int = R.position.x + rng.randi() % R.size.x
+		var v: int = R.position.y + rng.randi() % R.size.y
+		if room[v * cw + u] == ri and occ[v * cw + u] != 1:
+			return Vector2i(u, v)
+	return Vector2i(-1, -1)
+
 # ------------------------------------------------------------------ finalize
 func _map(u: int, v: int, facing: int) -> Vector2i:
 	match facing:
@@ -452,7 +499,6 @@ func finalize(facing: int, bld_id: int) -> LotPlan:
 				else:
 					a = _map(u - 1, v, facing)
 					b = _map(u, v, facing)
-				var locked: bool = (lock_n[v * (cw + 1) + u] if which == 0 else lock_w[v * (cw + 1) + u]) != 0
 				var is_n: bool = a.y != b.y
 				var c := Vector2i(a.x, maxi(a.y, b.y)) if is_n else Vector2i(maxi(a.x, b.x), a.y)
 				if c.x < 0 or c.y < 0 or c.x >= p.w or c.y >= p.h:
@@ -463,13 +509,33 @@ func finalize(facing: int, bld_id: int) -> LotPlan:
 				if vis_room >= 0:
 					mat = rooms[vis_room]["wall"]
 				var wid: int = _edge_wall(kind, mat)
-				var st: int = Defs.ES_LOCKED if locked else 0
+				var fl: int = lock_n[v * (cw + 1) + u] if which == 0 else lock_w[v * (cw + 1) + u]
+				var st: int = Defs.ES_LOCKED if (fl & F_LOCK) != 0 else 0
+				if (fl & F_PLANK) != 0:
+					st = (st & ~Defs.ES_LOCKED) | (2 << Defs.ES_PLANK_SHIFT)
+				if (fl & F_BROKEN) != 0:
+					st = Defs.ES_BROKEN
 				if is_n:
 					p.wall_n[fi2] = wid
 					p.st_n[fi2] = st
 				else:
 					p.wall_w[fi2] = wid
 					p.st_w[fi2] = st
+	# story data
+	if hatch_c.x >= 0:
+		p.hatch = _map(hatch_c.x, hatch_c.y, facing)
+		var cr := Rect2i(p.hatch.x - 2, p.hatch.y - 1, 5, 4)
+		cr.position.x = clampi(cr.position.x, 1, maxi(p.w - 6, 1))
+		cr.position.y = clampi(cr.position.y, 1, maxi(p.h - 5, 1))
+		p.cellar = cr
+		if not cr.has_point(p.hatch):
+			p.hatch = Vector2i(-1, -1)
+	for cc0 in corpse_c:
+		p.corpses.append([_map(cc0[0].x, cc0[0].y, facing), cc0[1]])
+	for zc in zspawn_c:
+		p.zspawn.append(_map(zc.x, zc.y, facing))
+	for bc in blood_c:
+		p.blood.append(_map(bc.x, bc.y, facing))
 	# objects
 	var krot: int = [2, 1, 0, 3][facing]
 	for pl in placements:

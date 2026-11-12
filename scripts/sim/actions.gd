@@ -209,6 +209,30 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 			var oh: Dictionary = _opt("Hop over", func(): _climb(sim, x, y, side, 0.8, false))
 			oh["quick"] = true
 			out.append(oh)
+	# alarms: an electrician can find and cut them from outside
+	if not fence and (shape == Defs.WS_DOOR or shape == Defs.WS_WINDOW) and not inside and Inv.has_tag(p.inv, "screwdriver"):
+		var tb: Vector2i = other
+		if w.bld(tb.x, tb.y) != 0 and not sim.alarms_done.has(w.bld(tb.x, tb.y)):
+			out.append(_opt("Check for an alarm", func():
+				p.start_action("Inspecting the frame", 4.0, func():
+					var b: int = w.bld(tb.x, tb.y)
+					var lvl: int = p.skill_level("electrical")
+					if not sim.alarm_armed(tb.x, tb.y):
+						sim.alarms_done[b] = true
+						sim.say("No alarm on this building", Color(0.75, 0.9, 0.7))
+						p.add_xp("electrical", 4.0)
+					elif randf() < 0.35 + lvl * 0.13:
+						sim.alarms_done[b] = true
+						sim.say("You find the sensor wire and cut it. Alarm disarmed.", Color(0.75, 0.9, 0.7))
+						p.add_xp("electrical", 30.0)
+					elif randf() < 0.3:
+						sim.alarms_done[b] = true
+						sim.alarms.append([p.pos, 28.0])
+						sim.say("You trip the alarm!", Color(1.0, 0.5, 0.4))
+						sim.emit_fx("alarm", p.pos)
+					else:
+						sim.say("There is an alarm, but you cannot get at the wiring. Try again.", Color(1.0, 0.85, 0.6))
+						p.add_xp("electrical", 8.0))))
 	# barricading (doors, windows)
 	if not fence and (shape == Defs.WS_DOOR or shape == Defs.WS_WINDOW):
 		if planks < 4 and Inv.count(p.inv, "plank") >= 1 and Inv.count(p.inv, "nails") >= 2 and Inv.has_tag(p.inv, "hammer"):
@@ -254,6 +278,7 @@ static func _toggle_door(sim: Sim, x: int, y: int, side: int) -> void:
 	else:
 		w.set_edge_state(x, y, side, (st | Defs.ES_OPEN) & ~Defs.ES_LOCKED)
 	sim.emit_fx("door", sim.player.pos)
+	sim.flags["door"] = true
 	sim.noise(sim.player.pos, 2.0 if sim.player.sneaking else 4.0)
 
 static func _climb(sim: Sim, x: int, y: int, side: int, dur: float, glass: bool) -> void:
@@ -329,6 +354,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
 		"car":
 			out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
+			out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
 		"gas_pump":
 			out.append(_opt("Fill gas can", func():
 				if not sim.has_power(x, y):
@@ -346,8 +372,18 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append_array(_gen_options(sim, x, y))
 		"crop":
 			out.append_array(_crop_options(sim, x, y))
+		"trap":
+			out.append_array(_trap_options(sim, x, y))
+		"hatch":
+			out.append(_opt("Climb down to the cellar", func(): _use_stairs(sim, World.UNDER)))
+		"ladder":
+			out.append(_opt("Climb up", func(): _use_stairs(sim, -World.UNDER)))
+		"compost":
+			out.append(_opt("About composting", func(): sim.say("Rotten food left in the bin slowly turns into fertiliser.", Color(0.8, 0.9, 0.75))))
 		"fridge":
 			pass
+	if id == Defs.O_CAR_WRECK:
+		out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
 	if d.has("scrap") and Inv.has_tag(p.inv, "hammer"):
 		out.append(_opt("Dismantle", func(): _dismantle(sim, x, y)))
 	if id == Defs.O_WOOD_CRATE or id == Defs.O_RAIN_BARREL or id == Defs.O_CAMPFIRE:
@@ -368,10 +404,91 @@ static func _dismantle(sim: Sim, x: int, y: int) -> void:
 			var n: int = int(ceil(float(sc[1]) * clampf(0.5 + lvl * 0.1, 0.5, 1.0)))
 			if n > 0:
 				w.drop_item(floori(p.pos.x), floori(p.pos.y), Items.make(sc[0], n, sim.hour))
+		if Defs.o_id(cell) == Defs.O_TV or Defs.o_id(cell) == Defs.O_WASHER:
+			p.add_xp("electrical", 14.0)
 		w.remove_object(x, y)
 		sim.noise(p.pos, 11.0)
 		sim.emit_fx("build", p.pos)
 		p.add_xp("carpentry", 12.0))
+
+static func _use_stairs(sim: Sim, dy: int) -> void:
+	var p: Player = sim.player
+	p.start_action("Climbing", 1.6, func():
+		var dest := Vector2(p.pos.x, p.pos.y + dy)
+		sim.world.stream(dest, 2, 999)
+		var t := Vector2(floorf(dest.x) + 0.5, floorf(dest.y) + 0.5)
+		if sim.world.blocked(t.x, t.y, Player.R):
+			# find a free neighbouring tile next to the ladder / hatch
+			for d in [Vector2(0, 1), Vector2(1, 0), Vector2(-1, 0), Vector2(0, -1), Vector2(1, 1), Vector2(-1, 1)]:
+				if not sim.world.blocked(t.x + d.x, t.y + d.y, Player.R):
+					t += d
+					break
+		p.pos = t
+		sim._process_world_events()
+		sim.emit_fx("step", p.pos)
+		sim.say("You climb down into the dark." if dy > 0 else "You climb back up.", Color(0.8, 0.85, 0.9)))
+
+static func _salvage_car(sim: Sim, ax: int, ay: int) -> void:
+	var p: Player = sim.player
+	var w: World = sim.world
+	if not Inv.has_tag(p.inv, "wrench") and not Inv.has_tag(p.inv, "screwdriver"):
+		sim.say("You need a wrench or a screwdriver", Color(0.9, 0.8, 0.6))
+		return
+	var e: Dictionary = w.ent(ax, ay)
+	if e.is_empty():
+		e = {"k": "car", "fuel": Rng.h2(ax, ay, sim.seed_v + 55) % 7}
+		w.set_ent(ax, ay, e)
+	if int(e.get("sv", 0)) >= 3:
+		sim.say("Nothing useful left on this one", Color(0.8, 0.8, 0.8))
+		return
+	p.start_action("Salvaging parts", 7.0 - p.skill_level("mechanics") * 0.4, func():
+		var lvl: int = p.skill_level("mechanics")
+		var n: int = int(e.get("sv", 0))
+		e["sv"] = n + 1
+		var got: Array = [["scrap_metal", 1 + (1 if randf() < 0.3 + lvl * 0.1 else 0)]]
+		if randf() < 0.4 + lvl * 0.08: got.append(["wire", 1])
+		if n == 0 and randf() < 0.35 + lvl * 0.1: got.append(["car_battery", 1])
+		var names: Array = []
+		for g in got:
+			Inv.add_new(p.inv, g[0], int(g[1]), sim.hour)
+			names.append("%d %s" % [int(g[1]), Items.def(g[0])["n"]])
+		sim.say("Salvaged: " + ", ".join(names), Color(0.75, 0.9, 0.7))
+		sim.noise(p.pos, 9.0)
+		sim.emit_fx("build", p.pos)
+		p.add_xp("mechanics", 16.0))
+
+static func _trap_options(sim: Sim, x: int, y: int) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var e: Dictionary = w.ent(x, y)
+	if e.is_empty():
+		e = {"k": "trap", "h": sim.hour, "bait": 0, "caught": ""}
+		w.set_ent(x, y, e)
+	var out: Array = []
+	if String(e.get("caught", "")) != "":
+		out.append(_opt("Collect the catch", func():
+			var id: String = e["caught"]
+			Inv.add_new(p.inv, id, 1, sim.hour)
+			e["caught"] = ""
+			p.add_xp("trapping", 28.0)
+			sim.say("The snare held: %s" % Items.def(id)["n"], Color(0.75, 0.9, 0.7))
+			sim.emit_fx("pickup", p.pos)))
+	else:
+		out.append(_opt("Check snare (empty%s)" % (", baited" if e.get("bait", 0) == 1 else ""), func():
+			sim.say("Nothing yet. Snares do best far from town, baited, and left alone.", Color(0.8, 0.85, 0.8))))
+		if e.get("bait", 0) == 0:
+			for bid in ["carrot", "berries", "cabbage", "apple"]:
+				if Inv.count(p.inv, bid) > 0:
+					var bait: String = bid
+					out.append(_opt("Bait with %s" % String(Items.def(bait)["n"]).to_lower(), func():
+						if Inv.take(p.inv, bait, 1):
+							e["bait"] = 1))
+					break
+	out.append(_opt("Pick up snare", func():
+		w.set_ent(x, y, {})
+		w.set_obj(x, y, 0)
+		Inv.add_new(p.inv, "snare", 1)))
+	return out
 
 static func _chop(sim: Sim, x: int, y: int) -> void:
 	var p: Player = sim.player
@@ -615,6 +732,12 @@ static func _gen_options(sim: Sim, x: int, y: int) -> Array:
 		p.start_action("Refuelling", 3.0, func():
 			e["fuel"] = float(e["fuel"]) + float(int(can["u"])) * 6.0
 			can["u"] = 0)))
+	if p.skill_level("electrical") >= 1 and Inv.count(p.inv, "scrap_metal") > 0 and float(e.get("c", 1.0)) < 0.95:
+		out.append(_opt("Repair (%d%%)" % int(float(e.get("c", 1.0)) * 100.0), func():
+			p.start_action("Repairing generator", 6.0, func():
+				if Inv.take(p.inv, "scrap_metal", 1):
+					e["c"] = minf(1.0, float(e.get("c", 1.0)) + 0.2 + p.skill_level("electrical") * 0.05)
+					p.add_xp("electrical", 20.0))))
 	out.append(_opt("Pick up", func():
 		if e["on"]:
 			sim.say("Turn it off first", Color(0.9, 0.8, 0.6))
@@ -745,7 +868,7 @@ static func nearby_containers(sim: Sim) -> Array:
 				if Vector2(cp["x"], cp["y"]).distance_to(p.pos) < 1.4:
 					if not cp.has("loot"):
 						var rng: RandomNumberGenerator = Rng.make(Rng.h2(int(float(cp["x"]) * 16.0), int(float(cp["y"]) * 16.0), sim.seed_v + int(float(cp["h"]) * 10.0)))
-						cp["loot"] = Loot.roll("corpse", "", rng, sim.hour, float(sim.settings["loot"]))
+						cp["loot"] = Loot.roll(cp.get("lt", "corpse"), "", rng, sim.hour, float(sim.settings["loot"]))
 						ch.touched = true
 					out.append({"label": "Corpse", "items": cp["loot"], "cap": 20.0, "kind": "corpse", "x": floori(cp["x"]), "y": floori(cp["y"]), "ref": cp})
 	# the tile under the player is always available as "Ground"
@@ -791,7 +914,7 @@ static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
 static func craft(sim: Sim, r: Dictionary) -> bool:
 	var p: Player = sim.player
 	var w: World = sim.world
-	var why: String = Recipes.missing(r, p, sim.near_heat(p.pos))
+	var why: String = Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos))
 	if why != "":
 		sim.say("Can't make that: " + why, Color(1.0, 0.8, 0.5))
 		return false
@@ -806,8 +929,10 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 	var dur: float = float(r["time"]) * (1.0 - (p.skill_level(skill) * 0.04 if skill != "" else 0.0))
 	var hammering: bool = (r["tools"] as Array).has("hammer")
 	p.start_action(r["n"], dur, func():
-		if Recipes.missing(r, p, sim.near_heat(p.pos)) != "":
+		if Recipes.missing(r, p, sim.near_heat(p.pos), sim.near_workbench(p.pos)) != "":
 			return
+		sim.flags["crafted"] = true
+		p.bored = maxf(0.0, p.bored - 4.0)
 		var target: Dictionary = {}
 		if r.has("build"):
 			target = build_target(sim, r)
@@ -823,10 +948,25 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 					if it.is_empty():
 						break
 					p.unequip(it) if int(it.get("n", 1)) <= 1 else null
-					if it.has("u") and inp[0] == "disinfectant":
+					if it.has("u") and (inp[0] == "disinfectant" or inp[0] == "duct_tape" or inp[0] == "glue"):
 						Inv.use_charge(p.inv, it)
 					else:
 						Inv.split(p.inv, it, 1)
+		var sp: String = r.get("special", "")
+		if sp == "patch" and not p.worn.is_empty():
+			var tl: int = p.skill_level("tailoring")
+			p.worn["c"] = minf(1.0, float(p.worn.get("c", 1.0)) + 0.25 + tl * 0.04)
+			if int(p.worn.get("pt", 0)) < 3 and tl >= 1:
+				p.worn["pt"] = int(p.worn.get("pt", 0)) + 1
+			sim.say("Patched. It will take a few more bites.", Color(0.75, 0.9, 0.7))
+		elif (sp == "repair_tape" or sp == "repair_glue" or sp == "sharpen") and not p.weapon.is_empty():
+			var ml: int = p.skill_level("maintenance")
+			var times: int = int(p.weapon.get("rp", 0))
+			var base: float = 0.35 if sp == "repair_tape" else (0.5 if sp == "repair_glue" else 0.22)
+			p.weapon["c"] = minf(1.0, float(p.weapon.get("c", 1.0)) + base * (1.0 + ml * 0.06) / (1.0 + times * 0.5))
+			if sp != "sharpen":
+				p.weapon["rp"] = times + 1
+			sim.say("Condition now %d%%. Each repair holds a little less." % int(float(p.weapon["c"]) * 100.0), Color(0.75, 0.9, 0.7))
 		if r.get("special", "") == "purify":
 			for it in p.inv:
 				if it.has("d") and Items.def(it["id"]).has("water"):
@@ -870,8 +1010,14 @@ static func place_item(sim: Sim, it: Dictionary) -> void:
 	if w.tile_blocked(ft.x, ft.y) or w.obj(ft.x, ft.y) != 0:
 		sim.say("No room in front of you", Color(1.0, 0.8, 0.5))
 		return
+	if id == Defs.O_SNARE and (not Defs.ground_is_natural(w.ground(ft.x, ft.y)) or w.bld(ft.x, ft.y) != 0):
+		sim.say("Snares need open ground", Color(1.0, 0.8, 0.5))
+		return
 	Inv.split(p.inv, it, 1)
 	w.set_obj(ft.x, ft.y, Defs.ocell(id, 0, 0))
 	if id == Defs.O_GENERATOR:
-		w.set_ent(ft.x, ft.y, {"k": "gen", "fuel": 0.0, "on": false})
+		w.set_ent(ft.x, ft.y, {"k": "gen", "fuel": 0.0, "on": false, "c": 1.0})
+	elif id == Defs.O_SNARE:
+		w.set_ent(ft.x, ft.y, {"k": "trap", "h": sim.hour, "bait": 0, "caught": ""})
+		p.add_xp("trapping", 6.0)
 	sim.emit_fx("build", p.pos)

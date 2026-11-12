@@ -3,7 +3,7 @@ extends RefCounted
 ## Registry of all procedurally generated sprites. Everything visible in the game is
 ## painted here at boot from code — no image files are shipped.
 
-const VERSION := 7
+const VERSION := 8
 
 static var ready := false
 static var world: Atlas          # ground, walls, objects

@@ -54,6 +54,32 @@ static func _static_init() -> void:
 	_r("rice", "Boil rice", "Cooking", {"in": [["rice", 1], ["water", 1], ["cooking_pot", 1]], "near": "heat", "out": [["rice_bowl", 1]], "time": 6.0, "xp": ["cooking", 12]})
 	_r("pasta", "Boil pasta", "Cooking", {"in": [["pasta", 1], ["water", 1], ["cooking_pot", 1]], "near": "heat", "out": [["pasta_bowl", 1]], "time": 6.0, "xp": ["cooking", 12]})
 	_r("boil_water", "Boil tainted water", "Cooking", {"tools": ["pot"], "near": "heat", "special": "purify", "time": 5.0, "xp": ["cooking", 3]})
+	_r("cook_rabbit", "Roast rabbit", "Cooking", {"in": [["raw_rabbit", 1]], "near": "heat", "out": [["cooked_rabbit", 1]], "time": 5.0, "xp": ["cooking", 10]})
+	_r("cook_bird", "Roast game bird", "Cooking", {"in": [["raw_bird", 1]], "near": "heat", "out": [["cooked_bird", 1]], "time": 5.0, "xp": ["cooking", 10]})
+	# ---- trapping
+	_r("snare", "Make snare trap (wire)", "Survival", {"in": [["wire", 1], ["branch", 2]], "out": [["snare", 1]], "time": 5.0, "xp": ["trapping", 10]})
+	_r("snare2", "Make snare trap (rope)", "Survival", {"in": [["rope", 1], ["branch", 2]], "out": [["snare", 1]], "time": 5.0, "xp": ["trapping", 10]})
+	# ---- more construction
+	_r("shelf", "Build storage shelf", "Carpentry", {"in": [["plank", 4], ["nails", 8]], "tools": ["hammer"], "skill": ["carpentry", 2], "build": {"obj": Defs.O_SHELF}, "time": 7.0, "xp": ["carpentry", 20]})
+	_r("compost", "Build compost bin", "Carpentry", {"in": [["plank", 5], ["nails", 10]], "tools": ["hammer"], "skill": ["carpentry", 2], "build": {"obj": Defs.O_COMPOST}, "time": 8.0, "xp": ["carpentry", 20]})
+	_r("log_wall", "Build log wall", "Carpentry", {"in": [["log", 3], ["rope", 1]], "tools": ["hammer"], "skill": ["carpentry", 2], "build": {"wall": Defs.WM_LOG, "shape": Defs.WS_SOLID}, "time": 9.0, "xp": ["carpentry", 25]})
+	# ---- tailoring
+	_r("patch", "Patch worn clothing", "Tailoring", {"in": [["rag", 1]], "tools": ["sewing"], "special": "patch", "time": 5.0, "xp": ["tailoring", 14]})
+	_r("sew_tote", "Sew a tote bag", "Tailoring", {"in": [["rag", 6]], "tools": ["sewing"], "out": [["tote_bag", 1]], "time": 7.0, "xp": ["tailoring", 16]})
+	_r("sew_padded", "Pad a jacket", "Tailoring", {"in": [["jacket", 1], ["rag", 4]], "tools": ["sewing"], "skill": ["tailoring", 3], "out": [["padded_jacket", 1]], "time": 10.0, "xp": ["tailoring", 30]})
+	_r("cut_bandages", "Cut sheet into clean bandages", "Tailoring", {"in": [["sheet", 1], ["disinfectant", 1]], "tools": ["scissors"], "out": [["bandage", 3]], "time": 4.0, "xp": ["tailoring", 6]})
+	_r("sew_bedroll", "Quilt a bedroll from rags", "Tailoring", {"in": [["rag", 8]], "tools": ["sewing"], "skill": ["tailoring", 1], "out": [["bedroll_item", 1]], "time": 8.0, "xp": ["tailoring", 18]})
+	# ---- repair (item condition)
+	_r("repair_tape", "Tape up equipped weapon", "Repair", {"in": [["duct_tape", 1]], "special": "repair_tape", "time": 4.0, "xp": ["maintenance", 12]})
+	_r("repair_glue", "Glue equipped wooden weapon", "Repair", {"in": [["glue", 1]], "special": "repair_glue", "time": 5.0, "xp": ["maintenance", 12]})
+	_r("sharpen", "Sharpen equipped blade on a stone", "Repair", {"tools": ["whetstone"], "special": "sharpen", "time": 5.0, "xp": ["maintenance", 10]})
+	# ---- workshop (needs a workbench within reach)
+	_r("forge_nails", "Cut nails from scrap", "Workshop", {"in": [["scrap_metal", 1]], "tools": ["hammer"], "near": "bench", "out": [["nails", 12]], "time": 5.0, "xp": ["metalworking", 10]})
+	_r("pipe_spear", "Fit a blade to a pipe", "Workshop", {"in": [["pipe", 1], ["kitchen_knife", 1], ["duct_tape", 1]], "near": "bench", "skill": ["metalworking", 1], "out": [["metal_spear", 1]], "time": 8.0, "xp": ["metalworking", 25]})
+	_r("pipe_from_scrap", "Hammer scrap into a pipe club", "Workshop", {"in": [["scrap_metal", 3]], "tools": ["hammer"], "near": "bench", "skill": ["metalworking", 2], "out": [["pipe", 1]], "time": 8.0, "xp": ["metalworking", 20]})
+	_r("salvage_radio", "Strip a radio for parts", "Workshop", {"in": [["radio", 1]], "tools": ["screwdriver"], "out": [["wire", 1], ["scrap_metal", 1], ["battery", 1]], "time": 5.0, "xp": ["electrical", 14]})
+	_r("salvage_clock", "Strip an alarm clock for parts", "Workshop", {"in": [["alarm_clock", 1]], "tools": ["screwdriver"], "out": [["wire", 1], ["battery", 1]], "time": 4.0, "xp": ["electrical", 10]})
+	_r("noise_lure", "Wire up a noise lure", "Workshop", {"in": [["radio", 1], ["battery", 1], ["wire", 1]], "tools": ["screwdriver"], "skill": ["electrical", 2], "out": [["alarm_clock", 2]], "time": 6.0, "xp": ["electrical", 20]})
 	# ---- farming
 	_r("till", "Dig furrow", "Farming", {"tools": ["dig"], "build": {"ground": Defs.G_SOIL, "natural": 1}, "time": 4.0, "xp": ["farming", 4]})
 
@@ -64,10 +90,10 @@ static func by_id(id: String) -> Dictionary:
 	return {}
 
 static func cats() -> Array:
-	return ["Survival", "Carpentry", "Weapons", "Cooking", "Farming"]
+	return ["Survival", "Carpentry", "Weapons", "Cooking", "Farming", "Tailoring", "Repair", "Workshop"]
 
 ## returns "" when craftable, else the reason
-static func missing(r: Dictionary, p: Player, near_heat: bool) -> String:
+static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool = false) -> String:
 	for inp in r["in"]:
 		var id: String = inp[0]
 		if id == "water":
@@ -84,6 +110,25 @@ static func missing(r: Dictionary, p: Player, near_heat: bool) -> String:
 			return "needs %s %d" % [String(sk[0]).capitalize(), int(sk[1])]
 	if r.get("near", "") == "heat" and not near_heat:
 		return "needs a lit campfire or working stove"
-	if r.get("special", "") == "purify" and not p.has_tainted_water():
+	if r.get("near", "") == "bench" and not near_bench:
+		return "needs a workbench within reach"
+	var sp: String = r.get("special", "")
+	if sp == "purify" and not p.has_tainted_water():
 		return "no tainted water"
+	if sp == "patch":
+		if p.worn.is_empty():
+			return "wear the clothing you want to patch"
+		if float(p.worn.get("c", 1.0)) >= 0.999 and int(p.worn.get("pt", 0)) >= 3:
+			return "nothing left to patch"
+	if sp == "repair_tape" or sp == "repair_glue" or sp == "sharpen":
+		var wd: Dictionary = p.weapon_def()
+		if not wd.has("wpn"):
+			return "equip the weapon to repair"
+		if float(p.weapon.get("c", 1.0)) >= 0.98:
+			return "it is in good condition"
+		var typ: String = wd["wpn"]["type"]
+		if sp == "sharpen" and typ != "blade" and typ != "axe" and typ != "spear":
+			return "only edged weapons can be sharpened"
+		if sp == "repair_glue" and typ == "blade":
+			return "glue will not hold a blade"
 	return ""

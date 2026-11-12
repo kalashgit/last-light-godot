@@ -451,6 +451,28 @@ static func _gen_nature() -> void:
 		p.put(int(sx2), int(sy2) - 5, fcols[k % 4])
 		p.put(int(sx2) + 1, int(sy2) - 5, fcols[k % 4].darkened(0.15))
 	_reg(Defs.O_FLOWERS, p, ax, ay)
+	# weeds pushing through pavement
+	p = Painter.new(64, 40)
+	ax = 32.0
+	ay = 6.0
+	for k in range(16):
+		var wx: float = (Rng.f2(k, 1, 141) - 0.5)
+		var wy: float = (Rng.f2(k, 2, 141) - 0.5)
+		var sx3: float = ax + (wx - wy) * 26.0
+		var sy3: float = ay + 16 + (wx + wy) * 13.0
+		var kk2: float = 0.7 + Rng.f2(k, 3, 141) * 0.4
+		p.line(sx3, sy3, sx3 + (Rng.f2(k, 4, 141) - 0.5) * 5.0, sy3 - 3.0 - Rng.f2(k, 5, 141) * 5.0, Color(0.34 * kk2, 0.46 * kk2, 0.22 * kk2))
+	_reg(Defs.O_WEEDS, p, ax, ay)
+	# snare trap
+	p = Painter.new(64, 40)
+	ax = 32.0
+	ay = 6.0
+	for k in range(20):
+		var ang2: float = k / 20.0 * TAU
+		p.put(int(ax + cos(ang2) * 9.0), int(ay + 17 + sin(ang2) * 4.5), Color(0.62, 0.52, 0.34))
+	p.line(ax + 9, ay + 17, ax + 15, ay + 6, Color(0.42, 0.32, 0.2), 2)
+	p.line(ax + 15, ay + 6, ax + 9, ay + 15, Color(0.62, 0.52, 0.34))
+	_reg(Defs.O_SNARE, p, ax, ay)
 	# bedroll
 	p = Painter.new(72, 44)
 	p.box([0.2, 0.05, 0, 0.8, 0.95, 3, Color(0.3, 0.4, 0.3), Painter.M_FABRIC], 36, 6)
