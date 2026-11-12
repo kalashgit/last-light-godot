@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_hardboard_panel",
+  "source_glb_sha256": "2532994e5ca0dd98c39dea28dfc5a800b1f85c88fc8ca9547d7ce5a9ce48cdfd",
+  "atlas_sha256": "7d527db3a89e8797e47e72ade6f1bc08ab1a280268f6895daced9bfc0c69da62",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2573678,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

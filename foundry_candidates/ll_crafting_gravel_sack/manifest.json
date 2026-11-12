@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_gravel_sack",
+  "source_glb_sha256": "ccdcdca294546fab1e3d3adba699dbeecf72d5816445a952baf8127958bbad2c",
+  "atlas_sha256": "7b81ce3d204efb300d75bf6a005477a7548395673d07276379ed1fa0977fb6b6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2636940,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

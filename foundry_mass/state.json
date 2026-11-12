@@ -24,9 +24,11 @@
     "ll_crafting_firewood",
     "ll_crafting_floorboard",
     "ll_crafting_glass_pane",
-    "ll_crafting_glue_bottle"
+    "ll_crafting_glue_bottle",
+    "ll_crafting_gravel_sack",
+    "ll_crafting_hardboard_panel"
   ],
-  "last_run_id": "43110676152",
+  "last_run_id": "43147995324",
   "golden_approved": false,
-  "remaining": 338
+  "remaining": 336
 }
