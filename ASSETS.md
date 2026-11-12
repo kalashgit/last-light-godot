@@ -1,26 +1,19 @@
-# LAST LIGHT V3.6 — external assets
+# LAST LIGHT — assets and provenance
 
-The game works as a **procedural playable greybox** before any external content is copied. No third-party packs have been downloaded or bundled in this ZIP/repository. Source downloading was blocked in the builder environment; the directories below are import destinations, not claims of completed asset import.
+**The game ships no external art, audio or map files.** As of 2026-11-12 every visual and every sound is generated at boot by the code in `scripts/art/` and `scripts/audio/`:
 
-## Approved packs (verified on the publisher's official pages 2026-11-04)
+| Asset class | Source | Licence |
+|---|---|---|
+| Ground tiles, walls, roofs, doors, windows, fences | `scripts/art/art_world.gd` | original, this repository |
+| Furniture, vehicles, street props | `scripts/art/models.gd` (box models) | original, this repository |
+| Trees, plants, crops, rocks | `scripts/art/art_world.gd` | original, this repository |
+| Survivor and infected animation frames | `scripts/art/art_chars.gd` | original, this repository |
+| Item and status icons | `scripts/art/art_icons.gd` | original, this repository |
+| Sound effects | `scripts/audio/sfx.gd` (synthesised PCM) | original, this repository |
+| UI font | Godot's built-in fallback font | bundled with the engine |
 
-| Pack | Licence | Download | Destination | Intended use |
-|---|---|---|---|---|
-| Kenney Top-down Shooter | CC0 | https://kenney.nl/assets/top-down-shooter | `assets/kenney_topdown/` | UI/icons/2D object prototypes |
-| Quaternius Survival Pack | CC0 | https://quaternius.com/packs/survival.html | `assets/quaternius_survival/` | survivor supplies/tools/props |
-| Quaternius Downtown City MegaKit Standard | CC0 | https://quaternius.com/packs/downtowncitymegakit.html | `assets/quaternius_downtown/` | urban exterior details/buildings |
+One grid specification is used throughout: 2:1 isometric, 64×32 px tiles, 72 px walls, ~46 px characters, one muted palette and one light direction (upper left), so there is nothing to mix or reconcile.
 
-The Quaternius Downtown **Standard** pack is free; its full **Source** tier with Godot example scenes and source files is paid. Survival pack ships OBJ/FBX/Blend; Downtown Standard has glTF. For Godot, prefer `.glb`/`.gltf` for downtown, and convert Survival OBJ/FBX to `.glb` if necessary, ensuring textures accompany the models. Imported 3D geometry can be prerendered into coherent isometric sprites or used as authored source material; avoid mixing mismatched 2D/3D render styles.
+No third-party packs were downloaded or committed. `ASSET_SOURCES.md` remains as a catalogue of vetted free packs should hand-made art ever replace the procedural sprites; nothing in it is used today. No Project Zomboid content, names or maps are used anywhere.
 
-## Import steps in Xogot / desktop Godot
-1. Download the **Standard/free** archives using the publisher's pages, inspect the archive and license.
-2. Import a **curated few assets**, not the whole 223 MB city pack, to avoid memory pressure on iPhone.
-3. Put only selected files under the destination directories above. Keep their original names and an attribution/license manifest (`source, URL, file, licence, date, changes`).
-4. Keep the gameplay collision and navigation separate from art; use the coordinate grid in `scripts/house.gd` as the source of truth.
-5. Before shipping, validate the final materials/animation licenses. Do not import copyrighted Project Zomboid content.
-
-## Animation milestone
-Procedural sprite animation is implemented in the starter: player walk cycle, zombie shamble, strike indicator, and opening/closing doors. Replace later with licensed sprite sheets or original rigged animations. Mixamo requires its own terms and should not be committed as raw redistributable files.
-
-## Goal
-Fixed isometric camera, mature survival feel, grounded material palette, coherent scale, clear room cutaway, functional doors and looting. Start with one high-quality residential house before adding buildings or expanding the world.
+The `assets/` folder and `legacy/asset_lab.tscn` belong to the earlier 3D experiments and are not referenced by the game.

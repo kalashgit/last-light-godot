@@ -1,0 +1,171 @@
+==== import
+#### import: ok
+==== worldgen
+start=(184.5, 209.5) lot=[P: (178, 199), S: (20, 15)]
+generated 576 chunks in 727 ms (avg 1.26215277777778 ms, worst 86.64 ms)
+deterministic=true
+start blocked=false indoors=true btype=house
+#### worldgen: ok
+==== simulation
+  PASS  spawn is indoors
+  PASS  spawn is not blocked
+  PASS  chunks streamed around spawn (25)
+  PASS  occupation skills applied
+  PASS  occupation items + weapon equipped
+  PASS  zombies populated loaded area (37)
+  PASS  no zombies inside the safe start radius
+  PASS  player moves with joystick input (2.32 tiles)
+  PASS  collision never leaves the player inside a wall
+  PASS  running drains endurance (79)
+  PASS  start house has a door
+  PASS  closed door blocks movement
+  PASS  closed door blocks sight
+  PASS  INTERACT opens the door
+  PASS  INTERACT closes it again
+  PASS  barricading adds a plank (1)
+  PASS  barricade consumed nails
+  PASS  planks can be broken by damage
+  PASS  melee kills a zombie (4 swings)
+  PASS  combat grants weapon XP
+  PASS  kill leaves a corpse
+  PASS  zombie notices and chases the player
+  PASS  zombie attack damages the player (100 -> 96)
+  PASS  attack leaves a wound
+  PASS  zombie investigates a noise it cannot see (state investigate)
+  PASS  reload fills the magazine (12)
+  PASS  pistol kills at range (1 shots)
+  PASS  shots consume ammunition
+  PASS  player survived the combat tests (hp 96)
+  PASS  open wound bleeds over time
+  PASS  bandage applied to wound
+  PASS  bandaged wound stops bleeding
+  PASS  eating reduces hunger (32)
+  PASS  eating a can leaves an empty tin
+  PASS  hunger grows with time
+  PASS  perishable food rots
+  PASS  ground container always available
+  PASS  containers hold generated loot (2181 items in 418 containers)
+  PASS  craft: rip sheet starts
+  PASS  craft produced 4 rags
+  PASS  build: wooden wall starts
+  PASS  wall placed on the facing edge
+  PASS  built wall blocks movement
+  PASS  build: crate starts
+  PASS  crate placed in front
+  PASS  till soil starts
+  PASS  ground tilled
+  PASS  seed planted
+  PASS  crop grows to maturity (stage 3)
+  PASS  harvest yields potatoes (3)
+  PASS  A* finds a route back to the start house (5 steps, 136 iterations)
+  PASS  clock advances (0.084 h in 10 s)
+  PASS  power is on at the start
+  PASS  power fails after the shutoff day (day 6)
+  PASS  save succeeds
+  PASS  save file exists
+  PASS  load succeeds
+  PASS  player position and health restored
+  PASS  inventory and kill count restored
+  PASS  equipped weapon restored
+  PASS  skills restored
+  PASS  built wall persisted
+  PASS  built crate persisted
+  PASS  dropped item persisted
+  PASS  clock restored
+  PASS  zombie population restored (0 vs 0)
+  PASS  corpses persisted (2)
+  PASS  changes survive chunk unload / reload
+  PASS  second save (with unloaded chunk store) succeeds
+== long soak (zombie AI, streaming, 3 simulated minutes)
+  soak: 5400 ticks in 2903 ms (avg 0.538 ms, worst 97.968 ms), zombies=111 { "idle": 96, "chase": 2, "wander": 13 } chunks=49 stored=0
+  PASS  average sim tick under 8 ms
+  PASS  chunk streaming unloads distant chunks
+RESULT: 71 checks, 0 failed
+#### simulation: ok
+==== touch
+LAST LIGHT: art generated in 3474 ms (2083 sprites)
+  PASS  joystick drag produces full right input (1.00, 0.00)
+  PASS  player walks while the stick is held (1.75 tiles)
+  PASS  screen-right maps to world (+x, -y)
+  PASS  second finger attacks while the first keeps moving
+  PASS  movement input unaffected by the attack touch
+  PASS  still moving after attack finger lifts
+  PASS  dragging up changes direction (0.00, -1.00)
+  PASS  releasing the stick clears input
+  PASS  player stops when the stick is released
+  PASS  SNEAK button toggles sneaking
+  PASS  RUN toggles on and cancels sneak
+  PASS  tapping USE opens the door in front
+  PASS  holding USE opens the options menu (menu)
+  PASS  BAG button opens the inventory
+  PASS  simulation is paused while a panel is open
+  PASS  two-finger pinch zooms the camera (1.50 -> 3.00)
+RESULT: 16 checks, 0 failed
+#### touch: ok
+==== boot main
+LAST LIGHT: art generated in 3327 ms (2083 sprites)
+#### boot main: ok
+==== soak (bot)
+LAST LIGHT: art generated in 3302 ms (2083 sprites)
+soak: frames=4500 day=1 hour=12.3 kills=0 zombies=40 { "idle": 24, "chase": 9, "investigate": 1, "wander": 6 }
+soak: chunks=63 views=63 zviews=0 explored=140 inv=2 hp=100
+soak: main frame avg=0.74 ms  sim avg=0.69 ms
+RESULT: soak ok
+  PASS  chunk views match loaded chunks and stay bounded
+#### soak (bot): ok
+==== render portrait
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+LAST LIGHT: art generated in 4588 ms (2083 sprites)
+shot 01_title (720, 1152)
+shot 02_newgame (720, 1152)
+shot 03_spawn_indoors (720, 1152)
+shot 04_street_zoomed_out (720, 1152)
+shot 05_combat (720, 1152)
+shot 06_inventory (720, 1152)
+shot 07_character (720, 1152)
+shot 08_craft (720, 1152)
+shot 09_map (720, 1152)
+shot 10_night_rain_flashlight (720, 1152)
+shot 11_downtown (720, 1152)
+perf downtown: draw_calls=690 primitives=13083 objects=4241 nodes=2619 tex_mem_mb=25.9 static_mem_mb=77.5 sim_ms=0.62
+shot 12_wilderness (720, 1152)
+shot 13_item_actions (720, 1152)
+shot 14_wounds (720, 1152)
+shot 15_build_placement (720, 1152)
+shot 16_context_menu (720, 1152)
+shot 17_sleeping (720, 1152)
+shot 18_pause (720, 1152)
+save ok=true
+continue ok=true wounds=2
+shot 19_after_continue (720, 1152)
+shot 20_death (720, 1152)
+#### render portrait: ok
+==== render landscape
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+LAST LIGHT: art generated in 4755 ms (2083 sprites)
+shot 01_title (1152, 720)
+shot 02_newgame (1152, 720)
+shot 03_spawn_indoors (1152, 720)
+shot 04_street_zoomed_out (1152, 720)
+shot 05_combat (1152, 720)
+shot 06_inventory (1152, 720)
+shot 07_character (1152, 720)
+shot 08_craft (1152, 720)
+shot 09_map (1152, 720)
+shot 10_night_rain_flashlight (1152, 720)
+shot 11_downtown (1152, 720)
+perf downtown: draw_calls=718 primitives=13837 objects=4618 nodes=2620 tex_mem_mb=25.9 static_mem_mb=77.5 sim_ms=0.6
+shot 12_wilderness (1152, 720)
+shot 13_item_actions (1152, 720)
+shot 14_wounds (1152, 720)
+shot 15_build_placement (1152, 720)
+shot 16_context_menu (1152, 720)
+shot 17_sleeping (1152, 720)
+shot 18_pause (1152, 720)
+save ok=true
+continue ok=true wounds=3
+shot 19_after_continue (1152, 720)
+shot 20_death (1152, 720)
+#### render landscape: ok
+
+ALL TESTS PASSED

@@ -27,6 +27,7 @@ var _ng_loot := 1
 var _ng_inf := true
 var _ng_seed := ""
 var _confirm_new := false
+var _relayout_frames := 0
 
 func _ready() -> void:
 	layer = 10
@@ -51,6 +52,11 @@ func _ready() -> void:
 
 func is_open() -> bool:
 	return current != ""
+
+func _process(_dt: float) -> void:
+	if _relayout_frames > 0 and current != "":
+		_relayout_frames -= 1
+		layout()
 
 func open(what: String, args: Dictionary = {}) -> void:
 	current = what
@@ -87,13 +93,14 @@ func layout() -> void:
 	box.custom_minimum_size = Vector2(w, 0)
 	box.size = Vector2(w, h if full else 0.0)
 	if not full:
-		box.reset_size()
-		h = minf(box.size.y, safe.size.y - m * 2.0)
+		box.size = Vector2(w, 0)
+		h = minf(box.get_combined_minimum_size().y, safe.size.y - m * 2.0)
 		box.size = Vector2(w, h)
 	box.position = Vector2(safe.position.x + (safe.size.x - w) * 0.5, safe.position.y + (safe.size.y - h) * 0.5)
 	var sw: float = minf(safe.size.x - 40.0, 560.0)
 	sheet.custom_minimum_size = Vector2(sw, 0)
-	sheet.reset_size()
+	sheet.size = Vector2(sw, 0)
+	sheet.size = Vector2(sw, sheet.get_combined_minimum_size().y)
 	sheet.position = Vector2(safe.position.x + (safe.size.x - sw) * 0.5, safe.end.y - sheet.size.y - 20.0)
 
 func rebuild() -> void:
@@ -113,6 +120,8 @@ func rebuild() -> void:
 		"help": _build_help()
 	dim.color.a = 0.0 if current == "title" or current == "newgame" else 0.62
 	layout.call_deferred()
+	# wrapped labels only know their height once they have a width: settle again next frames
+	_relayout_frames = 3
 
 func _header(title: String, closable: bool = true) -> void:
 	var hb := HBoxContainer.new()
@@ -377,6 +386,7 @@ func _sheet_open(title: String, opts: Array) -> void:
 	sheet_body.add_child(UiKit.button("Cancel", func(): sheet.visible = false, 50))
 	sheet.visible = true
 	layout.call_deferred()
+	_relayout_frames = 3
 
 func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 	var p: Player = sim.player
