@@ -53,7 +53,10 @@ def test_no_storage_items_in_shelf(tmp_path):
     r=f.process_one(({'asset_id':'empty_shelf','family':'shelf'},str(tmp_path)))
     assert r['status']=='built'
     meta=json.loads((tmp_path/'metadata'/'empty_shelf.json').read_text())
-    assert meta['parts'] in (8,9)  # four uprights + four/five shelves
+    assert meta['parts'] >= 25  # structural beams, empty trays, diagonal braces
+    assert meta['geometry_tier'] == 'detailed_procedural'
+    sc=trimesh.load(tmp_path/'models'/'empty_shelf.glb',force='scene')
+    assert len(sc.geometry)>0
 
 def test_different_seeds_produce_distinct_geometry(tmp_path):
     hashes=[]

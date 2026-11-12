@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -16,12 +17,13 @@ import struct
 import tempfile
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
 import trimesh
 
-VERSION = 'll-mesh-sprint-0.1.0'
+VERSION = 'll-mesh-sprint-0.2.0-geometry'
 FAMILIES = ('avocado', 'backpack', 'axe', 'armor', 'shelf', 'bottle',
             'barrel', 'crate', 'helmet', 'medkit', 'chair', 'canister')
 IDENT = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,110}\Z')
@@ -37,6 +39,10 @@ COLORS = {
  'wood_light': (153,111,70,255), 'black': (38,43,43,255),
  'leather': (95,58,39,255), 'red': (135,46,47,255), 'white': (197,201,184,255),
  'plastic': (181,175,139,255), 'glass': (110,155,143,240),
+ 'flesh_green':(105,145,55,255),'pit_shadow':(70,82,28,255),
+ 'pit_light':(146,94,56,255),'skin_dark':(25,53,29,255),
+ 'seam':(42,53,46,255),'stitch':(165,168,135,255),
+ 'wood_grain':(114,82,51,255),'wood_dark':(71,48,31,255),
  'olive': (102,104,68,255), 'paint': (70,86,96,255), 'paint_light': (122,130,126,255)
 }
 
@@ -172,16 +178,16 @@ class MeshBuilder:
             j=(i+1)%n;f.extend([[i,j,j+n],[i,j+n,i+n]])
         self.add(material,v,f)
 
-    def transform_variant(self, seed):
+    def transform_variant(self, seed, strength=1.0):
         """Small deterministic, coherent profile/scale variation across ALL parts.
 
         This deliberately creates geometry diversity; it does NOT create distinct
         semantic items or substitute for reference-matched authored recipes.
         """
         rng=np.random.default_rng(seed)
-        sx,sy,sz=rng.uniform(.92,1.08,3)
-        shear=rng.uniform(-.055,.055)
-        bend=rng.uniform(-.03,.03)
+        sx,sy,sz=1.0+(rng.uniform(-.08,.08,3)*strength)
+        shear=rng.uniform(-.055,.055)*strength
+        bend=rng.uniform(-.03,.03)*strength
         for material,meshes in self.groups.items():
             for i,(v,f) in enumerate(meshes):
                 vv=v.copy()
@@ -217,88 +223,20 @@ class MeshBuilder:
                       'parts':self.components}
 
 
-def create_family(builder, row):
-    f=row['family'];seed=int(row.get('seed',0));v=int(row.get('variant',0));
-    r=np.random.default_rng(seed)
-    # Variations are shape/material changes, not approval or proof of semantic diversity.
-    wob=.92+.015*(v%9)
-    if f=='avocado':
-        h=.26*wob;profile=[(0,.018),(.025,.060),(.07,.102),(.12,.118),(.19,.098),(.245,.066),(.29,.019)]
-        builder.rings(profile,[0,0,0],'skin',20,1+(v%4)*.015,.95)
-        builder.ellipsoid([0,-.095,.13],[.063,.018,.092],'flesh',16,8)
-        builder.ellipsoid([0,-.117,.105],[.038,.015,.040],'pit',12,7)
-        builder.tube([[0,0,.29],[.007,0,.31]],.007,'wood')
-    elif f=='backpack':
-        h=.68*wob
-        builder.ellipsoid([0,0,h*.51],[.33,.19,h*.51],'fabric',20,11,.52)
-        builder.ellipsoid([0,-.17,h*.35],[.26,.065,h*.23],'fabric_light',16,9,.62)
-        builder.box([0,-.24,h*.34],[.32,.018,.018],'fabric_dark')
-        for sx in (-1,1):
-            builder.tube([[sx*.23,.14,h*.87],[sx*.26,.26,h*.62],[sx*.24,.23,h*.26],[sx*.19,.17,h*.10]],.034,'fabric_dark')
-            builder.tube([[sx*.28,-.04,h*.78],[sx*.31,-.04,h*.66]],.025,'fabric_dark')
-        builder.tube([[-.08,.04,h*.98],[0,.05,h*1.05],[.08,.04,h*.98]],.025,'fabric_dark')
-    elif f=='axe':
-        length=.85+(v%7)*.025
-        builder.rings([(0,.027),(.12,.023),(.57,.020),(length,.029),(length+.04,.025)],[0,0,0],'wood',12,1,.79)
-        z=length-.06
-        blade=[(-.12,z-.10),(.10,z-.11),(.39,z-.20),(.59,z-.22),(.54,z),(.61,z+.21),(.38,z+.16),(.10,z+.10),(-.12,z+.09)]
-        builder.polygon_prism(blade,.095,0,'steel_dark')
-        # Very thin, sculpted cutting edge on flared end.
-        builder.polygon_prism([(.53,z-.205),(.64,z-.24),(.60,z),(.64,z+.235),(.53,z+.20)],.035,0,'edge')
-        builder.rings([(z-.09,.042),(z+.09,.042)],[0,0,0],'steel_dark',12)
-    elif f=='armor':
-        # Tapered anatomical torso: shoulder/waist dimensions vary along height.
-        profile=[(.10,.22),(.22,.30),(.48,.32),(.67,.40),(.78,.39),(.88,.19)]
-        builder.rings(profile,[0,0,0],'steel_dark',16,1,.55)
-        builder.ellipsoid([0,-.21,.56],[.27,.07,.23],'steel',16,9,.70)
-        for sx in (-1,1):
-            builder.ellipsoid([sx*.37,0,.73],[.23,.24,.14],'steel',13,7,.73)
-            builder.box([sx*.24,-.185,.27],[.08,.025,.20],'leather')
-        builder.box([0,-.19,.19],[.52,.055,.10],'leather')
-        builder.box([0,-.235,.19],[.12,.026,.07],'edge')
-    elif f=='shelf':
-        w=1+.08*(v%5);d=.45;h=1.55+.04*(v%6);tiers=4+(v%2)
-        for x in (-w/2,w/2):
-            for y in (-d/2,d/2): builder.box([x,y,h/2],[.035,.035,h],'steel_dark')
-        for i in range(tiers): builder.box([0,0,.14+i*(h-.26)/(tiers-1)],[w+.025,d+.025,.035],'steel')
-        # Storage must remain EMPTY: no crates, inventory, or incidental contents.
-    elif f=='bottle':
-        builder.rings([(0,.055),(.04,.085),(.10,.086),(.27,.079),(.35,.040),(.42,.037),(.45,.037)],[0,0,0],'glass',16)
-        builder.rings([(.45,.038),(.49,.038)],[0,0,0],'black',16)
-        builder.rings([(.13,.087),(.21,.087)],[0,0,0],'white',16)
-    elif f=='barrel':
-        rad=.24+.02*(v%3)
-        builder.rings([(0,rad*.89),(.08,rad),(.43,rad*1.02),(.75,rad),(.83,rad*.91)],[0,0,0],'paint',20)
-        for z in (.09,.43,.73): builder.rings([(z,rad*1.02),(z+.04,rad*1.02)],[0,0,0],'steel_dark',20)
-    elif f=='crate':
-        w=.65+.06*(v%4);d=.48;h=.41
-        builder.box([0,0,h/2],[w,d,h],'wood')
-        for yy in (-d/2-.012,d/2+.012):
-            for z in (.08,.32): builder.box([0,yy,z],[w+.02,.027,.048],'wood_light')
-        for xx in (-w/2-.013,w/2+.013):
-            for z in (.08,.32):builder.box([xx,0,z],[.026,d,.055],'wood_light')
-        builder.box([0,-d/2-.035,h*.51],[w*.37,.016,.085],'black')
-    elif f=='helmet':
-        builder.ellipsoid([0,0,.23],[.23,.26,.22],'steel',22,10,.65)
-        builder.box([0,-.23,.115],[.33,.085,.09],'steel_dark')
-        builder.tube([[-.17,-.11,.10],[-.13,.05,.05],[.12,.05,.05],[.18,-.09,.10]],.014,'leather')
-    elif f=='medkit':
-        builder.ellipsoid([0,0,.24],[.34,.20,.23],'red',16,9,.35)
-        builder.box([0,-.20,.26],[.20,.023,.055],'white')
-        builder.box([0,-.21,.26],[.058,.024,.20],'white')
-        builder.tube([[-.08,0,.47],[0,0,.54],[.08,0,.47]],.026,'black')
-    elif f=='chair':
-        builder.box([0,0,.42],[.50,.50,.07],'wood')
-        builder.box([0,.22,.76],[.49,.065,.65],'wood_light')
-        for x in (-.21,.21):
-            for y in (-.21,.21):builder.box([x,y,.22],[.045,.045,.44],'wood')
-        for x in (-.21,.21): builder.box([x,.22,.64],[.046,.075,.55],'wood')
-    elif f=='canister':
-        builder.ellipsoid([0,0,.30],[.19,.12,.28],'olive',16,9,.55)
-        builder.box([0,0,.58],[.18,.10,.10],'steel_dark')
-        builder.tube([[-.08,0,.59],[0,0,.69],[.08,0,.59]],.025,'steel')
-        builder.rings([(.55,.031),(.67,.031)],[.11,0,0],'black',12)
-    else: raise ValueError(f'Unsupported family {f}')
+@lru_cache(maxsize=1)
+def _quality_geometry():
+    """Load the sibling geometry module by exact path: works with Python -m, raw pytest,
+    and importlib-loaded source without mutating global sys.path."""
+    source=Path(__file__).with_name('quality_geometry.py')
+    spec=importlib.util.spec_from_file_location('_ll_mesh_quality_geometry',source)
+    if not spec or not spec.loader:
+        raise RuntimeError('Geometry module unavailable: '+str(source))
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if set(module.BUILDERS)!=set(FAMILIES):
+        raise RuntimeError('Family builder registry does not match factory contract')
+    return module
+
 
 
 def compile_parts(b,row):
@@ -309,7 +247,21 @@ def compile_parts(b,row):
         if not isinstance(part,dict):raise ValueError('Invalid part')
         op=part.get('op') or part.get('operator')
         mat=part.get('material','steel')
-        if op=='box':b.box(part['location'],part['dimensions'],mat)
+        if op=='superloft':
+            _quality_geometry().superloft(b,mat,part['sections'],n=int(part.get('segments',36)),
+                      exponent=float(part.get('exponent',2.8)),
+                      noise_seed=int(row.get('seed',0)),
+                      center_x=float(part.get('center_x',0.0)))
+        elif op=='ribbon':
+            _quality_geometry().ribbon(b,mat,part['points'],part['widths'],
+                   thickness=float(part.get('thickness',.009)))
+        elif op=='beam':
+            _quality_geometry().beam(b,mat,part['start'],part['end'],
+                   float(part['width']),float(part['depth']))
+        elif op=='forge_blade':
+            _quality_geometry()._head_bevel(b,part['x'],part['top_z'],
+                   part['bottom_z'],part['thickness'],mat)
+        elif op=='box':b.box(part['location'],part['dimensions'],mat)
         elif op=='ellipsoid':b.ellipsoid(part['location'],part['radii'],mat,
                                        int(part.get('segments',16)),int(part.get('rings',9)),float(part.get('boxiness',1)))
         elif op=='lathe':b.rings(part['profile'],part.get('location',[0,0,0]),mat,int(part.get('segments',16)),
@@ -325,6 +277,11 @@ def normalize(row):
     x['asset_id']=str(x.get('asset_id') or x.get('id') or '').strip()
     if not IDENT.fullmatch(x['asset_id']):raise ValueError('Invalid asset_id')
     x['family']=str(x.get('family') or x.get('geometry_family') or '').strip().lower()
+    if x.get('require_detailed') and x.get('parts'):
+        parts=x['parts'] if isinstance(x['parts'],list) else json.loads(x['parts'])
+        advanced={'superloft','ribbon','beam','forge_blade','lathe','tube','polygon_prism'}
+        if not any(p.get('op',p.get('operator')) in advanced for p in parts if isinstance(p,dict)):
+            raise ValueError('Strict detailed geometry: primitive-only custom recipe rejected')
     if not x.get('parts') and x['family'] not in FAMILIES:raise ValueError(f'Unsupported/unknown family {x["family"]}: recipe required')
     for key in ('seed','variant'):
         x[key]=int(x.get(key) or 0)
@@ -353,14 +310,16 @@ def process_one(args):
         b=MeshBuilder()
         if row.get('parts'): compile_parts(b,row)
         else:
-            create_family(b,row)
-            b.transform_variant(row['seed'])
+            _quality_geometry().BUILDERS[row['family']](b,seed=row['seed'],variant=row['variant'])
+            b.transform_variant(row['seed'],strength=.06)
         glb,metrics=b.export()
         sha=hashlib.sha256(glb).hexdigest()
         meta={'asset_id':key,'family':row['family'],'recipe_version':row['recipe_version'],
               'factory_version':VERSION,'recipe_sha256':recipe_hash,'sha256':sha,
               'source_reference':str(row.get('source_reference') or ''),
               'technical_qa':'passed','review_state':'generated_candidate',
+              'geometry_tier':('custom_recipe_unreviewed' if row.get('parts') else 'detailed_procedural'),
+              'visual_qa':'not_tested','gameplay_qa':'not_tested',
               'golden_approved':False,'identity_verified':False,**metrics}
         dest.parent.mkdir(parents=True,exist_ok=True);side.parent.mkdir(parents=True,exist_ok=True)
         # Atomic replace survives interruptions, preserves last valid candidate for resume.
@@ -447,11 +406,15 @@ def main(argv=None):
     src.add_argument('--demo',type=int,metavar='N',help='Synthetic throughput benchmark, NOT 2000 unique catalog assets')
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--workers',type=int,default=min(4,max(1,os.cpu_count() or 1)))
+    p.add_argument('--require-detailed',action='store_true',
+                   help='Reject primitive-only custom recipes; no visual approval implied')
     p.add_argument('--seed',type=int,default=17)
     p.add_argument('--budget-seconds',type=int,default=900)
     opts=p.parse_args(argv)
     if opts.demo is not None and not 1<=opts.demo<=100000: p.error('--demo must be 1..100000')
     rows=demo_rows(opts.demo,opts.seed) if opts.demo is not None else load_rows(opts.input)
+    if opts.require_detailed:
+        rows=[{**row,'require_detailed':True} for row in rows]
     report=run(rows,opts.out,opts.workers,opts.budget_seconds)
     print(json.dumps(report,indent=2))
     return 0 if report['failed']==0 else 2

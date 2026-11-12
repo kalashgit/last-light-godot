@@ -1,4 +1,4 @@
-# LAST LIGHT — Mesh Sprint v0.1
+# LAST LIGHT — Mesh Sprint v0.2 (Geometry Overhaul)
 
 **Status: executable technical candidate factory, not visual/Golden production approval.**
 
@@ -17,7 +17,7 @@ pytest -q tests/test_factory.py tests/test_verify.py
 
 `--demo N` creates **N deterministic synthetic geometry variants**, NOT N distinct catalog object designs and NOT N founder-approved game assets. This is a speed and structural regression, not a content-production claim. Every GLB/JSON sidecar is written atomically, and a rerun skips entries only if both the recipe hash and output SHA-256 match. Repaired corrupted outputs rebuild. Duplicate asset IDs reject before processing. Invalid/unsupported families fail closed rather than being misrepresented as the named item.
 
-## Current benchmark, measured on the assistant's container
+## V0.1 baseline benchmark (historical), measured on the assistant's container
 
 - Hardware: isolated 5-logical-CPU environment; 4 worker processes; Python 3.13, NumPy and Trimesh 4.11.1.
 - Fresh synthetic run: **2,000 candidate GLBs in 2.1284 seconds**, zero compiler failures; **2,000 unique GLB hashes** after fixing the initial duplicated-geometry defect.
@@ -32,7 +32,7 @@ CSV, JSONL or JSON list. One record = one asset. Required: `asset_id`, plus `fam
 
 Supported families: `avocado`, `backpack`, `axe`, `armor`, `shelf`, `bottle`, `barrel`, `crate`, `helmet`, `medkit`, `chair`, `canister`.
 
-The `parts` mode supports **five operators**: `box` (`location`, `dimensions`), `ellipsoid` (`location`, `radii`, optional `boxiness`), `lathe` (`profile` as `[z,r]` rings), `tube` (`points`, `radius`), and `polygon_prism` (`outline_xz`, `depth`). Every part also declares a material key. Validate the geometry visually before promoting. **This is a minimal independent recipe interface, not a blanket claim of compatibility with the existing Drive V2 schema.** A schema adapter and further geometry operators are required.
+The V0.1 `parts` mode supports five base operators (expanded with four advanced V0.2 operators below): `box` (`location`, `dimensions`), `ellipsoid` (`location`, `radii`, optional `boxiness`), `lathe` (`profile` as `[z,r]` rings), `tube` (`points`, `radius`), and `polygon_prism` (`outline_xz`, `depth`). Every part also declares a material key. Validate the geometry visually before promoting. **This is a minimal independent recipe interface, not a blanket claim of compatibility with the existing Drive V2 schema.** A schema adapter and further geometry operators are required.
 
 A complete example is in `tools/mesh_sprint/examples/custom_recipe.jsonl`. No unapproved name-only fallback or guessed category mapping is permitted for the 4,347 master-catalog rows.
 
@@ -58,3 +58,18 @@ Asset status: `generated_candidate`, `golden_approved=false`, `identity_verified
 This feature is deliberately isolated under `tools/mesh_sprint/`. It neither changes `main.tscn` nor takes over the existing `tools/foundry_mass/` and `tools/foundry_creation/` pipelines. The user must explicitly approve any promotion, gameplay integration or merge.
 
 Open-source references: [Trimesh](https://github.com/mikedh/trimesh) (MIT license; used as dependency, not vendored), [Trimesh GLB export API](https://trimesh.org/trimesh.exchange.gltf.html), [Blender background automation](https://docs.blender.org/manual/en/dev/advanced/command_line/). Review the actual current licenses before vendoring or redistributing any external code or artwork.
+
+## V0.2 geometry overhaul (stacked draft)
+
+Every one of the 12 family presets now uses original shaped geometry, instead of the V0.1 simple silhouettes. See [GEOMETRY_OVERHAUL_V02.md](GEOMETRY_OVERHAUL_V02.md). Added 
+`quality_geometry.py` with variable-section lofts, tapered axe bevels, fabric ribbons, prismatic diagonal beams and full sample-family construction templates. Custom recipes may use `superloft`, `ribbon`, `beam`, and `forge_blade`.
+
+```bash
+python tools/mesh_sprint/factory.py --demo 12 --out output/v02_pilot --workers 2 --require-detailed
+python tools/mesh_sprint/verify.py --root output/v02_pilot
+python -m pip install Pillow
+python tools/mesh_sprint/preview.py --glb output/v02_pilot/models/benchmark_00001_backpack.glb --out output/backpack.png
+python -m pytest tests -q
+```
+
+**The speed test does not include CPU preview rendering, advanced material baking, visual QA or Godot import.** The candidate status is unchanged, and the current catalog V2 schema still needs a proper adapter.
