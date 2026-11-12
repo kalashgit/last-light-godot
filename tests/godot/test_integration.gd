@@ -598,6 +598,39 @@ func _init() -> void:
 	sim._process_world_events()
 	ok(Defs.o_id(w.obj(pa.x, pa.y)) == Defs.O_CAR and absf(float(w.ent(pa.x, pa.y).get("fuel", 0.0)) - 3.5) < 0.01, "a car the first survivor left is still there, fuel and all")
 
+	print("== stuck: sealed rooms and the way out")
+	var sx0: int = fx0 + 2
+	var sy0: int = fy0 + 2
+	bulldoze(sim, Rect2i(sx0 - 3, sy0 - 3, 12, 12))
+	for k in range(0, 5):
+		w.set_wall(sx0 + k, sy0, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID))
+		w.set_wall(sx0 + k, sy0 + 4, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID))
+		w.set_wall(sx0, sy0 + k, 1, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID))
+		w.set_wall(sx0 + 5, sy0 + k, 1, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID))
+	for k in range(sx0, sx0 + 5):
+		for l in range(sy0, sy0 + 4):
+			w.chunk_at(k, l).bld[World.idx(k, l)] = 424242
+	var inside_p := Vector2(sx0 + 2.5, sy0 + 2.5)
+	ok(not sim.can_escape(inside_p), "a room with no door is detected as a trap")
+	w.set_wall(sx0 + 2, sy0 + 4, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_WINDOW))
+	ok(not sim.can_escape(inside_p), "a window is not a way out")
+	w.set_wall(sx0 + 2, sy0 + 4, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_DOOR))
+	w.set_edge_state(sx0 + 2, sy0 + 4, 0, 1 << Defs.ES_PLANK_SHIFT)
+	ok(not sim.can_escape(inside_p), "a barricaded door is not a way out")
+	w.set_edge_state(sx0 + 2, sy0 + 4, 0, 0)
+	ok(sim.can_escape(inside_p), "a plain door is")
+	w.set_wall(sx0 + 2, sy0 + 4, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID))
+	var np: Player = sim.player
+	np.pos = inside_p
+	sim.unstick()
+	ok(w.bld(floori(np.pos.x), floori(np.pos.y)) == 0 and not w.blocked(np.pos.x, np.pos.y, Player.R) and np.pos.distance_to(inside_p) > 1.0, "'Stuck? Move me outside' puts you on open ground (%.1f tiles away)" % np.pos.distance_to(inside_p))
+	var trapped_starts := 0
+	for sd in range(40):
+		var ts2 := Sim.new(1000 + sd * 31)
+		ts2.new_game("hunter", [], ["house", "farm", "cabin", "downtown"][sd % 4])
+		if not ts2.can_escape(ts2.player.pos): trapped_starts += 1
+	ok(trapped_starts == 0, "40 different new games, none starts sealed in")
+
 	print("== saves: backup, corruption, repeated cycles")
 	quiet(sim)
 	ok(SaveGame.save(sim, slot) and SaveGame.save(sim, slot), "two saves in a row")

@@ -866,6 +866,9 @@ func _build_pause() -> void:
 		var ok: bool = main.save_now()
 		sim.say("Game saved" if ok else "SAVE FAILED", UiKit.GOOD if ok else UiKit.BAD)
 		close()))
+	body.add_child(UiKit.button("Stuck? Move me outside", func():
+		sim.unstick()
+		close()))
 	body.add_child(UiKit.button("How to Play", func(): open("help")))
 	body.add_child(UiKit.button("Performance overlay: %s" % ("on" if main.hud.debug else "off"), func():
 		main.hud.debug = not main.hud.debug

@@ -105,11 +105,65 @@ func apply_settings() -> void:
 	guide_i = 0 if settings.get("guide", true) else -1
 	world.growth = float(settings.get("growth", 1.0))
 
+## can a person standing here walk out of the building? doors count as passable unless barricaded,
+## windows and walls do not. (tile-level search; used to make sure nobody spawns sealed in)
+func can_escape(pos: Vector2) -> bool:
+	var start := Vector2i(floori(pos.x), floori(pos.y))
+	var seen := {start: true}
+	var stack: Array = [start]
+	var n := 0
+	while not stack.is_empty() and n < 3000:
+		var c: Vector2i = stack.pop_back()
+		n += 1
+		if world.bld(c.x, c.y) == 0:
+			return true
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var t: Vector2i = c + d
+			if seen.has(t) or world.tile_blocked(t.x, t.y):
+				continue
+			var side: int = 1 if d.x != 0 else 0
+			var ex: int = c.x + (1 if d.x > 0 else 0)
+			var ey: int = c.y + (1 if d.y > 0 else 0)
+			var wid: int = world.wall(ex, ey, side)
+			if wid != 0:
+				var shape: int = wid & 3
+				var planked: bool = (world.edge_state(ex, ey, side) & Defs.ES_PLANK_MASK) != 0
+				if shape == Defs.WS_WINDOW or (shape == Defs.WS_SOLID and not Defs.wall_is_fence(wid)) or (shape == Defs.WS_DOOR and planked):
+					continue
+			seen[t] = true
+			stack.append(t)
+	return false
+
+## the nearest open outdoor spot (used when somebody is stuck)
+func outside_spot(pos: Vector2) -> Vector2:
+	world.stream(pos, 2, 999)
+	for r in range(1, 30):
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				if maxi(absi(dx), absi(dy)) != r:
+					continue
+				var t := Vector2(floorf(pos.x) + dx + 0.5, floorf(pos.y) + dy + 0.5)
+				if world.bld(floori(t.x), floori(t.y)) == 0 and not world.blocked(t.x, t.y, Player.R) and not world.blocked(t.x + 0.4, t.y, Player.R) and not world.blocked(t.x, t.y + 0.4, Player.R):
+					return t
+	return pos
+
+## the player is stuck: put them on open ground outside, without it counting as a way to cheat
+func unstick() -> void:
+	if vehicle != null:
+		return
+	player.cancel_action()
+	player.pos = outside_spot(player.pos)
+	safe_pos = player.pos
+	say("You find your way out.", Color(0.8, 0.85, 0.9))
+
 ## place the player in a building of the chosen kind near the starting town
 func new_game(occupation: String, trait_list: Array = [], start_kind: String = "house") -> void:
 	apply_settings()
 	var st: Dictionary = world.gen.find_start(start_kind)
 	player.pos = st["pos"]
+	world.stream(player.pos, 2, 999)
+	if not can_escape(player.pos):
+		player.pos = outside_spot(player.pos)      # never begin sealed in
 	safe_pos = player.pos
 	player.look = [rng.randi() % 4, rng.randi() % 10, rng.randi() % 6, rng.randi() % 6]
 	player.setup_occupation(occupation, trait_list)
@@ -346,6 +400,9 @@ func new_survivor(occupation: String, trait_list: Array = [], start_kind: String
 	dead = false
 	var st: Dictionary = world.gen.find_start(start_kind, lives)
 	player.pos = st["pos"]
+	world.stream(player.pos, 2, 999)
+	if not can_escape(player.pos):
+		player.pos = outside_spot(player.pos)
 	player.look = look if look.size() == 4 else [rng.randi() % 4, rng.randi() % 10, rng.randi() % 6, rng.randi() % 6]
 	player.setup_occupation(occupation, trait_list)
 	world.loot_mult = float(settings["loot"]) * player.tmod("loot")

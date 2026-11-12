@@ -474,6 +474,7 @@ func finalize(facing: int, bld_id: int) -> LotPlan:
 	p.obj.resize(n)
 	p.inside.resize(n)
 	p.roof.resize(n)
+	var spawn_open := -1
 	var froom := PackedInt32Array()
 	froom.resize(n)
 	froom.fill(-1)
@@ -486,8 +487,17 @@ func finalize(facing: int, bld_id: int) -> LotPlan:
 			froom[fi] = r
 			if r >= 0:
 				p.inside[fi] = 1
-				if occ[v * cw + u] != 1 and p.spawn.x < 0:
-					p.spawn = m
+				if occ[v * cw + u] != 1:
+					# prefer open floor with room to move over a corner tucked behind furniture
+					var open_n := 0
+					for dd in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+						var nu: int = u + dd.x
+						var nv: int = v + dd.y
+						if inb(nu, nv) and room[nv * cw + nu] == r and occ[nv * cw + nu] != 1:
+							open_n += 1
+					if open_n > spawn_open:
+						spawn_open = open_n
+						p.spawn = m
 	# edges
 	for v in range(ch + 1):
 		for u in range(cw + 1):
