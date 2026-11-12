@@ -130,6 +130,8 @@ static func all() -> Dictionary:
 	for rz in range(8, 66, 9):
 		ladder.append(b(.3, .06, rz, .7, .12, rz + 2, dwood))
 	m[Defs.O_LADDER] = ladder
+	m[Defs.O_STAIRS] = [b(.1, .7, 0, .9, .95, 7, wood, P.M_PLANK_H), b(.1, .45, 0, .9, .7, 14, wood, P.M_PLANK_H), b(.1, .2, 0, .9, .45, 21, wood, P.M_PLANK_H), b(.1, .02, 0, .9, .2, 28, wood, P.M_PLANK_H),
+		b(.04, .02, 0, .1, .95, 34, dwood)]
 	m[Defs.O_KILN] = [b(.12, .12, 0, .88, .88, 26, "9a5a44", P.M_BRICK), b(.2, .2, 26, .8, .8, 32, "8a4e3a", P.M_BRICK), b(.4, .4, 32, .6, .6, 42, "6a4034", P.M_BRICK),
 		b(.36, .88, 3, .64, .9, 15, "1a1412"), b(.42, .9, 4, .58, .91, 9, "e07a28")]
 	m[Defs.O_FORGE] = [b(.08, .12, 0, .6, .88, 18, "8a8680", P.M_STONE), b(.14, .18, 18, .54, .82, 20, "2a2420"), b(.22, .3, 20, .46, .7, 21, "d0582a", P.M_NOISE),

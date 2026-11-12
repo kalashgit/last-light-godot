@@ -10,12 +10,13 @@ const REGION_SHIFT := 5
 
 static var _cache: Dictionary = {}      # region key -> Dictionary of chunk records
 static var _cache_slot := ""
+static var recovered := 0               # files restored from backup this session
 
 static func dir_for(slot: String) -> String:
 	return "user://saves/%s" % slot
 
 static func exists(slot: String) -> bool:
-	return FileAccess.file_exists(dir_for(slot) + "/meta.sav")
+	return FileAccess.file_exists(dir_for(slot) + "/meta.sav") or FileAccess.file_exists(dir_for(slot) + "/meta.sav.bak")
 
 static func _region_path(slot: String, rk: Vector2i) -> String:
 	return "%s/r_%d_%d.sav" % [dir_for(slot), rk.x, rk.y]
@@ -30,6 +31,18 @@ static func _read(path: String) -> Variant:
 	f.close()
 	return v
 
+## read with corruption detection: a file that will not decode falls back to its backup copy
+static func _read_safe(path: String) -> Variant:
+	var v: Variant = _read(path)
+	if v is Dictionary:
+		return v
+	var b: Variant = _read(path + ".bak")
+	if b is Dictionary:
+		recovered += 1
+		push_warning("LAST LIGHT: %s was unreadable, restored from backup" % path)
+		return b
+	return v
+
 static func _write(path: String, v: Variant) -> bool:
 	var tmp: String = path + ".tmp"
 	var f: FileAccess = FileAccess.open_compressed(tmp, FileAccess.WRITE, FileAccess.COMPRESSION_ZSTD)
@@ -40,8 +53,14 @@ static func _write(path: String, v: Variant) -> bool:
 	var da: DirAccess = DirAccess.open(path.get_base_dir())
 	if da == null:
 		return false
+	# never leave the player without a readable file: verify the new one, keep the old one as .bak
+	if not (_read(tmp) is Dictionary):
+		da.remove(tmp.get_file())
+		return false
 	if da.file_exists(path.get_file()):
-		da.remove(path.get_file())
+		if da.file_exists(path.get_file() + ".bak"):
+			da.remove(path.get_file() + ".bak")
+		da.rename(path.get_file(), path.get_file() + ".bak")
 	return da.rename(tmp.get_file(), path.get_file()) == OK
 
 static func _region(slot: String, rk: Vector2i) -> Dictionary:
@@ -50,7 +69,7 @@ static func _region(slot: String, rk: Vector2i) -> Dictionary:
 		_cache_slot = slot
 	if _cache.has(rk):
 		return _cache[rk]
-	var v: Variant = _read(_region_path(slot, rk))
+	var v: Variant = _read_safe(_region_path(slot, rk))
 	var d: Dictionary = v if v is Dictionary else {}
 	if _cache.size() > 12:
 		_cache.clear()
@@ -77,10 +96,11 @@ static func save(sim: Sim, slot: String) -> bool:
 	for k in w.chunks.keys():
 		var c: Chunk = w.chunks[k]
 		var zs: Array = sim.zombies.serialized_in_chunk(c.cx, c.cy)
-		if not (c.touched or c.modified or c.spawned or zs.size() > 0):
+		if not (c.touched or c.modified or c.spawned or zs.size() > 0 or sim.npcs.serialized_in_chunk(c.cx, c.cy).size() > 0):
 			continue
 		var data: Dictionary = c.save_data()
 		data["z"] = zs
+		data["npc"] = sim.npcs.serialized_in_chunk(c.cx, c.cy)
 		data["lh"] = sim.hour
 		var rk2 := Vector2i(k.x >> REGION_SHIFT, k.y >> REGION_SHIFT)
 		if not by_region.has(rk2):
@@ -101,7 +121,7 @@ static func save(sim: Sim, slot: String) -> bool:
 	return ok
 
 static func load_game(slot: String) -> Sim:
-	var v: Variant = _read(dir_for(slot) + "/meta.sav")
+	var v: Variant = _read_safe(dir_for(slot) + "/meta.sav")
 	if not (v is Dictionary):
 		return null
 	var meta: Dictionary = migrate(v)

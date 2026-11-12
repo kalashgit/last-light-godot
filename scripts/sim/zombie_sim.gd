@@ -31,7 +31,7 @@ func spawn(pos: Vector2, kind: int = -1) -> Zombie:
 	var r: float = randf()
 	if kind < 0:
 		kind = 0
-		if r < 0.07: kind = 1
+		if r < 0.07 + float(sim.settings.get("sprinters", 0.0)): kind = 1
 		elif r < 0.12: kind = 2
 		elif r < 0.18: kind = 3
 	_apply_kind(z, kind)
@@ -48,7 +48,7 @@ func _apply_kind(z: Zombie, kind: int) -> void:
 	z.hp = randf_range(70.0, 130.0)
 	z.speed = randf_range(0.95, 1.35)
 	match kind:
-		1: z.speed = randf_range(1.9, 2.3)
+		1: z.speed = randf_range(1.9, 2.3) if float(sim.settings.get("sprinters", 0.0)) <= 0.0 else randf_range(3.6, 4.3)
 		2:
 			z.speed = randf_range(0.5, 0.7)
 			z.hp *= 0.7
@@ -74,7 +74,8 @@ func on_chunk_loaded(c: Chunk) -> void:
 	if not c.spawned:
 		c.spawned = true
 		c.touched = true
-		var dens: float = DENSITY[c.zone] * mult * growth()
+		# the dead gather: a cellular field makes some blocks nearly empty and others packed
+		var dens: float = DENSITY[c.zone] * mult * growth() * sim.world.gen.cluster(c.cx, c.cy)
 		var n: int = int(dens) + (1 if randf() < dens - floorf(dens) else 0)
 		if not World.is_under(c.cy * 16.0):
 			_spawn_in_chunk(c, mini(n, 16))
@@ -261,7 +262,11 @@ func kill(z: Zombie) -> void:
 	var w: World = sim.world
 	var c: Chunk = w.chunk_at(floori(z.pos.x), floori(z.pos.y))
 	if c != null:
-		c.corpses.append({"x": z.pos.x, "y": z.pos.y, "d": z.d8, "l": z.look, "h": sim.hour})
+		var cp := {"x": z.pos.x, "y": z.pos.y, "d": z.d8, "l": z.look, "h": sim.hour}
+		if not z.loot.is_empty():
+			cp["loot"] = z.loot
+			cp["perm"] = 1
+		c.corpses.append(cp)
 		c.touched = true
 		w.notify(floori(z.pos.x), floori(z.pos.y))
 	w.add_blood(z.pos.x, z.pos.y)

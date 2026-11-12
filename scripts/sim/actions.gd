@@ -99,7 +99,7 @@ static func options(sim: Sim, t: Dictionary) -> Array:
 		"edge": return _edge_options(sim, t)
 		"obj": return _obj_options(sim, t)
 		"ground": return [_opt("Pick up items", func(): sim.ui_events.append({"type": "loot"}))]
-		"corpse": return [_opt("Search corpse", func(): sim.ui_events.append({"type": "loot", "focus": t["corpse"]}))]
+		"corpse": return _corpse_options(sim, t)
 		"water": return _water_options(sim, t)
 		"soil": return _soil_options(sim, t)
 		"sand": return [_opt("Dig sand", func(): _dig(sim, "sand"))]
@@ -112,6 +112,9 @@ static func interact(sim: Sim, full_menu: bool = false) -> void:
 		return
 	if p.sleeping:
 		sim.wake("You get up.")
+		return
+	if not p.dragging.is_empty():
+		_drop_corpse(sim)
 		return
 	var ts: Array = targets(sim)
 	if ts.is_empty():
@@ -451,6 +454,69 @@ static func _watch_tv(sim: Sim, x: int, y: int) -> void:
 		p.bored = maxf(0.0, p.bored - 30.0)
 		sim.noise(p.pos, 6.0)
 		sim.say("You pick up a few things about %s" % skill.replace("_", " "), Color(0.6, 0.9, 0.6)))
+
+# ------------------------------------------------------------------ the dead
+static func _remove_corpse(sim: Sim, cp: Dictionary) -> void:
+	var c: Chunk = sim.world.chunk_at(floori(cp["x"]), floori(cp["y"]))
+	if c != null:
+		c.corpses.erase(cp)
+		c.touched = true
+		sim.world.notify(floori(cp["x"]), floori(cp["y"]))
+
+static func _drop_corpse(sim: Sim) -> void:
+	var p: Player = sim.player
+	var cp: Dictionary = p.dragging
+	p.dragging = {}
+	cp["x"] = p.pos.x + p.facing.x * 0.4
+	cp["y"] = p.pos.y + p.facing.y * 0.4
+	var c: Chunk = sim.world.chunk_at(floori(cp["x"]), floori(cp["y"]))
+	if c == null:
+		c = sim.world.chunk_at(floori(p.pos.x), floori(p.pos.y))
+		cp["x"] = p.pos.x
+		cp["y"] = p.pos.y
+	c.corpses.append(cp)
+	c.touched = true
+	sim.world.notify(floori(cp["x"]), floori(cp["y"]))
+	sim.say("You let the body down", Color(0.8, 0.8, 0.8))
+
+static func _corpse_options(sim: Sim, t: Dictionary) -> Array:
+	var p: Player = sim.player
+	var w: World = sim.world
+	var cp: Dictionary = t["corpse"]
+	var out: Array = [_opt("Search corpse", func(): sim.ui_events.append({"type": "loot", "focus": cp}))]
+	out.append(_opt("Drag the body", func():
+		_remove_corpse(sim, cp)
+		p.dragging = cp
+		sim.say("You take it by the ankles. USE to let go.", Color(0.8, 0.8, 0.8))))
+	if Inv.has_tag(p.inv, "dig"):
+		out.append(_opt("Bury", func():
+			p.start_action("Digging a grave", 9.0, func():
+				_remove_corpse(sim, cp)
+				var gx: int = floori(cp["x"])
+				var gy: int = floori(cp["y"])
+				if w.obj(gx, gy) == 0 and Defs.ground_is_natural(w.ground(gx, gy)):
+					w.set_obj(gx, gy, Defs.ocell(Defs.O_GRAVE, 0, 0))
+				p.endurance = maxf(0.0, p.endurance - 30.0)
+				p.unhappy = minf(100.0, p.unhappy + 4.0)
+				p.add_xp("strength", 6.0))))
+	if Inv.has_tag(p.inv, "fire"):
+		out.append(_opt("Burn the bodies here", func():
+			p.start_action("Lighting the pyre", 4.0, func():
+				var lighter: Dictionary = Inv.find_tag(p.inv, "fire")
+				if lighter.is_empty():
+					return
+				Inv.use_charge(p.inv, lighter)
+				var n := 0
+				var cc: Vector2 = Vector2(cp["x"], cp["y"])
+				for ch in w.chunks.values():
+					for other in (ch as Chunk).corpses.duplicate():
+						if Vector2(other["x"], other["y"]).distance_to(cc) < 1.8:
+							_remove_corpse(sim, other)
+							n += 1
+				sim.ignite(floori(cc.x), floori(cc.y), 1.5)
+				sim.noise(p.pos, 8.0)
+				sim.say("%d bodies burn. Keep clear of the flames." % n, Color(1.0, 0.8, 0.5)))))
+	return out
 
 static func _use_stairs(sim: Sim, dy: int) -> void:
 	var p: Player = sim.player

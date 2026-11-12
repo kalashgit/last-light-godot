@@ -244,10 +244,10 @@ func _init() -> void:
 	run(sim, 3.0)
 	ok(Defs.o_id(w.obj(soil.x, soil.y)) == Defs.O_CROP_POTATO, "seed planted")
 	var ent: Dictionary = w.ent(soil.x, soil.y)
-	ent["w"] = 100.0
+	ent["w"] = 70.0
 	var cchunk: Chunk = w.chunk_at(soil.x, soil.y)
 	for i in range(120):
-		ent["w"] = 100.0
+		ent["w"] = 70.0          # watered, but not waterlogged (standing water breeds mildew)
 		sim._sim_ents(cchunk, 1.0, false)
 	ok(int(ent["s"]) == 3 and Defs.o_part(w.obj(soil.x, soil.y)) == 3, "crop grows to maturity (stage %d)" % int(ent["s"]))
 	var co: Array = Actions.options(sim, {"kind": "obj", "x": soil.x, "y": soil.y})

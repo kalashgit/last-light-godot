@@ -19,6 +19,7 @@ var seed_v: int
 var n_forest := FastNoiseLite.new()
 var n_water := FastNoiseLite.new()
 var n_detail := FastNoiseLite.new()
+var n_cluster := FastNoiseLite.new()
 var _regions: Dictionary = {}
 var _lots: Dictionary = {}
 var _lot_order: Array = []
@@ -37,6 +38,16 @@ func _init(world_seed: int) -> void:
 	n_detail.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	n_detail.frequency = 0.05
 	n_detail.fractal_octaves = 2
+
+## population multiplier for a chunk (0.25 .. 2.4), from a Voronoi-style cellular field
+func cluster(cx: int, cy: int) -> float:
+	if n_cluster.seed != ((seed_v + 91) & 0x7FFFFFFF):
+		n_cluster.seed = (seed_v + 91) & 0x7FFFFFFF
+		n_cluster.noise_type = FastNoiseLite.TYPE_CELLULAR
+		n_cluster.cellular_return_type = FastNoiseLite.RETURN_CELL_VALUE
+		n_cluster.frequency = 0.09
+	var v: float = n_cluster.get_noise_2d(cx, cy) * 0.5 + 0.5
+	return 0.25 + v * v * 2.15
 
 static func fdiv(a: int, b: int) -> int:
 	return floori(float(a) / float(b))
@@ -529,6 +540,10 @@ func gen_chunk(cx: int, cy: int) -> Chunk:
 			var bw: Vector2i = lr.position + (bc as Vector2i)
 			if crect.has_point(bw):
 				c.blood.append([bw.x + 0.5, bw.y + 0.5, Rng.h2(bw.x, bw.y, 5) % 4])
+		for nc in plan.npcs:
+			var nw: Vector2i = lr.position + (nc[0] as Vector2i)
+			if crect.has_point(nw):
+				c.story_n.append([Vector2(nw.x + 0.5, nw.y + 0.5), nc[1]])
 		for zc in plan.zspawn:
 			var zw: Vector2i = lr.position + (zc as Vector2i)
 			if crect.has_point(zw):
@@ -624,8 +639,11 @@ func _gen_under(cx: int, cy: int) -> Chunk:
 	var c := Chunk.new(cx, cy)
 	var x0: int = cx * 16
 	var y0: int = cy * 16
-	var sy0: int = y0 - World.UNDER
+	var lvl: int = World.level(y0)
+	var sy0: int = y0 - World.UNDER * lvl
 	var srect := Rect2i(x0, sy0, 16, 16)
+	if lvl == 2:
+		return _gen_upper(c, x0, sy0, srect)
 	var R: Dictionary = region(fdiv(x0, REGION), fdiv(sy0, REGION))
 	var wall: int = Defs.wall(Defs.WM_CONCRETE, Defs.WS_SOLID)
 	for lot in R["lots"]:
@@ -665,6 +683,51 @@ func _gen_under(cx: int, cy: int) -> Chunk:
 	c.map_px.resize(Iso.CS2)
 	return c
 
+## the upper-floor band: one open storey over the footprint of every house with a staircase
+func _gen_upper(c: Chunk, x0: int, sy0: int, srect: Rect2i) -> Chunk:
+	var R: Dictionary = region(fdiv(x0, REGION), fdiv(sy0, REGION))
+	var w_in: int = Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID)
+	var w_out: int = Defs.wall(Defs.WM_SIDING_WHITE, Defs.WS_SOLID)
+	var kinds: Array = [Defs.O_WARDROBE, Defs.O_DRESSER, Defs.O_NIGHTSTAND, Defs.O_BOOKSHELF, Defs.O_CRATE, Defs.O_ARMCHAIR, Defs.O_DESK]
+	for lot in R["lots"]:
+		var lr: Rect2i = lot["r"]
+		if not lr.grow(1).intersects(srect):
+			continue
+		var plan: LotBuilder.LotPlan = lot_plan(lot)
+		if plan.stairs.x < 0:
+			continue
+		var uid: int = plan.bld_id + 0x20000000
+		c.btype[uid] = "house"
+		for ly in range(16):
+			for lx in range(16):
+				var px: int = x0 + lx - lr.position.x
+				var py: int = sy0 + ly - lr.position.y
+				var here: bool = px >= 0 and py >= 0 and px < plan.w and py < plan.h and plan.inside[py * plan.w + px] != 0
+				var north: bool = px >= 0 and py - 1 >= 0 and px < plan.w and py - 1 < plan.h and plan.inside[(py - 1) * plan.w + px] != 0
+				var west: bool = px - 1 >= 0 and py >= 0 and px - 1 < plan.w and py < plan.h and plan.inside[py * plan.w + px - 1] != 0
+				var i: int = ly * 16 + lx
+				if here:
+					c.ground[i] = Defs.G_WOOD_DARK
+					c.bld[i] = uid
+					c.roof[i] = plan.roof[py * plan.w + px]
+				if here != north:
+					c.wall_n[i] = w_in if here else w_out
+				if here != west:
+					c.wall_w[i] = w_in if here else w_out
+				if here and not north and Vector2i(px, py) != plan.stairs:
+					var f: float = Rng.f2(x0 + lx, sy0 + ly, plan.bld_id + 5)
+					if f < 0.5:
+						c.obj[i] = Defs.ocell(kinds[int(f * 100.0) % kinds.size()], 0, 0)
+				elif here and Rng.f2(x0 + lx, sy0 + ly, plan.bld_id + 9) < 0.05 and Vector2i(px, py) != plan.stairs:
+					c.obj[i] = Defs.ocell(Defs.O_BEDROLL, 0, 0)
+		var sw: Vector2i = lr.position + plan.stairs
+		if srect.has_point(sw):
+			c.obj[(sw.y - sy0) * 16 + (sw.x - x0)] = Defs.ocell(Defs.O_STAIRS, 2, 0)
+			if Rng.f2(plan.bld_id, 4, seed_v + 79) < 0.3:
+				c.story_z.append(Vector2(sw.x + 2.5, sw.y + World.UNDER * 2 + 1.5))
+	c.map_px.resize(Iso.CS2)
+	return c
+
 ## vegetation creeps over lawns, pavements and roads as the weeks pass
 func overgrow(c: Chunk, days: float) -> void:
 	if World.is_under(c.cy * 16.0):
@@ -689,7 +752,7 @@ func overgrow(c: Chunk, days: float) -> void:
 			if f < g * 0.035: c.obj[i] = Defs.O_WEEDS
 
 ## find the player's starting building. kind: house | downtown | farm | cabin
-func find_start(kind: String = "house") -> Dictionary:
+func find_start(kind: String = "house", salt: int = 0) -> Dictionary:
 	var R: Dictionary = region(0, 0)
 	var node: Vector2i = R["node"]
 	var best: Dictionary = {}
@@ -709,7 +772,7 @@ func find_start(kind: String = "house") -> Dictionary:
 				var score: float = -d
 				if kind == "house":
 					score = -absf(d - float(R["half"]) * 0.8)
-				score += Rng.f2(r.position.x, r.position.y, seed_v + 401) * 6.0
+				score += Rng.f2(r.position.x, r.position.y, seed_v + 401 + salt * 13) * (6.0 if salt == 0 else 60.0)
 				if score > best_score:
 					var plan: LotBuilder.LotPlan = lot_plan(lot)
 					if plan.spawn.x < 0 or not plan.zspawn.is_empty() or plan.btype == "stash" or not plan.corpses.is_empty():
@@ -718,7 +781,7 @@ func find_start(kind: String = "house") -> Dictionary:
 					best = lot
 	if best.is_empty():
 		if kind != "house":
-			return find_start("house")
+			return find_start("house", salt)
 		return {"pos": Vector2(node) + Vector2(6.5, 6.5), "lot": {}}
 	var plan2: LotBuilder.LotPlan = lot_plan(best)
 	var br: Rect2i = best["r"]

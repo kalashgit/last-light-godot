@@ -254,7 +254,8 @@ const O_WELL := 108
 const O_COOP := 109
 const O_GRAVE := 110
 const O_TROUGH := 111
-const O_COUNT := 112
+const O_STAIRS := 112
+const O_COUNT := 113
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -368,6 +369,7 @@ static func _static_init() -> void:
 	_o(O_FORGE, {"n": "Forge and anvil", "h": 34, "use": "forge", "hp": 500})
 	_o(O_WELL, {"n": "Well", "h": 44, "sym": 1, "use": "well", "hp": 600})
 	_o(O_COOP, {"n": "Chicken coop", "h": 36, "use": "coop", "c": "", "cap": 10, "scrap": [["plank", 3], ["nails", 4]]})
+	_o(O_STAIRS, {"n": "Stairs", "solid": 0.0, "h": 40, "use": "stairs", "hp": 999})
 	_o(O_GRAVE, {"n": "Grave", "solid": 0.0, "sym": 1, "h": 26, "hp": 999})
 	_o(O_TROUGH, {"n": "Feeding trough", "solid": 0.3, "h": 16, "use": "trough", "c": "", "cap": 20})
 

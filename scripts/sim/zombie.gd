@@ -41,9 +41,10 @@ var anim_t := 0.0
 var flash := 0.0
 var seen := false         # currently visible to the player (line of sight)
 var alpha := 0.0          # render fade
+var loot: Array = []      # carried items (a turned survivor keeps their pack)
 
 func save() -> Array:
-	return [pos.x, pos.y, hp, speed, kind, look[0], look[1], look[2], look[3], 1 if state == DOWN and kind == 2 else 0]
+	return [pos.x, pos.y, hp, speed, kind, look[0], look[1], look[2], look[3], 1 if state == DOWN and kind == 2 else 0, loot]
 
 static func from_save(a: Array) -> Zombie:
 	var z := Zombie.new()
@@ -52,4 +53,6 @@ static func from_save(a: Array) -> Zombie:
 	z.speed = a[3]
 	z.kind = a[4]
 	z.look = [a[5], a[6], a[7], a[8]]
+	if a.size() > 10:
+		z.loot = a[10]
 	return z

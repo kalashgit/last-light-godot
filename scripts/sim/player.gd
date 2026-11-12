@@ -420,6 +420,7 @@ func speed_factor() -> float:
 	if pain > 60.0: f *= 0.82
 	if slow_t > 0.0: f *= 0.5
 	if weight > 100.0: f *= 0.92
+	if not dragging.is_empty(): f *= 0.55
 	if drunk > 70.0: f *= 0.9
 	for wd in wounds:
 		if is_leg(int(wd["part"])):
@@ -433,16 +434,44 @@ func over_weight() -> float:
 # ------------------------------------------------------------------ combat
 func melee_stats() -> Dictionary:
 	var d: Dictionary = weapon_def()
-	if d.has("wpn"):
+	if d.has("wpn") and not force_shove:
 		return d["wpn"]
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
+var force_shove := false
+var corpses_near := 0
+
+## push everything in front of you back, whatever you are holding
+func try_shove() -> bool:
+	if not alive or sleeping or swing_t > 0.0 or attack_cd > 0.0:
+		return false
+	force_shove = true
+	var ok: bool = _melee_start()
+	if not ok:
+		force_shove = false
+	return ok
+
+## whisper lures the nearest one or two; a shout carries across the block
+func call_out(loud: bool) -> void:
+	if not alive or sleeping:
+		return
+	sim.noise(pos, 26.0 if loud else 6.5)
+	sim.emit_fx("call", pos)
+	sim.say("\"HEY! OVER HERE!\"" if loud else "\"psst…\"", Color(0.85, 0.85, 0.7))
+
 func try_attack() -> bool:
+	if not dragging.is_empty():
+		sim.say("Drop the body first (USE)", Color(0.9, 0.8, 0.6))
+		return false
+	force_shove = false
+	return _melee_start()
+
+func _melee_start() -> bool:
 	if not alive or sleeping or swing_t > 0.0 or attack_cd > 0.0:
 		return false
 	cancel_action()
 	var d: Dictionary = weapon_def()
-	if d.has("gun"):
+	if d.has("gun") and not force_shove:
 		_fire_gun(d["gun"])
 		return true
 	if endurance < 3.0:
@@ -508,6 +537,8 @@ func _resolve_melee() -> void:
 		if typ == "shove":
 			kd_ch = 0.3 + strn * 0.03
 			kb = 0.7
+			if zz.state == Zombie.CLIMB:
+				kd_ch = 1.0        # caught half way over a fence or sill
 		sim.zombies.damage(zz, dmg, pos, kb, randf() < kd_ch, crit)
 		if typ != "shove":
 			add_xp(skill, 5.0 + (6.0 if zz.hp <= 0.0 else 0.0))
@@ -518,8 +549,15 @@ func _resolve_melee() -> void:
 		else:
 			add_xp("strength", 2.0)
 	if hits == 0:
+		var nn = sim.npcs.nearest(pos + facing * 0.7, 1.0)
+		if nn != null:
+			var dr2: Array = st["dmg"]
+			sim.npcs.damage(nn, randf_range(float(dr2[0]), float(dr2[1])), true)
+			hits = 1
+	if hits == 0:
 		_hit_scenery(st)
 	sim.noise(pos, float(st["noise"]) + (4.0 if hits > 0 else 0.0))
+	force_shove = false
 
 func _wear_weapon(amount: float) -> void:
 	var d: Dictionary = weapon_def()
@@ -671,6 +709,11 @@ func add_wound(part: int, type: String, cause: String = "") -> void:
 
 func take_zombie_hit(z: Zombie) -> void:
 	if not alive or sim.settings.get("god", false):
+		return
+	if sim.vehicle != null and randf() < 0.85:
+		# they claw at the bodywork instead
+		sim.vehicle.ent["eng"] = maxf(0.0, float(sim.vehicle.ent.get("eng", 0.5)) - 0.006)
+		sim.emit_fx("thump", pos)
 		return
 	cancel_action()
 	if sleeping:
@@ -839,6 +882,7 @@ func tick_needs(dh: float) -> void:
 		eff -= windchill
 	eff -= wet * 0.09
 	if sim.near_fire(pos): eff += 14.0
+	if sim.vehicle != null and float(sim.vehicle.ent.get("fuel", 0.0)) > 0.0: eff += 10.0
 	if running: eff += 3.0
 	var target := 0.0
 	if eff < 12.0: target = -minf((12.0 - eff) * 7.0 * tmod("weather"), 100.0)
@@ -900,6 +944,12 @@ func _tick_body(dh: float) -> void:
 	# ---- nutrition: the reserve drains constantly and drags body weight with it
 	kcal -= dh * (55.0 if sleeping else 88.0)
 	protein = maxf(0.0, protein - dh * 1.6)
+	if corpses_near >= 4:
+		corpse_exp = minf(100.0, corpse_exp + dh * float(corpses_near - 3) * 2.5)
+		if corpse_exp > 25.0:
+			sick = minf(100.0, sick + dh * 3.0)
+	else:
+		corpse_exp = maxf(0.0, corpse_exp - dh * 5.0)
 	arm_strain = maxf(0.0, arm_strain - dh * (16.0 if sleeping else 9.0))
 	calm_h = maxf(0.0, calm_h - dh)
 	antidep_h = maxf(0.0, antidep_h - dh)

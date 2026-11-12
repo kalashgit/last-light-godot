@@ -8,6 +8,7 @@ const START_HOUR := 9.0
 var world: World
 var player: Player
 var zombies: ZombieSim
+var npcs: NpcSim
 var rng := RandomNumberGenerator.new()
 var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
@@ -31,6 +32,12 @@ var generators: Array = []       # Vector2i of running generators (loaded chunks
 var fires: Array = []            # Vector2i of lit campfires (loaded chunks)
 var lamps: Array = []            # Vector2i light-emitting objects near the player
 var dead := false
+var vehicle: Vehicle = null       # the car being driven, if any
+var burning: Dictionary = {}      # Vector2i tile -> seconds of fire left
+var brake := false
+var _fire_t := 0.0
+var lives := 0                   # survivors lost in this world so far
+var speed := 1                   # time control: simulation steps per frame (1, 2 or 4)
 var flags: Dictionary = {}       # one-off facts (tutorial progress, story triggers)
 var guide_i := 0                 # current tutorial objective (-1 = finished / off)
 var fly_next_h := 1e12           # absolute hour the next flyover starts
@@ -57,7 +64,10 @@ func _init(world_seed: int) -> void:
 	world.hour = hour
 	player = Player.new(self)
 	zombies = ZombieSim.new(self)
-	world.on_unload = zombies.on_chunk_unload
+	npcs = NpcSim.new(self)
+	world.on_unload = func(c: Chunk):
+		zombies.on_chunk_unload(c)
+		npcs.on_chunk_unload(c)
 	var r: RandomNumberGenerator = Rng.make(world_seed + 99)
 	power_off_h = r.randf_range(5.0, 16.0) * 24.0
 	water_off_h = r.randf_range(6.0, 20.0) * 24.0
@@ -129,7 +139,82 @@ func clock_text() -> String:
 	return "Day %d  %02d:%02d" % [day(), int(h), int((h - floorf(h)) * 60.0)]
 
 func underground() -> bool:
-	return World.is_under(player.pos.y)
+	return World.level(player.pos.y) == 1
+
+# ------------------------------------------------------------------ fire
+func flammability(x: int, y: int) -> float:
+	var g: int = world.ground(x, y)
+	if g == Defs.G_VOID or Defs.ground_is_water(g):
+		return 0.0
+	var f := 0.0
+	if g == Defs.G_WOOD or g == Defs.G_WOOD_DARK or g == Defs.G_PLANK or g == Defs.G_CARPET_RED or g == Defs.G_CARPET_BLUE or g == Defs.G_CARPET_BEIGE: f = 0.5
+	elif g == Defs.G_GRASS or g == Defs.G_GRASS_DARK or g == Defs.G_FOREST: f = 0.22
+	var o: int = Defs.o_id(world.obj(x, y))
+	if o != 0:
+		if o <= Defs.O_REEDS or o == Defs.O_HAY or o == Defs.O_WEEDS: f = maxf(f, 0.7)
+		elif o >= Defs.O_FRIDGE and o != Defs.O_STOVE and o != Defs.O_BATHTUB and o != Defs.O_TOILET: f = maxf(f, 0.6)
+	for side in range(2):
+		var wid: int = world.wall(x, y, side)
+		if wid != 0:
+			var tex: int = Defs.wall_tex(wid)
+			if tex == Defs.WT_SIDING or tex == Defs.WT_PLANK or tex == Defs.WT_LOG or tex == Defs.WT_PICKET or tex == Defs.WT_HEDGE or tex == Defs.WT_PLASTER:
+				f = maxf(f, 0.45)
+	return f * (1.0 - float(weather["rain"]) * (0.8 if world.bld(x, y) == 0 else 0.0))
+
+func ignite(x: int, y: int, strength: float = 1.0) -> void:
+	if burning.size() > 160 or not world.is_loaded(x, y):
+		return
+	var k := Vector2i(x, y)
+	if not burning.has(k):
+		burning[k] = rng.randf_range(10.0, 22.0) * strength
+		world.notify(x, y)
+
+func _tick_fire(dt: float) -> void:
+	if burning.is_empty():
+		return
+	_fire_t -= dt
+	var step: bool = _fire_t <= 0.0
+	if step:
+		_fire_t = 1.0
+	for k in burning.keys():
+		burning[k] = float(burning[k]) - dt
+		var tile: Vector2i = k
+		if step:
+			if not fires.has(tile):
+				fires.append(tile)
+			noise(Vector2(tile.x + 0.5, tile.y + 0.5), 7.0)
+			emit_fx("fire", Vector2(tile.x + 0.5, tile.y + 0.5))
+			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				var n: Vector2i = tile + d
+				if not burning.has(n) and randf() < flammability(n.x, n.y) * 0.16:
+					ignite(n.x, n.y)
+			# whatever stands in the flames burns
+			if player.alive and vehicle == null and absf(player.pos.x - tile.x - 0.5) < 0.6 and absf(player.pos.y - tile.y - 0.5) < 0.6:
+				player.hurt(6.0, "Burned to death")
+				if randf() < 0.35:
+					player.add_wound(Rng.pick_weighted(rng, Player.HIT_WEIGHTS_LOW), "burn", "fire")
+			for z in zombies.list.duplicate():
+				if absf(z.pos.x - tile.x - 0.5) < 0.6 and absf(z.pos.y - tile.y - 0.5) < 0.6:
+					zombies.damage(z, 22.0, z.pos, 0.0, false, false)
+		if float(burning[k]) <= 0.0:
+			burning.erase(k)
+			fires.erase(tile)
+			# what is left behind
+			var cell: int = world.obj(tile.x, tile.y)
+			if cell != 0 and flammability(tile.x, tile.y) > 0.0:
+				var oid: int = Defs.o_id(cell)
+				world.remove_object(tile.x, tile.y)
+				if oid >= Defs.O_TREE_OAK and oid <= Defs.O_TREE_BIRCH:
+					world.set_obj(tile.x, tile.y, Defs.O_TREE_DEAD)
+			for side in range(2):
+				var wid: int = world.wall(tile.x, tile.y, side)
+				if wid != 0:
+					var tex: int = Defs.wall_tex(wid)
+					if tex == Defs.WT_SIDING or tex == Defs.WT_PLANK or tex == Defs.WT_LOG or tex == Defs.WT_PICKET or tex == Defs.WT_HEDGE:
+						world.set_wall(tile.x, tile.y, side, 0)
+			var g: int = world.ground(tile.x, tile.y)
+			if Defs.ground_is_natural(g) or g == Defs.G_WOOD or g == Defs.G_WOOD_DARK or g == Defs.G_PLANK or g == Defs.G_CARPET_RED or g == Defs.G_CARPET_BLUE or g == Defs.G_CARPET_BEIGE:
+				world.set_ground(tile.x, tile.y, Defs.G_DIRT)
 
 ## 0 = deep night, 1 = full day
 func daylight() -> float:
@@ -237,7 +322,44 @@ func wake(reason: String = "") -> void:
 func on_player_death() -> void:
 	dead = true
 	time_scale = 1.0
+	speed = 1
 	ui_events.append({"type": "death"})
+
+## permadeath, persistent world: a new survivor wakes somewhere in the same world.
+## The previous one stays where they fell — as a corpse, or walking if the fever had them.
+func new_survivor(occupation: String, trait_list: Array = [], start_kind: String = "house", look: Array = []) -> void:
+	var old: Player = player
+	var c: Chunk = world.chunk_at(floori(old.pos.x), floori(old.pos.y))
+	var gear_left: Array = old.inv.duplicate(true)
+	if c != null:
+		if old.infection >= 0.0 or String(old.death_cause).contains("infected"):
+			var z: Zombie = zombies.spawn(old.pos, 0)
+			z.look = old.look.duplicate()
+			z.loot = gear_left
+			z.hp = 130.0
+		else:
+			c.corpses.append({"x": old.pos.x, "y": old.pos.y, "d": old.dir8, "l": old.look.duplicate(), "h": hour, "perm": 1, "loot": gear_left})
+			c.touched = true
+			world.notify(floori(old.pos.x), floori(old.pos.y))
+	lives += 1
+	player = Player.new(self)
+	dead = false
+	var st: Dictionary = world.gen.find_start(start_kind, lives)
+	player.pos = st["pos"]
+	player.look = look if look.size() == 4 else [rng.randi() % 4, rng.randi() % 10, rng.randi() % 6, rng.randi() % 6]
+	player.setup_occupation(occupation, trait_list)
+	world.loot_mult = float(settings["loot"]) * player.tmod("loot")
+	world.stream(player.pos, 2, 999)
+	safe_pos = player.pos
+	safe_radius = 0.0
+	guide_i = -1
+	_guide_inv = player.inv.size()
+	_process_world_events()
+	# nothing that was near the old body should be standing over the new one
+	for zz in zombies.list.duplicate():
+		if zz.pos.distance_to(player.pos) < 8.0 and zz.loot.is_empty():
+			zombies.list.erase(zz)
+	say("Day %d. Someone else is still alive." % day(), Color(0.9, 0.85, 0.7))
 
 # ------------------------------------------------------------------ main tick
 func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false) -> void:
@@ -252,9 +374,18 @@ func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false
 		if float(noises[i][2]) <= 0.0:
 			noises.remove_at(i)
 		i -= 1
-	player.update(dt, move_screen, want_run)
+	if vehicle != null and player.alive:
+		vehicle.update(dt, move_screen, brake)
+		player.pos = vehicle.pos
+		player.facing = Vehicle.DIRS[vehicle.heading]
+		player.dir8 = Iso.dir8(player.facing)
+		player.update(dt, Vector2.ZERO, false)
+	else:
+		player.update(dt, move_screen, want_run)
 	player.tick_needs(dh)
+	_tick_fire(dt)
 	zombies.update(dt)
+	npcs.update(dt, dh)
 	if world.stream(player.pos, 3, 1) == 0:
 		world.gen.prewarm_step(player.pos + player.facing * 30.0)
 	_process_world_events()
@@ -385,6 +516,7 @@ func _process_world_events() -> void:
 	if world.ev_loaded.size() > 0:
 		for c in world.ev_loaded:
 			_catch_up(c)
+			npcs.on_chunk_loaded(c)
 			zombies.on_chunk_loaded(c)
 			view_loaded.append(c)
 		world.ev_loaded.clear()
@@ -456,6 +588,8 @@ func _update_weather(dh: float) -> void:
 func _slow_tick(dh: float) -> void:
 	generators.clear()
 	fires.clear()
+	for bk in burning.keys():
+		fires.append(bk)
 	lamps.clear()
 	var px: int = floori(player.pos.x)
 	var py: int = floori(player.pos.y)
@@ -477,6 +611,15 @@ func _slow_tick(dh: float) -> void:
 				var o: int = c.obj[i] & 1023
 				if o == Defs.O_STREET_LAMP or o == Defs.O_LAMP:
 					lamps.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
+	var near := 0
+	for cy2 in range((py - 4) >> 4, ((py + 4) >> 4) + 1):
+		for cx2 in range((px - 4) >> 4, ((px + 4) >> 4) + 1):
+			var cc: Chunk = world.chunk(cx2, cy2)
+			if cc != null:
+				for cp2 in cc.corpses:
+					if absf(float(cp2["x"]) - player.pos.x) < 4.0 and absf(float(cp2["y"]) - player.pos.y) < 4.0 and hour - float(cp2["h"]) > 6.0:
+						near += 1
+	player.corpses_near = near
 	# building entry: alarms
 	var b: int = world.bld(px, py)
 	if b != 0 and b != _last_bld and not alarms_done.has(b):
@@ -564,6 +707,17 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 			"forage":
 				if hour - float(e["h"]) > 30.0:
 					c.ents.erase(i)
+			"coop":
+				if int(e.get("hens", 0)) > 0:
+					if float(e.get("fed", 0.0)) > 0.0:
+						e["fed"] = float(e["fed"]) - dh
+						e["eggs"] = minf(12.0, float(e.get("eggs", 0.0)) + float(int(e["hens"])) * dh / 22.0)
+						e["starve"] = 0.0
+					else:
+						e["starve"] = float(e.get("starve", 0.0)) + dh
+						if float(e["starve"]) > 72.0:
+							e["starve"] = 0.0
+							e["hens"] = int(e["hens"]) - 1
 			"trap":
 				if String(e.get("caught", "")) == "":
 					# snares work best far from people and with bait
@@ -675,7 +829,8 @@ func save_meta() -> Dictionary:
 		"player": player.save(), "safe_pos": safe_pos, "safe_bld": safe_bld, "alarms_done": alarms_done,
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
-		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active}
+		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning}
 
 func load_meta(d: Dictionary) -> void:
 	hour = d["hour"]
@@ -703,6 +858,11 @@ func load_meta(d: Dictionary) -> void:
 	fly_next_h = d.get("fly_next", 1e12)
 	fly_end_h = d.get("fly_end", 0.0)
 	fly_active = d.get("fly_on", false)
+	lives = d.get("lives", 0)
+	burning = d.get("burning", {})
+	var vd: Dictionary = d.get("vehicle", {})
+	if not vd.is_empty():
+		vehicle = Vehicle.from_save(self, vd)
 	world.growth = float(settings.get("growth", 1.0))
 	player.load(d["player"])
 	world.loot_mult = float(settings["loot"]) * player.tmod("loot")

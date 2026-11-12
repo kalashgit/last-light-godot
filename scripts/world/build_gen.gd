@@ -127,7 +127,17 @@ static func _house_story(b: LotBuilder, base_room: int) -> void:
 			if hc.x >= 0:
 				b.hatch_c = hc
 				break
+	# a second storey on the bigger homes
+	if n - base_room >= 3 and rng.randf() < 0.45:
+		var sc: Vector2i = b.place_free(base_room, Defs.O_STAIRS, 0, 0, 12)
+		if sc.x >= 0:
+			b.stairs_c = sc
 	var r: float = rng.randf()
+	if r > 0.93:
+		# somebody is still living here
+		var nc: Vector2i = b.free_cell(base_room)
+		if nc.x >= 0:
+			b.npc_c.append([nc, false])
 	if r < 0.06:
 		# someone fortified this place and never left
 		b.btype = "stash"
@@ -139,6 +149,10 @@ static func _house_story(b: LotBuilder, base_room: int) -> void:
 		if rng.randf() < 0.5:
 			var z: Vector2i = b.free_cell(base_room)
 			if z.x >= 0: b.zspawn_c.append(z)
+		elif rng.randf() < 0.5:
+			# ...or is still here, and does not want company
+			var hc2: Vector2i = b.free_cell(base_room)
+			if hc2.x >= 0: b.npc_c.append([hc2, true])
 	elif r < 0.10:
 		# a last stand in the living room
 		for k in range(rng.randi_range(3, 5)):
@@ -572,6 +586,8 @@ static func _farm(b: LotBuilder) -> void:
 	for k in range(5):
 		b.put_yard(_pick(rng, [Defs.O_TREE_OAK, Defs.O_HAY, Defs.O_BARREL, Defs.O_BUSH]), rng.randi_range(1, b.cw - 2), rng.randi_range(b.ch - 20, b.ch - 2), 0)
 	b.put_yard(Defs.O_CAR if rng.randf() < 0.7 else Defs.O_CAR_WRECK, hw + 4, b.ch - 9, 0)
+	b.put_yard(Defs.O_COOP, hw + 8, b.ch - 5, 2)
+	b.put_yard(Defs.O_WELL, hw + 7, b.ch - 9, 0)
 
 static func _cabin(b: LotBuilder) -> void:
 	var rng: RandomNumberGenerator = b.rng

@@ -24,6 +24,12 @@ const UNDER := 131072
 static func is_under(y: float) -> bool:
 	return y >= UNDER * 0.5
 
+## 0 = ground level, 1 = cellar band, 2 = upper-floor band
+static func level(y: float) -> int:
+	if y < UNDER * 0.5:
+		return 0
+	return 1 if y < UNDER * 1.5 else 2
+
 var _lc: Chunk = null
 var _lkey := Vector2i(999999, 999999)
 
