@@ -1,0 +1,28 @@
+name: Hollow County V0.11 Browser UI Smoke
+on:
+  pull_request:
+    paths:
+      - "prototypes/hollow-county/v011/**"
+      - "prototypes/hollow-county/tests/test_survivor_ui_v011.py"
+      - ".github/workflows/hollow-county-v011.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  playwright-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Survivor UI regression suite
+        run: python prototypes/hollow-county/tests/test_survivor_ui_v011.py
