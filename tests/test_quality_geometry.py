@@ -9,7 +9,7 @@ import trimesh
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('mesh_sprint_factory_quality', ROOT/'tools'/'mesh_sprint'/'factory.py')
 f=importlib.util.module_from_spec(spec);spec.loader.exec_module(f)
-from tools.mesh_sprint import quality_geometry as q
+q=f._quality_geometry()
 
 
 def test_every_supported_family_has_real_advanced_builder():

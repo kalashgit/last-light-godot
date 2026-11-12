@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m pip install -r tools/mesh_sprint/requirements.txt
-      - run: pytest -q tests/test_factory.py tests/test_verify.py tests/test_quality_geometry.py
+      - run: python -m pytest -q tests/test_factory.py tests/test_verify.py tests/test_quality_geometry.py
       - name: Small real file smoke test
         run: |
           python tools/mesh_sprint/factory.py --demo 48 --out /tmp/ll-mesh-ci --workers 2

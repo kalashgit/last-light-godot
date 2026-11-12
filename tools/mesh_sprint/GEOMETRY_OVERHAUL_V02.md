@@ -30,7 +30,7 @@ Four geometry operators are available to authored `parts` recipes beyond legacy 
 - `beam`: oriented prism connecting endpoints with real thickness
 - `forge_blade`: double-sided section loft, independent top/bottom heights and taper thickness, including near-zero sharpened profile
 
-Operators fail closed on invalid/nonfinite dimensions, too many sections, out-of-order profiles, and self-inconsistent geometry. `--require-detailed` rejects custom recipes consisting exclusively of primitive boxes/ellipsoids. Even advanced custom recipes remain `custom_recipe_unreviewed` until evaluated.
+The compiler loads the sibling geometry library from its verified local path, so a standalone entry point and GitHub Actions/Python test harness resolve the same code. Operators fail closed on invalid/nonfinite dimensions, too many sections, out-of-order profiles, and self-inconsistent geometry. `--require-detailed` rejects custom recipes consisting exclusively of primitive boxes/ellipsoids. Even advanced custom recipes remain `custom_recipe_unreviewed` until evaluated.
 
 ### Comparison evidence
 
@@ -46,7 +46,7 @@ python tools/mesh_sprint/verify.py --root /tmp/v02-fresh
 python -m pytest tests -q
 ```
 
-Observed run in the assistant's CPU environment: **2,000 actual GLBs / 4.8514 s** with four worker processes; 2,000 distinct byte hashes; independent file/geometry re-import 2,000/2,000, zero structural errors; **38 automated tests pass**. Comparison to V0.1's 2.1284 s has different file families/geometries and does not establish a controlled normalized performance comparison. GLB file uniqueness does not prove 2,000 unrelated identities.
+Observed run in the assistant's CPU environment: **2,000 actual GLBs / 5.0501 s** with four worker processes; 2,000 distinct byte hashes; independent file/geometry re-import 2,000/2,000, zero structural errors; **38 automated tests pass**. Comparison to V0.1's 2.1284 s has different file families/geometries and does not establish a controlled normalized performance comparison. GLB file uniqueness does not prove 2,000 unrelated identities.
 
 These throughput timings exclude high-resolution material baking, multiple renders for all 2,000 assets, visual model evaluation, physics/collision generation, Godot integration, and any 4,347-item catalog ingestion. Therefore the **2,000 finished gameplay assets in 15 min requirement remains unproven**.
 

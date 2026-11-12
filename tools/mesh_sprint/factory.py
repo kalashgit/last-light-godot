@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -16,6 +17,7 @@ import struct
 import tempfile
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -221,88 +223,20 @@ class MeshBuilder:
                       'parts':self.components}
 
 
-def create_family(builder, row):
-    f=row['family'];seed=int(row.get('seed',0));v=int(row.get('variant',0));
-    r=np.random.default_rng(seed)
-    # Variations are shape/material changes, not approval or proof of semantic diversity.
-    wob=.92+.015*(v%9)
-    if f=='avocado':
-        h=.26*wob;profile=[(0,.018),(.025,.060),(.07,.102),(.12,.118),(.19,.098),(.245,.066),(.29,.019)]
-        builder.rings(profile,[0,0,0],'skin',20,1+(v%4)*.015,.95)
-        builder.ellipsoid([0,-.095,.13],[.063,.018,.092],'flesh',16,8)
-        builder.ellipsoid([0,-.117,.105],[.038,.015,.040],'pit',12,7)
-        builder.tube([[0,0,.29],[.007,0,.31]],.007,'wood')
-    elif f=='backpack':
-        h=.68*wob
-        builder.ellipsoid([0,0,h*.51],[.33,.19,h*.51],'fabric',20,11,.52)
-        builder.ellipsoid([0,-.17,h*.35],[.26,.065,h*.23],'fabric_light',16,9,.62)
-        builder.box([0,-.24,h*.34],[.32,.018,.018],'fabric_dark')
-        for sx in (-1,1):
-            builder.tube([[sx*.23,.14,h*.87],[sx*.26,.26,h*.62],[sx*.24,.23,h*.26],[sx*.19,.17,h*.10]],.034,'fabric_dark')
-            builder.tube([[sx*.28,-.04,h*.78],[sx*.31,-.04,h*.66]],.025,'fabric_dark')
-        builder.tube([[-.08,.04,h*.98],[0,.05,h*1.05],[.08,.04,h*.98]],.025,'fabric_dark')
-    elif f=='axe':
-        length=.85+(v%7)*.025
-        builder.rings([(0,.027),(.12,.023),(.57,.020),(length,.029),(length+.04,.025)],[0,0,0],'wood',12,1,.79)
-        z=length-.06
-        blade=[(-.12,z-.10),(.10,z-.11),(.39,z-.20),(.59,z-.22),(.54,z),(.61,z+.21),(.38,z+.16),(.10,z+.10),(-.12,z+.09)]
-        builder.polygon_prism(blade,.095,0,'steel_dark')
-        # Very thin, sculpted cutting edge on flared end.
-        builder.polygon_prism([(.53,z-.205),(.64,z-.24),(.60,z),(.64,z+.235),(.53,z+.20)],.035,0,'edge')
-        builder.rings([(z-.09,.042),(z+.09,.042)],[0,0,0],'steel_dark',12)
-    elif f=='armor':
-        # Tapered anatomical torso: shoulder/waist dimensions vary along height.
-        profile=[(.10,.22),(.22,.30),(.48,.32),(.67,.40),(.78,.39),(.88,.19)]
-        builder.rings(profile,[0,0,0],'steel_dark',16,1,.55)
-        builder.ellipsoid([0,-.21,.56],[.27,.07,.23],'steel',16,9,.70)
-        for sx in (-1,1):
-            builder.ellipsoid([sx*.37,0,.73],[.23,.24,.14],'steel',13,7,.73)
-            builder.box([sx*.24,-.185,.27],[.08,.025,.20],'leather')
-        builder.box([0,-.19,.19],[.52,.055,.10],'leather')
-        builder.box([0,-.235,.19],[.12,.026,.07],'edge')
-    elif f=='shelf':
-        w=1+.08*(v%5);d=.45;h=1.55+.04*(v%6);tiers=4+(v%2)
-        for x in (-w/2,w/2):
-            for y in (-d/2,d/2): builder.box([x,y,h/2],[.035,.035,h],'steel_dark')
-        for i in range(tiers): builder.box([0,0,.14+i*(h-.26)/(tiers-1)],[w+.025,d+.025,.035],'steel')
-        # Storage must remain EMPTY: no crates, inventory, or incidental contents.
-    elif f=='bottle':
-        builder.rings([(0,.055),(.04,.085),(.10,.086),(.27,.079),(.35,.040),(.42,.037),(.45,.037)],[0,0,0],'glass',16)
-        builder.rings([(.45,.038),(.49,.038)],[0,0,0],'black',16)
-        builder.rings([(.13,.087),(.21,.087)],[0,0,0],'white',16)
-    elif f=='barrel':
-        rad=.24+.02*(v%3)
-        builder.rings([(0,rad*.89),(.08,rad),(.43,rad*1.02),(.75,rad),(.83,rad*.91)],[0,0,0],'paint',20)
-        for z in (.09,.43,.73): builder.rings([(z,rad*1.02),(z+.04,rad*1.02)],[0,0,0],'steel_dark',20)
-    elif f=='crate':
-        w=.65+.06*(v%4);d=.48;h=.41
-        builder.box([0,0,h/2],[w,d,h],'wood')
-        for yy in (-d/2-.012,d/2+.012):
-            for z in (.08,.32): builder.box([0,yy,z],[w+.02,.027,.048],'wood_light')
-        for xx in (-w/2-.013,w/2+.013):
-            for z in (.08,.32):builder.box([xx,0,z],[.026,d,.055],'wood_light')
-        builder.box([0,-d/2-.035,h*.51],[w*.37,.016,.085],'black')
-    elif f=='helmet':
-        builder.ellipsoid([0,0,.23],[.23,.26,.22],'steel',22,10,.65)
-        builder.box([0,-.23,.115],[.33,.085,.09],'steel_dark')
-        builder.tube([[-.17,-.11,.10],[-.13,.05,.05],[.12,.05,.05],[.18,-.09,.10]],.014,'leather')
-    elif f=='medkit':
-        builder.ellipsoid([0,0,.24],[.34,.20,.23],'red',16,9,.35)
-        builder.box([0,-.20,.26],[.20,.023,.055],'white')
-        builder.box([0,-.21,.26],[.058,.024,.20],'white')
-        builder.tube([[-.08,0,.47],[0,0,.54],[.08,0,.47]],.026,'black')
-    elif f=='chair':
-        builder.box([0,0,.42],[.50,.50,.07],'wood')
-        builder.box([0,.22,.76],[.49,.065,.65],'wood_light')
-        for x in (-.21,.21):
-            for y in (-.21,.21):builder.box([x,y,.22],[.045,.045,.44],'wood')
-        for x in (-.21,.21): builder.box([x,.22,.64],[.046,.075,.55],'wood')
-    elif f=='canister':
-        builder.ellipsoid([0,0,.30],[.19,.12,.28],'olive',16,9,.55)
-        builder.box([0,0,.58],[.18,.10,.10],'steel_dark')
-        builder.tube([[-.08,0,.59],[0,0,.69],[.08,0,.59]],.025,'steel')
-        builder.rings([(.55,.031),(.67,.031)],[.11,0,0],'black',12)
-    else: raise ValueError(f'Unsupported family {f}')
+@lru_cache(maxsize=1)
+def _quality_geometry():
+    """Load the sibling geometry module by exact path: works with Python -m, raw pytest,
+    and importlib-loaded source without mutating global sys.path."""
+    source=Path(__file__).with_name('quality_geometry.py')
+    spec=importlib.util.spec_from_file_location('_ll_mesh_quality_geometry',source)
+    if not spec or not spec.loader:
+        raise RuntimeError('Geometry module unavailable: '+str(source))
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if set(module.BUILDERS)!=set(FAMILIES):
+        raise RuntimeError('Family builder registry does not match factory contract')
+    return module
+
 
 
 def compile_parts(b,row):
@@ -314,33 +248,19 @@ def compile_parts(b,row):
         op=part.get('op') or part.get('operator')
         mat=part.get('material','steel')
         if op=='superloft':
-            try:
-                from tools.mesh_sprint.quality_geometry import superloft
-            except ImportError:
-                from quality_geometry import superloft
-            superloft(b,mat,part['sections'],n=int(part.get('segments',36)),
+            _quality_geometry().superloft(b,mat,part['sections'],n=int(part.get('segments',36)),
                       exponent=float(part.get('exponent',2.8)),
                       noise_seed=int(row.get('seed',0)),
                       center_x=float(part.get('center_x',0.0)))
         elif op=='ribbon':
-            try:
-                from tools.mesh_sprint.quality_geometry import ribbon
-            except ImportError:
-                from quality_geometry import ribbon
-            ribbon(b,mat,part['points'],part['widths'],
+            _quality_geometry().ribbon(b,mat,part['points'],part['widths'],
                    thickness=float(part.get('thickness',.009)))
         elif op=='beam':
-            try:
-                from tools.mesh_sprint.quality_geometry import beam
-            except ImportError:
-                from quality_geometry import beam
-            beam(b,mat,part['start'],part['end'],float(part['width']),float(part['depth']))
+            _quality_geometry().beam(b,mat,part['start'],part['end'],
+                   float(part['width']),float(part['depth']))
         elif op=='forge_blade':
-            try:
-                from tools.mesh_sprint.quality_geometry import _head_bevel
-            except ImportError:
-                from quality_geometry import _head_bevel
-            _head_bevel(b,part['x'],part['top_z'],part['bottom_z'],part['thickness'],mat)
+            _quality_geometry()._head_bevel(b,part['x'],part['top_z'],
+                   part['bottom_z'],part['thickness'],mat)
         elif op=='box':b.box(part['location'],part['dimensions'],mat)
         elif op=='ellipsoid':b.ellipsoid(part['location'],part['radii'],mat,
                                        int(part.get('segments',16)),int(part.get('rings',9)),float(part.get('boxiness',1)))
@@ -390,16 +310,8 @@ def process_one(args):
         b=MeshBuilder()
         if row.get('parts'): compile_parts(b,row)
         else:
-            if row['family'] in FAMILIES:
-                try:
-                    from tools.mesh_sprint.quality_geometry import BUILDERS
-                except ImportError:
-                    from quality_geometry import BUILDERS
-                BUILDERS[row['family']](b,seed=row['seed'],variant=row['variant'])
-                b.transform_variant(row['seed'],strength=.06)
-            else:
-                create_family(b,row)
-                b.transform_variant(row['seed'])
+            _quality_geometry().BUILDERS[row['family']](b,seed=row['seed'],variant=row['variant'])
+            b.transform_variant(row['seed'],strength=.06)
         glb,metrics=b.export()
         sha=hashlib.sha256(glb).hexdigest()
         meta={'asset_id':key,'family':row['family'],'recipe_version':row['recipe_version'],
