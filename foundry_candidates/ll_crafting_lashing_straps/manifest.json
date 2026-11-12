@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_lashing_straps",
+  "source_glb_sha256": "2527078443884c008b27a8278b3c76357a13059141d0b5c3be2723cc786bdb3b",
+  "atlas_sha256": "ae4009bf3942871e5aae6270ee50f97c80c7d43470e30c6d9246ec09a52b7aa6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2610742,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

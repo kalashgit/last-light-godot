@@ -28,9 +28,11 @@
     "ll_crafting_gravel_sack",
     "ll_crafting_hardboard_panel",
     "ll_crafting_hinge_pack",
-    "ll_crafting_insulation_tape"
+    "ll_crafting_insulation_tape",
+    "ll_crafting_lashing_straps",
+    "ll_crafting_leather_patch"
   ],
-  "last_run_id": "43212961756",
+  "last_run_id": "43295462961",
   "golden_approved": false,
-  "remaining": 334
+  "remaining": 332
 }

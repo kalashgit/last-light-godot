@@ -1,0 +1,42 @@
+{
+  "run_id": "43295462961",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 28,
+  "remaining": 332,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_lashing_straps",
+      "source_glb_sha256": "2527078443884c008b27a8278b3c76357a13059141d0b5c3be2723cc786bdb3b",
+      "atlas_sha256": "ae4009bf3942871e5aae6270ee50f97c80c7d43470e30c6d9246ec09a52b7aa6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2610742,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_leather_patch",
+      "source_glb_sha256": "51908ea4693f0c48c36b6230dd29afa628e592043ed116a39d50e0b4056a5eff",
+      "atlas_sha256": "ce00656ebfd63e2447cbe159170dd9ba3e5ec091dedb431dc302a09d7f18b483",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2573678,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
