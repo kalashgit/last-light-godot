@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_plastic_pipe",
+  "source_glb_sha256": "4f4969c5559e6cb930064df114751a0e4e7ac3d27a88e843e62255202db3b22b",
+  "atlas_sha256": "d282d9569673300da3d1a5d06ae8f4580955ea80511a2bdbda32b1887fbdf267",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2629463,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

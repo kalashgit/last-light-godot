@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_plastic_sheet",
+  "source_glb_sha256": "552aa5886a641a8357df6f55746127e08e1f01fa2dcf47a9f1f6c5e6db846319",
+  "atlas_sha256": "7d527db3a89e8797e47e72ade6f1bc08ab1a280268f6895daced9bfc0c69da62",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2533838,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

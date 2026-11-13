@@ -36,9 +36,11 @@
     "ll_crafting_nut_box",
     "ll_crafting_oak_plank",
     "ll_crafting_paving_brick",
-    "ll_crafting_pine_plank"
+    "ll_crafting_pine_plank",
+    "ll_crafting_plastic_pipe",
+    "ll_crafting_plastic_sheet"
   ],
-  "last_run_id": "43463056786",
+  "last_run_id": "43517469934",
   "golden_approved": false,
-  "remaining": 326
+  "remaining": 324
 }
