@@ -1,0 +1,42 @@
+{
+  "run_id": "43342444523",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 30,
+  "remaining": 330,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_metal_rod",
+      "source_glb_sha256": "01a0a6cbbdd2733a476b05a6bd0c119eef6d2cb4e0e8592874d5db59dbc0533f",
+      "atlas_sha256": "e30a5dcbc22938369184aff26582650d20c2b285a691078d5b803a3995c37e17",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2579288,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_nail_box",
+      "source_glb_sha256": "18fd5e5fd3f546a4f90f29762559e58de4d6866ec160e59f8a6ddacadcad58d3",
+      "atlas_sha256": "3b5339fb14c4b04c9e46e0f44bfc9d38413beebaa768c011a8d92b7d56a0df4b",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2615903,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

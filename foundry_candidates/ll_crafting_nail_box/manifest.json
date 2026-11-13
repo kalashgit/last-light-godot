@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_nail_box",
+  "source_glb_sha256": "18fd5e5fd3f546a4f90f29762559e58de4d6866ec160e59f8a6ddacadcad58d3",
+  "atlas_sha256": "3b5339fb14c4b04c9e46e0f44bfc9d38413beebaa768c011a8d92b7d56a0df4b",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2615903,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

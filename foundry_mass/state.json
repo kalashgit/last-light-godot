@@ -30,9 +30,11 @@
     "ll_crafting_hinge_pack",
     "ll_crafting_insulation_tape",
     "ll_crafting_lashing_straps",
-    "ll_crafting_leather_patch"
+    "ll_crafting_leather_patch",
+    "ll_crafting_metal_rod",
+    "ll_crafting_nail_box"
   ],
-  "last_run_id": "43295462961",
+  "last_run_id": "43342444523",
   "golden_approved": false,
-  "remaining": 332
+  "remaining": 330
 }

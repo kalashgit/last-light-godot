@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_metal_rod",
+  "source_glb_sha256": "01a0a6cbbdd2733a476b05a6bd0c119eef6d2cb4e0e8592874d5db59dbc0533f",
+  "atlas_sha256": "e30a5dcbc22938369184aff26582650d20c2b285a691078d5b803a3995c37e17",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2579288,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
