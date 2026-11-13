@@ -167,6 +167,9 @@ static func _static_init() -> void:
 	_i("tarp", "Tarp", "material", 1.0, ["sheet", "3c6a9a", "2c4a6a"], {})
 	_i("garbage_bag", "Garbage Bag", "material", 0.1, ["bag", "2a2c2e", "3a3d40"], {})
 	_i("binoculars", "Binoculars", "tool", 0.6, ["box", "2a2c2e", "5a7aa0"], {"look": 1})
+	_i("diary", "Diary", "misc", 0.3, ["book", "6a3a2a", "e0d0b0"], {"read": 1, "fuel": 0.3, "nostack": 1})
+	_i("bulletin", "Emergency Bulletin", "misc", 0.05, ["paper", "f0e8c0", "c0392b"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("local_map", "Local Map", "misc", 0.1, ["paper", "d8e0c0", "3a6a8a"], {"read": 1, "fuel": 0.1, "nostack": 1})
 	_i("pencil", "Pencil", "tool", 0.05, ["knife", "d8b040", "3a3a3a"], {})
 	_i("notebook", "Notebook", "tool", 0.2, ["book", "3a5a86", "f0ece0"], {"uses": 10, "fuel": 0.2})
 	_i("note", "Handwritten Note", "misc", 0.02, ["paper", "f0ece0", "5a5a56"], {"read": 1, "fuel": 0.05, "nostack": 1})
@@ -310,6 +313,27 @@ static func weight(it: Dictionary) -> float:
 	if d.has("water") and d.has("uses") and int(d["uses"]) > 0:
 		w = 0.1 + (w - 0.1) * float(it.get("u", 0)) / float(d["uses"])
 	return w * float(it.get("n", 1))
+
+## everything worth knowing about one item, in a sentence
+static func inspect_text(it: Dictionary, hour: float) -> String:
+	var d: Dictionary = def(it["id"])
+	var parts: Array = ["%s ×%d, %.1f kg" % [d.get("n", it["id"]), int(it.get("n", 1)), weight(it)]]
+	if it.has("c"): parts.append("condition %d%%" % int(float(it["c"]) * 100.0))
+	if it.has("sh"): parts.append("edge %d%%" % int(float(it["sh"]) * 100.0))
+	if it.has("u") and d.has("uses"): parts.append("%d of %d uses left" % [int(it["u"]), int(d.get("maxuses", d["uses"]))])
+	if d.has("fresh"):
+		parts.append(["fresh", "going stale", "rotten"][fresh_state(it, hour)])
+	if it.has("d"): parts.append("the water is not safe")
+	if d.has("hunger"): parts.append("food value %d" % int(d["hunger"]))
+	if d.has("wpn"):
+		var wp: Dictionary = d["wpn"]
+		parts.append("%s weapon, %d–%d damage, reach %.1f" % [String(wp.get("sk", "")).replace("_", " "), int(wp["dmg"][0]), int(wp["dmg"][1]), float(wp["range"])])
+	if d.has("gun"):
+		parts.append("takes %s, %d rounds" % [def(d["gun"]["ammo"]).get("n", ""), int(d["gun"]["mag"])])
+	if d.has("wear"):
+		parts.append("protects %d%%, warmth %d" % [int(float(d["wear"].get("def", 0.0)) * 100.0), int(d["wear"].get("warm", 0))])
+	if int(it.get("jam", 0)) == 1: parts.append("JAMMED")
+	return ", ".join(parts) + "."
 
 static func can_stack(a: Dictionary, b: Dictionary) -> bool:
 	if a["id"] != b["id"] or DB.get(a["id"], {}).has("nostack"):

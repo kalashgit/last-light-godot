@@ -141,6 +141,29 @@ static func interact(sim: Sim, full_menu: bool = false) -> void:
 		sim.say("Nothing to interact with here", Color(0.7, 0.7, 0.7))
 		return
 	var t: Dictionary = ts[0]
+	# holding USE with several things in reach: first choose which one
+	if full_menu:
+		var distinct: Array = []
+		var names_seen: Dictionary = {}
+		for tt in ts:
+			var nm: String = target_name(sim, tt)
+			var key: String = "%s@%d,%d" % [nm, int(tt.get("x", 0)), int(tt.get("y", 0))]
+			if names_seen.has(key) or options(sim, tt).is_empty():
+				continue
+			names_seen[key] = true
+			distinct.append(tt)
+			if distinct.size() >= 6:
+				break
+		if distinct.size() > 1:
+			var pick: Array = []
+			for tt2 in distinct:
+				var target: Dictionary = tt2
+				var lbl: String = target_name(sim, target)
+				if target["kind"] == "edge" or target["kind"] == "obj":
+					lbl += " (%s)" % Sim.compass(p.pos, Vector2(float(target["x"]) + 0.5, float(target["y"]) + 0.5)) if Vector2(float(target["x"]) + 0.5, float(target["y"]) + 0.5).distance_to(p.pos) > 0.6 else ""
+				pick.append(_opt(lbl, func(): sim.ui_events.append({"type": "menu", "title": target_name(sim, target), "options": options(sim, target)})))
+			sim.ui_events.append({"type": "menu", "title": "What do you want to use?", "options": pick})
+			return
 	var opts: Array = options(sim, t)
 	if opts.is_empty():
 		return

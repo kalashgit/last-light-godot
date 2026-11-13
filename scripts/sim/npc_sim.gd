@@ -769,6 +769,15 @@ func options(n: Npc) -> Array:
 				worst["dirty"] = 0.0
 				worst["heal"] = float(worst.get("heal", 0.0)) * 0.8
 				sim.say("%s cleans and dresses it properly." % n.name, Color(0.75, 0.9, 0.7))})
+	var teach_skill: String = {"medic": "first_aid", "mechanic": "mechanics", "farmer": "farming", "hunter": "aiming", "cook": "cooking", "guard": "short_blunt"}.get(n.job, "")
+	if tr >= 50.0 and teach_skill != "" and not sim.flags.has("taught_%s_%s" % [n.name, teach_skill]):
+		out.append({"label": "\"Teach me what you know about %s.\"" % teach_skill.replace("_", " "), "fn": func():
+			p.start_action("Learning from %s" % n.name, 20.0, func():
+				sim.flags["taught_%s_%s" % [n.name, teach_skill]] = true
+				p.add_xp(teach_skill, 160.0)
+				n.trust = minf(100.0, n.trust + 4.0)
+				p.bored = maxf(0.0, p.bored - 30.0)
+				sim.say("%s shows you how it is done. (%s)" % [n.name, teach_skill.replace("_", " ").capitalize()], Color(0.6, 0.9, 0.6)))})
 	if tr >= 55.0 and not sim.flags.has("npc_tip_%d" % n.id):
 		out.append({"label": "\"What do you know about this area?\"", "fn": func():
 			var tip: Dictionary = {"id": "survivor_note", "n": 1}

@@ -180,6 +180,7 @@ func new_game(occupation: String, trait_list: Array = [], start_kind: String = "
 	safe_pos = player.pos
 	player.look = [rng.randi() % 4, rng.randi() % 10, rng.randi() % 6, rng.randi() % 6]
 	player.setup_occupation(occupation, trait_list)
+	player.pname = String(settings.get("pname", ""))
 	world.loot_mult = float(settings["loot"]) * player.tmod("loot")
 	world.stream(player.pos, 2, 999)
 	safe_bld = world.bld(floori(player.pos.x), floori(player.pos.y))
@@ -551,7 +552,75 @@ func _fill_found_note(note: Dictionary) -> void:
 			note["lab"] = String(best[1]).capitalize() + " (from a note)"
 			note["txt"] = String(note["txt"]) + " Below it, a sketch: %s, %s of here." % [best[1], Sim.compass(player.pos, Vector2(c2))]
 
+const DIARY := ["Day 3. The neighbours stopped answering. Their dog has not stopped barking.", "Day 6. We moved the food down to the cellar. M. says the sound carries less there.",
+	"Day 9. Someone took the car. I hope they made it.", "Day 12. Last entry, I think. If you read this, the key is under the blue pot."]
+
+func _fill_document(doc: Dictionary) -> void:
+	var px: int = floori(player.pos.x)
+	var py: int = floori(player.pos.y)
+	var hv: int = Rng.h2(px, py, seed_v + 1301 + int(hour))
+	match String(doc["id"]):
+		"diary":
+			doc["txt"] = "Someone's diary. " + DIARY[hv % DIARY.size()] + " " + DIARY[(hv >> 5) % DIARY.size()]
+			if (hv >> 9) % 100 < 50:
+				_fill_found_note(doc)                  # some diaries name a place, and it may be out of date
+				if doc.has("mx"):
+					doc["txt"] = "Someone's diary. %s They wrote of %s, %s of here." % [DIARY[hv % DIARY.size()], String(doc.get("lab", "a place")).replace(" (from a note)", "").to_lower(), compass(player.pos, Vector2(float(doc["mx"]), float(doc["my"])))]
+					doc["lab"] = String(doc.get("lab", "A place")).replace("(from a note)", "(from a diary)")
+				else:
+					doc["txt"] = "Someone's diary. " + DIARY[hv % DIARY.size()] + " " + DIARY[(hv >> 5) % DIARY.size()]
+		"bulletin":
+			# printed in the first days: the place it promises may since have been emptied, or overrun
+			var a: float = float(hv % 360) * PI / 180.0
+			var site := Vector2i(px + int(cos(a) * float(60 + (hv >> 8) % 90)), py + int(sin(a) * float(60 + (hv >> 8) % 90)))
+			var kind: String = ["supply drop", "evacuation point", "aid station"][(hv >> 3) % 3]
+			doc["txt"] = "EMERGENCY BULLETIN — residents should report to the %s %s of here. Bring identification and water." % [kind, compass(player.pos, Vector2(site))]
+			doc["mx"] = site.x
+			doc["my"] = site.y
+			doc["lab"] = kind.capitalize() + " (bulletin)"
+			if not pending_sites.has(site):
+				pending_sites[site] = "supply" if (hv >> 12) % 100 < 45 else "overrun"
+		"local_map":
+			# marks the streets around a town centre as known
+			var cx: int = px >> 4
+			var cy: int = py >> 4
+			var known := 0
+			for dy in range(-6, 7):
+				for dx in range(-6, 7):
+					var k := Vector2i(cx + dx, cy + dy)
+					if not world.explored.has(k):
+						var ch: Chunk = world.gen.gen_chunk(k.x, k.y) if absi(dx) > 2 or absi(dy) > 2 or world.chunk(k.x, k.y) == null else world.chunk(k.x, k.y)
+						world.explored[k] = ch.map_px if ch.map_px.size() == Iso.CS2 else WorldGen._minimap(ch)
+						known += 1
+			doc["txt"] = "A road map of the surrounding streets, folded soft. (%d blocks added to your map.)" % known
+
+## a bulletin's promise comes true or does not, the first time anyone gets there
+func _resolve_sites(c: Chunk) -> void:
+	if pending_sites.is_empty():
+		return
+	for k in pending_sites.keys():
+		if (k.x >> 4) != c.cx or (k.y >> 4) != c.cy:
+			continue
+		var what: String = pending_sites[k]
+		pending_sites.erase(k)
+		if what == "supply":
+			var placed := 0
+			for d in [Vector2i(0, 0), Vector2i(2, 0), Vector2i(0, 2), Vector2i(2, 2), Vector2i(-2, 0)]:
+				var t: Vector2i = k + d
+				if world.obj(t.x, t.y) == 0 and not world.tile_blocked(t.x, t.y) and placed < 3:
+					world.set_obj(t.x, t.y, Defs.ocell(Defs.O_CRATE, 0, 0))
+					var arr: Array = Loot.roll("stash", "", rng, hour, 1.0)
+					world.chunk_at(t.x, t.y).containers[World.idx(t.x, t.y)] = arr
+					placed += 1
+		else:
+			for n in range(10):
+				var zp := Vector2(k.x + rng.randf_range(-4.0, 4.0), k.y + rng.randf_range(-4.0, 4.0))
+				if not world.blocked(zp.x, zp.y, 0.3):
+					zombies.spawn(zp)
+
 func read_note(note: Dictionary) -> void:
+	if not note.has("txt") and note["id"] != "note" and note["id"] != "survivor_note":
+		_fill_document(note)
 	if not note.has("txt"):
 		_fill_found_note(note)
 	say(String(note["txt"]), Color(0.86, 0.84, 0.72))
@@ -562,6 +631,7 @@ func read_note(note: Dictionary) -> void:
 	flags["read_note"] = true
 
 # ------------------------------------------------------------------ fish stocks
+var pending_sites: Dictionary = {}  # Vector2i -> "supply" | "overrun": what a bulletin promised, decided when it was printed
 var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
 var _trader_h := 60.0
 var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
@@ -833,6 +903,17 @@ func radio_report() -> void:
 			say("\"Utilities remain in service. Conserve water and fuel.\"", col)
 	else:
 		say("\"…this station is running on reserve power…\"", col)
+	# tomorrow, read off the same seasonal curve the weather follows
+	var tomorrow: float = temperature_base_at(hour + 24.0)
+	var fc: String = "a hard frost, snow possible" if tomorrow < 0.0 else ("a cold day" if tomorrow < 8.0 else ("a warm day" if tomorrow > 22.0 else "mild"))
+	if float(weather.get("wind", 0.0)) > 0.55 and float(weather["cloud"]) > 0.6: fc += ", with storms building"
+	say("\"Tomorrow: %s, around %d degrees.\"" % [fc, int(round(tomorrow))], col)
+	if not factions.sites.is_empty() and rng.randf() < 0.5:
+		var ks: Array = factions.sites.keys()
+		var st: Dictionary = factions.sites[ks[rng.randi() % ks.size()]]
+		if not st["fallen"] and Factions.kind(int(st["f"])) != Factions.RAIDER:
+			say("\"…this is %s. If you can hear us, we have walls and we have work.\"" % Factions.fname(int(st["f"])), Color(0.8, 0.9, 0.75))
+			add_marker(int(st["x"]), int(st["y"]), String(st["name"]) + " (radio)")
 	if fly_active:
 		say("\"Air units are sweeping your sector now. Stay indoors.\"", Color(1.0, 0.75, 0.5))
 	elif fly_next_h - hour < 30.0 and fly_next_h - hour > 0.0:
@@ -849,6 +930,7 @@ func _process_world_events() -> void:
 		for c in world.ev_loaded:
 			_catch_up(c)
 			animals.on_chunk_loaded(c, not c.spawned)
+			_resolve_sites(c)
 			npcs.on_chunk_loaded(c)
 			zombies.on_chunk_loaded(c)
 			view_loaded.append(c)
@@ -877,6 +959,13 @@ func _sleep_check() -> void:
 		wake("The thunder of rotor blades wakes you.")
 
 # ------------------------------------------------------------------ weather
+func temperature_base_at(h: float) -> float:
+	var saved: float = hour
+	hour = h
+	var t: float = temperature_base()
+	hour = saved
+	return t
+
 func temperature_base() -> float:
 	if underground():
 		return 12.0
@@ -1296,7 +1385,7 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
@@ -1304,6 +1393,7 @@ func load_meta(d: Dictionary) -> void:
 	fish = d.get("fish", {})
 	snow_cover = d.get("snowc", 0.0)
 	home = d.get("home", {})
+	pending_sites = d.get("psites", {})
 	_trader_h = d.get("trader_h", 60.0)
 	flooded = d.get("flooded", {})
 	_wet_h = d.get("weth", 0.0)

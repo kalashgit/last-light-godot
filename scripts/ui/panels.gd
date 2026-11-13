@@ -26,6 +26,7 @@ var _ng_zombies := 1
 var _ng_loot := 1
 var _ng_inf := true
 var _ng_seed := ""
+var _ng_name := ""
 var _ng_tab := "who"
 var _ng_traits: Array = []
 var _ng_start := 0
@@ -233,6 +234,20 @@ func _build_newgame() -> void:
 		rebuild())
 	var vb := VBoxContainer.new()
 	if _ng_tab == "who":
+		var hbn := HBoxContainer.new()
+		var nl: Label = UiKit.label("Name", 17, UiKit.DIM)
+		nl.autowrap_mode = TextServer.AUTOWRAP_OFF
+		nl.custom_minimum_size = Vector2(110, 0)
+		hbn.add_child(nl)
+		var ne := LineEdit.new()
+		ne.text = _ng_name
+		ne.placeholder_text = "your survivor's name"
+		ne.max_length = 24
+		ne.custom_minimum_size = Vector2(160, 50)
+		ne.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		ne.text_changed.connect(func(t): _ng_name = t)
+		hbn.add_child(ne)
+		body.add_child(hbn)
 		vb.add_child(UiKit.label("Who were you before?", 17, UiKit.DIM))
 		for k in Player.OCCUPATIONS.keys():
 			var o: Dictionary = Player.OCCUPATIONS[k]
@@ -360,7 +375,7 @@ func _build_newgame() -> void:
 			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [30.0, 60.0, 120.0][int(S2["day"])],
 			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
 			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
-			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])],
+			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "pname": _ng_name.strip_edges(), "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])],
 		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start], _ng_look.duplicate()), 64)
 	go.size_flags_stretch_ratio = 2.0
 	hb2.add_child(go)
@@ -566,6 +581,7 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 				Inv.add(cont["items"], it)
 				_after_move(cont)
 			rebuild()])
+	opts.append(["Inspect", func(): sim.say(Items.inspect_text(it, sim.hour), Color(0.85, 0.88, 0.8))])
 	opts.append(["Drop", func():
 		p.unequip(it)
 		p.inv.erase(it)
@@ -605,7 +621,7 @@ func _stat(name: String, v: float, col: Color) -> void:
 
 func _build_char() -> void:
 	var p: Player = sim.player
-	_header("Survivor")
+	_header(p.pname if p.pname != "" else "Survivor")
 	var tabs := HBoxContainer.new()
 	for t in [["health", "Health"], ["skills", "Skills"]]:
 		var key: String = t[0]
@@ -945,6 +961,8 @@ func _build_death() -> void:
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.add_child(t)
 	var hrs: float = sim.hour - Sim.START_HOUR
+	if p.pname != "":
+		body.add_child(UiKit.label("%s" % p.pname, 24, UiKit.ACCENT))
 	var l: Label = UiKit.label("%s.\n\nYou survived %d days and %d hours.\nInfected killed: %d\nOccupation: %s" % [p.death_cause, int(hrs / 24.0), int(fposmod(hrs, 24.0)), p.kills, Player.OCCUPATIONS[p.occupation]["n"]], 20)
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.add_child(l)

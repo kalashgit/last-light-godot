@@ -2245,6 +2245,120 @@ func _init() -> void:
 		for xx15 in range(fx0 + 1, fx0 + 11):
 			w.chunk_at(xx15, yy15).bld[World.idx(xx15, yy15)] = 0
 
+	print("== interface and documents: choosing a target, inspecting, names, diaries, bulletins, maps, radio, teaching")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	p.facing = Vector2(1, 0)
+	w.set_obj(fx0 + 6, fy0 + 30, Defs.ocell(Defs.O_WARDROBE, 0, 0))
+	w.set_obj(fx0 + 5, fy0 + 31, Defs.ocell(Defs.O_CRATE, 0, 0))
+	w.chunk_at(fx0 + 5, fy0 + 31).containers[World.idx(fx0 + 5, fy0 + 31)] = []
+	cch3 = w.chunk_at(floori(p.pos.x), floori(p.pos.y))
+	cch3.corpses.append({"x": p.pos.x - 0.6, "y": p.pos.y, "d": 0, "l": [0, 0, 0, 0], "h": sim.hour, "perm": 1})
+	sim.ui_events.clear()
+	Actions.interact(sim, true)
+	var first_menu: Dictionary = sim.ui_events[0] if sim.ui_events.size() > 0 else {}
+	ok(first_menu.get("title", "") == "What do you want to use?" and first_menu["options"].size() >= 3, "holding USE among several things asks which one (%d choices)" % (first_menu.get("options", []) as Array).size())
+	if not first_menu.is_empty():
+		var lbls2: Array = []
+		for o in first_menu["options"]: lbls2.append(o["label"])
+		ok(lbls2.any(func(l): return String(l).begins_with("Corpse")) and lbls2.any(func(l): return String(l).begins_with("Wardrobe")) and lbls2.any(func(l): return String(l).begins_with("Crate")), "listing each one (%s)" % str(lbls2))
+		sim.ui_events.clear()
+		for o in first_menu["options"]:
+			if String(o["label"]).begins_with("Crate"): (o["fn"] as Callable).call()
+		ok(sim.ui_events.size() == 1 and String(sim.ui_events[0]["title"]) == "Crate", "choosing one shows its options")
+	sim.ui_events.clear()
+	cch3.corpses.clear()
+	w.remove_object(fx0 + 6, fy0 + 30)
+	w.remove_object(fx0 + 5, fy0 + 31)
+	# inspect
+	var kn2: Dictionary = Items.make("kitchen_knife", 1)
+	kn2["c"] = 0.5
+	var insp: String = Items.inspect_text(kn2, sim.hour)
+	ok(insp.contains("condition 50%") and insp.contains("damage") and insp.contains("kg"), "inspecting an item tells you its weight, condition and what it does (\"%s\")" % insp)
+	# name
+	var named := Sim.new(777)
+	named.settings["pname"] = "Ada Kowal"
+	named.new_game("unemployed", [], "house")
+	ok(named.player.pname == "Ada Kowal", "the survivor has the name you gave them")
+	ok(SaveGame.save(named, slot), "saving a named survivor")
+	var nl2: Sim = SaveGame.load_game(slot)
+	ok(nl2 != null and nl2.player.pname == "Ada Kowal", "the name persists")
+	ok(SaveGame.save(sim, slot), "(restoring the main test save)")
+	# documents
+	p.markers.clear()
+	var bul: Dictionary = Items.make("bulletin", 1, sim.hour)
+	sim.pending_sites.clear()
+	sim.read_note(bul)
+	ok(String(bul.get("txt", "")).begins_with("EMERGENCY BULLETIN") and p.markers.size() == 1, "an emergency bulletin names a place and marks it")
+	var bsite := Vector2i(int(bul["mx"]), int(bul["my"]))
+	ok(sim.pending_sites.has(bsite), "what is really there was decided when it was printed")
+	var outcome: String = sim.pending_sites[bsite]
+	var zbefore: int = sim.zombies.list.size()
+	var fake := Chunk.new(bsite.x >> 4, bsite.y >> 4)
+	w.stream(Vector2(bsite.x + 0.5, bsite.y + 0.5), 1, 999)
+	sim._process_world_events()
+	ok(not sim.pending_sites.has(bsite), "reaching the place settles it")
+	var crates := 0
+	for dd5 in [Vector2i(0, 0), Vector2i(2, 0), Vector2i(0, 2), Vector2i(2, 2), Vector2i(-2, 0)]:
+		if Defs.o_id(w.obj(bsite.x + dd5.x, bsite.y + dd5.y)) == Defs.O_CRATE: crates += 1
+	var zthere := 0
+	for zq in sim.zombies.list:
+		if zq.pos.distance_to(Vector2(bsite)) < 6.0: zthere += 1
+	ok((outcome == "supply" and crates > 0) or (outcome == "overrun" and zthere >= 5), "it was %s (%d crates, %d infected nearby)" % [outcome, crates, zthere])
+	var supplies_seen := false
+	var overrun_seen := false
+	for k18 in range(40):
+		sim.hour += 1.3
+		var b2: Dictionary = Items.make("bulletin", 1, sim.hour)
+		sim._fill_document(b2)
+		var st4 = sim.pending_sites.get(Vector2i(int(b2["mx"]), int(b2["my"])), "")
+		if st4 == "supply": supplies_seen = true
+		if st4 == "overrun": overrun_seen = true
+	ok(supplies_seen and overrun_seen, "some bulletins still hold true and some are out of date")
+	sim.pending_sites.clear()
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.stream(p.pos, 3, 999)
+	sim._process_world_events()
+	quiet(sim)
+	var known0: int = w.explored.size()
+	var lm: Dictionary = Items.make("local_map", 1, sim.hour)
+	sim.read_note(lm)
+	ok(w.explored.size() > known0 + 50, "a local map fills in the streets around you (%d -> %d blocks)" % [known0, w.explored.size()])
+	var dia: Dictionary = Items.make("diary", 1, sim.hour)
+	sim.read_note(dia)
+	ok(String(dia.get("txt", "")).begins_with("Someone's diary."), "a diary has entries in it")
+	# radio
+	sim.log.clear()
+	sim.factions.sites.clear()
+	sim.factions.found(Vector2i(70, 70), Vector2i(fx0 + 60, fy0 + 60), 0, 4)
+	var heard_sett := false
+	var forecast := false
+	for k19 in range(12):
+		sim.log.clear()
+		sim.radio_report()
+		for ln in sim.log:
+			if String(ln[0]).begins_with("\"Tomorrow:"): forecast = true
+			if String(ln[0]).contains("we have walls"): heard_sett = true
+	ok(forecast, "the radio gives tomorrow's weather")
+	ok(heard_sett, "and sometimes a settlement calling out on the frequency")
+	sim.factions.sites.clear()
+	# teaching
+	var tch = sim.npcs.spawn(p.pos + Vector2(1.0, 0.0), false)
+	tch.job = "medic"
+	tch.trust = 60.0
+	var fa0: float = p.skills["first_aid"]
+	var tc: Callable = opt(sim.npcs.options(tch), "\"Teach me")
+	ok(tc.is_valid(), "a survivor who trusts you offers to teach their trade")
+	if tc.is_valid():
+		tc.call()
+		var dur_t: float = float(p.action.get("dur", 20.0))
+		run(sim, dur_t + 1.0)
+		ok(float(p.skills["first_aid"]) > fa0 + 100.0, "you learn from them (first aid +%.0f xp)" % (float(p.skills["first_aid"]) - fa0))
+		ok(not opt(sim.npcs.options(tch), "\"Teach me").is_valid(), "once")
+	sim.npcs.list.clear()
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

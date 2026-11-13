@@ -471,6 +471,7 @@ func melee_stats() -> Dictionary:
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
 var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
+var pname := ""                 # what the survivor is called
 var hidden := false             # inside a wardrobe or locker
 var hide_at := Vector2i.ZERO
 var trail: Array = []           # [pos, hour]: what the infected can follow by scent
@@ -1352,7 +1353,7 @@ func read_item(it: Dictionary) -> void:
 	if sim.daylight() < 0.25 and not light_on and not sim.near_fire(pos) and bld == 0:
 		sim.say("Too dark to read", Color(0.8, 0.8, 0.9))
 		return
-	if it["id"] == "note" or it["id"] == "survivor_note":
+	if it["id"] == "note" or it["id"] == "survivor_note" or it["id"] == "diary" or it["id"] == "bulletin" or it["id"] == "local_map":
 		var note: Dictionary = it
 		start_action("Reading", 2.5, func(): sim.read_note(note))
 		return
@@ -1400,7 +1401,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1480,6 +1481,7 @@ func load(d: Dictionary) -> void:
 	protein = d.get("protein", 50.0)
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
+	pname = d.get("pname", "")
 	grime = d.get("grime", 0.0)
 	hidden = d.get("hidden", false)
 	hide_at = d.get("hide_at", Vector2i.ZERO)
