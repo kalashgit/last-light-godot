@@ -498,8 +498,9 @@ static func _gen_nature() -> void:
 		_reg(Defs.O_CAMPFIRE, p, ax, ay, lit)
 
 static func _gen_crops() -> void:
-	var ids := [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO]
-	for ci in range(4):
+	var ids := [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO,
+		Defs.O_CROP_CORN, Defs.O_CROP_WHEAT, Defs.O_CROP_LETTUCE, Defs.O_CROP_PUMPKIN, Defs.O_CROP_PEPPER, Defs.O_CROP_ONION, Defs.O_CROP_STRAWBERRY, Defs.O_CROP_BEANS]
+	for ci in range(ids.size()):
 		for stage in range(5):
 			var p := Painter.new(64, 56)
 			var ax := 32.0
@@ -534,6 +535,41 @@ static func _gen_crops() -> void:
 						if stage == 3:
 							p.put(int(sx), int(sy), Color(0.9, 0.5, 0.15))
 							p.put(int(sx), int(sy) - 1, Color(0.9, 0.5, 0.15))
+					4:  # corn: tall stalks, yellow ears when ripe
+						p.line(sx, sy, sx, sy - size * 3.4, Color(0.42, 0.6, 0.3))
+						p.line(sx, sy - size * 1.6, sx - size * 0.8, sy - size * 2.2, green)
+						p.line(sx, sy - size * 2.4, sx + size * 0.8, sy - size * 3.0, green)
+						if stage == 3:
+							p.ball(sx + 1, sy - size * 2.0, 1.5, 2.5, Color(0.92, 0.8, 0.3), 230 + si, 0.1)
+					5:  # wheat: thin golden blades
+						var wc: Color = green if stage < 3 else Color(0.85, 0.72, 0.38)
+						for k2 in range(4):
+							p.line(sx + k2 - 1.5, sy, sx + k2 - 2.0, sy - size * 2.4, wc)
+					6:  # lettuce: pale rosette
+						p.ball(sx, sy - size * 0.4, size, size * 0.55, Color(0.58, 0.8, 0.42) if stage < 4 else green, 240 + si, 0.15)
+					7:  # pumpkin: vine, orange gourd when ripe
+						p.ball(sx, sy - size * 0.3, size * 1.1, size * 0.4, green, 250 + si, 0.3)
+						if stage >= 2 and stage < 4:
+							p.ball(sx + 1, sy - size * 0.4, size * (0.4 if stage == 2 else 0.75), size * 0.55, Color(0.9, 0.5, 0.15) if stage == 3 else Color(0.6, 0.7, 0.3), 255 + si, 0.1)
+					8:  # pepper
+						p.ball(sx, sy - size * 0.9, size * 0.8, size * 0.8, green, 260 + si, 0.3)
+						if stage == 3:
+							p.ball(sx + 1, sy - size * 0.6, 1.6, 2.2, Color(0.85, 0.2, 0.15), 265 + si, 0.1)
+					9:  # onion: upright hollow leaves
+						for k3 in range(3):
+							p.line(sx + k3 - 1, sy, sx + (k3 - 1) * 2, sy - size * 1.6, Color(0.42, 0.62, 0.38) if stage < 4 else green)
+						if stage == 3:
+							p.ball(sx, sy - 1, 2.2, 1.6, Color(0.88, 0.8, 0.6), 270 + si, 0.1)
+					10:  # strawberry: low leaves, red berries
+						p.ball(sx, sy - size * 0.35, size * 0.9, size * 0.45, green, 280 + si, 0.3)
+						if stage == 3:
+							p.put(int(sx) - 2, int(sy) - 1, Color(0.85, 0.15, 0.2))
+							p.put(int(sx) + 2, int(sy) - 2, Color(0.85, 0.15, 0.2))
+					11:  # beans: climbing on a stake
+						p.line(sx, sy, sx, sy - size * 2.6, Color(0.55, 0.42, 0.25))
+						p.ball(sx, sy - size * 1.4, size * 0.6, size * 1.1, green, 290 + si, 0.35)
+						if stage == 3:
+							p.line(sx + 2, sy - size * 1.2, sx + 2, sy - size * 0.7, Color(0.36, 0.62, 0.25))
 					3:
 						p.line(sx, sy, sx, sy - size * 2.0, Color(0.36, 0.3, 0.2))
 						p.ball(sx, sy - size * 1.2, size * 0.8, size, green, 220 + si, 0.3)

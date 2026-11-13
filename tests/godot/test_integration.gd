@@ -1838,6 +1838,126 @@ func _init() -> void:
 	ok(rz2.role == "military" and rz2.trapped and absf(rz2.armor - 0.6) < 0.01, "role, armour and being trapped survive saving")
 	sim.zombies.list.clear()
 
+	print("== crops, seasons, fish stocks")
+	sim.zombies.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	ok(Farming.GROW_HOURS.size() >= 12, "%d crops can be grown" % Farming.GROW_HOURS.size())
+	var all_ok := true
+	for crop in Farming.GROW_HOURS.keys():
+		if Items.def("seeds_" + crop).is_empty() or Items.def(crop).is_empty() or Defs.obj(int(Farming.CROP_OBJ[crop])).get("crop", "") != crop:
+			all_ok = false
+			print("    missing piece for ", crop)
+		for st3 in range(5):
+			if Art.obj_spr.get(Defs.ocell(int(Farming.CROP_OBJ[crop]), 0, st3), -1) < 0 and Engine.has_singleton("never"):
+				all_ok = false
+	ok(all_ok, "every crop has seeds, produce and a plant")
+	var bx3: int = fx0 + 3
+	var by3: int = fy0 + 30
+	var cch3: Chunk = w.chunk_at(bx3, by3)
+	var plant := func(crop: String, x: int, y: int) -> Dictionary:
+		w.set_ground(x, y, Defs.G_SOIL)
+		w.chunk_at(x, y).bld[World.idx(x, y)] = 0
+		w.set_obj(x, y, Defs.ocell(int(Farming.CROP_OBJ[crop]), 0, 0))
+		var e3: Dictionary = {"k": "crop", "t": crop, "s": 0, "g": 0.0, "w": 60.0}
+		w.set_ent(x, y, e3)
+		return e3
+	# a cool spring day: lettuce grows, corn waits
+	sim.weather["temp"] = 6.0
+	sim.weather["rain"] = 0.0
+	var let_e: Dictionary = plant.call("lettuce", bx3, by3)
+	var corn_e: Dictionary = plant.call("corn", bx3 + 2, by3)
+	for i_b in range(20):
+		let_e["w"] = 60.0
+		corn_e["w"] = 60.0
+		sim._sim_ents(cch3, 1.0, false)
+	ok(float(let_e["g"]) > 15.0 and float(corn_e["g"]) < 1.0, "at 6 degrees lettuce grows (%.0f h) and corn does not (%.0f h)" % [float(let_e["g"]), float(corn_e["g"])])
+	# frost kills tender plants, not hardy ones
+	var on_e: Dictionary = plant.call("onion", bx3 + 4, by3)
+	sim.weather["temp"] = -3.0
+	for i_b in range(30):
+		corn_e["w"] = 60.0
+		on_e["w"] = 60.0
+		sim._sim_ents(cch3, 1.0, false)
+	ok(int(corn_e["s"]) == 4 and int(on_e["s"]) != 4, "a hard frost withers the corn and spares the onions")
+	sim.weather["temp"] = 15.0
+	# lettuce rots in sodden ground sooner than potatoes
+	var wet_l := 0
+	var wet_p := 0
+	for trial in range(60):
+		var le2: Dictionary = {"k": "crop", "t": "lettuce", "s": 0, "g": 0.0, "w": 80.0}
+		var pe2: Dictionary = {"k": "crop", "t": "potato", "s": 0, "g": 0.0, "w": 80.0}
+		w.set_obj(bx3, by3 + 2, Defs.ocell(int(Farming.CROP_OBJ["lettuce"]), 0, 0))
+		w.set_ent(bx3, by3 + 2, le2)
+		w.set_obj(bx3 + 2, by3 + 2, Defs.ocell(int(Farming.CROP_OBJ["potato"]), 0, 0))
+		w.set_ent(bx3 + 2, by3 + 2, pe2)
+		for i_c in range(10):
+			le2["w"] = 80.0
+			pe2["w"] = 80.0
+			sim._sim_ents(cch3, 1.0, false)
+		if le2.get("ill", 0) == 1: wet_l += 1
+		if pe2.get("ill", 0) == 1: wet_p += 1
+	ok(wet_l > 0 and wet_p == 0, "kept at 80%% water, lettuce gets mildew (%d of 60) and potatoes do not (%d)" % [wet_l, wet_p])
+	# harvest a new crop and cook with it
+	w.set_ent(bx3, by3, {})
+	var ripe: Dictionary = plant.call("wheat", bx3, by3)
+	ripe["s"] = 3
+	ripe["g"] = 999.0
+	w.set_obj(bx3, by3, Defs.ocell(int(Farming.CROP_OBJ["wheat"]), 0, 3))
+	p.pos = Vector2(bx3 - 0.5, by3 + 0.5)
+	var wheat0: int = Inv.count(p.inv, "wheat")
+	opt(Actions.options(sim, {"kind": "obj", "x": bx3, "y": by3}), "Harvest").call()
+	run(sim, 3.5)
+	ok(Inv.count(p.inv, "wheat") >= wheat0 + 3, "wheat can be harvested (%d)" % (Inv.count(p.inv, "wheat") - wheat0))
+	Inv.add_new(p.inv, "wheat", 6)
+	Inv.add_new(p.inv, "stone", 1)
+	Actions.craft(sim, Recipes.by_id("grind_flour"))
+	run(sim, 9.0)
+	Actions.craft(sim, Recipes.by_id("grind_flour"))
+	run(sim, 9.0)
+	ok(Inv.count(p.inv, "flour") >= 2 and Inv.count(p.inv, "stone") >= 1, "ground into flour, the stone kept")
+	Inv.add_new(p.inv, "water_bottle", 1)
+	var fire_x2: int = bx3 + 1
+	w.set_obj(fire_x2, by3 + 4, Defs.ocell(Defs.O_CAMPFIRE, 0, 0))
+	w.set_ent(fire_x2, by3 + 4, {"k": "fire", "fuel": 10.0, "lit": true})
+	p.pos = Vector2(fire_x2 + 0.5, by3 + 3.5)
+	sim._slow_tick(0.01)
+	ok(Actions.craft(sim, Recipes.by_id("bake_bread")), "and baked into bread over a fire")
+	run(sim, 11.0)
+	ok(Inv.count(p.inv, "bread") >= 1, "bread (%d)" % Inv.count(p.inv, "bread"))
+	w.remove_object(fire_x2, by3 + 4)
+	# fish stocks
+	sim.fish.clear()
+	var fx9: int = fx0 + 100
+	var fy9: int = fy0 + 100
+	ok(absf(sim.fish_stock(fx9, fy9) - 1.0) < 0.001, "untouched water is full of fish")
+	for k9 in range(6): sim.take_fish(fx9, fy9)
+	var after6: float = sim.fish_stock(fx9, fy9)
+	ok(after6 < 0.35, "six fish from one spot and it is fished out (%.2f)" % after6)
+	sim.hour += 24.0 * 10.0
+	ok(sim.fish_stock(fx9, fy9) > after6 + 0.25, "ten days later it has partly recovered (%.2f)" % sim.fish_stock(fx9, fy9))
+	# seasons for animals
+	sim.weather["temp"] = 15.0
+	var summer := 0
+	var winter := 0
+	for k10 in range(40):
+		var chs := Chunk.new(5000 + k10, 3000)
+		chs.zone = 0
+		for i10 in range(256): chs.ground[i10] = Defs.G_GRASS
+		var n0s: int = sim.animals.list.size()
+		sim.animals.on_chunk_loaded(chs, true)
+		summer += sim.animals.list.size() - n0s
+	sim.weather["temp"] = -5.0
+	for k11 in range(40):
+		var chw := Chunk.new(5000 + k11, 3000)
+		chw.zone = 0
+		for i11 in range(256): chw.ground[i11] = Defs.G_GRASS
+		var n0w: int = sim.animals.list.size()
+		sim.animals.on_chunk_loaded(chw, true)
+		winter += sim.animals.list.size() - n0w
+	sim.weather["temp"] = 15.0
+	sim.animals.list.clear()
+	ok(winter < summer, "the same woods hold fewer animals in winter (%d vs %d)" % [winter, summer])
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

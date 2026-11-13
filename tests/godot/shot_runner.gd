@@ -278,6 +278,14 @@ func _process(_dt: float) -> bool:
 			for sp in spots:
 				var an = sim.animals.spawn(sp[0], pp + sp[1])
 				an.dir = (sp[2] as Vector2).normalized()
+			var ck: Array = Farming.GROW_HOURS.keys()
+			for ci2 in range(ck.size()):
+				var cx4: int = floori(pp.x) - 6 + ci2
+				var cy4: int = floori(pp.y) + 3
+				for yy in range(2):
+					sim.world.set_obj(cx4, cy4 + yy, 0)
+					sim.world.set_ground(cx4, cy4 + yy, Defs.G_SOIL)
+					sim.world.set_obj(cx4, cy4 + yy, Defs.ocell(int(Farming.CROP_OBJ[ck[ci2]]), 0, 3 if yy == 0 else 2))
 			main.view.zoom = 2.2
 		879:
 			for an2 in sim.animals.list: an2.state = AnimalSim.IDLE

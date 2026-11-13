@@ -1258,7 +1258,8 @@ static func _water_options(sim: Sim, t: Dictionary) -> Array:
 			p.start_action("Spear fishing", 6.0, func():
 				p.add_xp("fishing", 8.0)
 				p.add_xp("spear", 4.0)
-				if randf() < 0.18 + p.skill_level("fishing") * 0.05 + p.skill_level("spear") * 0.03:
+				if randf() < (0.18 + p.skill_level("fishing") * 0.05 + p.skill_level("spear") * 0.03) * sim.fish_stock(t["x"], t["y"]):
+					sim.take_fish(t["x"], t["y"])
 					Inv.add(p.inv, Items.make("raw_fish", 1, sim.hour))
 					sim.say("You spear a fish", Color(0.7, 0.9, 1.0))
 				else:
@@ -1266,9 +1267,13 @@ static func _water_options(sim: Sim, t: Dictionary) -> Array:
 	if Inv.has_tag(p.inv, "fishing"):
 		out.append(_opt("Fish", func():
 			p.start_action("Fishing", 8.0, func():
-				var ch: float = 0.35 + p.skill_level("fishing") * 0.06
+				var stock: float = sim.fish_stock(t["x"], t["y"])
+				var hod: float = sim.hour_of_day()
+				var dawn_dusk: bool = (hod >= 4.0 and hod < 7.0) or (hod >= 18.0 and hod < 21.0)
+				var ch: float = (0.35 + p.skill_level("fishing") * 0.06) * stock * (1.35 if dawn_dusk else 1.0) * (0.6 if float(sim.weather["temp"]) < 2.0 else 1.0)
 				p.add_xp("fishing", 10.0)
 				if randf() < ch:
+					sim.take_fish(t["x"], t["y"])
 					Inv.add(p.inv, Items.make("raw_fish", 1, sim.hour))
 					sim.say("You caught a fish", Color(0.7, 0.9, 1.0))
 					sim.emit_fx("pickup", p.pos)

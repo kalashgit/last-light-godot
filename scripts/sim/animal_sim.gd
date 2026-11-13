@@ -65,13 +65,16 @@ func on_chunk_loaded(c: Chunk, first: bool) -> void:
 		return
 	var hv: int = Rng.h2(c.cx, c.cy, sim.seed_v + 808)
 	var quota: int = [0, 0, 1, 1, 2, 3][hv % 6] if c.zone == 0 else [0, 0, 0, 1, 1, 2][hv % 6]
+	var winter: bool = float(sim.weather.get("temp", 10.0)) < 2.0
+	if winter and quota > 0:
+		quota = maxi(0, quota - 1)                 # thinner in the cold
 	if first:
 		for k in range(quota):
 			var p: Vector2 = _free_spot(c, k)
 			if p.x >= 0.0:
 				spawn(KINDS[(hv >> (4 + k * 3)) % KINDS.size()], p)
 		c.an_h = sim.hour
-	elif quota > 0 and sim.hour - c.an_h > 96.0:
+	elif quota > 0 and sim.hour - c.an_h > (192.0 if winter else 96.0):
 		# something wanders back in, slowly, and never past what the land carried
 		var here := 0
 		for a2 in list:
@@ -166,6 +169,9 @@ func update(dt: float) -> void:
 		var dp: float = a.pos.distance_to(p.pos)
 		# what can it see or hear?
 		var see: float = float(sp["see"]) * (0.45 if p.sneaking else 1.0) * (0.6 if sim.daylight() < 0.3 else 1.0)
+		var hod2: float = sim.hour_of_day()
+		if (hod2 >= 4.5 and hod2 < 8.0) or (hod2 >= 17.0 and hod2 < 21.0):
+			see *= 0.8                                 # dawn and dusk: out feeding, less watchful
 		var noticed: bool = p.alive and sim.vehicle == null and dp < see and w.los(a.pos.x, a.pos.y, p.pos.x, p.pos.y)
 		if sim.vehicle != null and dp < 12.0: noticed = true
 		var scare_from: Vector2 = p.pos

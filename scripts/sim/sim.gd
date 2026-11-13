@@ -561,6 +561,21 @@ func read_note(note: Dictionary) -> void:
 	player.bored = maxf(0.0, player.bored - 10.0)
 	flags["read_note"] = true
 
+# ------------------------------------------------------------------ fish stocks
+var fish: Dictionary = {}          # chunk key -> [stock 0..1, hour last updated]
+
+## how many fish are left in this stretch of water (1 = untouched), recovering about 3% a day
+func fish_stock(x: int, y: int) -> float:
+	var k := Vector2i(x >> 4, y >> 4)
+	if not fish.has(k):
+		return 1.0
+	var e: Array = fish[k]
+	return minf(1.0, float(e[0]) + (hour - float(e[1])) / 24.0 * 0.03)
+
+func take_fish(x: int, y: int) -> void:
+	var k := Vector2i(x >> 4, y >> 4)
+	fish[k] = [maxf(0.05, fish_stock(x, y) - 0.12), hour]
+
 func near_roof(pos: Vector2) -> bool:
 	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 		if world.bld(floori(pos.x) + d.x, floori(pos.y) + d.y) != 0:
@@ -916,8 +931,12 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 					e["w"] = minf(100.0, float(e["w"]) + rain * 40.0 * dh)
 				var stage: int = e["s"]
 				if stage < 3:
-					var warm_enough: bool = float(weather["temp"]) > 4.0 or not outdoors
-					if e.get("ill", 0) == 0 and float(e["w"]) > 85.0 and randf() < dh * 0.012:
+					var crop_t: String = e["t"]
+					var warm_enough: bool = float(weather["temp"]) > float(Farming.MIN_T.get(crop_t, 4.0)) or not outdoors
+					if outdoors and float(weather["temp"]) < 0.0 and Farming.FROST_KILLS.has(crop_t) and randf() < dh * 0.25:
+						e["dry"] = 99.0                    # frost blackens tender plants
+					var wet_lim: float = 75.0 if Farming.WET_SENSITIVE.has(crop_t) else 85.0
+					if e.get("ill", 0) == 0 and float(e["w"]) > wet_lim and randf() < dh * 0.012:
 						e["ill"] = 1          # standing water breeds mildew
 						e["ill_h"] = 0.0
 					if e.get("ill", 0) == 1:
@@ -1130,11 +1149,12 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
 	pipes = d.get("pipes", {})
+	fish = d.get("fish", {})
 	hour = d["hour"]
 	world.hour = hour
 	var st: Dictionary = d.get("settings", {})

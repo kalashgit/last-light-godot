@@ -36,7 +36,7 @@ static func _static_init() -> void:
 	T["office"] = {"rolls": [0, 2], "items": [["newspaper", 8, 1, 3], ["scissors", 2, 1, 1], ["money", 2, 5, 80], ["duct_tape", 2, 1, 1], ["battery", 2, 1, 2], ["painkillers", 1, 1, 1]]}
 	T["crate"] = {"rolls": [1, 4], "items": [["nails", 8, 5, 30], ["plank", 6, 1, 3], ["duct_tape", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["scrap_metal", 4, 1, 2], ["wire", 3, 1, 2],
 		["canned_beans", 3, 1, 3], ["water_bottle", 3, 1, 3], ["charcoal", 2, 1, 1], ["garbage_bag", 3, 1, 4], ["battery", 2, 1, 3], ["hammer", 1.5, 1, 1], ["saw", 1.2, 1, 1]]}
-	T["farm"] = {"rolls": [2, 5], "items": [["bucket", 4, 1, 1], ["seeds_potato", 6, 1, 3], ["seeds_cabbage", 6, 1, 3], ["seeds_carrot", 6, 1, 3], ["seeds_tomato", 6, 1, 3], ["trowel", 4, 1, 1], ["watering_can", 4, 1, 1],
+	T["farm"] = {"rolls": [2, 5], "items": [["seeds_corn", 4, 1, 3], ["seeds_wheat", 4, 1, 3], ["seeds_lettuce", 4, 1, 3], ["seeds_pumpkin", 4, 1, 3], ["seeds_pepper", 4, 1, 3], ["seeds_onion", 4, 1, 3], ["seeds_strawberry", 4, 1, 3], ["seeds_beans", 4, 1, 3], ["bucket", 4, 1, 1], ["seeds_potato", 6, 1, 3], ["seeds_cabbage", 6, 1, 3], ["seeds_carrot", 6, 1, 3], ["seeds_tomato", 6, 1, 3], ["trowel", 4, 1, 1], ["watering_can", 4, 1, 1],
 		["shovel", 3, 1, 1], ["fertilizer", 4, 1, 2], ["rope", 3, 1, 1], ["axe", 1.5, 1, 1], ["nails", 4, 5, 25], ["potato", 3, 2, 6], ["gas_can", 1.5, 1, 1], ["tarp", 2, 1, 1]]}
 	T["cabin"] = {"rolls": [2, 5], "items": [["binoculars", 3, 1, 1], ["canned_beans", 5, 1, 3], ["jerky", 5, 1, 2], ["matches", 5, 1, 1], ["fishing_rod", 3, 1, 1], ["hunting_knife", 2.5, 1, 1], ["hatchet", 2.5, 1, 1],
 		["rifle", 0.8, 1, 1], ["rifle_rounds", 1.5, 3, 10], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["bedroll_item", 2, 1, 1], ["whiskey", 2, 1, 1], ["book_foraging", 1.5, 1, 1], ["candle", 3, 1, 2], ["water_bottle", 4, 1, 2]]}
@@ -57,7 +57,7 @@ static func _static_init() -> void:
 	T["store_pharmacy"] = {"rolls": [2, 5], "items": [["bandage", 8, 1, 4], ["painkillers", 7, 1, 2], ["disinfectant", 6, 1, 2], ["vitamins", 5, 1, 2], ["antibiotics", 3, 1, 2], ["first_aid_kit", 2, 1, 1],
 		["suture_kit", 2, 1, 2], ["scissors", 2, 1, 1], ["chocolate", 2, 1, 2], ["water_bottle", 3, 1, 2], ["cigarettes", 3, 1, 2], ["tweezers", 3, 1, 1], ["alcohol_wipes", 5, 1, 2],
 		["beta_blockers", 4, 1, 2], ["antidepressants", 4, 1, 2], ["sleeping_pills", 3, 1, 1]]}
-	T["store_hardware"] = {"rolls": [2, 5], "items": [["nails", 10, 20, 80], ["hammer", 5, 1, 1], ["saw", 4, 1, 1], ["screwdriver", 5, 1, 1], ["wrench", 4, 1, 1], ["duct_tape", 5, 1, 3], ["rope", 4, 1, 2],
+	T["store_hardware"] = {"rolls": [2, 5], "items": [["seeds_corn", 2, 1, 3], ["seeds_wheat", 2, 1, 3], ["seeds_lettuce", 2, 1, 3], ["seeds_pumpkin", 2, 1, 3], ["seeds_pepper", 2, 1, 3], ["seeds_onion", 2, 1, 3], ["seeds_strawberry", 2, 1, 3], ["seeds_beans", 2, 1, 3], ["nails", 10, 20, 80], ["hammer", 5, 1, 1], ["saw", 4, 1, 1], ["screwdriver", 5, 1, 1], ["wrench", 4, 1, 1], ["duct_tape", 5, 1, 3], ["rope", 4, 1, 2],
 		["wire", 4, 1, 3], ["tarp", 4, 1, 2], ["flashlight", 4, 1, 1], ["battery", 5, 2, 6], ["crowbar", 2, 1, 1], ["axe", 2, 1, 1], ["shovel", 3, 1, 1], ["trowel", 3, 1, 1], ["watering_can", 2, 1, 1],
 		["seeds_potato", 2, 1, 3], ["seeds_cabbage", 2, 1, 3], ["seeds_carrot", 2, 1, 3], ["seeds_tomato", 2, 1, 3], ["fertilizer", 3, 1, 2], ["gas_can", 2, 1, 1], ["lighter", 3, 1, 2], ["candle", 3, 1, 3],
 		["bucket", 3, 1, 1], ["glue", 3, 1, 1], ["charcoal", 3, 1, 2], ["glass_pane", 1.5, 1, 2], ["work_gloves", 3, 1, 1]]}

@@ -138,6 +138,10 @@ static func _static_init() -> void:
 	_r("forge_machete", "Forge a machete", "Smithing", {"in": [["metal_bar", 2], ["wooden_handle", 1]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 3], "out": [["machete", 1]], "time": 12.0, "xp": ["blacksmithing", 45]})
 	_r("forge_crowbar", "Forge a crowbar", "Smithing", {"in": [["metal_bar", 2]], "tools": ["hammer"], "near": "forge", "skill": ["blacksmithing", 2], "out": [["crowbar", 1]], "time": 11.0, "xp": ["blacksmithing", 35]})
 	# ---- preserving and remedies
+	_r("cook_corn", "Roast corn", "Cooking", {"in": [["corn", 1]], "near": "heat", "out": [["cooked_corn", 1]], "time": 4.0, "xp": ["cooking", 8]})
+	_r("grind_flour", "Grind wheat into flour", "Cooking", {"in": [["wheat", 3], ["stone", 1]], "out": [["flour", 1], ["stone", 1]], "time": 8.0, "xp": ["cooking", 10]})
+	_r("bake_bread", "Bake bread", "Cooking", {"in": [["flour", 2], ["water", 1]], "near": "heat", "skill": ["cooking", 1], "out": [["bread", 1]], "time": 10.0, "xp": ["cooking", 22]})
+	_r("pumpkin_soup", "Make pumpkin soup", "Cooking", {"in": [["pumpkin", 1], ["onion", 1], ["water", 1]], "near": "heat", "skill": ["cooking", 2], "out": [["pumpkin_soup", 3]], "time": 10.0, "xp": ["cooking", 25]})
 	_r("pickle", "Pickle vegetables", "Cooking", {"in": [["glass_jar", 1], ["cabbage", 1], ["carrot", 1], ["water", 1]], "near": "heat", "skill": ["cooking", 2], "out": [["pickles", 1]], "time": 7.0, "xp": ["cooking", 20]})
 	_r("jam", "Boil berries into preserves", "Cooking", {"in": [["glass_jar", 1], ["berries", 4]], "near": "heat", "skill": ["cooking", 1], "out": [["preserves", 1]], "time": 7.0, "xp": ["cooking", 18]})
 	_r("plant_cure", "Mix mildew spray", "Farming", {"in": [["milk", 1], ["water", 1]], "out": [["plant_cure", 1]], "time": 3.0, "xp": ["farming", 8]})

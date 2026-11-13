@@ -289,7 +289,7 @@ static func _house_lot(b: LotBuilder) -> void:
 			for i in range(3):
 				if b.inb(gx + i, 2 + j) and b.room_at(gx + i, 2 + j) < 0 and b.occ[(2 + j) * b.cw + gx + i] == 0:
 					b.floor_g[(2 + j) * b.cw + gx + i] = Defs.G_SOIL
-					b.placements.append([_pick(rng, [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO]) | 0x10000, gx + i, 2 + j, 0])
+					b.placements.append([_pick(rng, [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO, Defs.O_CROP_CORN, Defs.O_CROP_WHEAT, Defs.O_CROP_PUMPKIN, Defs.O_CROP_ONION, Defs.O_CROP_BEANS]) | 0x10000, gx + i, 2 + j, 0])
 					b.occ[(2 + j) * b.cw + gx + i] = 1
 
 # ------------------------------------------------------------------ shops & civic
@@ -576,7 +576,7 @@ static func _farm(b: LotBuilder) -> void:
 	# fields
 	var field := Rect2i(2, 2, b.cw - 4, b.ch - 22)
 	if field.size.y >= 4:
-		var crops: Array = [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO]
+		var crops: Array = [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO, Defs.O_CROP_CORN, Defs.O_CROP_WHEAT, Defs.O_CROP_PUMPKIN, Defs.O_CROP_ONION, Defs.O_CROP_BEANS]
 		for v in range(field.position.y, field.end.y):
 			for u in range(field.position.x, field.end.x):
 				if b.room_at(u, v) >= 0:

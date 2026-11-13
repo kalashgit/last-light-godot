@@ -262,7 +262,15 @@ const O_MOTORBIKE := 116
 const O_BICYCLE := 117
 const O_BATTERY_BANK := 118
 const O_SOLAR := 119
-const O_COUNT := 120
+const O_CROP_CORN := 120
+const O_CROP_WHEAT := 121
+const O_CROP_LETTUCE := 122
+const O_CROP_PUMPKIN := 123
+const O_CROP_PEPPER := 124
+const O_CROP_ONION := 125
+const O_CROP_STRAWBERRY := 126
+const O_CROP_BEANS := 127
+const O_COUNT := 128
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -368,6 +376,14 @@ static func _static_init() -> void:
 	_o(O_CROP_CABBAGE, {"n": "Cabbage plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "cabbage"})
 	_o(O_CROP_CARROT, {"n": "Carrot plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "carrot"})
 	_o(O_CROP_TOMATO, {"n": "Tomato plant", "solid": 0.0, "sym": 1, "h": 30, "use": "crop", "custom": 1, "crop": "tomato"})
+	_o(O_CROP_CORN, {"n": "Corn plant", "solid": 0.0, "sym": 1, "h": 40, "use": "crop", "custom": 1, "crop": "corn"})
+	_o(O_CROP_WHEAT, {"n": "Wheat plant", "solid": 0.0, "sym": 1, "h": 40, "use": "crop", "custom": 1, "crop": "wheat"})
+	_o(O_CROP_LETTUCE, {"n": "Lettuce plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "lettuce"})
+	_o(O_CROP_PUMPKIN, {"n": "Pumpkin plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "pumpkin"})
+	_o(O_CROP_PEPPER, {"n": "Bell pepper plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "pepper"})
+	_o(O_CROP_ONION, {"n": "Onion plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "onion"})
+	_o(O_CROP_STRAWBERRY, {"n": "Strawberry plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "strawberry"})
+	_o(O_CROP_BEANS, {"n": "Green beans plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "beans"})
 	_o(O_GENERATOR, {"n": "Generator", "solid": 0.3, "h": 30, "use": "generator", "hp": 200})
 	_o(O_BEDROLL, {"n": "Bedroll", "solid": 0.0, "sym": 1, "h": 10, "use": "bed", "custom": 1})
 	_o(O_SHELF, {"n": "Storage shelf", "h": 58, "c": "", "cap": 45, "scrap": [["plank", 3], ["nails", 4]]})
