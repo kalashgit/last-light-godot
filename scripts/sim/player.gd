@@ -381,6 +381,17 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 				_run_xp = 0.0
 				add_xp("fitness", 2.0)
 				add_xp("sprinting", 3.0)
+		if _step_t <= 0.0 and moving and running and sim.icy(floori(pos.x), floori(pos.y)) and randf() < 0.08 * (1.0 - skill_level("nimble") * 0.08):
+			# feet go out from under you
+			slow_t = 1.2
+			cancel_action()
+			sim.noise(pos, 6.0)
+			sim.emit_fx("thump", pos)
+			if not sim.settings.get("god", false):
+				hurt(randf_range(2.0, 5.0), "Fell on the ice")
+				if randf() < 0.15:
+					add_wound(randi() % 2 + 9, "fracture" if randf() < 0.2 else "scratch", "a fall on the ice")
+			sim.say("You slip on the ice.", Color(0.8, 0.9, 1.0))
 		if _step_t <= 0.0 and moving:
 			_step_t = 0.32 if running else (0.7 if sneaking else 0.46)
 			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise") * (1.0 - skill_level("lightfooted") * 0.05) * surface_noise()
@@ -435,6 +446,7 @@ func speed_factor() -> float:
 	var ow: float = over_weight()
 	if ow > 0.0: f *= clampf(1.0 - ow * 0.07, 0.35, 1.0)
 	if endurance < 25.0: f *= 0.8
+	if bld == 0 and sim.snow_cover > 0.3 and World.level(pos.y) == 0: f *= 1.0 - minf(0.3, sim.snow_cover * 0.3)
 	if fatigue > 80.0: f *= 0.85
 	if pain > 60.0: f *= 0.82
 	if slow_t > 0.0: f *= 0.5

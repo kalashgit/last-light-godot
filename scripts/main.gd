@@ -149,6 +149,16 @@ func _play(dt: float) -> void:
 	light.update(sim, view, dt)
 	weather.intensity = 0.0 if World.level(sim.player.pos.y) != 0 else float(sim.weather["rain"])
 	weather.flyover = sim.fly_active and not sim.underground()
+	var outside: bool = World.level(sim.player.pos.y) == 0
+	weather.snow = 1.0 if float(sim.weather.get("snow", 0.0)) > 0.05 else 0.0
+	weather.cover = sim.snow_cover if outside and sim.player.bld == 0 else 0.0
+	weather.flash = sim.lightning if outside else 0.0
+	var smk := 0.0
+	for bk in sim.burning.keys():
+		var dsm: float = Vector2(bk.x + 0.5, bk.y + 0.5).distance_to(sim.player.pos)
+		if dsm < 9.0 and (sim.world.bld(bk.x, bk.y) == sim.player.bld and sim.player.bld != 0 or dsm < 2.5):
+			smk += 0.06
+	weather.smoke = smk
 	for ev in sim.ui_events:
 		match ev["type"]:
 			"loot": panels.open("inv", ev)

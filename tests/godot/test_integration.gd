@@ -1958,6 +1958,132 @@ func _init() -> void:
 	sim.animals.list.clear()
 	ok(winter < summer, "the same woods hold fewer animals in winter (%d vs %d)" % [winter, summer])
 
+	print("== weather hazards: snow, ice, storms, fallen trees, floods, smoke")
+	sim.zombies.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.chunk_at(floori(p.pos.x), floori(p.pos.y)).bld[World.idx(floori(p.pos.x), floori(p.pos.y))] = 0
+	p.bld = 0
+	sim.snow_cover = 0.0
+	sim.weather["temp"] = -4.0
+	sim.weather["rain"] = 0.8
+	sim.weather["snow"] = 0.8
+	for i_w in range(10): sim._weather_hazards(1.0)
+	ok(sim.snow_cover > 0.5, "snow settles while it falls (%.2f)" % sim.snow_cover)
+	var sf_snow: float = p.speed_factor()
+	ok(sf_snow < 0.9, "deep snow slows you (x%.2f)" % sf_snow)
+	ok(sim.icy(floori(p.pos.x), floori(p.pos.y)), "and below freezing the ground is treacherous")
+	sim.settings["god"] = false
+	p.hp = 100.0
+	var slipped := false
+	for i_w in range(300):
+		p._step_t = 0.0
+		p.update(1.0 / 30.0, Vector2(1, 0), true)
+		if p.slow_t > 0.5:
+			slipped = true
+			break
+		if i_w % 40 == 39: p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
+	sim.settings["god"] = true
+	ok(slipped, "running on ice, you go down sooner or later")
+	sim.weather["temp"] = 10.0
+	sim.weather["snow"] = 0.0
+	sim.weather["rain"] = 0.0
+	for i_w in range(20): sim._weather_hazards(1.0)
+	ok(sim.snow_cover < 0.3 and not sim.icy(floori(p.pos.x), floori(p.pos.y)), "a thaw melts it (%.2f)" % sim.snow_cover)
+	sim.snow_cover = 0.0
+	p.hp = 100.0
+	p.wounds.clear()
+	p.slow_t = 0.0
+	# storms: a stand of trees around you, then a few hundred gusts and strikes
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	for yy11 in range(fy0 + 1, fy0 + 43, 3):
+		for xx11 in range(fx0 + 1, fx0 + 11, 3):
+			w.set_obj(xx11, yy11, Defs.ocell(Defs.O_TREE_OAK, 0, 0))
+	p.pos = Vector2(fx0 + 5.5, fy0 + 20.5)
+	var fell := false
+	var struck := false
+	sim.rng.seed = 4242
+	for k12 in range(600):
+		sim._storm_event()
+		if not sim.burning.is_empty():
+			struck = true
+			sim.burning.clear()
+			sim.fires.clear()
+		if struck and fell: break
+		for yy12 in range(fy0, fy0 + 44):
+			for xx12 in range(fx0, fx0 + 12):
+				if Defs.o_id(w.obj(xx12, yy12)) == Defs.O_FALLEN_TREE: fell = true
+	ok(struck, "lightning can set a tree alight")
+	ok(fell, "and a storm can blow one down across the ground beside it")
+	ok(sim.lightning > 0.0, "a strike lights the sky")
+	var fa2 := Vector2i(-1, -1)
+	for yy13 in range(fy0, fy0 + 44):
+		for xx13 in range(fx0, fx0 + 12):
+			if fa2.x < 0 and Defs.o_id(w.obj(xx13, yy13)) == Defs.O_FALLEN_TREE:
+				fa2 = w.anchor_of(xx13, yy13)
+	ok(fa2.x >= 0 and w.tile_blocked(fa2.x, fa2.y) and w.tile_blocked(fa2.x + 1, fa2.y), "a fallen tree blocks the way")
+	if fa2.x >= 0:
+		p.pos = Vector2(fa2.x + 0.5, fa2.y - 0.5)
+		if w.blocked(p.pos.x, p.pos.y, Player.R): p.pos = Vector2(fa2.x + 0.5, fa2.y + 1.5)
+		Inv.add_new(p.inv, "axe", 1)
+		var logs0: int = Inv.count(p.inv, "log")
+		var co9: Array = Actions.options(sim, {"kind": "obj", "x": fa2.x, "y": fa2.y})
+		opt(co9, "Cut it up").call()
+		run(sim, 20.0)
+		ok(w.obj(fa2.x, fa2.y) == 0 and Inv.count(p.inv, "log") == logs0 + 2, "an axe clears it and gives you the wood")
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	# floods
+	sim.flooded.clear()
+	var wx2: int = fx0 + 9
+	for yy7 in range(fy0 + 28, fy0 + 40):
+		w.set_ground(wx2, yy7, Defs.G_WATER)
+		w.set_ground(wx2 - 1, yy7, Defs.G_ASPHALT)
+		w.chunk_at(wx2 - 1, yy7).bld[World.idx(wx2 - 1, yy7)] = 0
+	p.pos = Vector2(fx0 + 5.5, fy0 + 33.5)
+	sim._wet_h = 10.0
+	sim.weather["rain"] = 1.0
+	var road_wet := false
+	for i_w in range(400):
+		sim._flood_step()
+		for yy8 in range(fy0 + 28, fy0 + 40):
+			if sim.flooded.has(Vector2i(wx2 - 1, yy8)): road_wet = true
+		if road_wet: break
+	ok(sim.flooded.size() > 0 and road_wet, "a long downpour floods the road beside the river (%d tiles)" % sim.flooded.size())
+	var flood_t: Vector2i = Vector2i(-1, -1)
+	for k13 in sim.flooded.keys():
+		if k13.x == wx2 - 1: flood_t = k13
+	ok(flood_t.x >= 0 and Defs.ground_is_water(w.ground(flood_t.x, flood_t.y)), "the water is really there")
+	ok(SaveGame.save(sim, slot), "saving mid-flood")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and s2.flooded.size() == sim.flooded.size(), "floods persist")
+	sim._wet_h = 0.0
+	sim.weather["rain"] = 0.0
+	for i_w in range(500):
+		if sim.flooded.is_empty(): break
+		sim._recede_step()
+	ok(sim.flooded.is_empty() and w.ground(flood_t.x, flood_t.y) == Defs.G_ASPHALT, "and recede, giving the road back")
+	# smoke
+	var room_b: int = 777001
+	for yy9 in range(fy0 + 28, fy0 + 33):
+		for xx9 in range(fx0 + 1, fx0 + 6):
+			w.chunk_at(xx9, yy9).bld[World.idx(xx9, yy9)] = room_b
+			w.set_ground(xx9, yy9, Defs.G_WOOD)
+	p.pos = Vector2(fx0 + 1.5, fy0 + 28.5)
+	p.bld = room_b
+	sim.burning[Vector2i(fx0 + 5, fy0 + 32)] = 50.0
+	sim.settings["god"] = false
+	p.hp = 100.0
+	for i_w in range(5):
+		sim._smoke_t = 0.0
+		sim._tick_smoke(1.0)
+	sim.settings["god"] = true
+	ok(p.hp < 100.0, "smoke from a fire in the same room hurts (%.0f hp)" % p.hp)
+	sim.burning.clear()
+	for yy9 in range(fy0 + 28, fy0 + 33):
+		for xx9 in range(fx0 + 1, fx0 + 6):
+			w.chunk_at(xx9, yy9).bld[World.idx(xx9, yy9)] = 0
+	p.hp = 100.0
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

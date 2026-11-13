@@ -417,7 +417,9 @@ func _draw() -> void:
 	# status block
 	_txt(sim.clock_text(), Vector2(x0, y0 + 20), 20, UiKit.ACCENT)
 	var wtxt: String = "%d°C" % int(round(float(sim.weather["temp"])))
-	if float(sim.weather["rain"]) > 0.1: wtxt += "  rain"
+	if float(sim.weather.get("snow", 0.0)) > 0.1: wtxt += "  snow"
+	elif bool(sim.weather.get("storm", false)): wtxt += "  storm"
+	elif float(sim.weather["rain"]) > 0.1: wtxt += "  rain"
 	elif float(sim.weather["fog"]) > 0.2: wtxt += "  fog"
 	_txt(wtxt, Vector2(x0 + 172, y0 + 20), 15, UiKit.DIM)
 	_bar(Vector2(x0, y0 + 30), 210, 14, p.hp / 100.0, Color(0.74, 0.22, 0.2) if p.hp < 50.0 else Color(0.62, 0.7, 0.36))

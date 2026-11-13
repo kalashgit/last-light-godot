@@ -506,6 +506,27 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 					var txt: String = "Day %d. Someone lived here. %s" % [sim.day(), "Shelter and water inside." if w.bld(floori(p.pos.x), floori(p.pos.y)) != 0 or sim.near_roof(p.pos) else "Keep moving."]
 					w.set_ent(x, y, {"k": "sign", "txt": txt, "lab": "Sign left on day %d" % sim.day()})
 					sim.say("You write: \"%s\"" % txt, Color(0.8, 0.9, 0.75))))
+		"fallen":
+			if Inv.has_tag(p.inv, "axe") or Inv.has_tag(p.inv, "saw"):
+				out.append(_opt("Cut it up", func():
+					p.start_action("Cutting up the tree", 14.0 - p.skill_level("axe") * 0.8, func():
+						w.remove_object(a.x, a.y)
+						Inv.add_new(p.inv, "log", 2, sim.hour)
+						Inv.add_new(p.inv, "branch", 3, sim.hour)
+						p.endurance = maxf(0.0, p.endurance - 25.0)
+						p.add_xp("axe", 15.0)
+						sim.noise(p.pos, 14.0)
+						sim.say("The way is clear. Two logs and some branches.", Color(0.75, 0.9, 0.7)))))
+			else:
+				out.append(_opt("Too big to move without an axe or saw", func(): sim.say("You need an axe or a saw.", Color(0.9, 0.8, 0.6))))
+			out.append(_opt("Climb over", func():
+				var to: Vector2 = p.pos + p.facing.normalized() * 2.2
+				if sim.world.blocked(to.x, to.y, Player.R):
+					sim.say("No footing on the other side.", Color(0.9, 0.8, 0.6))
+					return
+				p.start_action("Climbing over", 2.0, func():
+					p.pos = to
+					sim.noise(p.pos, 4.0))))
 		"spikes":
 			out.append(_opt("About the spikes", func(): sim.say("Anything that walks across is torn up. They wear out.", Color(0.85, 0.85, 0.75))))
 		"stairs":

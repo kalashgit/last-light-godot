@@ -117,6 +117,9 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 	var vmax: float = (float(sp["road"]) if on_road else float(sp["off"])) * (0.55 + eng * 0.45) * (0.7 + tire * 0.3)
 	if tire < 0.15: vmax *= 0.35            # running on a flat
 	if not tow.is_empty(): vmax *= 0.6
+	if sim.icy(floori(pos.x), floori(pos.y)):
+		vmax *= 0.65
+		_turn_cd = maxf(_turn_cd, 0.25)        # she slides before she turns
 	if not motor():
 		vmax *= 0.7 + p.endurance / 330.0
 	var want := 0.0

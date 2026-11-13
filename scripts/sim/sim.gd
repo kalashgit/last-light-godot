@@ -562,6 +562,10 @@ func read_note(note: Dictionary) -> void:
 	flags["read_note"] = true
 
 # ------------------------------------------------------------------ fish stocks
+var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
+var flooded: Dictionary = {}       # Vector2i tile -> ground it had before the water came up
+var _wet_h := 0.0                  # hours of heavy rain in a row
+var lightning := 0.0               # seconds of flash left (renderer)
 var fish: Dictionary = {}          # chunk key -> [stock 0..1, hour last updated]
 
 ## how many fish are left in this stretch of water (1 = untouched), recovering about 3% a day
@@ -581,6 +585,29 @@ func near_roof(pos: Vector2) -> bool:
 		if world.bld(floori(pos.x) + d.x, floori(pos.y) + d.y) != 0:
 			return true
 	return false
+
+## smoke fills a room with a fire in it: you cough, it hurts, and it gets in your eyes
+var _smoke_t := 0.0
+func _tick_smoke(dt: float) -> void:
+	if burning.is_empty() or not player.alive or vehicle != null:
+		return
+	_smoke_t -= dt
+	if _smoke_t > 0.0:
+		return
+	_smoke_t = 1.0
+	var b: int = world.bld(floori(player.pos.x), floori(player.pos.y))
+	var thick := 0
+	for k in burning.keys():
+		var d: float = Vector2(k.x + 0.5, k.y + 0.5).distance_to(player.pos)
+		if (b != 0 and world.bld(k.x, k.y) == b and d < 9.0) or d < 2.5:
+			thick += 1
+	if thick > 0:
+		if not settings.get("god", false):
+			player.hurt(minf(4.0, 0.6 * float(thick)), "Choked on smoke")
+		player.endurance = maxf(0.0, player.endurance - 3.0)
+		noise(player.pos, 5.0)                 # coughing
+		if rng.randf() < 0.3:
+			say("Smoke fills your lungs. Get out!", Color(1.0, 0.7, 0.5))
 
 ## spike traps tear up whatever walks over them, and wear out doing it
 func _tick_spikes(dt: float) -> void:
@@ -653,6 +680,8 @@ func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false
 	player.tick_needs(dh)
 	_tick_fire(dt)
 	_tick_spikes(dt)
+	lightning = maxf(0.0, lightning - dt)
+	_tick_smoke(dt)
 	zombies.update(dt)
 	npcs.update(dt, dh)
 	animals.update(dt)
@@ -847,6 +876,7 @@ func _update_weather(dh: float) -> void:
 	# rain below freezing is snow; heavy rain with a gale is a storm
 	weather["snow"] = rain if float(weather["temp"]) <= 0.5 else 0.0
 	weather["storm"] = rain > 0.75 and wind > 0.6 and float(weather["temp"]) > 3.0
+	_weather_hazards(dh)
 	if hour >= power_off_h and not _power_said:
 		_power_said = true
 		say("The lights flicker and die. The power grid is down.", Color(1.0, 0.8, 0.5))
@@ -854,6 +884,86 @@ func _update_weather(dh: float) -> void:
 	if hour >= water_off_h and not _water_said:
 		_water_said = true
 		say("The taps sputter. The water has stopped.", Color(1.0, 0.8, 0.5))
+
+## what the weather does to the world: settles snow, ices, floods, knocks trees down, strikes
+func _weather_hazards(dh: float) -> void:
+	var t: float = weather["temp"]
+	var rain: float = weather["rain"]
+	if float(weather.get("snow", 0.0)) > 0.1:
+		snow_cover = minf(1.0, snow_cover + dh * float(weather["snow"]) * 0.12)
+	elif t > 2.0:
+		snow_cover = maxf(0.0, snow_cover - dh * (t - 2.0) * 0.02)
+	# floods: a long downpour pushes the water over its banks
+	_wet_h = _wet_h + dh if rain > 0.75 else maxf(0.0, _wet_h - dh * 0.5)
+	if _wet_h > 6.0 and flooded.size() < 60:
+		_flood_step()
+	elif _wet_h <= 0.0 and not flooded.is_empty() and rng.randf() < dh * 0.5:
+		_recede_step()
+	if bool(weather.get("storm", false)) and rng.randf() < dh * 1.4:
+		_storm_event()
+
+func _flood_step() -> void:
+	var px: int = floori(player.pos.x)
+	var py: int = floori(player.pos.y)
+	for tries in range(40):
+		var x: int = px + rng.randi_range(-40, 40)
+		var y: int = py + rng.randi_range(-40, 40)
+		if not world.is_loaded(x, y) or World.level(y) != 0 or flooded.has(Vector2i(x, y)):
+			continue
+		var g: int = world.ground(x, y)
+		if Defs.ground_is_water(g) or g == Defs.G_VOID or world.bld(x, y) != 0 or world.obj(x, y) != 0:
+			continue
+		var wet := false
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if Defs.ground_is_water(world.ground(x + d.x, y + d.y)) and not flooded.has(Vector2i(x + d.x, y + d.y)) or flooded.has(Vector2i(x + d.x, y + d.y)):
+				wet = true
+		if wet:
+			flooded[Vector2i(x, y)] = g
+			world.set_ground(x, y, Defs.G_WATER)
+			if flooded.size() == 1:
+				say("The river is over its banks.", Color(0.7, 0.85, 1.0))
+			return
+
+func _recede_step() -> void:
+	var k: Vector2i = flooded.keys()[rng.randi() % flooded.size()]
+	if world.is_loaded(k.x, k.y):
+		world.set_ground(k.x, k.y, int(flooded[k]))
+	flooded.erase(k)
+
+func _storm_event() -> void:
+	lightning = 0.25
+	emit_fx("thunder", player.pos)
+	var px: int = floori(player.pos.x)
+	var py: int = floori(player.pos.y)
+	for tries in range(30):
+		var x: int = px + rng.randi_range(-30, 30)
+		var y: int = py + rng.randi_range(-30, 30)
+		var id: int = Defs.o_id(world.obj(x, y))
+		if id < Defs.O_TREE_OAK or id > Defs.O_TREE_BIRCH or not world.is_loaded(x, y):
+			continue
+		if rng.randf() < 0.25:
+			ignite(x, y, 1.0)             # struck
+			return
+		# blown down: it lies across the tile beside it, roads included
+		var tree_cell: int = world.obj(x, y)
+		world.set_obj(x, y, 0)
+		for ax in [x, x - 1]:
+			if world.obj(ax, y) == 0 and world.obj(ax + 1, y) == 0 and world.bld(ax, y) == 0 and world.bld(ax + 1, y) == 0 \
+					and not world.tile_blocked(ax, y) and not world.tile_blocked(ax + 1, y):
+				world.set_obj(ax, y, Defs.ocell(Defs.O_FALLEN_TREE, 0, 0))
+				world.set_obj(ax + 1, y, Defs.ocell(Defs.O_FALLEN_TREE, 0, 1))
+				noise(Vector2(x + 0.5, y + 0.5), 18.0)
+				say("Somewhere close, a tree comes down.", Color(0.8, 0.85, 0.9)) if Vector2(x, y).distance_to(player.pos) < 25.0 else null
+				return
+		world.set_obj(x, y, tree_cell)
+		return
+
+## underfoot: ice and packed snow outdoors when it is cold
+func icy(x: int, y: int) -> bool:
+	if world.bld(x, y) != 0 or float(weather["temp"]) > 0.0:
+		return false
+	var g: int = world.ground(x, y)
+	return snow_cover > 0.3 or ((g == Defs.G_ASPHALT or g == Defs.G_SIDEWALK or g == Defs.G_ASPHALT_LX or g == Defs.G_ASPHALT_LY or g == Defs.G_CONCRETE) and _wet_h > 0.0)
 
 # ------------------------------------------------------------------ slow world tick (1 Hz)
 func _slow_tick(dh: float) -> void:
@@ -1149,12 +1259,15 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
 	pipes = d.get("pipes", {})
 	fish = d.get("fish", {})
+	snow_cover = d.get("snowc", 0.0)
+	flooded = d.get("flooded", {})
+	_wet_h = d.get("weth", 0.0)
 	hour = d["hour"]
 	world.hour = hour
 	var st: Dictionary = d.get("settings", {})

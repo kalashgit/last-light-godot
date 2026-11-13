@@ -310,12 +310,23 @@ func _process(_dt: float) -> bool:
 			sim.player.pos = vp + Vector2(9.0, 2.0)
 			main.view.zoom = 1.8
 		886: shot("27_vehicle_types")
-		888:
+		887:
+			sim.weather["temp"] = -5.0
+			sim.weather["rain"] = 0.8
+			sim.weather["snow"] = 0.8
+			sim.snow_cover = 0.8
+			var fp: Vector2 = sim.player.pos
+			for ii in range(-1, 3):
+				sim.world.set_obj(floori(fp.x) + ii, floori(fp.y) + 2, 0)
+			sim.world.set_obj(floori(fp.x), floori(fp.y) + 2, Defs.ocell(Defs.O_FALLEN_TREE, 0, 0))
+			sim.world.set_obj(floori(fp.x) + 1, floori(fp.y) + 2, Defs.ocell(Defs.O_FALLEN_TREE, 0, 1))
+		890: shot("28_snow_fallen_tree")
+		893:
 			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		905: shot("20_death")
-		907:
+		910: shot("20_death")
+		912:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

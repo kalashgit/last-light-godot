@@ -270,7 +270,8 @@ const O_CROP_PEPPER := 124
 const O_CROP_ONION := 125
 const O_CROP_STRAWBERRY := 126
 const O_CROP_BEANS := 127
-const O_COUNT := 128
+const O_FALLEN_TREE := 128
+const O_COUNT := 129
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -400,6 +401,7 @@ static func _static_init() -> void:
 	_o(O_SPIKES, {"n": "Spike trap", "solid": 0.0, "sym": 1, "h": 18, "hp": 60, "use": "spikes", "scrap": [["plank", 1]]})
 	_o(O_BATTERY_BANK, {"n": "Battery bank", "h": 30, "use": "battery_bank", "hp": 200, "scrap": [["car_battery", 2], ["wire", 2]]})
 	_o(O_SOLAR, {"n": "Solar panel", "h": 34, "use": "solar", "hp": 120, "scrap": [["scrap_metal", 2], ["wire", 1]]})
+	_o(O_FALLEN_TREE, {"n": "Fallen tree", "sz": [2, 1], "h": 22, "use": "fallen", "hp": 300})
 	_o(O_GRAVE, {"n": "Grave", "solid": 0.0, "sym": 1, "h": 26, "hp": 999})
 	_o(O_TROUGH, {"n": "Feeding trough", "solid": 0.3, "h": 16, "use": "trough", "c": "", "cap": 20})
 
