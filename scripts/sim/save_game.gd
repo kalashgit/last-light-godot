@@ -101,6 +101,7 @@ static func save(sim: Sim, slot: String) -> bool:
 		var data: Dictionary = c.save_data()
 		data["z"] = zs
 		data["npc"] = sim.npcs.serialized_in_chunk(c.cx, c.cy)
+		data["an"] = sim.animals.serialized_in_chunk(c.cx, c.cy)
 		data["lh"] = sim.hour
 		var rk2 := Vector2i(k.x >> REGION_SHIFT, k.y >> REGION_SHIFT)
 		if not by_region.has(rk2):

@@ -1136,6 +1136,174 @@ func _init() -> void:
 	quiet(sim)
 	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
 
+	print("== wildlife, hunting, butchering, preserving")
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.animals.list.clear()
+	sim.noises.clear()
+	var AS: AnimalSim = sim.animals
+	# populations come from the land: the wild has animals, town does not
+	var wild := 0
+	var town := 0
+	for cx3 in range(40):
+		var ch3 := Chunk.new(1000 + cx3, 1000)
+		ch3.zone = 0
+		for i3 in range(256): ch3.ground[i3] = Defs.G_GRASS
+		var n0: int = AS.list.size()
+		AS.on_chunk_loaded(ch3, true)
+		wild += AS.list.size() - n0
+		var ch4 := Chunk.new(2000 + cx3, 1000)
+		ch4.zone = 3
+		for i4 in range(256): ch4.ground[i4] = Defs.G_GRASS
+		n0 = AS.list.size()
+		AS.on_chunk_loaded(ch4, true)
+		town += AS.list.size() - n0
+	ok(wild >= 15 and town == 0, "animals live in the wild, not in town (%d in 40 wild chunks, %d in town)" % [wild, town])
+	AS.list.clear()
+	p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
+	p.sneaking = false
+	var rab: AnimalSim.Animal = AS.spawn("rabbit", p.pos + Vector2(3.0, 0.0))
+	AS.update(1.0 / 30.0)
+	ok(rab.state == AnimalSim.FLEE, "a rabbit that sees you bolts")
+	var r0: Vector2 = rab.pos
+	for i in range(30): AS.update(1.0 / 30.0)
+	ok(rab.pos.distance_to(p.pos) > r0.distance_to(p.pos), "away from you")
+	AS.list.clear()
+	p.sneaking = true
+	var deer: AnimalSim.Animal = AS.spawn("deer", p.pos + Vector2(6.0, 0.0))
+	AS.update(1.0 / 30.0)
+	ok(deer.state == AnimalSim.IDLE, "sneaking, you can get within six tiles of a deer without spooking it")
+	sim.noise(p.pos, 12.0)
+	AS.update(1.0 / 30.0)
+	ok(deer.state == AnimalSim.FLEE, "a noise sends it running")
+	sim.noises.clear()
+	p.sneaking = false
+	AS.list.clear()
+	# tracking
+	var far_deer: AnimalSim.Animal = AS.spawn("deer", p.pos + Vector2(0.0, 18.0))
+	var trk: String = AS.track(p.pos, 0)
+	ok(trk.begins_with("Deer sign") and trk.contains("paces"), "tracking reads the nearest animal's direction and distance (\"%s\")" % trk)
+	AS.list.clear()
+	ok(AS.track(p.pos, 0) == "", "and finds nothing where nothing lives")
+	# melee kill -> carcass -> butcher with skill-scaled yield
+	sim.settings["god"] = true
+	var r2: AnimalSim.Animal = AS.spawn("rabbit", p.pos + Vector2(0.8, 0.0))
+	p.facing = Vector2(1, 0)
+	p.weapon = {}
+	Inv.add_new(p.inv, "kitchen_knife", 1)
+	p.equip(Inv.find(p.inv, "kitchen_knife"))
+	var swings2 := 0
+	while AS.list.has(r2) and swings2 < 10:
+		p.attack_cd = 0.0
+		p.swing_t = 0.0
+		p.try_attack()
+		for fr_i in range(24):
+			r2.pos = p.pos + Vector2(0.8, 0.0)      # a snared rabbit cannot run
+			r2.state = AnimalSim.IDLE
+			sim.tick(1.0 / 30.0)
+		swings2 += 1
+	var carcass: Array = w.items_at(floori(p.pos.x + 0.8), floori(p.pos.y))
+	ok(not AS.list.has(r2) and Inv.count(carcass, "carcass_rabbit") == 1, "a rabbit can be killed with a knife and leaves a carcass (%d swings)" % swings2)
+	Inv.add_new(p.inv, "carcass_rabbit", 1, sim.hour)
+	p.skills["butchering"] = 0.0
+	Actions.craft(sim, Recipes.by_id("butcher_rabbit"))
+	run(sim, 5.5)
+	var novice: int = Inv.count(p.inv, "raw_rabbit")
+	Inv.take(p.inv, "raw_rabbit", novice)
+	Inv.add_new(p.inv, "carcass_deer", 1, sim.hour)
+	p.skills["butchering"] = Player.XP_LEVELS[6]
+	Actions.craft(sim, Recipes.by_id("butcher_deer"))
+	run(sim, 12.5)
+	ok(novice >= 1 and Inv.count(p.inv, "raw_venison") >= 7 and Inv.count(p.inv, "leather") >= 2, "butchering gives meat and hide, more for a practised hand (novice rabbit %d, skilled deer %d)" % [novice, Inv.count(p.inv, "raw_venison")])
+	# a shotgun at range
+	var dg: AnimalSim.Animal = AS.spawn("deer", p.pos + Vector2(3.0, 0.0))
+	dg.hp = 400.0
+	Inv.add_new(p.inv, "shotgun", 1)
+	Inv.add_new(p.inv, "shells", 10)
+	p.equip(Inv.find(p.inv, "shotgun"))
+	p.weapon["u"] = 4
+	p.weapon["c"] = 1.0
+	p.facing = Vector2(1, 0)
+	var hp_d: float = dg.hp
+	sim.zombies.list.clear()
+	for i in range(4):
+		dg.pos = p.pos + Vector2(3.0, 0.0)
+		dg.state = AnimalSim.IDLE
+		p.attack_cd = 0.0
+		p.swing_t = 0.0
+		p.try_attack()
+	ok(dg.hp < hp_d, "a gun hits game at range (%.0f -> %.0f)" % [hp_d, dg.hp])
+	AS.list.clear()
+	# a boar fights back
+	sim.settings["god"] = false
+	p.hp = 100.0
+	var boar: AnimalSim.Animal = AS.spawn("boar", p.pos + Vector2(2.0, 0.0))
+	var tb := 0.0
+	while tb < 6.0 and p.hp >= 100.0:
+		AS.update(1.0 / 30.0)
+		tb += 1.0 / 30.0
+	ok(boar.state == AnimalSim.CHARGE and p.hp < 100.0, "a boar you get close to charges and gores you (%.0f hp)" % p.hp)
+	sim.settings["god"] = true
+	p.hp = 100.0
+	p.wounds.clear()
+	AS.list.clear()
+	# overhunting
+	var hc := Chunk.new(3000, 3000)
+	hc.zone = 0
+	for i5 in range(256): hc.ground[i5] = Defs.G_GRASS
+	var seedhunt := 0
+	for k5 in range(60):
+		hc.cx = 3000 + k5
+		var n1: int = AS.list.size()
+		AS.on_chunk_loaded(hc, true)
+		if AS.list.size() > n1:
+			seedhunt = k5
+			break
+	AS.list.clear()                        # every animal there is shot
+	hc.an_h = sim.hour
+	AS.on_chunk_loaded(hc, false)
+	ok(AS.list.is_empty(), "hunted out, an area stays empty when you come straight back")
+	hc.an_h = sim.hour - 100.0
+	AS.on_chunk_loaded(hc, false)
+	ok(AS.list.size() == 1, "after four days one animal has wandered back in")
+	AS.list.clear()
+	# preservation
+	p.weapon = {}
+	sim.hour = floorf(sim.hour)
+	Inv.add_new(p.inv, "branch", 4)
+	var fire_x: int = floori(p.pos.x) + 1
+	var fire_y: int = floori(p.pos.y)
+	w.set_obj(fire_x, fire_y, Defs.ocell(Defs.O_CAMPFIRE, 0, 0))
+	w.set_ent(fire_x, fire_y, {"k": "fire", "fuel": 10.0, "lit": true})
+	sim._slow_tick(0.01)
+	var v0: int = Inv.count(p.inv, "raw_venison")
+	p.skills["cooking"] = Player.XP_LEVELS[6]      # nobody burns it at this level
+	print("    smoke missing: ", Recipes.missing(Recipes.by_id("smoke_venison"), p, sim.near_heat(p.pos), false, []))
+	ok(Actions.craft(sim, Recipes.by_id("smoke_venison")), "venison can be smoked over a fire")
+	sim.zombies.list.clear()
+	run(sim, 10.5)
+	ok(Inv.count(p.inv, "smoked_meat") >= 2 and Inv.count(p.inv, "raw_venison") == v0 - 2, "smoking turns raw meat into smoked meat")
+	var sm: Dictionary = Inv.find(p.inv, "smoked_meat")
+	var rv: Dictionary = Inv.find(p.inv, "raw_venison")
+	ok(Items.fresh_state(rv, sim.hour + 100.0) == 2 and Items.fresh_state(sm, sim.hour + 100.0) == 0, "four days later the raw meat has rotted and the smoked meat has not")
+	Inv.add_new(p.inv, "salt", 1)
+	ok(Actions.craft(sim, Recipes.by_id("jerky_venison")), "salt and a knife make jerky")
+	run(sim, 9.5)
+	ok(Inv.count(p.inv, "jerky") >= 2 and int(Inv.find(p.inv, "salt").get("u", 0)) == 5, "salt is used a pinch at a time")
+	w.remove_object(fire_x, fire_y)
+	# persistence
+	var keep_a: AnimalSim.Animal = AS.spawn("fox", p.pos + Vector2(3.0, 3.0))
+	keep_a.hp = 7.0
+	ok(SaveGame.save(sim, slot), "saving wildlife")
+	s2 = SaveGame.load_game(slot)
+	var fox_back := false
+	if s2 != null:
+		for a6 in s2.animals.list:
+			if a6.kind == "fox" and absf(a6.hp - 7.0) < 0.01: fox_back = true
+	ok(fox_back, "a wounded fox is still wounded after a reload")
+	AS.list.clear()
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

@@ -31,6 +31,8 @@ var last_hour := 0.0                 # game hour this chunk was last simulated
 var map_px := PackedByteArray()      # minimap palette index per tile
 var story_z: Array = []              # Vector2 positions of scripted zombies (first spawn only)
 var story_n: Array = []              # [Vector2, hostile] scripted survivors (first spawn only)
+var animals: Array = []              # stored wildlife: [kind, x, y, hp]
+var an_h := 0.0                      # hour the animal count here was last topped up
 var npcs: Array = []                 # stored survivors while the chunk is not active
 
 func _init(chunk_x: int = 0, chunk_y: int = 0) -> void:
@@ -48,7 +50,7 @@ func _init(chunk_x: int = 0, chunk_y: int = 0) -> void:
 func save_data() -> Dictionary:
 	var d := {
 		"v": 1, "items": items, "cont": containers, "ents": ents, "ehp": edge_hp, "ohp": obj_hp, "blood": blood,
-		"corpses": corpses, "z": zombies, "sp": spawned, "lh": last_hour, "bt": btype, "npc": npcs,
+		"corpses": corpses, "z": zombies, "sp": spawned, "lh": last_hour, "bt": btype, "npc": npcs, "an": animals, "anh": an_h,
 	}
 	if modified:
 		d["g"] = ground
@@ -71,6 +73,8 @@ func load_data(d: Dictionary) -> void:
 	corpses = d.get("corpses", [])
 	zombies = d.get("z", [])
 	npcs = d.get("npc", [])
+	animals = d.get("an", [])
+	an_h = d.get("anh", 0.0)
 	spawned = d.get("sp", false)
 	last_hour = d.get("lh", 0.0)
 	if d.has("bt"):

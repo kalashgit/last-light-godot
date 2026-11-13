@@ -33,6 +33,8 @@ var _target := ""
 var _target_t := 0.0
 var _fps_t := 0.0
 var _frame_ms := 0.0
+var _was_in_car := false
+var _was_carrying := false
 var _hot: Array = []              # quick-slot weapons shown in the hotbar
 
 func _ready() -> void:
@@ -322,6 +324,11 @@ func poll(dt: float) -> void:
 			Actions.interact(sim, true)
 	# what would INTERACT do right now? (label + highlight), refreshed a few times a second
 	_target_t -= dt
+	var in_car: bool = sim.vehicle != null
+	if in_car != _was_in_car or p.carrying.is_empty() == _was_carrying:
+		_target_t = 0.0                  # the USE label must change the moment you get in, out, or set something down
+		_was_in_car = in_car
+		_was_carrying = not p.carrying.is_empty()
 	if _target_t <= 0.0:
 		_target_t = 0.2
 		_target = ""

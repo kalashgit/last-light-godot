@@ -410,6 +410,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Gather branches", func(): _forage(sim, x, y, true)))
 		"forage":
 			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
+			out.append(_opt("Look for animal tracks", func(): _track(sim)))
 		"berries":
 			if Defs.o_part(cell) == 0:
 				out.append(_opt("Pick berries", func():
@@ -597,6 +598,13 @@ static func _corpse_options(sim: Sim, t: Dictionary) -> Array:
 				sim.noise(p.pos, 8.0)
 				sim.say("%d bodies burn. Keep clear of the flames." % n, Color(1.0, 0.8, 0.5)))))
 	return out
+
+static func _track(sim: Sim) -> void:
+	var p: Player = sim.player
+	p.start_action("Reading the ground", 4.0 - p.skill_level("tracking") * 0.25, func():
+		var found: String = sim.animals.track(p.pos, p.skill_level("tracking"))
+		p.add_xp("tracking", 8.0 if found != "" else 3.0)
+		sim.say(found if found != "" else "Nothing has passed this way lately.", Color(0.8, 0.88, 0.75)))
 
 ## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
 static func _rest(sim: Sim) -> void:
@@ -1345,7 +1353,7 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 					if it.is_empty():
 						break
 					p.unequip(it) if int(it.get("n", 1)) <= 1 else null
-					if it.has("u") and (inp[0] == "disinfectant" or inp[0] == "duct_tape" or inp[0] == "glue"):
+					if it.has("u") and (inp[0] == "disinfectant" or inp[0] == "duct_tape" or inp[0] == "glue" or inp[0] == "salt"):
 						Inv.use_charge(p.inv, it)
 					else:
 						Inv.split(p.inv, it, 1)
@@ -1391,7 +1399,11 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 				p.add_wound(9 + randi() % 2, "burn", "hot pan")
 		else:
 			for o in r.get("out", []):
-				Inv.add_new(p.inv, o[0], int(o[1]), sim.hour)
+				var qty: int = int(o[1])
+				if r.has("butcher") and Items.def(o[0]).has("raw"):
+					# a practised hand wastes less
+					qty = maxi(1, int(round(float(qty) * (0.6 + 0.1 * minf(6.0, float(p.skill_level("butchering")))))))
+				Inv.add_new(p.inv, o[0], qty, sim.hour)
 				if cooking and cl > 0:
 					var made: Dictionary = Inv.find(p.inv, o[0])
 					if not made.is_empty():

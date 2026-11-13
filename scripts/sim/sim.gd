@@ -10,6 +10,7 @@ var player: Player
 var zombies: ZombieSim
 var npcs: NpcSim
 var factions: Factions
+var animals: AnimalSim
 var rng := RandomNumberGenerator.new()
 var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
@@ -69,9 +70,11 @@ func _init(world_seed: int) -> void:
 	zombies = ZombieSim.new(self)
 	npcs = NpcSim.new(self)
 	factions = Factions.new(self)
+	animals = AnimalSim.new(self)
 	world.on_unload = func(c: Chunk):
 		zombies.on_chunk_unload(c)
 		npcs.on_chunk_unload(c)
+		animals.on_chunk_unload(c)
 	var r: RandomNumberGenerator = Rng.make(world_seed + 99)
 	power_off_h = r.randf_range(5.0, 16.0) * 24.0
 	water_off_h = r.randf_range(6.0, 20.0) * 24.0
@@ -588,6 +591,7 @@ func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false
 	_tick_spikes(dt)
 	zombies.update(dt)
 	npcs.update(dt, dh)
+	animals.update(dt)
 	if world.stream(player.pos, 3, 1) == 0:
 		world.gen.prewarm_step(player.pos + player.facing * 30.0)
 	_process_world_events()
@@ -718,6 +722,7 @@ func _process_world_events() -> void:
 	if world.ev_loaded.size() > 0:
 		for c in world.ev_loaded:
 			_catch_up(c)
+			animals.on_chunk_loaded(c, not c.spawned)
 			npcs.on_chunk_loaded(c)
 			zombies.on_chunk_loaded(c)
 			view_loaded.append(c)

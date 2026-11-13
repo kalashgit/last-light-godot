@@ -27,7 +27,56 @@ var _wall_tints: Array = []
 var _cam_pos := Vector2.ZERO
 var _roof_uv := PackedVector2Array()
 var _nviews: Dictionary = {}      # npc id -> EntityView
+var _aviews: Dictionary = {}      # animal id -> AnimalView
 var _vparts: Array = []           # CarPart nodes for the driven car
+
+class AnimalView extends Node2D:
+	var a: AnimalSim.Animal
+	var stamp := 0
+	func _process(_dt: float) -> void:
+		if visible: queue_redraw()
+	func _draw() -> void:
+		if a == null: return
+		var sp: Dictionary = AnimalSim.SPECIES[a.kind]
+		var col := Color(String(sp["col"]))
+		if a.flash > 0.0: col = col.lerp(Color(1.5, 1.2, 1.1), 0.6)
+		var L: float = sp["len"]
+		var sd: Vector2 = Iso.to_screen(a.dir.x, a.dir.y).normalized()
+		var fx: float = 1.0 if sd.x >= 0.0 else -1.0
+		var hop: float = absf(sin(a.anim_t * (14.0 if a.state != 0 else 7.0))) * (3.0 if a.moving else 0.0) * (L / 14.0)
+		var up: float = L * 0.55 + hop
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.45))
+		draw_circle(Vector2(0, 2), L * 0.5, Color(0, 0, 0, 0.28))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		var dark := col.darkened(0.35)
+		if a.kind == "pheasant":
+			draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.9 * fx, -up * 0.5), Vector2(-L * 0.2 * fx, -up * 0.9), Vector2(-L * 0.2 * fx, -up * 0.4)]), dark)
+			draw_circle(Vector2(0, -up * 0.6), L * 0.34, col)
+			draw_circle(Vector2(L * 0.38 * fx, -up * 1.05), L * 0.17, Color(0.2, 0.4, 0.3))
+			return
+		# legs
+		for lx in [-0.3, 0.3]:
+			var sw: float = sin(a.anim_t * 14.0 + lx * 9.0) * (2.0 if a.moving else 0.0)
+			draw_line(Vector2(lx * L * fx, -up * 0.5), Vector2(lx * L * fx + sw, 0), dark, maxf(1.5, L * 0.1))
+		# body, head
+		var body := PackedVector2Array([Vector2(-L * 0.5 * fx, -up * 0.5), Vector2(-L * 0.42 * fx, -up), Vector2(L * 0.4 * fx, -up * 1.02), Vector2(L * 0.5 * fx, -up * 0.55), Vector2(L * 0.3 * fx, -up * 0.42), Vector2(-L * 0.3 * fx, -up * 0.4)])
+		draw_colored_polygon(body, col)
+		var hx: float = L * 0.62 * fx
+		var hy: float = -up * (1.25 if a.kind == "deer" else (1.05 if a.kind != "boar" else 0.85))
+		draw_circle(Vector2(hx, hy), L * (0.2 if a.kind != "boar" else 0.26), col.lightened(0.08))
+		match a.kind:
+			"rabbit":
+				draw_line(Vector2(hx, hy), Vector2(hx - 1.0 * fx, hy - L * 0.5), col, 2.0)
+				draw_circle(Vector2(-L * 0.5 * fx, -up * 0.8), 1.8, Color(0.95, 0.95, 0.9))
+			"deer":
+				draw_line(Vector2(hx, hy), Vector2(L * 0.42 * fx, -up), col, L * 0.16)
+				draw_line(Vector2(hx, hy - 2), Vector2(hx + 3 * fx, hy - 8), dark, 1.5)
+				draw_line(Vector2(hx, hy - 2), Vector2(hx - 2 * fx, hy - 8), dark, 1.5)
+			"boar":
+				draw_line(Vector2(hx + 3 * fx, hy + 2), Vector2(hx + 6 * fx, hy), Color(0.9, 0.9, 0.82), 1.5)
+			"fox":
+				draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.5 * fx, -up * 0.8), Vector2(-L * 1.05 * fx, -up * 0.95), Vector2(-L * 0.55 * fx, -up * 0.5)]), col)
+				draw_circle(Vector2(-L * 1.0 * fx, -up * 0.92), 1.8, Color(0.95, 0.95, 0.9))
 
 class CarPart extends Node2D:
 	var h := -1
@@ -87,6 +136,9 @@ func clear() -> void:
 	for id in _nviews.keys():
 		(_nviews[id] as Node).queue_free()
 	_nviews.clear()
+	for id in _aviews.keys():
+		(_aviews[id] as Node).queue_free()
+	_aviews.clear()
 	for cp in _vparts:
 		(cp as Node).queue_free()
 	_vparts.clear()
@@ -261,6 +313,7 @@ func sync(dt: float) -> void:
 	_ghost.visible = sim.vehicle == null
 	_sync_vehicle()
 	_sync_npcs()
+	_sync_animals()
 	fx.flames = sim.burning.keys()
 	# zombies
 	var vr2: float = VIEW_RADIUS * VIEW_RADIUS
@@ -346,6 +399,28 @@ func _sync_vehicle() -> void:
 			cp.position = Iso.to_screen(a.x + i, a.y + j)
 			cp.z_index = _z(floori(a.x + i + 0.5) + floori(a.y + j + 0.5), 1)
 			k += 1
+
+func _sync_animals() -> void:
+	var p: Player = sim.player
+	var vr2: float = VIEW_RADIUS * VIEW_RADIUS
+	for a in sim.animals.list:
+		if a.pos.distance_squared_to(p.pos) > vr2:
+			continue
+		var v: AnimalView = _aviews.get(a.id)
+		if v == null:
+			v = AnimalView.new()
+			v.z_as_relative = false
+			v.a = a
+			_ents.add_child(v)
+			_aviews[a.id] = v
+		v.stamp = _stamp
+		v.position = Iso.to_screen(a.pos.x, a.pos.y)
+		v.z_index = _z(floori(a.pos.x) + floori(a.pos.y), 1)
+	for id in _aviews.keys():
+		var v2: AnimalView = _aviews[id]
+		if v2.stamp != _stamp:
+			v2.queue_free()
+			_aviews.erase(id)
 
 func _sync_npcs() -> void:
 	var p: Player = sim.player

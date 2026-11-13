@@ -561,6 +561,12 @@ func _resolve_melee() -> void:
 			sim.npcs.damage(nn, randf_range(float(dr2[0]), float(dr2[1])), true)
 			hits = 1
 	if hits == 0:
+		var prey = sim.animals.nearest(pos + facing * 0.7, 1.1)
+		if prey != null:
+			var dr3: Array = st["dmg"]
+			sim.animals.damage(prey, randf_range(float(dr3[0]), float(dr3[1])), pos)
+			hits = 1
+	if hits == 0:
 		_hit_scenery(st)
 	sim.noise(pos, float(st["noise"]) + (4.0 if hits > 0 else 0.0))
 	force_shove = false
@@ -678,6 +684,11 @@ func _fire_gun(g: Dictionary) -> void:
 		var dir: Vector2 = facing.rotated(randf_range(-spread, spread))
 		var z: Zombie = sim.zombies.ray_hit(pos, dir, rng)
 		if z == null:
+			var game = sim.animals.ray_hit(pos, dir, rng)
+			if game != null and randf() < clampf(0.6 + aim_lvl * 0.04 - game.pos.distance_to(pos) / rng * 0.35, 0.1, 0.95):
+				var gdr: Array = g["dmg"]
+				sim.animals.damage(game, randf_range(float(gdr[0]), float(gdr[1])) / float(maxi(pellets / 2, 1)), pos)
+				hit_any = true
 			continue
 		var dist: float = z.pos.distance_to(pos)
 		var ch: float = clampf(0.72 + aim_lvl * 0.04 - dist / rng * 0.3 - panic * 0.002, 0.15, 0.98)

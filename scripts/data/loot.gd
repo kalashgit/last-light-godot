@@ -7,7 +7,7 @@ static var T: Dictionary = {}
 static var OVERRIDE: Dictionary = {}
 
 static func _static_init() -> void:
-	T["kitchen"] = {"rolls": [1, 4], "items": [["canned_beans", 8, 1, 2], ["canned_soup", 8, 1, 2], ["canned_tuna", 6, 1, 2], ["canned_corn", 6, 1, 2], ["canned_peaches", 4, 1, 1],
+	T["kitchen"] = {"rolls": [1, 4], "items": [["canned_beans", 8, 1, 2], ["salt", 3, 1, 1], ["canned_soup", 8, 1, 2], ["canned_tuna", 6, 1, 2], ["canned_corn", 6, 1, 2], ["canned_peaches", 4, 1, 1],
 		["chips", 5, 1, 1], ["crackers", 5, 1, 1], ["cereal", 5, 1, 1], ["peanut_butter", 3, 1, 1], ["rice", 3, 1, 1], ["pasta", 4, 1, 1], ["coffee", 3, 1, 1],
 		["can_opener", 4, 1, 1], ["kitchen_knife", 5, 1, 1], ["frying_pan", 3, 1, 1], ["cooking_pot", 3, 1, 1], ["empty_bottle", 4, 1, 1], ["water_bottle", 3, 1, 1],
 		["matches", 3, 1, 1], ["lighter", 2, 1, 1], ["garbage_bag", 4, 1, 3], ["candle", 3, 1, 2], ["dog_food", 2, 1, 1], ["chocolate", 3, 1, 1], ["granola_bar", 3, 1, 2], ["bleach", 2, 1, 1], ["glass_jar", 2, 1, 2]]}

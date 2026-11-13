@@ -251,6 +251,12 @@ func _process(_dt: float) -> bool:
 				wv.set_roof(ox + 4 + k3, oy + 6, World.PLAYER_BLD)
 				wv.set_obj(ox + 4 + k3, oy + 8, Defs.ocell(Defs.O_SPIKES, 0, 0))
 			wv.set_obj(ox + 3, oy + 7, Defs.ocell(Defs.O_SIGN, 0, 0))
+			sim.animals.list.clear()
+			sim.animals.spawn("deer", Vector2(ox - 1.5, oy + 6.5)).dir = Vector2(1, 0)
+			sim.animals.spawn("rabbit", Vector2(ox + 0.5, oy + 8.5))
+			sim.animals.spawn("boar", Vector2(ox + 7.5, oy + 1.5)).dir = Vector2(-1, 0)
+			sim.animals.spawn("pheasant", Vector2(ox + 2.5, oy + 9.5))
+			sim.animals.spawn("fox", Vector2(ox - 2.5, oy + 3.5)).dir = Vector2(0, 1)
 			sim.npcs.list.clear()
 			var nn = sim.npcs.spawn(Vector2(ox + 4.5, oy + 2.5), false)
 			nn.state = NpcSim.FOLLOW
@@ -261,10 +267,27 @@ func _process(_dt: float) -> bool:
 			sim.burning.clear()
 			sim.fires.clear()
 			Actions.exit_vehicle(sim)
+			sim.npcs.list.clear()
+			sim.zombies.list.clear()
+			sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 13.0
+			sim.player.sneaking = true
+			var pp: Vector2 = sim.player.pos
+			sim.animals.list.clear()
+			var spots: Array = [[ "deer", Vector2(4.5, 1.5), Vector2(1, 0)], ["rabbit", Vector2(2.5, 4.5), Vector2(0, 1)], ["boar", Vector2(-3.5, 3.5), Vector2(-1, 0)],
+				["pheasant", Vector2(5.5, 4.5), Vector2(1, 1)], ["fox", Vector2(-2.5, -2.5), Vector2(0, -1)]]
+			for sp in spots:
+				var an = sim.animals.spawn(sp[0], pp + sp[1])
+				an.dir = (sp[2] as Vector2).normalized()
+			main.view.zoom = 2.2
+		879:
+			for an2 in sim.animals.list: an2.state = AnimalSim.IDLE
+		881: shot("26_wildlife_day")
+		883:
+			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		895: shot("20_death")
-		897:
+		900: shot("20_death")
+		902:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

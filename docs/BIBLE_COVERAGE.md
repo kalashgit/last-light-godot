@@ -25,7 +25,7 @@ Nothing here has been verified on an iPhone.
 | 14 | Building and fortification | Partial | Walls, doors, crates, barrels, beds, campfires, barricades (4 planks), placement preview with cost, damage by infected, fire and vehicles. Window frames, gates and plank floors were already buildable. **Added:** roofs (need a wall or roof beside them), sheet-metal walls and barricades, wire fence, gravel path, spike traps, signs you can write on, and nine more furniture pieces including a workbench. Missing: upper floors of your own, wiring, load-bearing collapse. |
 | 15 | Electricity | Partial | Grid failure, generators (fuel, noise, condition, fumes indoors), lights, refrigeration tied to power. Missing: batteries as storage, solar, switches, overloads, wet faults. |
 | 16 | Water, sanitation, cooking | Partial | Mains failure, wells, rain barrels, tainted water, boiling and bleach, cooking with quality, spoilage by type and refrigeration. **Added:** a sink within two tiles of a rain collector can be plumbed with a wrench and then gives filtered water from it. Missing: finite volume in pipes, freezing, washing. |
-| 17 | Farming, foraging, fishing, wildlife | Partial | Crops with water, cold, mildew and seed return; foraging with poison risk; fishing, snares, hens. Missing: 24 crops (4 exist), wildlife as animals in the world, hunting, local depletion, smoking/drying/canning. |
+| 17 | Farming, foraging, fishing, wildlife | Partial | Crops with water, cold, mildew and seed return; foraging with poison risk; fishing, snares, hens. **Added:** wildlife living in the world (rabbit, deer, pheasant, boar, fox) that sees, hears and flees, boars that charge; hunting by melee or gun; tracking; carcasses butchered with skill-scaled yield and hides; smoking and salt-drying meat and fish; populations tied to their land that are hunted out and only slowly refill. Missing: 24 crops (4 exist), seasonal animal behaviour, fishing depletion. |
 | 18 | Vehicles | Partial | One car: key/hotwire, battery, fuel, engine and tyre condition, crashes, boot, headlights, protection, persistence. **Added:** horn. Missing: the other 17 vehicle types, per-part repair, towing, sleeping in a vehicle, road blockages as obstacles to clear. |
 | 19 | NPCs, factions, settlements | Partial | Individuals who wait, follow, fight, get hungry, remember you, turn hostile, die persistently. **Added:** barter; hunger, thirst and fatigue they act on; a day routine (scavenge real containers by day, sleep at home at night); trust that rises and falls with what you do and gates following, healing, tips and trade; temperament and former job; fleeing; arming them; theft noticed; rising as infected when bitten to death. **Added:** eight factions (open, wary, raider) holding settlements in about two regions in three; standing shared by a whole faction; settlement ledgers for food, morale and headcount that run while you are away; work with a three-day deadline that can be done, expire, or be voided when the place falls; shelter; giving to the stores; raiders who attack other survivors and raid neighbouring settlements. Missing: survivors travelling between places, trade caravans, settlements you found yourself, recruiting to tasks like farming. |
 | 20 | Weather, fire, hazards | Partial | Rain, fog, cloud, wind and temperature values; fire with fuel, spread, rain damping, damage, light. Missing: smoke, storms and snow as visuals, flooding, fallen trees, ice. |
@@ -42,8 +42,8 @@ It means the behaviour exists, can be reached from the touch UI, and a test fail
 
 ## Largest gaps, in the order I would build them
 
-1. Wildlife in the world, hunting and food preservation (§17).
-2. More vehicles and per-part repair (§18).
-3. Batteries, solar and finite piped water (§15, §16).
+1. More vehicles and per-part repair (§18).
+2. Batteries, solar and finite piped water (§15, §16).
+3. More crops (§17).
 4. Carried furniture is not drawn in the survivor's arms yet (the HUD says what you hold).
 5. The content counts in §24.
