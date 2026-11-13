@@ -1648,6 +1648,196 @@ func _init() -> void:
 	s2 = SaveGame.load_game(slot)
 	ok(s2 != null and s2.pipes.has(hb) and int(s2.pipes[hb]) == 0 and absf(s2.player.grime - p.grime) < 0.01, "emptied pipes and grime persist")
 
+	print("== the infected: who they were, feeding, trapped, scent, stairs; hiding, peeking, binoculars, footsteps")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.animals.list.clear()
+	sim.noises.clear()
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	sim.settings["god"] = true
+	var roles: Dictionary = {}
+	for i_ia in range(400):
+		var zr_ia: Zombie = sim.zombies.spawn(Vector2(fx0 + 5.5, fy0 + 30.5), 0)
+		roles[zr_ia.role] = int(roles.get(zr_ia.role, 0)) + 1
+	ok(roles.size() >= 5 and int(roles.get("civilian", 0)) > 200, "most were ordinary people; some were police, medics, builders, soldiers (%s)" % str(roles))
+	sim.zombies.list.clear()
+	var cop: Zombie = sim.zombies.spawn(Vector2(fx0 + 5.5, fy0 + 30.5), 0)
+	sim.zombies._apply_role(cop, "police")
+	var civ: Zombie = sim.zombies.spawn(Vector2(fx0 + 6.5, fy0 + 30.5), 0)
+	cop.hp = 100.0
+	civ.hp = 100.0
+	sim.zombies.damage(cop, 40.0, Vector2(fx0, fy0), 0.0, false, false)
+	sim.zombies.damage(civ, 40.0, Vector2(fx0, fy0), 0.0, false, false)
+	ok(cop.hp > civ.hp, "a vest still turns part of a blow (police %.0f hp vs civilian %.0f)" % [cop.hp, civ.hp])
+	var looted := 0
+	for i_ia in range(60):
+		var zm: Zombie = sim.zombies.spawn(Vector2(fx0 + 5.5, fy0 + 31.5), 0)
+		zm.loot = []
+		sim.zombies._apply_role(zm, "medic")
+		if Inv.count(zm.loot, "bandage") + Inv.count(zm.loot, "painkillers") + Inv.count(zm.loot, "disinfectant") + Inv.count(zm.loot, "suture_kit") > 0: looted += 1
+	ok(looted > 20, "they carry what their work gave them: %d of 60 medics had medical supplies" % looted)
+	sim.zombies.list.clear()
+	# feeding
+	p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
+	var fz2: Zombie = sim.zombies.spawn(Vector2(fx0 + 8.5, fy0 + 30.5), 0)
+	fz2.dir = Vector2(-1, 0)
+	var fcc: Chunk = w.chunk_at(floori(fz2.pos.x), floori(fz2.pos.y))
+	fcc.corpses.append({"x": fz2.pos.x + 0.5, "y": fz2.pos.y, "d": 0, "l": [0, 0, 0, 0], "h": sim.hour})
+	var sr2: float = sim.zombies.sight_range()
+	ok(sim.zombies._sees_player(fz2, sr2), "(control) a standing one 6 tiles away sees you in daylight")
+	var watch_from: Vector2 = p.pos
+	p.pos = Vector2(-9999, -9999)            # it settles to feed while nobody is in sight
+	for i_ia in range(40):
+		if fz2.feeding: break
+		fz2.state = Zombie.IDLE
+		sim.zombies._think(fz2, sr2)
+	p.pos = watch_from
+	ok(fz2.feeding and not sim.zombies._sees_player(fz2, sr2), "one bent over a body does not look up at 6 tiles")
+	sim.noises.clear()
+	sim.noise(p.pos, 7.0)
+	fz2.state = Zombie.IDLE
+	sim.zombies._think(fz2, sr2)
+	ok(fz2.feeding, "nor for a small noise")
+	sim.noise(p.pos, 30.0)
+	sim.zombies._think(fz2, sr2)
+	ok(not fz2.feeding and fz2.state == Zombie.INVESTIGATE, "but a loud one gets its attention")
+	sim.zombies.list.clear()
+	sim.noises.clear()
+	fcc.corpses.clear()
+	# trapped
+	var tz: Zombie = sim.zombies.spawn(Vector2(fx0 + 4.5, fy0 + 30.5), 0)
+	tz.trapped = true
+	tz.state = Zombie.CHASE
+	tz.goal = p.pos
+	tz.has_goal = true
+	var tz0: Vector2 = tz.pos
+	for i_ia in range(60): sim.zombies._update_z(tz, 1.0 / 30.0, sr2, true)
+	ok(tz.pos.distance_to(tz0) < 0.01, "a trapped one reaches for you but cannot come")
+	var spawned_trapped := 0
+	sim.zombies.list.clear()
+	# scent
+	var sz: Zombie = sim.zombies.spawn(Vector2(fx0 + 3.5, fy0 + 30.5), 0)
+	p.trail.clear()
+	for k8 in range(8): p.trail.append([Vector2(fx0 + 4.5 + k8, fy0 + 33.5), sim.hour + k8 * 0.001])
+	p.pos = Vector2(fx0 + 11.5, fy0 + 40.5)
+	sz.state = Zombie.CHASE
+	sz.alert = 0.1
+	sz.give_up = 10.0
+	sim.zombies._think(sz, sr2)
+	ok(sz.scent and sz.has_goal and sz.goal.distance_to(sz.pos) < 5.1 and sz.goal.x > sz.pos.x, "losing sight of you, it follows your trail (goal %s)" % str(sz.goal))
+	sim.weather["rain"] = 1.0
+	w.chunk_at(floori(p.pos.x), floori(p.pos.y)).bld[World.idx(floori(p.pos.x), floori(p.pos.y))] = 0
+	var t_before: int = p.trail.size()
+	for i_ia in range(10):
+		p._trail_t = 0.0
+		p.update(0.05, Vector2.ZERO, false)
+	sim.weather["rain"] = 0.0
+	ok(p.trail.size() < t_before, "heavy rain washes the trail out (%d -> %d marks)" % [t_before, p.trail.size()])
+	sim.zombies.list.clear()
+	# stairs
+	if st_plan != null:
+		var lr2: Rect2i = st_lot["r"]
+		var sx3: int = lr2.position.x + st_plan.stairs.x
+		var sy3: int = lr2.position.y + st_plan.stairs.y
+		p.pos = Vector2(sx3 + 0.5, sy3 + 0.5)
+		w.stream(p.pos, 2, 999)
+		sim._process_world_events()
+		quiet(sim)
+		var chaser: Zombie = sim.zombies.spawn(p.pos + Vector2(0.0, 0.0), 0)
+		chaser.state = Zombie.CHASE
+		for dd2 in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1), Vector2(1, 1)]:
+			if not w.blocked(p.pos.x + dd2.x * 2.0, p.pos.y + dd2.y * 2.0, 0.3):
+				chaser.pos = p.pos + dd2 * 2.0
+				break
+		Actions._use_stairs(sim, World.UNDER * 2, "up")
+		run(sim, 2.0)
+		ok(World.level(chaser.pos.y) == 2 and sim.zombies.list.has(chaser), "it saw you take the stairs and comes up after you")
+		var tt4 := 0.0
+		while tt4 < 3.0:
+			sim.tick(1.0 / 30.0)
+			tt4 += 1.0 / 30.0
+		ok(World.level(chaser.pos.y) == 2 and (chaser.state == Zombie.CHASE or chaser.state == Zombie.ATTACK or chaser.state == Zombie.INVESTIGATE), "and is hunting you upstairs (%s)" % Zombie.STATE_NAMES[chaser.state])
+		sim.zombies.list.clear()
+		p.pos = Vector2(sx3 + 0.5, sy3 + 0.5)
+		w.stream(p.pos, 3, 999)
+		sim._process_world_events()
+		quiet(sim)
+	# hiding
+	p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
+	w.stream(p.pos, 2, 999)
+	sim._process_world_events()
+	quiet(sim)
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	var hx2: int = fx0 + 3
+	var hy2: int = fy0 + 30
+	w.set_obj(hx2, hy2, Defs.ocell(Defs.O_WARDROBE, 0, 0))
+	var ho: Callable = opt(Actions.options(sim, {"kind": "obj", "x": hx2, "y": hy2}), "Hide inside")
+	ok(ho.is_valid(), "a wardrobe offers a place to hide")
+	ho.call()
+	run(sim, 1.5)
+	ok(p.hidden, "you squeeze in")
+	var hz: Zombie = sim.zombies.spawn(p.pos + Vector2(3.0, 0.0), 0)
+	hz.dir = (p.pos - hz.pos).normalized()
+	ok(not sim.zombies._sees_player(hz, sr2), "one passing three tiles away cannot see you")
+	var hp0x: Vector2 = p.pos
+	run(sim, 0.5, Vector2(1, 0))
+	ok(p.pos.distance_to(hp0x) < 0.01, "you cannot walk while hidden")
+	Actions.interact(sim)
+	ok(not p.hidden, "USE brings you out")
+	sim.zombies.list.clear()
+	# peeking through a door
+	w.set_wall(fx0 + 6, fy0 + 30, 1, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_DOOR))
+	for yy4 in range(fy0 + 26, fy0 + 40):
+		if yy4 != fy0 + 30: w.set_wall(fx0 + 6, yy4, 1, Defs.wall(Defs.WM_BRICK_RED, Defs.WS_SOLID))
+	var behind_z: Zombie = sim.zombies.spawn(Vector2(fx0 + 8.5, fy0 + 30.5), 0)
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	p.facing = Vector2(1, 0)
+	sim.zombies._update_seen(behind_z, behind_z.pos.distance_squared_to(p.pos))
+	ok(not behind_z.seen, "a closed door hides what is behind it")
+	var pk: Callable = opt(Actions.options(sim, {"kind": "edge", "x": fx0 + 6, "y": fy0 + 30, "side": 1}), "Peek")
+	ok(pk.is_valid(), "a closed door can be peeked through")
+	sim.log.clear()
+	pk.call()
+	run(sim, 3.0)
+	sim.zombies._update_seen(behind_z, behind_z.pos.distance_squared_to(p.pos))
+	ok(behind_z.seen and sim.log.size() > 0 and String(sim.log[sim.log.size() - 1][0]).contains("1 of them"), "peeking shows it without opening the door")
+	ok(w.edge_blocks(fx0 + 6, fy0 + 30, 1), "and the door is still shut")
+	sim.zombies.list.clear()
+	for yy5 in range(fy0 + 26, fy0 + 40): w.set_wall(fx0 + 6, yy5, 1, 0)
+	# binoculars
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.stream(p.pos + Vector2(0, 16), 3, 999)
+	sim._process_world_events()
+	quiet(sim)
+	bulldoze(sim, Rect2i(fx0 + 3, fy0 + 30, 5, 34))
+	var far_z: Zombie = sim.zombies.spawn(p.pos + Vector2(0.0, 30.0), 0)
+	Inv.add_new(p.inv, "binoculars", 1)
+	p.facing = Vector2(0, 1)
+	sim.log.clear()
+	Actions.use_binoculars(sim)
+	run(sim, 3.5)
+	var lens_msg: String = String(sim.log[sim.log.size() - 1][0]) if sim.log.size() > 0 else ""
+	ok(far_z.peeked > 0.0 and lens_msg.begins_with("Through the lenses: infected"), "binoculars pick out an infected 30 tiles off (\"%s\")" % lens_msg)
+	sim.zombies.list.clear()
+	# footsteps
+	p.gear.erase("feet")
+	w.set_ground(floori(p.pos.x), floori(p.pos.y), Defs.G_CARPET_RED)
+	var carpet_k: float = p.surface_noise()
+	w.set_ground(floori(p.pos.x), floori(p.pos.y), Defs.G_GRAVEL)
+	var gravel_k: float = p.surface_noise()
+	Inv.add_new(p.inv, "boots", 1)
+	p.equip(Inv.find(p.inv, "boots"))
+	var boots_k: float = p.surface_noise()
+	ok(carpet_k < 0.75 and gravel_k > 1.0 and boots_k > gravel_k, "footsteps: carpet x%.2f, gravel barefoot x%.2f, gravel in boots x%.2f" % [carpet_k, gravel_k, boots_k])
+	ok(SaveGame.save(sim, slot), "saving roles and states")
+	var rz: Zombie = sim.zombies.spawn(p.pos + Vector2(4, 4), 0)
+	sim.zombies._apply_role(rz, "military")
+	rz.trapped = true
+	var rz_save: Array = rz.save()
+	var rz2: Zombie = Zombie.from_save(rz_save)
+	ok(rz2.role == "military" and rz2.trapped and absf(rz2.armor - 0.6) < 0.01, "role, armour and being trapped survive saving")
+	sim.zombies.list.clear()
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

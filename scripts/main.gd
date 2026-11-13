@@ -154,6 +154,8 @@ func _play(dt: float) -> void:
 			"loot": panels.open("inv", ev)
 			"menu": panels.open("menu", ev)
 			"craft": panels.open("craft", ev)
+			"zoom":
+				view.zoom = float(ev["z"])
 			"death":
 				save_now()
 				panels.open("death")

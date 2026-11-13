@@ -60,6 +60,27 @@ func _draw() -> void:
 	var skin: Color = (ZSKIN if zombie != null else SKIN)[int(look[0]) % 4]
 	var cols: Array = [skin, SHIRT[int(look[1]) % SHIRT.size()], PANTS[int(look[2]) % PANTS.size()], HAIR[int(look[3]) % HAIR.size()], Color.WHITE]
 	if zombie != null:
+		match zombie.role:
+			"police":
+				cols[1] = Color("2c3a5a")
+				cols[2] = Color("232a3a")
+			"medic":
+				cols[1] = Color("8ab8a8")
+				cols[2] = Color("8ab8a8")
+			"construction":
+				cols[1] = Color("d8a020")
+				cols[3] = Color("e8c020")
+			"military":
+				cols[1] = Color("4a5a38")
+				cols[2] = Color("4a5034")
+			"burned":
+				cols[0] = Color("4a3a32")
+				cols[1] = Color("2a2420")
+				cols[3] = Color("1a1614")
+			"soaked":
+				cols[0] = (cols[0] as Color).lerp(Color("8aa0a8"), 0.5)
+			"decayed":
+				cols[0] = (cols[0] as Color).lerp(Color("7a7058"), 0.5)
 		cols[1] = (cols[1] as Color).lerp(Color(0.45, 0.45, 0.38), 0.45)
 		cols[2] = (cols[2] as Color).lerp(Color(0.35, 0.34, 0.3), 0.4)
 	for i in range(5):

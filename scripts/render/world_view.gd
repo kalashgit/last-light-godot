@@ -309,8 +309,8 @@ func sync(dt: float) -> void:
 	_ghost.scale = _pview.scale
 	_ghost.look = p.look
 	_ghost.set_frame(p.anim, p.anim_t, p.dir8, prog, wl, 0.0)
-	_pview.visible = sim.vehicle == null
-	_ghost.visible = sim.vehicle == null
+	_pview.visible = sim.vehicle == null and not p.hidden
+	_ghost.visible = sim.vehicle == null and not p.hidden
 	_sync_vehicle()
 	_sync_npcs()
 	_sync_animals()
@@ -350,7 +350,7 @@ func sync(dt: float) -> void:
 		elif z.state == Zombie.ATTACK or (z.state == Zombie.THUMP and z.anim == "z_attack"):
 			zp = clampf(z.anim_t / 0.45, 0.0, 0.99)
 		var sc: float = 1.12 if z.kind == 3 else 1.0
-		v.scale = Vector2(sc, sc)
+		v.scale = Vector2(sc, sc * (0.78 if z.feeding else 1.0))
 		v.set_frame(anim, z.anim_t + z.id * 0.37, z.d8, zp, 0, z.flash)
 	for id in _zviews.keys():
 		var v2: EntityView = _zviews[id]

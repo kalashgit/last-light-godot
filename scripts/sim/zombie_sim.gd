@@ -36,6 +36,7 @@ func spawn(pos: Vector2, kind: int = -1) -> Zombie:
 		elif r < 0.18: kind = 3
 	_apply_kind(z, kind)
 	z.look = [randi() % 4, randi() % 10, randi() % 6, randi() % 6]
+	_apply_role(z, _role_for(pos))
 	var a: float = randf() * TAU
 	z.dir = Vector2(cos(a), sin(a))
 	z.d8 = Iso.dir8(z.dir)
@@ -56,6 +57,61 @@ func _apply_kind(z: Zombie, kind: int) -> void:
 			z.hp *= 2.0
 			z.speed = randf_range(0.85, 1.05)
 	z.speed *= float(sim.settings.get("zspeed", 1.0))
+
+const ROLE_LOOT := {"police": [["ammo_9mm", 0.35, 4, 9], ["pistol", 0.06, 1, 1], ["flashlight", 0.2, 1, 1]],
+	"medic": [["bandage", 0.45, 1, 2], ["painkillers", 0.25, 1, 1], ["disinfectant", 0.15, 1, 1], ["suture_kit", 0.06, 1, 1]],
+	"construction": [["hammer", 0.15, 1, 1], ["nails", 0.3, 5, 15], ["duct_tape", 0.15, 1, 1]],
+	"military": [["ammo_9mm", 0.4, 6, 14], ["shells", 0.2, 2, 6], ["bandage", 0.3, 1, 2], ["shotgun", 0.04, 1, 1]],
+	"civilian": [["money", 0.25, 1, 20], ["granola_bar", 0.06, 1, 1], ["lighter", 0.05, 1, 1]]}
+
+## who someone was depends on where they fell
+func _role_for(pos: Vector2) -> String:
+	var w: World = sim.world
+	var bt: String = w.btype_at(floori(pos.x), floori(pos.y))
+	var r: float = randf()
+	match bt:
+		"police": return "police" if r < 0.6 else "civilian"
+		"clinic", "hospital": return "medic" if r < 0.6 else "civilian"
+		"warehouse", "hardware": return "construction" if r < 0.5 else "civilian"
+		"firestation": return "burned" if r < 0.3 else ("construction" if r < 0.5 else "civilian")
+	if Defs.ground_is_water(w.ground(floori(pos.x), floori(pos.y))) or (r < 0.2 and _near_water(pos)):
+		return "soaked"
+	var c: Chunk = w.chunk_at(floori(pos.x), floori(pos.y))
+	var zone: int = c.zone if c != null else 0
+	if r < 0.015 + (0.02 if zone == 3 else 0.0): return "military"
+	if r < 0.05: return "police"
+	if r < 0.08: return "medic"
+	if r < 0.13: return "construction"
+	if r < 0.16: return "burned"
+	if sim.hour / 24.0 > 40.0 and r < 0.4: return "decayed"
+	return "civilian"
+
+func _near_water(pos: Vector2) -> bool:
+	for d in [Vector2i(3, 0), Vector2i(-3, 0), Vector2i(0, 3), Vector2i(0, -3)]:
+		if Defs.ground_is_water(sim.world.ground(floori(pos.x) + d.x, floori(pos.y) + d.y)): return true
+	return false
+
+func _apply_role(z: Zombie, role: String) -> void:
+	z.role = role
+	match role:
+		"police": z.armor = 0.75                 # vest
+		"military":
+			z.armor = 0.6
+			z.hp *= 1.2
+		"construction": z.armor = 0.88            # hard hat, heavy jacket
+		"burned":
+			z.hp *= 0.75
+		"soaked":
+			z.speed *= 0.82
+			z.hp *= 0.9
+		"decayed":
+			z.hp *= 0.6
+			z.speed *= 0.85
+	# what they had on them when they turned
+	if z.loot.is_empty():
+		for row in ROLE_LOOT.get(role, []):
+			if randf() < float(row[1]):
+				z.loot.append(Items.make(row[0], randi_range(int(row[2]), int(row[3])), sim.hour))
 
 func on_chunk_loaded(c: Chunk) -> void:
 	for a in c.zombies:
@@ -113,8 +169,13 @@ func _spawn_in_chunk(c: Chunk, n: int) -> void:
 			continue
 		if p.distance_to(sim.player.pos) < 14.0:
 			continue
-		spawn(p)
+		var nz: Zombie = spawn(p)
 		made += 1
+		# beside a wreck: still belted into it, or pinned under it
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if Defs.o_id(w.obj(x + d.x, y + d.y)) == Defs.O_CAR_WRECK and randf() < 0.5:
+				nz.trapped = true
+				break
 
 func count_in_chunk(cx: int, cy: int) -> int:
 	var n := 0
@@ -231,7 +292,8 @@ func ray_hit(p: Vector2, dir: Vector2, rng: float) -> Zombie:
 
 # ------------------------------------------------------------------ damage
 func damage(z: Zombie, dmg: float, from: Vector2, kb: float, knockdown: bool, crit: bool) -> void:
-	z.hp -= dmg
+	z.hp -= dmg * (z.armor if not crit else minf(1.0, z.armor + 0.2))
+	z.feeding = false
 	z.flash = 0.18
 	z.alert = 10.0
 	sim.emit_fx("hit", z.pos, {"crit": crit})
@@ -241,7 +303,7 @@ func damage(z: Zombie, dmg: float, from: Vector2, kb: float, knockdown: bool, cr
 		kill(z)
 		return
 	var away: Vector2 = (z.pos - from).normalized()
-	if kb > 0.0:
+	if kb > 0.0 and not z.trapped:
 		z.pos = sim.world.move(z.pos, away * kb, R)
 	if z.state != Zombie.DOWN:
 		if knockdown:
@@ -334,6 +396,24 @@ func _update_z(z: Zombie, dt: float, sr: float, near: bool) -> void:
 	z.atk_cd = maxf(0.0, z.atk_cd - dt)
 	if not w.is_loaded(floori(z.pos.x), floori(z.pos.y)):
 		return
+	z.peeked = maxf(0.0, z.peeked - dt)
+	# following someone up the stairs or down the hatch
+	if z.follow_dy != 0 and z.pos.distance_to(z.follow_at) < 1.1:
+		var dest := Vector2(z.follow_at.x, z.follow_at.y + z.follow_dy)
+		var moved := false
+		if w.is_loaded(floori(dest.x), floori(dest.y)):
+			for dd in [Vector2.ZERO, Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1), Vector2(1, 1)]:
+				if not w.blocked(dest.x + dd.x, dest.y + dd.y, R):
+					z.pos = dest + dd
+					moved = true
+					break
+		if not moved:
+			return                       # the floor above is not there yet: wait at the foot of the stairs
+		z.follow_dy = 0
+		z.state = Zombie.INVESTIGATE
+		z.goal = p.pos
+		z.give_up = 12.0
+		z.path = PackedVector2Array()
 	match z.state:
 		Zombie.DOWN:
 			z.t -= dt
@@ -432,12 +512,23 @@ func _sees_player(z: Zombie, sr: float) -> bool:
 	var d: float = to.length()
 	if d > sr:
 		return false
+	if p.hidden:
+		return false
+	if z.feeding and d > 2.5:
+		return false                     # too busy to look up
 	if d > 2.2 and z.dir.dot(to) / d < -0.25:
 		return false
 	return sim.world.los(z.pos.x, z.pos.y, p.pos.x, p.pos.y)
 
 func _think(z: Zombie, sr: float) -> void:
 	var p: Player = sim.player
+	if p.hidden and z.state >= Zombie.INVESTIGATE and z.pos.distance_to(p.pos) < 1.4 and randf() < 0.12:
+		p.hidden = false
+		z.state = Zombie.CHASE
+		z.alert = 9.0
+		sim.say("Hands on the door. It drags it open!", Color(1.0, 0.5, 0.4))
+		sim.emit_fx("door", p.pos)
+		return
 	if _sees_player(z, sr):
 		z.alert = 9.0
 		z.goal = p.pos
@@ -453,7 +544,20 @@ func _think(z: Zombie, sr: float) -> void:
 		if z.alert <= 0.0:
 			z.state = Zombie.INVESTIGATE
 			z.give_up = 10.0
+			z.scent = true
+			_sniff(z)
 		return
+	if z.scent and z.state == Zombie.INVESTIGATE and z.pos.distance_to(z.goal) < 1.0:
+		_sniff(z)
+	# a body to feed on keeps an idle one busy and half blind
+	if z.state <= Zombie.WANDER and not z.feeding and randf() < 0.25:
+		var c: Chunk = sim.world.chunk_at(floori(z.pos.x), floori(z.pos.y))
+		if c != null:
+			for cp in c.corpses:
+				if Vector2(cp["x"], cp["y"]).distance_squared_to(z.pos) < 4.0:
+					z.feeding = true
+					z.goal = Vector2(cp["x"], cp["y"])
+					break
 	# hearing
 	var best_score := 0.0
 	var best_pos := Vector2.ZERO
@@ -473,8 +577,13 @@ func _think(z: Zombie, sr: float) -> void:
 			var eff: float = nr * sim.world.sound_pass(np, z.pos)
 			if d < eff and eff - d > best_score:
 				best_score = eff - d
-				best_pos = np
+				best_pos = Vector2(np.x, np.y - float(lvn - lvz) * World.UNDER)     # heard through the floor: look on its own floor
+	if z.follow_dy != 0:
+		best_score = 0.0                 # already on its way to the stairs
+	if best_score > 0.0 and z.feeding and best_score < 6.0:
+		best_score = 0.0                 # a feeding one only lifts its head for something loud and close
 	if best_score > 0.0:
+		z.feeding = false
 		z.goal = best_pos + Vector2(randf_range(-1.2, 1.2), randf_range(-1.2, 1.2))
 		z.has_goal = true
 		if z.state != Zombie.INVESTIGATE:
@@ -502,7 +611,29 @@ func _think(z: Zombie, sr: float) -> void:
 			z.state = Zombie.WANDER
 			z.give_up = 8.0
 
+## follow the freshest trail the living left nearby; rain washes it out
+func _sniff(z: Zombie) -> void:
+	var p: Player = sim.player
+	var best := Vector2.ZERO
+	var best_t := -1.0
+	for tr in p.trail:
+		var tp: Vector2 = tr[0]
+		if float(tr[1]) > best_t and tp.distance_to(z.pos) < 5.0 and tp.distance_to(z.pos) > 0.8:
+			best_t = float(tr[1])
+			best = tp
+	if best_t >= 0.0 and z.give_up > 1.0:
+		z.goal = best
+		z.has_goal = true
+		z.path = PackedVector2Array()
+		z.repath_t = 0.0
+	else:
+		z.scent = false
+
 func _move(z: Zombie, dt: float, near: bool) -> void:
+	if z.trapped:
+		return
+	if z.feeding and z.state <= Zombie.WANDER:
+		return
 	var w: World = sim.world
 	var sp: float = z.speed * (0.45 if z.state == Zombie.WANDER else (0.8 if z.state == Zombie.INVESTIGATE else 1.0))
 	var target: Vector2 = z.goal
@@ -626,6 +757,9 @@ func _separate(z: Zombie) -> void:
 ## is this zombie inside the player's field of view (used for rendering fade and panic)
 func _update_seen(z: Zombie, d2: float) -> void:
 	var p: Player = sim.player
+	if z.peeked > 0.0:
+		z.seen = true
+		return
 	if d2 > 380.0:
 		z.seen = false
 		return
@@ -639,4 +773,4 @@ func _update_seen(z: Zombie, d2: float) -> void:
 	if d > view and d > 2.5:
 		z.seen = false
 		return
-	z.seen = sim.world.los(p.pos.x, p.pos.y, z.pos.x, z.pos.y)
+	z.seen = sim.world.los(p.pos.x, p.pos.y, z.pos.x, z.pos.y) or z.peeked > 0.0

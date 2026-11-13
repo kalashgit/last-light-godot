@@ -316,6 +316,20 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 	slow_t = maxf(0.0, slow_t - dt)
 	var w: World = sim.world
 	bld = w.bld(floori(pos.x), floori(pos.y))
+	# scent: a fresh mark every second you move; heavy rain washes the old ones out
+	_trail_t -= dt
+	if _trail_t <= 0.0:
+		_trail_t = 1.0
+		if moving and not hidden and sim.vehicle == null:
+			trail.append([pos, sim.hour])
+			if trail.size() > 24:
+				trail.pop_front()
+		if float(sim.weather.get("rain", 0.0)) > 0.6 and bld == 0 and not trail.is_empty():
+			trail.pop_front()
+	if hidden:
+		anim = "s_squat"
+		moving = false
+		return
 	if sleeping:
 		anim = "s_lie"
 		moving = false
@@ -369,11 +383,14 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 				add_xp("sprinting", 3.0)
 		if _step_t <= 0.0 and moving:
 			_step_t = 0.32 if running else (0.7 if sneaking else 0.46)
-			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise") * (1.0 - skill_level("lightfooted") * 0.05)
+			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise") * (1.0 - skill_level("lightfooted") * 0.05) * surface_noise()
 			if not running and randf() < 0.06 and sim.zombies.count_threats(pos, 12.0) > 0:
 				add_xp("lightfooted", 1.5)
 			sim.noise(pos, noise_r)
 			sim.emit_fx("step", pos)
+			if gear.get("feet", {}).is_empty() and (w.ground(floori(pos.x), floori(pos.y)) == Defs.G_GRAVEL or w.ground(floori(pos.x), floori(pos.y)) == Defs.G_ASPHALT) and randf() < (0.02 if not running else 0.06):
+				add_wound(15 + randi() % 2, "scratch", "bare feet")
+				sim.say("Something sharp underfoot. Shoes would help.", Color(1.0, 0.75, 0.5))
 			if sneaking and randf() < 0.05:
 				add_xp("sneaking", 1.0)
 	else:
@@ -442,12 +459,36 @@ func melee_stats() -> Dictionary:
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
 var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
+var hidden := false             # inside a wardrobe or locker
+var hide_at := Vector2i.ZERO
+var trail: Array = []           # [pos, hour]: what the infected can follow by scent
+var _trail_t := 0.0
 var grime := 0.0                # dirt and blood on you: 0 clean .. 100 filthy
 var markers: Array = []         # personal map notes: [x, y, label]
 var force_shove := false
 var corpses_near := 0
 
 ## push everything in front of you back, whatever you are holding
+## how loud the ground and your shoes make each step
+func surface_noise() -> float:
+	var g: int = sim.world.ground(floori(pos.x), floori(pos.y))
+	var k := 1.0
+	match g:
+		Defs.G_GRAVEL: k = 1.35
+		Defs.G_WOOD, Defs.G_WOOD_DARK, Defs.G_PLANK: k = 1.15
+		Defs.G_TILE, Defs.G_TILE_BLUE, Defs.G_LINO: k = 1.1
+		Defs.G_CARPET_RED, Defs.G_CARPET_BLUE, Defs.G_CARPET_BEIGE: k = 0.7
+		Defs.G_GRASS, Defs.G_GRASS_DARK, Defs.G_FOREST, Defs.G_SOIL, Defs.G_SAND: k = 0.85
+		Defs.G_WATER: k = 1.3
+	var shoes: Dictionary = gear.get("feet", {})
+	if shoes.is_empty():
+		k *= 0.85                                  # barefoot is quiet, and hurts
+	elif shoes["id"] == "boots":
+		k *= 1.12
+	elif shoes["id"] == "sneakers":
+		k *= 0.9
+	return k
+
 func try_shove() -> bool:
 	if not alive or sleeping or swing_t > 0.0 or attack_cd > 0.0:
 		return false
@@ -1347,7 +1388,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "grime": grime, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1428,6 +1469,8 @@ func load(d: Dictionary) -> void:
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
 	grime = d.get("grime", 0.0)
+	hidden = d.get("hidden", false)
+	hide_at = d.get("hide_at", Vector2i.ZERO)
 	carrying = d.get("carry", {})
 	xp_boost = d.get("boost", {})
 	if int(d.get("parts", 6)) == 6:

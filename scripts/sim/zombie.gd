@@ -42,9 +42,17 @@ var flash := 0.0
 var seen := false         # currently visible to the player (line of sight)
 var alpha := 0.0          # render fade
 var loot: Array = []      # carried items (a turned survivor keeps their pack)
+var role := "civilian"    # who they were: civilian police medic construction military burned soaked decayed
+var armor := 1.0          # damage multiplier from what they still wear
+var trapped := false      # pinned in a wreck or under rubble: cannot walk
+var feeding := false      # bent over a body: half blind
+var scent := false        # following a trail rather than a sight or sound
+var follow_dy := 0        # following someone up or down stairs
+var follow_at := Vector2.ZERO
+var peeked := 0.0         # seconds left of being visible through a peek or binoculars
 
 func save() -> Array:
-	return [pos.x, pos.y, hp, speed, kind, look[0], look[1], look[2], look[3], 1 if state == DOWN and kind == 2 else 0, loot]
+	return [pos.x, pos.y, hp, speed, kind, look[0], look[1], look[2], look[3], 1 if state == DOWN and kind == 2 else 0, loot, role, armor, trapped]
 
 static func from_save(a: Array) -> Zombie:
 	var z := Zombie.new()
@@ -55,4 +63,8 @@ static func from_save(a: Array) -> Zombie:
 	z.look = [a[5], a[6], a[7], a[8]]
 	if a.size() > 10:
 		z.loot = a[10]
+	if a.size() > 13:
+		z.role = a[11]
+		z.armor = a[12]
+		z.trapped = a[13]
 	return z

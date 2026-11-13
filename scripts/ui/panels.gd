@@ -525,6 +525,10 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 				p.use_med(it)])
 		else:
 			opts.append(["Treat a wound…", func(): open("char")])
+	if it["id"] == "binoculars":
+		opts.append(["Look through them (the way you face)", func():
+			close()
+			Actions.use_binoculars(sim)])
 	if it["id"] == "notebook":
 		opts.append(["Write a note about this place", func():
 			close()

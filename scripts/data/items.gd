@@ -154,6 +154,7 @@ static func _static_init() -> void:
 	_i("sheet", "Sheet", "material", 0.4, ["sheet", "e8e4d8", "c8c4b8"], {"fuel": 0.3})
 	_i("tarp", "Tarp", "material", 1.0, ["sheet", "3c6a9a", "2c4a6a"], {})
 	_i("garbage_bag", "Garbage Bag", "material", 0.1, ["bag", "2a2c2e", "3a3d40"], {})
+	_i("binoculars", "Binoculars", "tool", 0.6, ["box", "2a2c2e", "5a7aa0"], {"look": 1})
 	_i("pencil", "Pencil", "tool", 0.05, ["knife", "d8b040", "3a3a3a"], {})
 	_i("notebook", "Notebook", "tool", 0.2, ["book", "3a5a86", "f0ece0"], {"uses": 10, "fuel": 0.2})
 	_i("note", "Handwritten Note", "misc", 0.02, ["paper", "f0ece0", "5a5a56"], {"read": 1, "fuel": 0.05, "nostack": 1})

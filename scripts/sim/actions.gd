@@ -121,6 +121,9 @@ static func interact(sim: Sim, full_menu: bool = false) -> void:
 	if p.sleeping:
 		sim.wake("You get up.")
 		return
+	if p.hidden:
+		leave_hiding(sim)
+		return
 	if sim.vehicle != null:
 		if full_menu:
 			sim.ui_events.append({"type": "menu", "title": "The %s" % String(sim.vehicle.spec()["n"]), "options": vehicle_menu(sim)})
@@ -240,6 +243,8 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 			var oh: Dictionary = _opt("Hop over", func(): _climb(sim, x, y, side, 0.8, false))
 			oh["quick"] = true
 			out.append(oh)
+	if shape == Defs.WS_DOOR and (st & (Defs.ES_OPEN | Defs.ES_BROKEN)) == 0 and not fence:
+		out.append(_opt("Peek through the gap", func(): _peek(sim, x, y, side)))
 	# alarms: an electrician can find and cut them from outside
 	if not fence and (shape == Defs.WS_DOOR or shape == Defs.WS_WINDOW) and not inside and Inv.has_tag(p.inv, "screwdriver"):
 		var tb: Vector2i = other
@@ -361,6 +366,8 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 	var out: Array = []
 	if d.has("c"):
 		out.append(_opt("Search %s" % String(d["n"]).to_lower(), func(): sim.ui_events.append({"type": "loot", "focus": a})))
+	if id == Defs.O_WARDROBE or id == Defs.O_LOCKER:
+		out.append(_opt("Hide inside", func(): hide_in(sim, a.x, a.y)))
 	match use:
 		"bed":
 			out.append(_opt("Sleep", func(): sim.start_sleep(1.0 if id != Defs.O_SOFA and id != Defs.O_BEDROLL else 0.8)))
@@ -914,10 +921,89 @@ static func _coop_options(sim: Sim, x: int, y: int) -> Array:
 		sim.say("%d hens, %d eggs, feed for %d hours." % [hens, eggs, int(maxf(0.0, float(e.get("fed", 0.0))))], Color(0.85, 0.88, 0.8))))
 	return out
 
+static func hide_in(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	if not p.carrying.is_empty() or not p.dragging.is_empty():
+		sim.say("Not with your arms full", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Squeezing in", 1.2, func():
+		p.hidden = true
+		p.hide_at = Vector2i(x, y)
+		sim.emit_fx("door", p.pos)
+		# anything already chasing saw where you went
+		for z in sim.zombies.list:
+			if z.state == Zombie.CHASE and z.pos.distance_to(p.pos) < 5.0:
+				z.goal = p.pos
+				z.has_goal = true
+		sim.say("You pull the door to. Keep still. USE to come out.", Color(0.8, 0.85, 0.9)), false)
+
+static func leave_hiding(sim: Sim) -> void:
+	var p: Player = sim.player
+	if not p.hidden:
+		return
+	p.hidden = false
+	sim.emit_fx("door", p.pos)
+	sim.noise(p.pos, 3.0)
+
+## crack a closed door: see what is on the other side without opening it
+static func _peek(sim: Sim, x: int, y: int, side: int) -> void:
+	var p: Player = sim.player
+	p.start_action("Peeking", 1.5, func():
+		var other: Vector2i = _other_side(sim, x, y, side)
+		var c := Vector2(other.x + 0.5, other.y + 0.5)
+		var seen := 0
+		for z in sim.zombies.list:
+			if z.pos.distance_to(c) < 6.0 and sim.world.los(c.x, c.y, z.pos.x, z.pos.y):
+				z.peeked = 4.0
+				seen += 1
+		sim.noise(p.pos, 1.0)
+		sim.say(("Through the gap: %d of them." % seen) if seen > 0 else "Through the gap: nothing moving.", Color(0.85, 0.85, 0.75)))
+
+## look a long way: who and what is out there
+static func use_binoculars(sim: Sim) -> void:
+	var p: Player = sim.player
+	p.start_action("Looking through binoculars", 2.0, func():
+		var zs := 0
+		var dirs: Dictionary = {}
+		for z in sim.zombies.list:
+			var d: float = z.pos.distance_to(p.pos)
+			if d < 40.0 and d > 3.0 and p.facing.dot((z.pos - p.pos).normalized()) > 0.5 and sim.world.los(p.pos.x, p.pos.y, z.pos.x, z.pos.y):
+				zs += 1
+				z.peeked = 6.0
+				var cd: String = Sim.compass(p.pos, z.pos)
+				dirs[cd] = int(dirs.get(cd, 0)) + 1
+		var people := 0
+		for n in sim.npcs.list:
+			if n.pos.distance_to(p.pos) < 40.0 and p.facing.dot((n.pos - p.pos).normalized()) > 0.5: people += 1
+		var game := 0
+		for an in sim.animals.list:
+			if an.pos.distance_to(p.pos) < 40.0 and p.facing.dot((an.pos - p.pos).normalized()) > 0.5: game += 1
+		var parts: Array = []
+		for k in dirs.keys(): parts.append("%d %s" % [dirs[k], k])
+		sim.say("Through the lenses: %s%s%s." % [("infected " + ", ".join(parts)) if zs > 0 else "no infected", (", %d people" % people) if people > 0 else "", (", %d animals" % game) if game > 0 else ""], Color(0.8, 0.9, 1.0))
+		sim.ui_events.append({"type": "zoom", "z": 0.9, "t": 6.0}))
+
 static func _use_stairs(sim: Sim, dy: int, msg: String = "") -> void:
 	var p: Player = sim.player
+	var src: Vector2 = p.pos
+	# whatever is on your heels follows you up or down
+	var followers: Array = []
+	for z in sim.zombies.list:
+		if (z.state == Zombie.CHASE or z.state == Zombie.INVESTIGATE) and z.pos.distance_to(src) < 10.0 and not z.trapped:
+			followers.append(z)
+			z.goal = src
+			z.has_goal = true
+			z.state = Zombie.INVESTIGATE
+			z.give_up = 25.0
+			z.path = PackedVector2Array()
 	p.start_action("Climbing", 1.6, func():
 		var dest := Vector2(p.pos.x, p.pos.y + dy)
+		# lift the followers out before the floor you leave is unloaded
+		var climbing: Array = []
+		for zf in followers:
+			if sim.zombies.list.has(zf):
+				climbing.append([zf, zf.pos.distance_to(src) / maxf(0.4, zf.speed) + 0.8])
+				sim.zombies.list.erase(zf)
 		sim.world.stream(dest, 2, 999)
 		var t := Vector2(floorf(dest.x) + 0.5, floorf(dest.y) + 0.5)
 		if sim.world.blocked(t.x, t.y, Player.R):
@@ -927,6 +1013,23 @@ static func _use_stairs(sim: Sim, dy: int, msg: String = "") -> void:
 					t += d
 					break
 		p.pos = t
+		# they come up after you, a little behind: how far back they were, at their pace
+		for cl in climbing:
+			var z2: Zombie = cl[0]
+			var lag: float = cl[1]
+			sim.zombies.list.append(z2)
+			var spot: Vector2 = t
+			for d2 in [Vector2(0, 1), Vector2(1, 0), Vector2(-1, 0), Vector2(0, -1), Vector2(1, 1), Vector2(-1, -1), Vector2(1, -1), Vector2(-1, 1)]:
+				if not sim.world.blocked(t.x + d2.x, t.y + d2.y, 0.3):
+					spot = t + d2
+					break
+			z2.pos = spot
+			z2.state = Zombie.STAGGER          # still on the stairs: they arrive after `lag` seconds
+			z2.t = lag
+			z2.anim = "z_walk"
+			z2.goal = t
+			z2.has_goal = true
+			z2.path = PackedVector2Array()
 		sim._process_world_events()
 		sim.emit_fx("step", p.pos)
 		for n in sim.npcs.list:

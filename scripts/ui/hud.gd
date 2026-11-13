@@ -334,7 +334,9 @@ func poll(dt: float) -> void:
 		_target = ""
 		if p.alive and not p.busy():
 			var ts: Array = Actions.targets(sim)
-			if sim.vehicle != null:
+			if p.hidden:
+				_target = "Come out"
+			elif sim.vehicle != null:
 				_target = "Get out"
 			elif not p.carrying.is_empty():
 				_target = "Set down the %s" % String(Defs.obj(int(p.carrying["o"]))["n"]).to_lower()
