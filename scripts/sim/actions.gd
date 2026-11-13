@@ -215,7 +215,12 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 							sim.noise(p.pos, 12.0)
 							sim.emit_fx("door", p.pos))))
 			else:
-				var o3: Dictionary = _opt("Open", func(): _toggle_door(sim, x, y, side))
+				var o3: Dictionary = _opt("Open", func():
+					if sim.door_jammed(x, y, side):
+						sim.say("It won't budge — swollen in the frame. Force it?", Color(1.0, 0.85, 0.6))
+						sim.emit_fx("locked", p.pos)
+						return
+					_toggle_door(sim, x, y, side))
 				o3["quick"] = true
 				out.append(o3)
 				if not fence and inside:
@@ -268,6 +273,17 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(oh)
 	if shape == Defs.WS_DOOR and (st & (Defs.ES_OPEN | Defs.ES_BROKEN)) == 0 and not fence:
 		out.append(_opt("Peek through the gap", func(): _peek(sim, x, y, side)))
+		if sim.door_jammed(x, y, side):
+			out.append(_opt("Force the stuck door", func():
+				p.start_action("Shouldering the door", 3.0 if not Inv.has_tag(p.inv, "crowbar") else 1.5, func():
+					sim.noise(p.pos, 9.0)
+					p.endurance = maxf(0.0, p.endurance - 12.0)
+					if Inv.has_tag(p.inv, "crowbar") or randf() < 0.35 + p.skill_level("strength") * 0.06:
+						sim.unjammed["%d,%d,%d" % [x, y, side]] = true
+						_toggle_door(sim, x, y, side)
+						sim.say("It gives with a crack.", Color(0.8, 0.85, 0.9))
+					else:
+						sim.say("Not yet. Again?", Color(0.9, 0.8, 0.6)))))
 	# alarms: an electrician can find and cut them from outside
 	if not fence and (shape == Defs.WS_DOOR or shape == Defs.WS_WINDOW) and not inside and Inv.has_tag(p.inv, "screwdriver"):
 		var tb: Vector2i = other
@@ -408,7 +424,9 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Sleep (uncomfortable)", func(): sim.start_sleep(0.6)))
 		"sink":
 			var pb: int = w.bld(a.x, a.y)
-			if sim.has_water():
+			if sim.has_water() and float(sim.weather["temp"]) < -8.0 and not sim.near_heat(Vector2(a.x + 0.5, a.y + 0.5)):
+				out.append(_opt("The pipes have frozen", func(): sim.say("Nothing. Warm the house — a fire or a stove nearby — and they will thaw.", Color(0.75, 0.85, 1.0))))
+			elif sim.has_water():
 				out.append(_opt("Drink", func(): _drink_source(sim, false, 999)))
 				out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 				out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
@@ -594,6 +612,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		out.append(_opt("Watch the broadcast", func(): _watch_tv(sim, x, y)))
 	if d.has("scrap") and Inv.has_tag(p.inv, "hammer"):
 		out.append(_opt("Dismantle", func(): _dismantle(sim, x, y)))
+	out.append(_opt("Look closer", func(): sim.say(look_closer(sim, a.x, a.y), Color(0.85, 0.88, 0.8))))
 	if id == Defs.O_WOOD_CRATE or id == Defs.O_RAIN_BARREL or id == Defs.O_CAMPFIRE:
 		out.append(_opt("Remove", func():
 			p.start_action("Removing", 2.5, func(): w.remove_object(x, y))))
@@ -728,6 +747,38 @@ static func _wash(sim: Sim, draw: Callable) -> void:
 		p.temp -= 6.0 if sim.weather.get("temp", 15.0) < 10.0 else 0.0
 		sim.say("Clean, or close enough.", Color(0.75, 0.9, 1.0)))
 
+## what a careful look at a world object tells you
+static func look_closer(sim: Sim, x: int, y: int) -> String:
+	var w: World = sim.world
+	var cell: int = w.obj(x, y)
+	var id: int = Defs.o_id(cell)
+	var d: Dictionary = Defs.obj(id)
+	var bits: Array = [String(d.get("n", "Something"))]
+	var c: Chunk = w.chunk_at(x, y)
+	var hp_max: float = float(d.get("hp", 100))
+	var hp: float = float(c.obj_hp.get(World.idx(x, y), hp_max)) if c != null else hp_max
+	if hp < hp_max * 0.95:
+		bits.append("damaged (%d%%)" % int(hp / hp_max * 100.0))
+	if d.has("c") and not Vehicle.is_vehicle(id):
+		if c != null and c.containers.has(World.idx(x, y)):
+			var n: int = (c.containers[World.idx(x, y)] as Array).size()
+			bits.append("empty" if n == 0 else "%d things inside" % n)
+		else:
+			bits.append("not searched yet")
+	if Sim.APPLIANCES.has(id):
+		bits.append("switched off" if w.ent(x, y).get("off", false) else ("running" if sim.has_power(x, y) else "no power"))
+	var e: Dictionary = w.ent(x, y)
+	match String(e.get("k", "")):
+		"fire": bits.append("burning, about %d hours of fuel" % int(float(e.get("fuel", 0.0))) if e.get("lit", false) else "cold ashes")
+		"barrel": bits.append("%d units of rainwater%s" % [int(float(e.get("w", 0.0))), ", frozen" if e.get("ice", false) else ""])
+		"gen": bits.append("%s, %.0f h of fuel, condition %d%%" % ["running" if e.get("on", false) else "off", float(e.get("fuel", 0.0)), int(float(e.get("c", 1.0)) * 100.0)])
+		"bank": bits.append("charge %d%%" % int(float(e.get("w", 0.0)) / Sim.BANK_MAX * 100.0))
+		"crop": bits.append("%s, %s" % [String(e["t"]), Farming.STAGE_NAMES[int(e["s"])]])
+		"coop": bits.append("%d hens" % int(e.get("hens", 0)))
+	if Vehicle.is_vehicle(id):
+		return condition_text(Vehicle.car_ent(sim, x, y), id)
+	return ", ".join(bits) + "."
+
 ## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
 static func _rest(sim: Sim) -> void:
 	var p: Player = sim.player
@@ -797,6 +848,13 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				sim.say("Tank: %d / %d" % [int(float(e["fuel"])), int(tank)], Color(0.75, 0.9, 0.7)))))
 	if float(e.get("tire", 1.0)) < 0.9 and Inv.count(p.inv, "duct_tape") > 0:
 		out.append(_opt("Patch the tyres (duct tape)", func(): _patch_tyre(sim, e)))
+	if float(e.get("tire", 1.0)) < 0.99 and Inv.count(p.inv, "tyre_kit") > 0:
+		out.append(_opt("Repair the tyres properly (tyre kit)", func():
+			p.start_action("Plugging and inflating", 6.0, func():
+				if not Inv.take(p.inv, "tyre_kit", 1): return
+				e["tire"] = 1.0
+				p.add_xp("mechanics", 14.0)
+				sim.say("Good as new.", Color(0.75, 0.9, 0.7)))))
 	if float(e.get("win", 1.0)) < 0.99 and Inv.count(p.inv, "glass_pane") > 0:
 		out.append(_opt("Fit a new window (glass pane)", func():
 			p.start_action("Fitting glass", 7.0, func():

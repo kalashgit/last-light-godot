@@ -479,6 +479,7 @@ func speed_factor() -> float:
 	if ov > 0.0: f *= clampf(1.0 - ov * 0.04, 0.6, 1.0)          # arms full of awkward things
 	if endurance < 25.0: f *= 0.8
 	if bld == 0 and sim.snow_cover > 0.3 and World.level(pos.y) == 0: f *= 1.0 - minf(0.3, sim.snow_cover * 0.3)
+	if sim.muddy(floori(pos.x), floori(pos.y)): f *= 0.85
 	if fatigue > 80.0: f *= 0.85
 	if pain > 60.0: f *= 0.82
 	if slow_t > 0.0: f *= 0.5
@@ -503,6 +504,7 @@ func melee_stats() -> Dictionary:
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
 var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
+var known: Dictionary = {}       # trades someone has shown you in person
 var pname := ""                 # what the survivor is called
 var hidden := false             # inside a wardrobe or locker
 var hide_at := Vector2i.ZERO
@@ -514,6 +516,20 @@ var force_shove := false
 var corpses_near := 0
 
 ## push everything in front of you back, whatever you are holding
+## strip, clean and oil a firearm: gun oil does most, a rag does a little; clears any jam
+func clean_gun(it: Dictionary) -> void:
+	var d: Dictionary = Items.def(it["id"])
+	start_action("Cleaning the %s" % String(d["n"]).to_lower(), 8.0, func():
+		var oil: Dictionary = Inv.find(inv, "gun_oil")
+		if not oil.is_empty():
+			Inv.use_charge(inv, oil)
+			it["c"] = minf(1.0, float(it.get("c", 1.0)) + 0.35 + skill_level("maintenance") * 0.04)
+		elif Inv.take(inv, "rag", 1):
+			it["c"] = minf(1.0, float(it.get("c", 1.0)) + 0.15)
+		it.erase("jam")
+		add_xp("maintenance", 10.0)
+		sim.say("Condition %d%%." % int(float(it["c"]) * 100.0), Color(0.75, 0.9, 0.7)))
+
 ## how loud the ground and your shoes make each step
 func surface_noise() -> float:
 	var g: int = sim.world.ground(floori(pos.x), floori(pos.y))
@@ -772,6 +788,13 @@ func _fire_gun(g: Dictionary) -> void:
 	for i in range(pellets):
 		var dir: Vector2 = facing.rotated(randf_range(-spread, spread))
 		var z: Zombie = sim.zombies.ray_hit(pos, dir, rng)
+		# whoever stands between you and the target takes it instead
+		var by = sim.npcs.ray_hit(pos, dir, rng)
+		if by != null and (z == null or by.pos.distance_to(pos) < z.pos.distance_to(pos)) and randf() < 0.6:
+			var fdr: Array = g["dmg"]
+			sim.npcs.damage(by, randf_range(float(fdr[0]), float(fdr[1])) / float(maxi(pellets / 2, 1)), true)
+			sim.say("You hit %s!" % by.name, Color(1.0, 0.5, 0.4))
+			continue
 		if z == null:
 			var game = sim.animals.ray_hit(pos, dir, rng)
 			if game != null and randf() < clampf(0.6 + aim_lvl * 0.04 - game.pos.distance_to(pos) / rng * 0.35, 0.1, 0.95):
@@ -1437,7 +1460,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "known": known, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1518,6 +1541,7 @@ func load(d: Dictionary) -> void:
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
 	pname = d.get("pname", "")
+	known = d.get("known", {})
 	grime = d.get("grime", 0.0)
 	hidden = d.get("hidden", false)
 	hide_at = d.get("hide_at", Vector2i.ZERO)

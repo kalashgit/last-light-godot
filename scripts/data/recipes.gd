@@ -102,6 +102,9 @@ static func _static_init() -> void:
 	# ---- workshop (needs a workbench within reach)
 	_r("battery_bank", "Wire a battery bank", "Workshop", {"in": [["car_battery", 2], ["wire", 3]], "tools": ["screwdriver"], "skill": ["electrical", 2], "build": {"obj": Defs.O_BATTERY_BANK}, "time": 10.0, "xp": ["electrical", 35]})
 	_r("solar_panel", "Assemble a solar panel", "Workshop", {"in": [["glass_pane", 1], ["scrap_metal", 2], ["wire", 2]], "tools": ["screwdriver"], "skill": ["electrical", 3], "build": {"obj": Defs.O_SOLAR}, "time": 12.0, "xp": ["electrical", 40]})
+	_r("field_dressing", "Field dressing (taught)", "Survival", {"in": [["rag", 2], ["disinfectant", 1]], "learn": "medic", "out": [["bandage", 3]], "time": 4.0, "xp": ["first_aid", 12]})
+	_r("tyre_plug", "Plug a tyre properly (taught)", "Workshop", {"in": [["duct_tape", 1], ["scrap_metal", 1]], "learn": "mechanic", "out": [["tyre_kit", 1]], "time": 5.0, "xp": ["mechanics", 12]})
+	_r("hunter_stew", "Hunter's stew (taught)", "Cooking", {"in": [["raw_venison", 1], ["potato", 2], ["onion", 1], ["water", 1]], "near": "heat", "learn": "cook", "out": [["stew", 3]], "time": 9.0, "xp": ["cooking", 25]})
 	_r("forge_nails", "Cut nails from scrap", "Workshop", {"in": [["scrap_metal", 1]], "tools": ["hammer"], "near": "bench", "out": [["nails", 12]], "time": 5.0, "xp": ["metalworking", 10]})
 	_r("pipe_spear", "Fit a blade to a pipe", "Workshop", {"in": [["pipe", 1], ["kitchen_knife", 1], ["duct_tape", 1]], "near": "bench", "skill": ["metalworking", 1], "out": [["metal_spear", 1]], "time": 8.0, "xp": ["metalworking", 25]})
 	_r("pipe_from_scrap", "Hammer scrap into a pipe club", "Workshop", {"in": [["scrap_metal", 3]], "tools": ["hammer"], "near": "bench", "skill": ["metalworking", 2], "out": [["pipe", 1]], "time": 8.0, "xp": ["metalworking", 20]})
@@ -182,6 +185,8 @@ static func missing(r: Dictionary, p: Player, near_heat: bool, near_bench: bool 
 				return "needs water"
 		elif Inv.count(p.inv, id) < int(inp[1]):
 			return "needs %d %s" % [int(inp[1]), Items.def(id).get("n", id)]
+	if r.has("learn") and not p.known.has(String(r["learn"])):
+		return "someone has to show you how (a %s)" % String(r["learn"])
 	for t in r["tools"]:
 		if not Inv.has_tag(p.inv, t):
 			return "needs tool: " + String(t).replace("_", " ")

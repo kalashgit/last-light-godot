@@ -2514,6 +2514,166 @@ func _init() -> void:
 			if Vehicle.is_vehicle(Defs.o_id(w.obj(xx18, yy18))) and Defs.o_part(w.obj(xx18, yy18)) == 0: w.remove_object(xx18, yy18)
 	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
 
+	print("== odds and ends: looking closer, taught recipes, gun care, stray shots, lunges, stuck doors, sorting, theft, frozen pipes, mud, raids, footsteps")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.set_obj(fx0 + 6, fy0 + 30, Defs.ocell(Defs.O_WOOD_CRATE, 0, 0))
+	w.chunk_at(fx0 + 6, fy0 + 30).containers[World.idx(fx0 + 6, fy0 + 30)] = [Items.make("toy", 1), Items.make("nails", 4)]
+	var lc: String = Actions.look_closer(sim, fx0 + 6, fy0 + 30)
+	ok(lc.contains("Wooden crate") and lc.contains("2 things inside"), "looking closer at a crate says what is in it (\"%s\")" % lc)
+	ok(opt(Actions.options(sim, {"kind": "obj", "x": fx0 + 6, "y": fy0 + 30}), "Look closer").is_valid(), "every object can be looked at closely")
+	w.remove_object(fx0 + 6, fy0 + 30)
+	# taught recipes
+	p.known.clear()
+	Inv.add_new(p.inv, "rag", 2)
+	Inv.add_new(p.inv, "disinfectant", 1)
+	var fd: Dictionary = Recipes.by_id("field_dressing")
+	ok(Recipes.missing(fd, p, false, false, []).begins_with("someone has to show you"), "some things can only be learned from someone")
+	p.known["medic"] = true
+	ok(Recipes.missing(fd, p, false, false, []) == "", "once a medic has taught you, you can make field dressings")
+	# gun care
+	var gun9: Dictionary = Items.make("pistol", 1)
+	gun9["c"] = 0.4
+	gun9["jam"] = 1
+	p.inv.append(gun9)
+	Inv.add_new(p.inv, "gun_oil", 1)
+	p.clean_gun(gun9)
+	run(sim, float(p.action.get("dur", 8.0)) + 0.5)
+	ok(float(gun9["c"]) > 0.7 and not gun9.has("jam") and Inv.find(p.inv, "gun_oil").get("u", 5) == 4, "cleaning and oiling a gun restores it, clears a jam, and uses some oil")
+	p.inv.erase(gun9)
+	# stray shots
+	var by2 = sim.npcs.spawn(p.pos + Vector2(2.0, 0.0), false)
+	by2.hp = 100.0
+	var zb2: Zombie = sim.zombies.spawn(p.pos + Vector2(5.0, 0.0), 0)
+	zb2.hp = 999.0
+	Inv.add_new(p.inv, "pistol", 1)
+	p.equip(Inv.find(p.inv, "pistol"))
+	p.weapon["u"] = 12
+	p.weapon["c"] = 1.0
+	p.facing = Vector2(1, 0)
+	var hit_friend := false
+	for i_s in range(12):
+		p.attack_cd = 0.0
+		p.swing_t = 0.0
+		by2.pos = p.pos + Vector2(2.0, 0.0)
+		zb2.pos = p.pos + Vector2(5.0, 0.0)
+		p.try_attack()
+		if by2.hp < 100.0:
+			hit_friend = true
+			break
+	ok(hit_friend, "firing past someone can hit them instead")
+	ok(not sim.npcs.list.has(by2) or by2.state == NpcSim.HOSTILE, "and they take it badly")
+	sim.npcs.list.clear()
+	sim.zombies.list.clear()
+	# lunges
+	sim.settings["god"] = false
+	var lz: Zombie = sim.zombies.spawn(p.pos + Vector2(0.8, 0.0), 0)
+	lz.state = Zombie.CLIMB
+	lz.t = 1.0
+	lz.atk_cd = 0.0
+	lz.climb_to = p.pos + Vector2(0.2, 0.0)
+	p.slow_t = 0.0
+	sim.zombies._update_z(lz, 1.0 / 30.0, 10.0, true)
+	ok(p.slow_t > 1.0, "one coming through a window grabs your ankle if you stand too close")
+	sim.settings["god"] = true
+	sim.zombies.list.clear()
+	p.slow_t = 0.0
+	p.hp = 100.0
+	p.wounds.clear()
+	p.infection = -1.0
+	# stuck doors
+	var jam_found := Vector3i(-99999, 0, 0)
+	for yy19 in range(fy0 + 27, fy0 + 43):
+		for xx19 in range(fx0 + 1, fx0 + 11):
+			for side3 in range(2):
+				if jam_found.x == -99999 and Rng.h2(xx19 * 2 + side3, yy19, sim.seed_v + 4401) % 100 < 6:
+					jam_found = Vector3i(xx19, yy19, side3)
+	w.chunk_at(jam_found.x, jam_found.y).bld[World.idx(jam_found.x, jam_found.y)] = 991
+	sim.unjammed.clear()
+	ok(sim.door_jammed(jam_found.x, jam_found.y, jam_found.z), "some doors are stuck in their frames")
+	Inv.add_new(p.inv, "crowbar", 1)
+	w.set_wall(jam_found.x, jam_found.y, jam_found.z, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_DOOR))
+	p.pos = Vector2(jam_found.x + 0.5, jam_found.y + 0.5)
+	var fo2: Callable = opt(Actions.options(sim, {"kind": "edge", "x": jam_found.x, "y": jam_found.y, "side": jam_found.z}), "Force the stuck door")
+	ok(fo2.is_valid(), "a stuck door can be forced")
+	if fo2.is_valid():
+		fo2.call()
+		run(sim, 2.5)
+		ok(not sim.door_jammed(jam_found.x, jam_found.y, jam_found.z) and not w.edge_blocks(jam_found.x, jam_found.y, jam_found.z), "with a crowbar it gives and opens")
+	w.chunk_at(jam_found.x, jam_found.y).bld[World.idx(jam_found.x, jam_found.y)] = 0
+	w.set_wall(jam_found.x, jam_found.y, jam_found.z, 0)
+	# frozen pipes
+	sim.water_off_h = sim.hour + 500.0
+	var skx: int = fx0 + 3
+	var sky: int = fy0 + 36
+	w.set_obj(skx, sky, Defs.ocell(Defs.O_SINK_COUNTER, 0, 0))
+	sim.weather["temp"] = -12.0
+	sim.fires.clear()
+	var so2: Array = Actions.options(sim, {"kind": "obj", "x": skx, "y": sky})
+	ok(opt(so2, "The pipes have frozen").is_valid() and not opt(so2, "Drink").is_valid(), "in a deep frost an unheated house's pipes freeze")
+	sim.weather["temp"] = 5.0
+	ok(opt(Actions.options(sim, {"kind": "obj", "x": skx, "y": sky}), "Drink").is_valid(), "and run again in a thaw")
+	w.remove_object(skx, sky)
+	sim.water_off_h = sim.hour - 1.0
+	# mud
+	w.set_ground(fx0 + 1, fy0 + 40, Defs.G_DIRT)
+	w.chunk_at(fx0 + 1, fy0 + 40).bld[World.idx(fx0 + 1, fy0 + 40)] = 0
+	sim._wet_h = 4.0
+	ok(sim.muddy(fx0 + 1, fy0 + 40), "after long rain bare earth is mud")
+	p.pos = Vector2(fx0 + 1.5, fy0 + 40.5)
+	p.bld = 0
+	var sf_mud: float = p.speed_factor()
+	sim._wet_h = 0.0
+	ok(sf_mud < p.speed_factor(), "and slower going (x%.2f)" % sf_mud)
+	# raids on the shelter
+	sim.factions.sites.clear()
+	var rkey := Vector2i(WorldGen.fdiv(fx0, WorldGen.REGION), WorldGen.fdiv(fy0, WorldGen.REGION))
+	sim.factions.found(rkey, Vector2i(fx0 + 100, fy0 + 100), 3, 4)
+	sim.set_home(Vector2(fx0 + 5.5, fy0 + 30.5))
+	sim.home["b"] = 0
+	w.set_obj(fx0 + 6, fy0 + 31, Defs.ocell(Defs.O_WOOD_CRATE, 0, 0))
+	var hstore: Array = w.container_at(fx0 + 6, fy0 + 31)
+	hstore.clear()
+	for k20 in range(10): Inv.add_new(hstore, "canned_beans", 1, sim.hour)
+	p.pos = Vector2(fx0 + 5.5, fy0 + 200.5) if false else p.pos
+	var saved_p: Vector2 = p.pos
+	p.pos = Vector2(-99999, -99999)
+	sim.rng.seed = 11
+	var res: String = sim.factions.raid_shelter(rkey)
+	p.pos = saved_p
+	ok(res == "robbed" and Inv.count(hstore, "canned_beans") < 10, "raiders strip an unguarded shelter's stores (%d of 10 tins left)" % Inv.count(hstore, "canned_beans"))
+	for k21 in range(4):
+		var gd = sim.npcs.spawn(sim.home_pos() + Vector2(k21, 1), false)
+		gd.recruit = true
+		gd.work = "guard"
+	var held_n := 0
+	for k22 in range(20):
+		sim.rng.seed = 100 + k22
+		if sim.factions.raid_shelter(rkey) == "held": held_n += 1
+	ok(held_n >= 18, "four guards drive them off (%d of 20 raids held)" % held_n)
+	sim.npcs.list.clear()
+	sim.factions.sites.clear()
+	sim.home = {}
+	w.remove_object(fx0 + 6, fy0 + 31)
+	# footsteps by surface
+	var sfx_t := Sfx.new()
+	w.set_ground(fx0 + 2, fy0 + 30, Defs.G_WOOD)
+	w.set_ground(fx0 + 3, fy0 + 30, Defs.G_GRAVEL)
+	w.set_ground(fx0 + 4, fy0 + 30, Defs.G_GRASS)
+	ok(sfx_t._step_for(sim, Vector2(fx0 + 2.5, fy0 + 30.5)) == "step_wood" and sfx_t._step_for(sim, Vector2(fx0 + 3.5, fy0 + 30.5)) == "step_gravel" and sfx_t._step_for(sim, Vector2(fx0 + 4.5, fy0 + 30.5)) == "step_grass", "footsteps sound like the ground: wood, gravel, grass")
+	sfx_t.free()
+	sim._dawn_day = -1
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 6.0
+	sim.fx.clear()
+	sim._weather_hazards(0.01)
+	var dawn := false
+	for f9 in sim.fx:
+		if f9["k"] == "music_dawn": dawn = true
+	ok(dawn, "a few quiet notes at dawn")
+	sim.fx.clear()
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

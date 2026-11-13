@@ -631,6 +631,7 @@ func read_note(note: Dictionary) -> void:
 	flags["read_note"] = true
 
 # ------------------------------------------------------------------ fish stocks
+var unjammed: Dictionary = {}     # doors forced or found free: "x,y,side" -> true
 var pending_sites: Dictionary = {}  # Vector2i -> "supply" | "overrun": what a bulletin promised, decided when it was printed
 var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
 var _trader_h := 60.0
@@ -682,6 +683,13 @@ func home_stores() -> Array:
 				continue
 			out.append([x, y, world.container_at(x, y)])
 	return out
+
+## a few interior doors are swollen in their frames: stuck until forced
+func door_jammed(x: int, y: int, side: int) -> bool:
+	var key: String = "%d,%d,%d" % [x, y, side]
+	if unjammed.has(key) or world.bld(x, y) == 0:
+		return false
+	return Rng.h2(x * 2 + side, y, seed_v + 4401) % 100 < 6
 
 func near_roof(pos: Vector2) -> bool:
 	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
@@ -1008,7 +1016,13 @@ func _update_weather(dh: float) -> void:
 		say("The taps sputter. The water has stopped.", Color(1.0, 0.8, 0.5))
 
 ## what the weather does to the world: settles snow, ices, floods, knocks trees down, strikes
+var _dawn_day := -1
 func _weather_hazards(dh: float) -> void:
+	# a few quiet notes as the sun comes up, once a day, when nothing is close
+	var hod_m: float = hour_of_day()
+	if hod_m > 5.6 and hod_m < 6.4 and day() != _dawn_day and player.alive and not threatened():
+		_dawn_day = day()
+		emit_fx("music_dawn", player.pos)
 	var t: float = weather["temp"]
 	var rain: float = weather["rain"]
 	if float(weather.get("snow", 0.0)) > 0.1:
@@ -1079,6 +1093,13 @@ func _storm_event() -> void:
 				return
 		world.set_obj(x, y, tree_cell)
 		return
+
+## after a long rain, bare earth turns to mud
+func muddy(x: int, y: int) -> bool:
+	if world.bld(x, y) != 0 or float(weather["temp"]) <= 0.0:
+		return false
+	var g: int = world.ground(x, y)
+	return (_wet_h > 2.0 or float(weather["rain"]) > 0.6) and (g == Defs.G_DIRT or g == Defs.G_SOIL or g == Defs.G_GRASS or g == Defs.G_GRASS_DARK or g == Defs.G_FOREST)
 
 ## underfoot: ice and packed snow outdoors when it is cold
 func icy(x: int, y: int) -> bool:
@@ -1385,7 +1406,7 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "unjammed": unjammed, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
@@ -1394,6 +1415,7 @@ func load_meta(d: Dictionary) -> void:
 	snow_cover = d.get("snowc", 0.0)
 	home = d.get("home", {})
 	pending_sites = d.get("psites", {})
+	unjammed = d.get("unjammed", {})
 	_trader_h = d.get("trader_h", 60.0)
 	flooded = d.get("flooded", {})
 	_wet_h = d.get("weth", 0.0)

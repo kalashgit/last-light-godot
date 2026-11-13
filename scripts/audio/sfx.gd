@@ -19,6 +19,13 @@ func _ready() -> void:
 	_make("engine", 0.5, func(t, n): return (sin(t * 62.0 * TAU) * 0.4 + sin(t * 124.0 * TAU) * 0.2 + n * 0.12) * (0.7 + 0.3 * sin(t * 28.0 * TAU)) * sin(t / 0.5 * PI))
 	_make("call", 0.3, func(t, n): return (sin(t * (330.0 + t * 260.0) * TAU) * 0.4 + sin(t * 660.0 * TAU) * 0.12 + n * 0.05) * sin(t / 0.3 * PI))
 	_make("step", 0.06, func(t, n): return n * 0.25 * exp(-t * 60.0))
+	_make("step_wood", 0.08, func(t, n): return (sin(t * 140.0 * TAU) * 0.35 + n * 0.15) * exp(-t * 45.0))
+	_make("step_grass", 0.09, func(t, n): return n * 0.14 * exp(-t * 30.0) * (0.5 + 0.5 * sin(t * 400.0)))
+	_make("step_gravel", 0.1, func(t, n): return n * 0.32 * exp(-t * 28.0) * (0.4 + 0.6 * absf(sin(t * 900.0))))
+	_make("step_water", 0.16, func(t, n): return (n * 0.22 + sin(t * 260.0 * TAU) * 0.08) * sin(t / 0.16 * PI))
+	_make("dawn", 6.0, func(t, n):
+		var env: float = sin(minf(t / 6.0, 1.0) * PI)
+		return (sin(t * 110.0 * TAU) * 0.16 + sin(t * 164.8 * TAU) * 0.11 + sin(t * 220.0 * TAU) * 0.07 * (0.5 + 0.5 * sin(t * 0.9))) * env * 0.8)
 	_make("swing", 0.16, func(t, n): return n * 0.3 * sin(t / 0.16 * PI) * (0.4 + t * 3.0))
 	_make("hit", 0.14, func(t, n): return (sin(t * 180.0 * TAU * (1.0 - t * 3.0)) * 0.6 + n * 0.5) * exp(-t * 30.0))
 	_make("thump", 0.2, func(t, n): return (sin(t * 70.0 * TAU) * 0.8 + n * 0.25) * exp(-t * 22.0))
@@ -67,6 +74,15 @@ func play(name: String, volume_db: float = 0.0, pitch: float = 1.0) -> void:
 	p.pitch_scale = pitch
 	p.play()
 
+## which footstep: the ground under the foot decides
+func _step_for(sim: Sim, p: Vector2) -> String:
+	match sim.world.ground(floori(p.x), floori(p.y)):
+		Defs.G_WOOD, Defs.G_WOOD_DARK, Defs.G_PLANK: return "step_wood"
+		Defs.G_GRASS, Defs.G_GRASS_DARK, Defs.G_FOREST, Defs.G_SOIL, Defs.G_DIRT, Defs.G_SAND: return "step_grass"
+		Defs.G_GRAVEL: return "step_gravel"
+		Defs.G_WATER: return "step_water"
+	return "step"
+
 func consume(sim: Sim, view: WorldView) -> void:
 	var pp: Vector2 = sim.player.pos
 	var steps := 0
@@ -90,7 +106,8 @@ func consume(sim: Sim, view: WorldView) -> void:
 		match k:
 			"step":
 				steps += 1
-				if steps <= 1: play("step", vol - 8.0, randf_range(0.85, 1.15))
+				if steps <= 1: play(_step_for(sim, e["p"]), vol - 8.0, randf_range(0.85, 1.15))
+			"music_dawn": play("dawn", -10.0)
 			"swing": play("swing", vol - 4.0, randf_range(0.9, 1.1))
 			"hit": play("hit", vol, randf_range(0.85, 1.15))
 			"zdie": play("zdie", vol, randf_range(0.85, 1.1))

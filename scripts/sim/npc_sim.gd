@@ -156,6 +156,24 @@ func serialized_in_chunk(cx: int, cy: int) -> Array:
 			out.append(_ser(n))
 	return out
 
+func ray_hit(p: Vector2, dir: Vector2, rng: float) -> Npc:
+	var best: Npc = null
+	var bt := 1e9
+	for n in list:
+		if n.away_until > 0.0:
+			continue
+		var rel: Vector2 = n.pos - p
+		var t: float = rel.dot(dir)
+		if t < 0.3 or t > rng or t >= bt:
+			continue
+		if (rel - dir * t).length() > 0.38:
+			continue
+		if not sim.world.los(p.x, p.y, n.pos.x, n.pos.y):
+			continue
+		best = n
+		bt = t
+	return best
+
 func nearest(p: Vector2, r: float) -> Npc:
 	var best: Npc = null
 	var bd: float = r
@@ -329,7 +347,8 @@ func update(dt: float, dh: float) -> void:
 				if ev["type"] == "loot" and n.pos.distance_to(n.home) < 12.0 and p.pos.distance_to(n.home) < 8.0 and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) != 0 \
 						and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) == sim.world.bld(floori(n.home.x), floori(n.home.y)) and sim.world.los(n.pos.x, n.pos.y, p.pos.x, p.pos.y):
 					n.trust = maxf(0.0, n.trust - 6.0)
-					sim.say("%s: \"Those are mine.\"" % n.name, Color(1.0, 0.8, 0.6))
+					sim.factions.add_rep(n.fac, -6.0)
+					sim.say("%s: \"Those are %s.\"" % [n.name, "ours" if n.fac >= 0 else "mine"], Color(1.0, 0.8, 0.6))
 		# fear: the cautious and the badly hurt run instead of standing their ground
 		var threats := 0
 		var away := Vector2.ZERO
@@ -775,6 +794,7 @@ func options(n: Npc) -> Array:
 			p.start_action("Learning from %s" % n.name, 20.0, func():
 				sim.flags["taught_%s_%s" % [n.name, teach_skill]] = true
 				p.add_xp(teach_skill, 160.0)
+				p.known[n.job] = true          # and a few things you can only learn by watching
 				n.trust = minf(100.0, n.trust + 4.0)
 				p.bored = maxf(0.0, p.bored - 30.0)
 				sim.say("%s shows you how it is done. (%s)" % [n.name, teach_skill.replace("_", " ").capitalize()], Color(0.6, 0.9, 0.6)))})

@@ -178,6 +178,13 @@ func _raid() -> void:
 		if s["fallen"]: continue
 		if kind(int(s["f"])) == RAIDER: raiders.append(key)
 		else: victims.append(key)
+	# your shelter is a target too, if a raider camp is near enough
+	if not raiders.is_empty() and not sim.home.is_empty():
+		var hk := Vector2i(WorldGen.fdiv(int(sim.home["x"]), WorldGen.REGION), WorldGen.fdiv(int(sim.home["y"]), WorldGen.REGION))
+		for rk0 in raiders:
+			if Vector2(rk0 - hk).length() < 2.9 and sim.rng.randf() < 0.5:
+				raid_shelter(rk0)
+				return
 	if raiders.is_empty() or victims.is_empty():
 		return
 	var rk: Vector2i = raiders[sim.rng.randi() % raiders.size()]
@@ -192,6 +199,33 @@ func _raid() -> void:
 	sites[rk]["food"] = float(sites[rk]["food"]) + float(s2["food"]) * 0.3
 	if s2["met"]:
 		sim.say("Smoke over %s. %s came in the night and took what they wanted." % [s2["name"], fname(int(sites[rk]["f"]))], Color(1.0, 0.75, 0.55))
+
+## raiders come for your shelter: guards may drive them off; otherwise they take from the stores
+func raid_shelter(rk: Vector2i) -> String:
+	var guards: Array = []
+	for n in sim.npcs.list:
+		if n.recruit and n.work == "guard" and n.away_until <= 0.0:
+			guards.append(n)
+	var held: bool = sim.rng.randf() < 0.25 * float(guards.size()) + (0.25 if sim.player.pos.distance_to(sim.home_pos()) < 15.0 else 0.0)
+	var name: String = fname(int(sites[rk]["f"]))
+	if held:
+		for g in guards:
+			if sim.rng.randf() < 0.3:
+				g.hp = maxf(5.0, g.hp - sim.rng.randf_range(15.0, 40.0))
+		sim.say("%s tried your shelter in the night. Your people drove them off." % name, Color(0.75, 0.9, 0.7))
+		return "held"
+	var taken := 0
+	for st in sim.home_stores():
+		var arr: Array = st[2]
+		for it in arr.duplicate():
+			var c0: String = Items.def(it["id"]).get("cat", "")
+			if (c0 == "food" or c0 == "drink" or c0 == "med" or c0 == "ammo") and sim.rng.randf() < 0.5:
+				arr.erase(it)
+				taken += int(it.get("n", 1))
+		sim.world.chunk_at(int(st[0]), int(st[1])).touched = true
+	sites[rk]["food"] = float(sites[rk]["food"]) + float(taken) * 0.5
+	sim.say("%s raided your shelter while it was unguarded. %d things gone from the stores." % [name, taken], Color(1.0, 0.6, 0.45))
+	return "robbed"
 
 # ------------------------------------------------------------------ what a member offers
 func open_task(key: Vector2i) -> Dictionary:

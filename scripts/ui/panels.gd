@@ -472,6 +472,12 @@ func _build_inv() -> void:
 	yl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	right.add_child(yl)
 	right.add_child(UiKit.bar(cw / cap * 100.0, UiKit.BAD if cw > cap else UiKit.ACCENT, 12))
+	right.add_child(UiKit.button("Sort", func():
+		p.inv.sort_custom(func(a, b):
+			var ca: String = Items.def(a["id"]).get("cat", "")
+			var cb: String = Items.def(b["id"]).get("cat", "")
+			return ca < cb if ca != cb else String(Items.def(a["id"]).get("n", "")) < String(Items.def(b["id"]).get("n", "")))
+		rebuild(), 40))
 	var rv := VBoxContainer.new()
 	var sorted: Array = p.inv.duplicate()
 	sorted.sort_custom(func(a, b):
@@ -583,6 +589,10 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 				Inv.add(cont["items"], it)
 				_after_move(cont)
 			rebuild()])
+	if d.has("gun") and float(it.get("c", 1.0)) < 0.99 and (Inv.count(p.inv, "gun_oil") > 0 or Inv.count(p.inv, "rag") > 0):
+		opts.append(["Clean and oil it", func():
+			close()
+			p.clean_gun(it)])
 	opts.append(["Inspect", func(): sim.say(Items.inspect_text(it, sim.hour), Color(0.85, 0.88, 0.8))])
 	opts.append(["Drop", func():
 		p.unequip(it)

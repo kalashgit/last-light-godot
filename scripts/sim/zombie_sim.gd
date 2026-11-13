@@ -429,6 +429,14 @@ func _update_z(z: Zombie, dt: float, sr: float, near: bool) -> void:
 				z.state = Zombie.CHASE if z.alert > 0.0 else Zombie.IDLE
 			return
 		Zombie.CLIMB:
+			# halfway through a window or over a fence, it grabs at anyone standing too close
+			if p.alive and z.atk_cd <= 0.0 and z.pos.distance_to(p.pos) < 1.25 and z.climb_to.distance_to(p.pos) < 1.4:
+				z.atk_cd = 1.8
+				if randf() < 0.35:
+					p.take_zombie_hit(z)
+				p.slow_t = maxf(p.slow_t, 1.4)          # held by the ankle, whatever else happened
+				p.cancel_action()
+				sim.say("It lunges through and catches your ankle!", Color(1.0, 0.55, 0.45))
 			z.t -= dt
 			if z.t <= 0.0:
 				if not w.blocked(z.climb_to.x, z.climb_to.y, R):
@@ -439,6 +447,8 @@ func _update_z(z: Zombie, dt: float, sr: float, near: bool) -> void:
 				z.anim_t = 0.0
 			return
 		Zombie.ATTACK:
+			if z.kind == 2 and z.t > 0.3 and p.alive and z.pos.distance_to(p.pos) < 1.0:
+				p.slow_t = maxf(p.slow_t, 0.8)          # a crawler goes for the legs and drags
 			z.t -= dt
 			if z.t <= 0.0:
 				var d: float = z.pos.distance_to(p.pos)
