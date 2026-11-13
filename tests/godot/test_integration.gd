@@ -2359,6 +2359,62 @@ func _init() -> void:
 		ok(not opt(sim.npcs.options(tch), "\"Teach me").is_valid(), "once")
 	sim.npcs.list.clear()
 
+	print("== bulk and wet things")
+	var inv_keep: Array = p.inv.duplicate()
+	var bag_keep: Dictionary = p.bag
+	p.inv.clear()
+	p.bag = {}
+	ok(Items.vol(Items.make("plank", 1)) > Items.vol(Items.make("nails", 50)), "a plank takes more room than fifty nails")
+	Inv.add_new(p.inv, "plank", 6)
+	var cap_v: float = p.vol_capacity()
+	ok(p.over_volume() > 0.0 and p.carried() < p.capacity(), "six planks are light enough but too bulky for pockets (%.0f bulk of %.0f)" % [Inv.volume(p.inv), cap_v])
+	var sf_bulk: float = p.speed_factor()
+	Inv.add_new(p.inv, "backpack", 1)
+	p.bag = Inv.find(p.inv, "backpack")
+	ok(p.vol_capacity() > cap_v + 20.0 and p.over_volume() == 0.0 and p.speed_factor() > sf_bulk, "a backpack makes room for them (speed x%.2f -> x%.2f)" % [sf_bulk, p.speed_factor()])
+	# rain
+	p.bag = {}
+	p.inv.clear()
+	Inv.add_new(p.inv, "matches", 1)
+	Inv.add_new(p.inv, "novel", 1)
+	var flour: Dictionary = Items.make("flour", 1, sim.hour)
+	p.inv.append(flour)
+	var t_fl: float = flour["t"]
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.chunk_at(floori(p.pos.x), floori(p.pos.y)).bld[World.idx(floori(p.pos.x), floori(p.pos.y))] = 0
+	p.bld = 0
+	sim.weather["rain"] = 1.0
+	for i_x in range(30): p._soak_items(0.2)
+	var m3: Dictionary = Inv.find(p.inv, "matches")
+	ok(float(m3.get("wet", 0.0)) > 0.0 and float(Inv.find(p.inv, "novel").get("wet", 0.0)) > 0.0, "out in the rain without a bag, paper and matches get soaked")
+	ok(not Inv.has_tag(p.inv, "fire"), "soaked matches will not strike")
+	ok(float(flour["t"]) < t_fl, "and wet flour starts to spoil")
+	sim.log.clear()
+	p.read_item(Inv.find(p.inv, "novel"))
+	ok(p.action.is_empty() and sim.log.size() > 0 and String(sim.log[sim.log.size() - 1][0]).contains("soaked"), "a soaked book cannot be read")
+	# a bag keeps most of it dry
+	for it6 in p.inv: it6.erase("wet")
+	Inv.add_new(p.inv, "backpack", 1)
+	p.bag = Inv.find(p.inv, "backpack")
+	var soaked_bag := 0
+	for trial2 in range(20):
+		for it7 in p.inv: it7.erase("wet")
+		for i_x in range(5): p._soak_items(0.2)
+		if float(Inv.find(p.inv, "matches").get("wet", 0.0)) > 0.0: soaked_bag += 1
+	ok(soaked_bag < 15, "in a bag they mostly stay dry (%d of 20 soaked)" % soaked_bag)
+	# drying out
+	sim.weather["rain"] = 0.0
+	Inv.find(p.inv, "matches")["wet"] = 6.0
+	var dfx: int = floori(p.pos.x) + 1
+	w.set_obj(dfx, floori(p.pos.y), Defs.ocell(Defs.O_CAMPFIRE, 0, 0))
+	w.set_ent(dfx, floori(p.pos.y), {"k": "fire", "fuel": 10.0, "lit": true})
+	sim._slow_tick(0.01)
+	for i_x in range(10): p._soak_items(0.2)
+	ok(not Inv.find(p.inv, "matches").has("wet") and Inv.has_tag(p.inv, "fire"), "by a fire they dry out and strike again")
+	w.remove_object(dfx, floori(p.pos.y))
+	p.inv = inv_keep
+	p.bag = bag_keep if inv_keep.has(bag_keep) else {}
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

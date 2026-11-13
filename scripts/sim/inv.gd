@@ -70,8 +70,15 @@ static func find(arr: Array, id: String) -> Dictionary:
 			return o
 	return {}
 
+static func volume(arr: Array) -> float:
+	var v := 0.0
+	for o in arr:
+		v += Items.vol(o)
+	return v
+
 static func find_tag(arr: Array, tag: String) -> Dictionary:
 	for o in arr:
+		if tag == "fire" and float(o.get("wet", 0.0)) > 0.0: continue     # damp matches will not strike
 		if Items.has_tag(o, tag):
 			return o
 	return {}

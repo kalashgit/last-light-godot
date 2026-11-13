@@ -465,7 +465,9 @@ func _build_inv() -> void:
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var cw: float = p.carried()
 	var cap: float = p.capacity()
-	var yl: Label = UiKit.label("You carry  %.1f / %.0f kg" % [cw, cap], 18, UiKit.BAD if cw > cap else UiKit.TEXT)
+	var cv: float = Inv.volume(p.inv)
+	var vcap: float = p.vol_capacity()
+	var yl: Label = UiKit.label("You carry  %.1f / %.0f kg · bulk %.0f / %.0f" % [cw, cap, cv, vcap], 18, UiKit.BAD if cw > cap or cv > vcap else UiKit.TEXT)
 	yl.custom_minimum_size = Vector2(0, 54)
 	yl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	right.add_child(yl)

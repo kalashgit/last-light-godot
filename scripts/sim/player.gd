@@ -220,6 +220,36 @@ func capacity() -> float:
 		cap += float(Items.def(bag["id"]).get("bag", 0))
 	return cap
 
+## rain soaks what is not in a bag; shelter and fire dry it out again
+func _soak_items(dh: float) -> void:
+	var rain: float = float(sim.weather.get("rain", 0.0)) if bld == 0 and World.level(pos.y) == 0 and sim.vehicle == null else 0.0
+	var swim: bool = Defs.ground_is_water(sim.world.ground(floori(pos.x), floori(pos.y))) and sim.vehicle == null
+	var drying: float = (4.0 if sim.near_fire(pos) else (1.0 if bld != 0 or sim.vehicle != null else 0.0))
+	for it in inv:
+		if not Items.wet_prone(it):
+			continue
+		var w: float = float(it.get("wet", 0.0))
+		var exposure: float = rain * (0.25 if not bag.is_empty() else 1.0)
+		if swim: exposure = 1.0
+		if exposure > 0.3 and randf() < dh * exposure * 3.0:
+			if w <= 0.0 and (it["id"] == "flour" or it["id"] == "bread") and it.has("t"):
+				it["t"] = float(it["t"]) - 48.0            # wet flour and bread go off fast
+			it["wet"] = 6.0
+		elif w > 0.0 and drying > 0.0:
+			w -= dh * drying
+			if w <= 0.0: it.erase("wet")
+			else: it["wet"] = w
+
+## how much you can stow: pockets and hands, plus a bag
+func vol_capacity() -> float:
+	var v: float = 9.0
+	if not bag.is_empty():
+		v += float(Items.def(bag["id"]).get("bag", 0)) * 1.6
+	return v
+
+func over_volume() -> float:
+	return maxf(0.0, Inv.volume(inv) - vol_capacity())
+
 func carried() -> float:
 	return Inv.weight(inv)
 
@@ -445,6 +475,8 @@ func speed_factor() -> float:
 	var f := 1.0
 	var ow: float = over_weight()
 	if ow > 0.0: f *= clampf(1.0 - ow * 0.07, 0.35, 1.0)
+	var ov: float = over_volume()
+	if ov > 0.0: f *= clampf(1.0 - ov * 0.04, 0.6, 1.0)          # arms full of awkward things
 	if endurance < 25.0: f *= 0.8
 	if bld == 0 and sim.snow_cover > 0.3 and World.level(pos.y) == 0: f *= 1.0 - minf(0.3, sim.snow_cover * 0.3)
 	if fatigue > 80.0: f *= 0.85
@@ -899,6 +931,7 @@ func die(cause: String) -> void:
 
 # ------------------------------------------------------------------ needs (dh = elapsed game hours)
 func tick_needs(dh: float) -> void:
+	_soak_items(dh)
 	# everyone gets dirtier; rain outdoors rinses some of it off; filth wears on the mind
 	grime = minf(100.0, grime + dh * (0.5 if bld != 0 else 0.8))
 	if bld == 0 and float(sim.weather.get("rain", 0.0)) > 0.3:
@@ -1350,6 +1383,9 @@ func remove_bandage(wound: Dictionary) -> void:
 
 func read_item(it: Dictionary) -> void:
 	var d: Dictionary = Items.def(it["id"])
+	if float(it.get("wet", 0.0)) > 0.0:
+		sim.say("The pages are soaked through. Dry it out first — indoors, or by a fire.", Color(0.8, 0.85, 0.95))
+		return
 	if sim.daylight() < 0.25 and not light_on and not sim.near_fire(pos) and bld == 0:
 		sim.say("Too dark to read", Color(0.8, 0.8, 0.9))
 		return

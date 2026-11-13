@@ -314,6 +314,27 @@ static func weight(it: Dictionary) -> float:
 		w = 0.1 + (w - 0.1) * float(it.get("u", 0)) / float(d["uses"])
 	return w * float(it.get("n", 1))
 
+## bulk, separate from weight: a plank is light but awkward, a box of nails is heavy and small
+const BULKY := {"plank": 2.0, "log": 5.0, "branch": 1.5, "sheet": 1.0, "rag": 0.3, "baseball_bat": 2.5, "axe": 2.5, "shovel": 3.0, "shotgun": 3.0,
+	"hunting_rifle": 3.0, "sledgehammer": 3.5, "carcass_deer": 30.0, "carcass_boar": 30.0, "carcass_fox": 6.0, "pumpkin": 4.0, "generator_item": 20.0,
+	"car_battery": 4.0, "bedroll_item": 4.0, "gas_can": 3.0, "pipe": 1.8, "fishing_rod": 2.0, "water_bottle": 0.9, "leather_jacket": 2.0, "jacket": 1.6}
+const WET_PRONE := ["note", "survivor_note", "diary", "bulletin", "local_map", "newspaper", "novel", "comic", "matches", "flour", "bread", "cigarettes", "notebook"]
+
+static func vol(it: Dictionary) -> float:
+	var id: String = it.get("id", "")
+	var d: Dictionary = DB.get(id, {})
+	var each: float
+	if BULKY.has(id): each = float(BULKY[id])
+	elif d.get("cat", "") == "ammo" or id == "nails": each = 0.01
+	elif d.get("cat", "") == "book" or id.begins_with("book_"): each = 0.5
+	elif d.has("bag"): each = 1.0
+	else: each = maxf(0.1, float(d.get("w", 0.1)) * 0.9)
+	return each * float(it.get("n", 1))
+
+static func wet_prone(it: Dictionary) -> bool:
+	var id: String = it.get("id", "")
+	return WET_PRONE.has(id) or DB.get(id, {}).get("cat", "") == "book" or id.begins_with("book_")
+
 ## everything worth knowing about one item, in a sentence
 static func inspect_text(it: Dictionary, hour: float) -> String:
 	var d: Dictionary = def(it["id"])
@@ -333,6 +354,8 @@ static func inspect_text(it: Dictionary, hour: float) -> String:
 	if d.has("wear"):
 		parts.append("protects %d%%, warmth %d" % [int(float(d["wear"].get("def", 0.0)) * 100.0), int(d["wear"].get("warm", 0))])
 	if int(it.get("jam", 0)) == 1: parts.append("JAMMED")
+	parts.append("bulk %.1f" % vol(it))
+	if float(it.get("wet", 0.0)) > 0.0: parts.append("SOAKED")
 	return ", ".join(parts) + "."
 
 static func can_stack(a: Dictionary, b: Dictionary) -> bool:
