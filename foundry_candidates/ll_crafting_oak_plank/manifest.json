@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_oak_plank",
+  "source_glb_sha256": "6cc8a5138248b3cfa2c2c8953909d83817b0f55127c5b545dd7330b4ad77e57f",
+  "atlas_sha256": "fcf7a5b5d392d689ec5433da7e59e858a80c442d7d7e21a589302a2e70c7d2d7",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2578448,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

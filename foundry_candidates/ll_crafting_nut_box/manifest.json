@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_nut_box",
+  "source_glb_sha256": "c7569a17ec7a4dd181bc21314470dc8f4b353120675416ee7eaa2bf8788b2642",
+  "atlas_sha256": "4a945752c3966ac5c55d41424a6888375e9eb47b8fce9ce9817a8e0ec166d49e",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2576063,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

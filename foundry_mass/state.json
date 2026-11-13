@@ -32,9 +32,11 @@
     "ll_crafting_lashing_straps",
     "ll_crafting_leather_patch",
     "ll_crafting_metal_rod",
-    "ll_crafting_nail_box"
+    "ll_crafting_nail_box",
+    "ll_crafting_nut_box",
+    "ll_crafting_oak_plank"
   ],
-  "last_run_id": "43342444523",
+  "last_run_id": "43390060323",
   "golden_approved": false,
-  "remaining": 330
+  "remaining": 328
 }
