@@ -34,9 +34,11 @@
     "ll_crafting_metal_rod",
     "ll_crafting_nail_box",
     "ll_crafting_nut_box",
-    "ll_crafting_oak_plank"
+    "ll_crafting_oak_plank",
+    "ll_crafting_paving_brick",
+    "ll_crafting_pine_plank"
   ],
-  "last_run_id": "43390060323",
+  "last_run_id": "43463056786",
   "golden_approved": false,
-  "remaining": 328
+  "remaining": 326
 }

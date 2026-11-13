@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_paving_brick",
+  "source_glb_sha256": "87aa82d7a3ecceb58de299550eff0aff8275bfdf63c9ff4ee4ceac1cef09627e",
+  "atlas_sha256": "b5b1d99061ae3235a7c14f71fdd9fbe90686aa60f44dc8244bc8c19ef7deec48",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2573678,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

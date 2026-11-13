@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_pine_plank",
+  "source_glb_sha256": "df0a3357efc19661dd3e83cb071c3bf34c08522c287fa421c64aa186b57bf245",
+  "atlas_sha256": "bb99a52270f168e161c35edd5c4cb4ea9db70299ba294791e9eb65fac9323445",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2578448,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

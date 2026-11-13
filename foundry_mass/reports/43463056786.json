@@ -1,0 +1,42 @@
+{
+  "run_id": "43463056786",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 34,
+  "remaining": 326,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_paving_brick",
+      "source_glb_sha256": "87aa82d7a3ecceb58de299550eff0aff8275bfdf63c9ff4ee4ceac1cef09627e",
+      "atlas_sha256": "b5b1d99061ae3235a7c14f71fdd9fbe90686aa60f44dc8244bc8c19ef7deec48",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2573678,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_pine_plank",
+      "source_glb_sha256": "df0a3357efc19661dd3e83cb071c3bf34c08522c287fa421c64aa186b57bf245",
+      "atlas_sha256": "bb99a52270f168e161c35edd5c4cb4ea9db70299ba294791e9eb65fac9323445",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2578448,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
