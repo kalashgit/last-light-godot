@@ -769,6 +769,7 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 			p.cancel_action()
 			sim.vehicle = Vehicle.enter(sim, ax, ay)
 			sim.brake = false
+			_board_companions(sim)
 			sim.noise(p.pos, 14.0)
 			sim.emit_fx("engine", p.pos)
 			if float(e.get("fuel", 0.0)) <= 0.0:
@@ -803,6 +804,13 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				e["win"] = minf(1.0, float(e.get("win", 1.0)) + 0.34)
 				p.add_xp("mechanics", 12.0)
 				sim.say("Windows: %d%%" % int(float(e["win"]) * 100.0), Color(0.75, 0.9, 0.7)))))
+	if int(e.get("muf", 1)) == 0 and Inv.count(p.inv, "scrap_metal") > 0 and Inv.has_tag(p.inv, "wrench"):
+		out.append(_opt("Patch the muffler (scrap metal)", func():
+			p.start_action("Patching the muffler", 6.0, func():
+				if not Inv.take(p.inv, "scrap_metal", 1): return
+				e["muf"] = 1
+				p.add_xp("mechanics", 14.0)
+				sim.say("Quieter.", Color(0.75, 0.9, 0.7)))))
 	if int(e.get("lit", 1)) == 0 and Inv.count(p.inv, "wire") > 0:
 		out.append(_opt("Rewire the headlights (wire)", func():
 			if p.skill_level("electrical") < 1:
@@ -831,6 +839,8 @@ static func condition_text(e: Dictionary, tid: int) -> String:
 	var t: String = "Fuel %d/%d · engine %d%% · tyres %d%%" % [int(float(e.get("fuel", 0.0))), int(Vehicle.tank_of(tid)), int(float(e.get("eng", 0.0)) * 100.0), int(float(e.get("tire", 1.0)) * 100.0)]
 	if tid != Defs.O_MOTORBIKE:
 		t += " · windows %d%%" % int(float(e.get("win", 1.0)) * 100.0)
+	if tid != Defs.O_BICYCLE:
+		t += " · muffler %s" % ("ok" if int(e.get("muf", 1)) == 1 else "holed")
 	t += " · lights %s · battery %s · %s" % ["ok" if int(e.get("lit", 1)) == 1 else "broken", "ok" if int(e.get("bat", 0)) == 1 else "dead",
 		"key in the ignition" if int(e.get("key", 0)) == 1 else ("hotwired" if int(e.get("hot", 0)) == 1 else "no key")]
 	return t
@@ -875,6 +885,34 @@ static func vehicle_menu(sim: Sim) -> Array:
 				sim.say("Unhitched.", Color(0.8, 0.85, 0.9))))
 	return out
 
+## seats: following companions climb in with you
+static func _board_companions(sim: Sim) -> void:
+	var v: Vehicle = sim.vehicle
+	var seats: int = {Defs.O_BUS: 12, Defs.O_VAN: 3, Defs.O_TRUCK: 2, Defs.O_AMBULANCE: 3, Defs.O_PICKUP: 2, Defs.O_CAR: 3, Defs.O_POLICE_CAR: 3}.get(v.oid, 0)
+	for n in sim.npcs.list.duplicate():
+		if seats <= 0:
+			break
+		if n.state == NpcSim.FOLLOW and n.pos.distance_to(sim.player.pos) < 6.0:
+			v.passengers.append(NpcSim._ser(n))
+			sim.npcs.list.erase(n)
+			seats -= 1
+	if not v.passengers.is_empty():
+		sim.say("%d %s in with you." % [v.passengers.size(), "climbs" if v.passengers.size() == 1 else "climb"], Color(0.8, 0.85, 0.9))
+
+static func _unload_companions(sim: Sim, v: Vehicle) -> void:
+	var k := 0
+	for a in v.passengers:
+		var n = sim.npcs._de(a)
+		var side: Vector2 = Vector2(Vehicle.DIRS[v.heading].y, -Vehicle.DIRS[v.heading].x)
+		var spot: Vector2 = v.pos - side * (1.6 + float(k % 2) * 0.8) + Vehicle.DIRS[v.heading] * float(k / 2)
+		if sim.world.blocked(spot.x, spot.y, 0.25):
+			spot = sim.player.pos
+		n.pos = spot
+		n.state = NpcSim.FOLLOW
+		sim.npcs.list.append(n)
+		k += 1
+	v.passengers.clear()
+
 static func _hotwire(sim: Sim, e: Dictionary) -> void:
 	var p: Player = sim.player
 	var skilled: bool = p.occupation == "burglar" or (p.skill_level("mechanics") >= 2 and p.skill_level("electrical") >= 1)
@@ -904,6 +942,7 @@ static func exit_vehicle(sim: Sim) -> bool:
 		return false
 	sim.vehicle = null
 	sim.brake = false
+	_unload_companions(sim, v)
 	# step out on whichever side is free
 	var side: Vector2 = Vector2(Vehicle.DIRS[v.heading].y, -Vehicle.DIRS[v.heading].x)
 	var half: float = v.size().x * 0.5 + 0.6 if v.heading % 2 == 0 else v.size().y * 0.5 + 0.6

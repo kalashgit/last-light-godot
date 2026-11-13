@@ -148,9 +148,7 @@ func _touch_down(i: int, pos: Vector2) -> void:
 		"light": toggle_light()
 		"reload": p.reload()
 		"horn":
-			sim.noise(p.pos, 45.0)
-			sim.emit_fx("alarm", p.pos)
-			sim.say("The horn carries a long way.", Color(1.0, 0.85, 0.6))
+			if sim.vehicle != null: sim.vehicle.horn()
 		"turn":
 			p.carrying["rot"] = (int(p.carrying.get("rot", 0)) + 1) % 4
 		"shove": p.try_shove()

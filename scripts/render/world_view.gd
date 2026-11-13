@@ -378,7 +378,7 @@ func _sync_vehicle() -> void:
 		(cp0 as CarPart).visible = false
 	if v == null:
 		return
-	while _vparts.size() < 16:
+	while _vparts.size() < 24:
 		var n := CarPart.new()
 		n.z_as_relative = false
 		_ents.add_child(n)

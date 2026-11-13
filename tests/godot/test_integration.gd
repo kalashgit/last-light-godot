@@ -2415,6 +2415,105 @@ func _init() -> void:
 	p.inv = inv_keep
 	p.bag = bag_keep if inv_keep.has(bag_keep) else {}
 
+	print("== big vehicles, sirens, mufflers, passengers")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	for yy16 in range(fy0, fy0 + 44):
+		for xx16 in range(fx0, fx0 + 12):
+			w.set_ground(xx16, yy16, Defs.G_ASPHALT)
+	var place_v := func(vt: int, ax: int, ay: int) -> Dictionary:
+		var fsv: Vector2i = Defs.obj_size(vt, 0)
+		for jj in range(fsv.y):
+			for ii in range(fsv.x):
+				w.set_obj(ax + ii, ay + jj, Defs.ocell(vt, 0, jj * fsv.x + ii))
+		var e7: Dictionary = Vehicle.car_ent(sim, ax, ay)
+		e7["key"] = 1; e7["bat"] = 1; e7["eng"] = 1.0; e7["tire"] = 1.0; e7["fuel"] = Vehicle.tank_of(vt); e7["muf"] = 1
+		return e7
+	var vx2: int = fx0 + 5
+	var vy2: int = fy0 + 2
+	for vt2 in [Defs.O_TRUCK, Defs.O_BUS, Defs.O_AMBULANCE, Defs.O_POLICE_CAR]:
+		place_v.call(vt2, vx2, vy2)
+		p.pos = Vector2(vx2 - 0.5, vy2 + 1.5)
+		var go2: Callable = opt(Actions._car_options(sim, vx2, vy2), "Drive")
+		ok(go2.is_valid(), "a %s can be driven" % Defs.obj(vt2)["n"].to_lower())
+		go2.call()
+		ok(sim.vehicle != null and sim.vehicle.oid == vt2 and sim.vehicle.size() == Vector2(Defs.obj_size(vt2, 0)), "(it is %dx%d)" % [Defs.obj_size(vt2, 0).x, Defs.obj_size(vt2, 0).y])
+		run(sim, 1.5, screen_for(Vector2(0, 1)))
+		sim.brake = true
+		run(sim, 2.0)
+		sim.brake = false
+		ok(Actions.exit_vehicle(sim), "and parked again")
+		var pa5: Vector2i = Vector2i(roundi(sim.vehicle.anchor_f().x), roundi(sim.vehicle.anchor_f().y)) if sim.vehicle != null else Vector2i.ZERO
+		for yy17 in range(fy0, fy0 + 44):
+			for xx17 in range(fx0, fx0 + 12):
+				if Vehicle.is_vehicle(Defs.o_id(w.obj(xx17, yy17))): w.set_obj(xx17, yy17, 0)
+	ok(Inv.count(Loot.roll("medical", "", sim.rng, sim.hour, 1.0), "bandage") >= 0 and Defs.obj(Defs.O_AMBULANCE)["c"] == "medical" and Defs.obj(Defs.O_POLICE_CAR)["c"] == "locker_police", "an ambulance carries medical supplies, a police car what police carry")
+	# siren
+	var pe3: Dictionary = place_v.call(Defs.O_POLICE_CAR, vx2, vy2)
+	p.pos = Vector2(vx2 - 0.5, vy2 + 1.5)
+	opt(Actions._car_options(sim, vx2, vy2), "Drive").call()
+	sim.noises.clear()
+	sim.vehicle.horn()
+	var siren: float = 0.0
+	for nz3 in sim.noises: siren = maxf(siren, float(nz3[1]))
+	ok(siren >= 70.0, "a police siren carries much further than a horn (%.0f)" % siren)
+	# muffler
+	sim.noises.clear()
+	sim.vehicle._noise_t = 0.0
+	sim.vehicle.speed = 3.0
+	sim.vehicle.update(1.0 / 30.0, screen_for(Vector2(0, 1)), false)
+	var quiet_r: float = 0.0
+	for nz4 in sim.noises: quiet_r = maxf(quiet_r, float(nz4[1]))
+	sim.vehicle.ent["muf"] = 0
+	sim.noises.clear()
+	sim.vehicle._noise_t = 0.0
+	sim.vehicle.update(1.0 / 30.0, screen_for(Vector2(0, 1)), false)
+	var loud_r: float = 0.0
+	for nz5 in sim.noises: loud_r = maxf(loud_r, float(nz5[1]))
+	ok(loud_r > quiet_r * 1.5, "with the muffler holed the engine is far louder (%.0f vs %.0f)" % [loud_r, quiet_r])
+	sim.brake = true
+	run(sim, 2.0)
+	sim.brake = false
+	var vpos: Vector2 = sim.vehicle.anchor_f()
+	Actions.exit_vehicle(sim)
+	var pa6: Vector2i = Vector2i(roundi(vpos.x), roundi(vpos.y))
+	Inv.add_new(p.inv, "scrap_metal", 1)
+	Inv.add_new(p.inv, "wrench", 1)
+	p.pos = Vector2(pa6.x - 0.5, pa6.y + 1.5)
+	var mf: Callable = opt(Actions._car_options(sim, pa6.x, pa6.y), "Patch the muffler")
+	ok(mf.is_valid(), "a holed muffler can be patched")
+	if mf.is_valid():
+		mf.call()
+		run(sim, 7.0)
+		ok(int(w.ent(pa6.x, pa6.y).get("muf", 0)) == 1, "and is quiet again")
+	# passengers
+	var c1 = sim.npcs.spawn(p.pos + Vector2(-1.0, 0.0), false)
+	var c2 = sim.npcs.spawn(p.pos + Vector2(-1.0, 1.0), false)
+	c1.state = NpcSim.FOLLOW
+	c2.state = NpcSim.FOLLOW
+	c1.name = "Wren"
+	opt(Actions._car_options(sim, pa6.x, pa6.y), "Drive").call()
+	ok(sim.vehicle != null and sim.vehicle.passengers.size() == 2 and not sim.npcs.list.has(c1), "companions climb in with you")
+	run(sim, 2.0, screen_for(Vector2(0, 1)))
+	sim.brake = true
+	run(sim, 2.0)
+	sim.brake = false
+	ok(SaveGame.save(sim, slot), "saving with passengers")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and s2.vehicle != null and s2.vehicle.passengers.size() == 2, "passengers persist")
+	var vpos2: Vector2 = sim.vehicle.pos
+	Actions.exit_vehicle(sim)
+	var back := 0
+	for n7 in sim.npcs.list:
+		if n7.state == NpcSim.FOLLOW and n7.pos.distance_to(vpos2) < 4.0: back += 1
+	ok(back == 2, "and get out beside the car when you do")
+	sim.npcs.list.clear()
+	for yy18 in range(fy0, fy0 + 44):
+		for xx18 in range(fx0, fx0 + 12):
+			if Vehicle.is_vehicle(Defs.o_id(w.obj(xx18, yy18))) and Defs.o_part(w.obj(xx18, yy18)) == 0: w.remove_object(xx18, yy18)
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

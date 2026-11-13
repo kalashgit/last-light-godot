@@ -294,7 +294,8 @@ func _process(_dt: float) -> bool:
 			sim.animals.list.clear()
 			var vp: Vector2 = sim.player.pos
 			var vw: World = sim.world
-			var row: Array = [[Defs.O_VAN, Vector2i(3, -3)], [Defs.O_PICKUP, Vector2i(6, -3)], [Defs.O_MOTORBIKE, Vector2i(9, -2)], [Defs.O_BICYCLE, Vector2i(11, -2)]]
+			var row: Array = [[Defs.O_VAN, Vector2i(3, -3)], [Defs.O_PICKUP, Vector2i(6, -3)], [Defs.O_MOTORBIKE, Vector2i(9, -2)], [Defs.O_BICYCLE, Vector2i(11, -2)],
+				[Defs.O_TRUCK, Vector2i(3, 4)], [Defs.O_BUS, Vector2i(6, 4)], [Defs.O_AMBULANCE, Vector2i(9, 4)], [Defs.O_POLICE_CAR, Vector2i(12, 4)]]
 			for rv in row:
 				var ax2: int = floori(vp.x) + (rv[1] as Vector2i).x
 				var ay2: int = floori(vp.y) + (rv[1] as Vector2i).y
@@ -307,8 +308,8 @@ func _process(_dt: float) -> bool:
 				for jj2 in range(fs2.y):
 					for ii2 in range(fs2.x):
 						vw.set_obj(ax2 + ii2, ay2 + jj2, Defs.ocell(rv[0], 0, jj2 * fs2.x + ii2))
-			sim.player.pos = vp + Vector2(9.0, 2.0)
-			main.view.zoom = 1.8
+			sim.player.pos = vp + Vector2(9.0, 3.5)
+			main.view.zoom = 1.4
 		886: shot("27_vehicle_types")
 		887:
 			sim.weather["temp"] = -5.0

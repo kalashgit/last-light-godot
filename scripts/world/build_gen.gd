@@ -540,7 +540,13 @@ static func _parking(b: LotBuilder) -> void:
 		while u + 2 <= b.cw - 1:
 			if rng.randf() < 0.3:
 				var pr: float = rng.randf()
-				b.put_yard(Defs.O_CAR_WRECK if pr < 0.25 else (Defs.O_VAN if pr < 0.4 else (Defs.O_PICKUP if pr < 0.5 else Defs.O_CAR)), u, v, 0 if rng.randf() < 0.5 else 2)
+				var lot_k: String = b.btype
+				var pick_id: int = Defs.O_CAR_WRECK if pr < 0.25 else (Defs.O_VAN if pr < 0.4 else (Defs.O_PICKUP if pr < 0.5 else Defs.O_CAR))
+				if lot_k == "police" and pr > 0.4: pick_id = Defs.O_POLICE_CAR
+				elif (lot_k == "clinic" or lot_k == "hospital") and pr > 0.4: pick_id = Defs.O_AMBULANCE
+				elif (lot_k == "warehouse" or lot_k == "hardware" or lot_k == "grocery") and pr > 0.55: pick_id = Defs.O_TRUCK
+				elif lot_k == "school" and pr > 0.6: pick_id = Defs.O_BUS
+				b.put_yard(pick_id, u, v, 0 if rng.randf() < 0.5 else 2)
 			u += 3
 		v += 7
 

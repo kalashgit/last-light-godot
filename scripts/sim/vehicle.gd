@@ -12,10 +12,14 @@ const TYPES := {
 	Defs.O_CAR: {"n": "car", "road": 9.5, "off": 4.6, "tank": 12.0, "use": 0.004, "prot": 0.85, "noise": 10.0, "crash": 1.0, "motor": true, "tow": true},
 	Defs.O_VAN: {"n": "van", "road": 8.0, "off": 4.0, "tank": 16.0, "use": 0.006, "prot": 0.9, "noise": 12.0, "crash": 0.85, "motor": true, "tow": true},
 	Defs.O_PICKUP: {"n": "pickup", "road": 8.8, "off": 6.4, "tank": 14.0, "use": 0.005, "prot": 0.8, "noise": 12.0, "crash": 0.9, "motor": true, "tow": true},
+	Defs.O_TRUCK: {"n": "box truck", "road": 7.2, "off": 3.4, "tank": 24.0, "use": 0.009, "prot": 0.9, "noise": 15.0, "crash": 0.7, "motor": true, "tow": true},
+	Defs.O_BUS: {"n": "bus", "road": 6.4, "off": 2.8, "tank": 30.0, "use": 0.011, "prot": 0.95, "noise": 16.0, "crash": 0.6, "motor": true, "tow": false},
+	Defs.O_AMBULANCE: {"n": "ambulance", "road": 8.6, "off": 4.0, "tank": 18.0, "use": 0.007, "prot": 0.9, "noise": 12.0, "crash": 0.85, "motor": true, "tow": true},
+	Defs.O_POLICE_CAR: {"n": "police car", "road": 10.5, "off": 5.0, "tank": 14.0, "use": 0.005, "prot": 0.85, "noise": 10.0, "crash": 1.0, "motor": true, "tow": true},
 	Defs.O_MOTORBIKE: {"n": "motorcycle", "road": 12.5, "off": 5.6, "tank": 5.0, "use": 0.002, "prot": 0.0, "noise": 13.0, "crash": 2.2, "motor": true, "tow": false},
 	Defs.O_BICYCLE: {"n": "bicycle", "road": 5.6, "off": 3.4, "tank": 0.0, "use": 0.0, "prot": 0.0, "noise": 0.0, "crash": 1.6, "motor": false, "tow": false},
 }
-const TOWABLE := [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_CAR_WRECK]
+const TOWABLE := [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_CAR_WRECK, Defs.O_AMBULANCE, Defs.O_POLICE_CAR]
 
 static func is_vehicle(id: int) -> bool:
 	return TYPES.has(id)
@@ -26,6 +30,7 @@ static func tank_of(id: int) -> float:
 var sim: Sim
 var oid := Defs.O_CAR
 var tow: Dictionary = {}         # a vehicle on the hitch: {"o", "ent", "trunk", "tk"}
+var passengers: Array = []       # companions riding along (serialised survivors)
 var pos := Vector2.ZERO          # centre of the 2x4 footprint
 var heading := 0
 var speed := 0.0                 # tiles per second along the heading (negative = reversing)
@@ -194,7 +199,7 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 	_noise_t -= dt
 	if _noise_t <= 0.0 and has_fuel and motor():
 		_noise_t = 0.5
-		sim.noise(pos, float(sp["noise"]) + absf(speed) * 1.7)
+		sim.noise(pos, (float(sp["noise"]) + absf(speed) * 1.7) * (1.8 if int(ent.get("muf", 1)) == 0 else 1.0))
 		if absf(speed) > 0.5:
 			sim.emit_fx("engine", pos)
 	elif not motor() and absf(speed) > 0.5:
@@ -202,6 +207,12 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 		if _noise_t <= 0.0:
 			_noise_t = 0.5
 			sim.noise(pos, 2.5)
+
+## the horn, or a police car's siren: heard a long way off
+func horn() -> void:
+	sim.noise(pos, 70.0 if oid == Defs.O_POLICE_CAR else 45.0)
+	sim.emit_fx("alarm", pos)
+	sim.say("The siren wails across the town." if oid == Defs.O_POLICE_CAR else "The horn carries a long way.", Color(1.0, 0.85, 0.6))
 
 ## a hard stop: hurt the driver and whatever parts take it
 func crash(v: float) -> void:
@@ -226,6 +237,9 @@ func crash(v: float) -> void:
 	if motor() and int(ent.get("lit", 1)) == 1 and randf() < 0.2 + v * 0.03:
 		ent["lit"] = 0
 		parts.append("headlights")
+	if motor() and int(ent.get("muf", 1)) == 1 and randf() < 0.15 + v * 0.02:
+		ent["muf"] = 0
+		parts.append("the muffler — she is loud now")
 	if v > 6.0 or parts.size() > 0:
 		sim.say("You hit hard.%s" % ((" Damaged: " + ", ".join(parts) + ".") if parts.size() > 0 else ""), Color(1.0, 0.7, 0.5))
 
@@ -351,7 +365,7 @@ func unhitch() -> bool:
 	return true
 
 func save() -> Dictionary:
-	return {"pos": pos, "h": heading, "ent": ent, "trunk": trunk, "tk": tint_key, "o": oid, "tow": tow}
+	return {"pos": pos, "h": heading, "ent": ent, "trunk": trunk, "tk": tint_key, "o": oid, "tow": tow, "pax": passengers}
 
 static func from_save(sim: Sim, d: Dictionary) -> Vehicle:
 	var v := Vehicle.new()
@@ -363,4 +377,5 @@ static func from_save(sim: Sim, d: Dictionary) -> Vehicle:
 	v.tint_key = d.get("tk", Vector2i.ZERO)
 	v.oid = d.get("o", Defs.O_CAR)
 	v.tow = d.get("tow", {})
+	v.passengers = d.get("pax", [])
 	return v
