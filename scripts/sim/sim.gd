@@ -613,10 +613,14 @@ func _resolve_sites(c: Chunk) -> void:
 					world.chunk_at(t.x, t.y).containers[World.idx(t.x, t.y)] = arr
 					placed += 1
 		else:
-			for n in range(10):
-				var zp := Vector2(k.x + rng.randf_range(-4.0, 4.0), k.y + rng.randf_range(-4.0, 4.0))
+			var made := 0
+			for n in range(60):
+				if made >= 10:
+					break
+				var zp := Vector2(k.x + rng.randf_range(-5.0, 5.0), k.y + rng.randf_range(-5.0, 5.0))
 				if not world.blocked(zp.x, zp.y, 0.3):
 					zombies.spawn(zp)
+					made += 1
 
 func read_note(note: Dictionary) -> void:
 	if not note.has("txt") and note["id"] != "note" and note["id"] != "survivor_note":
@@ -1257,6 +1261,9 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 					if rain > 0.3 and c.bld[i] == 0 and randf() < dh * rain * 0.6:
 						e["c"] = float(e["c"]) - 0.25
 						if not catch_up: say("Rain gets into the generator. It sparks and coughs.", Color(1.0, 0.75, 0.5))
+					if load > GEN_CAP + 3 and randf() < dh * 0.15:
+						ignite(x, y, 1.2)                      # an overloaded generator catches fire
+						if not catch_up: say("The overloaded generator bursts into flames!", Color(1.0, 0.55, 0.4))
 					if load > GEN_CAP + 3 and randf() < dh * 2.0:
 						e["on"] = false
 						if not catch_up: say("The generator trips — too many things on at once (%d of %d)." % [load, GEN_CAP], Color(1.0, 0.75, 0.5))

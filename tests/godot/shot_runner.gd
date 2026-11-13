@@ -322,12 +322,40 @@ func _process(_dt: float) -> bool:
 			sim.world.set_obj(floori(fp.x), floori(fp.y) + 2, Defs.ocell(Defs.O_FALLEN_TREE, 0, 0))
 			sim.world.set_obj(floori(fp.x) + 1, floori(fp.y) + 2, Defs.ocell(Defs.O_FALLEN_TREE, 0, 1))
 		890: shot("28_snow_fallen_tree")
-		893:
+		891:
+			sim.weather["temp"] = 15.0
+			sim.weather["rain"] = 0.0
+			sim.weather["snow"] = 0.0
+			sim.snow_cover = 0.0
+			var site_r := Rect2i()
+			for rx in range(-3, 4):
+				for ry in range(-3, 4):
+					for lot in sim.world.gen.region(rx, ry)["lots"]:
+						if lot["k"] == "checkpoint" and site_r.size.x == 0: site_r = lot["r"]
+			sim.player.pos = Vector2(site_r.get_center()) + Vector2(0.5, 4.5)
+			sim.world.stream(sim.player.pos, 2, 999)
+			sim._process_world_events()
+			sim.zombies.list.clear()
+			main.view.zoom = 1.3
+		896: shot("29_checkpoint")
+		897:
+			var q_r := Rect2i()
+			for rx2 in range(-3, 4):
+				for ry2 in range(-3, 4):
+					for lot2 in sim.world.gen.region(rx2, ry2)["lots"]:
+						if lot2["k"] == "quarantine" and q_r.size.x == 0: q_r = lot2["r"]
+			sim.player.pos = Vector2(q_r.get_center()) + Vector2(0.5, 0.5)
+			sim.world.stream(sim.player.pos, 2, 999)
+			sim._process_world_events()
+			sim.zombies.list.clear()
+			main.view.zoom = 1.0
+		902: shot("30_quarantine")
+		905:
 			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		910: shot("20_death")
-		912:
+		922: shot("20_death")
+		924:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

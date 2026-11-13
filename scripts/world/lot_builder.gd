@@ -35,6 +35,7 @@ class LotPlan:
 	var zspawn: Array = []            # Vector2i cells of scripted zombies
 	var blood: Array = []             # Vector2i cells with blood
 	var stairs := Vector2i(-1, -1)    # staircase to the upper floor (lot coords) or -1
+	var attic := false                # the upper level is a low attic reached by a ladder
 	var npcs: Array = []              # [Vector2i cell, hostile]
 
 var cw: int
@@ -57,6 +58,7 @@ var corpse_c: Array = []
 var zspawn_c: Array = []
 var blood_c: Array = []
 var stairs_c := Vector2i(-1, -1)
+var attic := false
 var npc_c: Array = []
 const F_LOCK := 1
 const F_PLANK := 2
@@ -552,6 +554,7 @@ func finalize(facing: int, bld_id: int) -> LotPlan:
 		p.blood.append(_map(bc.x, bc.y, facing))
 	if stairs_c.x >= 0:
 		p.stairs = _map(stairs_c.x, stairs_c.y, facing)
+		p.attic = attic
 	for nc in npc_c:
 		p.npcs.append([_map(nc[0].x, nc[0].y, facing), nc[1]])
 	# objects

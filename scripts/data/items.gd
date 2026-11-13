@@ -173,6 +173,7 @@ static func _static_init() -> void:
 	_i("tyre_kit", "Tyre Repair Kit", "tool", 0.4, ["kit", "2a2c2e", "c8a850"], {"tyre": 1})
 	_i("stew", "Hunter's Stew", "food", 0.6, ["pot", "8a5030", "5a3420"], {"hunger": 40, "thirst": 8, "fresh": 48, "rot": 120, "kcal": 600, "calm": 10})
 	_i("gun_oil", "Gun Oil", "tool", 0.2, ["bottle", "3a3d40", "c8a850"], {"uses": 5})
+	_i("mre", "Ration Pack", "food", 0.5, ["bag", "6a7a4a", "3a4a2a"], {"hunger": 34, "kcal": 1200, "protein": 30})
 	_i("pencil", "Pencil", "tool", 0.05, ["knife", "d8b040", "3a3a3a"], {})
 	_i("notebook", "Notebook", "tool", 0.2, ["book", "3a5a86", "f0ece0"], {"uses": 10, "fuel": 0.2})
 	_i("note", "Handwritten Note", "misc", 0.02, ["paper", "f0ece0", "5a5a56"], {"read": 1, "fuel": 0.05, "nostack": 1})

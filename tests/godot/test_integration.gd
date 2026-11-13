@@ -1536,7 +1536,10 @@ func _init() -> void:
 	ge2["c"] = 1.0
 	sim.weather["rain"] = 1.0
 	var c_dry: float = 1.0
-	for i in range(10): sim._slow_tick(0.5)
+	for i in range(60):
+		ge2["on"] = true                      # keep it running: we are testing the rain, not tripping
+		sim._slow_tick(0.5)
+		if float(ge2["c"]) < c_dry - 0.2: break
 	ok(float(ge2["c"]) < c_dry - 0.2, "a generator left out in the rain shorts and wears (%d%%)" % int(float(ge2["c"]) * 100.0))
 	sim.weather["rain"] = 0.0
 	ge2["on"] = false
@@ -2673,6 +2676,132 @@ func _init() -> void:
 		if f9["k"] == "music_dawn": dawn = true
 	ok(dawn, "a few quiet notes at dawn")
 	sim.fx.clear()
+
+	print("== special sites, attics, overloaded generators, laundry, travelling settlers")
+	var cps: Array = []
+	var qcs: Array = []
+	var attics: Array = []
+	for rx3 in range(-3, 4):
+		for ry3 in range(-3, 4):
+			for lot3 in w.gen.region(rx3, ry3)["lots"]:
+				if lot3["k"] == "checkpoint": cps.append(lot3)
+				elif lot3["k"] == "quarantine": qcs.append(lot3)
+				elif lot3["k"] == "house" and attics.size() < 3 and rx3 == 0 and ry3 == 0:
+					var pl3: LotBuilder.LotPlan = w.gen.lot_plan(lot3)
+					if pl3.attic: attics.append([lot3, pl3])
+	ok(cps.size() > 0 and qcs.size() > 0, "the countryside has military checkpoints (%d) and quarantine camps (%d)" % [cps.size(), qcs.size()])
+	if cps.size() > 0:
+		var cpl: LotBuilder.LotPlan = w.gen.lot_plan(cps[0])
+		var sand := 0
+		var crates2 := 0
+		for oi in range(cpl.obj.size()):
+			var oid2: int = Defs.o_id(cpl.obj[oi])
+			if oid2 == Defs.O_SANDBAG: sand += 1
+			if oid2 == Defs.O_MIL_CRATE: crates2 += 1
+		ok(sand >= 10 and crates2 >= 2 and cpl.zspawn.size() >= 4 and cpl.corpses.size() >= 2, "a checkpoint: sandbags (%d), military crates (%d), dead soldiers, and the infected (%d)" % [sand, crates2, cpl.zspawn.size()])
+	if qcs.size() > 0:
+		var qpl: LotBuilder.LotPlan = w.gen.lot_plan(qcs[0])
+		var tents := 0
+		for oi2 in range(qpl.obj.size()):
+			if Defs.o_id(qpl.obj[oi2]) == Defs.O_TENT and Defs.o_part(qpl.obj[oi2]) == 0: tents += 1
+		ok(tents >= 6 and qpl.zspawn.size() >= 9, "a quarantine camp: rows of tents (%d) and many of the infected (%d)" % [tents, qpl.zspawn.size()])
+	var mil: Array = Loot.roll("military", "", sim.rng, sim.hour, 1.0)
+	ok(mil.size() >= 2, "military crates hold military supplies (%s)" % str(mil.map(func(it): return it["id"])))
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	w.set_obj(fx0 + 6, fy0 + 30, Defs.ocell(Defs.O_SANDBAG, 0, 0))
+	var mils := 0
+	for k23 in range(40):
+		var zm2: Zombie = sim.zombies.spawn(Vector2(fx0 + 4.5, fy0 + 30.5), 0)
+		if zm2.role == "military": mils += 1
+	ok(mils > 20, "the infected found at sandbag lines were mostly soldiers (%d of 40)" % mils)
+	sim.zombies.list.clear()
+	w.remove_object(fx0 + 6, fy0 + 30)
+	# attics
+	ok(attics.size() > 0, "some houses have an attic ladder instead of stairs")
+	if attics.size() > 0:
+		var alot: Dictionary = attics[0][0]
+		var apl: LotBuilder.LotPlan = attics[0][1]
+		var ar: Rect2i = alot["r"]
+		var ax3: int = ar.position.x + apl.stairs.x
+		var ay3: int = ar.position.y + apl.stairs.y
+		p.pos = Vector2(ax3 + 0.5, ay3 + 0.5)
+		w.stream(p.pos, 2, 999)
+		sim._process_world_events()
+		quiet(sim)
+		ok(Defs.o_id(w.obj(ax3, ay3)) == Defs.O_ATTIC_LADDER, "the ladder hangs in the house")
+		var al: Callable = opt(Actions.options(sim, {"kind": "obj", "x": ax3, "y": ay3}), "Climb into the attic")
+		ok(al.is_valid(), "and leads up into the attic")
+		al.call()
+		run(sim, 2.0)
+		ok(World.level(p.pos.y) == 2 and w.btype_at(floori(p.pos.x), floori(p.pos.y)) == "attic", "where it is an attic")
+		var boxes := 0
+		var attic_loot := 0
+		for yy20 in range(floori(p.pos.y) - 14, floori(p.pos.y) + 15):
+			for xx20 in range(floori(p.pos.x) - 14, floori(p.pos.x) + 15):
+				if Defs.o_id(w.obj(xx20, yy20)) == Defs.O_BOXES and w.bld(xx20, yy20) == w.bld(floori(p.pos.x), floori(p.pos.y)):
+					boxes += 1
+					attic_loot += w.container_at(xx20, yy20).size()
+		ok(boxes > 0 and attic_loot > 0, "full of boxed-up things (%d boxes, %d items)" % [boxes, attic_loot])
+		p.pos = Vector2(ax3 + 0.5, ay3 + World.UNDER * 2 + 0.5)
+		opt(Actions.options(sim, {"kind": "obj", "x": ax3, "y": ay3 + World.UNDER * 2}), "Climb down").call()
+		run(sim, 2.0)
+		ok(World.level(p.pos.y) == 0, "and back down")
+	p.pos = Vector2(fx0 + 5.5, fy0 + 30.5)
+	w.stream(p.pos, 3, 999)
+	sim._process_world_events()
+	quiet(sim)
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	# overloaded generator fires
+	sim.power_off_h = sim.hour - 1.0
+	var gx3: int = fx0 + 2
+	var gy3: int = fy0 + 30
+	w.set_obj(gx3, gy3, Defs.ocell(Defs.O_GENERATOR, 0, 0))
+	for k24 in range(12): w.set_obj(fx0 + k24 % 10 + 1, fy0 + 34 + k24 / 10, Defs.ocell(Defs.O_LAMP, 0, 0))
+	sim.burning.clear()
+	var burned := false
+	sim.rng.seed = 77
+	seed(77)
+	for k25 in range(200):
+		w.set_ent(gx3, gy3, {"k": "gen", "fuel": 40.0, "on": true, "c": 1.0})
+		sim._sim_ents(w.chunk_at(gx3, gy3), 0.5, false)
+		if sim.burning.has(Vector2i(gx3, gy3)):
+			burned = true
+			break
+	ok(burned, "a badly overloaded generator can catch fire")
+	sim.burning.clear()
+	sim.fires.clear()
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	# laundry
+	p.cloth_dirt = 80.0
+	p.grime = 0.0
+	p.tick_needs(0.1)
+	ok(p.grime >= 30.0, "filthy clothes make you filthy again (grime %.0f)" % p.grime)
+	var wlx: int = fx0 + 6
+	var wly: int = fy0 + 32
+	w.set_obj(wlx, wly, Defs.ocell(Defs.O_WELL, 0, 0))
+	p.pos = Vector2(wlx - 0.5, wly + 0.5)
+	var wet0: float = p.wet
+	var lnd: Callable = opt(Actions.options(sim, {"kind": "obj", "x": wlx, "y": wly}), "Wash your clothes")
+	ok(lnd.is_valid(), "clothes can be washed at a well")
+	lnd.call()
+	run(sim, float(p.action.get("dur", 10.0)) + 0.5)
+	ok(p.cloth_dirt < 10.0 and p.wet > wet0 + 30.0, "and come out clean, and damp")
+	w.remove_object(wlx, wly)
+	p.cloth_dirt = 0.0
+	p.grime = 0.0
+	p.wet = 0.0
+	# travellers from settlements
+	sim.factions.sites.clear()
+	sim.factions.found(Vector2i(80, 80), Vector2i(fx0 + 80, fy0 + 80), 0, 4)
+	var with_fac := 0
+	for k26 in range(12):
+		sim.npcs.list.clear()
+		sim.npcs.send_trader()
+		for n8 in sim.npcs.list:
+			if n8.trader and n8.fac == 0: with_fac += 1
+	ok(with_fac > 0, "many travellers on the road belong to a settlement (%d of 12)" % with_fac)
+	sim.npcs.list.clear()
+	sim.factions.sites.clear()
 
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor

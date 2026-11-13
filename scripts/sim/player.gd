@@ -510,6 +510,7 @@ var hidden := false             # inside a wardrobe or locker
 var hide_at := Vector2i.ZERO
 var trail: Array = []           # [pos, hour]: what the infected can follow by scent
 var _trail_t := 0.0
+var cloth_dirt := 0.0           # how filthy the clothes you wear are; dirty clothes re-dirty you
 var grime := 0.0                # dirt and blood on you: 0 clean .. 100 filthy
 var markers: Array = []         # personal map notes: [x, y, label]
 var force_shove := false
@@ -957,6 +958,8 @@ func tick_needs(dh: float) -> void:
 	_soak_items(dh)
 	# everyone gets dirtier; rain outdoors rinses some of it off; filth wears on the mind
 	grime = minf(100.0, grime + dh * (0.5 if bld != 0 else 0.8))
+	cloth_dirt = minf(100.0, cloth_dirt + dh * 0.35 + maxf(0.0, grime - 50.0) * dh * 0.01)
+	grime = maxf(grime, cloth_dirt * 0.4)                    # you cannot stay clean in filthy clothes
 	if bld == 0 and float(sim.weather.get("rain", 0.0)) > 0.3:
 		grime = maxf(0.0, grime - dh * 4.0)
 	if grime > 70.0:
@@ -1460,7 +1463,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "known": known, "grime": grime, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "known": known, "grime": grime, "cloth_dirt": cloth_dirt, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1543,6 +1546,7 @@ func load(d: Dictionary) -> void:
 	pname = d.get("pname", "")
 	known = d.get("known", {})
 	grime = d.get("grime", 0.0)
+	cloth_dirt = d.get("cloth_dirt", 0.0)
 	hidden = d.get("hidden", false)
 	hide_at = d.get("hide_at", Vector2i.ZERO)
 	carrying = d.get("carry", {})

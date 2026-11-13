@@ -74,6 +74,13 @@ func _role_for(pos: Vector2) -> String:
 		"clinic", "hospital": return "medic" if r < 0.6 else "civilian"
 		"warehouse", "hardware": return "construction" if r < 0.5 else "civilian"
 		"firestation": return "burned" if r < 0.3 else ("construction" if r < 0.5 else "civilian")
+	for dy in range(-5, 6):
+		for dx in range(-5, 6):
+			var oid: int = Defs.o_id(w.obj(floori(pos.x) + dx, floori(pos.y) + dy))
+			if oid == Defs.O_SANDBAG or oid == Defs.O_MIL_CRATE:
+				return "military" if r < 0.7 else "civilian"
+			if oid == Defs.O_HOSPITAL_BED and w.bld(floori(pos.x), floori(pos.y)) == 0:
+				return "medic" if r < 0.3 else "civilian"
 	if Defs.ground_is_water(w.ground(floori(pos.x), floori(pos.y))) or (r < 0.2 and _near_water(pos)):
 		return "soaked"
 	var c: Chunk = w.chunk_at(floori(pos.x), floori(pos.y))

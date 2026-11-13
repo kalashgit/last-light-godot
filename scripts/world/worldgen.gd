@@ -285,7 +285,7 @@ func _plan_pois(R: Dictionary, rng: RandomNumberGenerator) -> void:
 	for i in range(n * 3):
 		if placed.size() >= n:
 			break
-		var kinds: Array = ["farm", "farm", "cabin", "camp", "gas", "house", "house", "warehouse", "cabin", "diner"]
+		var kinds: Array = ["farm", "farm", "cabin", "camp", "gas", "house", "house", "warehouse", "cabin", "diner", "checkpoint", "quarantine"]
 		var k: String = kinds[rng.randi() % kinds.size()]
 		var w := 16
 		var h := 20
@@ -308,6 +308,12 @@ func _plan_pois(R: Dictionary, rng: RandomNumberGenerator) -> void:
 			"diner":
 				w = 18
 				h = 18
+			"checkpoint":
+				w = 18
+				h = 14
+			"quarantine":
+				w = 28
+				h = 26
 		var along_x: bool = rng.randf() < 0.5
 		var side: int = 1 if rng.randf() < 0.5 else -1
 		var lr: Rect2i
@@ -697,7 +703,7 @@ func _gen_upper(c: Chunk, x0: int, sy0: int, srect: Rect2i) -> Chunk:
 		if plan.stairs.x < 0:
 			continue
 		var uid: int = plan.bld_id + 0x20000000
-		c.btype[uid] = "house"
+		c.btype[uid] = "attic" if plan.attic else "house"
 		for ly in range(16):
 			for lx in range(16):
 				var px: int = x0 + lx - lr.position.x
@@ -707,14 +713,17 @@ func _gen_upper(c: Chunk, x0: int, sy0: int, srect: Rect2i) -> Chunk:
 				var west: bool = px - 1 >= 0 and py >= 0 and px - 1 < plan.w and py < plan.h and plan.inside[py * plan.w + px - 1] != 0
 				var i: int = ly * 16 + lx
 				if here:
-					c.ground[i] = Defs.G_WOOD_DARK
+					c.ground[i] = Defs.G_PLANK if plan.attic else Defs.G_WOOD_DARK
 					c.bld[i] = uid
 					c.roof[i] = plan.roof[py * plan.w + px]
 				if here != north:
 					c.wall_n[i] = w_in if here else w_out
 				if here != west:
 					c.wall_w[i] = w_in if here else w_out
-				if here and not north and Vector2i(px, py) != plan.stairs:
+				if here and plan.attic and Vector2i(px, py) != plan.stairs:
+					if Rng.f2(x0 + lx, sy0 + ly, plan.bld_id + 6) < 0.16:
+						c.obj[i] = Defs.ocell(Defs.O_BOXES, 0, 0)          # boxed-up lives
+				elif here and not north and Vector2i(px, py) != plan.stairs:
 					var f: float = Rng.f2(x0 + lx, sy0 + ly, plan.bld_id + 5)
 					if f < 0.5:
 						c.obj[i] = Defs.ocell(kinds[int(f * 100.0) % kinds.size()], 0, 0)
@@ -722,7 +731,7 @@ func _gen_upper(c: Chunk, x0: int, sy0: int, srect: Rect2i) -> Chunk:
 					c.obj[i] = Defs.ocell(Defs.O_BEDROLL, 0, 0)
 		var sw: Vector2i = lr.position + plan.stairs
 		if srect.has_point(sw):
-			c.obj[(sw.y - sy0) * 16 + (sw.x - x0)] = Defs.ocell(Defs.O_STAIRS, 2, 0)
+			c.obj[(sw.y - sy0) * 16 + (sw.x - x0)] = Defs.ocell(Defs.O_ATTIC_LADDER if plan.attic else Defs.O_STAIRS, 2, 0)
 			if Rng.f2(plan.bld_id, 4, seed_v + 79) < 0.3:
 				c.story_z.append(Vector2(sw.x + 2.5, sw.y + World.UNDER * 2 + 1.5))
 	c.map_px.resize(Iso.CS2)

@@ -16,6 +16,8 @@ static func gen(kind: String, w: int, h: int, facing: int, seed_v: int, bld_id: 
 		"farm": _farm(b)
 		"cabin": _cabin(b)
 		"camp": _camp(b)
+		"checkpoint": _checkpoint(b)
+		"quarantine": _quarantine(b)
 		"woods": _woods(b)
 		_: _shop(b, kind)
 	return b.finalize(facing, bld_id)
@@ -132,6 +134,12 @@ static func _house_story(b: LotBuilder, base_room: int) -> void:
 		var sc: Vector2i = b.place_free(base_room, Defs.O_STAIRS, 0, 0, 12)
 		if sc.x >= 0:
 			b.stairs_c = sc
+	elif rng.randf() < 0.35:
+		# no second storey, but a pull-down ladder to the attic
+		var ac: Vector2i = b.place_free(base_room, Defs.O_ATTIC_LADDER, 0, 0, 12)
+		if ac.x >= 0:
+			b.stairs_c = ac
+			b.attic = true
 	var r: float = rng.randf()
 	if r > 0.93:
 		# somebody is still living here
@@ -639,6 +647,51 @@ static func _cabin(b: LotBuilder) -> void:
 	b.put_yard(Defs.O_CAMPFIRE, clampi(x0 + w / 2 + 2, 0, b.cw - 1), b.ch - 1, 0)
 	for k in range(4):
 		b.put_yard(_pick(rng, [Defs.O_TREE_PINE, Defs.O_TREE_OAK, Defs.O_ROCK, Defs.O_BUSH]), rng.randi_range(0, b.cw - 1), rng.randi_range(0, 2), 0)
+
+## an army roadblock that did not hold: sandbags, a tent, crates, and the soldiers who stayed
+static func _checkpoint(b: LotBuilder) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	b.btype = "checkpoint"
+	b.set_floor(Rect2i(1, 1, b.cw - 2, b.ch - 2), Defs.G_GRAVEL)
+	for u in range(2, b.cw - 2):
+		if u < b.cw / 2 - 1 or u > b.cw / 2 + 1:
+			b.put_yard(Defs.O_SANDBAG, u, b.ch - 2, 0)
+	for v in range(3, b.ch - 2):
+		b.put_yard(Defs.O_SANDBAG, 2, v, 0)
+		b.put_yard(Defs.O_SANDBAG, b.cw - 3, v, 0)
+	b.put_yard(Defs.O_TENT, 4, 2, 0)
+	b.put_yard(Defs.O_MIL_CRATE, 7, 3, 0)
+	b.put_yard(Defs.O_MIL_CRATE, 8, 3, 1)
+	b.put_yard(Defs.O_MIL_CRATE, b.cw - 6, 3, 0)
+	b.put_yard(Defs.O_STREET_LAMP, b.cw / 2, 2, 0)
+	b.put_yard(Defs.O_TRUCK if rng.randf() < 0.6 else Defs.O_CAR_WRECK, b.cw - 6, 5, 0)
+	for k in range(rng.randi_range(2, 4)):
+		var c: Vector2i = Vector2i(rng.randi_range(4, b.cw - 5), rng.randi_range(5, b.ch - 4))
+		b.corpse_c.append([c, "corpse_armed"])
+		b.blood_c.append(c)
+	for k2 in range(rng.randi_range(4, 7)):
+		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 3)))
+
+## a fenced field camp for the sick, overrun from the inside
+static func _quarantine(b: LotBuilder) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	b.btype = "quarantine"
+	b.set_floor(Rect2i(1, 1, b.cw - 2, b.ch - 2), Defs.G_DIRT)
+	b.fence_rect(Rect2i(1, 1, b.cw - 2, b.ch - 2), LotBuilder.E_CHAIN, LotBuilder.E_PICKET_GATE, [Vector2i(b.cw / 2, b.ch - 1)])
+	for row in range(3):
+		for col in range(3):
+			b.put_yard(Defs.O_TENT, 3 + col * 8, 3 + row * 7, 0)
+			b.put_yard(Defs.O_HOSPITAL_BED, 6 + col * 8, 3 + row * 7, 0)
+	b.put_yard(Defs.O_MED_CABINET, b.cw - 4, 3, 0)
+	b.put_yard(Defs.O_MED_CABINET, b.cw - 4, 4, 0)
+	b.put_yard(Defs.O_MIL_CRATE, b.cw - 5, b.ch - 5, 0)
+	b.put_yard(Defs.O_AMBULANCE if rng.randf() < 0.7 else Defs.O_CAR_WRECK, 2, b.ch - 7, 0)
+	for k in range(rng.randi_range(5, 9)):
+		var c: Vector2i = Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4))
+		b.corpse_c.append([c, "corpse"])
+		b.blood_c.append(c)
+	for k2 in range(rng.randi_range(9, 14)):
+		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
 
 static func _camp(b: LotBuilder) -> void:
 	var rng: RandomNumberGenerator = b.rng

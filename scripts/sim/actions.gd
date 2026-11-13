@@ -430,6 +430,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 				out.append(_opt("Drink", func(): _drink_source(sim, false, 999)))
 				out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 				out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
+				out.append(_opt("Wash your clothes", func(): _laundry(sim, func(n: int) -> int: return n)))
 			elif sim.pipe_water(pb) > 0:
 				out.append(_opt("Drink what is left in the pipes (%d)" % sim.pipe_water(pb), func():
 					if sim.draw_pipe(pb, 1) > 0: _drink_source(sim, false, 1)))
@@ -523,6 +524,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Draw water and drink", func(): _drink_source(sim, false, 999)))
 			out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 			out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
+			out.append(_opt("Wash your clothes", func(): _laundry(sim, func(n: int) -> int: return n)))
 		"battery_bank":
 			var be: Dictionary = w.ent(x, y)
 			if be.is_empty():
@@ -575,10 +577,11 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		"spikes":
 			out.append(_opt("About the spikes", func(): sim.say("Anything that walks across is torn up. They wear out.", Color(0.85, 0.85, 0.75))))
 		"stairs":
+			var attic_l: bool = id == Defs.O_ATTIC_LADDER
 			if World.level(p.pos.y) == 0:
-				out.append(_opt("Go upstairs", func(): _use_stairs(sim, World.UNDER * 2, "You climb to the upper floor.")))
+				out.append(_opt("Climb into the attic" if attic_l else "Go upstairs", func(): _use_stairs(sim, World.UNDER * 2, "Dust and boxes under the rafters." if attic_l else "You climb to the upper floor.")))
 			else:
-				out.append(_opt("Go downstairs", func(): _use_stairs(sim, -World.UNDER * 2, "You come back down.")))
+				out.append(_opt("Climb down" if attic_l else "Go downstairs", func(): _use_stairs(sim, -World.UNDER * 2, "You come back down.")))
 		"coop":
 			out.append_array(_coop_options(sim, x, y))
 		"hatch":
@@ -778,6 +781,21 @@ static func look_closer(sim: Sim, x: int, y: int) -> String:
 	if Vehicle.is_vehicle(id):
 		return condition_text(Vehicle.car_ent(sim, x, y), id)
 	return ", ".join(bits) + "."
+
+## scrub the clothes you are wearing; you put them back on damp
+static func _laundry(sim: Sim, draw: Callable) -> void:
+	var p: Player = sim.player
+	if p.cloth_dirt < 10.0:
+		sim.say("Your clothes are clean enough.", Color(0.8, 0.85, 0.9))
+		return
+	p.start_action("Washing clothes", 10.0, func():
+		var got: int = draw.call(4)
+		if got <= 0:
+			sim.say("Not enough water.", Color(0.8, 0.8, 0.9))
+			return
+		p.cloth_dirt = maxf(0.0, p.cloth_dirt - 25.0 * float(got))
+		p.wet = minf(100.0, p.wet + 45.0)
+		sim.say("Clean clothes. Damp ones, for now.", Color(0.75, 0.9, 1.0)))
 
 ## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
 static func _rest(sim: Sim) -> void:

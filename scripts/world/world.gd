@@ -500,7 +500,9 @@ func container_at(x: int, y: int) -> Array:
 	var table: String = d.get("c", "")
 	if table != "":
 		var rng: RandomNumberGenerator = Rng.make(Rng.h2(a.x, a.y, seed_v + 977))
-		arr = Loot.roll(table, c.btype.get(c.bld[i], ""), rng, hour, loot_mult)
+		var bt0: String = c.btype.get(c.bld[i], "")
+		if bt0 == "attic": table = "attic"
+		arr = Loot.roll(table, bt0, rng, hour, loot_mult)
 	c.containers[i] = arr
 	c.touched = true
 	return arr

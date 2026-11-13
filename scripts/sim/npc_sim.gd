@@ -651,6 +651,15 @@ func send_trader() -> void:
 		n.wpn = "kitchen_knife"
 		n.leave_h = sim.hour + 8.0
 		n.home = p.pos.lerp(spot, 0.6)
+		# often a member of a settlement, travelling between places
+		var open_sites: Array = []
+		for k3 in sim.factions.sites.keys():
+			var st5: Dictionary = sim.factions.sites[k3]
+			if not st5["fallen"] and Factions.kind(int(st5["f"])) != Factions.RAIDER: open_sites.append(k3)
+		if not open_sites.is_empty() and randf() < 0.6:
+			var sk: Vector2i = open_sites[randi() % open_sites.size()]
+			n.fac = int(sim.factions.sites[sk]["f"])
+			n.site = sk
 		n.task = "home"
 		sim.say("Someone is coming along the road, pulling a loaded cart.", Color(0.85, 0.85, 0.7))
 		return

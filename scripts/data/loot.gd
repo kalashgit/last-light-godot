@@ -40,6 +40,10 @@ static func _static_init() -> void:
 		["shovel", 3, 1, 1], ["fertilizer", 4, 1, 2], ["rope", 3, 1, 1], ["axe", 1.5, 1, 1], ["nails", 4, 5, 25], ["potato", 3, 2, 6], ["gas_can", 1.5, 1, 1], ["tarp", 2, 1, 1]]}
 	T["cabin"] = {"rolls": [2, 5], "items": [["binoculars", 3, 1, 1], ["canned_beans", 5, 1, 3], ["jerky", 5, 1, 2], ["matches", 5, 1, 1], ["fishing_rod", 3, 1, 1], ["hunting_knife", 2.5, 1, 1], ["hatchet", 2.5, 1, 1],
 		["rifle", 0.8, 1, 1], ["rifle_rounds", 1.5, 3, 10], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["bedroll_item", 2, 1, 1], ["whiskey", 2, 1, 1], ["book_foraging", 1.5, 1, 1], ["candle", 3, 1, 2], ["water_bottle", 4, 1, 2]]}
+	T["military"] = {"rolls": [2, 5], "items": [["mre", 8, 1, 3], ["ammo_9mm", 6, 10, 30], ["shells", 4, 4, 12], ["bandage", 5, 1, 3], ["binoculars", 2, 1, 1],
+		["flashlight", 3, 1, 1], ["battery", 3, 1, 3], ["shotgun", 1, 1, 1], ["pistol", 1.5, 1, 1], ["gas_can", 2, 1, 1], ["boots", 2, 1, 1], ["first_aid_kit", 2, 1, 1], ["bulletin", 2, 1, 1]]}
+	T["attic"] = {"rolls": [1, 3], "items": [["sheet", 5, 1, 2], ["novel", 4, 1, 1], ["comic", 3, 1, 1], ["jacket", 3, 1, 1], ["toy", 4, 1, 1], ["diary", 3, 1, 1], ["hammer", 1, 1, 1],
+		["rope", 2, 1, 1], ["glass_jar", 3, 1, 2], ["candle", 3, 1, 2], ["local_map", 1, 1, 1], ["radio", 1, 1, 1]]}
 	T["camp"] = {"rolls": [1, 4], "items": [["canned_beans", 5, 1, 2], ["granola_bar", 5, 1, 3], ["water_bottle", 5, 1, 2], ["matches", 4, 1, 1], ["bedroll_item", 2, 1, 1], ["flashlight", 3, 1, 1],
 		["hunting_knife", 1.5, 1, 1], ["rope", 3, 1, 1], ["bandage", 3, 1, 2], ["backpack", 1.5, 1, 1], ["cooking_pot", 3, 1, 1]]}
 	T["tools"] = {"rolls": [2, 5], "items": [["hammer", 6, 1, 1], ["saw", 5, 1, 1], ["screwdriver", 6, 1, 1], ["wrench", 5, 1, 1], ["nails", 10, 10, 50], ["duct_tape", 5, 1, 2], ["wire", 4, 1, 3],
