@@ -442,6 +442,7 @@ func melee_stats() -> Dictionary:
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
 var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
+var grime := 0.0                # dirt and blood on you: 0 clean .. 100 filthy
 var markers: Array = []         # personal map notes: [x, y, label]
 var force_shove := false
 var corpses_near := 0
@@ -844,6 +845,12 @@ func die(cause: String) -> void:
 
 # ------------------------------------------------------------------ needs (dh = elapsed game hours)
 func tick_needs(dh: float) -> void:
+	# everyone gets dirtier; rain outdoors rinses some of it off; filth wears on the mind
+	grime = minf(100.0, grime + dh * (0.5 if bld != 0 else 0.8))
+	if bld == 0 and float(sim.weather.get("rain", 0.0)) > 0.3:
+		grime = maxf(0.0, grime - dh * 4.0)
+	if grime > 70.0:
+		unhappy = minf(100.0, unhappy + dh * 0.5)
 	if not alive:
 		return
 	var w: World = sim.world
@@ -872,13 +879,13 @@ func tick_needs(dh: float) -> void:
 			bleeding += float(def[0])
 			wd["bleed_h"] = float(wd["bleed_h"]) - dh
 		if wd["band"]:
-			wd["dirty"] = float(wd["dirty"]) + dh
+			wd["dirty"] = float(wd["dirty"]) + dh * (1.0 + grime / 60.0)
 		var heal_rate: float = (1.5 if wd["band"] else 1.0) * (1.8 if wd["stitch"] or wd["splint"] else 1.0) * (1.0 + fa * 0.03) * tmod("heal") * (1.15 if hunger < 15.0 else 1.0) * (0.85 if protein < 20.0 else 1.0) * (0.0 if wd.get("glass", false) else 1.0)
 		if wd["inf"]:
 			heal_rate = 0.0
 			hp -= dh * 0.6
 		elif not wd["dis"] and wd["type"] != "fracture":
-			var ch: float = dh * (0.05 if (wd["band"] and float(wd["dirty"]) > 24.0) else (0.02 if not wd["band"] else 0.004))
+			var ch: float = dh * (0.05 if (wd["band"] and float(wd["dirty"]) > 24.0) else (0.02 if not wd["band"] else 0.004)) * (1.0 + grime / 50.0)
 			if randf() < ch:
 				wd["inf"] = true
 				sim.say("A wound on your %s looks infected" % String(PARTS[int(wd["part"])]).to_lower(), Color(1.0, 0.6, 0.4))
@@ -980,6 +987,7 @@ func moodles() -> Array:
 	if bleeding: m.append(["bleeding", 3, "Bleeding"])
 	if hp < 75.0: m.append(["injured", 1 + int(hp < 55.0) + int(hp < 35.0) + int(hp < 18.0), "Injured"])
 	if sick > 20.0 or infection > 0.25: m.append(["sick", 1 + int(sick > 45.0 or infection > 0.5) + int(sick > 70.0 or infection > 0.7) + int(infection > 0.85), "Sick"])
+	if grime > 60.0: m.append(["dirty", 1 + int(grime > 80.0) + int(grime > 95.0), "Filthy"])
 	if temp < -25.0: m.append(["cold", 1 + int(temp < -50.0) + int(temp < -70.0) + int(temp < -88.0), "Cold"])
 	if temp > 25.0: m.append(["hot", 1 + int(temp > 50.0) + int(temp > 70.0) + int(temp > 88.0), "Overheated"])
 	if wet > 30.0: m.append(["wet", 1 + int(wet > 55.0) + int(wet > 80.0), "Wet"])
@@ -1339,7 +1347,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "grime": grime, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1419,6 +1427,7 @@ func load(d: Dictionary) -> void:
 	protein = d.get("protein", 50.0)
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
+	grime = d.get("grime", 0.0)
 	carrying = d.get("carry", {})
 	xp_boost = d.get("boost", {})
 	if int(d.get("parts", 6)) == 6:

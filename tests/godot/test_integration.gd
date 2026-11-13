@@ -1484,6 +1484,170 @@ func _init() -> void:
 	Actions.exit_vehicle(sim)
 	ok(not opt(Actions._car_options(sim, 0, 0), "Sleep").is_valid(), "(not offered on foot)")
 
+	print("== power: loads, switches, generators, batteries, solar")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.animals.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	sim.power_off_h = sim.hour - 1.0
+	sim.water_off_h = sim.hour - 1.0
+	sim.weather["rain"] = 0.0
+	sim.weather["temp"] = 15.0
+	var gx: int = fx0 + 2
+	var gy: int = fy0 + 20
+	var fridge_x: int = fx0 + 5
+	var fridge_y: int = fy0 + 20
+	var base_load: int = sim.loads_near(fx0 + 2, fy0 + 20, Sim.GEN_RANGE)      # whatever the nearby houses already have plugged in
+	w.set_obj(fridge_x, fridge_y, Defs.ocell(Defs.O_FRIDGE, 0, 0))
+	sim._slow_tick(0.01)
+	ok(not sim.has_power(fridge_x, fridge_y), "with the grid down, a fridge is dead")
+	w.set_obj(gx, gy, Defs.ocell(Defs.O_GENERATOR, 0, 0))
+	w.set_ent(gx, gy, {"k": "gen", "fuel": 40.0, "on": true, "c": 1.0})
+	sim._slow_tick(0.01)
+	ok(sim.has_power(fridge_x, fridge_y) and sim.loads_near(gx, gy, Sim.GEN_RANGE) == base_load + 1, "a running generator powers it (load %d)" % (base_load + 1))
+	var ge2: Dictionary = w.ent(gx, gy)
+	var f_one: float = ge2["fuel"]
+	sim._slow_tick(1.0)
+	var burn_one: float = f_one - float(ge2["fuel"])
+	var fe: Callable = opt(Actions.options(sim, {"kind": "obj", "x": fridge_x, "y": fridge_y}), "Switch off")
+	ok(fe.is_valid(), "an appliance can be switched off at the switch")
+	fe.call()
+	ok(not sim.has_power(fridge_x, fridge_y) and sim.loads_near(gx, gy, Sim.GEN_RANGE) == base_load, "switched off it draws nothing and runs nothing")
+	opt(Actions.options(sim, {"kind": "obj", "x": fridge_x, "y": fridge_y}), "Switch on").call()
+	for k6 in range(9):
+		w.set_obj(fx0 + 1 + k6, fy0 + 24, Defs.ocell(Defs.O_LAMP, 0, 0))
+	var f_many: float = ge2["fuel"]
+	var c_many: float = ge2["c"]
+	sim._slow_tick(1.0)
+	ok(f_many - float(ge2["fuel"]) > burn_one * 1.5, "more appliances burn more fuel (%.2f vs %.2f per hour)" % [f_many - float(ge2["fuel"]), burn_one])
+	ok(c_many - float(ge2["c"]) > 0.05, "too many for one generator wears it hard (%d of %d)" % [int(ge2.get("load", 0)), Sim.GEN_CAP])
+	var tripped := false
+	for i in range(30):
+		ge2["on"] = true
+		ge2["c"] = 1.0
+		sim._slow_tick(0.5)
+		if not ge2["on"]:
+			tripped = true
+			break
+	ok(tripped, "and sooner or later it trips")
+	for k7 in range(9):
+		w.remove_object(fx0 + 1 + k7, fy0 + 24)
+	ge2["on"] = true
+	ge2["c"] = 1.0
+	sim.weather["rain"] = 1.0
+	var c_dry: float = 1.0
+	for i in range(10): sim._slow_tick(0.5)
+	ok(float(ge2["c"]) < c_dry - 0.2, "a generator left out in the rain shorts and wears (%d%%)" % int(float(ge2["c"]) * 100.0))
+	sim.weather["rain"] = 0.0
+	ge2["on"] = false
+	w.remove_object(gx, gy)
+	# battery bank + solar
+	p.skills["electrical"] = Player.XP_LEVELS[3]
+	Inv.add_new(p.inv, "car_battery", 2)
+	Inv.add_new(p.inv, "wire", 5)
+	Inv.add_new(p.inv, "glass_pane", 1)
+	Inv.add_new(p.inv, "scrap_metal", 2)
+	Inv.add_new(p.inv, "screwdriver", 1)
+	p.pos = Vector2(fridge_x + 0.5, fridge_y + 2.5)
+	p.facing = Vector2(-1, 0)
+	var bt2: Vector2i = p.front_tile()
+	ok(Actions.craft(sim, Recipes.by_id("battery_bank")), "a battery bank can be wired from car batteries")
+	run(sim, 10.5)
+	ok(Defs.o_id(w.obj(bt2.x, bt2.y)) == Defs.O_BATTERY_BANK and Inv.count(p.inv, "car_battery") == 0, "it is built from the batteries you carried")
+	sim._slow_tick(0.01)
+	var bank_e: Dictionary = w.ent(bt2.x, bt2.y)
+	ok(not sim.has_power(fridge_x, fridge_y), "an empty bank powers nothing")
+	p.facing = Vector2(0, 1)
+	var sol: Vector2i = p.front_tile()
+	ok(Actions.craft(sim, Recipes.by_id("solar_panel")), "a solar panel can be assembled")
+	run(sim, 12.5)
+	ok(Defs.o_id(w.obj(sol.x, sol.y)) == Defs.O_SOLAR, "and stands where you built it")
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 12.0
+	sim.weather["cloud"] = 0.0
+	bank_e = w.ent(bt2.x, bt2.y)
+	var ch0: float = float(bank_e.get("w", 0.0))
+	for i in range(8): sim._slow_tick(1.0)
+	bank_e = w.ent(bt2.x, bt2.y)
+	var ch1: float = float(bank_e.get("w", 0.0))
+	ok(ch1 > ch0 + 5.0, "noon sun charges the bank (%.0f -> %.0f)" % [ch0, ch1])
+	sim._slow_tick(0.01)
+	ok(sim.has_power(fridge_x, fridge_y), "and a charged bank runs the fridge silently")
+	sim.noises.clear()
+	sim._slow_tick(0.01)
+	var hum := false
+	for nz2 in sim.noises:
+		if (nz2[0] as Vector2).distance_to(Vector2(bt2.x + 0.5, bt2.y + 0.5)) < 1.0: hum = true
+	ok(not hum, "a battery bank makes no noise")
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 1.0
+	var night0: float = float(w.ent(bt2.x, bt2.y)["w"])
+	for i in range(4): sim._slow_tick(1.0)
+	ok(float(w.ent(bt2.x, bt2.y)["w"]) < night0, "at night it runs down (%.0f -> %.0f)" % [night0, float(w.ent(bt2.x, bt2.y)["w"])])
+	w.remove_object(fridge_x, fridge_y)
+	w.remove_object(bt2.x, bt2.y)
+	w.remove_object(sol.x, sol.y)
+	sim._slow_tick(0.01)
+
+	print("== water: pipes, freezing, washing")
+	var hb: int = sim.safe_bld
+	sim.pipes.clear()
+	var left0: int = sim.pipe_water(hb)
+	ok(left0 >= 12 and left0 < 26, "after the mains fail a house's pipes still hold some water (%d)" % left0)
+	var sx2: int = fx0 + 3
+	var sy2: int = fy0 + 30
+	w.set_obj(sx2, sy2, Defs.ocell(Defs.O_SINK_COUNTER, 0, 0))
+	w.chunk_at(sx2, sy2).bld[World.idx(sx2, sy2)] = hb
+	p.pos = Vector2(sx2 + 0.5, sy2 - 0.5)
+	p.thirst = 70.0
+	var dp2: Callable = opt(Actions.options(sim, {"kind": "obj", "x": sx2, "y": sy2}), "Drink what is left")
+	ok(dp2.is_valid(), "the tap offers what is left in the pipes")
+	if dp2.is_valid():
+		dp2.call()
+		run(sim, 2.5)
+	ok(p.thirst < 70.0 and sim.pipe_water(hb) == left0 - 1, "drinking takes from it")
+	sim.pipes[hb] = 0
+	ok(not opt(Actions.options(sim, {"kind": "obj", "x": sx2, "y": sy2}), "Drink what is left").is_valid(), "and once it is gone, it is gone")
+	w.chunk_at(sx2, sy2).bld[World.idx(sx2, sy2)] = 0
+	w.remove_object(sx2, sy2)
+	var rbx: int = fx0 + 6
+	var rby: int = fy0 + 30
+	w.set_obj(rbx, rby, Defs.ocell(Defs.O_RAIN_BARREL, 0, 0))
+	w.chunk_at(rbx, rby).bld[World.idx(rbx, rby)] = 0          # out in the open
+	w.set_ent(rbx, rby, {"k": "barrel", "w": 20.0})
+	sim.weather["temp"] = -6.0
+	sim._sim_ents(w.chunk_at(rbx, rby), 0.5, false)
+	var ro: Array = Actions.options(sim, {"kind": "obj", "x": rbx, "y": rby})
+	ok(opt(ro, "Frozen solid").is_valid() and not opt(ro, "Drink rainwater").is_valid(), "in a hard frost the rain collector freezes")
+	sim.weather["temp"] = 8.0
+	sim._sim_ents(w.chunk_at(rbx, rby), 0.5, false)
+	ok(opt(Actions.options(sim, {"kind": "obj", "x": rbx, "y": rby}), "Drink rainwater").is_valid(), "and thaws when it warms")
+	p.grime = 0.0
+	p.wounds.clear()
+	sim.player.tick_needs(30.0)
+	ok(p.grime > 10.0, "days without washing leave you dirty (%.0f)" % p.grime)
+	p.grime = 90.0
+	ok(p.moodles().any(func(m): return m[0] == "dirty"), "and filthy shows up as a moodle")
+	p.add_wound(9, "laceration", "test")
+	p.wounds[0]["band"] = true
+	var dirty_fast: float = 0.0
+	var wcopy: Dictionary = p.wounds[0]
+	wcopy["dirty"] = 0.0
+	p.tick_needs(4.0)
+	dirty_fast = float(wcopy["dirty"])
+	var wv2: Callable = opt(Actions.options(sim, {"kind": "obj", "x": rbx, "y": rby}), "Wash yourself")
+	ok(wv2.is_valid(), "you can wash at a rain collector")
+	wv2.call()
+	run(sim, 7.0)
+	ok(p.grime < 10.0 and float(w.ent(rbx, rby)["w"]) <= 17.0, "washing uses water and gets you clean (grime %.0f)" % p.grime)
+	wcopy["dirty"] = 0.0
+	p.tick_needs(4.0)
+	ok(float(wcopy["dirty"]) < dirty_fast, "a clean body keeps a dressing clean longer (%.1f vs %.1f)" % [float(wcopy["dirty"]), dirty_fast])
+	p.wounds.clear()
+	p.hp = 100.0
+	w.remove_object(rbx, rby)
+	ok(SaveGame.save(sim, slot), "saving power and water state")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and s2.pipes.has(hb) and int(s2.pipes[hb]) == 0 and absf(s2.player.grime - p.grime) < 0.01, "emptied pipes and grime persist")
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

@@ -31,6 +31,12 @@ var sleep_quality := 1.0
 var alarms: Array = []           # [pos, seconds left]
 var alarms_done: Dictionary = {}
 var generators: Array = []       # Vector2i of running generators (loaded chunks)
+var banks: Array = []            # Vector2i of charged battery banks (loaded chunks)
+var pipes: Dictionary = {}       # building uid -> water units left in its pipes after the mains fail
+const GEN_RANGE := 14
+const GEN_CAP := 6               # appliances one generator carries before it strains
+const BANK_RANGE := 10
+const BANK_MAX := 60.0           # load-hours a bank holds
 var fires: Array = []            # Vector2i of lit campfires (loaded chunks)
 var spikes: Array = []           # Vector2i spike traps near the player
 var _spike_t := 0.0
@@ -289,15 +295,58 @@ func daylight() -> float:
 	return v * (1.0 - float(weather["cloud"]) * 0.25)
 
 func has_power(x: int, y: int) -> bool:
+	if world.ent(x, y).get("off", false):
+		return false                   # switched off at the appliance
 	if hour < power_off_h:
 		return true
 	for g in generators:
-		if absi(g.x - x) <= 14 and absi(g.y - y) <= 14:
+		if absi(g.x - x) <= GEN_RANGE and absi(g.y - y) <= GEN_RANGE:
+			return true
+	for bk in banks:
+		if absi(bk.x - x) <= BANK_RANGE and absi(bk.y - y) <= BANK_RANGE:
 			return true
 	return false
 
+const APPLIANCES := [Defs.O_FRIDGE, Defs.O_FREEZER, Defs.O_STOVE, Defs.O_LAMP, Defs.O_TV, Defs.O_WASHER, Defs.O_GAS_PUMP, Defs.O_VENDING]
+
+## appliances switched on within a square around (x, y)
+func loads_near(x: int, y: int, r: int) -> int:
+	var n := 0
+	for cy in range((y - r) >> 4, ((y + r) >> 4) + 1):
+		for cx in range((x - r) >> 4, ((x + r) >> 4) + 1):
+			var c: Chunk = world.chunk(cx, cy)
+			if c == null:
+				continue
+			for i in range(256):
+				var o: int = c.obj[i]
+				if o == 0 or Defs.o_part(o) != 0 or not APPLIANCES.has(o & 1023):
+					continue
+				var ax: int = cx * 16 + (i & 15)
+				var ay: int = cy * 16 + (i >> 4)
+				if absi(ax - x) <= r and absi(ay - y) <= r and not c.ents.get(i, {}).get("off", false):
+					n += 1
+	return n
+
 func has_water() -> bool:
 	return hour < water_off_h
+
+## after the mains fail a house's pipes still hold what was in them, once
+func pipe_water(b: int) -> int:
+	if has_water():
+		return 999
+	if b == 0:
+		return 0
+	if not pipes.has(b):
+		pipes[b] = 12 + Rng.h2(b, 7, seed_v) % 14
+	return int(pipes[b])
+
+func draw_pipe(b: int, units: int) -> int:
+	if has_water():
+		return units
+	var have: int = pipe_water(b)
+	var took: int = mini(have, units)
+	pipes[b] = have - took
+	return took
 
 func near_fire(p: Vector2) -> bool:
 	for f in fires:
@@ -795,6 +844,7 @@ func _update_weather(dh: float) -> void:
 func _slow_tick(dh: float) -> void:
 	factions.tick(dh)
 	generators.clear()
+	banks.clear()
 	fires.clear()
 	for bk in burning.keys():
 		fires.append(bk)
@@ -841,9 +891,17 @@ func _slow_tick(dh: float) -> void:
 			say("An alarm starts blaring!", Color(1.0, 0.5, 0.4))
 			emit_fx("alarm", player.pos)
 	_last_bld = b
-	# running generators hum
+	# running generators hum; battery banks hum not at all, but run down
 	for g in generators:
 		noise(Vector2(g.x + 0.5, g.y + 0.5), 11.0)
+	if hour >= power_off_h:
+		for bk in banks:
+			var covered := false
+			for g2 in generators:
+				if absi(g2.x - bk.x) <= 4 and absi(g2.y - bk.y) <= 4: covered = true
+			if not covered:
+				var be: Dictionary = world.ent(bk.x, bk.y)
+				be["w"] = maxf(0.0, float(be.get("w", 0.0)) - dh * 0.5 * float(maxi(1, loads_near(bk.x, bk.y, BANK_RANGE))))
 
 func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 	var rain: float = weather["rain"]
@@ -895,12 +953,43 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 					else:
 						fires.append(Vector2i(x, y))
 			"barrel":
-				if rain > 0.05:
+				var frz: bool = float(weather["temp"]) < -2.0 and c.bld[i] == 0
+				if frz != bool(e.get("ice", false)):
+					e["ice"] = frz
+				if rain > 0.05 and not frz:
 					e["w"] = minf(40.0, float(e["w"]) + rain * 6.0 * dh)
+			"bank":
+				e["w"] = clampf(float(e.get("w", 0.0)), 0.0, BANK_MAX)
+				if float(e["w"]) > 0.5 and not e.get("off", false) and not catch_up:
+					banks.append(Vector2i(x, y))
+			"solar":
+				# daylight and clear sky charge any battery bank within reach
+				var sun: float = clampf(daylight() * (1.0 - float(weather.get("cloud", 0.0)) * 0.7), 0.0, 1.0)
+				if sun > 0.05:
+					for bdy in range(-6, 7):
+						for bdx in range(-6, 7):
+							var be: Dictionary = world.ent(x + bdx, y + bdy)
+							if be.get("k", "") == "bank":
+								be["w"] = minf(BANK_MAX, float(be.get("w", 0.0)) + sun * dh * 1.5)
 			"gen":
 				if e.get("on", false):
-					e["fuel"] = float(e["fuel"]) - dh
-					e["c"] = float(e.get("c", 1.0)) - dh * 0.004
+					var load: int = loads_near(x, y, GEN_RANGE)
+					e["load"] = load
+					e["fuel"] = float(e["fuel"]) - dh * (0.6 + 0.1 * float(mini(load, 10)))
+					e["c"] = float(e.get("c", 1.0)) - dh * (0.004 + (0.03 * float(load - GEN_CAP) if load > GEN_CAP else 0.0))
+					# rain on an uncovered generator
+					if rain > 0.3 and c.bld[i] == 0 and randf() < dh * rain * 0.6:
+						e["c"] = float(e["c"]) - 0.25
+						if not catch_up: say("Rain gets into the generator. It sparks and coughs.", Color(1.0, 0.75, 0.5))
+					if load > GEN_CAP + 3 and randf() < dh * 2.0:
+						e["on"] = false
+						if not catch_up: say("The generator trips — too many things on at once (%d of %d)." % [load, GEN_CAP], Color(1.0, 0.75, 0.5))
+					# a running generator tops up nearby battery banks
+					for gdy in range(-4, 5):
+						for gdx in range(-4, 5):
+							var ge: Dictionary = world.ent(x + gdx, y + gdy)
+							if ge.get("k", "") == "bank":
+								ge["w"] = minf(BANK_MAX, float(ge.get("w", 0.0)) + dh * 4.0)
 					if float(e["c"]) <= 0.0:
 						e["on"] = false
 						e["c"] = 0.0
@@ -1041,10 +1130,11 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save()}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
+	pipes = d.get("pipes", {})
 	hour = d["hour"]
 	world.hour = hour
 	var st: Dictionary = d.get("settings", {})

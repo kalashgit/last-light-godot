@@ -260,7 +260,9 @@ const O_VAN := 114
 const O_PICKUP := 115
 const O_MOTORBIKE := 116
 const O_BICYCLE := 117
-const O_COUNT := 118
+const O_BATTERY_BANK := 118
+const O_SOLAR := 119
+const O_COUNT := 120
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -380,6 +382,8 @@ static func _static_init() -> void:
 	_o(O_COOP, {"n": "Chicken coop", "h": 36, "use": "coop", "scrap": [["plank", 3], ["nails", 4]]})
 	_o(O_STAIRS, {"n": "Stairs", "solid": 0.0, "h": 40, "use": "stairs", "hp": 999})
 	_o(O_SPIKES, {"n": "Spike trap", "solid": 0.0, "sym": 1, "h": 18, "hp": 60, "use": "spikes", "scrap": [["plank", 1]]})
+	_o(O_BATTERY_BANK, {"n": "Battery bank", "h": 30, "use": "battery_bank", "hp": 200, "scrap": [["car_battery", 2], ["wire", 2]]})
+	_o(O_SOLAR, {"n": "Solar panel", "h": 34, "use": "solar", "hp": 120, "scrap": [["scrap_metal", 2], ["wire", 1]]})
 	_o(O_GRAVE, {"n": "Grave", "solid": 0.0, "sym": 1, "h": 26, "hp": 999})
 	_o(O_TROUGH, {"n": "Feeding trough", "solid": 0.3, "h": 16, "use": "trough", "c": "", "cap": 20})
 

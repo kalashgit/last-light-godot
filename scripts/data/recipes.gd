@@ -100,6 +100,8 @@ static func _static_init() -> void:
 	_r("repair_glue", "Glue equipped wooden weapon", "Repair", {"in": [["glue", 1]], "special": "repair_glue", "time": 5.0, "xp": ["maintenance", 12]})
 	_r("sharpen", "Sharpen equipped blade on a stone", "Repair", {"tools": ["whetstone"], "special": "sharpen", "time": 5.0, "xp": ["maintenance", 10]})
 	# ---- workshop (needs a workbench within reach)
+	_r("battery_bank", "Wire a battery bank", "Workshop", {"in": [["car_battery", 2], ["wire", 3]], "tools": ["screwdriver"], "skill": ["electrical", 2], "build": {"obj": Defs.O_BATTERY_BANK}, "time": 10.0, "xp": ["electrical", 35]})
+	_r("solar_panel", "Assemble a solar panel", "Workshop", {"in": [["glass_pane", 1], ["scrap_metal", 2], ["wire", 2]], "tools": ["screwdriver"], "skill": ["electrical", 3], "build": {"obj": Defs.O_SOLAR}, "time": 12.0, "xp": ["electrical", 40]})
 	_r("forge_nails", "Cut nails from scrap", "Workshop", {"in": [["scrap_metal", 1]], "tools": ["hammer"], "near": "bench", "out": [["nails", 12]], "time": 5.0, "xp": ["metalworking", 10]})
 	_r("pipe_spear", "Fit a blade to a pipe", "Workshop", {"in": [["pipe", 1], ["kitchen_knife", 1], ["duct_tape", 1]], "near": "bench", "skill": ["metalworking", 1], "out": [["metal_spear", 1]], "time": 8.0, "xp": ["metalworking", 25]})
 	_r("pipe_from_scrap", "Hammer scrap into a pipe club", "Workshop", {"in": [["scrap_metal", 3]], "tools": ["hammer"], "near": "bench", "skill": ["metalworking", 2], "out": [["pipe", 1]], "time": 8.0, "xp": ["metalworking", 20]})

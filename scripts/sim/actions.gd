@@ -373,9 +373,18 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Sit and rest", func(): _rest(sim)))
 			out.append(_opt("Sleep (uncomfortable)", func(): sim.start_sleep(0.6)))
 		"sink":
+			var pb: int = w.bld(a.x, a.y)
 			if sim.has_water():
 				out.append(_opt("Drink", func(): _drink_source(sim, false, 999)))
 				out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
+				out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
+			elif sim.pipe_water(pb) > 0:
+				out.append(_opt("Drink what is left in the pipes (%d)" % sim.pipe_water(pb), func():
+					if sim.draw_pipe(pb, 1) > 0: _drink_source(sim, false, 1)))
+				out.append(_opt("Drain the pipes into your bottles", func():
+					var used: int = _fill(sim, false, sim.pipe_water(pb))
+					sim.draw_pipe(pb, used)))
+				out.append(_opt("Wash yourself (uses 3)", func(): _wash(sim, func(n: int) -> int: return sim.draw_pipe(pb, n))))
 			else:
 				# a rain collector beside the fixture can be piped into it
 				var barrel := Vector2i(-99999, 0)
@@ -439,8 +448,15 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		"rain_barrel":
 			var e: Dictionary = w.ent(x, y)
 			var units: int = int(e.get("w", 0.0))
-			out.append(_opt("Drink rainwater (%d left)" % units, func(): _drink_barrel(sim, x, y)))
-			out.append(_opt("Fill water containers", func(): _fill_barrel(sim, x, y)))
+			if e.get("ice", false):
+				out.append(_opt("Frozen solid (%d units of ice)" % units, func(): sim.say("It will not thaw until it warms up — or you carry it inside.", Color(0.75, 0.85, 1.0))))
+			else:
+				out.append(_opt("Drink rainwater (%d left)" % units, func(): _drink_barrel(sim, x, y)))
+				out.append(_opt("Fill water containers", func(): _fill_barrel(sim, x, y)))
+				out.append(_opt("Wash yourself (uses 3)", func(): _wash(sim, func(n: int) -> int:
+					var took: int = mini(n, int(float(e.get("w", 0.0))))
+					e["w"] = float(e.get("w", 0.0)) - took
+					return took)))
 		"generator":
 			out.append_array(_gen_options(sim, x, y))
 		"crop":
@@ -454,6 +470,24 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		"well":
 			out.append(_opt("Draw water and drink", func(): _drink_source(sim, false, 999)))
 			out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
+			out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
+		"battery_bank":
+			var be: Dictionary = w.ent(x, y)
+			if be.is_empty():
+				be = {"k": "bank", "w": 0.0}
+				w.set_ent(x, y, be)
+			out.append(_opt("Check the charge", func():
+				var lo: int = sim.loads_near(x, y, Sim.BANK_RANGE)
+				sim.say("Charge %d%%. %d appliances switched on nearby: about %d hours left." % [int(float(be.get("w", 0.0)) / Sim.BANK_MAX * 100.0), lo, int(float(be.get("w", 0.0)) / maxf(0.5, 0.5 * float(maxi(1, lo))))], Color(0.85, 0.88, 0.8))))
+			out.append(_opt("Switch on" if be.get("off", false) else "Switch off", func(): be["off"] = not be.get("off", false)))
+		"solar":
+			out.append(_opt("Check the panel", func():
+				var sun: float = clampf(sim.daylight() * (1.0 - float(sim.weather.get("cloud", 0.0)) * 0.7), 0.0, 1.0)
+				var bank := false
+				for bdy in range(-6, 7):
+					for bdx in range(-6, 7):
+						if w.ent(x + bdx, y + bdy).get("k", "") == "bank": bank = true
+				sim.say("Output %d%%. %s" % [int(sun * 100.0), "Charging a battery bank." if bank else "No battery bank within six tiles to charge."], Color(0.85, 0.88, 0.8))))
 		"sign":
 			var se: Dictionary = w.ent(x, y)
 			if se.has("txt"):
@@ -484,6 +518,17 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			pass
 	if id == Defs.O_CAR_WRECK:
 		out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
+	if Sim.APPLIANCES.has(id):
+		var ae: Dictionary = w.ent(a.x, a.y)
+		var is_off: bool = ae.get("off", false)
+		out.append(_opt("Switch on" if is_off else "Switch off", func():
+			var e2: Dictionary = w.ent(a.x, a.y)
+			if e2.is_empty():
+				e2 = {"k": "app"}
+				w.set_ent(a.x, a.y, e2)
+			e2["off"] = not e2.get("off", false)
+			sim.emit_fx("click", p.pos)
+			sim.say("%s %s." % [String(d["n"]), "off" if e2["off"] else "on"], Color(0.8, 0.85, 0.9))))
 	if movable(sim, a.x, a.y) and p.carrying.is_empty():
 		out.append(_opt("Pick up and carry", func(): _pick_up(sim, a.x, a.y)))
 		if Defs.obj_size(id, 0) == Vector2i(1, 1) and int(d.get("sym", 0)) == 0:
@@ -609,6 +654,24 @@ static func _track(sim: Sim) -> void:
 		var found: String = sim.animals.track(p.pos, p.skill_level("tracking"))
 		p.add_xp("tracking", 8.0 if found != "" else 3.0)
 		sim.say(found if found != "" else "Nothing has passed this way lately.", Color(0.8, 0.88, 0.75)))
+
+## wash off dirt and blood: cleaner wounds stay clean longer. `draw` takes n units and returns what it got
+static func _wash(sim: Sim, draw: Callable) -> void:
+	var p: Player = sim.player
+	if p.grime < 8.0:
+		sim.say("You are clean enough.", Color(0.8, 0.85, 0.9))
+		return
+	p.start_action("Washing", 5.0, func():
+		var got: int = draw.call(3)
+		if got <= 0:
+			sim.say("Not enough water left to wash.", Color(0.8, 0.8, 0.9))
+			return
+		p.grime = maxf(0.0, p.grime - 35.0 * float(got))
+		for wd in p.wounds:
+			if wd["band"]: wd["dirty"] = maxf(0.0, float(wd["dirty"]) - 8.0)
+		p.unhappy = maxf(0.0, p.unhappy - 6.0)
+		p.temp -= 6.0 if sim.weather.get("temp", 15.0) < 10.0 else 0.0
+		sim.say("Clean, or close enough.", Color(0.75, 0.9, 1.0)))
 
 ## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
 static func _rest(sim: Sim) -> void:
@@ -1179,7 +1242,7 @@ static func _gen_options(sim: Sim, x: int, y: int) -> Array:
 		e = {"k": "gen", "fuel": 0.0, "on": false}
 		w.set_ent(x, y, e)
 	var out: Array = []
-	out.append(_opt("Turn off" if e["on"] else "Turn on (%.0f h fuel)" % float(e["fuel"]), func():
+	out.append(_opt(("Turn off (load %d of %d)" % [int(e.get("load", sim.loads_near(x, y, Sim.GEN_RANGE))), Sim.GEN_CAP]) if e["on"] else "Turn on (%.0f h fuel, %d appliances in reach)" % [float(e["fuel"]), sim.loads_near(x, y, Sim.GEN_RANGE)], func():
 		if not e["on"] and float(e["fuel"]) <= 0.0:
 			sim.say("The generator needs fuel", Color(0.9, 0.8, 0.6))
 			return
@@ -1510,6 +1573,10 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 					w.set_ent(target["x"], target["y"], {"k": "barrel", "w": 0.0})
 				elif id == Defs.O_CAMPFIRE:
 					w.set_ent(target["x"], target["y"], {"k": "fire", "fuel": 1.0, "lit": false})
+				elif id == Defs.O_BATTERY_BANK:
+					w.set_ent(target["x"], target["y"], {"k": "bank", "w": 0.0})
+				elif id == Defs.O_SOLAR:
+					w.set_ent(target["x"], target["y"], {"k": "solar"})
 		if r.has("xp"):
 			p.add_xp(r["xp"][0], float(r["xp"][1]))
 		if hammering:

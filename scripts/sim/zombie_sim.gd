@@ -271,6 +271,8 @@ func kill(z: Zombie) -> void:
 		w.notify(floori(z.pos.x), floori(z.pos.y))
 	w.add_blood(z.pos.x, z.pos.y)
 	sim.player.kills += 1
+	if z.pos.distance_to(sim.player.pos) < 2.0:
+		sim.player.grime = minf(100.0, sim.player.grime + 6.0)    # close kills are messy
 	sim.emit_fx("zdie", z.pos)
 
 # ------------------------------------------------------------------ update
