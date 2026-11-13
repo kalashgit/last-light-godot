@@ -371,6 +371,10 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 	match use:
 		"bed":
 			out.append(_opt("Sleep", func(): sim.start_sleep(1.0 if id != Defs.O_SOFA and id != Defs.O_BEDROLL else 0.8)))
+			if sim.home.is_empty() or Vector2(float(sim.home["x"]), float(sim.home["y"])).distance_to(Vector2(x, y)) > 3.0:
+				out.append(_opt("Make this place your shelter", func():
+					sim.set_home(Vector2(x + 0.5, y + 0.5))
+					sim.say("This is home now. Survivors you take in will live and store food here.", Color(0.75, 0.9, 0.7))))
 			out.append(_opt("Sit and rest", func(): _rest(sim)))
 			if id == Defs.O_BEDROLL:
 				out.append(_opt("Roll up bedroll", func():

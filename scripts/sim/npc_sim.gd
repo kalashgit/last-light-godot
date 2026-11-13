@@ -48,6 +48,13 @@ class Npc:
 	var seen_kills := -1
 	var fac := -1                  # faction index, or -1 for a loner
 	var site := Vector2i.ZERO      # region key of their settlement
+	var recruit := false           # lives at your shelter
+	var work := ""                 # farm | guard | scavenge | cook | nurse | fix
+	var trader := false            # passing through with goods to swap
+	var leave_h := 0.0             # traders: when they move on
+	var away_until := 0.0          # scavengers: out on a trip until this hour
+	var uh := 0.0                  # hour they were last simulated (for time spent unloaded)
+	var _work_t := 0.0
 
 var sim: Sim
 var list: Array = []
@@ -75,7 +82,7 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 	return n
 
 static func _ser(n: Npc) -> Array:
-	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn, n.fac, n.site]
+	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn, n.fac, n.site, n.recruit, n.work, n.trader, n.leave_h, n.away_until, n.uh]
 
 func _de(a: Array) -> Npc:
 	var n := Npc.new()
@@ -102,6 +109,13 @@ func _de(a: Array) -> Npc:
 		if a.size() > 18:
 			n.fac = a[17]
 			n.site = a[18]
+		if a.size() > 24:
+			n.recruit = a[19]
+			n.work = a[20]
+			n.trader = a[21]
+			n.leave_h = a[22]
+			n.away_until = a[23]
+			n.uh = a[24]
 	else:
 		n.temper = TEMPERS[n.id % TEMPERS.size()]
 		n.job = JOBS[n.id % JOBS.size()]
@@ -109,7 +123,10 @@ func _de(a: Array) -> Npc:
 
 func on_chunk_loaded(c: Chunk) -> void:
 	for a in c.npcs:
-		list.append(_de(a))
+		var n: Npc = _de(a)
+		list.append(n)
+		if n.recruit and n.uh > 0.0 and sim.hour - n.uh > 1.0:
+			_catch_up_recruit(n, sim.hour - n.uh)
 	c.npcs = []
 	if not c.spawned:
 		for sn in c.story_n:
@@ -123,6 +140,9 @@ func on_chunk_unload(c: Chunk) -> void:
 	for n in list:
 		# companions travel with the player; everyone else stays with their chunk
 		if (floori(n.pos.x) >> 4) == c.cx and (floori(n.pos.y) >> 4) == c.cy and n.state != FOLLOW:
+			n.uh = sim.hour
+			if n.trader:
+				continue                   # a trader out of sight has moved on for good
 			c.npcs.append(_ser(n))
 			c.touched = true
 		else:
@@ -140,6 +160,8 @@ func nearest(p: Vector2, r: float) -> Npc:
 	var best: Npc = null
 	var bd: float = r
 	for n in list:
+		if n.away_until > 0.0:
+			continue
 		var d: float = n.pos.distance_to(p)
 		if d < bd:
 			bd = d
@@ -221,6 +243,10 @@ func update(dt: float, dh: float) -> void:
 	for n in list.duplicate():
 		if not list.has(n):
 			continue
+		if n.away_until > 0.0:
+			if sim.hour < n.away_until:
+				continue                   # out scavenging
+			_return_from_trip(n)
 		n.anim_t += dt
 		n.atk_cd = maxf(0.0, n.atk_cd - dt)
 		n.swing = maxf(0.0, n.swing - dt)
@@ -362,6 +388,18 @@ func update(dt: float, dh: float) -> void:
 
 ## eat and drink from what they carry; go without and it starts to cost them
 func _needs(n: Npc, dh: float) -> void:
+	if n.recruit and n.hunger > 55.0 and _eat_from_stores(n):
+		n.hunger = maxf(0.0, n.hunger - 45.0)
+	if n.recruit and n.thirst > 55.0 and _drink_from_stores(n):
+		n.thirst = maxf(0.0, n.thirst - 60.0)
+	if n.recruit:
+		# a fed, rested person settles in; a hungry one starts to doubt you
+		n.trust = clampf(n.trust + dh * (0.4 if n.hunger < 60.0 else -1.2), 0.0, 100.0)
+		if n.trust < 15.0 or n.hunger >= 100.0 and n.hp < 50.0:
+			n.recruit = false
+			n.work = ""
+			n.home = n.pos + Vector2(randf_range(-30, 30), randf_range(-30, 30))
+			sim.say("%s has left your shelter. There was nothing to eat, or nothing to stay for." % n.name, Color(1.0, 0.75, 0.55))
 	var st: Dictionary = sim.factions.site_of(n)
 	if n.hunger > 55.0 and not st.is_empty() and float(st["food"]) > 0.3 and n.state != FOLLOW:
 		st["food"] = float(st["food"]) - 0.3
@@ -383,9 +421,241 @@ func _needs(n: Npc, dh: float) -> void:
 	if n.hunger < 60.0 and n.thirst < 60.0 and n.task == "sleep":
 		n.hp = minf(100.0, n.hp + dh * 3.0)
 
+# ------------------------------------------------------------------ your shelter
+const WORKS := {"farm": "tend the crops", "guard": "keep watch", "scavenge": "go out scavenging", "cook": "cook what we bring in", "nurse": "look after the wounded", "fix": "keep the vehicles running"}
+const TRIP_FINDS := ["canned_beans", "canned_soup", "water_bottle", "bandage", "nails", "plank", "ammo_9mm", "battery", "painkillers", "seeds_potato", "duct_tape", "scrap_metal"]
+
+func _take_from_stores(pred: Callable) -> Dictionary:
+	for st in sim.home_stores():
+		var arr: Array = st[2]
+		for it in arr:
+			if pred.call(it):
+				var one: Dictionary = Inv.split(arr, it, 1)
+				sim.world.chunk_at(int(st[0]), int(st[1])).touched = true
+				return one
+	return {}
+
+func _put_in_stores(it: Dictionary) -> bool:
+	var stores: Array = sim.home_stores()
+	if stores.is_empty():
+		return false
+	var arr: Array = stores[0][2]
+	Inv.add(arr, it)
+	sim.world.chunk_at(int(stores[0][0]), int(stores[0][1])).touched = true
+	return true
+
+func _eat_from_stores(n: Npc) -> bool:
+	var got: Dictionary = _take_from_stores(func(it):
+		var d: Dictionary = Items.def(it["id"])
+		return d.has("hunger") and not d.has("raw") and float(d["hunger"]) > 0.0 and Items.fresh_state(it, sim.hour) < 2)     # tins: they get them open with a knife
+	return not got.is_empty()
+
+func _drink_from_stores(n: Npc) -> bool:
+	if sim.has_water():
+		return true
+	var got: Dictionary = _take_from_stores(func(it): return it["id"] == "water_bottle" and int(it.get("u", 1)) > 0)
+	if not got.is_empty():
+		_put_in_stores(Items.make("empty_bottle", 1))
+		return true
+	return false
+
+func recruit_to_home(n: Npc) -> void:
+	n.recruit = true
+	n.state = STAY
+	n.home = sim.home_pos() + Vector2(randf_range(-2.0, 2.0), randf_range(-2.0, 2.0))
+	n.task = "home"
+	n.work = {"farmer": "farm", "guard": "guard", "hunter": "scavenge", "cook": "cook", "medic": "nurse", "mechanic": "fix"}.get(n.job, "guard")
+
+## the hours you were away from the shelter, done in one go
+func _catch_up_recruit(n: Npc, hours: float) -> void:
+	var days: float = hours / 24.0
+	var meals: int = int(ceil(days * 2.0))
+	var fed := 0
+	for k in range(meals):
+		if _eat_from_stores(n): fed += 1
+	n.hunger = clampf(n.hunger + hours * 3.0 - float(fed) * 45.0, 0.0, 100.0)
+	n.thirst = 20.0 if sim.has_water() or _drink_from_stores(n) else minf(100.0, n.thirst + hours * 2.0)
+	match n.work:
+		"farm":
+			_tend_crops(n, true)
+		"scavenge":
+			for t in range(int(days)):
+				if not _trip_outcome(n):
+					return
+		"fix":
+			_fix_vehicles(n, hours)
+
+func _tend_crops(n: Npc, all: bool) -> bool:
+	var w: World = sim.world
+	var hx: int = int(sim.home["x"])
+	var hy: int = int(sim.home["y"])
+	var did := false
+	for y in range(hy - 10, hy + 11):
+		for x in range(hx - 10, hx + 11):
+			var e: Dictionary = w.ent(x, y)
+			if e.get("k", "") != "crop":
+				continue
+			if int(e["s"]) == 3:
+				var yr: Array = Farming.YIELD[e["t"]]
+				_put_in_stores(Items.make(e["t"], randi_range(int(yr[0]), int(yr[1])), sim.hour))
+				w.set_ent(x, y, {"k": "crop", "t": e["t"], "s": 0, "g": 0.0, "w": 60.0})
+				w.set_obj(x, y, Defs.ocell(int(Farming.CROP_OBJ[e["t"]]), 0, 0))     # and sow it again
+				did = true
+			elif int(e["s"]) < 3 and float(e["w"]) < 50.0:
+				e["w"] = 65.0
+				did = true
+			if did and not all:
+				return true
+	return did
+
+func _fix_vehicles(n: Npc, hours: float) -> bool:
+	var w: World = sim.world
+	var hx: int = int(sim.home["x"])
+	var hy: int = int(sim.home["y"])
+	for y in range(hy - 12, hy + 13):
+		for x in range(hx - 12, hx + 13):
+			var cell: int = w.obj(x, y)
+			if cell == 0 or Defs.o_part(cell) != 0 or not Vehicle.is_vehicle(Defs.o_id(cell)):
+				continue
+			var e: Dictionary = Vehicle.car_ent(sim, x, y)
+			if float(e.get("eng", 1.0)) < 0.95 or float(e.get("tire", 1.0)) < 0.85:
+				var scrap: Dictionary = _take_from_stores(func(it): return it["id"] == "scrap_metal")
+				if scrap.is_empty():
+					return false
+				e["eng"] = minf(1.0, float(e.get("eng", 0.5)) + 0.15 * minf(hours, 4.0))
+				e["tire"] = minf(0.85, float(e.get("tire", 0.5)) + 0.1 * minf(hours, 4.0))
+				return true
+	return false
+
+## one scavenging trip: they may come back with something, or not come back
+func _trip_outcome(n: Npc) -> bool:
+	var risk: float = 0.03 if n.wpn != "" else 0.08
+	if n.temper == "cautious": risk *= 0.7
+	if randf() < risk:
+		list.erase(n)
+		sim.say("%s went out scavenging and did not come back." % n.name, Color(1.0, 0.6, 0.5))
+		return false
+	var found: Array = []
+	for k in range(randi_range(1, 3)):
+		var id: String = TRIP_FINDS[randi() % TRIP_FINDS.size()]
+		var it: Dictionary = Items.make(id, 6 if id == "ammo_9mm" else (8 if id == "nails" else 1), sim.hour)
+		if _put_in_stores(it):
+			found.append(Items.def(id)["n"])
+	if not found.is_empty() and n.pos.distance_to(sim.player.pos) < 40.0:
+		sim.say("%s is back: %s, in the stores." % [n.name, ", ".join(found)], Color(0.75, 0.9, 0.7))
+	return true
+
+func _return_from_trip(n: Npc) -> void:
+	n.away_until = 0.0
+	n.pos = n.home
+	_trip_outcome(n)
+
+## what a recruit does at your shelter during the day
+func _work(n: Npc, dt: float) -> bool:
+	var p: Player = sim.player
+	if sim.home.is_empty():
+		return false
+	n._work_t -= dt
+	match n.work:
+		"guard":
+			var hp_: Vector2 = sim.home_pos()
+			for z in sim.zombies.list:
+				if z.pos.distance_to(hp_) < 9.0 and z.state != Zombie.DOWN:
+					if n._work_t <= 0.0:
+						n._work_t = 30.0
+						sim.say("%s: \"Coming in from the %s!\"" % [n.name, Sim.compass(hp_, z.pos)], Color(1.0, 0.8, 0.6))
+					_go(n, z.pos, 2.8, dt)
+					return true
+			if n.pos.distance_to(hp_) > 1.5:
+				_go(n, hp_, 2.4, dt)
+				return true
+		"farm":
+			if n._work_t <= 0.0:
+				n._work_t = 20.0
+				_tend_crops(n, false)
+		"scavenge":
+			var hod: float = sim.hour_of_day()
+			if hod > 8.0 and hod < 12.0 and n.away_until <= 0.0 and sim.hour - n.leave_h > 20.0 and n.hunger < 70.0:
+				n.leave_h = sim.hour
+				n.away_until = sim.hour + 6.0
+				sim.say("%s heads out to scavenge. Back by evening." % n.name, Color(0.8, 0.85, 0.9))
+				return true
+		"cook":
+			if n._work_t <= 0.0:
+				n._work_t = 40.0
+				if sim.near_heat(n.pos) or sim.near_heat(sim.home_pos()):
+					var raw: Dictionary = _take_from_stores(func(it): return Items.def(it["id"]).has("cook"))
+					if not raw.is_empty():
+						var done: String = Items.def(raw["id"])["cook"]
+						_put_in_stores(Items.make(done, int(raw.get("n", 1)), sim.hour))
+		"nurse":
+			if n._work_t <= 0.0 and p.pos.distance_to(n.pos) < 4.0:
+				n._work_t = 10.0
+				for wd in p.wounds:
+					if not wd["band"] and float(wd.get("bleed_h", 0.0)) > 0.0:
+						var bnd: Dictionary = _take_from_stores(func(it): return it["id"] == "bandage" or it["id"] == "rag")
+						if bnd.is_empty() and not Inv.find(p.inv, "bandage").is_empty():
+							Inv.split(p.inv, Inv.find(p.inv, "bandage"), 1)
+							bnd = {"id": "bandage"}
+						if not bnd.is_empty():
+							wd["band"] = true
+							wd["dirty"] = 0.0
+							sim.say("%s dresses your %s." % [n.name, String(Player.PARTS[int(wd["part"])]).to_lower()], Color(0.75, 0.9, 0.7))
+						break
+		"fix":
+			if n._work_t <= 0.0:
+				n._work_t = 60.0
+				_fix_vehicles(n, 0.5)
+	return false
+
+# ------------------------------------------------------------------ traders on the road
+const TRADE_GOODS := ["ammo_9mm", "shells", "first_aid_kit", "antibiotics", "car_battery", "gas_can", "seeds_corn", "seeds_wheat", "binoculars",
+	"leather_jacket", "boots", "fishing_rod", "salt", "glass_pane", "wire", "suture_kit", "hatchet", "backpack", "canned_beans", "water_bottle"]
+
+func send_trader() -> void:
+	var p: Player = sim.player
+	if World.level(p.pos.y) != 0:
+		return
+	for tries in range(30):
+		var a: float = randf() * TAU
+		var spot: Vector2 = p.pos + Vector2(cos(a), sin(a)) * randf_range(20.0, 28.0)
+		if not sim.world.is_loaded(floori(spot.x), floori(spot.y)) or sim.world.bld(floori(spot.x), floori(spot.y)) != 0 or sim.world.blocked(spot.x, spot.y, 0.3):
+			continue
+		var n: Npc = spawn(Vector2(floorf(spot.x) + 0.5, floorf(spot.y) + 0.5), false)
+		n.trader = true
+		n.met = true
+		n.temper = "generous"
+		n.trust = 45.0
+		n.stock = []
+		for k in range(8):
+			n.stock.append(TRADE_GOODS[randi() % TRADE_GOODS.size()])
+		n.wpn = "kitchen_knife"
+		n.leave_h = sim.hour + 8.0
+		n.home = p.pos.lerp(spot, 0.6)
+		n.task = "home"
+		sim.say("Someone is coming along the road, pulling a loaded cart.", Color(0.85, 0.85, 0.7))
+		return
+
 ## what a survivor who is not following anyone does with the day
 func routine(n: Npc, dt: float) -> void:
 	var w: World = sim.world
+	if n.trader:
+		if sim.hour > n.leave_h:
+			var away: Vector2 = n.pos + (n.pos - sim.player.pos).normalized() * 3.0
+			_go(n, away, 2.4, dt)
+			if n.pos.distance_to(sim.player.pos) > 34.0:
+				list.erase(n)
+			return
+		if n.pos.distance_to(n.home) > 1.2:
+			_go(n, n.home, 2.0, dt)
+		return
+	if n.recruit:
+		var hod0: float = sim.hour_of_day()
+		var night0: bool = hod0 >= 22.0 or hod0 < 6.0
+		if not night0 and n.fatigue < 85.0 and n.task != "sleep":
+			if not _work(n, dt) and n.pos.distance_to(n.home) > 1.5:
+				_go(n, n.home, 2.2, dt)       # recruits do not help themselves to your stores
+			return
 	var hod: float = sim.hour_of_day()
 	var night: bool = hod >= 22.0 or hod < 6.0
 	match n.task:
@@ -523,11 +793,37 @@ func options(n: Npc) -> Array:
 				break
 	if n.fac >= 0:
 		out.append_array(sim.factions.options(n, tr))
+	if n.trader:
+		out.append({"label": "\"What have you got?\"", "fn": func():
+			var names: Array = []
+			for sid in n.stock: names.append(Items.def(sid)["n"])
+			sim.say("%s's cart: %s. Moving on in %d hours." % [n.name, ", ".join(names), maxi(0, int(n.leave_h - sim.hour))], Color(0.85, 0.85, 0.7))})
+	# your shelter
+	if not sim.home.is_empty() and not n.recruit and n.fac < 0 and not n.trader and n.state == FOLLOW:
+		out.append({"label": "\"Come and live at my shelter.\"", "fn": func():
+			if tr < 60.0:
+				sim.say("%s: \"Not yet. I don't know you well enough.\"" % n.name, Color(0.85, 0.85, 0.7))
+				return
+			recruit_to_home(n)
+			sim.say("%s: \"All right. I'll %s.\"" % [n.name, WORKS[n.work]], Color(0.75, 0.9, 0.7))})
+	if n.recruit:
+		for wk in WORKS.keys():
+			if wk != n.work:
+				var job_k: String = wk
+				out.append({"label": "Ask them to %s" % WORKS[wk], "fn": func():
+					n.work = job_k
+					sim.say("%s: \"I'll %s.\"" % [n.name, WORKS[job_k]], Color(0.85, 0.85, 0.7))})
+		out.append({"label": "\"How are things?\"", "fn": func():
+			var food := 0
+			for st2 in sim.home_stores():
+				for it2 in st2[2]:
+					if Items.def(it2["id"]).has("hunger") and not Items.def(it2["id"]).has("raw"): food += int(it2.get("n", 1))
+			sim.say("%s %s. %s, and %s. %d meals in the stores." % [n.name, "is " + WORKS[n.work].replace("keep", "keeping").replace("tend", "tending").replace("go out", "going out").replace("cook", "cooking").replace("look after", "looking after"), "Fed" if n.hunger < 50.0 else "Hungry", trust_word(n.trust), food], Color(0.85, 0.85, 0.7))})
 	# barter: one of theirs for one of yours. They want things that keep a person alive.
 	var offer: Dictionary = {}
 	for it0 in p.inv:
 		var c0: String = Items.def(it0["id"]).get("cat", "")
-		if (c0 == "food" or c0 == "drink" or c0 == "med" or c0 == "ammo") and not is_same(it0, p.weapon) and Items.fresh_state(it0, sim.hour) < 2 and not n.stock.has(it0["id"]):
+		if (c0 == "food" or c0 == "drink" or c0 == "med" or c0 == "ammo" or (n.trader and (c0 == "tool" or c0 == "material" or c0 == "weapon"))) and not is_same(it0, p.weapon) and Items.fresh_state(it0, sim.hour) < 2 and not n.stock.has(it0["id"]):
 			offer = it0
 			break
 	if n.met and not offer.is_empty():

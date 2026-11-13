@@ -432,7 +432,7 @@ func _sync_npcs() -> void:
 	var p: Player = sim.player
 	var vr2: float = VIEW_RADIUS * VIEW_RADIUS
 	for n in sim.npcs.list:
-		if n.pos.distance_squared_to(p.pos) > vr2:
+		if n.pos.distance_squared_to(p.pos) > vr2 or n.away_until > 0.0:
 			continue
 		var v: EntityView = _nviews.get(n.id)
 		if v == null:

@@ -2084,6 +2084,167 @@ func _init() -> void:
 			w.chunk_at(xx9, yy9).bld[World.idx(xx9, yy9)] = 0
 	p.hp = 100.0
 
+	print("== your shelter: recruits, jobs, stores, time away; traders")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.animals.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	var hb2: int = 888001
+	for yy14 in range(fy0 + 20, fy0 + 30):
+		for xx14 in range(fx0 + 1, fx0 + 11):
+			w.chunk_at(xx14, yy14).bld[World.idx(xx14, yy14)] = hb2
+			w.set_ground(xx14, yy14, Defs.G_WOOD)
+	w.set_obj(fx0 + 2, fy0 + 21, Defs.ocell(Defs.O_BED, 0, 0))
+	w.set_obj(fx0 + 2, fy0 + 22, Defs.ocell(Defs.O_BED, 0, 1))
+	w.set_obj(fx0 + 8, fy0 + 21, Defs.ocell(Defs.O_WOOD_CRATE, 0, 0))
+	var store: Array = w.container_at(fx0 + 8, fy0 + 21)
+	store.clear()
+	for k14 in range(4): Inv.add_new(store, "canned_beans", 1, sim.hour)
+	p.pos = Vector2(fx0 + 3.5, fy0 + 22.5)
+	sim.home = {}
+	var mk: Callable = opt(Actions.options(sim, {"kind": "obj", "x": fx0 + 2, "y": fy0 + 21}), "Make this place your shelter")
+	ok(mk.is_valid(), "a bed offers to make the place your shelter")
+	mk.call()
+	ok(not sim.home.is_empty() and int(sim.home["b"]) == hb2, "it is now home")
+	ok(sim.home_stores().size() == 1, "and its crate counts as the shelter's stores")
+	# a companion moves in
+	var rec = sim.npcs.spawn(p.pos + Vector2(1.0, 0.0), false)
+	rec.state = NpcSim.FOLLOW
+	rec.job = "guard"
+	rec.trust = 40.0
+	rec.stock = []
+	var mv: Callable = opt(sim.npcs.options(rec), "\"Come and live")
+	ok(mv.is_valid(), "a companion can be asked to live there")
+	mv.call()
+	ok(not rec.recruit, "not before they trust you")
+	rec.trust = 70.0
+	opt(sim.npcs.options(rec), "\"Come and live").call()
+	ok(rec.recruit and rec.state == NpcSim.STAY and rec.work == "guard" and rec.home.distance_to(sim.home_pos()) < 3.0, "with trust they move in and take up their old trade (%s)" % rec.work)
+	# they eat from the stores, physically
+	rec.hunger = 80.0
+	sim.npcs._needs(rec, 0.01)
+	ok(rec.hunger < 50.0 and Inv.count(store, "canned_beans") == 3, "a hungry recruit eats a tin from the stores (3 left)")
+	# jobs
+	opt(sim.npcs.options(rec), "Ask them to tend the crops").call()
+	ok(rec.work == "farm", "you can give them another job")
+	var cpx: int = fx0 + 6
+	var cpy: int = fy0 + 30
+	w.set_ground(cpx, cpy, Defs.G_SOIL)
+	w.set_obj(cpx, cpy, Defs.ocell(int(Farming.CROP_OBJ["potato"]), 0, 1))
+	w.set_ent(cpx, cpy, {"k": "crop", "t": "potato", "s": 1, "g": 30.0, "w": 10.0})
+	w.set_ground(cpx + 2, cpy, Defs.G_SOIL)
+	w.set_obj(cpx + 2, cpy, Defs.ocell(int(Farming.CROP_OBJ["carrot"]), 0, 3))
+	w.set_ent(cpx + 2, cpy, {"k": "crop", "t": "carrot", "s": 3, "g": 999.0, "w": 40.0})
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 10.0
+	for k15 in range(12):
+		rec._work_t = 0.0
+		sim.npcs._work(rec, 0.1)
+	ok(float(w.ent(cpx, cpy)["w"]) > 50.0, "a farmer waters dry plants")
+	ok(Inv.count(store, "carrot") >= 2 and int(w.ent(cpx + 2, cpy)["s"]) == 0, "and harvests ripe ones into the stores, sowing again (%d carrots)" % Inv.count(store, "carrot"))
+	# scavenging trip
+	rec.work = "scavenge"
+	rec.leave_h = -100.0
+	rec.wpn = "crowbar"
+	sim.npcs._work(rec, 0.1)
+	ok(rec.away_until > sim.hour, "a scavenger heads out in the morning")
+	ok(sim.npcs.nearest(rec.pos, 3.0) == null, "and is not around while gone")
+	var items_before: int = store.size()
+	var beans_before: int = Inv.count(store, "canned_beans")
+	sim.hour = rec.away_until + 0.1
+	seed(3)
+	sim.npcs.update(1.0 / 30.0, 0.0)
+	ok(rec.away_until == 0.0 and (not sim.npcs.list.has(rec) or store.size() > items_before or Inv.count(store, "canned_beans") > beans_before), "and comes back with something for the stores — or does not come back")
+	if not sim.npcs.list.has(rec):
+		rec = sim.npcs.spawn(p.pos + Vector2(1.0, 0.0), false)
+		rec.trust = 80.0
+		sim.npcs.recruit_to_home(rec)
+	# nursing
+	rec.work = "nurse"
+	rec.pos = p.pos + Vector2(1.0, 0.0)
+	Inv.add_new(store, "bandage", 1)
+	var band0: int = Inv.count(store, "bandage")
+	p.wounds.clear()
+	p.add_wound(9, "laceration", "test")
+	rec._work_t = 0.0
+	sim.npcs._work(rec, 0.1)
+	ok(p.wounds[0]["band"] and Inv.count(store, "bandage") == band0 - 1, "a nurse dresses your bleeding wound from the stores")
+	p.wounds.clear()
+	# cook
+	rec.work = "cook"
+	Inv.add_new(store, "raw_venison", 1, sim.hour)
+	w.set_obj(fx0 + 5, fy0 + 25, Defs.ocell(Defs.O_CAMPFIRE, 0, 0))
+	w.set_ent(fx0 + 5, fy0 + 25, {"k": "fire", "fuel": 10.0, "lit": true})
+	sim._slow_tick(0.01)
+	rec.pos = Vector2(fx0 + 5.5, fy0 + 24.5)
+	rec._work_t = 0.0
+	sim.npcs._work(rec, 0.1)
+	ok(Inv.count(store, "raw_venison") == 0 and Inv.count(store, "cooked_venison") == 1, "a cook turns raw food in the stores into a meal")
+	w.remove_object(fx0 + 5, fy0 + 25)
+	# time away
+	rec.work = "guard"
+	store.clear()
+	Inv.add_new(store, "canned_beans", 6, sim.hour)
+	rec.hunger = 10.0
+	sim.npcs._catch_up_recruit(rec, 48.0)
+	ok(Inv.count(store, "canned_beans") < 6 and rec.hunger < 60.0, "while you are away for two days they eat from the stores (%d tins left)" % Inv.count(store, "canned_beans"))
+	store.clear()
+	rec.hunger = 10.0
+	sim.npcs._catch_up_recruit(rec, 72.0)
+	ok(rec.hunger >= 90.0, "with nothing in the stores they go hungry")
+	rec.trust = 10.0
+	rec.hp = 40.0
+	sim.npcs._needs(rec, 1.0)
+	ok(not rec.recruit, "and in the end they leave")
+	# guard warns
+	rec.recruit = true
+	rec.work = "guard"
+	rec.trust = 80.0
+	rec.hunger = 10.0
+	var gz: Zombie = sim.zombies.spawn(sim.home_pos() + Vector2(5.0, 0.0), 0)
+	sim.log.clear()
+	rec._work_t = 0.0
+	sim.npcs._work(rec, 0.1)
+	ok(sim.log.size() > 0 and String(sim.log[sim.log.size() - 1][0]).contains("Coming in from the"), "a guard calls out when something comes near the shelter")
+	sim.zombies.list.clear()
+	ok(SaveGame.save(sim, slot), "saving the shelter")
+	s2 = SaveGame.load_game(slot)
+	var rec_back := false
+	if s2 != null:
+		for n5 in s2.npcs.list:
+			if n5.recruit and n5.work == "guard": rec_back = true
+	ok(s2 != null and int(s2.home.get("b", 0)) == hb2 and rec_back, "your shelter and the people in it persist")
+	sim.npcs.list.clear()
+	# traders
+	p.pos = Vector2(fx0 + 5.5, fy0 + 10.5)
+	w.stream(p.pos, 3, 999)
+	sim._process_world_events()
+	quiet(sim)
+	sim.npcs.send_trader()
+	var tr2 = null
+	for n6 in sim.npcs.list:
+		if n6.trader: tr2 = n6
+	ok(tr2 != null and tr2.stock.size() == 8, "a trader arrives with a loaded cart")
+	if tr2 != null:
+		var to0: float = tr2.pos.distance_to(p.pos)
+		for k16 in range(300): sim.npcs.update(1.0 / 30.0, 0.0)
+		ok(tr2.pos.distance_to(p.pos) < to0 - 3.0, "and walks toward you")
+		Inv.add_new(p.inv, "hammer", 1)
+		var tr_opt: Callable = Callable()
+		for o in sim.npcs.options(tr2):
+			if String(o["label"]).begins_with("Trade your"): tr_opt = o["fn"]
+		ok(tr_opt.is_valid(), "they will trade without needing to know you")
+		sim.hour = tr2.leave_h + 1.0
+		for k17 in range(900):
+			sim.npcs.update(1.0 / 30.0, 0.0)
+			if not sim.npcs.list.has(tr2): break
+		ok(not sim.npcs.list.has(tr2), "and after a few hours they move on")
+	sim.npcs.list.clear()
+	sim.home = {}
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	for yy15 in range(fy0 + 20, fy0 + 30):
+		for xx15 in range(fx0 + 1, fx0 + 11):
+			w.chunk_at(xx15, yy15).bld[World.idx(xx15, yy15)] = 0
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

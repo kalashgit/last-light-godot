@@ -562,6 +562,8 @@ func read_note(note: Dictionary) -> void:
 	flags["read_note"] = true
 
 # ------------------------------------------------------------------ fish stocks
+var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
+var _trader_h := 60.0
 var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
 var flooded: Dictionary = {}       # Vector2i tile -> ground it had before the water came up
 var _wet_h := 0.0                  # hours of heavy rain in a row
@@ -579,6 +581,37 @@ func fish_stock(x: int, y: int) -> float:
 func take_fish(x: int, y: int) -> void:
 	var k := Vector2i(x >> 4, y >> 4)
 	fish[k] = [maxf(0.05, fish_stock(x, y) - 0.12), hour]
+
+## make the building (or spot) you are in your shelter: recruits live and store food here
+func set_home(pos: Vector2) -> void:
+	home = {"x": floori(pos.x), "y": floori(pos.y), "b": world.bld(floori(pos.x), floori(pos.y))}
+	add_marker(floori(pos.x), floori(pos.y), "Your shelter")
+
+func home_pos() -> Vector2:
+	return Vector2(float(home["x"]) + 0.5, float(home["y"]) + 0.5) if not home.is_empty() else Vector2.ZERO
+
+## every storage container in your shelter: [x, y, Array]
+func home_stores() -> Array:
+	var out: Array = []
+	if home.is_empty():
+		return out
+	var hx: int = home["x"]
+	var hy: int = home["y"]
+	var hb: int = home["b"]
+	for y in range(hy - 12, hy + 13):
+		for x in range(hx - 12, hx + 13):
+			if not world.is_loaded(x, y):
+				continue
+			var cell: int = world.obj(x, y)
+			if cell == 0 or Defs.o_part(cell) != 0:
+				continue
+			var d: Dictionary = Defs.obj(Defs.o_id(cell))
+			if not d.has("c") or Vehicle.is_vehicle(Defs.o_id(cell)) or d.get("use", "") == "bed" or Defs.o_id(cell) == Defs.O_TRASH_CAN or Defs.o_id(cell) == Defs.O_MAILBOX:
+				continue                          # proper storage only: not under the bed, not the bin
+			if hb != 0 and world.bld(x, y) != hb:
+				continue
+			out.append([x, y, world.container_at(x, y)])
+	return out
 
 func near_roof(pos: Vector2) -> bool:
 	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
@@ -968,6 +1001,10 @@ func icy(x: int, y: int) -> bool:
 # ------------------------------------------------------------------ slow world tick (1 Hz)
 func _slow_tick(dh: float) -> void:
 	factions.tick(dh)
+	_trader_h -= dh
+	if _trader_h <= 0.0:
+		_trader_h = rng.randf_range(50.0, 90.0)
+		npcs.send_trader()
 	generators.clear()
 	banks.clear()
 	fires.clear()
@@ -1259,13 +1296,15 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "flooded": flooded, "weth": _wet_h}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
 	pipes = d.get("pipes", {})
 	fish = d.get("fish", {})
 	snow_cover = d.get("snowc", 0.0)
+	home = d.get("home", {})
+	_trader_h = d.get("trader_h", 60.0)
 	flooded = d.get("flooded", {})
 	_wet_h = d.get("weth", 0.0)
 	hour = d["hour"]
