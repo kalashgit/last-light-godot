@@ -31,6 +31,7 @@ class Npc:
 	var path_i := 0
 	var repath := 0.0
 	var flash := 0.0
+	var stock: Array = []          # item ids they are willing to swap
 
 var sim: Sim
 var list: Array = []
@@ -47,11 +48,14 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 	n.state = HOSTILE if hostile else STAY
 	n.look = [randi() % 4, randi() % 10, randi() % 6, randi() % 6]
 	n.name = NAMES[randi() % NAMES.size()]
+	var goods: Array = ["bandage", "ammo_9mm", "painkillers", "battery", "matches", "duct_tape", "nails", "canned_beans", "water_bottle", "disinfectant", "kitchen_knife", "lighter"]
+	for k in range(3):
+		n.stock.append(goods[randi() % goods.size()])
 	list.append(n)
 	return n
 
 static func _ser(n: Npc) -> Array:
-	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift]
+	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock]
 
 func _de(a: Array) -> Npc:
 	var n := Npc.new()
@@ -65,6 +69,7 @@ func _de(a: Array) -> Npc:
 	n.hunger = a[6]
 	n.met = a[7]
 	n.gift = a[8]
+	n.stock = a[9] if a.size() > 9 else []
 	return n
 
 func on_chunk_loaded(c: Chunk) -> void:
@@ -239,6 +244,30 @@ func options(n: Npc) -> Array:
 		out.append({"label": "\"Wait here.\"", "fn": func():
 			n.state = STAY
 			sim.say("%s: \"I'll hold this spot.\"" % n.name, Color(0.85, 0.85, 0.7))})
+	# barter: one of theirs for one of yours. They want things that keep a person alive.
+	var offer: Dictionary = {}
+	for it0 in p.inv:
+		var c0: String = Items.def(it0["id"]).get("cat", "")
+		if (c0 == "food" or c0 == "drink" or c0 == "med" or c0 == "ammo") and not is_same(it0, p.weapon) and Items.fresh_state(it0, sim.hour) < 2 and not n.stock.has(it0["id"]):
+			offer = it0
+			break
+	if n.met and not offer.is_empty():
+		for si in range(n.stock.size()):
+			var want_id: String = n.stock[si]
+			var give_it: Dictionary = offer
+			out.append({"label": "Trade your %s for their %s" % [Items.def(give_it["id"])["n"], Items.def(want_id)["n"]], "fn": func():
+				if not p.inv.has(give_it) or not n.stock.has(want_id):
+					return
+				var given: Dictionary = Inv.split(p.inv, give_it, 1)
+				n.stock.erase(want_id)
+				n.stock.append(given["id"])
+				Inv.add_new(p.inv, want_id, 6 if want_id == "ammo_9mm" else 1, sim.hour)
+				sim.say("%s: \"Fair.\"" % n.name, Color(0.85, 0.85, 0.7))})
+	elif n.met and n.stock.size() > 0:
+		out.append({"label": "Ask what they would trade", "fn": func():
+			var names: Array = []
+			for sid in n.stock: names.append(Items.def(sid)["n"])
+			sim.say("%s has %s — and wants food, drink, medicine or ammunition for it." % [n.name, ", ".join(names)], Color(0.85, 0.85, 0.7))})
 	for it in p.inv:
 		var d: Dictionary = Items.def(it["id"])
 		if d.has("hunger") and not d.has("raw") and p.can_eat(it) == "" and Items.fresh_state(it, sim.hour) < 2:

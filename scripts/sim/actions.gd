@@ -343,11 +343,13 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 	match use:
 		"bed":
 			out.append(_opt("Sleep", func(): sim.start_sleep(1.0 if id != Defs.O_SOFA and id != Defs.O_BEDROLL else 0.8)))
+			out.append(_opt("Sit and rest", func(): _rest(sim)))
 			if id == Defs.O_BEDROLL:
 				out.append(_opt("Roll up bedroll", func():
 					w.remove_object(x, y)
 					Inv.add(p.inv, Items.make("bedroll_item", 1))))
 		"rest":
+			out.append(_opt("Sit and rest", func(): _rest(sim)))
 			out.append(_opt("Sleep (uncomfortable)", func(): sim.start_sleep(0.6)))
 		"sink":
 			if sim.has_water():
@@ -533,6 +535,19 @@ static func _corpse_options(sim: Sim, t: Dictionary) -> Array:
 				sim.noise(p.pos, 8.0)
 				sim.say("%d bodies burn. Keep clear of the flames." % n, Color(1.0, 0.8, 0.5)))))
 	return out
+
+## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
+static func _rest(sim: Sim) -> void:
+	var p: Player = sim.player
+	if sim.threatened():
+		sim.say("Not with them this close", Color(1.0, 0.7, 0.6))
+		return
+	p.start_action("Resting", 8.0, func():
+		p.endurance = minf(100.0, p.endurance + 55.0)
+		p.arm_strain = maxf(0.0, p.arm_strain - 30.0)
+		p.panic = maxf(0.0, p.panic - 15.0)
+		sim.hour += 0.25
+		sim.say("You get your breath back.", Color(0.8, 0.9, 0.75)))
 
 # ------------------------------------------------------------------ vehicles
 static func _car_options(sim: Sim, ax: int, ay: int) -> Array:

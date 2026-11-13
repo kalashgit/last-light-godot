@@ -31,7 +31,7 @@ static func _static_init() -> void:
 		["rag", 3, 1, 2], ["needle_thread", 1, 1, 1], ["suture_kit", 0.8, 1, 1], ["first_aid_kit", 0.8, 1, 1], ["tweezers", 2.5, 1, 1], ["alcohol_wipes", 3, 1, 1],
 		["beta_blockers", 1.2, 1, 1], ["antidepressants", 1.2, 1, 1], ["sleeping_pills", 1.5, 1, 1]]}
 	T["washer"] = {"rolls": [0, 2], "items": [["sheet", 6, 1, 2], ["jacket", 2, 1, 1], ["rag", 4, 1, 3]]}
-	T["desk"] = {"rolls": [0, 3], "items": [["newspaper", 5, 1, 1], ["scissors", 3, 1, 1], ["battery", 3, 1, 2], ["duct_tape", 2, 1, 1], ["novel", 3, 1, 1], ["money", 3, 5, 50],
+	T["desk"] = {"rolls": [0, 3], "items": [["newspaper", 5, 1, 1], ["pencil", 4, 1, 1], ["notebook", 3, 1, 1], ["survivor_note", 2.5, 1, 1], ["scissors", 3, 1, 1], ["battery", 3, 1, 2], ["duct_tape", 2, 1, 1], ["novel", 3, 1, 1], ["money", 3, 5, 50],
 		["cigarettes", 2, 1, 1], ["lighter", 2, 1, 1], ["radio", 1, 1, 1], ["flashlight", 2, 1, 1], ["screwdriver", 2, 1, 1]]}
 	T["office"] = {"rolls": [0, 2], "items": [["newspaper", 8, 1, 3], ["scissors", 2, 1, 1], ["money", 2, 5, 80], ["duct_tape", 2, 1, 1], ["battery", 2, 1, 2], ["painkillers", 1, 1, 1]]}
 	T["crate"] = {"rolls": [1, 4], "items": [["nails", 8, 5, 30], ["plank", 6, 1, 3], ["duct_tape", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 3, 1, 1], ["scrap_metal", 4, 1, 2], ["wire", 3, 1, 2],
@@ -87,13 +87,13 @@ static func _static_init() -> void:
 	T["car"] = {"rolls": [0, 3], "items": [["wrench", 3, 1, 1], ["screwdriver", 3, 1, 1], ["duct_tape", 3, 1, 1], ["water_bottle", 3, 1, 1], ["granola_bar", 3, 1, 2], ["flashlight", 2, 1, 1], ["gas_can", 2, 1, 1],
 		["rope", 2, 1, 1], ["tarp", 2, 1, 1], ["cigarettes", 3, 1, 1], ["lighter", 2, 1, 1], ["baseball_bat", 1, 1, 1], ["newspaper", 3, 1, 1], ["first_aid_kit", 1, 1, 1], ["money", 3, 1, 30], ["school_bag", 1, 1, 1]]}
 	T["car_wreck"] = {"rolls": [0, 2], "items": [["scrap_metal", 8, 1, 3], ["wire", 5, 1, 2], ["wrench", 1, 1, 1], ["rag", 3, 1, 2]]}
-	T["corpse"] = {"rolls": [0, 2], "items": [["money", 6, 1, 30], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["granola_bar", 2, 1, 1], ["bandage", 1.5, 1, 1], ["battery", 1.5, 1, 1], ["painkillers", 1, 1, 1],
+	T["corpse"] = {"rolls": [0, 2], "items": [["money", 6, 1, 30], ["survivor_note", 2, 1, 1], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["granola_bar", 2, 1, 1], ["bandage", 1.5, 1, 1], ["battery", 1.5, 1, 1], ["painkillers", 1, 1, 1],
 		["kitchen_knife", 0.6, 1, 1], ["ammo_9mm", 0.6, 2, 8], ["chocolate", 1.5, 1, 1], ["rag", 3, 1, 2], ["tote_bag", 0.6, 1, 1], ["jacket", 0.8, 1, 1], ["water_bottle", 1, 1, 1]]}
 	T["stash"] = {"rolls": [5, 8], "items": [["canned_beans", 8, 2, 5], ["canned_soup", 8, 2, 5], ["water_bottle", 8, 2, 4], ["bandage", 6, 2, 4], ["nails", 6, 20, 60], ["plank", 5, 2, 5],
 		["ammo_9mm", 4, 8, 24], ["shells", 3, 4, 12], ["battery", 4, 2, 4], ["painkillers", 4, 1, 2], ["antibiotics", 2, 1, 1], ["hammer", 3, 1, 1], ["rice", 4, 1, 2], ["candle", 4, 2, 4], ["jerky", 4, 1, 3], ["duct_tape", 3, 1, 2]]}
 	T["cellar"] = {"rolls": [1, 4], "items": [["preserves", 9, 1, 4], ["pickles", 8, 1, 4], ["whiskey", 4, 1, 1], ["beer", 4, 2, 6], ["canned_peaches", 5, 1, 3], ["potato", 4, 2, 6], ["candle", 5, 1, 3],
 		["plank", 4, 1, 4], ["nails", 5, 10, 40], ["charcoal", 3, 1, 1], ["glue", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 2, 1, 1], ["gas_can", 1.5, 1, 1], ["generator_item", 0.4, 1, 1], ["hunting_knife", 1, 1, 1], ["sleeping_pills", 1.5, 1, 1]]}
-	T["corpse_survivor"] = {"rolls": [2, 4], "must": [["backpack", 1, 1]], "items": [["water_bottle", 6, 1, 2], ["canned_beans", 6, 1, 3], ["granola_bar", 5, 1, 3], ["bandage", 5, 1, 3], ["flashlight", 4, 1, 1],
+	T["corpse_survivor"] = {"rolls": [2, 4], "must": [["backpack", 1, 1]], "items": [["water_bottle", 6, 1, 2], ["survivor_note", 5, 1, 1], ["pencil", 2, 1, 1], ["canned_beans", 6, 1, 3], ["granola_bar", 5, 1, 3], ["bandage", 5, 1, 3], ["flashlight", 4, 1, 1],
 		["hunting_knife", 3, 1, 1], ["matches", 4, 1, 1], ["painkillers", 3, 1, 1], ["battery", 3, 1, 2], ["novel", 2, 1, 1], ["crowbar", 1.5, 1, 1]]}
 	T["corpse_armed"] = {"rolls": [1, 3], "must": [["pistol", 1, 1], ["ammo_9mm", 6, 18]], "items": [["shells", 3, 2, 8], ["bandage", 4, 1, 2], ["whiskey", 2, 1, 1], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["shotgun", 1, 1, 1]]}
 	T["corpse_burglar"] = {"rolls": [1, 3], "must": [["crowbar", 1, 1], ["duffel_bag", 1, 1]], "items": [["money", 8, 40, 300], ["flashlight", 4, 1, 1], ["screwdriver", 4, 1, 1], ["cigarettes", 3, 1, 1], ["kitchen_knife", 2, 1, 1]]}

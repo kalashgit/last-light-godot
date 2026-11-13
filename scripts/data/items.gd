@@ -142,6 +142,10 @@ static func _static_init() -> void:
 	_i("sheet", "Sheet", "material", 0.4, ["sheet", "e8e4d8", "c8c4b8"], {"fuel": 0.3})
 	_i("tarp", "Tarp", "material", 1.0, ["sheet", "3c6a9a", "2c4a6a"], {})
 	_i("garbage_bag", "Garbage Bag", "material", 0.1, ["bag", "2a2c2e", "3a3d40"], {})
+	_i("pencil", "Pencil", "tool", 0.05, ["knife", "d8b040", "3a3a3a"], {})
+	_i("notebook", "Notebook", "tool", 0.2, ["book", "3a5a86", "f0ece0"], {"uses": 10, "fuel": 0.2})
+	_i("note", "Handwritten Note", "misc", 0.02, ["paper", "f0ece0", "5a5a56"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("survivor_note", "Folded Note", "misc", 0.02, ["paper", "e0d8c0", "7a5a46"], {"read": 1, "fuel": 0.05, "nostack": 1})
 	_i("newspaper", "Newspaper", "misc", 0.1, ["paper", "d8d4c8", "8a8a86"], {"fuel": 0.15, "read": 1})
 	_i("charcoal", "Charcoal", "material", 1.0, ["bag", "3a3d40", "c0392b"], {"fuel": 6.0})
 	_i("gunpowder", "Gunpowder", "material", 0.2, ["jar", "3a3d40", "8a8a86"], {})
@@ -275,7 +279,7 @@ static func weight(it: Dictionary) -> float:
 	return w * float(it.get("n", 1))
 
 static func can_stack(a: Dictionary, b: Dictionary) -> bool:
-	if a["id"] != b["id"]:
+	if a["id"] != b["id"] or DB.get(a["id"], {}).has("nostack"):
 		return false
 	if a.has("u") or b.has("u") or a.has("c") or b.has("c") or a.has("d") or b.has("d"):
 		return false

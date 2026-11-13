@@ -13,7 +13,7 @@ var rng := RandomNumberGenerator.new()
 var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
 var time_scale := 1.0
-var settings := {"zombies": 1.0, "loot": 1.0, "day_min": 48.0, "infection": true, "god": false, "respawn": true, "zspeed": 1.0,
+var settings := {"zombies": 1.0, "loot": 1.0, "day_min": 60.0, "infection": true, "god": false, "respawn": false, "zspeed": 1.0,
 	"xp": 1.0, "util": 1, "season": 0, "flyover": 1, "kit": false, "growth": 1.0, "dark": 1.0, "guide": true, "meta": true}
 var weather := {"cloud": 0.3, "rain": 0.0, "fog": 0.0, "temp": 21.0, "wind": 0.2}
 var power_off_h := 0.0
@@ -396,6 +396,7 @@ func new_survivor(occupation: String, trait_list: Array = [], start_kind: String
 			c.touched = true
 			world.notify(floori(old.pos.x), floori(old.pos.y))
 	lives += 1
+	world.explored = {}        # what the dead knew of the map dies with them
 	player = Player.new(self)
 	dead = false
 	var st: Dictionary = world.gen.find_start(start_kind, lives)
@@ -417,6 +418,89 @@ func new_survivor(occupation: String, trait_list: Array = [], start_kind: String
 		if zz.pos.distance_to(player.pos) < 8.0 and zz.loot.is_empty():
 			zombies.list.erase(zz)
 	say("Day %d. Someone else is still alive." % day(), Color(0.9, 0.85, 0.7))
+
+# ------------------------------------------------------------------ notes, documents, markers
+const NOTE_LORE := ["\"They said the east road was open. It was not.\"", "\"If the taps still run when you read this, fill everything you own.\"",
+	"\"We boarded the windows the first night. By the fourth we wished we had left a way out.\"", "\"Do not trust the quiet houses. Quiet means the door held.\"",
+	"\"M. — gone to find your mother. Wait three days, then go north without me.\""]
+
+func add_marker(x: int, y: int, label: String) -> void:
+	for m in player.markers:
+		if int(m[0]) == x and int(m[1]) == y:
+			return
+	player.markers.append([x, y, label])
+
+## what kind of place is this, in words (for notes and markers)
+func place_name(pos: Vector2) -> String:
+	if vehicle != null: return "a car"
+	var bt: String = world.btype_at(floori(pos.x), floori(pos.y))
+	if bt != "": return "a " + bt.replace("_", " ")
+	for dy in range(-3, 4):
+		for dx in range(-3, 4):
+			var id: int = Defs.o_id(world.obj(floori(pos.x) + dx, floori(pos.y) + dy))
+			if id == Defs.O_CAR: return "a car"
+			if id == Defs.O_WELL: return "a well"
+			if id == Defs.O_GENERATOR: return "a generator"
+	return "open ground"
+
+## put what you know on paper: the note is a physical thing anyone can find later
+func write_note() -> bool:
+	var pencil: Dictionary = Inv.find(player.inv, "pencil")
+	var paper: Dictionary = Inv.find(player.inv, "notebook")
+	if pencil.is_empty() or paper.is_empty():
+		say("You need a pencil and a notebook", Color(0.9, 0.8, 0.6))
+		return false
+	Inv.use_charge(player.inv, paper)
+	var note: Dictionary = Items.make("note", 1, hour)
+	note["mx"] = floori(player.pos.x)
+	note["my"] = floori(player.pos.y)
+	note["txt"] = "Day %d. I was at %s here. Worth coming back to." % [day(), place_name(player.pos)]
+	note["lab"] = "%s (note, day %d)" % [place_name(player.pos).capitalize(), day()]
+	player.inv.append(note)
+	say("You write it down and mark the place.", Color(0.8, 0.9, 0.75))
+	return true
+
+## a note found in the world gets its contents the first time anyone reads it
+func _fill_found_note(note: Dictionary) -> void:
+	var px: int = floori(player.pos.x)
+	var py: int = floori(player.pos.y)
+	var hv: int = Rng.h2(px, py, seed_v + 977 + int(hour))
+	note["txt"] = NOTE_LORE[hv % NOTE_LORE.size()]
+	if (hv >> 6) % 100 < 70:
+		var best: Array = []
+		var rx0: int = WorldGen.fdiv(px, WorldGen.REGION)
+		var ry0: int = WorldGen.fdiv(py, WorldGen.REGION)
+		var cands: Array = []
+		for lot in world.gen.region(rx0, ry0)["lots"]:
+			var r: Rect2i = lot["r"]
+			var c: Vector2i = r.get_center()
+			var d: float = Vector2(c - Vector2i(px, py)).length()
+			if d < 30.0 or d > 260.0:
+				continue
+			var k: String = lot["k"]
+			if k != "house" and k != "park" and k != "woods":
+				cands.append([c, "the " + k.replace("_", " ")])
+			elif k == "house" and cands.size() < 40 and (Rng.h2(c.x, c.y, 5) % 5) == 0:
+				var plan: LotBuilder.LotPlan = world.gen.lot_plan(lot)
+				if plan.btype == "stash": cands.append([c, "a boarded-up house with supplies"])
+				elif plan.hatch.x >= 0: cands.append([c, "a house with a cellar"])
+		if not cands.is_empty():
+			best = cands[(hv >> 14) % cands.size()]
+			var c2: Vector2i = best[0]
+			note["mx"] = c2.x
+			note["my"] = c2.y
+			note["lab"] = String(best[1]).capitalize() + " (from a note)"
+			note["txt"] = String(note["txt"]) + " Below it, a sketch: %s, %s of here." % [best[1], Sim.compass(player.pos, Vector2(c2))]
+
+func read_note(note: Dictionary) -> void:
+	if not note.has("txt"):
+		_fill_found_note(note)
+	say(String(note["txt"]), Color(0.86, 0.84, 0.72))
+	if note.has("mx"):
+		add_marker(int(note["mx"]), int(note["my"]), String(note.get("lab", "Marked on a note")))
+		say("Marked on your map.", Color(0.75, 0.9, 0.7))
+	player.bored = maxf(0.0, player.bored - 10.0)
+	flags["read_note"] = true
 
 ## is anything hunting the survivor right now? (fast-forward drops back to normal speed)
 func threatened() -> bool:
@@ -891,7 +975,7 @@ func start_sleep(quality: float) -> void:
 	p.sleeping = true
 	flags["slept"] = true
 	sleep_quality = quality
-	time_scale = 60.0
+	time_scale = 20.0          # the world keeps acting while you sleep, twenty times faster
 	ui_events.append({"type": "sleep"})
 
 # ------------------------------------------------------------------ persistence

@@ -26,6 +26,7 @@ var _hint_t := 0.0
 
 func _ready() -> void:
 	UiKit.make_theme()
+	Opts.load_all()
 	get_tree().root.size_changed.connect(_on_resize)
 	_on_resize()
 	_boot = Control.new()

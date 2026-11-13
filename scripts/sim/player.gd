@@ -438,6 +438,7 @@ func melee_stats() -> Dictionary:
 		return d["wpn"]
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
+var markers: Array = []         # personal map notes: [x, y, label]
 var force_shove := false
 var corpses_near := 0
 
@@ -637,6 +638,19 @@ func _fire_gun(g: Dictionary) -> void:
 	if int(weapon.get("u", 0)) <= 0:
 		reload()
 		return
+	if int(weapon.get("jam", 0)) == 1:
+		sim.say("Jammed. LOAD to clear it.", Color(1.0, 0.7, 0.5))
+		sim.emit_fx("click", pos)
+		attack_cd = 0.4
+		return
+	var gc: float = float(weapon.get("c", 1.0))
+	if gc < 0.6 and randf() < (0.6 - gc) * 0.4:
+		weapon["jam"] = 1
+		attack_cd = 0.4
+		sim.say("The action jams! LOAD to clear it.", Color(1.0, 0.7, 0.5))
+		sim.emit_fx("click", pos)
+		return
+	weapon["c"] = maxf(0.05, gc - 0.004 * (1.0 - skill_level("maintenance") * 0.06))
 	var aim_lvl: int = skill_level("aiming")
 	var rng: float = float(g["range"])
 	var tgt: Zombie = sim.zombies.nearest_in_cone(pos, facing, rng, 0.82, true)
@@ -680,6 +694,13 @@ func reload() -> void:
 	if not d.has("gun") or not action.is_empty():
 		return
 	var g: Dictionary = d["gun"]
+	if int(weapon.get("jam", 0)) == 1:
+		var jw: Dictionary = weapon
+		start_action("Clearing the jam", 2.2 - skill_level("reloading") * 0.12, func():
+			jw.erase("jam")
+			sim.emit_fx("reload", pos)
+			sim.say("Cleared.", Color(0.8, 0.9, 0.7)), false)
+		return
 	var have: int = Inv.count(inv, g["ammo"])
 	if have <= 0:
 		sim.say("No ammunition", Color(1.0, 0.7, 0.5))
@@ -724,6 +745,21 @@ func take_zombie_hit(z: Zombie) -> void:
 	panic = minf(100.0, panic + 14.0 * tmod("panic") * (1.5 if tadd("squeamish") > 0.0 else 1.0))
 	stress = minf(100.0, stress + 6.0)
 	var part: int = Rng.pick_weighted(sim.rng, HIT_WEIGHTS_LOW if z.kind == 2 else HIT_WEIGHTS)
+	# three or more with their hands on you: they pull you down, whatever you are wearing
+	var grabbing := 0
+	for oz in sim.zombies.list:
+		if oz.state != Zombie.DOWN and oz.state != Zombie.STAGGER and oz.state != Zombie.CLIMB and oz.pos.distance_squared_to(pos) < 1.2:
+			grabbing += 1
+	if grabbing >= 3 and sim.vehicle == null and randf() < 0.4:
+		hp -= randf_range(35.0, 50.0)
+		add_wound(1 if randf() < 0.5 else 2, "bite", "dragged down")
+		if infection < 0.0 and sim.settings.get("infection", true):
+			infection = 0.0
+			infection_span = randf_range(48.0, 78.0)
+		sim.say("DRAGGED DOWN by %d of them — bitten on the %s. The bite broke the skin." % [grabbing, PARTS[1].to_lower()], Color(1.0, 0.35, 0.3))
+		if hp <= 0.0:
+			die("Dragged down and torn apart")
+		return
 	var cover: Dictionary = cover_item(part)
 	if not cover.is_empty():
 		if randf() < clothing_def(part):
@@ -735,7 +771,7 @@ func take_zombie_hit(z: Zombie) -> void:
 				unequip(cover)
 				inv.erase(cover)
 			else:
-				sim.say("Your %s stopped the attack" % cname, Color(0.8, 0.85, 0.7))
+				sim.say("Your %s stopped it — %s, skin not broken" % [cname, PARTS[part].to_lower()], Color(0.8, 0.85, 0.7))
 			return
 	var shrug: float = tadd("shrug")
 	if shrug > 0.0 and randf() < shrug:
@@ -758,6 +794,10 @@ func take_zombie_hit(z: Zombie) -> void:
 		inf_ch = 0.25
 	hp -= dmg
 	add_wound(part, type, "infected attack")
+	match type:
+		"scratch": sim.say("Scratched on the %s. Skin broken; a small risk of the fever." % PARTS[part].to_lower(), Color(1.0, 0.75, 0.5))
+		"laceration": sim.say("Deep laceration on the %s — bleeding. A real risk of the fever." % PARTS[part].to_lower(), Color(1.0, 0.6, 0.45))
+		"bite": sim.say("BITTEN on the %s. The bite broke the skin." % PARTS[part].to_lower(), Color(1.0, 0.35, 0.3))
 	if infection < 0.0 and sim.settings.get("infection", true) and randf() < inf_ch:
 		infection = 0.0
 		infection_span = randf_range(48.0, 78.0)
@@ -1233,6 +1273,10 @@ func read_item(it: Dictionary) -> void:
 	if sim.daylight() < 0.25 and not light_on and not sim.near_fire(pos) and bld == 0:
 		sim.say("Too dark to read", Color(0.8, 0.8, 0.9))
 		return
+	if it["id"] == "note" or it["id"] == "survivor_note":
+		var note: Dictionary = it
+		start_action("Reading", 2.5, func(): sim.read_note(note))
+		return
 	if d.has("book"):
 		if read.has(it["id"]):
 			sim.say("You have already studied this", Color(0.8, 0.8, 0.9))
@@ -1277,7 +1321,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1356,6 +1400,7 @@ func load(d: Dictionary) -> void:
 	antidep_h = d.get("antidep_h", 0.0)
 	protein = d.get("protein", 50.0)
 	corpse_exp = d.get("corpse", 0.0)
+	markers = d.get("markers", [])
 	xp_boost = d.get("boost", {})
 	if int(d.get("parts", 6)) == 6:
 		for wd in wounds:

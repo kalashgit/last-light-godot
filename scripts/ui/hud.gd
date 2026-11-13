@@ -88,6 +88,14 @@ func _layout() -> void:
 		var py: float = b - (250.0 if safe.size.y > safe.size.x else 96.0)
 		_btn["place_ok"] = [Vector2(safe.get_center().x - 70, py), 50.0]
 		_btn["place_no"] = [Vector2(safe.get_center().x + 70, py), 50.0]
+	if sim.vehicle != null:
+		_btn["horn"] = [Vector2(r - 168, b - 198), 36.0]
+	_scale_buttons()
+
+func _scale_buttons() -> void:
+	if absf(Opts.btn - 1.0) > 0.01:
+		for id in _btn.keys():
+			_btn[id][1] = float(_btn[id][1]) * Opts.btn
 
 func _hit(pos: Vector2) -> String:
 	var best := ""
@@ -135,6 +143,10 @@ func _touch_down(i: int, pos: Vector2) -> void:
 			if p.sneaking: run_on = false
 		"light": toggle_light()
 		"reload": p.reload()
+		"horn":
+			sim.noise(p.pos, 45.0)
+			sim.emit_fx("alarm", p.pos)
+			sim.say("The horn carries a long way.", Color(1.0, 0.85, 0.6))
 		"shove": p.try_shove()
 		"call": p.call_out(not p.sneaking)
 		"speed": cycle_speed()
@@ -170,10 +182,11 @@ func _touch_down(i: int, pos: Vector2) -> void:
 func _touch_move(i: int, pos: Vector2) -> void:
 	if i == _stick_touch:
 		var d: Vector2 = pos - _stick_origin
-		if d.length() > STICK_R * 1.35:
-			_stick_origin = pos - d.normalized() * STICK_R * 1.35
+		var sr: float = STICK_R * Opts.stick
+		if d.length() > sr * 1.35:
+			_stick_origin = pos - d.normalized() * sr * 1.35
 			d = pos - _stick_origin
-		_stick_vec = d.limit_length(STICK_R) / STICK_R
+		_stick_vec = d.limit_length(sr) / sr
 	elif _free.has(i):
 		_free[i][1] = pos
 		if _free.size() == 2:
@@ -287,7 +300,7 @@ func poll(dt: float) -> void:
 	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP): kv.y -= 1.0
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN): kv.y += 1.0
 	if _stick_touch >= 0:
-		move = _stick_vec if _stick_vec.length() > 0.14 else Vector2.ZERO
+		move = _stick_vec if _stick_vec.length() > Opts.dead else Vector2.ZERO
 	else:
 		move = kv.normalized()
 	sim.brake = sim.vehicle != null and (_attack_touch >= 0 or _key_attack)
@@ -344,6 +357,7 @@ func want_run() -> bool:
 # ------------------------------------------------------------------ drawing
 func _txt(text: String, pos: Vector2, size: int = 18, col: Color = UiKit.TEXT, align: int = HORIZONTAL_ALIGNMENT_LEFT, width: float = -1) -> void:
 	var font: Font = ThemeDB.fallback_font
+	size = int(round(size * Opts.text))
 	draw_string_outline(font, pos, text, align, width, size, 4, Color(0, 0, 0, 0.75 * col.a))
 	draw_string(font, pos, text, align, width, size, col)
 
@@ -450,6 +464,7 @@ func _draw() -> void:
 	else:
 		_round_btn("attack", atk, Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)
 		_round_btn("interact", "USE", Color(0.7, 0.6, 0.36), _interact_touch >= 0, 17)
+	_round_btn("horn", "HORN", Color(0.36, 0.34, 0.44), false, 12)
 	_round_btn("shove", "SHOVE", Color(0.5, 0.36, 0.26), false, 11)
 	_round_btn("call", "CALL", Color(0.36, 0.34, 0.44), false, 11)
 	_round_btn("run", "RUN", Color(0.3, 0.42, 0.5), run_on, 14)

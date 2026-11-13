@@ -1,0 +1,51 @@
+# LAST LIGHT — coverage against the Gameplay & Mechanics Bible
+
+Source: `Last_Light_Complete_Gameplay_and_Mechanics_Bible.docx` (Drive › Last light › Mechanics), read in full on 2026-11-13.
+The folder's `project_zomboid_gameplay_mechanics.csv` was read in full; the `Mechanics2` sheet only as far as the tool returned it (through the start of its section 4). Both were used as reference for numbers only.
+`project_zomboid_complete_database.csv` (213 rows) was only sampled, and the weapon database sheet was not opened; neither was implemented as content.
+
+Status words: **In** = playable and covered by an automated test. **Partial** = some of the section works; the gap is named. **Not built** = absent.
+Nothing here has been verified on an iPhone.
+
+| § | Bible section | Status | What is in / what is missing |
+|---|---|---|---|
+| 1 | Identity: single-player, offline, fixed isometric, permadeath, finite world | In | Loot never refills. Cleared areas now stay cleared by default (respawn is an opt-in sandbox setting). |
+| 2 | Core loop and its tradeoffs | In | Weight vs stamina, glass vs noise, generator vs fuel/noise, fight vs lure, medicine scarcity all function. |
+| 3 | Controls, camera, interaction | Partial | Floating stick, multi-touch, tap/hold menus, blocked-action reasons, roof cutaway, floors. **Added:** settings for button size, HUD text size, stick dead zone and travel, volume. Missing: choosing between overlapping targets from a list (hold USE shows only the best target's options); long-press inspect. |
+| 4 | Time, sleep, continuity | In | **Changed:** 60 real minutes = 24 game hours by default; sleep runs at 20×. No catch-up while closed. Waiting via 2×/4× and "Sit and rest". Seasons affect daylight, temperature, crops. |
+| 5 | Character creation, traits, progression | Partial | Occupations, traits, appearance, 35 skills, practice XP, manuals, exercise, mood. Missing: naming the survivor; learning recipes from NPCs. |
+| 6 | Body, needs, medicine | In | All ten rows function. **Added:** every hit is reported exactly — blocked by clothing / scratch / laceration / bite — with the body part. Bite = certain infection; scratch 7 %, laceration 25 %. |
+| 7 | Movement, stealth, perception | Partial | Walk/run/sneak, shove, hop fences, climb windows, drag bodies, sight by light and facing, sound with radius, last-known-position search. Missing: sound blocked by walls (distance only), scent, peeking, hiding spots, binoculars, footwear and surface noise. |
+| 8 | Combat, weapons, equipment | Partial | Reach, swing time, durability, sharpness, strain, firearms with ammo/reload/recoil spread, armour by body part, hits on doors/windows/furniture. **Added:** firearms wear and jam; LOAD clears a jam. **Added:** three attackers at once drag you down. Missing: weapon wind-up arcs as distinct shapes, gun cleaning, friendly fire on NPCs from gunshots. |
+| 9 | Zombies | Partial | Persistent individuals, state machine exactly as listed, shared collision world, crowds from shared stimuli, noise redistribution, persistent corpses. Missing: variants by profession (visual only kinds exist: shambler, fast, crawler, brute), stairs use, feeding/trapped states. |
+| 10 | Geography and exploration | Partial | Seeded continuous world with districts, roads, farms, forest, water; map revealed by travel. **Added:** found notes can mark real places on the map. Missing: rivers as barriers with bridges, wetlands, signs, damaged bridges. |
+| 11 | Buildings and interiors | Partial | Houses, shops, industrial, civic, farm and cabin lots with functional furniture, door and window states, cellars, a second storey. Missing: most of the 60 archetypes, attics, moving/rotating furniture, jammed doors, high-risk special sites. |
+| 12 | Inventory and scarcity | Partial | Weight, condition, freshness, charges, containers with capacity, split/transfer/equip/use, bags, hotbar, conservation (tested: barter and crafting never duplicate). Missing: volume as a separate limit, wetness on items, ownership, sorting. |
+| 13 | Crafting, repair, dismantling | In | Recipes with tools, stations, skill, time, noise and explained blockers; repair with diminishing returns; dismantling with skill-based recovery; recipe knowledge from manuals. |
+| 14 | Building and fortification | Partial | Walls, doors, crates, barrels, beds, campfires, barricades (4 planks), placement preview with cost, damage by infected, fire and vehicles. Missing: floors/roofs, windows, gates, structural support, wiring and plumbing fixtures, traps as defences. |
+| 15 | Electricity | Partial | Grid failure, generators (fuel, noise, condition, fumes indoors), lights, refrigeration tied to power. Missing: batteries as storage, solar, switches, overloads, wet faults. |
+| 16 | Water, sanitation, cooking | Partial | Mains failure, wells, rain barrels, tainted water, boiling and bleach, cooking with quality, spoilage by type and refrigeration. Missing: finite volume in pipes, plumbing a barrel to a sink, freezing, washing. |
+| 17 | Farming, foraging, fishing, wildlife | Partial | Crops with water, cold, mildew and seed return; foraging with poison risk; fishing, snares, hens. Missing: 24 crops (4 exist), wildlife as animals in the world, hunting, local depletion, smoking/drying/canning. |
+| 18 | Vehicles | Partial | One car: key/hotwire, battery, fuel, engine and tyre condition, crashes, boot, headlights, protection, persistence. **Added:** horn. Missing: the other 17 vehicle types, per-part repair, towing, sleeping in a vehicle, road blockages as obstacles to clear. |
+| 19 | NPCs, factions, settlements | Partial | Individuals who wait, follow, fight, get hungry, remember you, turn hostile, die persistently. **Added:** barter (one item each way). Missing: needs beyond hunger, schedules, scavenging, trust/reputation, factions, settlements, recruiting to tasks. |
+| 20 | Weather, fire, hazards | Partial | Rain, fog, cloud, wind and temperature values; fire with fuel, spread, rain damping, damage, light. Missing: smoke, storms and snow as visuals, flooding, fallen trees, ice. |
+| 21 | Events, documents, objectives | Partial | Flyovers, alarms, distant gunfire and screams. **Added:** written notes (pencil + notebook) as physical items; found notes with text, some pointing to real places; personal map markers. Missing: diaries/bulletins as distinct documents, wrong or outdated information, stateful objectives that fail or expire. |
+| 22 | Death and the next survivor | In | Body or reanimated body keeps the gear; world, buildings, cars and notes persist. **Added:** the new survivor does not inherit the map or markers. |
+| 23 | Audio, animation, feedback | Partial | Synthesised sounds for the listed actions; directional walk/attack/aim/work/sleep/death frames; layered clothing and weapons. Missing: footsteps by material, music, vault/carry/reload animations. Nobody has listened to the audio. |
+| 24 | Content targets | Not met | Stated in the Bible as targets, not claims. Current counts: ~110 world objects, ~185 items, 1 drivable vehicle, 4 infected kinds, 4 crops, 0 factions. |
+| 25 | A complete playable day | Partial | Every step of the example day is possible except moving food "to a cooler location" having an effect, and repairing a damaged gate. |
+| 26 | Rules connecting every system | In | Persistence, finite supply, single ownership, costs, fair information, shared collision, no magical knowledge, no closed-app catch-up, permadeath: each has a test. |
+
+## What "In" does and does not mean
+
+It means the behaviour exists, can be reached from the touch UI, and a test fails if it breaks. It does not mean it has been balanced, or played on a phone.
+
+## Largest gaps, in the order I would build them
+
+1. Sound occlusion by walls and doors (§7) — changes stealth everywhere.
+2. Moving furniture and more constructions (§11, §14).
+3. NPC depth: needs, routines, trust (§19), then factions and settlements.
+4. Wildlife in the world and food preservation (§17).
+5. More vehicles and per-part repair (§18).
+6. Batteries, solar, plumbing (§15, §16).
+7. The content counts in §24.

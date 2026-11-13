@@ -563,6 +563,154 @@ func _init() -> void:
 	ok(not sim.threatened(), "no threat once it is gone")
 	sim.speed = 1
 
+	print("== mechanics bible: time, reports, drag-down, jams, notes, barter, rest")
+	var fresh := Sim.new(31337)
+	ok(absf(float(fresh.settings["day_min"]) - 60.0) < 0.01 and fresh.settings["respawn"] == false, "defaults: one real hour is one game day; cleared areas stay cleared")
+	fresh.new_game("unemployed", [], "house")
+	quiet(fresh)
+	var fh0: float = fresh.hour
+	run(fresh, 60.0)
+	ok(absf((fresh.hour - fh0) - 0.4) < 0.02, "60 real seconds pass 24 game minutes (%.3f h)" % (fresh.hour - fh0))
+	fresh.player.fatigue = 80.0
+	fresh.start_sleep(1.0)
+	ok(absf(fresh.time_scale - 20.0) < 0.01, "sleep runs the world at 20x")
+	fresh.wake("test")
+	# exact reports
+	sim.settings["god"] = false
+	p.worn = {}
+	p.gear = {}
+	var seen_s := false
+	var seen_l := false
+	var seen_b := false
+	var bite_always := true
+	var zrep: Zombie = sim.zombies.spawn(p.pos + Vector2(30, 0), 0)
+	for i in range(400):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		sim.log.clear()
+		p.take_zombie_hit(zrep)
+		var msg: String = String(sim.log[sim.log.size() - 1][0]) if sim.log.size() > 0 else ""
+		if msg.begins_with("Scratched"): seen_s = true
+		if msg.begins_with("Deep laceration"): seen_l = true
+		if msg.begins_with("BITTEN"):
+			seen_b = true
+			if p.infection < 0.0: bite_always = false
+	ok(seen_s and seen_l and seen_b, "every hit says what it was: scratch, laceration or bite")
+	ok(bite_always, "a bite that breaks the skin always infects")
+	Inv.add_new(p.inv, "leather_jacket", 1)
+	p.equip(Inv.find(p.inv, "leather_jacket"))
+	var blocked_msg := false
+	for i in range(300):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		if not p.worn.is_empty(): p.worn["c"] = 1.0
+		sim.log.clear()
+		p.take_zombie_hit(zrep)
+		if sim.log.size() > 0 and String(sim.log[sim.log.size() - 1][0]).contains("skin not broken") and p.infection < 0.0 and p.wounds.is_empty(): blocked_msg = true
+	ok(blocked_msg, "a blocked attack is reported as blocked, with no wound and no infection")
+	# drag-down
+	var ring: Array = []
+	for k in range(3):
+		var zr2: Zombie = sim.zombies.spawn(p.pos + Vector2(0.7, 0).rotated(k * 2.1), 0)
+		zr2.state = Zombie.CHASE
+		ring.append(zr2)
+	var dragged := false
+	for i in range(80):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		if not p.worn.is_empty(): p.worn["c"] = 1.0
+		for k in range(3): (ring[k] as Zombie).pos = p.pos + Vector2(0.7, 0).rotated(k * 2.1)
+		sim.log.clear()
+		p.take_zombie_hit(ring[0])
+		if sim.log.size() > 0 and String(sim.log[sim.log.size() - 1][0]).begins_with("DRAGGED DOWN"):
+			dragged = p.hp <= 65.0 and p.infection >= 0.0
+			break
+	ok(dragged, "three at once drag you down through any clothing: heavy damage and a certain bite")
+	sim.zombies.list.clear()
+	sim.settings["god"] = true
+	p.hp = 100.0
+	p.wounds.clear()
+	p.infection = -1.0
+	p.panic = 0.0
+	p.alive = true
+	# jams
+	p.equip(Inv.find(p.inv, "pistol")) if (p.weapon.is_empty() or p.weapon["id"] != "pistol") else null
+	Inv.add_new(p.inv, "ammo_9mm", 30)
+	p.weapon["c"] = 0.08
+	p.weapon["u"] = 12
+	var jammed := false
+	for i in range(40):
+		p.attack_cd = 0.0
+		p.swing_t = 0.0
+		p.try_attack()
+		if int(p.weapon.get("jam", 0)) == 1:
+			jammed = true
+			break
+		if int(p.weapon["u"]) <= 0: p.weapon["u"] = 12
+	ok(jammed, "a worn-out gun jams")
+	var u_j: int = p.weapon["u"]
+	p.attack_cd = 0.0
+	p.swing_t = 0.0
+	p.try_attack()
+	ok(int(p.weapon["u"]) == u_j, "a jammed gun does not fire")
+	p.cancel_action()
+	p.reload()
+	run(sim, 2.6)
+	ok(not p.weapon.has("jam"), "LOAD clears the jam")
+	p.weapon["c"] = 1.0
+	# notes and markers
+	p.markers.clear()
+	ok(not sim.write_note(), "writing needs a pencil and a notebook")
+	Inv.add_new(p.inv, "pencil", 1)
+	Inv.add_new(p.inv, "notebook", 1)
+	ok(sim.write_note() and sim.write_note(), "with both, notes can be written")
+	var notes: Array = []
+	for it in p.inv:
+		if it["id"] == "note": notes.append(it)
+	ok(notes.size() == 2 and int(Inv.find(p.inv, "notebook")["u"]) == 8, "each note is its own item and uses a page")
+	if notes.size() > 0:
+		sim.read_note(notes[0])
+		ok(p.markers.size() == 1 and int(p.markers[0][0]) == floori(p.pos.x), "reading a note marks its place on the reader's map")
+	var found: Dictionary = Items.make("survivor_note", 1, sim.hour)
+	sim.read_note(found)
+	ok(String(found.get("txt", "")).length() > 10, "a found note has something written on it")
+	var with_sketch := 0
+	for k in range(30):
+		var fn2: Dictionary = Items.make("survivor_note", 1, sim.hour)
+		sim.hour += 1.0
+		sim._fill_found_note(fn2)
+		if fn2.has("mx"): with_sketch += 1
+	ok(with_sketch > 0, "some found notes point at a real place (%d of 30)" % with_sketch)
+	# barter
+	var trader = sim.npcs.spawn(p.pos + Vector2(1.0, 0.0), false)
+	trader.met = true
+	trader.stock = ["nails", "duct_tape", "matches"]
+	Inv.add_new(p.inv, "canned_beans", 1, sim.hour)
+	var beans0: int = Inv.count(p.inv, "canned_beans")
+	var nails0: int = Inv.count(p.inv, "nails")
+	var tr: Callable = Callable()
+	for o in sim.npcs.options(trader):
+		if String(o["label"]).begins_with("Trade your") and String(o["label"]).ends_with("Nails"): tr = o["fn"]
+	ok(tr.is_valid(), "a survivor you have met offers a trade")
+	if tr.is_valid():
+		var gave_id := ""
+		var before: Dictionary = {}
+		for it in p.inv: before[it["id"]] = int(before.get(it["id"], 0)) + int(it["n"])
+		tr.call()
+		for k2 in before.keys():
+			if Inv.count(p.inv, k2) < int(before[k2]): gave_id = k2
+		ok(Inv.count(p.inv, "nails") == nails0 + 1 and gave_id != "" and trader.stock.has(gave_id) and not trader.stock.has("nails"), "barter moves one item each way and nothing is duplicated (gave %s)" % gave_id)
+	sim.npcs.list.clear()
+	# rest
+	p.endurance = 20.0
+	Actions._rest(sim)
+	run(sim, 8.5)
+	ok(p.endurance > 70.0, "sitting down restores stamina (%.0f)" % p.endurance)
+	ok(absf(Opts.cycle(1.0, [0.85, 1.0, 1.1]) - 1.1) < 0.001 and Opts.dead > 0.0, "device settings cycle through their steps")
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)
@@ -583,6 +731,7 @@ func _init() -> void:
 	ok(q != p and q.alive and not sim.dead and sim.lives == 1, "a new survivor takes over")
 	ok(q.pos.distance_to(died_at) > 30.0 and not w.blocked(q.pos.x, q.pos.y, Player.R), "somewhere else in the same world (%.0f tiles away)" % q.pos.distance_to(died_at))
 	ok(sim.hour >= hour_d and Inv.count(q.inv, "toy") == 0, "time carries on; the new survivor starts with their own kit")
+	ok(q.markers.is_empty() and sim.world.explored.size() < 60, "the dead survivor's map knowledge is gone (%d chunks known)" % sim.world.explored.size())
 	q.pos = died_at
 	w.stream(q.pos, 2, 999)
 	sim._process_world_events()

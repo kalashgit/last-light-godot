@@ -30,7 +30,7 @@ var _ng_tab := "who"
 var _ng_traits: Array = []
 var _ng_start := 0
 var _ng_look: Array = [0, 2, 1, 0]
-var _ng_sand := {"sprinters": 0, "zombies": 1, "zspeed": 1, "respawn": 1, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
+var _ng_sand := {"sprinters": 0, "zombies": 1, "zspeed": 1, "respawn": 0, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
 	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1}
 var _confirm_new := false
 var _relayout_frames := 0
@@ -124,6 +124,7 @@ func rebuild() -> void:
 		"menu": _build_menu()
 		"death": _build_death()
 		"help": _build_help()
+		"settings": _build_settings()
 	dim.color.a = 0.0 if current == "title" or current == "newgame" else 0.62
 	layout.call_deferred()
 	# wrapped labels only know their height once they have a width: settle again next frames
@@ -317,7 +318,7 @@ func _build_newgame() -> void:
 		add.call("Infected return to cleared areas", "respawn", ["Never", "Slowly"])
 		add.call("The Grey Fever (bites)", "infection", ["Always fatal", "Disabled"])
 		add.call("Loot", "loot", ["Scarce", "Normal", "Plentiful"])
-		add.call("Length of a day", "day", ["24 min", "48 min", "96 min"])
+		add.call("Length of a day", "day", ["30 min", "1 hour", "2 hours"])
 		add.call("Power and water fail", "util", ["Within days", "In a week or two", "After a month", "Never"])
 		add.call("Starting season", "season", ["Summer", "Autumn", "Winter", "Spring"])
 		add.call("Aircraft flyovers", "flyover", ["Never", "Once", "Recurring"])
@@ -356,7 +357,7 @@ func _build_newgame() -> void:
 		var S2: Dictionary = _ng_sand
 		main.new_game(sv, _ng_occ, {
 			"zombies": [0.5, 1.0, 1.7, 2.6][int(S2["zombies"])], "zspeed": [0.8, 1.0, 1.3][int(S2["zspeed"])], "respawn": int(S2["respawn"]) == 1,
-			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [24.0, 48.0, 96.0][int(S2["day"])],
+			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [30.0, 60.0, 120.0][int(S2["day"])],
 			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
 			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
 			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])],
@@ -524,6 +525,10 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 				p.use_med(it)])
 		else:
 			opts.append(["Treat a wound…", func(): open("char")])
+	if it["id"] == "notebook":
+		opts.append(["Write a note about this place", func():
+			close()
+			sim.write_note()])
 	if d.has("book") or d.has("read"):
 		opts.append(["Read", func():
 			close()
@@ -836,6 +841,16 @@ func _build_map() -> void:
 	for d in range(-3, 4):
 		if mx + d >= 0 and mx + d < n * 2: img.set_pixel(mx + d, my, Color.WHITE)
 		if my + d >= 0 and my + d < n: img.set_pixel(mx, my + d, Color.WHITE)
+	# personal markers: yellow diamonds
+	for mk in p.markers:
+		var kx: int = int(mk[0]) - (pc.x - R) * 16
+		var ky: int = int(mk[1]) - (pc.y - R) * 16
+		var qx: int = kx - ky + n - 1
+		var qy: int = (kx + ky) >> 1
+		for d2 in range(-3, 4):
+			for e2 in range(-3, 4):
+				if absi(d2) + absi(e2) <= 3 and qx + d2 >= 0 and qx + d2 < n * 2 and qy + e2 >= 0 and qy + e2 < n:
+					img.set_pixel(qx + d2, qy + e2, Color(1.0, 0.85, 0.2))
 	var tr := TextureRect.new()
 	tr.texture = ImageTexture.create_from_image(img)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -857,6 +872,33 @@ func _build_map() -> void:
 	hb.add_child(zi)
 	hb.add_child(zo)
 	body.add_child(hb)
+	body.add_child(UiKit.button("Mark where I am standing", func():
+		sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s (marked day %d)" % [sim.place_name(p.pos).capitalize(), sim.day()])
+		rebuild(), 52))
+	if not p.markers.is_empty():
+		body.add_child(UiKit.label("Yellow marks — only you know these. Write a note to leave one behind.", 14, UiKit.DIM))
+		for mi in range(p.markers.size() - 1, maxi(-1, p.markers.size() - 7), -1):
+			var mk2: Array = p.markers[mi]
+			var idx: int = mi
+			var dist: int = int(Vector2(float(mk2[0]) + 0.5, float(mk2[1]) + 0.5).distance_to(p.pos))
+			body.add_child(UiKit.button("%s — %d tiles %s   ✕" % [mk2[2], dist, Sim.compass(p.pos, Vector2(float(mk2[0]), float(mk2[1])))], func():
+				p.markers.remove_at(idx)
+				rebuild(), 44))
+
+# ------------------------------------------------------------------ settings (device, not save)
+func _build_settings() -> void:
+	_header("Settings", false)
+	var row := func(label: String, val: String, fn: Callable):
+		body.add_child(UiKit.button("%s: %s" % [label, val], func():
+			fn.call()
+			Opts.save_all()
+			rebuild(), 58))
+	row.call("Button size", "%d%%" % int(round(Opts.btn * 100.0)), func(): Opts.btn = Opts.cycle(Opts.btn, [0.85, 1.0, 1.1, 1.2]))
+	row.call("HUD text size", "%d%%" % int(round(Opts.text * 100.0)), func(): Opts.text = Opts.cycle(Opts.text, [0.9, 1.0, 1.15, 1.3]))
+	row.call("Stick dead zone", "%d%%" % int(round(Opts.dead * 100.0)), func(): Opts.dead = Opts.cycle(Opts.dead, [0.06, 0.14, 0.22, 0.3]))
+	row.call("Stick travel", ["short (sensitive)", "normal", "long (precise)"][0 if Opts.stick < 0.9 else (1 if Opts.stick < 1.1 else 2)], func(): Opts.stick = Opts.cycle(Opts.stick, [0.7, 1.0, 1.3]))
+	row.call("Sound volume", "%d%%" % int(round(Opts.volume * 100.0)), func(): Opts.volume = Opts.cycle(Opts.volume, [0.0, 0.25, 0.5, 0.75, 1.0]))
+	body.add_child(UiKit.button("Back", func(): open("pause" if sim != null else "title"), 58))
 
 # ------------------------------------------------------------------ pause / context / death
 func _build_pause() -> void:
@@ -869,6 +911,7 @@ func _build_pause() -> void:
 	body.add_child(UiKit.button("Stuck? Move me outside", func():
 		sim.unstick()
 		close()))
+	body.add_child(UiKit.button("Settings (buttons, text, stick, sound)", func(): open("settings")))
 	body.add_child(UiKit.button("How to Play", func(): open("help")))
 	body.add_child(UiKit.button("Performance overlay: %s" % ("on" if main.hud.debug else "off"), func():
 		main.hud.debug = not main.hud.debug
