@@ -96,7 +96,7 @@ func update(sim: Sim, view: WorldView, dt: float) -> void:
 			var fs: Vector2 = view.world_to_screen(fp.x, fp.y, 10.0)
 			pos.append(Vector3(fs.x, fs.y, 330.0 * z))
 			col.append(Vector3(0.95, 0.92, 0.78) * dark)
-		if sim.vehicle != null and sim.vehicle.lights:
+		if sim.vehicle != null and sim.vehicle.lights and int(sim.vehicle.ent.get("lit", 1)) == 1 and sim.vehicle.motor():
 			var hp: Vector2 = sim.vehicle.pos + Vehicle.DIRS[sim.vehicle.heading] * 6.0
 			var hs: Vector2 = view.world_to_screen(hp.x, hp.y, 10.0)
 			pos.append(Vector3(hs.x, hs.y, 420.0 * z))

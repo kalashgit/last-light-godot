@@ -206,7 +206,7 @@ func _init() -> void:
 	ok(w.bld(bx, by) != 0 or sim.flammability(bx, by) < 0.2, "rain makes things outdoors hard to light")
 	sim.weather["rain"] = 0.0
 	p.pos = Vector2(bx - 4.5, by + 4.5)
-	sim.ignite(bx, by)
+	sim.ignite(bx, by, 3.0)          # a well-fed fire: 30-66 s, long enough that spreading is not left to luck
 	ok(sim.burning.has(Vector2i(bx, by)), "a tile can be set alight")
 	var zf: Zombie = sim.zombies.spawn(Vector2(bx + 0.5, by + 0.5), 0)
 	zf.hp = 300.0
@@ -1038,6 +1038,7 @@ func _init() -> void:
 	opt(mo, "\"Is there anything").call()
 	var task: Dictionary = F.open_task(key1)
 	ok(not task.is_empty() and absf(float(task["due"]) - sim.hour - 72.0) < 0.01, "asking for work creates a task with a three-day deadline")
+	if not task.is_empty(): Inv.take(p.inv, task["want"], Inv.count(p.inv, task["want"]))      # start with none of it
 	ok(not opt(sim.npcs.options(m0), "Hand over").is_valid(), "it cannot be handed in without the goods")
 	Inv.add_new(p.inv, task["want"], int(task["n"]) + 1, sim.hour)
 	var have0: int = Inv.count(p.inv, task["want"])
@@ -1303,6 +1304,185 @@ func _init() -> void:
 			if a6.kind == "fox" and absf(a6.hp - 7.0) < 0.01: fox_back = true
 	ok(fox_back, "a wounded fox is still wounded after a reload")
 	AS.list.clear()
+
+	print("== vehicle types, parts, towing, sleeping in a car")
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.animals.list.clear()
+	bulldoze(sim, Rect2i(fx0, fy0, 12, 44))
+	for yy3 in range(fy0, fy0 + 44):
+		for xx3 in range(fx0, fx0 + 12):
+			w.set_ground(xx3, yy3, Defs.G_ASPHALT)
+	sim.settings["god"] = true
+	var tops: Dictionary = {}
+	for vt in [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_MOTORBIKE, Defs.O_BICYCLE]:
+		var vx: int = fx0 + 5
+		var vy: int = fy0 + 2
+		var fsv: Vector2i = Defs.obj_size(vt, 0)
+		for jj in range(fsv.y):
+			for ii in range(fsv.x):
+				w.set_obj(vx + ii, vy + jj, Defs.ocell(vt, 0, jj * fsv.x + ii))
+		var ve: Dictionary = Vehicle.car_ent(sim, vx, vy)
+		ve["key"] = 1; ve["bat"] = 1; ve["eng"] = 1.0; ve["tire"] = 1.0
+		if vt != Defs.O_BICYCLE: ve["fuel"] = Vehicle.tank_of(vt)
+		p.pos = Vector2(vx - 0.5, vy + 1.5)
+		p.endurance = 100.0
+		var co2: Array = Actions._car_options(sim, vx, vy)
+		var go: Callable = Callable()
+		for o in co2:
+			if String(o["label"]).begins_with("Drive") or String(o["label"]).begins_with("Ride"): go = o["fn"]
+		ok(go.is_valid(), "%s can be driven or ridden" % Defs.obj(vt)["n"])
+		go.call()
+		var vv: Vehicle = sim.vehicle
+		ok(vv != null and vv.oid == vt and vv.size() == Vector2(fsv), "you are on the %s" % Defs.obj(vt)["n"].to_lower())
+		var top := 0.0
+		var t9 := 0.0
+		while t9 < 4.0:
+			sim.tick(1.0 / 30.0, screen_for(Vector2(0, 1)), false)
+			top = maxf(top, vv.speed)
+			t9 += 1.0 / 30.0
+		tops[vt] = top
+		if vt == Defs.O_BICYCLE:
+			ok(p.endurance < 100.0 and float(vv.ent.get("fuel", 0.0)) == 0.0, "pedalling uses your stamina, not fuel (%.0f left)" % p.endurance)
+			sim.noises.clear()
+			run(sim, 1.0, screen_for(Vector2(0, 1)))
+			var loudest := 0.0
+			for nz in sim.noises: loudest = maxf(loudest, float(nz[1]))
+			ok(loudest < 4.0, "a bicycle is nearly silent (%.1f)" % loudest)
+		sim.brake = true
+		run(sim, 2.0)
+		sim.brake = false
+		Actions.exit_vehicle(sim)
+		ok(sim.vehicle == null, "and get off again")
+		var pa2: Vector2i = Vector2i(roundi(vv.anchor_f().x), roundi(vv.anchor_f().y))
+		w.remove_object(pa2.x, pa2.y)
+	ok(tops[Defs.O_MOTORBIKE] > tops[Defs.O_CAR] and tops[Defs.O_CAR] > tops[Defs.O_VAN] and tops[Defs.O_BICYCLE] < tops[Defs.O_VAN], "they differ: motorcycle %.1f > car %.1f > van %.1f > bicycle %.1f tiles/s" % [tops[Defs.O_MOTORBIKE], tops[Defs.O_CAR], tops[Defs.O_VAN], tops[Defs.O_BICYCLE]])
+	# protection by type and by glass
+	sim.settings["god"] = false
+	var zp: Zombie = sim.zombies.spawn(p.pos + Vector2(20, 0), 0)
+	var moto := Vehicle.new()
+	moto.sim = sim
+	moto.oid = Defs.O_MOTORBIKE
+	moto.ent = {"win": 1.0}
+	sim.vehicle = moto
+	var bike_hits := 0
+	for i in range(100):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		p.take_zombie_hit(zp)
+		if not p.wounds.is_empty() or p.hp < 99.0: bike_hits += 1
+	var vn := Vehicle.new()
+	vn.sim = sim
+	vn.oid = Defs.O_VAN
+	vn.ent = {"win": 1.0}
+	sim.vehicle = vn
+	var van_hits := 0
+	for i in range(100):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		p.take_zombie_hit(zp)
+		if not p.wounds.is_empty() or p.hp < 99.0: van_hits += 1
+	vn.ent["win"] = 0.0
+	var broken_hits := 0
+	for i in range(100):
+		p.hp = 100.0
+		p.wounds.clear()
+		p.infection = -1.0
+		p.take_zombie_hit(zp)
+		if not p.wounds.is_empty() or p.hp < 99.0: broken_hits += 1
+	sim.vehicle = null
+	sim.zombies.list.clear()
+	sim.settings["god"] = true
+	p.hp = 100.0
+	p.wounds.clear()
+	p.infection = -1.0
+	ok(bike_hits > 85 and van_hits < 25 and broken_hits > van_hits + 15, "a motorcycle protects nothing (%d/100 got through), a van a lot (%d), a van with smashed windows less (%d)" % [bike_hits, van_hits, broken_hits])
+	# crash damage to parts, then repairs
+	var cx2: int = fx0 + 5
+	var cy2: int = fy0 + 2
+	place_car(sim, cx2, cy2)
+	var ce2: Dictionary = Vehicle.car_ent(sim, cx2, cy2)
+	ce2["key"] = 1; ce2["bat"] = 1; ce2["eng"] = 1.0; ce2["tire"] = 1.0; ce2["win"] = 1.0; ce2["lit"] = 1; ce2["fuel"] = 10.0
+	p.pos = Vector2(cx2 - 0.5, cy2 + 1.5)
+	sim.vehicle = Vehicle.enter(sim, cx2, cy2)
+	var cv: Vehicle = sim.vehicle
+	seed(5)
+	for i in range(6): cv.crash(9.0)
+	ok(float(cv.ent["tire"]) < 1.0 and float(cv.ent["win"]) < 1.0 and int(cv.ent["lit"]) == 0 and float(cv.ent["eng"]) < 1.0, "hard crashes damage tyres, windows, lights and the engine (%s)" % Actions.condition_text(cv.ent, Defs.O_CAR))
+	p.hp = 100.0
+	p.wounds.clear()
+	cv.ent["tire"] = 0.1
+	var vmax_flat := 0.0
+	cv.speed = 0.0
+	for i in range(90):
+		cv.update(1.0 / 30.0, screen_for(Vector2(0, 1)), false)
+		vmax_flat = maxf(vmax_flat, cv.speed)
+	ok(vmax_flat < tops[Defs.O_CAR] * 0.45, "on flat tyres it crawls (%.1f tiles/s)" % vmax_flat)
+	cv.speed = 0.0
+	Actions.exit_vehicle(sim)
+	var pa3: Vector2i = Vector2i(roundi(cv.anchor_f().x), roundi(cv.anchor_f().y))
+	var pe: Dictionary = w.ent(pa3.x, pa3.y)
+	Inv.add_new(p.inv, "duct_tape", 1)
+	Inv.add_new(p.inv, "glass_pane", 3)
+	Inv.add_new(p.inv, "wire", 1)
+	p.skills["electrical"] = Player.XP_LEVELS[1]
+	p.pos = Vector2(pa3.x - 0.5, pa3.y + 1.5)
+	for lbl in ["Patch the tyres", "Fit a new window", "Rewire the headlights"]:
+		var fnr: Callable = opt(Actions._car_options(sim, pa3.x, pa3.y), lbl)
+		ok(fnr.is_valid(), "repair offered: %s" % lbl)
+		if fnr.is_valid():
+			fnr.call()
+			run(sim, 7.5)
+	ok(float(pe["tire"]) > 0.35 and float(pe["tire"]) <= 0.85 and float(pe["win"]) > 0.3 and int(pe["lit"]) == 1, "each part is repaired with its own materials (%s)" % Actions.condition_text(pe, Defs.O_CAR))
+	# towing a wreck off the road
+	w.remove_object(pa3.x, pa3.y)
+	var tx2: int = fx0 + 5
+	var ty2: int = fy0 + 10
+	place_car(sim, tx2, ty2)
+	var te: Dictionary = Vehicle.car_ent(sim, tx2, ty2)
+	te["key"] = 1; te["bat"] = 1; te["eng"] = 1.0; te["tire"] = 1.0; te["fuel"] = 12.0
+	for jj2 in range(4):
+		for ii2 in range(2):
+			w.set_obj(tx2 + ii2, ty2 - 4 + jj2, Defs.ocell(Defs.O_CAR_WRECK, 0, jj2 * 2 + ii2))
+	w.chunk_at(tx2, ty2 - 4).containers[World.idx(tx2, ty2 - 4)] = [Items.make("toy", 1)]
+	p.pos = Vector2(tx2 - 0.5, ty2 + 1.5)
+	sim.vehicle = Vehicle.enter(sim, tx2, ty2)
+	var tv: Vehicle = sim.vehicle
+	var hm: Callable = opt(Actions.vehicle_menu(sim), "Hitch")
+	ok(hm.is_valid(), "a wreck right behind you can be hitched")
+	if hm.is_valid(): hm.call()
+	ok(not tv.tow.is_empty() and w.obj(tx2, ty2 - 4) == 0, "hitched: it leaves the road")
+	var fuel_t0: float = tv.ent["fuel"]
+	var y_t0: float = tv.pos.y
+	var top_t := 0.0
+	for i in range(120):
+		sim.tick(1.0 / 30.0, screen_for(Vector2(0, 1)), false)
+		top_t = maxf(top_t, tv.speed)
+	ok(tv.pos.y > y_t0 + 6.0 and top_t < tops[Defs.O_CAR] * 0.7, "towing is slower (%.1f vs %.1f tiles/s)" % [top_t, tops[Defs.O_CAR]])
+	ok(SaveGame.save(sim, slot), "saving mid-tow")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and s2.vehicle != null and int(s2.vehicle.tow.get("o", 0)) == Defs.O_CAR_WRECK, "the tow survives a reload")
+	sim.brake = true
+	run(sim, 2.0)
+	sim.brake = false
+	var ua: Callable = opt(Actions.vehicle_menu(sim), "Unhitch")
+	ok(ua.is_valid(), "and can be unhitched")
+	if ua.is_valid(): ua.call()
+	var tanc: Vector2i = tv.tow_anchor(roundi(tv.anchor_f().x), roundi(tv.anchor_f().y))
+	ok(tv.tow.is_empty() and Defs.o_id(w.obj(tanc.x, tanc.y)) == Defs.O_CAR_WRECK and Inv.count(w.container_at(tanc.x, tanc.y), "toy") == 1, "dropped behind you with its contents")
+	ok(w.obj(tx2, ty2 - 4) == 0, "the road where it stood is clear")
+	# sleep in the seat
+	p.fatigue = 75.0
+	var sl: Callable = opt(Actions.vehicle_menu(sim), "Sleep in the seat")
+	ok(sl.is_valid(), "a stopped car can be slept in")
+	if sl.is_valid():
+		sl.call()
+		ok(p.sleeping and sim.vehicle != null, "you sleep in it")
+		sim.wake("test")
+	Actions.exit_vehicle(sim)
+	ok(not opt(Actions._car_options(sim, 0, 0), "Sleep").is_valid(), "(not offered on foot)")
 
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor

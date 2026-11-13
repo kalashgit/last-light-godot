@@ -254,7 +254,10 @@ static func _house_lot(b: LotBuilder) -> void:
 	if drive:
 		b.set_floor(Rect2i(1, y1 - 5, 3, b.ch - (y1 - 5)), Defs.G_CONCRETE)
 		if rng.randf() < 0.6:
-			b.put_yard(Defs.O_CAR if rng.randf() < 0.85 else Defs.O_CAR_WRECK, 1, y1 - 4, 0 if rng.randf() < 0.5 else 2)
+			var dr: float = rng.randf()
+			b.put_yard(Defs.O_CAR_WRECK if dr < 0.15 else (Defs.O_PICKUP if dr < 0.32 else (Defs.O_VAN if dr < 0.42 else Defs.O_CAR)), 1, y1 - 4, 0 if rng.randf() < 0.5 else 2)
+		elif rng.randf() < 0.5:
+			b.put_yard(Defs.O_BICYCLE if rng.randf() < 0.65 else Defs.O_MOTORBIKE, 2, y1 - 3, 0 if rng.randf() < 0.5 else 2)
 	# backyard fence
 	var fr: float = rng.randf()
 	if fr < 0.7:
@@ -536,7 +539,8 @@ static func _parking(b: LotBuilder) -> void:
 		var u := 1
 		while u + 2 <= b.cw - 1:
 			if rng.randf() < 0.3:
-				b.put_yard(Defs.O_CAR if rng.randf() < 0.75 else Defs.O_CAR_WRECK, u, v, 0 if rng.randf() < 0.5 else 2)
+				var pr: float = rng.randf()
+				b.put_yard(Defs.O_CAR_WRECK if pr < 0.25 else (Defs.O_VAN if pr < 0.4 else (Defs.O_PICKUP if pr < 0.5 else Defs.O_CAR)), u, v, 0 if rng.randf() < 0.5 else 2)
 			u += 3
 		v += 7
 
@@ -585,7 +589,7 @@ static func _farm(b: LotBuilder) -> void:
 		b.fence_rect(field.grow(1), LotBuilder.E_PICKET, LotBuilder.E_PICKET_GATE, [Vector2i(field.position.x + 3, field.end.y), Vector2i(field.position.x + 3, field.end.y + 1), Vector2i(field.end.x - 4, field.end.y), Vector2i(field.end.x - 4, field.end.y + 1)])
 	for k in range(5):
 		b.put_yard(_pick(rng, [Defs.O_TREE_OAK, Defs.O_HAY, Defs.O_BARREL, Defs.O_BUSH]), rng.randi_range(1, b.cw - 2), rng.randi_range(b.ch - 20, b.ch - 2), 0)
-	b.put_yard(Defs.O_CAR if rng.randf() < 0.7 else Defs.O_CAR_WRECK, hw + 4, b.ch - 9, 0)
+	b.put_yard(Defs.O_PICKUP if rng.randf() < 0.7 else Defs.O_CAR_WRECK, hw + 4, b.ch - 9, 0)
 	b.put_yard(Defs.O_COOP, hw + 8, b.ch - 5, 2)
 	b.put_yard(Defs.O_WELL, hw + 7, b.ch - 9, 0)
 

@@ -6,8 +6,26 @@ extends RefCounted
 
 const DIRS := [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 const TANK := 12.0
+## per type: road / off-road top speed (tiles/s), tank, fuel per tile, protection from attacks,
+## engine noise radius, crash severity, whether it has an engine, whether it can tow
+const TYPES := {
+	Defs.O_CAR: {"n": "car", "road": 9.5, "off": 4.6, "tank": 12.0, "use": 0.004, "prot": 0.85, "noise": 10.0, "crash": 1.0, "motor": true, "tow": true},
+	Defs.O_VAN: {"n": "van", "road": 8.0, "off": 4.0, "tank": 16.0, "use": 0.006, "prot": 0.9, "noise": 12.0, "crash": 0.85, "motor": true, "tow": true},
+	Defs.O_PICKUP: {"n": "pickup", "road": 8.8, "off": 6.4, "tank": 14.0, "use": 0.005, "prot": 0.8, "noise": 12.0, "crash": 0.9, "motor": true, "tow": true},
+	Defs.O_MOTORBIKE: {"n": "motorcycle", "road": 12.5, "off": 5.6, "tank": 5.0, "use": 0.002, "prot": 0.0, "noise": 13.0, "crash": 2.2, "motor": true, "tow": false},
+	Defs.O_BICYCLE: {"n": "bicycle", "road": 5.6, "off": 3.4, "tank": 0.0, "use": 0.0, "prot": 0.0, "noise": 0.0, "crash": 1.6, "motor": false, "tow": false},
+}
+const TOWABLE := [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_CAR_WRECK]
+
+static func is_vehicle(id: int) -> bool:
+	return TYPES.has(id)
+
+static func tank_of(id: int) -> float:
+	return float(TYPES.get(id, TYPES[Defs.O_CAR])["tank"])
 
 var sim: Sim
+var oid := Defs.O_CAR
+var tow: Dictionary = {}         # a vehicle on the hitch: {"o", "ent", "trunk", "tk"}
 var pos := Vector2.ZERO          # centre of the 2x4 footprint
 var heading := 0
 var speed := 0.0                 # tiles per second along the heading (negative = reversing)
@@ -24,6 +42,9 @@ static func car_ent(sim: Sim, ax: int, ay: int) -> Dictionary:
 	if e.is_empty():
 		e = {"k": "car", "fuel": Rng.h2(ax, ay, sim.seed_v + 55) % 7}
 		w.set_ent(ax, ay, e)
+	var tid: int = Defs.o_id(w.obj(ax, ay))
+	if tid == Defs.O_BICYCLE and not e.has("eng"):
+		e.merge({"eng": 1.0, "bat": 1, "key": 1, "hot": 0, "tire": 0.6 + float(Rng.h2(ax, ay, 3) % 40) / 100.0, "win": 1.0, "lit": 0, "fuel": 0.0})
 	if not e.has("eng"):
 		var hv: int = Rng.h2(ax, ay, sim.seed_v + 57)
 		e["eng"] = 0.35 + float(hv % 60) / 100.0
@@ -31,10 +52,20 @@ static func car_ent(sim: Sim, ax: int, ay: int) -> Dictionary:
 		e["key"] = 1 if (hv >> 16) % 100 < 30 else 0
 		e["hot"] = 0
 		e["tire"] = 0.5 + float((hv >> 4) % 50) / 100.0
+	if not e.has("win"):
+		e["win"] = 1.0
+		e["lit"] = 1
+	e["fuel"] = minf(float(e.get("fuel", 0.0)), tank_of(tid)) if TYPES.has(tid) else e.get("fuel", 0.0)
 	return e
 
+func spec() -> Dictionary:
+	return TYPES.get(oid, TYPES[Defs.O_CAR])
+
+func motor() -> bool:
+	return bool(spec()["motor"])
+
 func size() -> Vector2:
-	return Vector2(2, 4) if heading % 2 == 0 else Vector2(4, 2)
+	return Vector2(Defs.obj_size(oid, heading))
 
 func anchor_f() -> Vector2:
 	return pos - size() * 0.5
@@ -78,9 +109,16 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 	var w: World = sim.world
 	_turn_cd = maxf(0.0, _turn_cd - dt)
 	var eng: float = ent.get("eng", 0.5)
-	var has_fuel: bool = float(ent.get("fuel", 0.0)) > 0.0 and eng > 0.05
+	var sp: Dictionary = spec()
+	var p: Player = sim.player
+	var has_fuel: bool = (float(ent.get("fuel", 0.0)) > 0.0 and eng > 0.05) if motor() else p.endurance > 3.0
 	var on_road: bool = Defs.ground_is_road(w.ground(floori(pos.x), floori(pos.y)))
-	var vmax: float = (9.5 if on_road else 4.6) * (0.55 + eng * 0.45) * (0.7 + float(ent.get("tire", 1.0)) * 0.3)
+	var tire: float = float(ent.get("tire", 1.0))
+	var vmax: float = (float(sp["road"]) if on_road else float(sp["off"])) * (0.55 + eng * 0.45) * (0.7 + tire * 0.3)
+	if tire < 0.15: vmax *= 0.35            # running on a flat
+	if not tow.is_empty(): vmax *= 0.6
+	if not motor():
+		vmax *= 0.7 + p.endurance / 330.0
 	var want := 0.0
 	if move_screen.length() > 0.25 and has_fuel and not braking:
 		var wd: Vector2 = Iso.screen_dir_to_world(move_screen)
@@ -113,12 +151,7 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 		var b: int = _blocked_at(np)
 		if b == 2:
 			if absf(speed) > 2.5:
-				ent["eng"] = maxf(0.0, eng - absf(speed) * 0.012)
-				sim.emit_fx("break", pos)
-				sim.noise(pos, 22.0)
-				sim.player.hurt(maxf(0.0, absf(speed) - 5.0) * 2.0, "Died in a crash")
-				if absf(speed) > 6.0:
-					sim.say("You hit hard. The engine does not like that.", Color(1.0, 0.7, 0.5))
+				crash(absf(speed))
 			speed = -speed * 0.2
 		else:
 			if b == 1:
@@ -127,24 +160,71 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 				ent["eng"] = maxf(0.0, eng - 0.01)
 				sim.emit_fx("break", pos)
 			pos = np
-		ent["fuel"] = maxf(0.0, float(ent.get("fuel", 0.0)) - absf(speed) * dt * 0.004)
-		if float(ent["fuel"]) <= 0.0:
-			sim.say("The engine dies. Out of fuel.", Color(1.0, 0.8, 0.5))
+		if motor():
+			ent["fuel"] = maxf(0.0, float(ent.get("fuel", 0.0)) - absf(speed) * dt * float(sp["use"]) * (1.6 if not tow.is_empty() else 1.0))
+			if float(ent["fuel"]) <= 0.0:
+				sim.say("The engine dies. Out of fuel.", Color(1.0, 0.8, 0.5))
+		else:
+			p.endurance = maxf(0.0, p.endurance - absf(speed) * dt * 0.55 * (1.0 - p.skill_level("fitness") * 0.05))
+			p.add_xp("fitness", absf(speed) * dt * 0.02)
 	# anything walking in front of a moving car
 	if absf(speed) > 2.0:
 		var half: Vector2 = size() * 0.5 + Vector2(0.25, 0.25)
 		for z in sim.zombies.list.duplicate():
 			var d: Vector2 = z.pos - pos
 			if absf(d.x) < half.x and absf(d.y) < half.y:
-				sim.zombies.damage(z, absf(speed) * 20.0, pos - DIRS[heading] * signf(speed), 1.2, true, false)
+				sim.zombies.damage(z, absf(speed) * (20.0 if size().x + size().y > 3.0 else 9.0), pos - DIRS[heading] * signf(speed), 1.2, true, false)
 				ent["eng"] = maxf(0.0, float(ent["eng"]) - 0.004 * absf(speed))
 				speed *= 0.9
+				if size().x + size().y <= 3.0 and absf(speed) > 2.0:
+					# on two wheels a body in the road puts you on the ground
+					speed = 0.0
+					sim.say("You go over the handlebars.", Color(1.0, 0.6, 0.45))
+					if not sim.settings.get("god", false):
+						p.hurt(8.0, "Thrown from a bike")
+						p.add_wound(Rng.pick_weighted(sim.rng, Player.HIT_WEIGHTS), "laceration", "the road")
+					break
+		for a in sim.animals.list.duplicate():
+			var da: Vector2 = a.pos - pos
+			if absf(da.x) < half.x and absf(da.y) < half.y:
+				sim.animals.damage(a, absf(speed) * 15.0, pos)
 	_noise_t -= dt
-	if _noise_t <= 0.0 and has_fuel:
+	if _noise_t <= 0.0 and has_fuel and motor():
 		_noise_t = 0.5
-		sim.noise(pos, 10.0 + absf(speed) * 1.7)
+		sim.noise(pos, float(sp["noise"]) + absf(speed) * 1.7)
 		if absf(speed) > 0.5:
 			sim.emit_fx("engine", pos)
+	elif not motor() and absf(speed) > 0.5:
+		_noise_t = maxf(_noise_t, 0.0)
+		if _noise_t <= 0.0:
+			_noise_t = 0.5
+			sim.noise(pos, 2.5)
+
+## a hard stop: hurt the driver and whatever parts take it
+func crash(v: float) -> void:
+	var sp: Dictionary = spec()
+	var eng: float = ent.get("eng", 0.5)
+	ent["eng"] = maxf(0.0, eng - v * 0.012 * (1.0 if motor() else 0.0))
+	sim.emit_fx("break", pos)
+	sim.noise(pos, 22.0 if motor() else 8.0)
+	var harm: float = maxf(0.0, v - 5.0) * 2.0 * float(sp["crash"])
+	if not motor(): harm = maxf(harm, (v - 2.5) * 3.0)
+	if harm > 0.0:
+		sim.player.hurt(harm, "Died in a crash")
+		if harm > 12.0 and randf() < 0.35:
+			sim.player.add_wound(Rng.pick_weighted(sim.rng, Player.HIT_WEIGHTS), "fracture" if harm > 22.0 else "laceration", "the crash")
+	var parts: Array = []
+	if randf() < 0.4 + v * 0.03:
+		ent["tire"] = maxf(0.0, float(ent.get("tire", 1.0)) - 0.12 - v * 0.015)
+		parts.append("tyres")
+	if motor() and randf() < 0.25 + v * 0.03:
+		ent["win"] = maxf(0.0, float(ent.get("win", 1.0)) - 0.34)
+		parts.append("glass")
+	if motor() and int(ent.get("lit", 1)) == 1 and randf() < 0.2 + v * 0.03:
+		ent["lit"] = 0
+		parts.append("headlights")
+	if v > 6.0 or parts.size() > 0:
+		sim.say("You hit hard.%s" % ((" Damaged: " + ", ".join(parts) + ".") if parts.size() > 0 else ""), Color(1.0, 0.7, 0.5))
 
 # ------------------------------------------------------------------ enter / exit
 static func enter(sim: Sim, ax: int, ay: int) -> Vehicle:
@@ -154,6 +234,7 @@ static func enter(sim: Sim, ax: int, ay: int) -> Vehicle:
 	var rot: int = Defs.o_rot(cell)
 	var v := Vehicle.new()
 	v.sim = sim
+	v.oid = id
 	v.heading = rot
 	v.ent = car_ent(sim, ax, ay)
 	v.tint_key = Vector2i(ax, ay)
@@ -181,9 +262,13 @@ func park() -> bool:
 		for i in range(int(s.x)):
 			if w.obj(ax + i, ay + j) != 0 or w.tile_blocked(ax + i, ay + j):
 				return false
+	if not tow.is_empty() and not _tow_room(ax, ay):
+		return false
 	for j in range(int(s.y)):
 		for i in range(int(s.x)):
-			w.set_obj(ax + i, ay + j, Defs.ocell(Defs.O_CAR, heading, j * int(s.x) + i))
+			w.set_obj(ax + i, ay + j, Defs.ocell(oid, heading, j * int(s.x) + i))
+	if not tow.is_empty():
+		_drop_tow(ax, ay)
 	w.set_ent(ax, ay, ent)
 	var c: Chunk = w.chunk_at(ax, ay)
 	c.containers[World.idx(ax, ay)] = trunk
@@ -191,8 +276,79 @@ func park() -> bool:
 	pos = Vector2(ax, ay) + s * 0.5
 	return true
 
+# ------------------------------------------------------------------ towing
+## where a towed 2x4 sits: directly behind, same heading
+func tow_anchor(ax: int, ay: int) -> Vector2i:
+	var d: Vector2 = DIRS[heading]
+	return Vector2i(ax - int(d.x) * 4, ay - int(d.y) * 4) if d.x + d.y > 0.0 else Vector2i(ax - int(d.x) * int(size().x), ay - int(d.y) * int(size().y))
+
+func _tow_room(ax: int, ay: int) -> bool:
+	var t: Vector2i = tow_anchor(ax, ay)
+	var fs: Vector2i = Defs.obj_size(int(tow["o"]), heading)
+	for j in range(fs.y):
+		for i in range(fs.x):
+			if sim.world.obj(t.x + i, t.y + j) != 0 or sim.world.tile_blocked(t.x + i, t.y + j):
+				return false
+	return true
+
+func _drop_tow(ax: int, ay: int) -> void:
+	var w: World = sim.world
+	var t: Vector2i = tow_anchor(ax, ay)
+	var tid: int = tow["o"]
+	var fs: Vector2i = Defs.obj_size(tid, heading)
+	for j in range(fs.y):
+		for i in range(fs.x):
+			w.set_obj(t.x + i, t.y + j, Defs.ocell(tid, heading, j * fs.x + i))
+	if not (tow.get("ent", {}) as Dictionary).is_empty():
+		w.set_ent(t.x, t.y, tow["ent"])
+	var c: Chunk = w.chunk_at(t.x, t.y)
+	c.containers[World.idx(t.x, t.y)] = tow.get("trunk", [])
+	c.touched = true
+	tow = {}
+
+## a vehicle standing right behind this one (its anchor), or (-1,-1)
+func behind() -> Vector2i:
+	var w: World = sim.world
+	var back: Vector2 = pos - DIRS[heading] * (size().y if heading % 2 == 0 else size().x) * 0.5 - DIRS[heading] * 1.2
+	for k in range(3):
+		var q: Vector2 = back - DIRS[heading] * float(k)
+		var cell: int = w.obj(floori(q.x), floori(q.y))
+		if cell != 0 and TOWABLE.has(Defs.o_id(cell)):
+			return w.anchor_of(floori(q.x), floori(q.y))
+	return Vector2i(-1, -1)
+
+func hitch(ax: int, ay: int) -> bool:
+	if not spec()["tow"] or not tow.is_empty():
+		return false
+	var w: World = sim.world
+	var cell: int = w.obj(ax, ay)
+	var tid: int = Defs.o_id(cell)
+	if not TOWABLE.has(tid):
+		return false
+	var c: Chunk = w.chunk_at(ax, ay)
+	var ai: int = World.idx(ax, ay)
+	tow = {"o": tid, "ent": c.ents.get(ai, {}), "trunk": w.container_at(ax, ay), "tk": Vector2i(ax, ay)}
+	c.containers.erase(ai)
+	c.ents.erase(ai)
+	var fs: Vector2i = Defs.obj_size(tid, Defs.o_rot(cell))
+	for j in range(fs.y):
+		for i in range(fs.x):
+			w.set_obj(ax + i, ay + j, 0)
+	return true
+
+func unhitch() -> bool:
+	if tow.is_empty() or absf(speed) > 0.5:
+		return false
+	var a: Vector2 = anchor_f()
+	var ax: int = roundi(a.x)
+	var ay: int = roundi(a.y)
+	if not _tow_room(ax, ay):
+		return false
+	_drop_tow(ax, ay)
+	return true
+
 func save() -> Dictionary:
-	return {"pos": pos, "h": heading, "ent": ent, "trunk": trunk, "tk": tint_key}
+	return {"pos": pos, "h": heading, "ent": ent, "trunk": trunk, "tk": tint_key, "o": oid, "tow": tow}
 
 static func from_save(sim: Sim, d: Dictionary) -> Vehicle:
 	var v := Vehicle.new()
@@ -202,4 +358,6 @@ static func from_save(sim: Sim, d: Dictionary) -> Vehicle:
 	v.ent = d["ent"]
 	v.trunk = d.get("trunk", [])
 	v.tint_key = d.get("tk", Vector2i.ZERO)
+	v.oid = d.get("o", Defs.O_CAR)
+	v.tow = d.get("tow", {})
 	return v

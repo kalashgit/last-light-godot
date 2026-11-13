@@ -389,6 +389,8 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		if weight < 68.0: regen *= 0.8
 		elif weight < 75.0: regen *= 0.92
 		regen *= 1.0 - minf(discomfort() * 0.05, 0.3)
+		if sim.vehicle != null and not sim.vehicle.motor() and absf(sim.vehicle.speed) > 0.5:
+			regen = 0.0                    # pedalling is work, not rest
 		endurance = minf(100.0 if weight >= 60.0 else 85.0, endurance + regen * dt)
 	if running:
 		kcal -= dt * 0.11
@@ -747,7 +749,7 @@ func add_wound(part: int, type: String, cause: String = "") -> void:
 func take_zombie_hit(z: Zombie) -> void:
 	if not alive or sim.settings.get("god", false):
 		return
-	if sim.vehicle != null and randf() < 0.85:
+	if sim.vehicle != null and randf() < float(sim.vehicle.spec()["prot"]) * (0.45 + 0.55 * float(sim.vehicle.ent.get("win", 1.0))):
 		# they claw at the bodywork instead
 		sim.vehicle.ent["eng"] = maxf(0.0, float(sim.vehicle.ent.get("eng", 0.5)) - 0.006)
 		sim.emit_fx("thump", pos)

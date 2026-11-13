@@ -122,7 +122,10 @@ static func interact(sim: Sim, full_menu: bool = false) -> void:
 		sim.wake("You get up.")
 		return
 	if sim.vehicle != null:
-		exit_vehicle(sim)
+		if full_menu:
+			sim.ui_events.append({"type": "menu", "title": "The %s" % String(sim.vehicle.spec()["n"]), "options": vehicle_menu(sim)})
+		else:
+			exit_vehicle(sim)
 		return
 	if not p.dragging.is_empty():
 		_drop_corpse(sim)
@@ -422,8 +425,9 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
 		"car":
 			out.append_array(_car_options(sim, a.x, a.y))
-			out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
-			out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
+			if id != Defs.O_BICYCLE:
+				out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
+				out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
 		"gas_pump":
 			out.append(_opt("Fill gas can", func():
 				if not sim.has_power(x, y):
@@ -624,9 +628,20 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 	var p: Player = sim.player
 	var e: Dictionary = Vehicle.car_ent(sim, ax, ay)
 	var out: Array = []
+	var tid: int = Defs.o_id(sim.world.obj(ax, ay))
+	var tank: float = Vehicle.tank_of(tid)
+	if tid == Defs.O_BICYCLE:
+		out.append(_opt("Ride the bicycle", func():
+			p.cancel_action()
+			sim.vehicle = Vehicle.enter(sim, ax, ay)
+			sim.brake = false
+			sim.say("Quiet, and it runs on you. Watch your stamina.", Color(0.75, 0.9, 0.7))))
+		if float(e.get("tire", 1.0)) < 0.9 and Inv.count(p.inv, "duct_tape") > 0:
+			out.append(_opt("Patch the tyres (duct tape)", func(): _patch_tyre(sim, e)))
+		return out
 	var can_start: bool = int(e.get("key", 0)) == 1 or int(e.get("hot", 0)) == 1
 	if can_start:
-		out.append(_opt("Drive", func():
+		out.append(_opt("Ride" if tid == Defs.O_MOTORBIKE else "Drive", func():
 			if int(e.get("bat", 0)) == 0:
 				sim.say("You turn the key. Nothing — the battery is dead or missing.", Color(0.9, 0.8, 0.6))
 				return
@@ -654,13 +669,32 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				p.add_xp("mechanics", 10.0)
 				sim.say("Battery connected.", Color(0.75, 0.9, 0.7)))))
 	var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
-	if not can.is_empty() and int(can.get("u", 0)) > 0 and float(e.get("fuel", 0.0)) < Vehicle.TANK - 0.5:
+	if not can.is_empty() and int(can.get("u", 0)) > 0 and float(e.get("fuel", 0.0)) < tank - 0.5:
 		out.append(_opt("Refuel from gas can", func():
 			p.start_action("Refuelling", 4.0, func():
-				var n: float = minf(float(int(can.get("u", 0))), Vehicle.TANK - float(e.get("fuel", 0.0)))
+				var n: float = minf(float(int(can.get("u", 0))), tank - float(e.get("fuel", 0.0)))
 				can["u"] = int(can.get("u", 0)) - int(ceil(n))
 				e["fuel"] = float(e.get("fuel", 0.0)) + n
-				sim.say("Tank: %d / %d" % [int(float(e["fuel"])), int(Vehicle.TANK)], Color(0.75, 0.9, 0.7)))))
+				sim.say("Tank: %d / %d" % [int(float(e["fuel"])), int(tank)], Color(0.75, 0.9, 0.7)))))
+	if float(e.get("tire", 1.0)) < 0.9 and Inv.count(p.inv, "duct_tape") > 0:
+		out.append(_opt("Patch the tyres (duct tape)", func(): _patch_tyre(sim, e)))
+	if float(e.get("win", 1.0)) < 0.99 and Inv.count(p.inv, "glass_pane") > 0:
+		out.append(_opt("Fit a new window (glass pane)", func():
+			p.start_action("Fitting glass", 7.0, func():
+				if not Inv.take(p.inv, "glass_pane", 1): return
+				e["win"] = minf(1.0, float(e.get("win", 1.0)) + 0.34)
+				p.add_xp("mechanics", 12.0)
+				sim.say("Windows: %d%%" % int(float(e["win"]) * 100.0), Color(0.75, 0.9, 0.7)))))
+	if int(e.get("lit", 1)) == 0 and Inv.count(p.inv, "wire") > 0:
+		out.append(_opt("Rewire the headlights (wire)", func():
+			if p.skill_level("electrical") < 1:
+				sim.say("You need Electrical 1 to trace the fault.", Color(0.9, 0.8, 0.6))
+				return
+			p.start_action("Rewiring", 6.0, func():
+				if not Inv.take(p.inv, "wire", 1): return
+				e["lit"] = 1
+				p.add_xp("electrical", 16.0)
+				sim.say("The headlights work again.", Color(0.75, 0.9, 0.7)))))
 	if float(e.get("eng", 1.0)) < 0.95 and Inv.has_tag(p.inv, "wrench") and Inv.count(p.inv, "scrap_metal") > 0:
 		out.append(_opt("Repair engine (1 scrap metal)", func():
 			p.start_action("Repairing engine", 9.0 - p.skill_level("mechanics") * 0.5, func():
@@ -672,9 +706,55 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				sim.noise(p.pos, 8.0)
 				sim.emit_fx("build", p.pos)
 				sim.say("Engine condition: %d%%" % int(float(e["eng"]) * 100.0), Color(0.75, 0.9, 0.7)))))
-	out.append(_opt("Look it over", func():
-		sim.say("Fuel %d/%d · engine %d%% · tyres %d%% · battery %s · %s" % [int(float(e.get("fuel", 0.0))), int(Vehicle.TANK), int(float(e.get("eng", 0.0)) * 100.0),
-			int(float(e.get("tire", 1.0)) * 100.0), "ok" if int(e.get("bat", 0)) == 1 else "dead", "key in the ignition" if int(e.get("key", 0)) == 1 else ("hotwired" if int(e.get("hot", 0)) == 1 else "no key")], Color(0.85, 0.88, 0.8))))
+	out.append(_opt("Look it over", func(): sim.say(condition_text(e, tid), Color(0.85, 0.88, 0.8))))
+	return out
+
+static func condition_text(e: Dictionary, tid: int) -> String:
+	var t: String = "Fuel %d/%d · engine %d%% · tyres %d%%" % [int(float(e.get("fuel", 0.0))), int(Vehicle.tank_of(tid)), int(float(e.get("eng", 0.0)) * 100.0), int(float(e.get("tire", 1.0)) * 100.0)]
+	if tid != Defs.O_MOTORBIKE:
+		t += " · windows %d%%" % int(float(e.get("win", 1.0)) * 100.0)
+	t += " · lights %s · battery %s · %s" % ["ok" if int(e.get("lit", 1)) == 1 else "broken", "ok" if int(e.get("bat", 0)) == 1 else "dead",
+		"key in the ignition" if int(e.get("key", 0)) == 1 else ("hotwired" if int(e.get("hot", 0)) == 1 else "no key")]
+	return t
+
+static func _patch_tyre(sim: Sim, e: Dictionary) -> void:
+	var p: Player = sim.player
+	p.start_action("Patching tyres", 5.0, func():
+		var tape: Dictionary = Inv.find(p.inv, "duct_tape")
+		if tape.is_empty(): return
+		Inv.use_charge(p.inv, tape)
+		e["tire"] = minf(0.85, float(e.get("tire", 0.0)) + 0.3 + p.skill_level("mechanics") * 0.03)
+		p.add_xp("mechanics", 8.0)
+		sim.say("Tyres: %d%%. A patch is never as good as new." % int(float(e["tire"]) * 100.0), Color(0.75, 0.9, 0.7)))
+
+## long-press USE while inside
+static func vehicle_menu(sim: Sim) -> Array:
+	var v: Vehicle = sim.vehicle
+	var out: Array = []
+	out.append(_opt("Get out", func(): exit_vehicle(sim)))
+	out.append(_opt("Look it over", func(): sim.say(condition_text(v.ent, v.oid), Color(0.85, 0.88, 0.8))))
+	if v.motor() and v.size().x + v.size().y > 3.0 and absf(v.speed) < 0.5:
+		out.append(_opt("Sleep in the seat", func():
+			if sim.player.fatigue < 20.0:
+				sim.say("You are not tired enough to sleep", Color(0.8, 0.8, 0.9))
+				return
+			sim.start_sleep(0.55)))
+	if v.tow.is_empty() and bool(v.spec()["tow"]):
+		var b: Vector2i = v.behind()
+		if b.x != -1 or b.y != -1:
+			out.append(_opt("Hitch the %s behind you" % String(Defs.obj(Defs.o_id(sim.world.obj(b.x, b.y)))["n"]).to_lower(), func():
+				if absf(v.speed) > 0.5:
+					sim.say("Stop first", Color(0.9, 0.8, 0.6))
+					return
+				if v.hitch(b.x, b.y):
+					sim.noise(v.pos, 8.0)
+					sim.say("Chained on. Slow and thirsty, but it moves.", Color(0.75, 0.9, 0.7))))
+	elif not v.tow.is_empty():
+		out.append(_opt("Unhitch the %s" % String(Defs.obj(int(v.tow["o"]))["n"]).to_lower(), func():
+			if not v.unhitch():
+				sim.say("Stop somewhere with room behind you", Color(0.9, 0.8, 0.6))
+			else:
+				sim.say("Unhitched.", Color(0.8, 0.85, 0.9))))
 	return out
 
 static func _hotwire(sim: Sim, e: Dictionary) -> void:
@@ -708,7 +788,7 @@ static func exit_vehicle(sim: Sim) -> bool:
 	sim.brake = false
 	# step out on whichever side is free
 	var side: Vector2 = Vector2(Vehicle.DIRS[v.heading].y, -Vehicle.DIRS[v.heading].x)
-	var half: float = 1.0 + 0.6
+	var half: float = v.size().x * 0.5 + 0.6 if v.heading % 2 == 0 else v.size().y * 0.5 + 0.6
 	for sgn in [1.0, -1.0]:
 		for along in [0.0, 1.0, -1.0, 1.6, -1.6]:
 			var t: Vector2 = v.pos + side * half * sgn + Vehicle.DIRS[v.heading] * along
@@ -1444,7 +1524,7 @@ static func movable(sim: Sim, ax: int, ay: int) -> bool:
 		return false
 	var id: int = Defs.o_id(cell)
 	var d: Dictionary = Defs.obj(id)
-	if id == Defs.O_CAR or id == Defs.O_CAR_WRECK or id == Defs.O_DUMPSTER or id == Defs.O_COOP or id == Defs.O_SIGN:
+	if Vehicle.is_vehicle(id) or id == Defs.O_CAR_WRECK or id == Defs.O_DUMPSTER or id == Defs.O_COOP or id == Defs.O_SIGN:
 		return false
 	var e: Dictionary = sim.world.ent(ax, ay)
 	if e.get("lit", false) or e.get("on", false):

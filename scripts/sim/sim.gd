@@ -448,7 +448,7 @@ func place_name(pos: Vector2) -> String:
 	for dy in range(-3, 4):
 		for dx in range(-3, 4):
 			var id: int = Defs.o_id(world.obj(floori(pos.x) + dx, floori(pos.y) + dy))
-			if id == Defs.O_CAR: return "a car"
+			if Vehicle.is_vehicle(id): return "a " + String(Vehicle.TYPES[id]["n"])
 			if id == Defs.O_WELL: return "a well"
 			if id == Defs.O_GENERATOR: return "a generator"
 	return "open ground"

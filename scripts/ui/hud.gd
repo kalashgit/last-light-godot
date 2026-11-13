@@ -92,7 +92,7 @@ func _layout() -> void:
 		_btn["place_no"] = [Vector2(safe.get_center().x + 70, py), 50.0]
 	if not p.carrying.is_empty():
 		_btn["turn"] = [Vector2(r - 262, b - 176), 34.0]
-	if sim.vehicle != null:
+	if sim.vehicle != null and sim.vehicle.motor():
 		_btn["horn"] = [Vector2(r - 168, b - 198), 36.0]
 	_scale_buttons()
 
@@ -477,9 +477,10 @@ func _draw() -> void:
 		var vy: float = safe.end.y - (300.0 if portrait else 70.0)
 		draw_rect(Rect2(vx - 10, vy - 26, 280, 62), Color(0.04, 0.05, 0.05, 0.6))
 		_txt("%d km/h%s" % [int(absf(veh.speed) * 9.0), "  R" if veh.speed < -0.1 else ""], Vector2(vx, vy), 20, UiKit.ACCENT)
-		_txt("engine %d%%" % int(float(veh.ent.get("eng", 0.0)) * 100.0), Vector2(vx + 140, vy), 15, UiKit.DIM)
-		_txt("fuel", Vector2(vx, vy + 24), 14, UiKit.DIM)
-		var fu: float = float(veh.ent.get("fuel", 0.0)) / Vehicle.TANK
+		if veh.motor():
+			_txt("engine %d%%%s" % [int(float(veh.ent.get("eng", 0.0)) * 100.0), "  +tow" if not veh.tow.is_empty() else ""], Vector2(vx + 140, vy), 15, UiKit.DIM)
+		_txt("fuel" if veh.motor() else "legs", Vector2(vx, vy + 24), 14, UiKit.DIM)
+		var fu: float = float(veh.ent.get("fuel", 0.0)) / maxf(1.0, Vehicle.tank_of(veh.oid)) if veh.motor() else p.endurance / 100.0
 		_bar(Vector2(vx + 40, vy + 12), 210, 12, fu, Color(0.8, 0.3, 0.25) if fu < 0.15 else Color(0.82, 0.76, 0.45))
 	else:
 		_round_btn("attack", atk, Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)

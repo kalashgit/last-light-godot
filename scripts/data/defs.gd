@@ -256,7 +256,11 @@ const O_GRAVE := 110
 const O_TROUGH := 111
 const O_STAIRS := 112
 const O_SPIKES := 113
-const O_COUNT := 114
+const O_VAN := 114
+const O_PICKUP := 115
+const O_MOTORBIKE := 116
+const O_BICYCLE := 117
+const O_COUNT := 118
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -307,6 +311,10 @@ static func _static_init() -> void:
 	_o(O_SIGN, {"n": "Sign", "solid": 0.1, "h": 64, "hp": 200, "use": "sign", "scrap": [["plank", 1]]})
 	_o(O_GAS_PUMP, {"n": "Fuel pump", "h": 56, "use": "gas_pump", "hp": 400})
 	_o(O_CAR, {"n": "Car", "sz": [2, 4], "h": 44, "c": "car", "cap": 30, "tint": 1, "hp": 900, "use": "car"})
+	_o(O_VAN, {"n": "Van", "sz": [2, 4], "h": 58, "c": "car", "cap": 70, "tint": 1, "hp": 1000, "use": "car"})
+	_o(O_PICKUP, {"n": "Pickup truck", "sz": [2, 4], "h": 46, "c": "car", "cap": 45, "tint": 1, "hp": 950, "use": "car"})
+	_o(O_MOTORBIKE, {"n": "Motorcycle", "sz": [1, 2], "h": 30, "tint": 1, "hp": 300, "use": "car", "solid": 0.3})
+	_o(O_BICYCLE, {"n": "Bicycle", "sz": [1, 2], "h": 22, "tint": 1, "hp": 80, "use": "car", "solid": 0.2})
 	_o(O_CAR_WRECK, {"n": "Wrecked car", "sz": [2, 4], "h": 44, "c": "car_wreck", "cap": 20, "hp": 900})
 	_o(O_PICNIC_TABLE, {"n": "Picnic table", "h": 26, "sym": 1, "scrap": [["plank", 3], ["nails", 6]]})
 	_o(O_FRIDGE, {"n": "Refrigerator", "h": 62, "c": "fridge", "cap": 30, "use": "fridge", "hp": 200})

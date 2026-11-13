@@ -282,12 +282,32 @@ func _process(_dt: float) -> bool:
 		879:
 			for an2 in sim.animals.list: an2.state = AnimalSim.IDLE
 		881: shot("26_wildlife_day")
-		883:
+		882:
+			sim.animals.list.clear()
+			var vp: Vector2 = sim.player.pos
+			var vw: World = sim.world
+			var row: Array = [[Defs.O_VAN, Vector2i(3, -3)], [Defs.O_PICKUP, Vector2i(6, -3)], [Defs.O_MOTORBIKE, Vector2i(9, -2)], [Defs.O_BICYCLE, Vector2i(11, -2)]]
+			for rv in row:
+				var ax2: int = floori(vp.x) + (rv[1] as Vector2i).x
+				var ay2: int = floori(vp.y) + (rv[1] as Vector2i).y
+				var fs2: Vector2i = Defs.obj_size(rv[0], 0)
+				for jj in range(fs2.y + 1):
+					for ii in range(fs2.x + 1):
+						vw.set_obj(ax2 + ii, ay2 + jj, 0)
+						vw.set_wall(ax2 + ii, ay2 + jj, 0, 0)
+						vw.set_wall(ax2 + ii, ay2 + jj, 1, 0)
+				for jj2 in range(fs2.y):
+					for ii2 in range(fs2.x):
+						vw.set_obj(ax2 + ii2, ay2 + jj2, Defs.ocell(rv[0], 0, jj2 * fs2.x + ii2))
+			sim.player.pos = vp + Vector2(9.0, 2.0)
+			main.view.zoom = 1.8
+		886: shot("27_vehicle_types")
+		888:
 			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		900: shot("20_death")
-		902:
+		905: shot("20_death")
+		907:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

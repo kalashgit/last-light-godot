@@ -374,23 +374,28 @@ func sync(dt: float) -> void:
 
 func _sync_vehicle() -> void:
 	var v: Vehicle = sim.vehicle
+	for cp0 in _vparts:
+		(cp0 as CarPart).visible = false
 	if v == null:
-		for cp in _vparts:
-			(cp as CarPart).visible = false
 		return
-	while _vparts.size() < 8:
+	while _vparts.size() < 16:
 		var n := CarPart.new()
 		n.z_as_relative = false
 		_ents.add_child(n)
 		_vparts.append(n)
-	var s: Vector2 = v.size()
-	var a: Vector2 = v.anchor_f()
-	var tint: Color = CAR_COLORS[Rng.h2(v.tint_key.x, v.tint_key.y, 71) % CAR_COLORS.size()]
 	var k := 0
+	k = _car_parts(v.oid, v.heading, v.anchor_f(), v.tint_key, k, 0)
+	if not v.tow.is_empty():
+		var ta: Vector2i = v.tow_anchor(0, 0)
+		_car_parts(int(v.tow["o"]), v.heading, v.anchor_f() + Vector2(ta), v.tow.get("tk", Vector2i.ZERO), k, k)
+
+func _car_parts(oid: int, heading: int, a: Vector2, tk: Vector2i, k: int, part0: int) -> int:
+	var s: Vector2 = Vector2(Defs.obj_size(oid, heading))
+	var tint: Color = CAR_COLORS[Rng.h2(tk.x, tk.y, 71) % CAR_COLORS.size()] if oid != Defs.O_CAR_WRECK else Color.WHITE
 	for j in range(int(s.y)):
 		for i in range(int(s.x)):
 			var cp: CarPart = _vparts[k]
-			var h: int = Art.obj_spr.get(Defs.ocell(Defs.O_CAR, v.heading, k), -1)
+			var h: int = Art.obj_spr.get(Defs.ocell(oid, heading, k - part0), -1)
 			if cp.h != h or cp.tint != tint:
 				cp.h = h
 				cp.tint = tint
@@ -399,6 +404,7 @@ func _sync_vehicle() -> void:
 			cp.position = Iso.to_screen(a.x + i, a.y + j)
 			cp.z_index = _z(floori(a.x + i + 0.5) + floori(a.y + j + 0.5), 1)
 			k += 1
+	return k
 
 func _sync_animals() -> void:
 	var p: Player = sim.player
@@ -573,7 +579,7 @@ func _draw_row(s: Strip) -> void:
 				var od: Dictionary = Defs.OBJ[o & 1023]
 				var tint := Color.WHITE
 				if od.has("tint"):
-					if (o & 1023) == Defs.O_CAR:
+					if Vehicle.is_vehicle(o & 1023):
 						var a: Vector2i = Vector2i(x, y) - Defs.part_offset(o & 1023, (o >> 10) & 3, (o >> 12) & 15)
 						tint = CAR_COLORS[Rng.h2(a.x, a.y, 71) % CAR_COLORS.size()]
 					else:
