@@ -128,7 +128,7 @@ func _init() -> void:
 	ok(p.wounds.size() > 0, "attack leaves a wound")
 	sim.zombies.list.erase(z2)
 	# hearing
-	var z3: Zombie = sim.zombies.spawn(p.pos + Vector2(0.0, 9.0), 0)
+	var z3: Zombie = sim.zombies.spawn(p.pos + Vector2(0.0, 3.0), 0)      # near enough that walls in between cannot swallow it
 	z3.dir = Vector2(0, 1)
 	sim.settings["god"] = true
 	var saved_pos := p.pos

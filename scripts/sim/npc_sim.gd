@@ -46,6 +46,8 @@ class Npc:
 	var task_pos := Vector2.ZERO
 	var task_t := 0.0
 	var seen_kills := -1
+	var fac := -1                  # faction index, or -1 for a loner
+	var site := Vector2i.ZERO      # region key of their settlement
 
 var sim: Sim
 var list: Array = []
@@ -73,7 +75,7 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 	return n
 
 static func _ser(n: Npc) -> Array:
-	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn]
+	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn, n.fac, n.site]
 
 func _de(a: Array) -> Npc:
 	var n := Npc.new()
@@ -97,6 +99,9 @@ func _de(a: Array) -> Npc:
 		n.job = a[14]
 		n.home = a[15]
 		n.wpn = a[16]
+		if a.size() > 18:
+			n.fac = a[17]
+			n.site = a[18]
 	else:
 		n.temper = TEMPERS[n.id % TEMPERS.size()]
 		n.job = JOBS[n.id % JOBS.size()]
@@ -111,6 +116,7 @@ func on_chunk_loaded(c: Chunk) -> void:
 			var p: Vector2 = sn[0]
 			if not sim.world.blocked(p.x, p.y, 0.2):
 				spawn(p, sn[1])
+		sim.factions.on_chunk_first(c)
 
 func on_chunk_unload(c: Chunk) -> void:
 	var keep: Array = []
@@ -141,14 +147,26 @@ func nearest(p: Vector2, r: float) -> Npc:
 	return best
 
 func damage(n: Npc, dmg: float, by_player: bool) -> void:
+	if not list.has(n):
+		return          # already dead: two attackers in one frame must not kill them twice
 	n.hp -= dmg
 	n.flash = 0.2
 	sim.emit_fx("hit", n.pos)
 	if by_player and n.state != HOSTILE:
 		n.state = HOSTILE
 		sim.say("%s turns on you." % n.name, Color(1.0, 0.6, 0.5))
+	if by_player and n.fac >= 0 and Factions.kind(n.fac) != Factions.RAIDER:
+		sim.factions.add_rep(n.fac, -25.0)
 	if n.hp <= 0.0:
 		list.erase(n)
+		if n.fac >= 0:
+			if by_player and Factions.kind(n.fac) == Factions.RAIDER:
+				# everyone else is glad of it
+				for fi in range(Factions.LIST.size()):
+					if Factions.kind(fi) != Factions.RAIDER: sim.factions.add_rep(fi, 3.0)
+				sim.factions.member_died(n, false)
+			else:
+				sim.factions.member_died(n, by_player)
 		var c: Chunk = sim.world.chunk_at(floori(n.pos.x), floori(n.pos.y))
 		var carried: Array = []
 		for sid in n.stock:
@@ -201,6 +219,8 @@ func _go(n: Npc, target: Vector2, speed: float, dt: float) -> void:
 func update(dt: float, dh: float) -> void:
 	var p: Player = sim.player
 	for n in list.duplicate():
+		if not list.has(n):
+			continue
 		n.anim_t += dt
 		n.atk_cd = maxf(0.0, n.atk_cd - dt)
 		n.swing = maxf(0.0, n.swing - dt)
@@ -242,8 +262,25 @@ func update(dt: float, dh: float) -> void:
 			if n.hp <= 0.0:
 				damage(n, 0.0, false)
 				continue
+		if n.fac >= 0 and n.state != HOSTILE and sim.factions.rep_of(n.fac) < -15.0:
+			n.state = HOSTILE                 # the whole group knows what you did
 		if n.state == HOSTILE:
 			var dp: float = n.pos.distance_to(p.pos)
+			var victim: Npc = null
+			var vd: float = minf(dp, 7.0)
+			for o in list:
+				if o.state != HOSTILE and o.fac != n.fac and o.pos.distance_to(n.pos) < vd and sim.world.los(n.pos.x, n.pos.y, o.pos.x, o.pos.y):
+					vd = o.pos.distance_to(n.pos)
+					victim = o
+			if victim != null:
+				if vd > 0.95:
+					_go(n, victim.pos, 2.6, dt)
+				elif n.atk_cd <= 0.0:
+					n.atk_cd = 1.2
+					n.swing = 0.4
+					n.anim_t = 0.0
+					damage(victim, randf_range(8.0, 14.0), false)
+				continue
 			if p.alive and dp < 11.0 and sim.world.los(n.pos.x, n.pos.y, p.pos.x, p.pos.y):
 				if dp > 0.95:
 					_go(n, p.pos, 2.6, dt)
@@ -285,6 +322,16 @@ func update(dt: float, dh: float) -> void:
 			_go(n, n.task_pos, 4.3, dt)
 			if n.task_t <= 0.0: n.task = ""
 			continue
+		# someone is trying to kill them: hit back
+		var foe: Npc = null
+		for o2 in list:
+			if o2.state == HOSTILE and o2.pos.distance_to(n.pos) < 1.3: foe = o2
+		if foe != null and n.atk_cd <= 0.0:
+			n.atk_cd = 1.0
+			n.swing = 0.4
+			n.anim_t = 0.0
+			damage(foe, randf_range(10.0, 18.0) * (1.4 if n.wpn != "" or n.job == "guard" else 1.0), false)
+			continue
 		# friends fight what is next to them
 		if target != null and td < 1.3 and n.atk_cd <= 0.0:
 			n.atk_cd = 1.0
@@ -315,6 +362,10 @@ func update(dt: float, dh: float) -> void:
 
 ## eat and drink from what they carry; go without and it starts to cost them
 func _needs(n: Npc, dh: float) -> void:
+	var st: Dictionary = sim.factions.site_of(n)
+	if n.hunger > 55.0 and not st.is_empty() and float(st["food"]) > 0.3 and n.state != FOLLOW:
+		st["food"] = float(st["food"]) - 0.3
+		n.hunger = maxf(0.0, n.hunger - 45.0)
 	if n.hunger > 55.0:
 		for sid in n.stock:
 			if EDIBLE.has(sid):
@@ -406,13 +457,14 @@ func options(n: Npc) -> Array:
 	var out: Array = []
 	if n.state == HOSTILE:
 		return out
+	var tr: float = n.trust + (sim.factions.rep_of(n.fac) * 0.4 if n.fac >= 0 else 0.0)
 	out.append({"label": "Talk to %s" % n.name, "fn": func():
 		if not n.met:
 			n.met = true
 			sim.say("%s: \"You're alive. I'd stopped expecting that.\"" % n.name, Color(0.85, 0.85, 0.7))
 		else:
 			sim.say("%s: \"%s\"" % [n.name, LINES[randi() % LINES.size()]], Color(0.85, 0.85, 0.7))
-		sim.say("%s was a %s, is %s by nature, and %s." % [n.name, n.job, n.temper, trust_word(n.trust)], Color(0.75, 0.82, 0.9))
+		sim.say("%s was a %s, is %s by nature, and %s." % [n.name, n.job, n.temper, trust_word(tr)], Color(0.75, 0.82, 0.9))
 		n.trust = minf(100.0, n.trust + 1.0)
 		p.bored = maxf(0.0, p.bored - 20.0)
 		p.unhappy = maxf(0.0, p.unhappy - 8.0)})
@@ -423,7 +475,7 @@ func options(n: Npc) -> Array:
 			n.trust = maxf(0.0, n.trust - 2.0)})
 	if n.state == STAY:
 		out.append({"label": "\"Come with me.\"", "fn": func():
-			if n.trust < 35.0:
+			if tr < 35.0:
 				sim.say("%s: \"I don't know you well enough for that.\"" % n.name, Color(0.85, 0.85, 0.7))
 			elif n.hunger > 85.0:
 				sim.say("%s: \"Not until I've eaten something.\"" % n.name, Color(0.85, 0.85, 0.7))
@@ -437,7 +489,7 @@ func options(n: Npc) -> Array:
 			n.task = ""
 			sim.say("%s: \"I'll hold this spot.\"" % n.name, Color(0.85, 0.85, 0.7))})
 	# what trust buys
-	if n.trust >= 50.0 and n.job == "medic":
+	if tr >= 50.0 and n.job == "medic":
 		var worst: Dictionary = {}
 		for wd in p.wounds:
 			if not wd.get("band", false) and float(wd.get("bleed_h", 0.0)) > 0.0: worst = wd
@@ -447,7 +499,7 @@ func options(n: Npc) -> Array:
 				worst["dirty"] = 0.0
 				worst["heal"] = float(worst.get("heal", 0.0)) * 0.8
 				sim.say("%s cleans and dresses it properly." % n.name, Color(0.75, 0.9, 0.7))})
-	if n.trust >= 55.0 and not sim.flags.has("npc_tip_%d" % n.id):
+	if tr >= 55.0 and not sim.flags.has("npc_tip_%d" % n.id):
 		out.append({"label": "\"What do you know about this area?\"", "fn": func():
 			var tip: Dictionary = {"id": "survivor_note", "n": 1}
 			sim._fill_found_note(tip)
@@ -469,6 +521,8 @@ func options(n: Npc) -> Array:
 					n.trust = minf(100.0, n.trust + 10.0)
 					sim.say("%s takes the %s. They will stand and fight now." % [n.name, String(dw["n"]).to_lower()], Color(0.75, 0.9, 0.7))})
 				break
+	if n.fac >= 0:
+		out.append_array(sim.factions.options(n, tr))
 	# barter: one of theirs for one of yours. They want things that keep a person alive.
 	var offer: Dictionary = {}
 	for it0 in p.inv:
@@ -487,6 +541,7 @@ func options(n: Npc) -> Array:
 				n.stock.erase(want_id)
 				n.stock.append(given["id"])
 				n.trust = minf(100.0, n.trust + 5.0)
+				sim.factions.add_rep(n.fac, 2.0)
 				Inv.add_new(p.inv, want_id, 6 if want_id == "ammo_9mm" else 1, sim.hour)
 				sim.say("%s: \"Fair.\"" % n.name, Color(0.85, 0.85, 0.7))})
 	elif n.met and n.stock.size() > 0:

@@ -232,6 +232,67 @@ func los(ax: float, ay: float, bx: float, by: float) -> bool:
 			tmy += tdy
 	return true
 
+## how much of a sound gets from a to b: 1.0 in the open, less through each wall, shut door or window,
+## and much less between floors. Open doors, broken windows, arches and fences let it through.
+func sound_pass(a: Vector2, b: Vector2) -> float:
+	var la: int = World.level(a.y)
+	var lb: int = World.level(b.y)
+	var k := 1.0
+	if la != lb:
+		k = 0.4
+		b = Vector2(b.x, b.y - float(UNDER) * lb + float(UNDER) * la)
+	var cx: int = floori(a.x)
+	var cy: int = floori(a.y)
+	var ex: int = floori(b.x)
+	var ey: int = floori(b.y)
+	var dx: float = b.x - a.x
+	var dy: float = b.y - a.y
+	var sx: int = 1 if dx > 0.0 else -1
+	var sy: int = 1 if dy > 0.0 else -1
+	var tdx: float = absf(1.0 / dx) if absf(dx) > 0.00001 else 1e20
+	var tdy: float = absf(1.0 / dy) if absf(dy) > 0.00001 else 1e20
+	var tmx: float = ((cx + (1 if dx > 0.0 else 0)) - a.x) / dx if absf(dx) > 0.00001 else 1e20
+	var tmy: float = ((cy + (1 if dy > 0.0 else 0)) - a.y) / dy if absf(dy) > 0.00001 else 1e20
+	var guard := 0
+	while (cx != ex or cy != ey) and guard < 70 and k > 0.2:
+		guard += 1
+		var wx: int
+		var wy: int
+		var side: int
+		if tmx < tmy:
+			var nx: int = cx + sx
+			wx = maxi(cx, nx); wy = cy; side = 1
+			cx = nx
+			tmx += tdx
+		else:
+			var ny: int = cy + sy
+			wx = cx; wy = maxi(cy, ny); side = 0
+			cy = ny
+			tmy += tdy
+		var wid: int = wall(wx, wy, side)
+		if wid == 0 or Defs.wall_is_fence(wid):
+			continue
+		var shape: int = wid & 3
+		var st: int = edge_state(wx, wy, side)
+		if shape == Defs.WS_ARCH or (st & (Defs.ES_OPEN | Defs.ES_BROKEN)) != 0:
+			continue
+		if shape == Defs.WS_DOOR: k *= 0.72
+		elif shape == Defs.WS_WINDOW: k *= 0.8 if (st & Defs.ES_PLANK_MASK) == 0 else 0.65
+		else:
+			var tex: int = Defs.wall_tex(wid)
+			k *= 0.5 if (tex == Defs.WT_BRICK or tex == Defs.WT_CONCRETE) else 0.62
+	return maxf(k, 0.2)
+
+## the radius at which a sound made at `from` with nominal radius r is still heard at `to`
+func heard(from: Vector2, r: float, to: Vector2) -> bool:
+	var lf: int = World.level(from.y)
+	var lt: int = World.level(to.y)
+	var t2: Vector2 = to if lf == lt else Vector2(to.x, to.y - float(UNDER) * lt + float(UNDER) * lf)
+	var d: float = from.distance_to(t2)
+	if d >= r:
+		return false
+	return d < r * sound_pass(from, to)
+
 ## straight walkable line (no walls, solid tiles)
 func walk_clear(ax: float, ay: float, bx: float, by: float) -> bool:
 	var cx: int = floori(ax)

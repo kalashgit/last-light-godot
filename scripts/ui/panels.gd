@@ -872,6 +872,9 @@ func _build_map() -> void:
 	hb.add_child(zi)
 	hb.add_child(zo)
 	body.add_child(hb)
+	for tk in sim.factions.tasks:
+		if tk["state"] == "open":
+			body.add_child(UiKit.label("Work: %d %s for %s — %d h left" % [int(tk["n"]), Items.def(tk["want"])["n"], Factions.fname(int(tk["f"])), maxi(0, int(float(tk["due"]) - sim.hour))], 15, UiKit.ACCENT))
 	body.add_child(UiKit.button("Mark where I am standing", func():
 		sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s (marked day %d)" % [sim.place_name(p.pos).capitalize(), sim.day()])
 		rebuild(), 52))

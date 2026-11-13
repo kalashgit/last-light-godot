@@ -9,6 +9,7 @@ var world: World
 var player: Player
 var zombies: ZombieSim
 var npcs: NpcSim
+var factions: Factions
 var rng := RandomNumberGenerator.new()
 var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
@@ -67,6 +68,7 @@ func _init(world_seed: int) -> void:
 	player = Player.new(self)
 	zombies = ZombieSim.new(self)
 	npcs = NpcSim.new(self)
+	factions = Factions.new(self)
 	world.on_unload = func(c: Chunk):
 		zombies.on_chunk_unload(c)
 		npcs.on_chunk_unload(c)
@@ -365,6 +367,9 @@ func emit_fx(kind: String, pos: Vector2, extra: Dictionary = {}) -> void:
 func noise(pos: Vector2, radius: float, from_zombie: bool = false) -> void:
 	if radius <= 0.5:
 		return
+	# heavy rain drowns out sounds made outdoors
+	if world.bld(floori(pos.x), floori(pos.y)) == 0 and World.level(pos.y) == 0:
+		radius *= 1.0 - float(weather.get("rain", 0.0)) * 0.25
 	noises.append([pos, radius, 0.7, from_zombie])
 
 func wake(reason: String = "") -> void:
@@ -783,6 +788,7 @@ func _update_weather(dh: float) -> void:
 
 # ------------------------------------------------------------------ slow world tick (1 Hz)
 func _slow_tick(dh: float) -> void:
+	factions.tick(dh)
 	generators.clear()
 	fires.clear()
 	for bk in burning.keys():
@@ -1030,9 +1036,10 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save()}
 
 func load_meta(d: Dictionary) -> void:
+	factions.load(d.get("factions", {}))
 	hour = d["hour"]
 	world.hour = hour
 	var st: Dictionary = d.get("settings", {})

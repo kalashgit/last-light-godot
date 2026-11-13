@@ -460,10 +460,18 @@ func _think(z: Zombie, sr: float) -> void:
 		var nr: float = n[1]
 		if n[3] and z.state >= Zombie.INVESTIGATE:
 			continue
-		var d: float = np.distance_to(z.pos)
+		var zp2: Vector2 = z.pos
+		var lvn: int = World.level(np.y)
+		var lvz: int = World.level(z.pos.y)
+		if lvn != lvz:
+			zp2.y += float(lvn - lvz) * World.UNDER       # the same spot one floor up or down
+		var d: float = np.distance_to(zp2)
 		if d < nr and nr - d > best_score:
-			best_score = nr - d
-			best_pos = np
+			# walls, shut doors and floors between them eat part of it
+			var eff: float = nr * sim.world.sound_pass(np, z.pos)
+			if d < eff and eff - d > best_score:
+				best_score = eff - d
+				best_pos = np
 	if best_score > 0.0:
 		z.goal = best_pos + Vector2(randf_range(-1.2, 1.2), randf_range(-1.2, 1.2))
 		z.has_goal = true

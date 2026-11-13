@@ -258,11 +258,11 @@ func _init() -> void:
 	opt(no, "Talk").call()
 	ok(friend.met, "talking introduces you")
 	friend.trust = 10.0
-	opt(no, "\"Come").call()
+	opt(sim.npcs.options(friend), "\"Come").call()
 	ok(friend.state == NpcSim.STAY, "a stranger who does not trust you will not follow")
 	friend.trust = 50.0
 	friend.temper = "brave"
-	opt(no, "\"Come").call()
+	opt(sim.npcs.options(friend), "\"Come").call()
 	ok(friend.state == NpcSim.FOLLOW, "with some trust they agree to follow")
 	p.pos += Vector2(6.0, 5.0)
 	run(sim, 5.0)
@@ -962,6 +962,179 @@ func _init() -> void:
 	sim.npcs.list.clear()
 	p.wounds.clear()
 	p.hp = 100.0
+
+	print("== sound through walls, doors, floors and rain")
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	sim.weather["rain"] = 0.0
+	var sa := Vector2(fx0 + 3.5, fy0 + 34.5)
+	var sb := Vector2(fx0 + 9.5, fy0 + 34.5)
+	ok(absf(w.sound_pass(sa, sb) - 1.0) < 0.001, "in the open, sound carries its full distance")
+	for yy in range(fy0 + 28, fy0 + 41):
+		w.set_wall(fx0 + 6, yy, 1, Defs.wall(Defs.WM_BRICK_RED, Defs.WS_SOLID))
+	var through: float = w.sound_pass(sa, sb)
+	ok(through < 0.6, "a brick wall in the way cuts it (x%.2f)" % through)
+	w.set_wall(fx0 + 6, fy0 + 34, 1, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_DOOR))
+	var shut: float = w.sound_pass(sa, sb)
+	w.set_edge_state(fx0 + 6, fy0 + 34, 1, Defs.ES_OPEN)
+	var open_d: float = w.sound_pass(sa, sb)
+	ok(shut < 1.0 and shut > through and absf(open_d - 1.0) < 0.001, "a shut door muffles less than a wall (x%.2f); an open one not at all" % shut)
+	w.set_wall(fx0 + 6, fy0 + 34, 1, Defs.wall(Defs.WM_BRICK_RED, Defs.WS_SOLID))
+	var zh: Zombie = sim.zombies.spawn(sb, 0)
+	zh.dir = Vector2(1, 0)
+	keep = p.pos
+	p.pos = Vector2(-9999, -9999)
+	sim.noises.clear()
+	sim.noise(sa, 9.0)
+	for i in range(20): sim.zombies.update(1.0 / 30.0)
+	ok(zh.state == Zombie.IDLE or zh.state == Zombie.WANDER, "a noise that would reach 9 tiles is not heard 6 tiles away behind brick")
+	sim.noises.clear()
+	sim.noise(sa, 20.0)
+	for i in range(20): sim.zombies.update(1.0 / 30.0)
+	ok(zh.state == Zombie.INVESTIGATE, "a loud enough one still is")
+	sim.zombies.list.clear()
+	sim.noises.clear()
+	ok(w.sound_pass(sa, Vector2(sa.x + 2.0, sa.y + World.UNDER)) <= 0.4, "the floor between storeys muffles heavily")
+	ok(w.heard(sa, 12.0, Vector2(sa.x + 2.0, sa.y + World.UNDER)) and not w.heard(sa, 4.0, Vector2(sa.x + 2.0, sa.y + World.UNDER)), "a crash upstairs carries down; footsteps do not")
+	sim.weather["rain"] = 1.0
+	var outp := Vector2(fx0 + 1.5, fy0 + 27.5)
+	for yy2 in range(fy0 + 27, fy0 + 43):
+		if w.bld(fx0 + 1, yy2) == 0: outp = Vector2(fx0 + 1.5, yy2 + 0.5)
+	sim.noise(outp, 20.0)
+	ok(float(sim.noises[sim.noises.size() - 1][1]) < 16.0, "heavy rain shortens how far outdoor noise carries (%.0f of 20)" % float(sim.noises[sim.noises.size() - 1][1]))
+	sim.weather["rain"] = 0.0
+	sim.noises.clear()
+	p.pos = keep
+
+	print("== factions and settlements")
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	var F: Factions = sim.factions
+	var home_site: Dictionary = F.site_for(0, 0)
+	ok(not home_site.is_empty() and Factions.kind(int(home_site["f"])) != Factions.RAIDER, "the starting region has a settlement, and it is not a raider camp (%s)" % (Factions.fname(int(home_site["f"])) if not home_site.is_empty() else "none"))
+	var some := 0
+	for rx in range(-2, 3):
+		for ry in range(-2, 3):
+			if not F.site_for(rx, ry).is_empty(): some += 1
+	ok(some >= 8 and some < 25, "settlements are scattered across regions, not everywhere (%d of 25)" % some)
+	F.sites.clear()
+	F.tasks.clear()
+	F.rep.clear()
+	var key1 := Vector2i(50, 50)
+	var s1: Dictionary = F.found(key1, Vector2i(fx0 + 5, fy0 + 34), 2, 3)      # The Wardens
+	var members: Array = []
+	for k in range(3):
+		var mem = sim.npcs.spawn(Vector2(fx0 + 4.5 + k, fy0 + 33.5), false)
+		F.enlist(mem, 2, key1)
+		mem.temper = "brave"
+		mem.stock = []
+		members.append(mem)
+	p.pos = Vector2(fx0 + 5.5, fy0 + 35.5)
+	p.markers.clear()
+	var m0 = members[0]
+	var mo: Array = sim.npcs.options(m0)
+	ok(s1["met"] and p.markers.size() == 1, "meeting a member puts the settlement on your map")
+	ok(opt(mo, "Ask about").is_valid() and opt(mo, "\"Is there anything").is_valid() and opt(mo, "\"Could I sleep").is_valid(), "members speak for the settlement: news, work, shelter")
+	opt(mo, "\"Is there anything").call()
+	var task: Dictionary = F.open_task(key1)
+	ok(not task.is_empty() and absf(float(task["due"]) - sim.hour - 72.0) < 0.01, "asking for work creates a task with a three-day deadline")
+	ok(not opt(sim.npcs.options(m0), "Hand over").is_valid(), "it cannot be handed in without the goods")
+	Inv.add_new(p.inv, task["want"], int(task["n"]) + 1, sim.hour)
+	var have0: int = Inv.count(p.inv, task["want"])
+	var rep0: float = F.rep_of(2)
+	opt(sim.npcs.options(m0), "Hand over").call()
+	ok(task["state"] == "done" and Inv.count(p.inv, task["want"]) == have0 - int(task["n"]) and F.rep_of(2) >= rep0 + 15.0, "delivering it spends the goods and raises your standing with the whole faction (%.0f)" % F.rep_of(2))
+	opt(sim.npcs.options(m0), "\"Is there anything").call()
+	var task2: Dictionary = F.open_task(key1)
+	sim.hour += 80.0
+	var rep1: float = F.rep_of(2)
+	F.tick(0.1)
+	ok(task2["state"] == "expired" and F.rep_of(2) < rep1, "a task left too long expires and costs you standing")
+	# the ledger
+	s1["food"] = 3.0
+	var food_a: float = s1["food"]
+	F.tick(24.0)
+	ok(float(s1["food"]) < food_a, "a settlement eats through its stores (%.1f -> %.1f)" % [food_a, float(s1["food"])])
+	Inv.add_new(p.inv, "cooked_egg", 1, sim.hour)
+	var food_b: float = s1["food"]
+	var gv: Callable = Callable()
+	for o8 in sim.npcs.options(m0):
+		if String(o8["label"]).ends_with("to their stores"): gv = o8["fn"]
+	ok(gv.is_valid(), "food can be given to the stores")
+	if gv.is_valid():
+		gv.call()
+		ok(float(s1["food"]) > food_b, "and goes into the ledger")
+	members[1].hunger = 80.0
+	s1["food"] = 5.0
+	sim.npcs._needs(members[1], 0.01)
+	ok(members[1].hunger < 50.0 and float(s1["food"]) < 5.0, "members eat from the settlement's stores")
+	# raiders and other people
+	var key2 := Vector2i(51, 50)
+	var s3: Dictionary = F.found(key2, Vector2i(fx0 + 9, fy0 + 40), 3, 2)       # Harrow Road Crew
+	var raider = sim.npcs.spawn(Vector2(fx0 + 6.5, fy0 + 36.5), true)
+	F.enlist(raider, 3, key2)
+	raider.hp = 60.0
+	members[2].pos = raider.pos + Vector2(0.8, 0.0)
+	members[2].hp = 100.0
+	sim.settings["god"] = true
+	p.pos = Vector2(fx0 + 1.5, fy0 + 27.5)
+	var tt3 := 0.0
+	while tt3 < 20.0 and sim.npcs.list.has(raider) and sim.npcs.list.has(members[2]):
+		sim.npcs.update(1.0 / 30.0, 0.0)
+		tt3 += 1.0 / 30.0
+	ok(members[2].hp < 100.0 or not sim.npcs.list.has(raider), "a raider attacks other survivors, and they fight back (%.1f s)" % tt3)
+	s1["food"] = 40.0
+	s3["food"] = 2.0
+	s1["met"] = true
+	F._raid()
+	ok(float(s1["food"]) < 40.0 and float(s3["food"]) > 2.0, "raiders take from the nearest settlement while you are away (%.0f left)" % float(s1["food"]))
+	# violence against a member
+	p.pos = members[0].pos + Vector2(-0.8, 0.0)
+	var repv: float = F.rep_of(2)
+	sim.npcs.damage(members[0], 10.0, true)
+	ok(F.rep_of(2) <= repv - 25.0, "striking one of them is held against you by all of them (%.0f)" % F.rep_of(2))
+	F.rep[2] = -30.0
+	sim.npcs.update(1.0 / 30.0, 0.0)
+	var all_hostile := true
+	for mem2 in members:
+		if sim.npcs.list.has(mem2) and mem2.state != NpcSim.HOSTILE: all_hostile = false
+	ok(all_hostile, "with standing that low, every member is hostile on sight")
+	ok(SaveGame.save(sim, slot), "saving factions")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and s2.factions.sites.has(key1) and absf(s2.factions.rep_of(2) + 30.0) < 0.01 and s2.factions.tasks.size() == 2, "settlements, standing and tasks persist")
+	var facs_ok := s2 != null
+	if s2 != null:
+		for nn2 in s2.npcs.list:
+			if nn2.fac != 2 and nn2.fac != 3: facs_ok = false
+	ok(facs_ok, "members keep their allegiance across a reload")
+	# collapse
+	F.rep[2] = 0.0
+	s1["met"] = true
+	var open_before := 0
+	opt(F.options(members[1], 60.0), "\"Is there anything").call() if sim.npcs.list.has(members[1]) else null
+	for mem3 in members:
+		if sim.npcs.list.has(mem3): sim.npcs.damage(mem3, 999.0, false)
+	ok(s1["fallen"] and F.open_task(key1).is_empty(), "when the last member dies the settlement falls and its work is void")
+	sim.npcs.list.clear()
+	F.sites.clear()
+	F.tasks.clear()
+	F.rep.clear()
+	# and for real: walking into the region's site finds people living there
+	var real_site: Dictionary = F.site_for(0, 0)
+	var rc: Vector2i = real_site["c"]
+	keep = p.pos
+	p.pos = Vector2(rc.x + 0.5, rc.y + 0.5)
+	w.stream(p.pos, 2, 999)
+	sim._process_world_events()
+	var living := 0
+	for nn3 in sim.npcs.list:
+		if nn3.fac == int(real_site["f"]): living += 1
+	ok(F.sites.has(Vector2i(0, 0)) and living >= 3, "the generated settlement is populated when you first reach it (%d people of %s)" % [living, Factions.fname(int(real_site["f"]))])
+	p.pos = keep
+	w.stream(p.pos, 3, 999)
+	sim._process_world_events()
+	quiet(sim)
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
 
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
