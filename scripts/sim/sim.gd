@@ -30,6 +30,8 @@ var alarms: Array = []           # [pos, seconds left]
 var alarms_done: Dictionary = {}
 var generators: Array = []       # Vector2i of running generators (loaded chunks)
 var fires: Array = []            # Vector2i of lit campfires (loaded chunks)
+var spikes: Array = []           # Vector2i spike traps near the player
+var _spike_t := 0.0
 var lamps: Array = []            # Vector2i light-emitting objects near the player
 var dead := false
 var vehicle: Vehicle = null       # the car being driven, if any
@@ -502,6 +504,45 @@ func read_note(note: Dictionary) -> void:
 	player.bored = maxf(0.0, player.bored - 10.0)
 	flags["read_note"] = true
 
+func near_roof(pos: Vector2) -> bool:
+	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		if world.bld(floori(pos.x) + d.x, floori(pos.y) + d.y) != 0:
+			return true
+	return false
+
+## spike traps tear up whatever walks over them, and wear out doing it
+func _tick_spikes(dt: float) -> void:
+	if spikes.is_empty():
+		return
+	_spike_t -= dt
+	if _spike_t > 0.0:
+		return
+	_spike_t = 0.4
+	for sp in spikes.duplicate():
+		if Defs.o_id(world.obj(sp.x, sp.y)) != Defs.O_SPIKES:
+			spikes.erase(sp)
+			continue
+		var used := false
+		for z in zombies.list.duplicate():
+			if floori(z.pos.x) == sp.x and floori(z.pos.y) == sp.y and z.state != Zombie.DOWN:
+				zombies.damage(z, 16.0, z.pos, 0.0, randf() < 0.25, false)
+				used = true
+		if player.alive and vehicle == null and floori(player.pos.x) == sp.x and floori(player.pos.y) == sp.y and not player.sneaking and not settings.get("god", false):
+			player.hurt(3.0, "Bled out on your own spikes")
+			if randf() < 0.3:
+				player.add_wound(15 + randi() % 2, "laceration", "a spike trap")
+				say("You step on your own spikes. Sneak across them.", Color(1.0, 0.7, 0.5))
+		if used:
+			var c: Chunk = world.chunk_at(sp.x, sp.y)
+			var i: int = World.idx(sp.x, sp.y)
+			var hp: float = float(c.obj_hp.get(i, 60.0)) - 4.0
+			c.obj_hp[i] = hp
+			c.touched = true
+			if hp <= 0.0:
+				world.remove_object(sp.x, sp.y)
+				spikes.erase(sp)
+				emit_fx("break", Vector2(sp.x + 0.5, sp.y + 0.5))
+
 ## is anything hunting the survivor right now? (fast-forward drops back to normal speed)
 func threatened() -> bool:
 	if not burning.is_empty() and player.alive:
@@ -539,6 +580,7 @@ func tick(dt: float, move_screen: Vector2 = Vector2.ZERO, want_run: bool = false
 		player.update(dt, move_screen, want_run)
 	player.tick_needs(dh)
 	_tick_fire(dt)
+	_tick_spikes(dt)
 	zombies.update(dt)
 	npcs.update(dt, dh)
 	if world.stream(player.pos, 3, 1) == 0:
@@ -746,6 +788,7 @@ func _slow_tick(dh: float) -> void:
 	for bk in burning.keys():
 		fires.append(bk)
 	lamps.clear()
+	spikes.clear()
 	var px: int = floori(player.pos.x)
 	var py: int = floori(player.pos.y)
 	for k in world.chunks.keys():
@@ -766,6 +809,8 @@ func _slow_tick(dh: float) -> void:
 				var o: int = c.obj[i] & 1023
 				if o == Defs.O_STREET_LAMP or o == Defs.O_LAMP:
 					lamps.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
+				elif o == Defs.O_SPIKES:
+					spikes.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
 	var near := 0
 	for cy2 in range((py - 4) >> 4, ((py + 4) >> 4) + 1):
 		for cx2 in range((px - 4) >> 4, ((px + 4) >> 4) + 1):

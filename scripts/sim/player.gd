@@ -421,6 +421,7 @@ func speed_factor() -> float:
 	if slow_t > 0.0: f *= 0.5
 	if weight > 100.0: f *= 0.92
 	if not dragging.is_empty(): f *= 0.55
+	if not carrying.is_empty(): f *= 0.4 if Actions.HEAVY.has(int(carrying["o"])) else 0.6
 	if drunk > 70.0: f *= 0.9
 	for wd in wounds:
 		if is_leg(int(wd["part"])):
@@ -438,6 +439,7 @@ func melee_stats() -> Dictionary:
 		return d["wpn"]
 	return {"dmg": [2, 5], "range": 0.95, "swing": 0.55, "dur": 0, "kb": 1.3, "type": "shove", "noise": 3, "crit": 0.0, "spr": 0}
 
+var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
 var markers: Array = []         # personal map notes: [x, y, label]
 var force_shove := false
 var corpses_near := 0
@@ -463,6 +465,9 @@ func call_out(loud: bool) -> void:
 func try_attack() -> bool:
 	if not dragging.is_empty():
 		sim.say("Drop the body first (USE)", Color(0.9, 0.8, 0.6))
+		return false
+	if not carrying.is_empty():
+		sim.say("Your arms are full — set it down first (USE)", Color(0.9, 0.8, 0.6))
 		return false
 	force_shove = false
 	return _melee_start()
@@ -1321,7 +1326,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1401,6 +1406,7 @@ func load(d: Dictionary) -> void:
 	protein = d.get("protein", 50.0)
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
+	carrying = d.get("carry", {})
 	xp_boost = d.get("boost", {})
 	if int(d.get("parts", 6)) == 6:
 		for wd in wounds:

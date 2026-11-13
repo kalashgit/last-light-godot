@@ -280,6 +280,18 @@ func set_ground(x: int, y: int, g: int) -> void:
 	_touch(c, true)
 	ev_ground.append(Vector2i(c.cx, c.cy))
 
+## every roof the player builds shares one building id: stand under any of it and it is cut away
+const PLAYER_BLD := 0x30000001
+
+func set_roof(x: int, y: int, uid: int) -> void:
+	var c: Chunk = chunk_at(x, y)
+	if c == null:
+		return
+	c.bld[idx(x, y)] = uid
+	c.roof[idx(x, y)] = 0
+	_touch(c, true)
+	notify(x, y)
+
 func set_obj(x: int, y: int, cell: int) -> void:
 	var c: Chunk = chunk_at(x, y)
 	if c == null:

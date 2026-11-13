@@ -7,6 +7,9 @@ const STAY := 0
 const FOLLOW := 1
 const HOSTILE := 2
 const NAMES := ["Mara", "Ilya", "Tomas", "Renee", "Odile", "Jonah", "Priya", "Kasper", "Lena", "Amos", "Wren", "Dario"]
+const TEMPERS := ["brave", "cautious", "generous", "wary"]
+const JOBS := ["medic", "mechanic", "farmer", "hunter", "cook", "guard"]
+const EDIBLE := ["canned_beans", "granola_bar", "canned_corn", "cooked_egg", "berries", "cooked_chicken"]
 const LINES := ["I counted eleven days since I heard a voice that wasn't mine.", "The pharmacy downtown still had shelves when I ran past. Too many of them, though.",
 	"Don't light anything after dark. They see it from the next street.", "My brother went for the farm road. If you see a blue pack, that's his.",
 	"When the engines come over, get under a roof. I learned that one the hard way.", "Cellars. Half the houses here have one. Look for the hatch."]
@@ -31,7 +34,18 @@ class Npc:
 	var path_i := 0
 	var repath := 0.0
 	var flash := 0.0
-	var stock: Array = []          # item ids they are willing to swap
+	var stock: Array = []          # what they carry: swapped, eaten, added to when they scavenge
+	var thirst := 15.0
+	var fatigue := 20.0
+	var trust := 30.0              # 0 stranger .. 100 would die for you
+	var temper := ""               # brave | cautious | generous | wary
+	var job := ""                  # medic | mechanic | farmer | hunter | cook | guard
+	var home := Vector2.ZERO       # where they sleep and return to
+	var wpn := ""                  # a weapon you gave them
+	var task := ""                 # "" | sleep | scavenge | home | flee
+	var task_pos := Vector2.ZERO
+	var task_t := 0.0
+	var seen_kills := -1
 
 var sim: Sim
 var list: Array = []
@@ -51,11 +65,15 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 	var goods: Array = ["bandage", "ammo_9mm", "painkillers", "battery", "matches", "duct_tape", "nails", "canned_beans", "water_bottle", "disinfectant", "kitchen_knife", "lighter"]
 	for k in range(3):
 		n.stock.append(goods[randi() % goods.size()])
+	n.temper = TEMPERS[randi() % TEMPERS.size()]
+	n.job = JOBS[randi() % JOBS.size()]
+	n.trust = randf_range(22.0, 40.0) + (8.0 if n.temper == "generous" else (-8.0 if n.temper == "wary" else 0.0))
+	n.home = pos
 	list.append(n)
 	return n
 
 static func _ser(n: Npc) -> Array:
-	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock]
+	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn]
 
 func _de(a: Array) -> Npc:
 	var n := Npc.new()
@@ -70,6 +88,18 @@ func _de(a: Array) -> Npc:
 	n.met = a[7]
 	n.gift = a[8]
 	n.stock = a[9] if a.size() > 9 else []
+	n.home = n.pos
+	if a.size() > 16:
+		n.thirst = a[10]
+		n.fatigue = a[11]
+		n.trust = a[12]
+		n.temper = a[13]
+		n.job = a[14]
+		n.home = a[15]
+		n.wpn = a[16]
+	else:
+		n.temper = TEMPERS[n.id % TEMPERS.size()]
+		n.job = JOBS[n.id % JOBS.size()]
 	return n
 
 func on_chunk_loaded(c: Chunk) -> void:
@@ -120,8 +150,22 @@ func damage(n: Npc, dmg: float, by_player: bool) -> void:
 	if n.hp <= 0.0:
 		list.erase(n)
 		var c: Chunk = sim.world.chunk_at(floori(n.pos.x), floori(n.pos.y))
+		var carried: Array = []
+		for sid in n.stock:
+			carried.append(Items.make(sid, 1, sim.hour))
+		if n.wpn != "":
+			carried.append(Items.make(n.wpn, 1, sim.hour))
+		if not by_player and dmg <= 0.0 and c != null and sim.settings.get("infection", true):
+			# bitten to death: they get up again, still carrying what they had
+			var zr: Zombie = sim.zombies.spawn(n.pos, 0)
+			zr.look = n.look.duplicate()
+			zr.loot = carried
+			zr.state = Zombie.DOWN
+			zr.t = 6.0
+			sim.say("%s is dead. It will not stay that way." % n.name, Color(1.0, 0.6, 0.5))
+			return
 		if c != null:
-			c.corpses.append({"x": n.pos.x, "y": n.pos.y, "d": n.d8, "l": n.look, "h": sim.hour, "perm": 1, "lt": "corpse_survivor"})
+			c.corpses.append({"x": n.pos.x, "y": n.pos.y, "d": n.d8, "l": n.look, "h": sim.hour, "perm": 1, "loot": carried})
 			c.touched = true
 			sim.world.notify(floori(n.pos.x), floori(n.pos.y))
 		sim.say("%s is dead." % n.name, Color(0.9, 0.8, 0.7))
@@ -162,7 +206,22 @@ func update(dt: float, dh: float) -> void:
 		n.swing = maxf(0.0, n.swing - dt)
 		n.flash = maxf(0.0, n.flash - dt)
 		n.hunger = minf(100.0, n.hunger + dh * 3.0)
+		n.thirst = minf(100.0, n.thirst + dh * 4.0)
+		n.fatigue = minf(100.0, n.fatigue + dh * (4.2 if n.task != "sleep" else -12.0))
+		if n.fatigue < 0.0: n.fatigue = 0.0
+		_needs(n, dh)
+		if n.hp <= 0.0:
+			damage(n, 0.01, false)        # starved or died of thirst: an ordinary body
+			continue
 		n.anim = "s_attack" if n.swing > 0.0 else "s_idle"
+		# they notice what you do near them
+		if n.seen_kills < 0: n.seen_kills = p.kills
+		if p.kills > n.seen_kills and n.state != HOSTILE and n.pos.distance_squared_to(p.pos) < 100.0:
+			n.trust = minf(100.0, n.trust + 2.0 * (p.kills - n.seen_kills))
+		n.seen_kills = p.kills
+		if n.state == FOLLOW:
+			n.trust = minf(100.0, n.trust + dh * 0.6)
+			n.home = n.pos
 		if not sim.world.is_loaded(floori(n.pos.x), floori(n.pos.y)):
 			if n.state == FOLLOW and World.level(n.pos.y) == World.level(p.pos.y):
 				n.pos = p.pos
@@ -201,6 +260,31 @@ func update(dt: float, dh: float) -> void:
 						p.cancel_action()
 						sim.emit_fx("hurt", p.pos)
 			continue
+		# theft: taking from the house they live in, in front of them
+		if n.state == STAY and n.met:
+			for ev in sim.ui_events:
+				if ev["type"] == "loot" and n.pos.distance_to(n.home) < 12.0 and p.pos.distance_to(n.home) < 8.0 and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) != 0 \
+						and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) == sim.world.bld(floori(n.home.x), floori(n.home.y)) and sim.world.los(n.pos.x, n.pos.y, p.pos.x, p.pos.y):
+					n.trust = maxf(0.0, n.trust - 6.0)
+					sim.say("%s: \"Those are mine.\"" % n.name, Color(1.0, 0.8, 0.6))
+		# fear: the cautious and the badly hurt run instead of standing their ground
+		var threats := 0
+		var away := Vector2.ZERO
+		for z2 in sim.zombies.list:
+			var dz: float = z2.pos.distance_to(n.pos)
+			if dz < 4.5 and z2.state != Zombie.DOWN:
+				threats += 1
+				away += (n.pos - z2.pos).normalized()
+		var limit: int = 4 if n.temper == "brave" else (1 if n.temper == "cautious" else 2)
+		if threats > 0 and (threats > limit or n.hp < 35.0) and n.wpn == "" or (threats > limit + 2):
+			n.task = "flee"
+			n.task_t = 2.5
+			n.task_pos = (p.pos if n.state == FOLLOW and p.pos.distance_to(n.pos) > 3.0 else n.pos + away.normalized() * 6.0)
+		if n.task == "flee":
+			n.task_t -= dt
+			_go(n, n.task_pos, 4.3, dt)
+			if n.task_t <= 0.0: n.task = ""
+			continue
 		# friends fight what is next to them
 		if target != null and td < 1.3 and n.atk_cd <= 0.0:
 			n.atk_cd = 1.0
@@ -208,16 +292,113 @@ func update(dt: float, dh: float) -> void:
 			n.anim_t = 0.0
 			n.dir = (target.pos - n.pos).normalized()
 			n.d8 = Iso.dir8(n.dir)
-			sim.zombies.damage(target, randf_range(18.0, 30.0), n.pos, 0.3, randf() < 0.2, false)
+			var wdmg: float = 1.0
+			if n.wpn != "":
+				var wdr: Array = Items.def(n.wpn)["wpn"]["dmg"]
+				wdmg = (float(wdr[0]) + float(wdr[1])) / 48.0 + 0.5
+			if n.job == "guard" or n.job == "hunter": wdmg *= 1.25
+			sim.zombies.damage(target, randf_range(18.0, 30.0) * wdmg, n.pos, 0.3, randf() < 0.2, false)
 			if not sim.zombies.list.has(target):
 				sim.player.kills -= 1       # their kill, not yours
+		elif n.state == STAY:
+			routine(n, dt)
 		elif n.state == FOLLOW:
 			var dpl: float = n.pos.distance_to(p.pos)
 			if dpl > 2.2:
 				_go(n, p.pos, 4.4 if dpl > 6.0 else 2.6, dt)
+			if n.trust < 8.0:
+				n.state = STAY
+				sim.say("%s: \"I'm done following you.\"" % n.name, Color(1.0, 0.8, 0.6))
 			if n.hunger >= 100.0:
 				n.state = STAY
 				sim.say("%s: \"I can't keep going on nothing. I'm staying here.\"" % n.name, Color(0.85, 0.85, 0.7))
+
+## eat and drink from what they carry; go without and it starts to cost them
+func _needs(n: Npc, dh: float) -> void:
+	if n.hunger > 55.0:
+		for sid in n.stock:
+			if EDIBLE.has(sid):
+				n.stock.erase(sid)
+				n.hunger = maxf(0.0, n.hunger - 45.0)
+				break
+	if n.thirst > 55.0 and n.stock.has("water_bottle"):
+		n.stock.erase("water_bottle")
+		n.stock.append("empty_bottle")
+		n.thirst = maxf(0.0, n.thirst - 60.0)
+	elif n.thirst > 70.0 and sim.has_water() and sim.world.bld(floori(n.pos.x), floori(n.pos.y)) != 0:
+		n.thirst = 10.0            # the taps still run
+	if n.hunger >= 100.0: n.hp -= dh * 1.5
+	if n.thirst >= 100.0: n.hp -= dh * 4.0
+	if n.hunger < 60.0 and n.thirst < 60.0 and n.task == "sleep":
+		n.hp = minf(100.0, n.hp + dh * 3.0)
+
+## what a survivor who is not following anyone does with the day
+func routine(n: Npc, dt: float) -> void:
+	var w: World = sim.world
+	var hod: float = sim.hour_of_day()
+	var night: bool = hod >= 22.0 or hod < 6.0
+	match n.task:
+		"sleep":
+			n.anim = "s_idle"
+			if (not night and n.fatigue < 30.0) or n.fatigue <= 0.0:
+				n.task = ""
+		"scavenge":
+			n.task_t -= dt
+			if n.pos.distance_to(n.task_pos) > 1.3 and n.task_t > 0.0:
+				_go(n, n.task_pos, 2.4, dt)
+			else:
+				var tx: int = floori(n.task_pos.x)
+				var ty: int = floori(n.task_pos.y)
+				if n.task_t > 0.0 and w.has_container(tx, ty) and n.stock.size() < 8:
+					var arr: Array = w.container_at(tx, ty)
+					for it in arr:
+						var cat: String = Items.def(it["id"]).get("cat", "")
+						if cat == "food" or cat == "drink" or cat == "med" or cat == "ammo":
+							var one: Dictionary = Inv.split(arr, it, 1)      # physically taken: the shelf has one less
+							n.stock.append(one["id"])
+							w.chunk_at(tx, ty).touched = true
+							break
+				n.task = "home"
+		"home":
+			if n.pos.distance_to(n.home) > 1.2:
+				_go(n, n.home, 2.4, dt)
+			else:
+				n.task = ""
+		_:
+			n.task_t -= dt
+			if night or n.fatigue > 85.0:
+				if n.pos.distance_to(n.home) > 1.5:
+					_go(n, n.home, 2.4, dt)
+				else:
+					n.task = "sleep"
+			elif n.task_t <= 0.0:
+				n.task_t = randf_range(20.0, 45.0)
+				if n.hunger > 35.0 or n.thirst > 35.0 or n.stock.size() < 4:
+					# look for something worth taking within a short walk
+					var hx: int = floori(n.pos.x)
+					var hy: int = floori(n.pos.y)
+					var best := Vector2.ZERO
+					var bd := 99.0
+					for yy in range(hy - 9, hy + 10):
+						for xx in range(hx - 9, hx + 10):
+							var cell: int = w.obj(xx, yy)
+							if cell == 0 or Defs.o_part(cell) != 0 or not Defs.obj(Defs.o_id(cell)).has("c"):
+								continue
+							var dd: float = Vector2(xx + 0.5, yy + 0.5).distance_to(n.pos)
+							if dd < bd and dd > 1.0 and (Rng.h2(xx, yy, n.id + int(sim.hour)) % 3) == 0:
+								bd = dd
+								best = Vector2(xx + 0.5, yy + 0.5)
+					if bd < 99.0:
+						n.task = "scavenge"
+						n.task_pos = best
+						n.task_t = 25.0
+
+static func trust_word(t: float) -> String:
+	if t < 15.0: return "does not trust you"
+	if t < 35.0: return "is wary of you"
+	if t < 60.0: return "trusts you a little"
+	if t < 85.0: return "trusts you"
+	return "would follow you anywhere"
 
 # ------------------------------------------------------------------ talking
 func options(n: Npc) -> Array:
@@ -231,11 +412,20 @@ func options(n: Npc) -> Array:
 			sim.say("%s: \"You're alive. I'd stopped expecting that.\"" % n.name, Color(0.85, 0.85, 0.7))
 		else:
 			sim.say("%s: \"%s\"" % [n.name, LINES[randi() % LINES.size()]], Color(0.85, 0.85, 0.7))
+		sim.say("%s was a %s, is %s by nature, and %s." % [n.name, n.job, n.temper, trust_word(n.trust)], Color(0.75, 0.82, 0.9))
+		n.trust = minf(100.0, n.trust + 1.0)
 		p.bored = maxf(0.0, p.bored - 20.0)
 		p.unhappy = maxf(0.0, p.unhappy - 8.0)})
+	if n.task == "sleep":
+		out.append({"label": "(asleep — talking wakes them)", "fn": func():
+			n.task = ""
+			n.fatigue = maxf(n.fatigue, 40.0)
+			n.trust = maxf(0.0, n.trust - 2.0)})
 	if n.state == STAY:
 		out.append({"label": "\"Come with me.\"", "fn": func():
-			if n.hunger > 85.0:
+			if n.trust < 35.0:
+				sim.say("%s: \"I don't know you well enough for that.\"" % n.name, Color(0.85, 0.85, 0.7))
+			elif n.hunger > 85.0:
 				sim.say("%s: \"Not until I've eaten something.\"" % n.name, Color(0.85, 0.85, 0.7))
 			else:
 				n.state = FOLLOW
@@ -243,7 +433,42 @@ func options(n: Npc) -> Array:
 	else:
 		out.append({"label": "\"Wait here.\"", "fn": func():
 			n.state = STAY
+			n.home = n.pos
+			n.task = ""
 			sim.say("%s: \"I'll hold this spot.\"" % n.name, Color(0.85, 0.85, 0.7))})
+	# what trust buys
+	if n.trust >= 50.0 and n.job == "medic":
+		var worst: Dictionary = {}
+		for wd in p.wounds:
+			if not wd.get("band", false) and float(wd.get("bleed_h", 0.0)) > 0.0: worst = wd
+		if not worst.is_empty():
+			out.append({"label": "\"Can you look at this wound?\"", "fn": func():
+				worst["band"] = true
+				worst["dirty"] = 0.0
+				worst["heal"] = float(worst.get("heal", 0.0)) * 0.8
+				sim.say("%s cleans and dresses it properly." % n.name, Color(0.75, 0.9, 0.7))})
+	if n.trust >= 55.0 and not sim.flags.has("npc_tip_%d" % n.id):
+		out.append({"label": "\"What do you know about this area?\"", "fn": func():
+			var tip: Dictionary = {"id": "survivor_note", "n": 1}
+			sim._fill_found_note(tip)
+			sim.flags["npc_tip_%d" % n.id] = true
+			if tip.has("mx"):
+				sim.add_marker(int(tip["mx"]), int(tip["my"]), String(tip.get("lab", "A place")).replace("from a note", "%s told you" % n.name))
+				sim.say("%s marks a place on your map." % n.name, Color(0.75, 0.9, 0.7))
+			else:
+				sim.say("%s: \"Nothing near here worth the walk.\"" % n.name, Color(0.85, 0.85, 0.7))})
+	if n.wpn == "":
+		for itw in p.inv:
+			var dw: Dictionary = Items.def(itw["id"])
+			if dw.has("wpn") and dw["cat"] == "weapon" and not is_same(itw, p.weapon):
+				var gw: Dictionary = itw
+				out.append({"label": "Give them your spare %s" % dw["n"], "fn": func():
+					if not p.inv.has(gw): return
+					Inv.split(p.inv, gw, 1)
+					n.wpn = gw["id"]
+					n.trust = minf(100.0, n.trust + 10.0)
+					sim.say("%s takes the %s. They will stand and fight now." % [n.name, String(dw["n"]).to_lower()], Color(0.75, 0.9, 0.7))})
+				break
 	# barter: one of theirs for one of yours. They want things that keep a person alive.
 	var offer: Dictionary = {}
 	for it0 in p.inv:
@@ -261,6 +486,7 @@ func options(n: Npc) -> Array:
 				var given: Dictionary = Inv.split(p.inv, give_it, 1)
 				n.stock.erase(want_id)
 				n.stock.append(given["id"])
+				n.trust = minf(100.0, n.trust + 5.0)
 				Inv.add_new(p.inv, want_id, 6 if want_id == "ammo_9mm" else 1, sim.hour)
 				sim.say("%s: \"Fair.\"" % n.name, Color(0.85, 0.85, 0.7))})
 	elif n.met and n.stock.size() > 0:
@@ -276,6 +502,7 @@ func options(n: Npc) -> Array:
 				Inv.split(p.inv, food, 1)
 				n.hunger = maxf(0.0, n.hunger - float(d["hunger"]) * 2.0)
 				n.hp = minf(100.0, n.hp + 15.0)
+				n.trust = minf(100.0, n.trust + (15.0 if n.hunger > 40.0 or n.temper != "wary" else 8.0))
 				if not n.gift:
 					n.gift = true
 					var gifts: Array = ["bandage", "ammo_9mm", "painkillers", "battery", "matches", "duct_tape"]

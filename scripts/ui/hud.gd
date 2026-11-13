@@ -88,6 +88,8 @@ func _layout() -> void:
 		var py: float = b - (250.0 if safe.size.y > safe.size.x else 96.0)
 		_btn["place_ok"] = [Vector2(safe.get_center().x - 70, py), 50.0]
 		_btn["place_no"] = [Vector2(safe.get_center().x + 70, py), 50.0]
+	if not p.carrying.is_empty():
+		_btn["turn"] = [Vector2(r - 262, b - 176), 34.0]
 	if sim.vehicle != null:
 		_btn["horn"] = [Vector2(r - 168, b - 198), 36.0]
 	_scale_buttons()
@@ -147,6 +149,8 @@ func _touch_down(i: int, pos: Vector2) -> void:
 			sim.noise(p.pos, 45.0)
 			sim.emit_fx("alarm", p.pos)
 			sim.say("The horn carries a long way.", Color(1.0, 0.85, 0.6))
+		"turn":
+			p.carrying["rot"] = (int(p.carrying.get("rot", 0)) + 1) % 4
 		"shove": p.try_shove()
 		"call": p.call_out(not p.sneaking)
 		"speed": cycle_speed()
@@ -325,6 +329,8 @@ func poll(dt: float) -> void:
 			var ts: Array = Actions.targets(sim)
 			if sim.vehicle != null:
 				_target = "Get out"
+			elif not p.carrying.is_empty():
+				_target = "Set down the %s" % String(Defs.obj(int(p.carrying["o"]))["n"]).to_lower()
 			elif ts.size() > 0:
 				var opts: Array = Actions.options(sim, ts[0])
 				if opts.size() > 0:
@@ -338,6 +344,13 @@ func poll(dt: float) -> void:
 			fxv.hl_tile = Vector2i(int(bt["x"]), int(bt["y"]))
 			fxv.hl_edge = int(bt.get("side", -1))
 			fxv.hl_ok = bt["ok"]
+	elif not p.carrying.is_empty():
+		var ct: Dictionary = Actions.build_target(sim, Actions.carry_recipe(p))
+		fxv.hl_on = ct.has("x")
+		if fxv.hl_on:
+			fxv.hl_tile = Vector2i(int(ct["x"]), int(ct["y"]))
+			fxv.hl_edge = -1
+			fxv.hl_ok = ct["ok"]
 	else:
 		fxv.hl_on = false
 	# flashlight battery
@@ -464,6 +477,7 @@ func _draw() -> void:
 	else:
 		_round_btn("attack", atk, Color(0.62, 0.26, 0.22), _attack_touch >= 0, 17)
 		_round_btn("interact", "USE", Color(0.7, 0.6, 0.36), _interact_touch >= 0, 17)
+	_round_btn("turn", "TURN", Color(0.4, 0.4, 0.3), false, 12)
 	_round_btn("horn", "HORN", Color(0.36, 0.34, 0.44), false, 12)
 	_round_btn("shove", "SHOVE", Color(0.5, 0.36, 0.26), false, 11)
 	_round_btn("call", "CALL", Color(0.36, 0.34, 0.44), false, 11)

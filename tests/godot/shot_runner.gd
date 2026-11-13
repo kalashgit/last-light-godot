@@ -244,6 +244,13 @@ func _process(_dt: float) -> bool:
 			for k2 in range(3):
 				wv.set_obj(ox - 3, oy + k2, Defs.ocell(Defs.O_BOOKSHELF, 0, 0))
 				sim.ignite(ox - 3, oy + k2, 3.0)
+			# player-built lean-to: metal wall, roof, spikes, a sign
+			for k3 in range(3):
+				wv.set_wall(ox + 4 + k3, oy + 5, 0, Defs.wall(Defs.WM_METAL, Defs.WS_SOLID))
+				wv.set_roof(ox + 4 + k3, oy + 5, World.PLAYER_BLD)
+				wv.set_roof(ox + 4 + k3, oy + 6, World.PLAYER_BLD)
+				wv.set_obj(ox + 4 + k3, oy + 8, Defs.ocell(Defs.O_SPIKES, 0, 0))
+			wv.set_obj(ox + 3, oy + 7, Defs.ocell(Defs.O_SIGN, 0, 0))
 			sim.npcs.list.clear()
 			var nn = sim.npcs.spawn(Vector2(ox + 4.5, oy + 2.5), false)
 			nn.state = NpcSim.FOLLOW

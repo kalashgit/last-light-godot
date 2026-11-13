@@ -172,6 +172,8 @@ func _dirty_tile(x: int, y: int) -> void:
 	else:
 		(rows[dl] as Strip).queue_redraw()
 	var roofs: Array = cv["roofs"]
+	if roofs[dl] == null and (cv["c"] as Chunk).bld[((y & 15) << 4) | (x & 15)] != 0:
+		roofs[dl] = _make_strip(cv["c"], Strip.K_ROOF, dl)       # a roof was built where there was none
 	if roofs[dl] != null:
 		(roofs[dl] as Strip).queue_redraw()
 

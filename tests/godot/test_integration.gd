@@ -257,8 +257,13 @@ func _init() -> void:
 	var no: Array = sim.npcs.options(friend)
 	opt(no, "Talk").call()
 	ok(friend.met, "talking introduces you")
+	friend.trust = 10.0
 	opt(no, "\"Come").call()
-	ok(friend.state == NpcSim.FOLLOW, "they agree to follow")
+	ok(friend.state == NpcSim.STAY, "a stranger who does not trust you will not follow")
+	friend.trust = 50.0
+	friend.temper = "brave"
+	opt(no, "\"Come").call()
+	ok(friend.state == NpcSim.FOLLOW, "with some trust they agree to follow")
 	p.pos += Vector2(6.0, 5.0)
 	run(sim, 5.0)
 	ok(friend.pos.distance_to(p.pos) < 3.2, "and keep up when you move (%.1f tiles away)" % friend.pos.distance_to(p.pos))
@@ -281,6 +286,7 @@ func _init() -> void:
 	ok(give.is_valid(), "food you carry can be offered")
 	if give.is_valid(): give.call()
 	ok(friend.hunger < 70.0 and Inv.count(p.inv, "cooked_egg") == inv0 - 1 and friend.gift, "feeding them consumes the food and earns something back")
+	friend.stock = []
 	friend.hunger = 100.0
 	run(sim, 0.3)
 	ok(friend.state == NpcSim.STAY, "a starving companion stops following")
@@ -710,6 +716,252 @@ func _init() -> void:
 	run(sim, 8.5)
 	ok(p.endurance > 70.0, "sitting down restores stamina (%.0f)" % p.endurance)
 	ok(absf(Opts.cycle(1.0, [0.85, 1.0, 1.1]) - 1.1) < 0.001 and Opts.dead > 0.0, "device settings cycle through their steps")
+
+	print("== moving furniture")
+	bulldoze(sim, Rect2i(fx0, fy0 + 30, 10, 10))
+	sim.zombies.list.clear()
+	p.cancel_action()
+	p.pos = Vector2(fx0 + 4.5, fy0 + 34.5)
+	p.facing = Vector2(1, 0)
+	p.weapon = {}
+	var wx: int = fx0 + 5
+	var wy: int = fy0 + 34
+	w.set_obj(wx, wy, Defs.ocell(Defs.O_WARDROBE, 1, 0))
+	w.chunk_at(wx, wy).containers[World.idx(wx, wy)] = [Items.make("toy", 2), Items.make("nails", 7)]
+	var fo: Array = Actions.options(sim, {"kind": "obj", "x": wx, "y": wy})
+	var labels: Array = []
+	for o9 in fo: labels.append(o9["label"])
+	ok(opt(fo, "Pick up").is_valid() and opt(fo, "Turn it").is_valid(), "furniture offers to be carried or turned")
+	opt(fo, "Turn it").call()
+	ok(Defs.o_rot(w.obj(wx, wy)) == 2, "turning it changes which way it faces")
+	opt(Actions.options(sim, {"kind": "obj", "x": wx, "y": wy}), "Pick up").call()
+	run(sim, 2.3)
+	ok(w.obj(wx, wy) == 0 and int(p.carrying.get("o", 0)) == Defs.O_WARDROBE and w.items_at(wx, wy).is_empty(), "lifting removes it from the floor without spilling what is inside")
+	ok(not p.try_attack(), "you cannot swing with your arms full")
+	var c0: Vector2 = p.pos
+	run(sim, 1.0, screen_for(Vector2(0, 1)))
+	var carry_d: float = p.pos.distance_to(c0)
+	ok(carry_d > 0.3 and carry_d < 2.6, "you can walk with it, slowly (%.2f tiles/s)" % carry_d)
+	p.carrying["rot"] = 3
+	p.facing = Vector2(0, 1)
+	var dest: Vector2i = p.front_tile()
+	Actions.interact(sim)
+	ok(p.carrying.is_empty() and Defs.o_id(w.obj(dest.x, dest.y)) == Defs.O_WARDROBE and Defs.o_rot(w.obj(dest.x, dest.y)) == 3, "USE sets it down in front of you, facing the way you chose")
+	var moved: Array = w.container_at(dest.x, dest.y)
+	ok(Inv.count(moved, "toy") == 2 and Inv.count(moved, "nails") == 7 and moved.size() == 2, "its contents arrive with it: nothing lost, nothing duplicated")
+	w.set_obj(wx + 2, wy, Defs.ocell(Defs.O_FRIDGE, 0, 0))
+	p.pos = Vector2(wx + 1.5, wy + 0.5)
+	p.skills["strength"] = 0.0
+	Actions._pick_up(sim, wx + 2, wy)
+	run(sim, 4.5)
+	ok(p.carrying.is_empty() and Defs.o_id(w.obj(wx + 2, wy)) == Defs.O_FRIDGE, "a refrigerator is too heavy to lift alone")
+	var helper = sim.npcs.spawn(p.pos + Vector2(0.0, 1.2), false)
+	helper.state = NpcSim.FOLLOW
+	helper.trust = 80.0
+	Actions._pick_up(sim, wx + 2, wy)
+	run(sim, 4.5)
+	ok(int(p.carrying.get("o", 0)) == Defs.O_FRIDGE, "with a companion on the other end it comes up")
+	ok(SaveGame.save(sim, slot), "saving with furniture in your arms")
+	s2 = SaveGame.load_game(slot)
+	ok(s2 != null and int(s2.player.carrying.get("o", 0)) == Defs.O_FRIDGE, "what you are carrying survives a reload")
+	p.facing = Vector2(0, 1)
+	Actions.interact(sim)
+	sim.npcs.list.clear()
+	ok(p.carrying.is_empty(), "and can be set down again")
+
+	print("== construction")
+	bulldoze(sim, Rect2i(fx0, fy0 + 30, 10, 10))
+	p.pos = Vector2(fx0 + 4.5, fy0 + 34.5)
+	p.facing = Vector2(1, 0)
+	p.skills["carpentry"] = Player.XP_LEVELS[4]
+	p.skills["metalworking"] = Player.XP_LEVELS[2]
+	for it in [["plank", 40], ["nails", 120], ["scrap_metal", 12], ["wire", 6], ["stone", 6], ["hammer", 1], ["saw", 1], ["wrench", 1]]:
+		Inv.add_new(p.inv, it[0], it[1])
+	var planks0: int = Inv.count(p.inv, "plank")
+	var rt: Vector2i = p.front_tile()
+	var roof_r: Dictionary = Recipes.by_id("roof")
+	ok(not Actions.build_target(sim, roof_r)["ok"], "a roof with nothing to rest on is refused, with a reason")
+	ok(Actions.craft(sim, Recipes.by_id("metal_wall")), "a sheet-metal wall can be started")
+	run(sim, 10.0)
+	var me: Vector3i = p.front_edge()
+	ok(Defs.wall_mat(w.wall(me.x, me.y, me.z)) == Defs.WM_METAL and w.edge_blocks(me.x, me.y, me.z), "the metal wall stands and blocks movement")
+	ok(Actions.build_target(sim, roof_r)["ok"], "beside a wall, a roof can be built")
+	Actions.craft(sim, roof_r)
+	run(sim, 7.0)
+	ok(w.bld(rt.x, rt.y) == World.PLAYER_BLD and Inv.count(p.inv, "plank") == planks0 - 2, "the roofed tile counts as indoors and the planks are spent")
+	p.facing = Vector2(0, 1)
+	var st2: Vector2i = p.front_tile()
+	ok(Actions.craft(sim, Recipes.by_id("spikes")), "a spike trap can be set")
+	run(sim, 7.0)
+	ok(Defs.o_id(w.obj(st2.x, st2.y)) == Defs.O_SPIKES and not w.tile_blocked(st2.x, st2.y), "spikes lie on the ground and can be walked over")
+	sim._slow_tick(0.01)
+	var zsp: Zombie = sim.zombies.spawn(Vector2(st2.x + 0.5, st2.y + 0.5), 0)
+	zsp.hp = 500.0
+	for i in range(60):
+		zsp.pos = Vector2(st2.x + 0.5, st2.y + 0.5)
+		if zsp.state == Zombie.DOWN: zsp.state = Zombie.IDLE
+		sim._tick_spikes(0.5)
+	ok(zsp.hp < 500.0, "an infected standing on them is torn up (%.0f hp left)" % zsp.hp)
+	ok(w.obj(st2.x, st2.y) == 0, "and the trap wears out with use")
+	sim.zombies.list.clear()
+	p.facing = Vector2(-1, 0)
+	var sg: Vector2i = p.front_tile()
+	Actions.craft(sim, Recipes.by_id("signpost"))
+	run(sim, 5.0)
+	Inv.add_new(p.inv, "pencil", 1) if Inv.find(p.inv, "pencil").is_empty() else null
+	opt(Actions.options(sim, {"kind": "obj", "x": sg.x, "y": sg.y}), "Write").call()
+	p.markers.clear()
+	opt(Actions.options(sim, {"kind": "obj", "x": sg.x, "y": sg.y}), "Read the sign").call()
+	ok(p.markers.size() == 1 and String(w.ent(sg.x, sg.y).get("txt", "")) != "", "a sign can be put up, written on, and read by whoever comes later")
+	for rid in ["chair", "counter", "wardrobe", "bookshelf", "workbench", "bench", "nightstand", "chain_fence", "gravel"]:
+		ok(not Recipes.by_id(rid).is_empty(), "recipe exists: %s" % rid) if Recipes.by_id(rid).is_empty() else null
+	# sheet-metal barricade
+	p.facing = Vector2(0, -1)
+	Actions.craft(sim, Recipes.by_id("door"))
+	run(sim, 10.0)
+	var de: Vector3i = p.front_edge()
+	var mb: Callable = opt(Actions.options(sim, {"kind": "edge", "x": de.x, "y": de.y, "side": de.z}), "Barricade with sheet metal")
+	ok(mb.is_valid(), "a built door accepts a sheet-metal barricade")
+	if mb.is_valid():
+		mb.call()
+		run(sim, 6.5)
+		ok(((w.edge_state(de.x, de.y, de.z) & Defs.ES_PLANK_MASK) >> Defs.ES_PLANK_SHIFT) == 4 and w.edge_blocks(de.x, de.y, de.z), "sheet metal seals it in one go")
+	# plumbing
+	sim.water_off_h = sim.hour - 1.0
+	var kx: int = fx0 + 2
+	var ky: int = fy0 + 37
+	w.set_obj(kx, ky, Defs.ocell(Defs.O_SINK_COUNTER, 0, 0))
+	w.set_obj(kx + 1, ky, Defs.ocell(Defs.O_RAIN_BARREL, 0, 0))
+	w.set_ent(kx + 1, ky, {"k": "barrel", "w": 20.0})
+	p.pos = Vector2(kx + 0.5, ky - 0.5)
+	p.thirst = 60.0
+	var pl: Callable = opt(Actions.options(sim, {"kind": "obj", "x": kx, "y": ky}), "Plumb")
+	ok(pl.is_valid(), "with the mains off, a sink beside a rain collector can be plumbed")
+	if pl.is_valid():
+		pl.call()
+		run(sim, 9.5)
+		opt(Actions.options(sim, {"kind": "obj", "x": kx, "y": ky}), "Drink (piped").call()
+		run(sim, 4.0)
+		ok(p.thirst < 60.0 and float(w.ent(kx + 1, ky)["w"]) < 20.0, "the tap now draws clean water out of the collector (%.0f left)" % float(w.ent(kx + 1, ky)["w"]))
+
+	print("== survivor depth: needs, routine, trust, fear, jobs")
+	bulldoze(sim, Rect2i(fx0, fy0 + 30, 10, 10))
+	sim.zombies.list.clear()
+	sim.npcs.list.clear()
+	p.pos = Vector2(fx0 + 2.5, fy0 + 31.5)
+	p.wounds.clear()
+	var sv = sim.npcs.spawn(Vector2(fx0 + 6.5, fy0 + 35.5), false)
+	sv.temper = "cautious"
+	sv.job = "medic"
+	sv.trust = 30.0
+	sv.stock = ["canned_beans", "water_bottle", "nails"]
+	sv.hunger = 70.0
+	sv.thirst = 70.0
+	sim.npcs._needs(sv, 0.1)
+	ok(sv.hunger < 40.0 and sv.thirst < 40.0 and not sv.stock.has("canned_beans") and sv.stock.has("empty_bottle"), "a hungry, thirsty survivor eats and drinks from what they carry")
+	sv.hunger = 100.0
+	sv.thirst = 100.0
+	sv.stock = []
+	sim.water_off_h = sim.hour - 1.0
+	var shp: float = sv.hp
+	sim.npcs._needs(sv, 2.0)
+	ok(sv.hp < shp, "with nothing left, hunger and thirst wear them down")
+	sv.hunger = 50.0
+	sv.thirst = 10.0
+	sv.hp = 100.0
+	# routine: scavenge a nearby container, physically
+	var bxx: int = fx0 + 3
+	var byy: int = fy0 + 36
+	w.set_obj(bxx, byy, Defs.ocell(Defs.O_WOOD_CRATE, 0, 0))
+	w.chunk_at(bxx, byy).containers[World.idx(bxx, byy)] = [Items.make("canned_beans", 3, sim.hour)]
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 10.0
+	sv.task = "scavenge"
+	sv.task_pos = Vector2(bxx + 0.5, byy + 0.5)
+	sv.task_t = 25.0
+	var tt2 := 0.0
+	while tt2 < 20.0 and sv.task == "scavenge":
+		sim.npcs.routine(sv, 1.0 / 30.0)
+		tt2 += 1.0 / 30.0
+	ok(sv.stock.has("canned_beans") and Inv.count(w.container_at(bxx, byy), "canned_beans") == 2, "by day they scavenge: one tin leaves the crate and is now theirs")
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 23.5
+	sv.task = ""
+	sv.home = sv.pos
+	sv.fatigue = 70.0
+	sim.npcs.routine(sv, 0.1)
+	ok(sv.task == "sleep", "at night they sleep where they live")
+	ok(opt(sim.npcs.options(sv), "(asleep").is_valid(), "and you are told they are asleep")
+	sim.hour = floorf(sim.hour / 24.0) * 24.0 + 24.0 + 9.0
+	sv.fatigue = 10.0
+	sim.npcs.routine(sv, 0.1)
+	ok(sv.task != "sleep", "and get up in the morning")
+	# trust
+	sv.task = ""
+	sv.pos = p.pos + Vector2(1.5, 0.0)
+	sv.home = sv.pos
+	sv.met = true
+	sim.npcs.update(1.0 / 30.0, 0.0)
+	var t0x: float = sv.trust
+	p.kills += 2
+	sim.npcs.update(1.0 / 30.0, 0.0)
+	ok(sv.trust > t0x, "killing the infected in front of them earns trust (%.0f -> %.0f)" % [t0x, sv.trust])
+	sv.trust = 60.0
+	p.add_wound(7, "laceration", "test")
+	var heal: Callable = opt(sim.npcs.options(sv), "\"Can you look")
+	ok(heal.is_valid(), "a medic who trusts you offers to treat a wound")
+	if heal.is_valid():
+		heal.call()
+		ok(p.wounds[0]["band"] == true, "and dresses it")
+	p.markers.clear()
+	var tip: Callable = opt(sim.npcs.options(sv), "\"What do you know")
+	ok(tip.is_valid(), "at higher trust they share what they know")
+	if tip.is_valid():
+		tip.call()
+		ok(not opt(sim.npcs.options(sv), "\"What do you know").is_valid(), "once")
+	Inv.add_new(p.inv, "crowbar", 1)
+	var gw: Callable = opt(sim.npcs.options(sv), "Give them your spare")
+	ok(gw.is_valid(), "a spare weapon can be handed over")
+	if gw.is_valid():
+		gw.call()
+		ok(sv.wpn != "", "and they keep it (%s)" % sv.wpn)
+	# fear
+	sv.wpn = ""
+	sv.hp = 100.0
+	sv.state = NpcSim.STAY
+	var fz: Array = []
+	for k in range(3):
+		var zz2: Zombie = sim.zombies.spawn(sv.pos + Vector2(2.5, -1.0 + k), 0)
+		zz2.state = Zombie.IDLE
+		fz.append(zz2)
+	var f0: Vector2 = sv.pos
+	for i in range(45):
+		for zz3 in fz: (zz3 as Zombie).state = Zombie.IDLE
+		sim.npcs.update(1.0 / 30.0, 0.0)
+	ok(sv.pos.distance_to((fz[1] as Zombie).pos) > f0.distance_to((fz[1] as Zombie).pos) + 2.0, "an unarmed, cautious survivor runs from a group instead of fighting (moved %.1f tiles)" % f0.distance_to(sv.pos))
+	# bitten to death -> gets back up with their things
+	sv.stock = ["nails", "toy"]
+	sv.hp = 0.5
+	for zz4 in fz: (zz4 as Zombie).pos = sv.pos + Vector2(0.3, 0.0)
+	var zn0: int = sim.zombies.list.size()
+	sim.npcs.update(0.5, 0.0)
+	var risen := false
+	for z5 in sim.zombies.list:
+		if Inv.count(z5.loot, "toy") == 1 and Inv.count(z5.loot, "nails") == 1: risen = true
+	ok(not sim.npcs.list.has(sv) and sim.zombies.list.size() == zn0 + 1 and risen, "a survivor killed by the infected rises as one of them, still carrying their things")
+	sim.zombies.list.clear()
+	# persistence of the new fields
+	var keepn = sim.npcs.spawn(p.pos + Vector2(1.0, 1.0), false)
+	keepn.trust = 77.0
+	keepn.job = "farmer"
+	keepn.temper = "wary"
+	keepn.wpn = "crowbar"
+	keepn.thirst = 42.0
+	ok(SaveGame.save(sim, slot), "saving survivors")
+	s2 = SaveGame.load_game(slot)
+	var kn = s2.npcs.list[0] if s2 != null and s2.npcs.list.size() == 1 else null
+	ok(kn != null and absf(kn.trust - 77.0) < 0.01 and kn.job == "farmer" and kn.temper == "wary" and kn.wpn == "crowbar" and absf(kn.thirst - 42.0) < 0.01, "trust, job, temperament, weapon and needs persist")
+	sim.npcs.list.clear()
+	p.wounds.clear()
+	p.hp = 100.0
 
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
