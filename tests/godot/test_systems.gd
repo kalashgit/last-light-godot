@@ -841,6 +841,52 @@ func _init() -> void:
 	rs.weather["temp"] = 15.0
 	ok(cold_out < 0.8 and rs.zombies.cold_factor(Vector2(-99999, -99999)) == 1.0, "as the reports say, hard frost slows the infected outdoors (x%.2f)" % cold_out)
 
+	print("== the second dozen crops")
+	ok(Farming.CROP_OBJ.size() >= 24, "%d crops can be grown" % Farming.CROP_OBJ.size())
+	var all_ok := true
+	for crn in Farming.CROP_OBJ.keys():
+		if not Items.DB.has(crn) or not Items.DB.has("seeds_" + crn) or not Farming.YIELD.has(crn) or not Farming.GROW_HOURS.has(crn) or Defs.obj(int(Farming.CROP_OBJ[crn])).get("crop", "") != crn:
+			all_ok = false
+			print("    incomplete crop: ", crn)
+	ok(all_ok, "each has seeds, produce, a yield, a growing time and a plant")
+	var fs2 := Sim.new(2323)
+	fs2.new_game("farmer", [], "farm")
+	quiet(fs2)
+	var fp: Player = fs2.player
+	var ft2 := Vector2i(floori(fp.pos.x) + 2, floori(fp.pos.y))
+	clear_area(fs2, ft2, 2)
+	fs2.world.set_ground(ft2.x, ft2.y, Defs.G_SOIL)
+	fs2.world.set_obj(ft2.x, ft2.y, Defs.ocell(int(Farming.CROP_OBJ["blueberries"]), 0, 3))
+	fs2.world.set_ent(ft2.x, ft2.y, {"k": "crop", "t": "blueberries", "s": 3, "g": 999.0, "w": 50.0})
+	var hv_fn: Callable
+	for o in Actions._obj_options(fs2, {"kind": "obj", "x": ft2.x, "y": ft2.y}):
+		if String(o["label"]).begins_with("Harvest"): hv_fn = o["fn"]
+	ok(hv_fn.is_valid(), "ripe blueberries can be picked")
+	hv_fn.call()
+	run(fs2, 4.0)
+	ok(Inv.count(fp.inv, "blueberries") > 0 and Defs.o_id(fs2.world.obj(ft2.x, ft2.y)) == int(Farming.CROP_OBJ["blueberries"]) and int(fs2.world.ent(ft2.x, ft2.y)["s"]) == 2,
+		"a perennial bush bears again instead of being pulled up")
+	fs2.world.set_obj(ft2.x, ft2.y, Defs.ocell(int(Farming.CROP_OBJ["radish"]), 0, 3))
+	fs2.world.set_ent(ft2.x, ft2.y, {"k": "crop", "t": "radish", "s": 3, "g": 999.0, "w": 50.0})
+	for o in Actions._obj_options(fs2, {"kind": "obj", "x": ft2.x, "y": ft2.y}):
+		if String(o["label"]).begins_with("Harvest"): o["fn"].call()
+	run(fs2, 4.0)
+	ok(Inv.count(fp.inv, "radish") > 0 and fs2.world.obj(ft2.x, ft2.y) == 0, "an annual like radish is pulled up when harvested")
+	# mushrooms only fruit out of the sun
+	var mk3 := ft2 + Vector2i(0, 1)
+	fs2.world.set_obj(mk3.x, mk3.y, Defs.ocell(int(Farming.CROP_OBJ["oyster_mushroom"]), 0, 0))
+	fs2.world.set_ent(mk3.x, mk3.y, {"k": "crop", "t": "oyster_mushroom", "s": 0, "g": 0.0, "w": 90.0})
+	fs2.weather["temp"] = 15.0
+	fs2.weather["rain"] = 0.0
+	fs2.hour = floorf(fs2.hour / 24.0) * 24.0 + 12.0
+	var mc: Chunk = fs2.world.chunk_at(mk3.x, mk3.y)
+	fs2._sim_ents(mc, 2.0, false)
+	var g_day: float = float(fs2.world.ent(mk3.x, mk3.y)["g"])
+	fs2.hour = floorf(fs2.hour / 24.0) * 24.0 + 23.5
+	fs2.world.ent(mk3.x, mk3.y)["w"] = 90.0
+	fs2._sim_ents(mc, 2.0, false)
+	ok(g_day == 0.0 and float(fs2.world.ent(mk3.x, mk3.y)["g"]) > 0.0, "mushrooms do not grow in the noon sun, only in the dark")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

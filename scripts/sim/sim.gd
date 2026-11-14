@@ -1583,6 +1583,8 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 				if stage < 3:
 					var crop_t: String = e["t"]
 					var warm_enough: bool = float(weather["temp"]) > float(Farming.MIN_T.get(crop_t, 4.0)) or not outdoors
+					if Farming.SHADE.has(crop_t) and outdoors and daylight() > 0.35:
+						warm_enough = false                # mushrooms will not fruit in the sun
 					if outdoors and float(weather["temp"]) < 0.0 and Farming.FROST_KILLS.has(crop_t) and randf() < dh * 0.25:
 						e["dry"] = 99.0                    # frost blackens tender plants
 					var wet_lim: float = 75.0 if Farming.WET_SENSITIVE.has(crop_t) else 85.0

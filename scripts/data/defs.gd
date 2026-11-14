@@ -282,7 +282,19 @@ const O_ATTIC_LADDER := 136
 const O_SUBSTATION := 137
 const O_CABLE := 138
 const O_PUMP := 139
-const O_COUNT := 140
+const O_CROP_PEA := 140
+const O_CROP_GARLIC := 141
+const O_CROP_SQUASH := 142
+const O_CROP_CUCUMBER := 143
+const O_CROP_RADISH := 144
+const O_CROP_BEET := 145
+const O_CROP_SPINACH := 146
+const O_CROP_SUNFLOWER := 147
+const O_CROP_HERBS := 148
+const O_CROP_OYSTER_MUSHROOM := 149
+const O_CROP_APPLE := 150
+const O_CROP_BLUEBERRIES := 151
+const O_COUNT := 152
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -400,6 +412,18 @@ static func _static_init() -> void:
 	_o(O_CROP_ONION, {"n": "Onion plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "onion"})
 	_o(O_CROP_STRAWBERRY, {"n": "Strawberry plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "strawberry"})
 	_o(O_CROP_BEANS, {"n": "Green beans plant", "solid": 0.0, "sym": 1, "h": 26, "use": "crop", "custom": 1, "crop": "beans"})
+	_o(O_CROP_PEA, {"n": "Pea plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "pea"})
+	_o(O_CROP_GARLIC, {"n": "Garlic plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "garlic"})
+	_o(O_CROP_SQUASH, {"n": "Squash plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "squash"})
+	_o(O_CROP_CUCUMBER, {"n": "Cucumber plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "cucumber"})
+	_o(O_CROP_RADISH, {"n": "Radish plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "radish"})
+	_o(O_CROP_BEET, {"n": "Beet plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "beet"})
+	_o(O_CROP_SPINACH, {"n": "Spinach plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "spinach"})
+	_o(O_CROP_SUNFLOWER, {"n": "Sunflower plant", "solid": 0.0, "sym": 1, "h": 34, "use": "crop", "custom": 1, "crop": "sunflower"})
+	_o(O_CROP_HERBS, {"n": "Herbs plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "herbs"})
+	_o(O_CROP_OYSTER_MUSHROOM, {"n": "Oyster mushroom plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "oyster_mushroom"})
+	_o(O_CROP_APPLE, {"n": "Apple plant", "solid": 0.0, "sym": 1, "h": 60, "use": "crop", "custom": 1, "crop": "apple"})
+	_o(O_CROP_BLUEBERRIES, {"n": "Blueberries plant", "solid": 0.0, "sym": 1, "h": 24, "use": "crop", "custom": 1, "crop": "blueberries"})
 	_o(O_GENERATOR, {"n": "Generator", "solid": 0.3, "h": 30, "use": "generator", "hp": 200})
 	_o(O_BEDROLL, {"n": "Bedroll", "solid": 0.0, "sym": 1, "h": 10, "use": "bed", "custom": 1})
 	_o(O_SHELF, {"n": "Storage shelf", "h": 58, "c": "", "cap": 45, "scrap": [["plank", 3], ["nails", 4]]})

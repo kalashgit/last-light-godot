@@ -161,6 +161,11 @@ func _process(_dt: float) -> bool:
 			sim.player.carrying = {}
 			main.view._sync_carry(sim.player)
 			ok(main.view.carry_handle() < 0, "and gone once set down")
+			var crop_art := true
+			for crn in Farming.CROP_OBJ.keys():
+				for stg in range(5):
+					if not Art.obj_spr.has(Defs.ocell(int(Farming.CROP_OBJ[crn]), 0, stg)): crop_art = false
+			ok(crop_art, "all %d crops are painted at every growth stage" % Farming.CROP_OBJ.size())
 			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 5 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload"), "carry, climb and reload frames are painted in all five directions")
 			touch(5, Vector2(size.x * 0.5, size.y * 0.3), true)      # pinch
 			touch(6, Vector2(size.x * 0.5 + 100, size.y * 0.3), true)

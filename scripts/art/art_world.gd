@@ -497,9 +497,58 @@ static func _gen_nature() -> void:
 			p.ball(ax, ay + 12, 4, 5, Color(1.0, 0.95, 0.6), 131, 0.05)
 		_reg(Defs.O_CAMPFIRE, p, ax, ay, lit)
 
+## the second dozen crops: [leaf, fruit, shape]
+const NEW_CROPS := [["4a8a3a", "8ac85a", "vine"], ["5a8a4a", "e8e0d0", "spike"], ["3a6a2a", "d8a030", "gourd"], ["3a7a3a", "3a6a2a", "vine"], ["5a9a3a", "c83a4a", "root"], ["5a7a3a", "7a1a3a", "root"], ["2a6a2a", "2a6a2a", "rosette"], ["4a7a2a", "e8c020", "tall"], ["5a8a4a", "8ab06a", "rosette"], ["8a7a5a", "d8c8a8", "cap"], ["3a6a2a", "b83a30", "tree"], ["3a5a3a", "3a4ab0", "bush"]]
+
+static func _paint_crop(p: Painter, spec: Array, sx: float, sy: float, size: float, stage: int, green: Color, si: int) -> void:
+	var leaf: Color = Color(String(spec[0])) if stage < 4 else green
+	var fruit := Color(String(spec[1]))
+	match String(spec[2]):
+		"vine":
+			p.ball(sx, sy - size * 0.6, size * 0.9, size * 0.7, leaf, 300 + si, 0.35)
+			if stage == 3:
+				p.ball(sx + 1, sy - size * 0.4, 1.3, 2.2, fruit, 305 + si, 0.1)
+		"spike":
+			for k in range(2):
+				p.line(sx + k, sy, sx + k * 2 - 1, sy - size * 1.8, leaf)
+			if stage == 3:
+				p.ball(sx, sy - 1, 2.0, 1.6, fruit, 310 + si, 0.1)
+		"gourd":
+			p.ball(sx, sy - size * 0.3, size * 1.1, size * 0.45, leaf, 315 + si, 0.3)
+			if stage >= 2 and stage < 4:
+				p.ball(sx + 1, sy - size * 0.35, size * (0.45 if stage == 2 else 0.7), size * 0.5, fruit if stage == 3 else Color(0.6, 0.7, 0.3), 318 + si, 0.1)
+		"root":
+			for k2 in range(3):
+				p.line(sx + k2 - 1, sy, sx + (k2 - 1) * 2, sy - size * 1.2, leaf)
+			if stage == 3:
+				p.ball(sx, sy - 0.5, 2.0, 1.8, fruit, 320 + si, 0.1)
+		"rosette":
+			p.ball(sx, sy - size * 0.4, size, size * 0.55, leaf, 325 + si, 0.25)
+		"cap":
+			p.line(sx, sy, sx, sy - size * 0.6, Color(0.85, 0.82, 0.72))
+			p.ball(sx, sy - size * 0.7, size * 0.8, size * 0.35, fruit if stage >= 2 else Color(0.7, 0.66, 0.56), 330 + si, 0.1)
+		"tall":
+			p.line(sx, sy, sx, sy - size * 4.0, leaf.darkened(0.15))
+			p.ball(sx - 1, sy - size * 2.0, size * 0.5, size * 0.3, leaf, 335 + si, 0.2)
+			if stage >= 2:
+				p.ball(sx, sy - size * 4.2, size * (0.5 if stage == 2 else 0.85), size * 0.6, fruit if stage == 3 else leaf, 338 + si, 0.1)
+		"tree":
+			p.line(sx, sy, sx, sy - size * 3.2, Color(0.4, 0.3, 0.2))
+			p.ball(sx, sy - size * 3.6, size * 1.3, size * 1.1, leaf, 340 + si, 0.3)
+			if stage == 3:
+				p.put(int(sx) - 2, int(sy - size * 3.4), fruit)
+				p.put(int(sx) + 2, int(sy - size * 3.9), fruit)
+				p.put(int(sx), int(sy - size * 3.2), fruit)
+		"bush":
+			p.ball(sx, sy - size * 0.7, size * 1.0, size * 0.8, leaf, 345 + si, 0.35)
+			if stage == 3:
+				p.put(int(sx) - 2, int(sy - size * 0.6), fruit)
+				p.put(int(sx) + 2, int(sy - size * 0.9), fruit)
+
 static func _gen_crops() -> void:
 	var ids := [Defs.O_CROP_POTATO, Defs.O_CROP_CABBAGE, Defs.O_CROP_CARROT, Defs.O_CROP_TOMATO,
-		Defs.O_CROP_CORN, Defs.O_CROP_WHEAT, Defs.O_CROP_LETTUCE, Defs.O_CROP_PUMPKIN, Defs.O_CROP_PEPPER, Defs.O_CROP_ONION, Defs.O_CROP_STRAWBERRY, Defs.O_CROP_BEANS]
+		Defs.O_CROP_CORN, Defs.O_CROP_WHEAT, Defs.O_CROP_LETTUCE, Defs.O_CROP_PUMPKIN, Defs.O_CROP_PEPPER, Defs.O_CROP_ONION, Defs.O_CROP_STRAWBERRY, Defs.O_CROP_BEANS,
+		Defs.O_CROP_PEA, Defs.O_CROP_GARLIC, Defs.O_CROP_SQUASH, Defs.O_CROP_CUCUMBER, Defs.O_CROP_RADISH, Defs.O_CROP_BEET, Defs.O_CROP_SPINACH, Defs.O_CROP_SUNFLOWER, Defs.O_CROP_HERBS, Defs.O_CROP_OYSTER_MUSHROOM, Defs.O_CROP_APPLE, Defs.O_CROP_BLUEBERRIES]
 	for ci in range(ids.size()):
 		for stage in range(5):
 			var p := Painter.new(64, 56)
@@ -577,6 +626,8 @@ static func _gen_crops() -> void:
 							p.put(int(sx) - 2, int(sy - size), Color(0.85, 0.15, 0.12))
 							p.put(int(sx) + 2, int(sy - size * 1.5), Color(0.85, 0.15, 0.12))
 							p.put(int(sx) + 1, int(sy - size * 0.7), Color(0.85, 0.15, 0.12))
+					_:
+						_paint_crop(p, NEW_CROPS[ci - 12], sx, sy, size, stage, green, si)
 			var hnd: int = Art.world.add(p.img, ax, ay)
 			for r in range(4):
 				Art.obj_spr[Defs.ocell(ids[ci], r, stage)] = hnd

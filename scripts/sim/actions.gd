@@ -1710,8 +1710,15 @@ static func _crop_options(sim: Sim, x: int, y: int) -> Array:
 				Inv.add(p.inv, Items.make(e["t"], n, sim.hour))
 				if randf() < 0.5 + p.skill_level("farming") * 0.05:
 					Inv.add(p.inv, Items.make("seeds_" + String(e["t"]), 1 + randi() % 2))
-				w.set_ent(x, y, {})
-				w.set_obj(x, y, 0)
+				if Farming.PERENNIAL.has(String(e["t"])):
+					# it bears again: back to growing, roots and all
+					e["s"] = 2
+					e["g"] = float(Farming.GROW_HOURS[e["t"]]) * 0.7
+					w.set_ent(x, y, e)
+					w.set_obj(x, y, Defs.ocell(int(Farming.CROP_OBJ[e["t"]]), 0, 2))
+				else:
+					w.set_ent(x, y, {})
+					w.set_obj(x, y, 0)
 				p.add_xp("farming", 25.0)
 				sim.say("Harvested %d %s" % [n, e["t"]], Color(0.75, 0.9, 0.7))
 				sim.emit_fx("pickup", p.pos))))
