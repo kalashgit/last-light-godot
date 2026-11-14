@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_rubber_sheet",
+  "source_glb_sha256": "90c51037115270380048894cc5ccf504d9b7bdb44bf0abc518e962732932c8ea",
+  "atlas_sha256": "341f5cf060180486cd1cd544b6af4f12ae34d41bd0abc9143ff19205a11b1b0e",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2620673,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

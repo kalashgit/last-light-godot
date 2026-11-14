@@ -1,0 +1,42 @@
+{
+  "run_id": "43613939101",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 42,
+  "remaining": 318,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_rubber_sheet",
+      "source_glb_sha256": "90c51037115270380048894cc5ccf504d9b7bdb44bf0abc518e962732932c8ea",
+      "atlas_sha256": "341f5cf060180486cd1cd544b6af4f12ae34d41bd0abc9143ff19205a11b1b0e",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2620673,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_sand_sack",
+      "source_glb_sha256": "8eff923daabb29335a5b3271e21f8f5e3a07de93cf42a4162a67b97326644950",
+      "atlas_sha256": "9b77e34cd841eb5561082b252d73f9129a273602fc4883a578c4775e56ad3d29",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2636940,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

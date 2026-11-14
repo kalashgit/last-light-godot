@@ -42,9 +42,11 @@
     "ll_crafting_plywood_sheet",
     "ll_crafting_red_brick",
     "ll_crafting_repair_patch",
-    "ll_crafting_rope_coil"
+    "ll_crafting_rope_coil",
+    "ll_crafting_rubber_sheet",
+    "ll_crafting_sand_sack"
   ],
-  "last_run_id": "43580644933",
+  "last_run_id": "43613939101",
   "golden_approved": false,
-  "remaining": 320
+  "remaining": 318
 }
