@@ -161,6 +161,7 @@ static func _static_init() -> void:
 	_r("screw_crate", "Build a screwed crate", "Carpentry", {"in": [["plank", 3], ["screws", 1]], "tools": ["screwdriver"], "build": {"obj": Defs.O_WOOD_CRATE}, "time": 7.0, "xp": ["carpentry", 15]})
 	_r("rain_tarp", "Rig a rain catcher from plastic", "Survival", {"in": [["plastic_sheet", 2], ["twine", 1], ["branch", 2]], "build": {"obj": Defs.O_RAIN_BARREL}, "time": 6.0, "xp": ["foraging", 8]})
 	_r("metal_barricade_sheet", "Cut sheet metal into scrap", "Workshop", {"in": [["sheet_metal", 1]], "tools": ["saw"], "out": [["scrap_metal", 4]], "time": 5.0, "xp": ["metalworking", 6]})
+	_r("build_stairs", "Build a staircase to a floor above", "Carpentry", {"in": [["plank", 10], ["nails", 20]], "tools": ["hammer", "saw"], "skill": ["carpentry", 3], "build": {"obj": Defs.O_STAIRS, "upper": 1}, "time": 30.0, "xp": ["carpentry", 60]})
 	_r("battery_bank", "Wire a battery bank", "Workshop", {"in": [["car_battery", 2], ["wire", 3]], "tools": ["screwdriver"], "skill": ["electrical", 2], "build": {"obj": Defs.O_BATTERY_BANK}, "time": 10.0, "xp": ["electrical", 35]})
 	_r("solar_panel", "Assemble a solar panel", "Workshop", {"in": [["glass_pane", 1], ["scrap_metal", 2], ["wire", 2]], "tools": ["screwdriver"], "skill": ["electrical", 3], "build": {"obj": Defs.O_SOLAR}, "time": 12.0, "xp": ["electrical", 40]})
 	_r("field_dressing", "Field dressing (taught)", "Survival", {"in": [["rag", 2], ["disinfectant", 1]], "learn": "medic", "out": [["bandage", 3]], "time": 4.0, "xp": ["first_aid", 12]})

@@ -1896,10 +1896,21 @@ static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
 			return {"ok": false, "why": "Out of reach"}
 		return {"ok": true, "x": e.x, "y": e.y, "side": e.z}
 	var ft: Vector2i = p.front_tile()
+	if b.has("upper"):
+		if World.level(ft.y) != 0 or w.bld(ft.x, ft.y) == 0:
+			return {"ok": false, "why": "Stairs go up from inside a building, on the ground floor", "x": ft.x, "y": ft.y, "side": -1}
+		var up := Vector2i(ft.x, ft.y + World.UNDER * 2)
+		if w.peek_obj(up.x, up.y) != 0 or w.peek_obj(up.x + 1, up.y) != 0:
+			return {"ok": false, "why": "Something is in the way upstairs", "x": ft.x, "y": ft.y, "side": -1}
 	if b.has("ground"):
 		var g: int = w.ground(ft.x, ft.y)
 		if b.get("natural", 0) == 1 and not Defs.ground_is_natural(g):
 			return {"ok": false, "why": "You can only dig in soil or grass", "x": ft.x, "y": ft.y, "side": -1}
+		if g == Defs.G_VOID and World.level(ft.y) == 2 and int(b["ground"]) == Defs.G_PLANK:
+			# floor laid out over thin air needs a wall below close enough to carry it
+			if not sim.upper_supported(ft):
+				return {"ok": false, "why": "Nothing below to carry it: build over a wall, or closer to one", "x": ft.x, "y": ft.y, "side": -1}
+			return {"ok": true, "x": ft.x, "y": ft.y, "side": -1}
 		if w.obj(ft.x, ft.y) != 0 or Defs.ground_is_water(g) or g == Defs.G_VOID:
 			return {"ok": false, "why": "The tile in front is not clear", "x": ft.x, "y": ft.y, "side": -1}
 		if g == int(b["ground"]):
@@ -2039,6 +2050,8 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 				w.set_roof(target["x"], target["y"], World.PLAYER_BLD)
 				sim.alarms_done[World.PLAYER_BLD] = true
 			elif b.has("ground"):
+				if World.level(int(target["y"])) == 2 and w.ground(target["x"], target["y"]) == Defs.G_VOID:
+					sim.built_upper.append(Vector2i(target["x"], target["y"]))
 				w.set_ground(target["x"], target["y"], int(b["ground"]))
 				var oc: int = w.obj(target["x"], target["y"])
 				if oc != 0:
@@ -2057,6 +2070,8 @@ static func craft(sim: Sim, r: Dictionary) -> bool:
 					w.set_ent(target["x"], target["y"], {"k": "bank", "w": 0.0})
 				elif id == Defs.O_SOLAR:
 					w.set_ent(target["x"], target["y"], {"k": "solar"})
+				if b.has("upper"):
+					sim.build_upper_access(int(target["x"]), int(target["y"]))
 		if r.has("xp"):
 			p.add_xp(r["xp"][0], float(r["xp"][1]))
 		if hammering:

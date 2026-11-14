@@ -562,8 +562,48 @@ func add_blood(x: float, y: float) -> void:
 	ev_ground.append(Vector2i(c.cx, c.cy))
 
 # ------------------------------------------------------------------ streaming
+## read a wall without loading its chunk (for floors upstairs resting on walls below)
+var _peek: Dictionary = {}
+func peek_chunk(x: int, y: int) -> Chunk:
+	var k := Vector2i(x >> 4, y >> 4)
+	var c: Chunk = chunks.get(k)
+	if c == null:
+		c = _peek.get(k)
+		if c == null:
+			c = gen.gen_chunk(k.x, k.y)
+			var data: Dictionary = store.get(k, {})
+			if data.is_empty() and store_loader.is_valid():
+				data = store_loader.call(k)
+			if not data.is_empty():
+				c.load_data(data)
+			_peek[k] = c
+	return c
+
+func peek_wall(x: int, y: int, side: int) -> int:
+	var c: Chunk = peek_chunk(x, y)
+	var i: int = ((y & 15) << 4) | (x & 15)
+	return c.wall_n[i] if side == 0 else c.wall_w[i]
+
+func peek_obj(x: int, y: int) -> int:
+	return peek_chunk(x, y).obj[((y & 15) << 4) | (x & 15)]
+
+## change a tile on a floor that is not loaded: the edit goes into what is stored for it
+func set_unloaded(x: int, y: int, ground_id: int, obj_cell: int) -> void:
+	if is_loaded(x, y):
+		if ground_id >= 0: set_ground(x, y, ground_id)
+		if obj_cell >= 0: set_obj(x, y, obj_cell)
+		return
+	var c: Chunk = peek_chunk(x, y)
+	var i: int = ((y & 15) << 4) | (x & 15)
+	if ground_id >= 0: c.ground[i] = ground_id
+	if obj_cell >= 0: c.obj[i] = obj_cell
+	c.modified = true
+	c.touched = true
+	store[Vector2i(x >> 4, y >> 4)] = c.save_data()
+
 func load_chunk(cx: int, cy: int) -> Chunk:
 	var k := Vector2i(cx, cy)
+	_peek.erase(k)
 	if chunks.has(k):
 		return chunks[k]
 	var c: Chunk = gen.gen_chunk(cx, cy)
@@ -594,6 +634,7 @@ func unload_chunk(k: Vector2i) -> void:
 	if c.touched or c.modified or c.spawned:
 		store[k] = c.save_data()
 	chunks.erase(k)
+	_peek.erase(k)
 	if _lkey == k:
 		_lc = null
 		_lkey = Vector2i(999999, 999999)

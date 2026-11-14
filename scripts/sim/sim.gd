@@ -807,6 +807,7 @@ func read_note(note: Dictionary) -> void:
 # ------------------------------------------------------------------ fish stocks
 var unjammed: Dictionary = {}     # doors forced or found free: "x,y,side" -> true
 var pending_sites: Dictionary = {}  # Vector2i -> "supply" | "overrun": what a bulletin promised, decided when it was printed
+var built_upper: Array = []       # Vector2i floor tiles you laid over thin air upstairs
 var objectives: Array = []        # {"text", "x", "y", "state", "due", "kind"}
 var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
 var _trader_h := 60.0
@@ -922,6 +923,62 @@ func _tick_smoke(dt: float) -> void:
 		noise(player.pos, 5.0)                 # coughing
 		if rng.randf() < 0.3:
 			say("Smoke fills your lungs. Get out!", Color(1.0, 0.7, 0.5))
+
+## a floor tile upstairs stands if a wall below is within three tiles of it
+func upper_supported(t: Vector2i) -> bool:
+	var by: int = t.y - World.UNDER * 2
+	for dy in range(-3, 4):
+		for dx in range(-3, 4):
+			if world.peek_wall(t.x + dx, by + dy, 0) != 0 or world.peek_wall(t.x + dx, by + dy, 1) != 0:
+				return true
+	return false
+
+var fallen_items: Array = []      # [x, y, item] dropped through a floor onto one not loaded yet
+func _land_fallen() -> void:
+	for f in fallen_items.duplicate():
+		if world.is_loaded(int(f[0]), int(f[1])):
+			world.drop_item(int(f[0]), int(f[1]), f[2])
+			fallen_items.erase(f)
+
+## a staircase you built: stairs below, a landing above
+func build_upper_access(x: int, y: int) -> void:
+	var up := Vector2i(x, y + World.UNDER * 2)
+	for t in [up, up + Vector2i(1, 0)]:
+		var g: int = world.ground(t.x, t.y) if world.is_loaded(t.x, t.y) else world.peek_chunk(t.x, t.y).ground[((t.y & 15) << 4) | (t.x & 15)]
+		if g == Defs.G_VOID:
+			world.set_unloaded(t.x, t.y, Defs.G_PLANK, -1)
+			built_upper.append(t)
+	world.set_unloaded(up.x, up.y, -1, Defs.ocell(Defs.O_STAIRS, 0, 0))
+
+## take away what held it up and the floor you laid comes down, with whatever was on it
+func _check_upper_floors() -> void:
+	if built_upper.is_empty():
+		return
+	for t in built_upper.duplicate():
+		if not world.is_loaded(t.x, t.y):
+			continue                        # it comes down when someone is there to see it
+		if upper_supported(t):
+			continue
+		var below := Vector2i(t.x, t.y - World.UNDER * 2)
+		var falling: Array = []
+		if world.has_container(t.x, t.y):
+			falling.append_array(world.container_at(t.x, t.y).duplicate())
+		if world.obj(t.x, t.y) != 0:
+			world.remove_object(t.x, t.y)
+		falling.append_array(world.items_at(t.x, t.y).duplicate())
+		for it in falling:
+			fallen_items.append([below.x, below.y, it])      # lands when the floor below is loaded
+		_land_fallen()
+		world.set_ground(t.x, t.y, Defs.G_VOID)
+		built_upper.erase(t)
+		noise(Vector2(below) + Vector2(0.5, 0.5), 25.0)
+		say("A crack like a gunshot, and part of the floor upstairs comes down.", Color(1.0, 0.6, 0.45))
+		if player.alive and floori(player.pos.x) == t.x and floori(player.pos.y) == t.y:
+			player.pos.y -= World.UNDER * 2
+			world.stream(player.pos, 2, 999)
+			if not settings.get("god", false):
+				player.hurt(14.0, "Fell through a collapsing floor")
+				player.add_wound(13 if randf() < 0.5 else 14, "fracture" if randf() < 0.3 else "laceration", "the fall")
 
 ## a generator running inside a building fills it with exhaust; you notice only when it is late
 var fume_h := 0.0
@@ -1711,6 +1768,9 @@ func _slow_tick(dh: float) -> void:
 				elif o == Defs.O_SPIKES:
 					spikes.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
 	_cable_network(cables)
+	_check_upper_floors()
+	if not fallen_items.is_empty():
+		_land_fallen()
 	_generator_fumes()
 	var near := 0
 	for cy2 in range((py - 4) >> 4, ((py + 4) >> 4) + 1):
@@ -2003,7 +2063,7 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "objectives": objectives, "event_h": _event_h, "unjammed": unjammed, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "objectives": objectives, "upper": built_upper, "fallen": fallen_items, "event_h": _event_h, "unjammed": unjammed, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
@@ -2012,6 +2072,8 @@ func load_meta(d: Dictionary) -> void:
 	snow_cover = d.get("snowc", 0.0)
 	home = d.get("home", {})
 	objectives = d.get("objectives", [])
+	built_upper = d.get("upper", [])
+	fallen_items = d.get("fallen", [])
 	_event_h = d.get("event_h", 30.0)
 	pending_sites = d.get("psites", {})
 	unjammed = d.get("unjammed", {})

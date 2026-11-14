@@ -918,6 +918,7 @@ func _init() -> void:
 		tip.call()
 		ok(not opt(sim.npcs.options(sv), "\"What do you know").is_valid(), "once")
 	Inv.add_new(p.inv, "crowbar", 1)
+	sv.wpn = ""                     # (some trades start armed; this one has nothing)
 	var gw: Callable = opt(sim.npcs.options(sv), "Give them your spare")
 	ok(gw.is_valid(), "a spare weapon can be handed over")
 	if gw.is_valid():

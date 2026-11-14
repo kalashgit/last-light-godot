@@ -1401,6 +1401,76 @@ func _init() -> void:
 		if BuildGen.gen("house", 16, 18, 0, 6000 + sd5, 1).btype == "burned_house": burned += 1
 	ok(burned > 0, "some houses are burned out (%d in 200)" % burned)
 
+	print("== a floor of your own upstairs")
+	var us := Sim.new(1616)
+	us.new_game("unemployed", [], "house")
+	quiet(us)
+	var up_p: Player = us.player
+	var ub := Vector2i(floori(up_p.pos.x) + 30, floori(up_p.pos.y))
+	us.world.stream(Vector2(ub), 2, 999)
+	clear_area(us, ub + Vector2i(3, 3), 7)
+	var uw: World = us.world
+	var wall_u: int = Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID)
+	for yy4 in range(ub.y, ub.y + 6):
+		for xx4 in range(ub.x, ub.x + 6):
+			uw.chunk(xx4 >> 4, yy4 >> 4).bld[((yy4 & 15) << 4) | (xx4 & 15)] = 909
+	for i9 in range(6):
+		uw.set_wall(ub.x + i9, ub.y, 0, wall_u)
+		uw.set_wall(ub.x, ub.y + i9, 1, wall_u)
+	up_p.pos = Vector2(ub.x + 2.5, ub.y + 2.5)
+	up_p.facing = Vector2(1, 0)
+	var sr: Dictionary = Recipes.by_id("build_stairs")
+	ok(not sr.is_empty() and Actions.build_target(us, sr)["ok"], "stairs can be built inside a building")
+	for inp9 in sr["in"]: Inv.add_new(up_p.inv, String(inp9[0]), int(inp9[1]))
+	Inv.add_new(up_p.inv, "hammer", 1)
+	Inv.add_new(up_p.inv, "saw", 1)
+	up_p.skills["carpentry"] = 2000.0
+	var stx: Dictionary = Actions.build_target(us, sr)
+	Actions.craft(us, sr)
+	run(us, 32.0)
+	var upt := Vector2i(int(stx["x"]), int(stx["y"]) + World.UNDER * 2)
+	ok(Defs.o_id(uw.obj(int(stx["x"]), int(stx["y"]))) == Defs.O_STAIRS and Defs.o_id(uw.peek_obj(upt.x, upt.y)) == Defs.O_STAIRS and uw.peek_chunk(upt.x + 1, upt.y).ground[((upt.y & 15) << 4) | ((upt.x + 1) & 15)] == Defs.G_PLANK,
+		"they lead to a landing on a new floor above")
+	us.world.stream(Vector2(upt), 2, 999)              # go up: the ground floor is no longer loaded
+	ok(Defs.o_id(uw.obj(upt.x, upt.y)) == Defs.O_STAIRS and uw.ground(upt.x + 1, upt.y) == Defs.G_PLANK, "and the landing is really there when you go up")
+	ok(not us.world.is_loaded(ub.x, ub.y), "(upstairs, the floor below is not loaded)")
+	up_p.pos = Vector2(upt.x + 1.5, upt.y + 0.5)
+	up_p.facing = Vector2(0, 1)
+	var fr2: Dictionary = Recipes.by_id("floor")
+	ok(Actions.build_target(us, fr2)["ok"], "from the landing you can lay floor over the wall below")
+	us.built_upper.append(Vector2i(upt.x + 1, upt.y + 1))
+	uw.set_ground(upt.x + 1, upt.y + 1, Defs.G_PLANK)
+	var far_t := Vector2i(-1, -1)
+	for dd in range(8, 80):
+		var cand := Vector2i(upt.x + dd, upt.y + dd)
+		if not us.upper_supported(cand):
+			far_t = cand
+			break
+	ok(far_t.x >= 0 and us.upper_supported(Vector2i(upt.x + 1, upt.y + 1)), "but not far out over nothing (no support at %s)" % str(far_t - upt))
+	# take the walls away and the floor comes down
+	up_p.pos = Vector2(upt.x + 1.5, upt.y + 1.5)
+	us.settings["god"] = false
+	us.world.stream(Vector2(ub), 2, 999)               # come down and pull the walls out
+	for i10 in range(6):
+		uw.set_wall(ub.x + i10, ub.y, 0, 0)
+		uw.set_wall(ub.x, ub.y + i10, 1, 0)
+	Inv.add_new(up_p.inv, "nails", 1)
+	us.world.stream(Vector2(upt), 2, 999)              # and go back up to stand on it
+	uw.drop_item(upt.x + 1, upt.y + 1, Items.make("toy", 1))
+	var hp9: float = up_p.hp
+	us._check_upper_floors()
+	ok(uw.ground(upt.x + 1, upt.y + 1) == Defs.G_VOID and World.level(up_p.pos.y) == 0 and up_p.hp < hp9, "with its walls gone, the floor caves in and you fall through")
+	us.world.stream(up_p.pos, 2, 999)
+	us._land_fallen()
+	ok(us.fallen_items.is_empty() and Inv.count(uw.items_at(upt.x + 1, upt.y + 1 - World.UNDER * 2), "toy") == 1, "what was on it lands on the floor below, none of it lost")
+	us.settings["god"] = true
+	SaveGame.delete("sys_up")
+	us.built_upper = [Vector2i(5, 6)]
+	SaveGame.save(us, "sys_up")
+	var lu: Sim = SaveGame.load_game("sys_up")
+	ok(lu != null and lu.built_upper.size() == 1, "the floors you laid are remembered")
+	SaveGame.delete("sys_up")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")
