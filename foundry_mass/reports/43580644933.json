@@ -1,0 +1,42 @@
+{
+  "run_id": "43580644933",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 40,
+  "remaining": 320,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_repair_patch",
+      "source_glb_sha256": "3ac8d34e5aec04e40f33762b37651b679afcc7c9e9bd718b764e3f5f86edb54b",
+      "atlas_sha256": "60b759792e1f55a48b9246b872985b190385a331a8a8bcd3b702f4e1263cb91e",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2547765,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_rope_coil",
+      "source_glb_sha256": "fdebadf286a5e63aa32bb2f098189c0a3e77a29097ce494f83ae701c183e2a58",
+      "atlas_sha256": "ef3f1665e46b2463787a1ba8cea839f9684d17b8963b0a19ef699ceb035e2a70",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2604202,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

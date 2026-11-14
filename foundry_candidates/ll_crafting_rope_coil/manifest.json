@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_rope_coil",
+  "source_glb_sha256": "fdebadf286a5e63aa32bb2f098189c0a3e77a29097ce494f83ae701c183e2a58",
+  "atlas_sha256": "ef3f1665e46b2463787a1ba8cea839f9684d17b8963b0a19ef699ceb035e2a70",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2604202,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

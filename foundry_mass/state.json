@@ -40,9 +40,11 @@
     "ll_crafting_plastic_pipe",
     "ll_crafting_plastic_sheet",
     "ll_crafting_plywood_sheet",
-    "ll_crafting_red_brick"
+    "ll_crafting_red_brick",
+    "ll_crafting_repair_patch",
+    "ll_crafting_rope_coil"
   ],
-  "last_run_id": "43546586793",
+  "last_run_id": "43580644933",
   "golden_approved": false,
-  "remaining": 322
+  "remaining": 320
 }
