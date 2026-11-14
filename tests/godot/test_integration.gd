@@ -2803,6 +2803,70 @@ func _init() -> void:
 	sim.npcs.list.clear()
 	sim.factions.sites.clear()
 
+	print("== bridges, and the ones that are down")
+	var bridge_t := Vector2i(-99999, 0)
+	var broken_t := Vector2i(-99999, 0)
+	var hw_axis := 0
+	var gen2: WorldGen = w.gen
+	for rx4 in range(-3, 4):
+		for ry4 in range(-3, 4):
+			for hw2 in gen2.region_highways(rx4, ry4):
+				var hr2: Rect2i = hw2[0]
+				var mid: int = (hr2.position.y + 2) if hw2[1] == 0 else (hr2.position.x + 2)
+				var lo: int = hr2.position.x if hw2[1] == 0 else hr2.position.y
+				var hi: int = hr2.end.x if hw2[1] == 0 else hr2.end.y
+				for k27 in range(lo, hi, 2):
+					var tx4: int = k27 if hw2[1] == 0 else mid
+					var ty4: int = mid if hw2[1] == 0 else k27
+					var wv3: float = gen2.n_water.get_noise_2d(tx4, ty4)
+					var in_t: bool = gen2.region(rx4, ry4)["rect"].has_point(Vector2i(tx4, ty4))
+					if in_t: continue
+					if wv3 > 0.56 and wv3 < 0.62 and bridge_t.x == -99999:
+						bridge_t = Vector2i(tx4, ty4)
+						hw_axis = hw2[1]
+					if wv3 > 0.66 and broken_t.x == -99999:
+						var span2: int = (tx4 if hw2[1] == 0 else ty4) / 24
+						if Rng.f2(span2, (ty4 if hw2[1] == 0 else tx4) / 64, gen2.seed_v + 1777) < 0.35:
+							broken_t = Vector2i(tx4, ty4)
+	ok(bridge_t.x != -99999, "highways cross water")
+	var town_rail := 0
+	var tr0: Rect2i = gen2.region(0, 0)["rect"]
+	for cyy in range(tr0.position.y >> 4, (tr0.end.y >> 4) + 1):
+		for cxx in range(tr0.position.x >> 4, (tr0.end.x >> 4) + 1):
+			var town_ch: Chunk = gen2.gen_chunk(cxx, cyy)
+			for i29 in range(256):
+				if town_ch.ground[i29] == Defs.G_DEEP_WATER and tr0.has_point(Vector2i(cxx * 16 + (i29 & 15), cyy * 16 + (i29 >> 4))): town_rail += 1
+	ok(town_rail == 0, "but never inside a town (%d water tiles in the starting town)" % town_rail)
+	if bridge_t.x != -99999:
+		var bc: Chunk = gen2.gen_chunk(bridge_t.x >> 4, bridge_t.y >> 4)
+		var bi: int = ((bridge_t.y & 15) << 4) | (bridge_t.x & 15)
+		ok(bc.ground[bi] == Defs.G_CONCRETE, "on a bridge deck, not in the water")
+		var railed := false
+		for i28 in range(256):
+			if bc.wall_n[i28] != 0 and Defs.wall_mat(bc.wall_n[i28]) == Defs.WM_CHAIN: railed = true
+			if bc.wall_w[i28] != 0 and Defs.wall_mat(bc.wall_w[i28]) == Defs.WM_CHAIN: railed = true
+		ok(railed, "with railings along its sides")
+	ok(broken_t.x != -99999, "and some bridges are down")
+	if broken_t.x != -99999:
+		var kc: Chunk = gen2.gen_chunk(broken_t.x >> 4, broken_t.y >> 4)
+		ok(kc.ground[((broken_t.y & 15) << 4) | (broken_t.x & 15)] == Defs.G_DEEP_WATER, "with open water where the deck was")
+	# span a gap
+	bulldoze(sim, Rect2i(fx0, fy0 + 26, 12, 18))
+	var gx4: int = fx0 + 5
+	var gy4: int = fy0 + 32
+	w.set_ground(gx4, gy4 - 1, Defs.G_CONCRETE)
+	w.set_ground(gx4, gy4, Defs.G_DEEP_WATER)
+	w.set_ground(gx4, gy4 + 1, Defs.G_CONCRETE)
+	ok(w.tile_blocked(gx4, gy4), "the gap cannot be walked")
+	for it8 in [["plank", 3], ["nails", 6], ["hammer", 1]]: Inv.add_new(p.inv, it8[0], it8[1])
+	p.pos = Vector2(gx4 + 0.5, gy4 - 0.5)
+	var span3: Callable = opt(Actions._water_options(sim, {"kind": "water", "x": gx4, "y": gy4}), "Lay a plank span")
+	ok(span3.is_valid(), "but planks can be laid across it")
+	if span3.is_valid():
+		span3.call()
+		run(sim, float(p.action.get("dur", 9.0)) + 0.5)
+		ok(w.ground(gx4, gy4) == Defs.G_PLANK and not w.tile_blocked(gx4, gy4), "and then it can be crossed")
+
 	print("== death, a new survivor in the same world")
 	pa = Vector2i(fx0 + 1, fy0 + 2)       # a car left behind by the first survivor
 	p.pos = Vector2(pa.x - 1.5, pa.y + 0.5)

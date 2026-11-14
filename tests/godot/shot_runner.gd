@@ -350,7 +350,32 @@ func _process(_dt: float) -> bool:
 			sim.zombies.list.clear()
 			main.view.zoom = 1.0
 		902: shot("30_quarantine")
-		905:
+		903:
+			var gen3: WorldGen = sim.world.gen
+			var spot3 := Vector2i(-99999, 0)
+			for rx5 in range(-3, 4):
+				for ry5 in range(-3, 4):
+					for hw3 in gen3.region_highways(rx5, ry5):
+						var hr3: Rect2i = hw3[0]
+						var mid3: int = (hr3.position.y + 2) if hw3[1] == 0 else (hr3.position.x + 2)
+						var lo3: int = hr3.position.x if hw3[1] == 0 else hr3.position.y
+						for k29 in range(lo3, hr3.end.x if hw3[1] == 0 else hr3.end.y, 2):
+							var tx5: int = k29 if hw3[1] == 0 else mid3
+							var ty5: int = mid3 if hw3[1] == 0 else k29
+							if spot3.x == -99999 and not gen3.region(rx5, ry5)["rect"].has_point(Vector2i(tx5, ty5)) and gen3.n_water.get_noise_2d(tx5, ty5) > 0.66 and Rng.f2((tx5 if hw3[1] == 0 else ty5) / 24, (ty5 if hw3[1] == 0 else tx5) / 64, gen3.seed_v + 1777) < 0.35:
+								spot3 = Vector2i(tx5 - (6 if hw3[1] == 0 else 0), ty5 - (0 if hw3[1] == 0 else 6))
+			if spot3.x != -99999:
+				for back in range(0, 20):
+					var cand := Vector2(spot3.x + 0.5, spot3.y + 0.5)
+					sim.world.stream(cand, 2, 999)
+					if not sim.world.blocked(cand.x, cand.y, 0.3): break
+				sim.player.pos = Vector2(spot3.x + 0.5, spot3.y + 0.5)
+				sim.world.stream(sim.player.pos, 2, 999)
+				sim._process_world_events()
+				sim.zombies.list.clear()
+			main.view.zoom = 1.2
+		904: shot("31_broken_bridge")
+		908:
 			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")

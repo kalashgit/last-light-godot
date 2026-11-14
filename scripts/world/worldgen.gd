@@ -463,6 +463,25 @@ func gen_chunk(cx: int, cy: int) -> Chunk:
 								c.ground[i2] = D.G_ASPHALT
 						elif not D.ground_is_road(c.ground[i2]):
 							c.ground[i2] = D.G_GRAVEL
+						# over water the highway is a bridge: a concrete deck with railings, sometimes broken
+						var wv2: float = n_water.get_noise_2d(x, y)
+						if wv2 > 0.54 and not (in_town and town.has_point(Vector2i(x, y))):     # towns are built on dry ground
+							if not hr.has_point(Vector2i(x, y)):
+								c.ground[i2] = D.G_DEEP_WATER if wv2 > 0.62 else D.G_WATER
+								continue
+							var span: int = (x if axis == 0 else y) / 24
+							var broken: bool = Rng.f2(span, (y if axis == 0 else x) / 64, seed_v + 1777) < 0.35 and wv2 > 0.66
+							if broken:
+								c.ground[i2] = D.G_DEEP_WATER
+							else:
+								c.ground[i2] = D.G_CONCRETE
+								var rail: int = D.wall(D.WM_CHAIN, D.WS_SOLID)
+								if axis == 0:
+									if y == hr.position.y: c.wall_n[i2] = rail
+									if y == hr.end.y - 1 and (y + 1) < y0 + CS: c.wall_n[i2 + CS] = rail
+								else:
+									if x == hr.position.x: c.wall_w[i2] = rail
+									if x == hr.end.x - 1 and (x + 1 - x0) < CS: c.wall_w[i2 + 1] = rail
 	# ---- roadside stories: pile-ups and people who did not make it out of town
 	if has_road and not in_town and Rng.f2(cx, cy, seed_v + 901) < 0.05:
 		_road_story(c, x0, y0)

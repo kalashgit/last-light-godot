@@ -117,7 +117,8 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 	var sp: Dictionary = spec()
 	var p: Player = sim.player
 	var has_fuel: bool = (float(ent.get("fuel", 0.0)) > 0.0 and eng > 0.05) if motor() else p.endurance > 3.0
-	var on_road: bool = Defs.ground_is_road(w.ground(floori(pos.x), floori(pos.y)))
+	var g_here: int = w.ground(floori(pos.x), floori(pos.y))
+	var on_road: bool = Defs.ground_is_road(g_here) or g_here == Defs.G_CONCRETE or g_here == Defs.G_PLANK or g_here == Defs.G_SIDEWALK
 	var tire: float = float(ent.get("tire", 1.0))
 	var vmax: float = (float(sp["road"]) if on_road else float(sp["off"])) * (0.55 + eng * 0.45) * (0.7 + tire * 0.3)
 	if tire < 0.15: vmax *= 0.35            # running on a flat

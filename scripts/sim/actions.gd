@@ -1416,6 +1416,22 @@ static func _water_options(sim: Sim, t: Dictionary) -> Array:
 		_opt("Fill water containers (untreated)", func(): _fill(sim, true, 999))]
 	if Inv.has_tag(p.inv, "dig"):
 		out.append(_opt("Dig clay from the bank", func(): _dig(sim, "clay")))
+	# a gap in a bridge or a channel: span it with planks if there is something to rest them on
+	var wx3: int = t["x"]
+	var wy3: int = t["y"]
+	var shore := false
+	for d3 in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		var g3: int = sim.world.ground(wx3 + d3.x, wy3 + d3.y)
+		if g3 == Defs.G_CONCRETE or g3 == Defs.G_PLANK or Defs.ground_is_road(g3): shore = true
+	if shore and Inv.count(p.inv, "plank") >= 3 and Inv.count(p.inv, "nails") >= 6 and Inv.has_tag(p.inv, "hammer"):
+		out.append(_opt("Lay a plank span across (3 planks, 6 nails)", func():
+			p.start_action("Laying a span", 9.0 - p.skill_level("carpentry") * 0.4, func():
+				if not Inv.take(p.inv, "plank", 3) or not Inv.take(p.inv, "nails", 6): return
+				sim.world.set_ground(wx3, wy3, Defs.G_PLANK)
+				sim.noise(p.pos, 13.0)
+				sim.emit_fx("build", p.pos)
+				p.add_xp("carpentry", 25.0)
+				sim.say("A rough span. It will take a car, carefully.", Color(0.75, 0.9, 0.7)))))
 	if not p.weapon.is_empty() and Items.def(p.weapon["id"]).get("wpn", {}).get("type", "") == "spear":
 		out.append(_opt("Spear fish", func():
 			p.start_action("Spear fishing", 6.0, func():
