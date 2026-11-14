@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_plywood_sheet",
+  "source_glb_sha256": "20d8e0fd276e8cf37da25d8bc87792117d1ee601571bfb17c8d988b3c258e833",
+  "atlas_sha256": "341f5cf060180486cd1cd544b6af4f12ae34d41bd0abc9143ff19205a11b1b0e",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2620673,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

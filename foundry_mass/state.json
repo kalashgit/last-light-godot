@@ -38,9 +38,11 @@
     "ll_crafting_paving_brick",
     "ll_crafting_pine_plank",
     "ll_crafting_plastic_pipe",
-    "ll_crafting_plastic_sheet"
+    "ll_crafting_plastic_sheet",
+    "ll_crafting_plywood_sheet",
+    "ll_crafting_red_brick"
   ],
-  "last_run_id": "43517469934",
+  "last_run_id": "43546586793",
   "golden_approved": false,
-  "remaining": 324
+  "remaining": 322
 }

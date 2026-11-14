@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_red_brick",
+  "source_glb_sha256": "c61dc48bd9344be8452f8fe29689feb349688cfbfab466087302cfafdcb02bf0",
+  "atlas_sha256": "a5b1fcc1d7c9b6cb70130cd0b46d4c9e5d5a9599d70e8fd3dd9942c0ab66aef4",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2620673,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
