@@ -16,10 +16,21 @@ const TYPES := {
 	Defs.O_BUS: {"n": "bus", "road": 6.4, "off": 2.8, "tank": 30.0, "use": 0.011, "prot": 0.95, "noise": 16.0, "crash": 0.6, "motor": true, "tow": false},
 	Defs.O_AMBULANCE: {"n": "ambulance", "road": 8.6, "off": 4.0, "tank": 18.0, "use": 0.007, "prot": 0.9, "noise": 12.0, "crash": 0.85, "motor": true, "tow": true},
 	Defs.O_POLICE_CAR: {"n": "police car", "road": 10.5, "off": 5.0, "tank": 14.0, "use": 0.005, "prot": 0.85, "noise": 10.0, "crash": 1.0, "motor": true, "tow": true},
+	Defs.O_HATCHBACK: {"n": "hatchback", "road": 10.0, "off": 4.2, "tank": 10.0, "use": 0.0035, "prot": 0.8, "noise": 9.0, "crash": 1.1, "motor": true, "tow": false},
+	Defs.O_WAGON: {"n": "station wagon", "road": 9.2, "off": 4.4, "tank": 14.0, "use": 0.0045, "prot": 0.85, "noise": 10.0, "crash": 1.0, "motor": true, "tow": true},
+	Defs.O_SUV: {"n": "SUV", "road": 9.5, "off": 6.0, "tank": 18.0, "use": 0.006, "prot": 0.9, "noise": 11.0, "crash": 0.85, "motor": true, "tow": true},
+	Defs.O_OFFROADER: {"n": "off-roader", "road": 9.0, "off": 7.6, "tank": 16.0, "use": 0.006, "prot": 0.7, "noise": 12.0, "crash": 0.9, "motor": true, "tow": true},
+	Defs.O_UTILITY: {"n": "utility truck", "road": 8.0, "off": 5.0, "tank": 20.0, "use": 0.007, "prot": 0.9, "noise": 13.0, "crash": 0.8, "motor": true, "tow": true},
+	Defs.O_DELIVERY: {"n": "delivery van", "road": 8.2, "off": 3.8, "tank": 16.0, "use": 0.0065, "prot": 0.9, "noise": 12.0, "crash": 0.85, "motor": true, "tow": true},
+	Defs.O_TANKER: {"n": "fuel tanker", "road": 6.8, "off": 2.8, "tank": 30.0, "use": 0.011, "prot": 0.9, "noise": 15.0, "crash": 0.65, "motor": true, "tow": false},
+	Defs.O_TOW_TRUCK: {"n": "tow truck", "road": 8.4, "off": 4.6, "tank": 20.0, "use": 0.008, "prot": 0.9, "noise": 13.0, "crash": 0.8, "motor": true, "tow": true},
+	Defs.O_TRACTOR: {"n": "tractor", "road": 4.6, "off": 4.6, "tank": 10.0, "use": 0.005, "prot": 0.3, "noise": 16.0, "crash": 0.6, "motor": true, "tow": true},
 	Defs.O_MOTORBIKE: {"n": "motorcycle", "road": 12.5, "off": 5.6, "tank": 5.0, "use": 0.002, "prot": 0.0, "noise": 13.0, "crash": 2.2, "motor": true, "tow": false},
 	Defs.O_BICYCLE: {"n": "bicycle", "road": 5.6, "off": 3.4, "tank": 0.0, "use": 0.0, "prot": 0.0, "noise": 0.0, "crash": 1.6, "motor": false, "tow": false},
 }
-const TOWABLE := [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_CAR_WRECK, Defs.O_AMBULANCE, Defs.O_POLICE_CAR]
+const TOWABLE := [Defs.O_CAR, Defs.O_VAN, Defs.O_PICKUP, Defs.O_CAR_WRECK, Defs.O_AMBULANCE, Defs.O_POLICE_CAR, Defs.O_HATCHBACK, Defs.O_WAGON, Defs.O_SUV, Defs.O_OFFROADER, Defs.O_DELIVERY]
+## only a tow truck can haul these
+const HEAVY_TOW := [Defs.O_TRUCK, Defs.O_BUS, Defs.O_UTILITY, Defs.O_TANKER, Defs.O_TRACTOR]
 
 static func is_vehicle(id: int) -> bool:
 	return TYPES.has(id)
@@ -333,9 +344,12 @@ func behind() -> Vector2i:
 	for k in range(3):
 		var q: Vector2 = back - DIRS[heading] * float(k)
 		var cell: int = w.obj(floori(q.x), floori(q.y))
-		if cell != 0 and TOWABLE.has(Defs.o_id(cell)):
+		if cell != 0 and can_tow(Defs.o_id(cell)):
 			return w.anchor_of(floori(q.x), floori(q.y))
 	return Vector2i(-1, -1)
+
+func can_tow(tid: int) -> bool:
+	return TOWABLE.has(tid) or (oid == Defs.O_TOW_TRUCK and HEAVY_TOW.has(tid))
 
 func hitch(ax: int, ay: int) -> bool:
 	if not spec()["tow"] or not tow.is_empty():
@@ -343,7 +357,7 @@ func hitch(ax: int, ay: int) -> bool:
 	var w: World = sim.world
 	var cell: int = w.obj(ax, ay)
 	var tid: int = Defs.o_id(cell)
-	if not TOWABLE.has(tid):
+	if not can_tow(tid):
 		return false
 	var c: Chunk = w.chunk_at(ax, ay)
 	var ai: int = World.idx(ax, ay)

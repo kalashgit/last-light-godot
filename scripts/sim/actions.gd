@@ -508,6 +508,10 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Forage", func(): _forage(sim, x, y, false)))
 		"car":
 			out.append_array(_car_options(sim, a.x, a.y))
+			if id == Defs.O_TANKER:
+				var te: Dictionary = Vehicle.car_ent(sim, a.x, a.y)
+				if not te.has("cargo"): te["cargo"] = 60 + Rng.h2(a.x, a.y, sim.seed_v + 91) % 120
+				out.append(_opt("Draw from the tanker (%d units left)" % int(te["cargo"]), func(): _draw_tanker(sim, a.x, a.y)))
 			if id != Defs.O_BICYCLE:
 				out.append(_opt("Siphon fuel", func(): _siphon(sim, a.x, a.y)))
 				out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
@@ -1029,7 +1033,8 @@ static func vehicle_menu(sim: Sim) -> Array:
 ## seats: following companions climb in with you
 static func _board_companions(sim: Sim) -> void:
 	var v: Vehicle = sim.vehicle
-	var seats: int = {Defs.O_BUS: 12, Defs.O_VAN: 3, Defs.O_TRUCK: 2, Defs.O_AMBULANCE: 3, Defs.O_PICKUP: 2, Defs.O_CAR: 3, Defs.O_POLICE_CAR: 3}.get(v.oid, 0)
+	var seats: int = {Defs.O_BUS: 12, Defs.O_VAN: 3, Defs.O_TRUCK: 2, Defs.O_AMBULANCE: 3, Defs.O_PICKUP: 2, Defs.O_CAR: 3, Defs.O_POLICE_CAR: 3,
+		Defs.O_HATCHBACK: 3, Defs.O_WAGON: 4, Defs.O_SUV: 4, Defs.O_OFFROADER: 3, Defs.O_UTILITY: 2, Defs.O_DELIVERY: 1, Defs.O_TANKER: 1, Defs.O_TOW_TRUCK: 2, Defs.O_TRACTOR: 0}.get(v.oid, 0)
 	for n in sim.npcs.list.duplicate():
 		if seats <= 0:
 			break
@@ -1468,6 +1473,23 @@ static func _siphon(sim: Sim, ax: int, ay: int) -> void:
 		can["u"] = int(can.get("u", 0)) + n
 		e["fuel"] = int(e["fuel"]) - n
 		sim.say("Siphoned %d units of fuel" % n, Color(0.8, 0.9, 0.7)))
+
+static func _draw_tanker(sim: Sim, ax: int, ay: int) -> void:
+	var p: Player = sim.player
+	var can: Dictionary = Inv.find_tag(p.inv, "fuel_can")
+	if can.is_empty():
+		sim.say("You need a gas can", Color(0.9, 0.8, 0.6))
+		return
+	var e: Dictionary = Vehicle.car_ent(sim, ax, ay)
+	if int(e.get("cargo", 0)) <= 0:
+		sim.say("The tanker is empty", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Drawing fuel", 4.0, func():
+		var room: int = int(Items.def(can["id"])["maxuses"]) - int(can.get("u", 0))
+		var n: int = mini(room, int(e["cargo"]))
+		can["u"] = int(can.get("u", 0)) + n
+		e["cargo"] = int(e["cargo"]) - n
+		sim.say("Drew %d units from the tanker" % n, Color(0.8, 0.9, 0.7)))
 
 static func _fill_gas(sim: Sim, n: int) -> void:
 	var p: Player = sim.player

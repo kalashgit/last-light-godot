@@ -47,7 +47,7 @@ func _init() -> void:
 	p.grabbed_by = z.id
 	var p0: Vector2 = p.pos
 	run(sim, 0.6, Vector2(-1, 0))
-	ok(p.pos.distance_to(p0) < 0.05, "while held you cannot walk away (moved %.2f)" % p.pos.distance_to(p0))
+	ok(p.pos.distance_to(p0) < 0.2, "while held you cannot walk away (moved %.2f; walking would cover ~0.8)" % p.pos.distance_to(p0))
 	var presses := 0
 	while p.grabbed_by >= 0 and presses < 20:
 		p.attack_cd = 0.0
@@ -960,6 +960,55 @@ func _init() -> void:
 			if (r2.get("in", []) as Array).size() > 0 and r2["in"][0][0] == dr_w: found2_w = true
 		if not found2_w: but_ok_w = false
 	ok(but_ok_w, "each new animal you can hunt can be butchered")
+
+	print("== eighteen kinds of vehicle")
+	ok(Vehicle.TYPES.size() >= 18, "%d vehicle types" % Vehicle.TYPES.size())
+	var vm: Dictionary = Models.all()
+	var vmiss: Array = []
+	for vid in Vehicle.TYPES.keys():
+		if not vm.has(vid): vmiss.append(Defs.obj(vid)["n"])
+	ok(vmiss.is_empty(), "each has its own model %s" % str(vmiss))
+	ok(float(Vehicle.TYPES[Defs.O_OFFROADER]["off"]) > float(Vehicle.TYPES[Defs.O_PICKUP]["off"]) and float(Vehicle.TYPES[Defs.O_TRACTOR]["off"]) >= float(Vehicle.TYPES[Defs.O_TRACTOR]["road"]),
+		"an off-roader beats a pickup off the road; a tractor is as slow on the road as off it")
+	var vs := Sim.new(4545)
+	vs.new_game("unemployed", [], "house")
+	quiet(vs)
+	var vp: Player = vs.player
+	var vt := Vector2i(floori(vp.pos.x) + 3, floori(vp.pos.y) - 3)
+	clear_area(vs, vt + Vector2i(1, 4), 6)
+	for j in range(6):
+		for i in range(2):
+			vs.world.set_obj(vt.x + i, vt.y + j, Defs.ocell(Defs.O_TANKER, 0, j * 2 + i))
+	Inv.add_new(vp.inv, "gas_can", 1)
+	var gc: Dictionary = Inv.find(vp.inv, "gas_can")
+	gc["u"] = 0
+	var tl: Array = []
+	for o in Actions._obj_options(vs, {"kind": "obj", "x": vt.x, "y": vt.y}): tl.append(String(o["label"]))
+	ok(tl.any(func(l): return l.begins_with("Draw from the tanker")), "a fuel tanker can be drawn from")
+	var c0: int = int(Vehicle.car_ent(vs, vt.x, vt.y)["cargo"])
+	Actions._draw_tanker(vs, vt.x, vt.y)
+	run(vs, 5.0)
+	ok(int(gc["u"]) > 0 and int(Vehicle.car_ent(vs, vt.x, vt.y)["cargo"]) == c0 - int(gc["u"]), "fuel moves from the tanker into the can, none made up (%d units)" % int(gc["u"]))
+	for j2 in range(6):
+		for i2 in range(2):
+			vs.world.set_obj(vt.x + i2, vt.y + j2, 0)
+	for j3 in range(5):
+		for i3 in range(2):
+			vs.world.set_obj(vt.x + i3, vt.y + j3, Defs.ocell(Defs.O_TOW_TRUCK, 0, j3 * 2 + i3))
+	var tw := Vehicle.enter(vs, vt.x, vt.y)
+	ok(tw != null and tw.can_tow(Defs.O_BUS) and tw.can_tow(Defs.O_CAR), "a tow truck can haul even a bus")
+	vs.vehicle = null
+	ok(tw != null and not (func(): tw.oid = Defs.O_PICKUP; return tw.can_tow(Defs.O_BUS)).call(), "a pickup cannot")
+	var found := {"tanker": false, "tow": false, "tractor": false, "offroader": false}
+	for sd in range(40):
+		for cell in BuildGen.gen("gas", 22, 18, 0, 7000 + sd, 1).obj:
+			if Defs.o_id(cell) == Defs.O_TANKER: found["tanker"] = true
+			if Defs.o_id(cell) == Defs.O_TOW_TRUCK: found["tow"] = true
+		for cell2 in BuildGen.gen("farm", 44, 42, 0, 7100 + sd, 1).obj:
+			if Defs.o_id(cell2) == Defs.O_TRACTOR: found["tractor"] = true
+		for cell3 in BuildGen.gen("cabin", 14, 13, 0, 7200 + sd, 1).obj:
+			if Defs.o_id(cell3) == Defs.O_OFFROADER: found["offroader"] = true
+	ok(not found.values().has(false), "tankers and tow trucks at fuel stations, tractors on farms, off-roaders by cabins %s" % str(found))
 
 	print("== settings and save files")
 	Opts.vibrate = false

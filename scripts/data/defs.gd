@@ -294,7 +294,16 @@ const O_CROP_HERBS := 148
 const O_CROP_OYSTER_MUSHROOM := 149
 const O_CROP_APPLE := 150
 const O_CROP_BLUEBERRIES := 151
-const O_COUNT := 152
+const O_HATCHBACK := 152
+const O_WAGON := 153
+const O_SUV := 154
+const O_OFFROADER := 155
+const O_UTILITY := 156
+const O_DELIVERY := 157
+const O_TANKER := 158
+const O_TOW_TRUCK := 159
+const O_TRACTOR := 160
+const O_COUNT := 161
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -351,6 +360,15 @@ static func _static_init() -> void:
 	_o(O_BICYCLE, {"n": "Bicycle", "sz": [1, 2], "h": 22, "tint": 1, "hp": 80, "use": "car", "solid": 0.2})
 	_o(O_TRUCK, {"n": "Box truck", "sz": [2, 5], "h": 66, "c": "warehouse", "cap": 120, "tint": 1, "hp": 1300, "use": "car"})
 	_o(O_BUS, {"n": "Bus", "sz": [2, 6], "h": 64, "c": "car", "cap": 60, "tint": 1, "hp": 1600, "use": "car"})
+	_o(O_HATCHBACK, {"n": "Hatchback", "sz": [2, 4], "h": 40, "c": "car", "cap": 20, "tint": 1, "hp": 800, "use": "car"})
+	_o(O_WAGON, {"n": "Station wagon", "sz": [2, 4], "h": 44, "c": "car", "cap": 45, "tint": 1, "hp": 900, "use": "car"})
+	_o(O_SUV, {"n": "SUV", "sz": [2, 4], "h": 50, "c": "car", "cap": 40, "tint": 1, "hp": 1050, "use": "car"})
+	_o(O_OFFROADER, {"n": "Off-roader", "sz": [2, 4], "h": 50, "c": "camp", "cap": 30, "tint": 1, "hp": 1000, "use": "car"})
+	_o(O_UTILITY, {"n": "Utility truck", "sz": [2, 5], "h": 56, "c": "tools", "cap": 70, "tint": 1, "hp": 1250, "use": "car"})
+	_o(O_DELIVERY, {"n": "Delivery van", "sz": [2, 4], "h": 56, "c": "boxes", "cap": 60, "tint": 1, "hp": 1000, "use": "car"})
+	_o(O_TANKER, {"n": "Fuel tanker", "sz": [2, 6], "h": 58, "c": "car", "cap": 10, "tint": 1, "hp": 1700, "use": "car"})
+	_o(O_TOW_TRUCK, {"n": "Tow truck", "sz": [2, 5], "h": 52, "c": "tools", "cap": 30, "tint": 1, "hp": 1300, "use": "car"})
+	_o(O_TRACTOR, {"n": "Farm tractor", "sz": [2, 3], "h": 46, "c": "farm", "cap": 10, "tint": 1, "hp": 1100, "use": "car"})
 	_o(O_AMBULANCE, {"n": "Ambulance", "sz": [2, 4], "h": 60, "c": "medical", "cap": 50, "hp": 1000, "use": "car"})
 	_o(O_POLICE_CAR, {"n": "Police car", "sz": [2, 4], "h": 46, "c": "locker_police", "cap": 30, "hp": 950, "use": "car"})
 	_o(O_CAR_WRECK, {"n": "Wrecked car", "sz": [2, 4], "h": 44, "c": "car_wreck", "cap": 20, "hp": 900})

@@ -263,7 +263,7 @@ static func _house_lot(b: LotBuilder) -> void:
 		b.set_floor(Rect2i(1, y1 - 5, 3, b.ch - (y1 - 5)), Defs.G_CONCRETE)
 		if rng.randf() < 0.6:
 			var dr: float = rng.randf()
-			b.put_yard(Defs.O_CAR_WRECK if dr < 0.15 else (Defs.O_PICKUP if dr < 0.32 else (Defs.O_VAN if dr < 0.42 else Defs.O_CAR)), 1, y1 - 4, 0 if rng.randf() < 0.5 else 2)
+			b.put_yard(Defs.O_CAR_WRECK if dr < 0.15 else (Defs.O_PICKUP if dr < 0.3 else (Defs.O_VAN if dr < 0.38 else (Defs.O_HATCHBACK if dr < 0.55 else (Defs.O_WAGON if dr < 0.65 else (Defs.O_SUV if dr < 0.78 else Defs.O_CAR))))), 1, y1 - 4, 0 if rng.randf() < 0.5 else 2)
 		elif rng.randf() < 0.5:
 			b.put_yard(Defs.O_BICYCLE if rng.randf() < 0.65 else Defs.O_MOTORBIKE, 2, y1 - 3, 0 if rng.randf() < 0.5 else 2)
 	# backyard fence
@@ -407,6 +407,16 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 	if kind != "bunker":
 		b.windows(2 if kind != "warehouse" and kind != "gunstore" and kind != "police" and kind != "prison" and kind != "lab" else 5, rng.randi() % 2)
 	b.set_floor(Rect2i(0, y1, b.cw, apron), D.G_CONCRETE)
+	# the working vehicles each kind of place keeps out front
+	match kind:
+		"gas":
+			if rng.randf() < 0.3: _park_any(b, Defs.O_TANKER)
+			if rng.randf() < 0.3: _park_any(b, Defs.O_TOW_TRUCK)
+		"grocery":
+			if rng.randf() < 0.4: _park_any(b, Defs.O_DELIVERY)
+		"warehouse":
+			if rng.randf() < 0.3: _park_any(b, Defs.O_UTILITY)
+			if rng.randf() < 0.3: _park_any(b, Defs.O_DELIVERY)
 	# ---- main room
 	match kind:
 		"grocery":
@@ -593,6 +603,14 @@ static func _park(b: LotBuilder) -> void:
 		var id: int = _pick(rng, [Defs.O_TREE_OAK, Defs.O_TREE_OAK, Defs.O_TREE_BIRCH, Defs.O_BUSH, Defs.O_FLOWERS, Defs.O_FLOWERS, Defs.O_BENCH, Defs.O_PICNIC_TABLE, Defs.O_TRASH_CAN, Defs.O_TREE_PINE])
 		b.put_yard(id, rng.randi_range(0, b.cw - 1), rng.randi_range(0, b.ch - 1), rng.randi() % 4)
 
+## put a vehicle anywhere in the yard it fits, lowest rows first; false if there is no room
+static func _park_any(b: LotBuilder, id: int) -> bool:
+	for v in range(b.ch - 1, -1, -1):
+		for u in range(1, b.cw - 2):
+			if b.put_yard(id, u, v, 0):
+				return true
+	return false
+
 static func _parking(b: LotBuilder) -> void:
 	var rng: RandomNumberGenerator = b.rng
 	b.btype = "parking"
@@ -605,7 +623,7 @@ static func _parking(b: LotBuilder) -> void:
 			if rng.randf() < 0.3:
 				var pr: float = rng.randf()
 				var lot_k: String = b.btype
-				var pick_id: int = Defs.O_CAR_WRECK if pr < 0.25 else (Defs.O_VAN if pr < 0.4 else (Defs.O_PICKUP if pr < 0.5 else Defs.O_CAR))
+				var pick_id: int = Defs.O_CAR_WRECK if pr < 0.22 else (Defs.O_VAN if pr < 0.32 else (Defs.O_PICKUP if pr < 0.42 else (Defs.O_HATCHBACK if pr < 0.55 else (Defs.O_WAGON if pr < 0.64 else (Defs.O_SUV if pr < 0.74 else Defs.O_CAR)))))
 				if lot_k == "police" and pr > 0.4: pick_id = Defs.O_POLICE_CAR
 				elif (lot_k == "clinic" or lot_k == "hospital") and pr > 0.4: pick_id = Defs.O_AMBULANCE
 				elif (lot_k == "warehouse" or lot_k == "hardware" or lot_k == "grocery") and pr > 0.55: pick_id = Defs.O_TRUCK
@@ -660,6 +678,8 @@ static func _farm(b: LotBuilder) -> void:
 	for k in range(5):
 		b.put_yard(_pick(rng, [Defs.O_TREE_OAK, Defs.O_HAY, Defs.O_BARREL, Defs.O_BUSH]), rng.randi_range(1, b.cw - 2), rng.randi_range(b.ch - 20, b.ch - 2), 0)
 	b.put_yard(Defs.O_PICKUP if rng.randf() < 0.7 else Defs.O_CAR_WRECK, hw + 4, b.ch - 9, 0)
+	if rng.randf() < 0.65:
+		_park_any(b, Defs.O_TRACTOR)
 	b.put_yard(Defs.O_COOP, hw + 8, b.ch - 5, 2)
 	b.put_yard(Defs.O_WELL, hw + 7, b.ch - 9, 0)
 
@@ -705,6 +725,9 @@ static func _cabin(b: LotBuilder) -> void:
 		b.put_yard(_pick(rng, [Defs.O_TREE_PINE, Defs.O_TREE_OAK, Defs.O_ROCK, Defs.O_BUSH]), rng.randi_range(0, b.cw - 1), rng.randi_range(0, 2), 0)
 
 ## an army roadblock that did not hold: sandbags, a tent, crates, and the soldiers who stayed
+	if b.rng.randf() < 0.4:
+		_park_any(b, Defs.O_OFFROADER)
+
 static func _checkpoint(b: LotBuilder) -> void:
 	var rng: RandomNumberGenerator = b.rng
 	b.btype = "checkpoint"

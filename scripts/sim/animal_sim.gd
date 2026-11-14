@@ -277,7 +277,7 @@ func update(dt: float) -> void:
 					a.goal = prey_n.pos             # stalking
 					a.t = 2.0
 		# frogs sing after dark, and the infected can hear that too
-		if sp.has("croak") and sim.daylight() < 0.3 and randf() < dt * 0.05:
+		if sp.has("croak") and sim.daylight() < 0.3 and randf() < dt * 0.2:
 			sim.noise(a.pos, 6.0)
 		# a swarm drifts over the dead and over still water; walk through it and it finds you
 		if sp.has("swarm"):
