@@ -19,10 +19,18 @@ const SPECIES := {
 	"crow": {"n": "Crow", "hp": 3.0, "sp": 7.0, "see": 10.0, "drop": "carcass_crow", "col": "1a1a1e", "len": 7.0, "loud": 1, "bird": 1, "carrion": 1, "town": 1},
 	"rat": {"n": "Rat", "hp": 3.0, "sp": 4.8, "see": 4.0, "drop": "carcass_rat", "col": "5a5048", "len": 5.0, "town": 1, "nibble": 1},
 	"dog": {"n": "Feral dog", "hp": 30.0, "sp": 6.4, "see": 12.0, "drop": "carcass_dog", "col": "6a5040", "len": 14.0, "mean": 1, "pack": 1, "town": 1},
+	"hare": {"n": "Hare", "hp": 12.0, "sp": 6.4, "see": 8.0, "drop": "carcass_hare", "col": "9a8462", "len": 11.0},
+	"mouse": {"n": "Mouse", "hp": 1.0, "sp": 4.0, "see": 3.0, "drop": "carcass_mouse", "col": "7a7068", "len": 3.5, "town": 1, "nibble": 1},
+	"pigeon": {"n": "Pigeon", "hp": 3.0, "sp": 6.0, "see": 7.0, "drop": "carcass_pigeon", "col": "8a8a98", "len": 7.0, "loud": 1, "bird": 1, "town": 1},
+	"goose": {"n": "Goose", "hp": 12.0, "sp": 4.0, "see": 8.0, "drop": "carcass_goose", "col": "c8c8c0", "len": 12.0, "loud": 1, "bird": 1, "water": 1, "mean": 1, "peck": 1},
+	"chicken": {"n": "Chicken", "hp": 6.0, "sp": 3.6, "see": 5.0, "drop": "carcass_chicken", "col": "d8c8a8", "len": 8.0, "loud": 1, "bird": 1},
+	"cat": {"n": "Cat", "hp": 8.0, "sp": 6.0, "see": 8.0, "drop": "", "col": "6a5a4a", "len": 9.0, "town": 1, "ratter": 1},
+	"frog": {"n": "Frog", "hp": 2.0, "sp": 2.6, "see": 3.0, "drop": "carcass_frog", "col": "4a7a3a", "len": 4.0, "water": 1, "warm": 1, "croak": 1},
+	"swarm": {"n": "Insect swarm", "hp": 999.0, "sp": 1.2, "see": 0.0, "drop": "", "col": "2a2a20", "len": 10.0, "swarm": 1, "warm": 1},
 	"snake": {"n": "Snake", "hp": 5.0, "sp": 1.4, "see": 2.2, "drop": "carcass_snake", "col": "6a7a3a", "len": 10.0, "venom": 1, "warm": 1},
 }
-const KINDS := ["rabbit", "rabbit", "deer", "pheasant", "pheasant", "boar", "fox", "deer", "squirrel", "squirrel", "turkey", "duck", "snake", "crow"]
-const TOWN_KINDS := ["rat", "rat", "crow", "crow", "dog", "squirrel"]
+const KINDS := ["rabbit", "rabbit", "deer", "pheasant", "pheasant", "boar", "fox", "deer", "squirrel", "squirrel", "turkey", "duck", "snake", "crow", "hare", "goose", "chicken", "frog"]
+const TOWN_KINDS := ["rat", "rat", "crow", "crow", "dog", "squirrel", "pigeon", "pigeon", "mouse", "cat"]
 
 class Animal:
 	var id := 0
@@ -71,6 +79,10 @@ func on_chunk_loaded(c: Chunk, first: bool) -> void:
 	c.animals = []
 	if World.level(c.cy * 16.0) != 0:
 		return
+	if first and float(sim.weather.get("temp", 10.0)) >= 15.0 and (not c.corpses.is_empty() or Rng.h2(c.cx, c.cy, sim.seed_v + 77) % 9 == 0):
+		var sw: Vector2 = Vector2(float(c.corpses[0]["x"]), float(c.corpses[0]["y"])) if not c.corpses.is_empty() else _free_spot_any(c, 9)
+		if sw.x >= 0.0:
+			spawn("swarm", sw)
 	if c.zone > 1:
 		_town_animals(c, first)
 		return
@@ -101,7 +113,7 @@ func _fit_kind(kind: String, p: Vector2) -> String:
 	if SPECIES[kind].has("water") and not sim.zombies._near_water(p):
 		return "pheasant"
 	if SPECIES[kind].has("warm") and float(sim.weather.get("temp", 10.0)) < 12.0:
-		return "rabbit"
+		return "rabbit" if kind != "frog" else "duck"
 	return kind
 
 ## streets: rats in the ruins, crows on the dead, and sometimes a pack of dogs gone wild
@@ -178,7 +190,8 @@ func damage(a: Animal, dmg: float, from: Vector2) -> void:
 	sim.emit_fx("hit", a.pos)
 	if a.hp <= 0.0:
 		list.erase(a)
-		sim.world.drop_item(floori(a.pos.x), floori(a.pos.y), Items.make(SPECIES[a.kind]["drop"], 1, sim.hour))
+		if String(SPECIES[a.kind]["drop"]) != "":
+			sim.world.drop_item(floori(a.pos.x), floori(a.pos.y), Items.make(SPECIES[a.kind]["drop"], 1, sim.hour))
 		sim.player.add_xp("tracking", 12.0)
 		sim.say("The %s goes down. Butcher it before it spoils." % String(SPECIES[a.kind]["n"]).to_lower(), Color(0.8, 0.9, 0.75))
 		return
@@ -249,6 +262,27 @@ func update(dt: float) -> void:
 		# rats get into the food
 		if sp.has("nibble") and randf() < dt * 0.02:
 			nibble(a)
+		# a cat keeps the rats and mice down
+		if sp.has("ratter") and a.state == IDLE:
+			var prey_n: Animal = null
+			var pd := 10.0
+			for prey in list:
+				if (prey.kind == "rat" or prey.kind == "mouse") and prey.pos.distance_to(a.pos) < pd:
+					pd = prey.pos.distance_to(a.pos)
+					prey_n = prey
+			if prey_n != null:
+				if pd < 0.9:
+					list.erase(prey_n)              # caught
+				else:
+					a.goal = prey_n.pos             # stalking
+					a.t = 2.0
+		# frogs sing after dark, and the infected can hear that too
+		if sp.has("croak") and sim.daylight() < 0.3 and randf() < dt * 0.05:
+			sim.noise(a.pos, 6.0)
+		# a swarm drifts over the dead and over still water; walk through it and it finds you
+		if sp.has("swarm"):
+			_swarm(a, dt)
+			continue
 		match a.state:
 			IDLE:
 				if noticed:
@@ -296,7 +330,9 @@ func update(dt: float) -> void:
 				elif a.atk <= 0.0:
 					a.atk = 1.4
 					if not sim.settings.get("god", false):
-						if a.kind == "dog":
+						if sp.has("peck"):
+							peck(a)
+						elif a.kind == "dog":
 							var part: int = [7, 8, 11, 12, 13, 14][randi() % 6]
 							var stop: float = p.clothing_def(part)
 							if randf() > stop:
@@ -323,6 +359,35 @@ func _rouse_pack(a: Animal, t: float) -> void:
 		if o != a and o.kind == a.kind and o.pos.distance_to(a.pos) < 10.0 and o.state != CHARGE:
 			o.state = CHARGE
 			o.t = t
+
+func _swarm(a: Animal, dt: float) -> void:
+	var p: Player = sim.player
+	a.t -= dt
+	if a.t <= 0.0:
+		a.t = randf_range(3.0, 6.0)
+		a.goal = a.pos + Vector2(randf_range(-1.5, 1.5), randf_range(-1.5, 1.5))
+	a.pos = a.pos.move_toward(a.goal, float(SPECIES["swarm"]["sp"]) * dt)
+	a.moving = true
+	# smoke breaks them up; cold kills them
+	if sim.near_fire(a.pos) or float(sim.weather.get("temp", 10.0)) < 8.0:
+		list.erase(a)
+		return
+	if p.alive and sim.vehicle == null and p.pos.distance_to(a.pos) < 1.4 and randf() < dt * 0.8:
+		p.stress = minf(100.0, p.stress + 4.0)
+		p.unhappy = minf(100.0, p.unhappy + 1.0)
+		if not sim.settings.get("god", false) and randf() < 0.05:
+			p.sick = minf(100.0, p.sick + 6.0)
+		if randf() < 0.2:
+			sim.say("Bites and buzzing. Get out of the cloud.", Color(0.9, 0.85, 0.6))
+
+## a goose defends its patch: a few hard pecks, then it lets you go
+func peck(a: Animal) -> void:
+	var p: Player = sim.player
+	if sim.settings.get("god", false):
+		return
+	p.hurt(randf_range(1.0, 3.0), "Pecked by a goose")
+	p.stress = minf(100.0, p.stress + 6.0)
+	sim.say("The goose hisses and goes for your legs.", Color(1.0, 0.75, 0.5))
 
 ## a snakebite: not deep, but the venom makes you sick for a day
 func bite(a: Animal) -> void:

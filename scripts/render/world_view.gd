@@ -50,6 +50,15 @@ class AnimalView extends Node2D:
 		draw_circle(Vector2(0, 2), L * 0.5, Color(0, 0, 0, 0.28))
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 		var dark := col.darkened(0.35)
+		if a.kind == "swarm":
+			for k in range(14):
+				var ang: float = a.anim_t * (2.0 + float(k % 3)) + float(k) * 1.7
+				draw_circle(Vector2(cos(ang) * (4.0 + float(k % 5) * 2.0), -10.0 + sin(ang * 1.3) * 5.0), 0.9, Color(0.1, 0.1, 0.08, 0.8))
+			return
+		if a.kind == "frog":
+			draw_circle(Vector2(0, -2), 2.6, col)
+			draw_circle(Vector2(1.6 * fx, -3.6), 1.0, col.lightened(0.2))
+			return
 		if a.kind == "snake":
 			var pts := PackedVector2Array()
 			for k in range(9):
@@ -63,6 +72,11 @@ class AnimalView extends Node2D:
 			var head: Color = Color(0.2, 0.4, 0.3)
 			match a.kind:
 				"duck": head = Color(0.15, 0.45, 0.25)
+				"goose": head = Color(0.15, 0.15, 0.15)
+				"pigeon": head = Color(0.4, 0.5, 0.45)
+				"chicken":
+					head = Color(0.95, 0.9, 0.85)
+					draw_circle(Vector2(L * 0.42 * fx, -up * 1.3), 1.4, Color(0.85, 0.15, 0.15))
 				"turkey":
 					head = Color(0.75, 0.25, 0.25)
 					draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.2 * fx, -up * 0.6), Vector2(-L * 0.75 * fx, -up * 1.5), Vector2(-L * 0.95 * fx, -up * 0.8), Vector2(-L * 0.4 * fx, -up * 0.3)]), tail.darkened(0.2))
@@ -99,7 +113,14 @@ class AnimalView extends Node2D:
 				draw_line(Vector2(hx + 3 * fx, hy + 2), Vector2(hx + 6 * fx, hy), Color(0.9, 0.9, 0.82), 1.5)
 			"squirrel":
 				draw_arc(Vector2(-L * 0.6 * fx, -up * 1.1), L * 0.45, 0.0, PI * 1.5, 8, col.lightened(0.1), 2.5)
-			"rat":
+			"cat":
+				draw_line(Vector2(-L * 0.5 * fx, -up * 0.7), Vector2(-L * 0.7 * fx, -up * 1.5), col, 1.8)
+				draw_line(Vector2(hx, hy), Vector2(hx - 1.0 * fx, hy - L * 0.3), col, 1.6)
+				draw_line(Vector2(hx, hy), Vector2(hx + 1.2 * fx, hy - L * 0.3), col, 1.6)
+			"hare":
+				draw_line(Vector2(hx, hy), Vector2(hx - 1.5 * fx, hy - L * 0.7), col, 2.0)
+				draw_line(Vector2(hx, hy), Vector2(hx - 0.2 * fx, hy - L * 0.7), col, 2.0)
+			"mouse", "rat":
 				draw_line(Vector2(-L * 0.5 * fx, -up * 0.5), Vector2(-L * 1.3 * fx, -up * 0.2), Color(0.75, 0.6, 0.6), 1.0)
 			"dog":
 				draw_line(Vector2(hx, hy), Vector2(hx - 1.5 * fx, hy - L * 0.3), dark, 2.0)

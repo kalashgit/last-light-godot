@@ -813,12 +813,16 @@ func _init() -> void:
 	var uid0: int = rs.world.bld(floori(rs.player.pos.x), floori(rs.player.pos.y))
 	if uid0 != 0:
 		lc.btype[uid0] = "prison"
-		for i7 in range(60): roles2[rs.zombies._role_for(rs.player.pos)] = int(roles2.get(rs.zombies._role_for(rs.player.pos), 0)) + 1
-		ok(int(roles2.get("prisoner", 0)) > 20, "the infected in a prison were mostly prisoners (%s)" % str(roles2))
+		for i7 in range(60):
+			var rl: String = rs.zombies._role_for(rs.player.pos)
+			roles2[rl] = int(roles2.get(rl, 0)) + 1
+		ok(int(roles2.get("prisoner", 0)) > 30, "the infected in a prison were mostly prisoners (%s)" % str(roles2))
 		lc.btype[uid0] = "lab"
 		roles2 = {}
-		for i8 in range(60): roles2[rs.zombies._role_for(rs.player.pos)] = int(roles2.get(rs.zombies._role_for(rs.player.pos), 0)) + 1
-		ok(int(roles2.get("hazmat", 0)) > 15, "in a lab, staff in sealed suits (%s)" % str(roles2))
+		for i8 in range(60):
+			var rl2: String = rs.zombies._role_for(rs.player.pos)
+			roles2[rl2] = int(roles2.get(rl2, 0)) + 1
+		ok(int(roles2.get("hazmat", 0)) > 20, "in a lab, staff in sealed suits (%s)" % str(roles2))
 		lc.btype = saved_bt
 	else:
 		ok(false, "start position is indoors for the role test")
@@ -886,6 +890,76 @@ func _init() -> void:
 	fs2.world.ent(mk3.x, mk3.y)["w"] = 90.0
 	fs2._sim_ents(mc, 2.0, false)
 	ok(g_day == 0.0 and float(fs2.world.ent(mk3.x, mk3.y)["g"]) > 0.0, "mushrooms do not grow in the noon sun, only in the dark")
+
+	print("== twenty kinds of wildlife")
+	ok(AnimalSim.SPECIES.size() >= 20, "%d wild species" % AnimalSim.SPECIES.size())
+	var wv := Sim.new(3434)
+	wv.new_game("unemployed", [], "cabin")
+	quiet(wv)
+	var wvp: Player = wv.player
+	var wvt := Vector2i(floori(wvp.pos.x), floori(wvp.pos.y))
+	clear_area(wv, wvt, 8)
+	for yy2 in range(wvt.y - 8, wvt.y + 9):
+		for xx2 in range(wvt.x - 8, wvt.x + 9):
+			wv.world.chunk(xx2 >> 4, yy2 >> 4).bld[((yy2 & 15) << 4) | (xx2 & 15)] = 0
+	wvp.pos = Vector2(wvt) + Vector2(0.5, 0.5)
+	wv.animals.list.clear()
+	var cat_w = wv.animals.spawn("cat", wvp.pos + Vector2(4, 0))
+	var rat2_w = wv.animals.spawn("rat", wvp.pos + Vector2(6, 0))
+	var mouse2_w = wv.animals.spawn("mouse", wvp.pos + Vector2(5, 1))
+	var wv_home: Vector2 = wvp.pos
+	wvp.pos += Vector2(0, 30)              # out of sight: none of them is running from you
+	for k9 in range(30 * 60): 
+		if not wv.animals.list.has(rat2_w) and not wv.animals.list.has(mouse2_w): break
+		cat_w.t = 99.0
+		wv.animals.update(1.0 / 30.0)
+	ok(not wv.animals.list.has(rat2_w) and not wv.animals.list.has(mouse2_w), "a cat keeps the rats and mice down")
+	wvp.pos = wv_home
+	wv.animals.damage(cat_w, 100.0, wvp.pos)
+	var dropped_cat := false
+	for it2 in wv.world.items_at(floori(cat_w.pos.x), floori(cat_w.pos.y)):
+		dropped_cat = true
+	ok(not wv.animals.list.has(cat_w) and not dropped_cat, "and leaves nothing to butcher")
+	wv.animals.list.clear()
+	wv.settings["god"] = false
+	var goose_w = wv.animals.spawn("goose", wvp.pos + Vector2(2.5, 0))
+	wvp.hp = 100.0
+	for k10 in range(150): wv.animals.update(1.0 / 30.0)
+	ok(wvp.hp < 100.0 and wvp.hp > 80.0, "walk up to a goose and it comes at you, hard but not deadly (hp %.0f)" % wvp.hp)
+	wv.animals.list.clear()
+	wvp.hp = 100.0
+	wv.weather["temp"] = 22.0
+	var sw2_w = wv.animals.spawn("swarm", wvp.pos + Vector2(0.5, 0))
+	var st0_w: float = wvp.stress
+	for k11 in range(90):
+		sw2_w.pos = wvp.pos + Vector2(0.4, 0)
+		wv.animals.update(1.0 / 30.0)
+	ok(wvp.stress > st0_w, "standing in an insect swarm wears on you (stress %.0f -> %.0f)" % [st0_w, wvp.stress])
+	wv.burning[Vector2i(floori(sw2_w.pos.x) + 1, floori(sw2_w.pos.y))] = 30.0
+	wv.fires.append(Vector2i(floori(sw2_w.pos.x) + 1, floori(sw2_w.pos.y)))
+	wv.animals.update(1.0 / 30.0)
+	ok(not wv.animals.list.has(sw2_w), "smoke breaks it up")
+	wv.burning.clear()
+	wv.fires.clear()
+	wv.animals.list.clear()
+	wv.settings["god"] = true
+	var fr2_w = wv.animals.spawn("frog", wvp.pos + Vector2(6, 0))
+	wv.hour = floorf(wv.hour / 24.0) * 24.0 + 23.5
+	wv.noises.clear()
+	for k12 in range(30 * 30):
+		fr2_w.state = AnimalSim.IDLE
+		wv.animals.update(1.0 / 30.0)
+		if not wv.noises.is_empty(): break
+	ok(not wv.noises.is_empty(), "frogs sing at night, loud enough to carry")
+	wv.animals.list.clear()
+	var but_ok_w := true
+	for kk_w in ["hare", "mouse", "pigeon", "goose", "chicken", "frog"]:
+		var dr_w: String = AnimalSim.SPECIES[kk_w]["drop"]
+		var found2_w := false
+		for r2 in Recipes.LIST:
+			if (r2.get("in", []) as Array).size() > 0 and r2["in"][0][0] == dr_w: found2_w = true
+		if not found2_w: but_ok_w = false
+	ok(but_ok_w, "each new animal you can hunt can be butchered")
 
 	print("== settings and save files")
 	Opts.vibrate = false
