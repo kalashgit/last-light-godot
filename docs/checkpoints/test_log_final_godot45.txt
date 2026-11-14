@@ -1,0 +1,324 @@
+==== import
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (4 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (2 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+#### import: ok
+==== worldgen
+start=(184.5, 209.5) lot=[P: (178, 199), S: (20, 15)]
+generated 576 chunks in 597 ms (avg 1.03645833333333 ms, worst 81.393 ms)
+deterministic=true
+start blocked=false indoors=true btype=house
+  PASS  every generated building can be left on foot
+  PASS  every indoor floor tile is reachable (0 buildings affected)
+#### worldgen: ok
+==== simulation
+  PASS  spawn is indoors
+  PASS  spawn is not blocked
+  PASS  chunks streamed around spawn (25)
+  PASS  occupation skills applied
+  PASS  occupation items + weapon equipped
+  PASS  zombies populated loaded area (53)
+  PASS  no zombies inside the safe start radius
+  PASS  player moves with joystick input (2.32 tiles)
+  PASS  collision never leaves the player inside a wall
+  PASS  running drains endurance (79)
+  PASS  start house has a door
+  PASS  closed door blocks movement
+  PASS  closed door blocks sight
+  PASS  INTERACT opens the door
+  PASS  INTERACT closes it again
+  PASS  barricading adds a plank (1)
+  PASS  barricade consumed nails
+  PASS  planks can be broken by damage
+  PASS  melee kills a zombie (2 swings)
+  PASS  combat grants weapon XP
+  PASS  kill leaves a corpse
+  PASS  zombie notices and chases the player
+  PASS  zombie attack damages the player (100 -> 86)
+  PASS  attack leaves a wound
+  PASS  zombie investigates a noise it cannot see (state investigate)
+  PASS  reload fills the magazine (12)
+  PASS  pistol kills at range (1 shots)
+  PASS  shots consume ammunition
+  PASS  player survived the combat tests (hp 86)
+  PASS  open wound bleeds over time
+  PASS  bandage applied to wound
+  PASS  bandaged wound stops bleeding
+  PASS  eating reduces hunger (32)
+  PASS  eating a can leaves an empty tin
+  PASS  hunger grows with time
+  PASS  perishable food rots
+  PASS  ground container always available
+  PASS  containers hold generated loot (2271 items in 418 containers)
+  PASS  craft: rip sheet starts
+  PASS  craft produced 4 rags
+  PASS  build: wooden wall starts
+  PASS  wall placed on the facing edge
+  PASS  built wall blocks movement
+  PASS  build: crate starts
+  PASS  crate placed in front
+  PASS  till soil starts
+  PASS  ground tilled
+  PASS  seed planted
+  PASS  crop grows to maturity (stage 3)
+  PASS  harvest yields potatoes (3)
+  PASS  A* finds a route back to the start house (5 steps, 225 iterations)
+  PASS  clock advances (0.084 h in 10 s)
+  PASS  power is on at the start
+  PASS  power fails after the shutoff day (day 6)
+  PASS  save succeeds
+  PASS  save file exists
+  PASS  load succeeds
+  PASS  player position and health restored
+  PASS  inventory and kill count restored
+  PASS  equipped weapon restored
+  PASS  skills restored
+  PASS  built wall persisted
+  PASS  built crate persisted
+  PASS  dropped item persisted
+  PASS  clock restored
+  PASS  zombie population restored (0 vs 0)
+  PASS  corpses persisted (2)
+  PASS  changes survive chunk unload / reload
+  PASS  second save (with unloaded chunk store) succeeds
+== long soak (zombie AI, streaming, 3 simulated minutes)
+  soak: 5400 ticks in 4234 ms (avg 0.784 ms, worst 66.215 ms), zombies=167 { "idle": 120, "chase": 4, "wander": 41, "attack": 2 } chunks=49 stored=0
+  PASS  average sim tick under 8 ms
+  PASS  chunk streaming unloads distant chunks
+RESULT: 71 checks, 0 failed
+#### simulation: ok
+==== mechanics
+  PASS  trait adds skill levels on top of the occupation (fitness 3)
+  PASS  trait multiplier is applied (hunger x0.75)
+  PASS  Organised adds carry capacity (15.0)
+  PASS  trait points add up (9)
+  PASS  opposite traits exclude each other
+  PASS  Slow Study reduces experience gained
+  PASS  Small Appetite slows hunger (+9.9 in 4 h)
+  PASS  the Veteran occupation never panics
+  PASS  18 occupations, 39 traits
+  PASS  a calorie surplus puts on weight (80.00 -> 80.07 kg)
+  PASS  a deficit burns weight (80.07 -> 79.47 kg)
+  PASS  food adds calories as well as filling you (897 kcal)
+  PASS  eating is recorded for the tutorial
+  PASS  exercise starts
+  PASS  exercise uses its own animation (s_squat)
+  PASS  push-ups train strength and cost stamina
+  PASS  over-training strains muscles (14 h)
+  PASS  sitting indoors is boring (60)
+  PASS  reading relieves boredom (25)
+  PASS  a smoker without cigarettes grows stressed (20)
+  PASS  a cigarette settles it
+  PASS  alcohol makes you drunk (32)
+  PASS  new status icons appear (["thirsty", "tired", "sad", "drunk"])
+  PASS  a head cold makes you sneeze out loud
+  PASS  taping a damaged weapon starts
+  PASS  repair restores condition (0.65) and counts the repair
+  PASS  the second repair holds less (0.53)
+  PASS  patching clothing restores it and adds protection (0.10 -> 0.19)
+  PASS  workshop recipes need a workbench
+  PASS  …and work beside one
+  PASS  snare placed on open ground
+  PASS  a baited snare eventually catches something (raw_rabbit)
+  PASS  the catch goes into the inventory
+  PASS  some houses have cellar hatches (26 of 72)
+  PASS  the hatch is in the house floor
+  PASS  climbing down moves the survivor underground (y=131256)
+  PASS  the cellar is a walkable room
+  PASS  it is dark and cool down there
+  PASS  cellar storage holds loot (78 stacks)
+  PASS  a ladder leads back up
+  PASS  climbing up returns to the same house
+  PASS  story houses are generated { "stash": 14, "corpses": 32, "sealed": 17, "broken": 13 }
+  PASS  story corpses are placed in the world (2)
+  PASS  after two months weeds crack the pavement and lawns grow wild (136 weeds, 416 tall grass)
+  PASS  a flyover is scheduled for day 7
+  PASS  the flyover starts on schedule
+  PASS  it draws the infected from far away (state investigate)
+  PASS  it ends, and with 'Once' it does not return
+  PASS  distant events are reported: "A dog is barking to the east."
+  PASS  compass directions match the screen
+  PASS  a radio picks up the emergency broadcast: "…this station is running on reserve power…"
+  PASS  utilities and flyovers can be switched off
+  PASS  a winter start is cold (-1°C)
+  PASS  starter kit is handed out
+  PASS  start location: cabin
+  PASS  start location: farm
+  PASS  guided objectives can be turned off
+  PASS  starts at the first objective
+  PASS  objectives advance as the player does things (now 4: Objective: eat or drink something from your BAG)
+  PASS  the starting home never has an alarm
+  PASS  alarm state can be queried per building (11 of 82 sampled tiles armed)
+  PASS  rotten food in a compost bin becomes fertiliser
+  PASS  salvaging a car yields parts and Mechanics XP
+  PASS  save
+  PASS  weight and mood restored
+  PASS  traits restored and still applied
+  PASS  story flags and tutorial progress restored
+  PASS  schema 2 saves migrate to the current schema
+RESULT: 68 checks, 0 failed
+#### mechanics: ok
+==== integration
+  PASS  USE targets the car beside you
+  PASS  a car without a key offers hotwiring, not driving
+  PASS  a burglar hotwires it (1 tries)
+  PASS  it will not start with a dead battery
+  PASS  fitting a battery consumes it and powers the car
+  PASS  refuelling moves fuel from the can to the tank (6.0)
+  PASS  getting in lifts the parked car out of the map
+  PASS  the boot contents travel with it
+  PASS  the stick accelerates it forward (8.8 tiles, 4.2 t/s)
+  PASS  the driver moves with the car
+  PASS  driving burns fuel (6.000 -> 5.965)
+  PASS  a running engine is loud (radius 17)
+  PASS  driving into one of them hurts it
+  PASS  and the impact costs engine condition (0.800 -> 0.783)
+  PASS  engine noise draws the infected (chase)
+  PASS  BRAKE stops the car (0.00)
+  PASS  steering across the heading turns the car (heading 0 -> 1)
+  PASS  solid objects stop it
+  PASS  a crash damages the engine (0.78 -> 0.73)
+  PASS  the car body shields the driver (180 of 200 attacks stopped)
+  PASS  saving while driving
+  PASS  the driven car is restored where it was
+  PASS  with its fuel and boot contents
+  PASS  USE gets out
+  PASS  the car is parked back into the world
+  PASS  its boot and tank state stay with it
+  PASS  the driver steps out onto free ground
+  PASS  saving after parking
+  PASS  the parked car and its hotwired ignition persist
+  PASS  furniture burns, bare dirt does not
+  PASS  rain makes things outdoors hard to light
+  PASS  a tile can be set alight
+  PASS  fire spreads to the furniture beside it (3 s)
+  PASS  whatever stands in the flames burns
+  PASS  burning tiles light the night
+  PASS  fire nearby counts as danger (fast-forward is refused)
+  PASS  saving mid-fire
+  PASS  the fire is still burning after a reload (2 tiles)
+  PASS  standing in fire hurts (76 hp)
+  PASS  the fire burns itself out on bare ground (17 s)
+  PASS  what burned is gone
+  PASS  a survivor beside you can be addressed with USE
+  PASS  talking introduces you
+  PASS  they agree to follow
+  PASS  and keep up when you move (2.2 tiles away)
+  PASS  a companion kills the infected next to them (1.0 s)
+  PASS  their kills are not counted as yours
+  PASS  food you carry can be offered
+  PASS  feeding them consumes the food and earns something back
+  PASS  a starving companion stops following
+  PASS  saving with a companion
+  PASS  the companion and their memory of you persist
+  PASS  hitting a survivor hurts them and turns them on you
+  PASS  a hostile survivor attacks (92 hp after 1.0 s)
+  PASS  a hostile survivor counts as danger
+  PASS  killing them leaves a body
+  PASS  SHOVE works with a weapon in hand
+  PASS  it pushes the infected back (1.50 tiles, down)
+  PASS  without doing weapon damage (96 hp)
+  PASS  a whisper does not carry 16 tiles
+  PASS  a shout does (investigate)
+  PASS  a body can be picked up and dragged
+  PASS  USE lets go of it
+  PASS  dragging slows you down (1.42 vs 2.58 tiles/s)
+  PASS  the body lies where it was dropped
+  PASS  burying it leaves a grave
+  PASS  living among corpses makes you ill (12 bodies, exposure 0.0 -> 100.0)
+  PASS  a coop offers eggs and hens
+  PASS  fed hens lay over time and eat their feed (6.5 eggs)
+  PASS  collecting eggs fills the bag and trains Animal Care
+  PASS  unfed hens start to die
+  PASS  seed is consumed as feed
+  PASS  butchering a hen gives meat and trains Butchering
+  PASS  some houses have a second storey (150 of 350)
+  PASS  the staircase stands inside the house
+  PASS  the stairs lead to the upper floor
+  PASS  which is a walkable indoor room
+  PASS  it is not treated as a cellar
+  PASS  the storey has a floor plan and furniture (617 tiles, 80 objects)
+  PASS  walls keep you on the upper floor
+  PASS  saving upstairs
+  PASS  a save made upstairs loads upstairs
+  PASS  and back down into the same house
+  PASS  a broken leg slows walking (2.25 vs 3.75 tiles)
+  PASS  a leather jacket stops some attacks (234 wounds vs 300 bare, of 300)
+  PASS  a gunshot is heard 22 tiles away and investigated (radius 55, investigate)
+  PASS  when the grid fails, the house loses power
+  PASS  and the taps run dry when the water fails
+  PASS  a chasing infected is a threat (fast-forward drops out)
+  PASS  no threat once it is gone
+  PASS  the survivor dies
+  PASS  a new survivor takes over
+  PASS  somewhere else in the same world (511 tiles away)
+  PASS  time carries on; the new survivor starts with their own kit
+  PASS  the old body (or what it became) still carries the old gear
+  PASS  a car the first survivor left is still there, fuel and all
+  PASS  two saves in a row
+  PASS  the previous save is kept as a backup
+  PASS  a corrupted save is detected and the backup loads instead
+  PASS  the recovered game is the right one
+  PASS  a half-written save (interrupted write) also falls back to the backup
+  PASS  with both copies destroyed, loading fails cleanly instead of crashing
+  PASS  saving over a destroyed slot works
+  PASS  six save/load cycles in a row reproduce the same state
+  PASS  a schema 1 save migrates to the current schema (4)
+  PASS  deleting the slot removes the backup too
+RESULT: 106 checks, 0 failed
+#### integration: ok
+==== touch
+LAST LIGHT: art generated in 2862 ms (2291 sprites)
+  PASS  joystick drag produces full right input (1.00, 0.00)
+  PASS  player walks while the stick is held (1.75 tiles)
+  PASS  screen-right maps to world (+x, -y)
+  PASS  second finger attacks while the first keeps moving
+  PASS  movement input unaffected by the attack touch
+  PASS  still moving after attack finger lifts
+  PASS  dragging up changes direction (0.00, -1.00)
+  PASS  releasing the stick clears input
+  PASS  player stops when the stick is released
+  PASS  SNEAK button toggles sneaking
+  PASS  RUN toggles on and cancels sneak
+  PASS  tapping USE opens the door in front
+  PASS  holding USE opens the options menu (menu)
+  PASS  BAG button opens the inventory
+  PASS  simulation is paused while a panel is open
+  PASS  two-finger pinch zooms the camera (1.50 -> 3.00)
+  PASS  crafting panel has a scroll list
+  PASS  dragging on a list row scrolls the list (616 px)
+  PASS  the drag did not trigger the row underneath
+  PASS  the time button fast-forwards (x2)
+  PASS  and the clock runs
+  PASS  fast-forward drops out when something is chasing you
+  PASS  CALL makes a noise the infected can hear
+  PASS  a SHOVE button appears while a weapon is drawn
+  PASS  SHOVE starts a shove, not a weapon swing
+  PASS  weapons carried show up in the hotbar (3 slots)
+  PASS  tapping a hotbar slot draws that weapon
+  PASS  the inv panel opens and closes
+  PASS  the char panel opens and closes
+  PASS  the craft panel opens and closes
+  PASS  the map panel opens and closes
+  PASS  the pause panel opens and closes
+  PASS  on-foot buttons are hidden while driving
+  PASS  holding the big button brakes
+  PASS  releasing it lets go of the brake
+  PASS  EXIT gets out, or says why it cannot
+RESULT: 36 checks, 0 failed
+#### touch: ok
+==== boot main
+LAST LIGHT: art generated in 3012 ms (2291 sprites)
+#### boot main: ok
+==== soak (bot)
+LAST LIGHT: art generated in 2878 ms (2291 sprites)
+soak: frames=4500 day=1 hour=11.0 kills=0 zombies=49 { "investigate": 7, "idle": 32, "chase": 4, "wander": 6 }
+soak: chunks=64 views=64 zviews=0 explored=152 inv=2 hp=100.0
+soak: main frame avg=0.57 ms  sim avg=0.5 ms
+RESULT: soak ok
+  PASS  chunk views match loaded chunks and stay bounded
+#### soak (bot): ok
+
+ALL TESTS PASSED

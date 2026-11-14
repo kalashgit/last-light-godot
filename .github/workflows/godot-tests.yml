@@ -1,0 +1,29 @@
+name: Godot game tests
+
+# Runs the headless engine checks for the playable game (import, world generation,
+# gameplay simulation, multi-touch controls, main-scene boot and bot soak).
+on:
+  pull_request:
+    paths: ['scripts/**', 'tests/godot/**', 'tools/godot/**', 'main.tscn', 'project.godot', '.github/workflows/godot-tests.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  godot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        godot: ['4.3', '4.5']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Godot ${{ matrix.godot }}
+        run: |
+          curl -sSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${{ matrix.godot }}-stable/Godot_v${{ matrix.godot }}-stable_linux.x86_64.zip"
+          unzip -q godot.zip -d "$RUNNER_TEMP/godot"
+          echo "GODOT=$RUNNER_TEMP/godot/Godot_v${{ matrix.godot }}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Run tests
+        run: tools/godot/run_tests.sh
