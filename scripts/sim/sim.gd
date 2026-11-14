@@ -36,6 +36,8 @@ var pipes: Dictionary = {}       # building uid -> water units left in its pipes
 const GEN_RANGE := 14
 const GEN_CAP := 6               # appliances one generator carries before it strains
 const BANK_RANGE := 10
+const SUB_RANGE := 48             # a repaired substation feeds the streets around it
+var substations: Array = []       # Vector2i of substations carrying power (loaded chunks)
 const BANK_MAX := 60.0           # load-hours a bank holds
 var fires: Array = []            # Vector2i of lit campfires (loaded chunks)
 var spikes: Array = []           # Vector2i spike traps near the player
@@ -306,7 +308,24 @@ func has_power(x: int, y: int) -> bool:
 	for bk in banks:
 		if absi(bk.x - x) <= BANK_RANGE and absi(bk.y - y) <= BANK_RANGE:
 			return true
+	for ss in substations:
+		if absi(ss.x - x) <= SUB_RANGE and absi(ss.y - y) <= SUB_RANGE:
+			return true
 	return false
+
+## put a dead substation back on line: days of grid power for the streets around it, and a hum they can hear
+func repair_substation(x: int, y: int) -> bool:
+	var e: Dictionary = world.ent(x, y)
+	if hour < power_off_h or hour < float(e.get("until", 0.0)):
+		return false
+	e["k"] = "substation"
+	e["until"] = hour + rng.randf_range(5.0, 9.0) * 24.0
+	e["said"] = 0
+	world.set_ent(x, y, e)
+	substations.append(Vector2i(x, y))
+	world.chunk_at(x, y).touched = true
+	noise(Vector2(x + 0.5, y + 0.5), 20.0)
+	return true
 
 const APPLIANCES := [Defs.O_FRIDGE, Defs.O_FREEZER, Defs.O_STOVE, Defs.O_LAMP, Defs.O_TV, Defs.O_WASHER, Defs.O_GAS_PUMP, Defs.O_VENDING]
 
@@ -1397,6 +1416,7 @@ func _slow_tick(dh: float) -> void:
 		npcs.send_trader()
 	generators.clear()
 	banks.clear()
+	substations.clear()
 	fires.clear()
 	for bk in burning.keys():
 		fires.append(bk)
@@ -1462,6 +1482,14 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 		var x: int = c.cx * 16 + (int(i) & 15)
 		var y: int = c.cy * 16 + (int(i) >> 4)
 		match e.get("k", ""):
+			"substation":
+				if hour < float(e.get("until", 0.0)):
+					if not catch_up:
+						substations.append(Vector2i(x, y))
+						noise(Vector2(x + 0.5, y + 0.5), 9.0)       # transformers hum
+				elif int(e.get("said", 1)) == 0:
+					e["said"] = 1
+					if not catch_up: say("Somewhere a transformer bangs, and the streetlights die again.", Color(1.0, 0.8, 0.5))
 			"crop":
 				var outdoors: bool = c.bld[i] == 0
 				if outdoors and rain > 0.05:

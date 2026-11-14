@@ -460,6 +460,13 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 			_many(b, 0, D.O_PLANT, 2)
 			_many(b, 0, D.O_VENDING, 1)
 		"warehouse":
+			# a third of the industrial lots keep the district's substation out in the yard
+			if rng.randf() < 0.35:
+				var placed := false
+				for v in range(b.ch - 1, -1, -1):
+					for u in range(1, b.cw - 1):
+						if not placed and b.put_yard(D.O_SUBSTATION, u, v, 0):
+							placed = true
 			_many(b, 0, D.O_METAL_SHELF, 10)
 			_rows(b, 0, D.O_METAL_SHELF, D.O_CRATE)
 			for k in range(6):

@@ -145,6 +145,13 @@ static func _icon(shape: String, a: Color, b: Color) -> Painter:
 		"screwdriver":
 			p.line(6, 19, 11, 13, a, 3)
 			p.line(12, 12, 19, 5, b)
+		"key":
+			p.rect(5, 6, 7, 7, a)
+			p.rect(7, 8, 3, 3, Color(0, 0, 0, 0))
+			p.rect(11, 9, 9, 2, a)
+			p.rect(16, 11, 2, 3, a)
+			p.rect(19, 11, 1, 2, a)
+			p.rect(4, 14, 5, 5, b)
 		"wrench":
 			p.line(6, 19, 16, 8, a, 2)
 			p.rect(14, 4, 6, 6, b)

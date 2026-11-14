@@ -497,6 +497,55 @@ func _init() -> void:
 		ok(true, "no car near this start (skipped)")
 	ok(Loot.T.has("nightstand") and str(Loot.T["nightstand"]).contains("car_keys") and str(Loot.T["military"]).contains("kevlar_vest"), "new gear is in the loot tables")
 
+	print("== substations")
+	var ss := Sim.new(5151)
+	ss.new_game("unemployed", [], "house")
+	quiet(ss)
+	var sp: Player = ss.player
+	var st := Vector2i(floori(sp.pos.x) + 2, floori(sp.pos.y))
+	clear_area(ss, st, 3)
+	ss.world.set_obj(st.x, st.y, Defs.ocell(Defs.O_SUBSTATION, 0, 0))
+	sp.pos = Vector2(st) + Vector2(-0.5, 0.5)
+	sp.facing = Vector2(1, 0)
+	var far := Vector2i(st.x + 30, st.y + 10)
+	ss.power_off_h = ss.hour + 10.0
+	var so: Array = Actions._obj_options(ss, {"kind": "obj", "x": st.x, "y": st.y})
+	ok(String(so[0]["label"]).contains("grid is still up"), "while the grid runs, a substation needs nothing")
+	ss.power_off_h = ss.hour - 1.0
+	ok(not ss.has_power(far.x, far.y), "after the grid fails, the streets are dark")
+	so = Actions._obj_options(ss, {"kind": "obj", "x": st.x, "y": st.y})
+	var rep_fn: Callable
+	for o in so:
+		if String(o["label"]).begins_with("Repair the substation"): rep_fn = o["fn"]
+	ok(rep_fn.is_valid(), "a dead substation offers a repair")
+	rep_fn.call()
+	ok(sp.action.is_empty(), "without Electrical 3 and parts you cannot start")
+	sp.skills["electrical"] = 500.0
+	Inv.add_new(sp.inv, "wire", 4)
+	Inv.add_new(sp.inv, "scrap_metal", 2)
+	Inv.add_new(sp.inv, "pliers", 1)
+	rep_fn.call()
+	ok(not sp.action.is_empty(), "with the skill, wire, scrap and pliers the repair begins")
+	run(ss, 42.0)
+	ok(Inv.count(sp.inv, "wire") == 0 and ss.has_power(far.x, far.y), "once rewired, buildings for blocks around have power again")
+	ok(not ss.has_power(st.x + 200, st.y), "but not across the whole map")
+	var se: Dictionary = ss.world.ent(st.x, st.y)
+	ok(float(se.get("until", 0.0)) - ss.hour > 24.0 * 4.0, "it holds for days (%.0f h)" % (float(se.get("until", 0.0)) - ss.hour))
+	var hum := false
+	ss._slow_tick(0.01)
+	for nz in ss.noises:
+		if Vector2(nz[0]).distance_to(Vector2(st) + Vector2(0.5, 0.5)) < 0.1: hum = true
+	ok(hum, "a running substation hums, and the infected hear it")
+	ss.hour = float(se["until"]) + 1.0
+	ss._slow_tick(0.01)
+	ok(not ss.has_power(far.x, far.y), "then it fails again")
+	var found_sub := false
+	for sd2 in range(60):
+		var pl = BuildGen.gen("warehouse", 24, 20, 0, 9000 + sd2, 1)
+		for cell in pl.obj:
+			if Defs.o_id(cell) == Defs.O_SUBSTATION: found_sub = true
+	ok(found_sub, "substations stand in the yards of some industrial lots")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

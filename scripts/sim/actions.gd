@@ -420,6 +420,14 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 	if id == Defs.O_WARDROBE or id == Defs.O_LOCKER:
 		out.append(_opt("Hide inside", func(): hide_in(sim, a.x, a.y)))
 	match use:
+		"substation":
+			var se: Dictionary = w.ent(a.x, a.y)
+			if sim.hour < sim.power_off_h:
+				out.append(_opt("It is humming. The grid is still up.", func(): sim.say("Leave it be while the power holds.", Color(0.85, 0.85, 0.75))))
+			elif sim.hour < float(se.get("until", 0.0)):
+				out.append(_opt("It is running (about %d days left)" % int((float(se["until"]) - sim.hour) / 24.0 + 0.5), func(): sim.say("It will not hold for ever.", Color(0.85, 0.85, 0.75))))
+			else:
+				out.append(_opt("Repair the substation (Electrical 3, 4 wire, scrap, pliers)", func(): _fix_substation(sim, a.x, a.y)))
 		"bed":
 			out.append(_opt("Sleep", func(): sim.start_sleep(1.0 if id != Defs.O_SOFA and id != Defs.O_BEDROLL else 0.8)))
 			if sim.home.is_empty() or Vector2(float(sim.home["x"]), float(sim.home["y"])).distance_to(Vector2(x, y)) > 3.0:
@@ -1040,6 +1048,24 @@ static func _unload_companions(sim: Sim, v: Vehicle) -> void:
 		sim.npcs.list.append(n)
 		k += 1
 	v.passengers.clear()
+
+static func _fix_substation(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	if p.skill_level("electrical") < 3:
+		sim.say("You do not know enough about high voltage to touch this. (Electrical 3)", Color(0.9, 0.8, 0.6))
+		return
+	if Inv.count(p.inv, "wire") < 4 or Inv.count(p.inv, "scrap_metal") < 2 or not Inv.has_tag(p.inv, "pliers"):
+		sim.say("You need 4 wire, 2 scrap metal and pliers.", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Rewiring the substation", 40.0, func():
+		Inv.take(p.inv, "wire", 4)
+		Inv.take(p.inv, "scrap_metal", 2)
+		p.add_xp("electrical", 60.0)
+		if sim.repair_substation(x, y):
+			sim.say("A deep hum, then lights flicker on down the street. It will not last, and everything for blocks can hear it.", Color(0.75, 0.9, 0.7))
+			sim.journal_add("Got a substation running again. Power for a few days.")
+		else:
+			sim.say("Nothing. It needs more than you can give it.", Color(0.9, 0.8, 0.6)))
 
 ## keys you picked up somewhere: one of them may fit this car; a key that fits is remembered as this car's
 static func try_keys(sim: Sim, e: Dictionary, ax: int, ay: int) -> bool:
