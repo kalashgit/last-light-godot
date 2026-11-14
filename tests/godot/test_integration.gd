@@ -1162,8 +1162,8 @@ func _init() -> void:
 		town += AS.list.size() - n0
 	var town_only := true
 	for an in AS.list:
-		if (floori(an.pos.x) >> 4) >= 2000 and not AnimalSim.TOWN_KINDS.has(an.kind): town_only = false
-	ok(wild >= 15 and town > 0 and town_only, "deer and boar live in the wild; towns have only rats, crows, squirrels and dog packs (%d in 40 wild chunks, %d in town)" % [wild, town])
+		if (floori(an.pos.x) >> 4) >= 2000 and not AnimalSim.TOWN_KINDS.has(an.kind) and an.kind != "swarm": town_only = false
+	ok(wild >= 15 and town > 0 and town_only, "deer and boar live in the wild; towns have only town animals (and summer swarms over the dead) (%d in 40 wild chunks, %d in town)" % [wild, town])
 	AS.list.clear()
 	p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
 	p.sneaking = false
