@@ -464,6 +464,21 @@ func gen_chunk(cx: int, cy: int) -> Chunk:
 					c.obj[i] = D.O_TALL_GRASS
 				elif r < 0.034:
 					c.obj[i] = D.O_ROCK
+	# ---- road signs at the edge of each town, saying how far the next one is
+	for sy2 in range(ry - 1, ry + 2):
+		for sx2 in range(rx - 1, rx + 2):
+			var nd: Vector2i = region_node(sx2, sy2)
+			for dir in [Vector2i(1, 0), Vector2i(0, 1)]:
+				var other: Vector2i = region_node(sx2 + dir.x, sy2 + dir.y)
+				var spot: Vector2i = nd + dir * 34 + Vector2i(dir.y, dir.x) * -4
+				if not crect.has_point(spot):
+					continue
+				var si: int = (spot.y - y0) * CS + (spot.x - x0)
+				if c.obj[si] != 0:
+					continue
+				c.obj[si] = D.ocell(D.O_SIGN, 0, 0)
+				var km: float = float(absi(other.x - nd.x) + absi(other.y - nd.y)) / 300.0
+				c.ents[si] = {"k": "sign", "txt": "%s — next town %.1f km. %s" % ["EAST" if dir.x == 1 else "SOUTH", km, ["Drive slowly.", "Evacuation route.", "Road closed beyond the bridge?", "Welcome. Population: —"][Rng.h2(sx2, sy2, seed_v + 71) % 4]], "lab": "Road sign"}
 	# ---- highways
 	var has_road := false
 	for ny in range(ry - 1, ry + 2):

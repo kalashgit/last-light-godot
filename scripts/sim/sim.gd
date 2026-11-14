@@ -1711,7 +1711,22 @@ func muddy(x: int, y: int) -> bool:
 	if world.bld(x, y) != 0 or float(weather["temp"]) <= 0.0:
 		return false
 	var g: int = world.ground(x, y)
+	if marsh(x, y):
+		return true
 	return (_wet_h > 2.0 or float(weather["rain"]) > 0.6) and (g == Defs.G_DIRT or g == Defs.G_SOIL or g == Defs.G_GRASS or g == Defs.G_GRASS_DARK or g == Defs.G_FOREST)
+
+## wetland: open wild ground at the water's edge stays soft in every season but frost
+func marsh(x: int, y: int) -> bool:
+	var g: int = world.ground(x, y)
+	if not Defs.ground_is_natural(g) or Defs.ground_is_water(g):
+		return false
+	var c: Chunk = world.chunk_at(x, y)
+	if c == null or c.zone > 1:
+		return false
+	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(2, 0), Vector2i(-2, 0), Vector2i(0, 2), Vector2i(0, -2)]:
+		if Defs.ground_is_water(world.ground(x + d.x, y + d.y)):
+			return true
+	return false
 
 ## underfoot: ice and packed snow outdoors when it is cold
 func icy(x: int, y: int) -> bool:

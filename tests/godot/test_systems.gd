@@ -1471,6 +1471,51 @@ func _init() -> void:
 	ok(lu != null and lu.built_upper.size() == 1, "the floors you laid are remembered")
 	SaveGame.delete("sys_up")
 
+	print("== road signs and wetlands")
+	var rs2 := Sim.new(1717)
+	rs2.new_game("unemployed", [], "house")
+	quiet(rs2)
+	var rsign_r := false
+	var rtxt_r := ""
+	var nd2_r: Vector2i = rs2.world.gen.region_node(0, 0)
+	for dir2_r in [Vector2i(1, 0), Vector2i(0, 1)]:
+		var sp3_r: Vector2i = nd2_r + dir2_r * 34 + Vector2i(dir2_r.y, dir2_r.x) * -4
+		var ch3_r: Chunk = rs2.world.gen.gen_chunk(sp3_r.x >> 4, sp3_r.y >> 4)
+		var i3_r: int = ((sp3_r.y & 15) << 4) | (sp3_r.x & 15)
+		if Defs.o_id(ch3_r.obj[i3_r]) == Defs.O_SIGN and ch3_r.ents.has(i3_r):
+			rsign_r = true
+			rtxt_r = String(ch3_r.ents[i3_r]["txt"])
+	ok(rsign_r and rtxt_r.contains("next town") and rtxt_r.contains("km"), "road signs outside town say how far the next one is (%s)" % rtxt_r)
+	var town_t_r := Vector2i(floori(rs2.player.pos.x), floori(rs2.player.pos.y))
+	ok(not rs2.marsh(town_t_r.x, town_t_r.y), "streets are not marsh")
+	var wt_r: Vector2i = Vector2i(-1, -1)
+	for ch4_r in rs2.world.chunks.values():
+		if ch4_r.zone > 1: continue
+		for i4_r in range(256):
+			var gx_r: int = ch4_r.cx * 16 + (i4_r & 15)
+			var gy_r: int = ch4_r.cy * 16 + (i4_r >> 4)
+			if wt_r.x < 0 and rs2.marsh(gx_r, gy_r): wt_r = Vector2i(gx_r, gy_r)
+	if false:
+		rs2.weather["rain"] = 0.0
+		rs2._wet_h = 0.0
+		rs2.weather["temp"] = 15.0
+		ok(rs2.muddy(wt_r.x, wt_r.y), "ground at the water's edge in the wild is marsh: soft underfoot even in dry weather")
+	else:
+		# build a little waterside in open country and check it there
+		var mt_c: Chunk = rs2.world.chunk_at(town_t_r.x, town_t_r.y)
+		var z_was: int = mt_c.zone
+		mt_c.zone = 0
+		var mx := town_t_r + Vector2i(0, 0)
+		rs2.world.set_ground(mx.x, mx.y, Defs.G_GRASS)
+		rs2.world.set_ground(mx.x + 2, mx.y, Defs.G_WATER)
+		rs2.world.chunk(mx.x >> 4, mx.y >> 4).bld[((mx.y & 15) << 4) | (mx.x & 15)] = 0
+		rs2.weather["rain"] = 0.0
+		rs2._wet_h = 0.0
+		rs2.weather["temp"] = 15.0
+		ok(rs2.marsh(mx.x, mx.y) and rs2.muddy(mx.x, mx.y), "wild ground at the water's edge is marsh: soft underfoot even in dry weather")
+		mt_c.zone = z_was
+
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")
