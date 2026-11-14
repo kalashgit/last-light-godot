@@ -923,9 +923,28 @@ func _build_map() -> void:
 		if tk["state"] == "open":
 			body.add_child(UiKit.label("Work: %d %s for %s — %d h left" % [int(tk["n"]), Items.def(tk["want"])["n"], Factions.fname(int(tk["f"])), maxi(0, int(float(tk["due"]) - sim.hour))], 15, UiKit.ACCENT))
 	body.add_child(UiKit.button("Journal", func(): open("journal"), 52))
-	body.add_child(UiKit.button("Mark where I am standing", func():
-		sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s (marked day %d)" % [sim.place_name(p.pos).capitalize(), sim.day()])
+	body.add_child(UiKit.label("Mark where you are standing:", 15, UiKit.DIM))
+	var mrow := HBoxContainer.new()
+	for lab in ["Shelter", "Supplies", "Water", "Danger", "Horde"]:
+		var lb: String = lab
+		var mb: Button = UiKit.button(lb, func():
+			sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s — %s (day %d)" % [lb, sim.place_name(p.pos).capitalize(), sim.day()])
+			rebuild(), 52)
+		mb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		mrow.add_child(mb)
+	body.add_child(mrow)
+	var lrow := HBoxContainer.new()
+	var le_m := LineEdit.new()
+	le_m.placeholder_text = "or write your own label"
+	le_m.max_length = 40
+	le_m.custom_minimum_size = Vector2(0, 52)
+	le_m.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	lrow.add_child(le_m)
+	lrow.add_child(UiKit.button("Mark", func():
+		var txt: String = le_m.text.strip_edges()
+		sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s (day %d)" % [txt if txt != "" else sim.place_name(p.pos).capitalize(), sim.day()])
 		rebuild(), 52))
+	body.add_child(lrow)
 	if not p.markers.is_empty():
 		body.add_child(UiKit.label("Yellow marks — only you know these. Write a note to leave one behind.", 14, UiKit.DIM))
 		for mi in range(p.markers.size() - 1, maxi(-1, p.markers.size() - 7), -1):

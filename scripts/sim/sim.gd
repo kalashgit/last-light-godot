@@ -311,6 +311,46 @@ func has_power(x: int, y: int) -> bool:
 	for ss in substations:
 		if absi(ss.x - x) <= SUB_RANGE and absi(ss.y - y) <= SUB_RANGE:
 			return true
+	if not live_cables.is_empty():
+		for dy in range(-CABLE_REACH, CABLE_REACH + 1):
+			for dx in range(-CABLE_REACH, CABLE_REACH + 1):
+				if live_cables.has(Vector2i(x + dx, y + dy)):
+					return true
+	return false
+
+## a run of cable is live when one end is near a running source; power then follows it tile by tile
+func _cable_network(cables: Array) -> void:
+	live_cables.clear()
+	if cables.is_empty():
+		return
+	var set: Dictionary = {}
+	for c in cables: set[c] = true
+	var queue: Array = []
+	for c in cables:
+		var fed := false
+		for g in generators:
+			if absi(g.x - c.x) <= 2 and absi(g.y - c.y) <= 2: fed = true
+		for bk in banks:
+			if absi(bk.x - c.x) <= 2 and absi(bk.y - c.y) <= 2: fed = true
+		for ss in substations:
+			if absi(ss.x - c.x) <= SUB_RANGE and absi(ss.y - c.y) <= SUB_RANGE: fed = true
+		if hour < power_off_h and world.bld(c.x, c.y) != 0: fed = true
+		if fed:
+			live_cables[c] = true
+			queue.append(c)
+	while not queue.is_empty():
+		var q: Vector2i = queue.pop_back()
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var nb: Vector2i = q + d
+			if set.has(nb) and not live_cables.has(nb):
+				live_cables[nb] = true
+				queue.append(nb)
+
+## sinks near a powered pump on a well run with clean ground water, mains or no mains
+func pumped(x: int, y: int) -> bool:
+	for pp in pumps:
+		if absi(pp.x - x) <= 16 and absi(pp.y - y) <= 16 and has_power(pp.x, pp.y):
+			return true
 	return false
 
 ## put a dead substation back on line: days of grid power for the streets around it, and a hum they can hear
@@ -327,7 +367,10 @@ func repair_substation(x: int, y: int) -> bool:
 	noise(Vector2(x + 0.5, y + 0.5), 20.0)
 	return true
 
-const APPLIANCES := [Defs.O_FRIDGE, Defs.O_FREEZER, Defs.O_STOVE, Defs.O_LAMP, Defs.O_TV, Defs.O_WASHER, Defs.O_GAS_PUMP, Defs.O_VENDING]
+const APPLIANCES := [Defs.O_FRIDGE, Defs.O_FREEZER, Defs.O_STOVE, Defs.O_LAMP, Defs.O_TV, Defs.O_WASHER, Defs.O_GAS_PUMP, Defs.O_VENDING, Defs.O_PUMP]
+const CABLE_REACH := 2               # a live cable powers what is this close to it
+var live_cables: Dictionary = {}     # Vector2i -> true: cable tiles carrying power
+var pumps: Array = []                # Vector2i of well pumps near the player
 
 ## appliances switched on within a square around (x, y)
 func loads_near(x: int, y: int, r: int) -> int:
@@ -796,6 +839,8 @@ func _tick_smoke(dt: float) -> void:
 			thick += 1
 	if thick > 0 and b != 0 and _room_vented(b):
 		thick = int(ceil(float(thick) * 0.4))          # an open window or door lets the worst of it out
+	if thick > 0 and player.mask("smoke") > 0.0:
+		thick = int(floor(float(thick) * (1.0 - player.mask("smoke"))))       # a mask keeps most of it out
 	if thick > 0:
 		if not settings.get("god", false):
 			player.hurt(minf(4.0, 0.6 * float(thick)), "Choked on smoke")
@@ -803,6 +848,27 @@ func _tick_smoke(dt: float) -> void:
 		noise(player.pos, 5.0)                 # coughing
 		if rng.randf() < 0.3:
 			say("Smoke fills your lungs. Get out!", Color(1.0, 0.7, 0.5))
+
+## a generator running inside a building fills it with exhaust; you notice only when it is late
+var fume_h := 0.0
+func _generator_fumes() -> void:
+	var b: int = world.bld(floori(player.pos.x), floori(player.pos.y))
+	var inside := false
+	if b != 0 and player.alive and vehicle == null:
+		for g in generators:
+			if world.bld(g.x, g.y) == b and Vector2(g).distance_to(player.pos) < 14.0:
+				inside = true
+	if not inside or _room_vented(b):
+		fume_h = maxf(0.0, fume_h - 0.05)
+		return
+	fume_h += 0.04 * (1.0 - player.mask("fumes"))
+	if fume_h > 0.3:
+		player.endurance = maxf(0.0, player.endurance - 4.0)
+		player.fatigue = minf(100.0, player.fatigue + 0.6)
+		if rng.randf() < 0.15:
+			say("Your head pounds and the room tilts. The generator — the fumes have nowhere to go.", Color(1.0, 0.6, 0.45))
+	if fume_h > 0.8 and not settings.get("god", false):
+		player.hurt(1.5 * fume_h, "Poisoned by generator exhaust")
 
 ## is there an open (or broken) door or window in this building near you?
 func _room_vented(b: int) -> bool:
@@ -1417,6 +1483,8 @@ func _slow_tick(dh: float) -> void:
 	generators.clear()
 	banks.clear()
 	substations.clear()
+	pumps.clear()
+	var cables: Array = []
 	fires.clear()
 	for bk in burning.keys():
 		fires.append(bk)
@@ -1437,6 +1505,11 @@ func _slow_tick(dh: float) -> void:
 					c.corpses.remove_at(ci)
 					world.notify(floori(cp["x"]), floori(cp["y"]))
 				ci -= 1
+		if absi(c.cx - (px >> 4)) <= 2 and absi(c.cy - (py >> 4)) <= 2:
+			for i in range(Iso.CS2):
+				var o2: int = c.obj[i] & 1023
+				if o2 == Defs.O_CABLE: cables.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
+				elif o2 == Defs.O_PUMP: pumps.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
 		if absi(c.cx - (px >> 4)) <= 1 and absi(c.cy - (py >> 4)) <= 1:
 			for i in range(Iso.CS2):
 				var o: int = c.obj[i] & 1023
@@ -1444,6 +1517,8 @@ func _slow_tick(dh: float) -> void:
 					lamps.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
 				elif o == Defs.O_SPIKES:
 					spikes.append(Vector2i(c.cx * 16 + (i & 15), c.cy * 16 + (i >> 4)))
+	_cable_network(cables)
+	_generator_fumes()
 	var near := 0
 	for cy2 in range((py - 4) >> 4, ((py + 4) >> 4) + 1):
 		for cx2 in range((px - 4) >> 4, ((px + 4) >> 4) + 1):

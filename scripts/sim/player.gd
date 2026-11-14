@@ -287,6 +287,13 @@ func cover_item(part: int) -> Dictionary:
 			return it
 	return {}
 
+## how much of smoke / stench / fumes a worn mask keeps out (0 none .. 1 all)
+func mask(kind: String) -> float:
+	var best := 0.0
+	for it in worn_items():
+		best = maxf(best, float(Items.def(it["id"]).get("wear", {}).get(kind, 0.0)))
+	return best
+
 func discomfort() -> float:
 	var h := 0.0
 	for it in worn_items():
@@ -325,7 +332,20 @@ func weapon_def() -> Dictionary:
 # ------------------------------------------------------------------ timed actions
 func start_action(label: String, dur: float, done: Callable, cancel_on_move: bool = true) -> void:
 	var mood: float = 1.0 + (0.35 if unhappy > 70.0 else (0.15 if unhappy > 40.0 else 0.0))
-	action = {"label": label, "t": 0.0, "dur": maxf(dur * tmod("action") * mood, 0.05), "done": done, "cm": cancel_on_move}
+	var hands: float = 1.0 if label == "Resting" or label.begins_with("Sleep") else hand_factor()
+	action = {"label": label, "t": 0.0, "dur": maxf(dur * tmod("action") * mood * hands, 0.05), "done": done, "cm": cancel_on_move}
+
+## hurt hands and forearms make every job with them slower: crafting, first aid, reloading
+func hand_factor() -> float:
+	var f := 1.0
+	for wd in wounds:
+		var part: int = int(wd["part"])
+		if part >= 7 and part <= 10:
+			match String(wd["type"]):
+				"scratch": f += 0.05
+				"fracture": f += 0.3 if wd.get("splint", false) else 0.6
+				_: f += 0.2 if wd.get("band", false) else 0.3
+	return minf(f, 2.2)
 
 func cancel_action() -> void:
 	if not action.is_empty():
@@ -1191,7 +1211,7 @@ func _tick_body(dh: float) -> void:
 	kcal -= dh * (55.0 if sleeping else 88.0)
 	protein = maxf(0.0, protein - dh * 1.6)
 	if corpses_near >= 4:
-		corpse_exp = minf(100.0, corpse_exp + dh * float(corpses_near - 3) * 2.5)
+		corpse_exp = minf(100.0, corpse_exp + dh * float(corpses_near - 3) * 2.5 * (1.0 - mask("stench")))
 		if corpse_exp > 25.0:
 			sick = minf(100.0, sick + dh * 3.0)
 	else:

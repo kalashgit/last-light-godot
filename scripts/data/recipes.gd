@@ -107,6 +107,8 @@ static func _static_init() -> void:
 	_r("repair_glue", "Glue equipped wooden weapon", "Repair", {"in": [["glue", 1]], "special": "repair_glue", "time": 5.0, "xp": ["maintenance", 12]})
 	_r("sharpen", "Sharpen equipped blade on a stone", "Repair", {"tools": ["whetstone"], "special": "sharpen", "time": 5.0, "xp": ["maintenance", 10]})
 	# ---- workshop (needs a workbench within reach)
+	_r("power_cable", "Lay power cable", "Workshop", {"in": [["wire", 2]], "skill": ["electrical", 1], "build": {"obj": Defs.O_CABLE}, "time": 2.0, "xp": ["electrical", 6]})
+	_r("well_pump", "Fit an electric pump to a well", "Workshop", {"in": [["scrap_metal", 4], ["wire", 3], ["pipe", 1]], "tools": ["wrench"], "skill": ["electrical", 2], "build": {"obj": Defs.O_PUMP, "near_well": 1}, "time": 14.0, "xp": ["electrical", 30]})
 	_r("battery_bank", "Wire a battery bank", "Workshop", {"in": [["car_battery", 2], ["wire", 3]], "tools": ["screwdriver"], "skill": ["electrical", 2], "build": {"obj": Defs.O_BATTERY_BANK}, "time": 10.0, "xp": ["electrical", 35]})
 	_r("solar_panel", "Assemble a solar panel", "Workshop", {"in": [["glass_pane", 1], ["scrap_metal", 2], ["wire", 2]], "tools": ["screwdriver"], "skill": ["electrical", 3], "build": {"obj": Defs.O_SOLAR}, "time": 12.0, "xp": ["electrical", 40]})
 	_r("field_dressing", "Field dressing (taught)", "Survival", {"in": [["rag", 2], ["disinfectant", 1]], "learn": "medic", "out": [["bandage", 3]], "time": 4.0, "xp": ["first_aid", 12]})

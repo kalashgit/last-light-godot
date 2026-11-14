@@ -546,6 +546,196 @@ func _init() -> void:
 			if Defs.o_id(cell) == Defs.O_SUBSTATION: found_sub = true
 	ok(found_sub, "substations stand in the yards of some industrial lots")
 
+	print("== hurt hands, harder conversations")
+	var hs := Sim.new(6161)
+	hs.new_game("unemployed", [], "house")
+	quiet(hs)
+	var hp_: Player = hs.player
+	hp_.wounds.clear()
+	hp_.start_action("Test", 10.0, func(): pass)
+	var d0: float = float(hp_.action["dur"])
+	hp_.cancel_action()
+	hp_.add_wound(10, "laceration", "test")
+	hp_.start_action("Test", 10.0, func(): pass)
+	ok(float(hp_.action["dur"]) > d0 * 1.2, "a cut hand makes work slower (%.1f s vs %.1f s)" % [float(hp_.action["dur"]), d0])
+	hp_.cancel_action()
+	hp_.wounds.clear()
+	hp_.add_wound(13, "laceration", "test")
+	hp_.start_action("Test", 10.0, func(): pass)
+	ok(absf(float(hp_.action["dur"]) - d0) < 0.01, "a leg wound does not")
+	hp_.cancel_action()
+	hp_.wounds.clear()
+	var nb = hs.npcs.spawn(hp_.pos + Vector2(1.0, 0.0), false)
+	nb.trust = 70.0
+	nb.temper = "generous"
+	var labs: Array = []
+	for o in hs.npcs.options(nb): labs.append(String(o["label"]))
+	ok(str(labs).contains("Help me for a few hours"), "a survivor who trusts you can be asked for help")
+	ok(hs.npcs.ask_help(nb) and nb.state == NpcSim.FOLLOW, "they come with you")
+	hs.hour += 6.5
+	hs.npcs.update(0.1, 0.0)
+	ok(nb.state == NpcSim.STAY and nb.help_until == 0.0, "and go home when the hours are up")
+	Inv.add_new(hp_.inv, "kitchen_knife", 1)
+	hp_.weapon = Inv.find(hp_.inv, "kitchen_knife")
+	var outcomes: Dictionary = {}
+	for k in range(40):
+		var v = hs.npcs.spawn(hp_.pos + Vector2(1.0, 0.0), false)
+		v.temper = ["brave", "cautious", "generous", "wary"][k % 4]
+		v.stock = ["bandage", "battery"]
+		var t0: float = v.trust
+		var res: String = hs.npcs.threaten(v)
+		outcomes[res] = int(outcomes.get(res, 0)) + 1
+		if v.trust > maxf(0.0, t0 - 40.0) + 0.01: outcomes["bad"] = 1
+	ok(outcomes.has("gave") and outcomes.has("fight") and not outcomes.has("bad"), "threatened survivors give in, run or fight, and trust you far less (%s)" % str(outcomes))
+	var bitter = hs.npcs.spawn(hp_.pos + Vector2(1.0, 0.0), false)
+	bitter.trust = 10.0
+	Inv.add_new(hp_.inv, "granola_bar", 1)
+	labs = []
+	for o in hs.npcs.options(bitter): labs.append(String(o["label"]))
+	ok(labs.any(func(l): return l.contains("sorry")), "someone who distrusts you can be offered an apology")
+	var food_n0: int = 0
+	for it in hp_.inv:
+		if Items.def(it["id"]).get("cat", "") == "food": food_n0 += int(it.get("n", 1))
+	var st0: int = bitter.stock.size()
+	var ap: bool = hs.npcs.apologize(bitter)
+	var food_n1: int = 0
+	for it in hp_.inv:
+		if Items.def(it["id"]).get("cat", "") == "food": food_n1 += int(it.get("n", 1))
+	ok(ap and bitter.trust > 10.0 and food_n1 == food_n0 - 1 and bitter.stock.size() == st0 + 1, "one food goes from you to them and some trust comes back (%.0f)" % bitter.trust)
+	labs = []
+	for o in hs.npcs.options(bitter): labs.append(String(o["label"]))
+	ok(not labs.any(func(l): return l.contains("sorry")), "but not twice in one day")
+	var sv_rec: Array = NpcSim._ser(nb)
+	nb.help_until = 99.0
+	sv_rec = NpcSim._ser(nb)
+	ok(hs.npcs._de(sv_rec).help_until == 99.0, "an agreed favour survives a save")
+	hs.npcs.list.clear()
+
+	print("== wiring and pumps")
+	var es := Sim.new(7171)
+	es.new_game("unemployed", [], "house")
+	quiet(es)
+	var ep: Player = es.player
+	var e0 := Vector2i(floori(ep.pos.x), floori(ep.pos.y))
+	clear_area(es, e0 + Vector2i(10, 0), 12)
+	es.power_off_h = es.hour - 1.0
+	var gpos := e0 + Vector2i(0, 0)
+	var lamp := e0 + Vector2i(20, 0)
+	es.world.set_obj(lamp.x, lamp.y, Defs.ocell(Defs.O_LAMP, 0, 0))
+	es.generators = [gpos]
+	ok(not es.has_power(lamp.x, lamp.y), "a lamp twenty tiles from a generator is dark")
+	var cabl: Array = []
+	for cx in range(1, 20):
+		es.world.set_obj(e0.x + cx, e0.y, Defs.ocell(Defs.O_CABLE, 0, 0))
+		cabl.append(Vector2i(e0.x + cx, e0.y))
+	es._cable_network(cabl)
+	ok(es.has_power(lamp.x, lamp.y), "a cable run from the generator carries power to it")
+	var cut: Array = cabl.duplicate()
+	cut.remove_at(14)
+	es._cable_network(cut)
+	ok(not es.has_power(lamp.x, lamp.y), "cut the run and the far end goes dark")
+	es.generators = []
+	es._cable_network(cabl)
+	ok(not es.has_power(lamp.x, lamp.y), "no source, no power")
+	ok(not Recipes.by_id("power_cable").is_empty(), "cable can be laid from wire")
+	# strip an appliance
+	var tv := e0 + Vector2i(4, 3)
+	es.world.set_obj(tv.x, tv.y, Defs.ocell(Defs.O_TV, 0, 0))
+	Inv.add_new(ep.inv, "screwdriver", 1)
+	var w0: int = Inv.count(ep.inv, "wire")
+	Actions._strip_wiring(es, tv.x, tv.y)
+	run(es, 9.0)
+	ok(Inv.count(ep.inv, "wire") > w0 and es.world.ent(tv.x, tv.y).get("stripped", false), "a dead appliance can be stripped for wire")
+	var tvl: Array = []
+	for o in Actions._obj_options(es, {"kind": "obj", "x": tv.x, "y": tv.y}): tvl.append(String(o["label"]))
+	ok(str(tvl).contains("stripped") and not str(tvl).contains("Switch"), "and never runs again")
+	# a pump on a well
+	var wl := e0 + Vector2i(6, 5)
+	es.world.set_obj(wl.x, wl.y, Defs.ocell(Defs.O_WELL, 0, 0))
+	ep.pos = Vector2(wl.x + 1.5, wl.y + 2.5)
+	ep.facing = Vector2(0, -1)
+	var pr: Dictionary = Recipes.by_id("well_pump")
+	ok(Actions.build_target(es, pr)["ok"], "a pump can go beside a well")
+	ep.pos = Vector2(wl.x + 6.5, wl.y + 6.5)
+	ok(not Actions.build_target(es, pr)["ok"], "but not away from one")
+	var pmp := Vector2i(wl.x + 1, wl.y + 1)
+	es.world.set_obj(pmp.x, pmp.y, Defs.ocell(Defs.O_PUMP, 0, 0))
+	es.water_off_h = es.hour - 1.0
+	var snk := pmp + Vector2i(3, 0)
+	es.world.set_obj(snk.x, snk.y, Defs.ocell(Defs.O_SINK_COUNTER, 0, 0))
+	es.pumps = [pmp]
+	es.generators = []
+	ok(not es.pumped(snk.x, snk.y), "an unpowered pump gives nothing")
+	es.generators = [pmp + Vector2i(0, 2)]
+	ok(es.pumped(snk.x, snk.y), "powered, it sends well water to the taps")
+	var sl: Array = []
+	for o in Actions._obj_options(es, {"kind": "obj", "x": snk.x, "y": snk.y}): sl.append(String(o["label"]))
+	ok(sl.has("Drink") and sl.has("Fill water containers"), "a sink nearby runs again after the mains are gone (%s)" % str(sl))
+	ok(es.loads_near(pmp.x, pmp.y, 2) >= 1, "and the pump is a load on the generator")
+
+	print("== masks and fumes")
+	var ms := Sim.new(8181)
+	ms.new_game("unemployed", [], "house")
+	quiet(ms)
+	ms.settings["god"] = false
+	var mp: Player = ms.player
+	var mt := Vector2i(floori(mp.pos.x) + 30, floori(mp.pos.y))
+	var mw: World = ms.world
+	clear_area(ms, mt + Vector2i(2, 2), 5)
+	for y in range(mt.y, mt.y + 5):
+		for x in range(mt.x, mt.x + 5):
+			mw.chunk(x >> 4, y >> 4).bld[((y & 15) << 4) | (x & 15)] = 5151
+	var wall_s: int = Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID)
+	for i in range(5):
+		mw.set_wall(mt.x + i, mt.y, 0, wall_s)
+		mw.set_wall(mt.x + i, mt.y + 5, 0, wall_s)
+		mw.set_wall(mt.x, mt.y + i, 1, wall_s)
+		mw.set_wall(mt.x + 5, mt.y + i, 1, wall_s)
+	mp.pos = Vector2(mt.x + 2.5, mt.y + 2.5)
+	var smoke_hurt := [0.0, 0.0]
+	for pass_m in range(2):
+		if pass_m == 1:
+			Inv.add_new(mp.inv, "gas_mask", 1)
+			mp.equip(Inv.find(mp.inv, "gas_mask"))
+		ms.burning.clear()
+		for k in range(4): ms.burning[Vector2i(mt.x + 4, mt.y + k)] = 999.0
+		mp.hp = 100.0
+		for s3 in range(5):
+			ms._smoke_t = 0.0
+			ms._tick_smoke(1.0)
+		smoke_hurt[pass_m] = 100.0 - mp.hp
+	ok(smoke_hurt[1] < smoke_hurt[0] * 0.3, "a gas mask keeps most of the smoke out (%.1f vs %.1f)" % [smoke_hurt[1], smoke_hurt[0]])
+	ms.burning.clear()
+	mp.gear.clear()
+	mp.hp = 100.0
+	ms.generators = [Vector2i(mt.x + 1, mt.y + 1)]
+	ms.fume_h = 0.0
+	for k2 in range(40): ms._generator_fumes()
+	ok(ms.fume_h > 0.8 and mp.hp < 100.0, "a generator running in a closed house poisons you (hp %.0f)" % mp.hp)
+	mw.set_wall(mt.x + 2, mt.y, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_WINDOW))
+	mw.set_edge_state(mt.x + 2, mt.y, 0, Defs.ES_OPEN)
+	var f1: float = ms.fume_h
+	for k3 in range(10): ms._generator_fumes()
+	ok(ms.fume_h < f1, "an open window clears it")
+	mw.set_edge_state(mt.x + 2, mt.y, 0, 0)
+	ms.fume_h = 0.0
+	mp.equip(Inv.find(mp.inv, "gas_mask"))
+	for k4 in range(40): ms._generator_fumes()
+	ok(ms.fume_h < 0.8 * 0.5, "a gas mask slows it a great deal (%.2f)" % ms.fume_h)
+	ms.generators = []
+	mp.corpses_near = 8
+	mp.corpse_exp = 0.0
+	mp.gear.clear()
+	mp._tick_body(1.0)
+	var ce0: float = mp.corpse_exp
+	mp.corpse_exp = 0.0
+	Inv.add_new(mp.inv, "dust_mask", 1)
+	mp.equip(Inv.find(mp.inv, "dust_mask"))
+	mp._tick_body(1.0)
+	ok(mp.corpse_exp < ce0 * 0.5, "a dust mask cuts the stench of the dead (%.1f vs %.1f)" % [mp.corpse_exp, ce0])
+	mp.corpses_near = 0
+	ok(str(Loot.T["military"]).contains("gas_mask") and str(Loot.T["store_hardware"]).contains("dust_mask"), "masks are in the loot")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

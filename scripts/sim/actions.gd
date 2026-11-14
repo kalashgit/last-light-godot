@@ -444,9 +444,10 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			out.append(_opt("Sleep (uncomfortable)", func(): sim.start_sleep(0.6)))
 		"sink":
 			var pb: int = w.bld(a.x, a.y)
-			if sim.has_water() and float(sim.weather["temp"]) < -8.0 and not sim.near_heat(Vector2(a.x + 0.5, a.y + 0.5)):
+			var running: bool = sim.has_water() or sim.pumped(a.x, a.y)
+			if running and float(sim.weather["temp"]) < -8.0 and not sim.near_heat(Vector2(a.x + 0.5, a.y + 0.5)):
 				out.append(_opt("The pipes have frozen", func(): sim.say("Nothing. Warm the house — a fire or a stove nearby — and they will thaw.", Color(0.75, 0.85, 1.0))))
-			elif sim.has_water():
+			elif running:
 				out.append(_opt("Drink", func(): _drink_source(sim, false, 999)))
 				out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 				out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))
@@ -614,7 +615,11 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			pass
 	if id == Defs.O_CAR_WRECK:
 		out.append(_opt("Salvage parts", func(): _salvage_car(sim, a.x, a.y)))
-	if Sim.APPLIANCES.has(id):
+	if Sim.APPLIANCES.has(id) and id != Defs.O_PUMP and not w.ent(a.x, a.y).get("stripped", false) and not sim.has_power(a.x, a.y):
+		out.append(_opt("Strip out the wiring (screwdriver)", func(): _strip_wiring(sim, a.x, a.y)))
+	if Sim.APPLIANCES.has(id) and w.ent(a.x, a.y).get("stripped", false):
+		out.append(_opt("Its wiring has been stripped out", func(): sim.say("It will never run again.", Color(0.8, 0.8, 0.75))))
+	elif Sim.APPLIANCES.has(id):
 		var ae: Dictionary = w.ent(a.x, a.y)
 		var is_off: bool = ae.get("off", false)
 		out.append(_opt("Switch on" if is_off else "Switch off", func():
@@ -1048,6 +1053,26 @@ static func _unload_companions(sim: Sim, v: Vehicle) -> void:
 		sim.npcs.list.append(n)
 		k += 1
 	v.passengers.clear()
+
+## the copper inside a dead appliance is worth more than the appliance
+static func _strip_wiring(sim: Sim, x: int, y: int) -> void:
+	var p: Player = sim.player
+	if not Inv.has_tag(p.inv, "screwdriver"):
+		sim.say("You need a screwdriver to get the panels off.", Color(0.9, 0.8, 0.6))
+		return
+	p.start_action("Stripping wiring", 8.0, func():
+		var e: Dictionary = sim.world.ent(x, y)
+		if e.is_empty():
+			e = {"k": "app"}
+		e["stripped"] = true
+		e["off"] = true
+		sim.world.set_ent(x, y, e)
+		sim.world.chunk_at(x, y).touched = true
+		var n: int = 1 + int(p.skill_level("electrical") >= 2) + (1 if randf() < 0.4 else 0)
+		Inv.add_new(p.inv, "wire", n, sim.hour)
+		p.add_xp("electrical", 8.0)
+		sim.noise(p.pos, 6.0)
+		sim.say("You pull out %d lengths of wire." % n, Color(0.8, 0.9, 0.75)))
 
 static func _fix_substation(sim: Sim, x: int, y: int) -> void:
 	var p: Player = sim.player
@@ -1849,6 +1874,13 @@ static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
 				return {"ok": false, "why": "Not across the stairs", "x": ft.x, "y": ft.y, "side": -1}
 			if w.tile_blocked(ft.x + i, ft.y + j) or w.obj(ft.x + i, ft.y + j) != 0 or Defs.ground_is_water(w.ground(ft.x + i, ft.y + j)):
 				return {"ok": false, "why": "Not enough clear space in front of you", "x": ft.x, "y": ft.y, "side": -1}
+	if b.has("near_well"):
+		var well := false
+		for wy in range(ft.y - 2, ft.y + 3):
+			for wx in range(ft.x - 2, ft.x + 3):
+				if Defs.o_id(w.obj(wx, wy)) == Defs.O_WELL: well = true
+		if not well:
+			return {"ok": false, "why": "A pump has to stand beside a well", "x": ft.x, "y": ft.y, "side": -1}
 	return {"ok": true, "x": ft.x, "y": ft.y, "side": -1}
 
 static func craft(sim: Sim, r: Dictionary) -> bool:

@@ -147,7 +147,7 @@ func _init() -> void:
 	var pistol: Dictionary = Inv.find(p.inv, "pistol")
 	p.weapon = pistol
 	p.try_attack()            # empty -> reload
-	run(sim, 3.0)
+	run(sim, 3.0 * p.hand_factor())      # the wound from the attack above slows hands
 	ok(int(pistol["u"]) == 12, "reload fills the magazine (%d)" % int(pistol["u"]))
 	p.panic = 0.0
 	var z4: Zombie = sim.zombies.spawn(p.pos + Vector2(4.0, 0.0), 0)

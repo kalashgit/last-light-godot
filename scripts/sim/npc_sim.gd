@@ -55,6 +55,8 @@ class Npc:
 	var away_until := 0.0          # scavengers: out on a trip until this hour
 	var uh := 0.0                  # hour they were last simulated (for time spent unloaded)
 	var _work_t := 0.0
+	var help_until := 0.0          # agreed to help you for a while, then goes home
+	var forgiven_h := -99.0        # when they last accepted an apology
 
 var sim: Sim
 var list: Array = []
@@ -82,7 +84,7 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 	return n
 
 static func _ser(n: Npc) -> Array:
-	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn, n.fac, n.site, n.recruit, n.work, n.trader, n.leave_h, n.away_until, n.uh]
+	return [n.pos.x, n.pos.y, n.hp, n.state, n.look, n.name, n.hunger, n.met, n.gift, n.stock, n.thirst, n.fatigue, n.trust, n.temper, n.job, n.home, n.wpn, n.fac, n.site, n.recruit, n.work, n.trader, n.leave_h, n.away_until, n.uh, n.help_until, n.forgiven_h]
 
 func _de(a: Array) -> Npc:
 	var n := Npc.new()
@@ -116,6 +118,9 @@ func _de(a: Array) -> Npc:
 			n.leave_h = a[22]
 			n.away_until = a[23]
 			n.uh = a[24]
+		if a.size() > 26:
+			n.help_until = a[25]
+			n.forgiven_h = a[26]
 	else:
 		n.temper = TEMPERS[n.id % TEMPERS.size()]
 		n.job = JOBS[n.id % JOBS.size()]
@@ -283,7 +288,13 @@ func update(dt: float, dh: float) -> void:
 		if p.kills > n.seen_kills and n.state != HOSTILE and n.pos.distance_squared_to(p.pos) < 100.0:
 			n.trust = minf(100.0, n.trust + 2.0 * (p.kills - n.seen_kills))
 		n.seen_kills = p.kills
-		if n.state == FOLLOW:
+		if n.help_until > 0.0 and sim.hour > n.help_until:
+			n.help_until = 0.0
+			if n.state == FOLLOW:
+				n.state = STAY
+				n.task = "home"
+				sim.say("%s: \"That's what I promised. I'm heading back.\"" % n.name, Color(0.85, 0.85, 0.7))
+		if n.state == FOLLOW and n.help_until <= 0.0:
 			n.trust = minf(100.0, n.trust + dh * 0.6)
 			n.home = n.pos
 		if not sim.world.is_loaded(floori(n.pos.x), floori(n.pos.y)):
@@ -406,6 +417,79 @@ func update(dt: float, dh: float) -> void:
 			if n.hunger >= 100.0:
 				n.state = STAY
 				sim.say("%s: \"I can't keep going on nothing. I'm staying here.\"" % n.name, Color(0.85, 0.85, 0.7))
+
+## the harder conversations: asking a favour, making a demand at weapon-point, making amends
+func social_options(n: Npc, tr: float) -> Array:
+	var p: Player = sim.player
+	var out: Array = []
+	if n.state == STAY and not n.recruit and not n.trader and tr >= 40.0 and n.help_until <= 0.0:
+		out.append({"label": "\"Help me for a few hours?\"", "fn": func(): ask_help(n)})
+	if not p.weapon.is_empty() and not n.recruit:
+		out.append({"label": "Threaten them: \"Hand it over.\"", "fn": func(): threaten(n)})
+	if tr < 30.0 and sim.hour - n.forgiven_h > 24.0:
+		out.append({"label": "\"I'm sorry. Take this.\" (give food)", "fn": func(): apologize(n)})
+	return out
+
+func ask_help(n: Npc) -> bool:
+	var tr: float = n.trust + (sim.factions.rep_of(n.fac) * 0.4 if n.fac >= 0 else 0.0)
+	var keen: bool = n.temper == "brave" or n.temper == "generous" or tr >= 60.0
+	if n.hunger > 80.0 or n.hp < 40.0 or (not keen and randf() < 0.5):
+		sim.say("%s: \"Not today. I can barely look after myself.\"" % n.name, Color(0.85, 0.85, 0.7))
+		return false
+	n.state = FOLLOW
+	n.help_until = sim.hour + 6.0
+	n.met = true
+	sim.say("%s: \"Six hours. Then I'm going home.\"" % n.name, Color(0.7, 0.9, 0.7))
+	return true
+
+## a demand with a weapon in your hand: they may give in, run, or fight. none of them forget it
+func threaten(n: Npc) -> String:
+	var p: Player = sim.player
+	var gun: bool = Items.def(p.weapon["id"]).has("gun")
+	var give: float = 0.35 + (0.3 if gun else 0.0) + (0.2 if n.temper == "cautious" else 0.0) - (0.35 if n.temper == "brave" else 0.0) \
+		- (0.25 if n.wpn != "" else 0.0) + (0.15 if n.hp < 50.0 else 0.0)
+	n.trust = maxf(0.0, n.trust - 40.0)
+	n.met = true
+	if n.fac >= 0:
+		sim.factions.hear_of(n, -20.0, true)
+	var r: float = randf()
+	if r < give and not n.stock.is_empty():
+		var took: Array = []
+		for k in range(mini(2, n.stock.size())):
+			var sid: String = n.stock.pop_back()
+			Inv.add_new(p.inv, sid, 1, sim.hour)
+			took.append(Items.def(sid)["n"])
+		sim.say("%s raises their hands and gives you %s. They will remember your face." % [n.name, " and ".join(took)], Color(1.0, 0.75, 0.55))
+		return "gave"
+	if n.temper == "brave" or n.wpn != "" or r > 0.85:
+		n.state = HOSTILE
+		sim.say("%s: \"Over my dead body.\"" % n.name, Color(1.0, 0.55, 0.45))
+		return "fight"
+	n.task = "flee"
+	n.task_t = 6.0
+	n.task_pos = n.pos + (n.pos - p.pos).normalized() * 12.0
+	sim.say("%s bolts." % n.name, Color(1.0, 0.75, 0.55))
+	return "fled"
+
+## food offered with an apology: a little trust back, and a little standing with their people
+func apologize(n: Npc) -> bool:
+	var p: Player = sim.player
+	var food: Dictionary = {}
+	for it in p.inv:
+		if Items.def(it["id"]).get("cat", "") == "food" and not Items.def(it["id"]).has("raw"):
+			food = it
+			break
+	if food.is_empty():
+		sim.say("You have nothing to offer them.", Color(0.9, 0.8, 0.6))
+		return false
+	var one: Dictionary = Inv.split(p.inv, food, 1)
+	n.stock.append(one["id"])
+	n.forgiven_h = sim.hour
+	n.trust = minf(100.0, n.trust + (18.0 if n.temper == "generous" else (8.0 if n.temper == "wary" else 12.0)))
+	if n.fac >= 0:
+		sim.factions.add_rep(n.fac, 4.0)
+	sim.say("%s takes the %s. \"...All right.\"" % [n.name, String(Items.def(one["id"])["n"]).to_lower()], Color(0.8, 0.9, 0.75))
+	return true
 
 ## eat and drink from what they carry; go without and it starts to cost them
 func _needs(n: Npc, dh: float) -> void:
@@ -912,4 +996,5 @@ func options(n: Npc) -> Array:
 				else:
 					sim.say("%s: \"Thank you.\"" % n.name, Color(0.85, 0.85, 0.7))})
 			break
+	out.append_array(social_options(n, tr))
 	return out
