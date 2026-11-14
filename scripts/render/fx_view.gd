@@ -11,6 +11,12 @@ var hl_edge := -1            # -1 tile, 0 north edge, 1 west edge
 var hl_ok := true
 var hl_on := false
 var flames: Array = []       # Vector2i tiles currently on fire
+var arcs: Array = []         # [screen pos, angle, kind, life, max life]
+## the shape a swing leaves in the air: sweep (radians), reach (px), thickness, colour alpha
+const ARC := {"blunt": [2.3, 30.0, 4.0, 0.55], "blade": [1.5, 28.0, 2.0, 0.75], "axe": [1.9, 32.0, 6.0, 0.6], "spear": [0.0, 40.0, 3.0, 0.7], "shove": [1.2, 18.0, 5.0, 0.35]}
+
+func swing_arc(p: Vector2, screen_dir: Vector2, kind: String, life: float) -> void:
+	arcs.append([p, screen_dir.angle(), kind if ARC.has(kind) else "blunt", life, life])
 
 func burst(p: Vector2, n: int, color: Color, speed: float, life: float, size: float = 2.0, up: float = 30.0) -> void:
 	for i in range(n):
@@ -27,6 +33,10 @@ func flash_line(a: Vector2, b: Vector2) -> void:
 	flashes.append([a, b, 0.07])
 
 func _process(dt: float) -> void:
+	for a in arcs.duplicate():
+		a[3] = float(a[3]) - dt
+		if float(a[3]) <= 0.0:
+			arcs.erase(a)
 	var busy: bool = parts.size() > 0 or texts.size() > 0 or flashes.size() > 0 or hl_on or flames.size() > 0
 	var i: int = parts.size() - 1
 	while i >= 0:
@@ -57,6 +67,18 @@ func _process(dt: float) -> void:
 		queue_redraw()
 
 func _draw() -> void:
+	for a in arcs:
+		var spec: Array = ARC[a[2]]
+		var t: float = 1.0 - float(a[3]) / maxf(float(a[4]), 0.01)
+		var col := Color(1, 1, 1, float(spec[3]) * (1.0 - t))
+		if float(spec[0]) <= 0.0:
+			# a thrust: a straight jab along the facing
+			var tip: Vector2 = Vector2(a[0]) + Vector2.from_angle(float(a[1])) * float(spec[1]) * (0.4 + t * 0.6)
+			draw_line(Vector2(a[0]), tip, col, float(spec[2]))
+		else:
+			var half: float = float(spec[0]) * 0.5
+			var from: float = float(a[1]) - half
+			draw_arc(Vector2(a[0]), float(spec[1]), from, from + float(spec[0]) * (0.25 + t * 0.75), 12, col, float(spec[2]))
 	if hl_on:
 		var tp: Vector2 = Iso.to_screen(hl_tile.x, hl_tile.y)
 		var col := Color(0.6, 1.0, 0.6, 0.9) if hl_ok else Color(1.0, 0.45, 0.4, 0.9)

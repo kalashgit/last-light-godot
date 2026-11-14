@@ -1516,6 +1516,57 @@ func _init() -> void:
 		mt_c.zone = z_was
 
 
+	print("== swing shapes, music, car doors")
+	ok(FxView.ARC["blunt"][0] > FxView.ARC["blade"][0] and FxView.ARC["spear"][0] == 0.0 and FxView.ARC["axe"][2] > FxView.ARC["blade"][2], "a bat sweeps wide, a blade cuts narrow, an axe heavy, a spear thrusts straight")
+	var ms2 := Sim.new(1818)
+	ms2.new_game("unemployed", [], "house")
+	quiet(ms2)
+	var mp2: Player = ms2.player
+	Inv.add_new(mp2.inv, "spear", 1)
+	mp2.weapon = Inv.find(mp2.inv, "spear")
+	ms2.fx.clear()
+	mp2.attack_cd = 0.0
+	mp2.try_attack()
+	var sw_fx: Dictionary = {}
+	for e9 in ms2.fx:
+		if e9["k"] == "swing": sw_fx = e9
+	ok(sw_fx.get("wt", "") == "spear" and sw_fx.has("dir"), "a swing reports the weapon's kind and the way it goes (%s)" % str(sw_fx.get("wt", "")))
+	ms2.fx.clear()
+	var cue1: String = ms2.music_cues(21.5)
+	var cue2: String = ms2.music_cues(21.6)
+	ok(cue1 == "night" and cue2 == "", "a quiet night cue plays once in the evening, not twice")
+	ms2.set_home(mp2.pos)
+	ok(ms2.music_cues(18.5) == "home", "and something warmer at home in the evening")
+	ms2.zombies.spawn(mp2.pos + Vector2(2, 0), 0).state = Zombie.CHASE
+	ms2._music_last.clear()
+	ok(ms2.music_cues(21.5) == "", "never with the infected close")
+	ms2.zombies.list.clear()
+	# car doors
+	var cd := Vector2i(floori(mp2.pos.x) + 4, floori(mp2.pos.y) - 6)
+	clear_area(ms2, cd + Vector2i(1, 2), 4)
+	for j5 in range(4):
+		for i5 in range(2):
+			ms2.world.set_obj(cd.x + i5, cd.y + j5, Defs.ocell(Defs.O_CAR, 0, j5 * 2 + i5))
+	var ce: Dictionary = Vehicle.car_ent(ms2, cd.x, cd.y)
+	ce["key"] = 1
+	ce["bat"] = 1
+	ce["eng"] = 1.0
+	ms2.vehicle = Vehicle.enter(ms2, cd.x, cd.y)
+	ms2.settings["god"] = false
+	var zc: Zombie = ms2.zombies.spawn(mp2.pos + Vector2(1, 0), 0)
+	for k8 in range(60): mp2.take_zombie_hit(zc)
+	var dmg_door: float = float(ms2.vehicle.ent.get("door", 1.0))
+	ok(dmg_door < 1.0, "infected clawing at a car wear its doors down (%d%%)" % int(dmg_door * 100.0))
+	ms2.settings["god"] = true
+	ms2.vehicle = null
+	ms2.zombies.list.clear()
+	Inv.add_new(mp2.inv, "scrap_metal", 2)
+	var e8: Dictionary = Vehicle.car_ent(ms2, cd.x, cd.y)
+	e8["door"] = 0.3
+	var dl2: Array = []
+	for o in Actions._car_options(ms2, cd.x, cd.y): dl2.append(String(o["label"]))
+	ok(dl2.any(func(l): return l.begins_with("Fix the doors")), "worn doors can be straightened with scrap")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

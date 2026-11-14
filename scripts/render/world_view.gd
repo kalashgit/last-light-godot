@@ -530,6 +530,9 @@ func _consume_fx() -> void:
 	for e in sim.fx:
 		var sp: Vector2 = Iso.to_screen((e["p"] as Vector2).x, (e["p"] as Vector2).y) + Vector2(0, -24)
 		match e["k"]:
+			"swing":
+				if e.has("dir"):
+					fx.swing_arc(sp + Vector2(0, 6), Iso.to_screen((e["dir"] as Vector2).x, (e["dir"] as Vector2).y).normalized(), String(e.get("wt", "blunt")), maxf(0.15, float(e.get("dur", 0.4))))
 			"hit":
 				fx.burst(sp, 10 if e.get("crit", false) else 5, Color(0.55, 0.08, 0.06), 70.0, 0.45, 2.0)
 			"zdie":

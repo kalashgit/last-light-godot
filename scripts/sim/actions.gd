@@ -993,6 +993,13 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				e["lit"] = 1
 				p.add_xp("electrical", 16.0)
 				sim.say("The headlights work again.", Color(0.75, 0.9, 0.7)))))
+	if float(e.get("door", 1.0)) < 0.85 and Inv.count(p.inv, "scrap_metal") >= 2:
+		out.append(_opt("Fix the doors (2 scrap metal, %d%%)" % int(float(e.get("door", 1.0)) * 100.0), func():
+			p.start_action("Straightening the doors", 8.0, func():
+				if Inv.take(p.inv, "scrap_metal", 2):
+					e["door"] = minf(1.0, float(e.get("door", 1.0)) + 0.5)
+					p.add_xp("mechanics", 10.0)
+					sim.say("They shut properly again.", Color(0.8, 0.9, 0.75)))))
 	if float(e.get("eng", 1.0)) < 0.95 and Inv.has_tag(p.inv, "wrench") and Inv.count(p.inv, "scrap_metal") > 0:
 		out.append(_opt("Repair engine (1 scrap metal)", func():
 			p.start_action("Repairing engine", 9.0 - p.skill_level("mechanics") * 0.5, func():
@@ -1011,6 +1018,7 @@ static func condition_text(e: Dictionary, tid: int) -> String:
 	var t: String = "Fuel %d/%d · engine %d%% · tyres %d%%" % [int(float(e.get("fuel", 0.0))), int(Vehicle.tank_of(tid)), int(float(e.get("eng", 0.0)) * 100.0), int(float(e.get("tire", 1.0)) * 100.0)]
 	if tid != Defs.O_MOTORBIKE:
 		t += " · windows %d%%" % int(float(e.get("win", 1.0)) * 100.0)
+		t += " · doors %d%%" % int(float(e.get("door", 1.0)) * 100.0)
 	if tid != Defs.O_BICYCLE:
 		t += " · muffler %s" % ("ok" if int(e.get("muf", 1)) == 1 else "holed")
 	t += " · lights %s · battery %s · %s" % ["ok" if int(e.get("lit", 1)) == 1 else "broken", "ok" if int(e.get("bat", 0)) == 1 else "dead",

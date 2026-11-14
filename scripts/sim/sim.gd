@@ -1629,12 +1629,31 @@ func _update_weather(dh: float) -> void:
 
 ## what the weather does to the world: settles snow, ices, floods, knocks trees down, strikes
 var _dawn_day := -1
+var _music_last: Dictionary = {}     # cue -> day it last played
+
+## quiet, original cues: never in danger, never twice a day
+func music_cues(hod: float) -> String:
+	if not player.alive or threatened() or player.sleeping:
+		return ""
+	var cue := ""
+	if hod > 21.3 and hod < 22.0:
+		cue = "night"
+	elif float(weather["rain"]) > 0.6 and _wet_h > 1.0:
+		cue = "rain"
+	elif hod > 18.0 and hod < 19.0 and not home.is_empty() and home_pos().distance_to(player.pos) < 10.0:
+		cue = "home"
+	if cue == "" or int(_music_last.get(cue, -1)) == day():
+		return ""
+	_music_last[cue] = day()
+	emit_fx("music_" + cue, player.pos)
+	return cue
 func _weather_hazards(dh: float) -> void:
 	# a few quiet notes as the sun comes up, once a day, when nothing is close
 	var hod_m: float = hour_of_day()
 	if hod_m > 5.6 and hod_m < 6.4 and day() != _dawn_day and player.alive and not threatened():
 		_dawn_day = day()
 		emit_fx("music_dawn", player.pos)
+	music_cues(hod_m)
 	var t: float = weather["temp"]
 	var rain: float = weather["rain"]
 	if float(weather.get("snow", 0.0)) > 0.1:

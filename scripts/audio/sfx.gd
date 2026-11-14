@@ -29,6 +29,17 @@ func _ready() -> void:
 	_make("dawn", 6.0, func(t, n):
 		var env: float = sin(minf(t / 6.0, 1.0) * PI)
 		return (sin(t * 110.0 * TAU) * 0.16 + sin(t * 164.8 * TAU) * 0.11 + sin(t * 220.0 * TAU) * 0.07 * (0.5 + 0.5 * sin(t * 0.9))) * env * 0.8)
+	_make("night", 8.0, func(t, n):
+		var env: float = sin(minf(t / 8.0, 1.0) * PI)
+		return (sin(t * 98.0 * TAU) * 0.14 + sin(t * 116.5 * TAU) * 0.1 + sin(t * 146.8 * TAU) * 0.06 * (0.5 + 0.5 * sin(t * 0.6))) * env * 0.7)
+	_make("rainsong", 7.0, func(t, n):
+		var env2: float = sin(minf(t / 7.0, 1.0) * PI)
+		var step: int = int(t * 1.5) % 4
+		var f: float = [196.0, 174.6, 164.8, 146.8][step]
+		return (sin(t * f * TAU) * 0.12 * exp(-fmod(t, 0.667) * 3.0) + n * 0.02) * env2)
+	_make("hearth", 7.0, func(t, n):
+		var env3: float = sin(minf(t / 7.0, 1.0) * PI)
+		return (sin(t * 130.8 * TAU) * 0.12 + sin(t * 164.8 * TAU) * 0.1 + sin(t * 196.0 * TAU) * 0.08) * env3 * (0.7 + 0.3 * sin(t * 1.3)))
 	_make("swing", 0.16, func(t, n): return n * 0.3 * sin(t / 0.16 * PI) * (0.4 + t * 3.0))
 	_make("hit", 0.14, func(t, n): return (sin(t * 180.0 * TAU * (1.0 - t * 3.0)) * 0.6 + n * 0.5) * exp(-t * 30.0))
 	_make("thump", 0.2, func(t, n): return (sin(t * 70.0 * TAU) * 0.8 + n * 0.25) * exp(-t * 22.0))
@@ -152,6 +163,9 @@ func consume(sim: Sim, view: WorldView) -> void:
 				steps += 1
 				if steps <= 1: play(_step_for(sim, e["p"]), vol - 8.0, randf_range(0.85, 1.15))
 			"music_dawn": play("dawn", -10.0)
+			"music_night": play("night", -11.0)
+			"music_rain": play("rainsong", -12.0)
+			"music_home": play("hearth", -11.0)
 			"swing": play("swing", vol - 4.0, randf_range(0.9, 1.1))
 			"hit": play("hit", vol, randf_range(0.85, 1.15))
 			"zdie": play("zdie", vol, randf_range(0.85, 1.1))

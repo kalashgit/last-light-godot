@@ -693,7 +693,7 @@ func _melee_start() -> bool:
 	swing_kind = "shove" if typ == "shove" else "attack"
 	anim_t = 0.0
 	endurance -= 2.0 + float(d.get("w", 0.3)) * 1.6
-	sim.emit_fx("swing", pos)
+	sim.emit_fx("swing", pos, {"dir": facing, "wt": String(st.get("type", "blunt")), "dur": swing_dur})
 	return true
 
 func _resolve_melee() -> void:
@@ -948,9 +948,10 @@ func add_wound(part: int, type: String, cause: String = "") -> void:
 func take_zombie_hit(z: Zombie) -> void:
 	if not alive or sim.settings.get("god", false):
 		return
-	if sim.vehicle != null and randf() < float(sim.vehicle.spec()["prot"]) * (0.45 + 0.55 * float(sim.vehicle.ent.get("win", 1.0))):
-		# they claw at the bodywork instead
+	if sim.vehicle != null and randf() < float(sim.vehicle.spec()["prot"]) * (0.45 + 0.55 * float(sim.vehicle.ent.get("win", 1.0))) * (0.55 + 0.45 * float(sim.vehicle.ent.get("door", 1.0))):
+		# they claw at the bodywork instead, and the doors give a little each time
 		sim.vehicle.ent["eng"] = maxf(0.0, float(sim.vehicle.ent.get("eng", 0.5)) - 0.006)
+		sim.vehicle.ent["door"] = maxf(0.0, float(sim.vehicle.ent.get("door", 1.0)) - 0.02)
 		sim.emit_fx("thump", pos)
 		return
 	cancel_action()
