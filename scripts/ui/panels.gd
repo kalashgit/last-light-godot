@@ -510,7 +510,9 @@ func _after_move(cont: Dictionary) -> void:
 		if c != null:
 			c.touched = true
 
+var last_opts: Array = []          # what the last action sheet offered (for automated checks)
 func _sheet_open(title: String, opts: Array) -> void:
+	last_opts = opts
 	for ch in sheet_body.get_children():
 		sheet_body.remove_child(ch)
 		ch.queue_free()
