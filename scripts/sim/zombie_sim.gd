@@ -78,7 +78,8 @@ func _role_for(pos: Vector2) -> String:
 		"firestation": return "burned" if r < 0.3 else ("construction" if r < 0.5 else "civilian")
 		"prison": return "prisoner" if r < 0.7 else ("police" if r < 0.9 else "civilian")
 		"lab": return "hazmat" if r < 0.55 else ("medic" if r < 0.75 else "civilian")
-		"bunker": return "military" if r < 0.8 else "civilian"
+		"bunker", "supply_depot", "command_post": return "military" if r < 0.7 else "civilian"
+		"burned_house": return "burned" if r < 0.7 else "civilian"
 	for dy in range(-5, 6):
 		for dx in range(-5, 6):
 			var oid: int = Defs.o_id(w.obj(floori(pos.x) + dx, floori(pos.y) + dy))

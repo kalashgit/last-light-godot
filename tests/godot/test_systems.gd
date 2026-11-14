@@ -1337,6 +1337,70 @@ func _init() -> void:
 	Inv.add_new(ip.inv, "whetstone", 1)
 	ok(Inv.has_tag(ip.inv, "whetstone"), "a whetstone sharpens blades")
 
+	print("== mending, cool storage, the last kinds of place")
+	var md := Sim.new(1414)
+	md.new_game("unemployed", [], "house")
+	quiet(md)
+	var mdp: Player = md.player
+	var dtl := Vector2i(floori(mdp.pos.x) + 20, floori(mdp.pos.y))
+	clear_area(md, dtl, 3)
+	md.world.set_wall(dtl.x, dtl.y, 0, Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_DOOR))
+	md.world.damage_edge(dtl.x, dtl.y, 0, 9999.0)
+	ok((md.world.edge_state(dtl.x, dtl.y, 0) & Defs.ES_BROKEN) != 0, "a door can be broken down")
+	mdp.pos = Vector2(dtl.x + 0.5, dtl.y + 0.6)
+	var dlab: Array = []
+	for o in Actions._edge_options(md, {"x": dtl.x, "y": dtl.y, "side": 0}): dlab.append(String(o["label"]))
+	ok(dlab.any(func(l): return l.begins_with("Rehang the door")), "a broken door can be rehung")
+	Inv.add_new(mdp.inv, "hammer", 1)
+	Inv.add_new(mdp.inv, "plank", 3)
+	Inv.add_new(mdp.inv, "nails", 6)
+	for o in Actions._edge_options(md, {"x": dtl.x, "y": dtl.y, "side": 0}):
+		if String(o["label"]).begins_with("Rehang"): o["fn"].call()
+	run(md, 9.0)
+	ok((md.world.edge_state(dtl.x, dtl.y, 0) & Defs.ES_BROKEN) == 0 and Inv.count(mdp.inv, "plank") == 0, "rehung, it shuts again; the wood is used")
+	md.world.set_wall(dtl.x + 2, dtl.y, 0, Defs.wall(Defs.WM_PICKET, Defs.WS_DOOR))
+	md.world.damage_edge(dtl.x + 2, dtl.y, 0, 30.0)
+	ok(md.world.edge_wear(dtl.x + 2, dtl.y, 0) > 0.15, "a gate takes damage before it breaks")
+	var glab: Array = []
+	for o in Actions._edge_options(md, {"x": dtl.x + 2, "y": dtl.y, "side": 0}): glab.append(String(o["label"]))
+	ok(glab.any(func(l): return l.begins_with("Patch up the damage")), "a battered gate can be patched before it gives")
+	# cool storage
+	md.weather["temp"] = 20.0
+	ok(md.cool_factor(dtl.x, dtl.y) == 0.0, "on a warm day a cupboard keeps nothing longer")
+	ok(md.cool_factor(dtl.x, dtl.y + World.UNDER) > 0.3, "a cellar always keeps food longer")
+	md.weather["temp"] = -5.0
+	ok(md.cool_factor(dtl.x, dtl.y) > 0.6, "in a hard frost, food left out barely spoils")
+	md.weather["temp"] = 15.0
+	var bx2 := dtl + Vector2i(0, 2)
+	md.world.set_obj(bx2.x, bx2.y, Defs.ocell(Defs.O_CRATE, 0, 0))
+	var bxa: Array = md.world.container_at(bx2.x, bx2.y)
+	bxa.clear()
+	var meat: Dictionary = Items.make("raw_steak", 1, md.hour)
+	bxa.append(meat)
+	md.weather["temp"] = -5.0
+	var t0m: float = float(meat["t"])
+	md._sim_ents(md.world.chunk_at(bx2.x, bx2.y), 10.0, false)
+	ok(float(meat["t"]) > t0m + 5.0, "meat in a crate outdoors in a frost ages far more slowly")
+	md.weather["temp"] = 15.0
+	# the last kinds of place
+	var found_b: Dictionary = {}
+	for kd in ["scrapyard", "supply_depot", "command_post", "greenhouse", "mobile_home", "barn"]:
+		var plk = BuildGen.gen(kd, {"scrapyard": 28, "supply_depot": 22, "command_post": 18, "greenhouse": 18, "mobile_home": 12, "barn": 20}[kd], {"scrapyard": 24, "supply_depot": 18, "command_post": 16, "greenhouse": 14, "mobile_home": 12, "barn": 18}[kd], 0, 5050, 1)
+		var nobj := 0
+		for cell in plk.obj:
+			if cell != 0 and (Defs.o_part(cell) == 0 or Defs.obj(Defs.o_id(cell)).get("use", "") == "crop"): nobj += 1      # a crop's part is its growth stage
+		found_b[kd] = plk.btype == kd and nobj >= 4
+	ok(not found_b.values().has(false), "scrapyards, supply depots, command posts, greenhouses, mobile homes and barns %s" % str(found_b))
+	var gh = BuildGen.gen("greenhouse", 18, 14, 0, 5151, 1)
+	var gcrop := 0
+	for cell in gh.obj:
+		if Defs.obj(Defs.o_id(cell)).get("use", "") == "crop": gcrop += 1
+	ok(gcrop >= 4, "a greenhouse has crops growing under cover (%d)" % gcrop)
+	var burned := 0
+	for sd5 in range(200):
+		if BuildGen.gen("house", 16, 18, 0, 6000 + sd5, 1).btype == "burned_house": burned += 1
+	ok(burned > 0, "some houses are burned out (%d in 200)" % burned)
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

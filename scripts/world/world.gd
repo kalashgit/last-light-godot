@@ -420,6 +420,28 @@ func remove_object(x: int, y: int) -> void:
 		c.obj_hp.erase(ai)
 
 ## damage a barrier on an edge. returns true when something broke.
+## how battered an edge is: 0 untouched .. 1 about to give (only doors, gates and walls that have taken blows)
+func edge_wear(x: int, y: int, side: int) -> float:
+	var c: Chunk = chunk_at(x, y)
+	if c == null:
+		return 0.0
+	var key: int = idx(x, y) * 2 + side
+	if not c.edge_hp.has(key):
+		return 0.0
+	var w: int = c.wall_n[idx(x, y)] if side == 0 else c.wall_w[idx(x, y)]
+	var max_hp: float = float(Defs.WALL_MATS[w >> 2][2])
+	if (w & 3) == Defs.WS_DOOR:
+		max_hp = Defs.DOOR_HP if Defs.WALL_MATS[w >> 2][0] < Defs.WT_PICKET else 50.0
+	return clampf(1.0 - float(c.edge_hp[key]) / maxf(max_hp, 1.0), 0.0, 1.0)
+
+func mend_edge(x: int, y: int, side: int) -> void:
+	var c: Chunk = chunk_at(x, y)
+	if c == null:
+		return
+	c.edge_hp.erase(idx(x, y) * 2 + side)
+	set_edge_state(x, y, side, edge_state(x, y, side) & ~Defs.ES_BROKEN)
+	_touch(c, false)
+
 func damage_edge(x: int, y: int, side: int, dmg: float) -> bool:
 	var c: Chunk = chunk_at(x, y)
 	if c == null:

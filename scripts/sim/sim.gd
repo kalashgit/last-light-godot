@@ -446,7 +446,7 @@ func alarm_armed(x: int, y: int) -> bool:
 	var bt: String = world.btype_at(x, y)
 	if bt == "cellar" or bt == "camp" or bt == "stash":
 		return false
-	var chance: int = 6 if (bt == "house" or bt == "cabin" or bt == "farm") else 18
+	var chance: int = 6 if (bt == "house" or bt == "cabin" or bt == "farm" or bt == "burned_house" or bt == "mobile_home") else 18
 	return (Rng.h(b + seed_v) % 100) < chance
 
 static func compass(from: Vector2, to: Vector2) -> String:
@@ -1915,6 +1915,11 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 					c.touched = true
 				continue
 			if oid != Defs.O_FRIDGE and oid != Defs.O_FREEZER:
+				var cool: float = cool_factor(c.cx * 16 + (int(ci) & 15), c.cy * 16 + (int(ci) >> 4))
+				if cool > 0.0:
+					for it2 in c.containers[ci]:
+						if it2.has("t") and Items.def(it2["id"]).has("fresh"):
+							it2["t"] = float(it2["t"]) + dh * cool
 				continue
 			var x2: int = c.cx * 16 + (int(ci) & 15)
 			var y2: int = c.cy * 16 + (int(ci) >> 4)
@@ -1923,6 +1928,17 @@ func _sim_ents(c: Chunk, dh: float, catch_up: bool) -> void:
 			for it in c.containers[ci]:
 				if it.has("t"):
 					it["t"] = float(it["t"]) + dh * 0.8
+
+## how much a cool place slows food going off (0 not at all .. 0.9 nearly a fridge)
+func cool_factor(x: int, y: int) -> float:
+	var t: float = float(weather.get("temp", 15.0))
+	if World.level(y) == 1:
+		return 0.5                           # a cellar stays cool all year
+	if t < 0.0:
+		return 0.8                           # frozen solid
+	if t < 6.0 and not near_heat(Vector2(x + 0.5, y + 0.5)):
+		return 0.45
+	return 0.0
 
 ## bring a freshly loaded chunk up to date with the time it was away
 func _catch_up(c: Chunk) -> void:

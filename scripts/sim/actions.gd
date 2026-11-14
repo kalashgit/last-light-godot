@@ -283,6 +283,22 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 			var oh: Dictionary = _opt("Hop over", func(): _climb(sim, x, y, side, 0.8, false))
 			oh["quick"] = true
 			out.append(oh)
+	# a broken or battered door or gate can be mended
+	if shape == Defs.WS_DOOR and ((st & Defs.ES_BROKEN) != 0 or w.edge_wear(x, y, side) > 0.15):
+		var broke: bool = (st & Defs.ES_BROKEN) != 0
+		var pl: int = (1 if fence else 3) if broke else 1
+		var nl: int = (3 if fence else 6) if broke else 2
+		out.append(_opt("%s (%d plank, %d nails, hammer)" % [("Mend the gate" if fence else "Rehang the door") if broke else "Patch up the damage", pl, nl], func():
+			if not Inv.has_tag(p.inv, "hammer") or Inv.count(p.inv, "plank") < pl or Inv.count(p.inv, "nails") < nl:
+				sim.say("You need a hammer, %d plank and %d nails." % [pl, nl], Color(0.9, 0.8, 0.6))
+				return
+			p.start_action("Mending", 8.0 if broke else 4.0, func():
+				Inv.take(p.inv, "plank", pl)
+				Inv.take(p.inv, "nails", nl)
+				w.mend_edge(x, y, side)
+				sim.noise(p.pos, 10.0)
+				p.add_xp("carpentry", 12.0)
+				sim.say("Solid again.", Color(0.8, 0.9, 0.75)))))
 	if shape == Defs.WS_DOOR and (st & (Defs.ES_OPEN | Defs.ES_BROKEN)) == 0 and not fence:
 		out.append(_opt("Peek through the gap", func(): _peek(sim, x, y, side)))
 		if sim.door_jammed(x, y, side):

@@ -20,6 +20,9 @@ static func gen(kind: String, w: int, h: int, facing: int, seed_v: int, bld_id: 
 		"checkpoint": _checkpoint(b)
 		"quarantine": _quarantine(b)
 		"woods": _woods(b)
+		"scrapyard": _scrapyard(b)
+		"supply_depot": _supply_depot(b)
+		"command_post": _command_post(b)
 		_: _shop(b, kind)
 	return b.finalize(facing, bld_id)
 
@@ -172,6 +175,21 @@ static func _house_story(b: LotBuilder, base_room: int) -> void:
 		var c3: Vector2i = b.free_cell(base_room)
 		if c3.x >= 0:
 			b.corpse_c.append([c3, "corpse_armed"])
+	elif r >= 0.19 and r < 0.23:
+		# burned out: smashed openings, scorched floors, and the ones who did not get out
+		b.btype = "burned_house"
+		b.flag_openings(base_room, LotBuilder.F_BROKEN)
+		for ri4 in range(base_room, n):
+			var rr4: Rect2i = b.rooms[ri4]["r"]
+			if rng.randf() < 0.6:
+				b.set_floor(rr4, Defs.G_DIRT)
+		for k5 in range(rng.randi_range(1, 2)):
+			var c5: Vector2i = b.free_cell(base_room)
+			if c5.x >= 0:
+				b.corpse_c.append([c5, "corpse"])
+				b.blood_c.append(c5)
+		var z5: Vector2i = b.free_cell(base_room)
+		if z5.x >= 0: b.zspawn_c.append(z5)
 	elif r < 0.14:
 		# looted: the door was forced
 		b.flag_openings(base_room, LotBuilder.F_BROKEN, -1, true)
@@ -342,6 +360,11 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 	if kind == "prison" or kind == "bunker" or kind == "lab":
 		b.ext_mat = D.WM_CONCRETE
 		apron = 3 if kind != "bunker" else 4
+	if kind == "barn":
+		b.ext_mat = D.WM_LOG
+		apron = 3
+	if kind == "greenhouse" or kind == "mobile_home":
+		apron = 3
 	var x0 := 1
 	var x1: int = b.cw - 1
 	var y1: int = b.ch - apron
@@ -355,12 +378,15 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 	if kind == "bunker":
 		depth = mini(depth, 6)
 		y0 = y1 - depth
-	if depth >= 9 and kind != "warehouse" and kind != "bunker":
+	if depth >= 9 and kind != "warehouse" and kind != "bunker" and kind != "greenhouse":
 		back_d = clampi(depth / 3, 3, 5)
 	var main_floor: int = D.G_LINO
 	match kind:
 		"hardware", "warehouse", "firestation", "gunstore", "prison", "bunker": main_floor = D.G_CONCRETE
 		"lab": main_floor = D.G_TILE
+		"greenhouse": main_floor = D.G_SOIL
+		"barn": main_floor = D.G_DIRT
+		"mobile_home": main_floor = D.G_LINO
 		"bar", "bookstore", "diner": main_floor = D.G_WOOD_DARK
 		"clothing", "office": main_floor = D.G_CARPET_BLUE
 		"clinic", "pharmacy": main_floor = D.G_TILE
@@ -429,6 +455,9 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		"school_dorm": back_types = ["bunk", "bunk", "bunk", "bathroom"]
 		"prison": back_types = ["cell", "cell", "cell", "cell", "cell", "office"]
 		"lab": back_types = ["lab", "lab", "office"]
+		"greenhouse": back_types = []
+		"barn": back_types = ["storage"]
+		"mobile_home": back_types = ["bunk", "bathroom"]
 	if back_d > 0:
 		var nb: int = mini(back_types.size(), maxi(1, (x1 - x0) / 4))
 		var bx: int = x0
@@ -667,6 +696,28 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 				_many(b, ri2, D.O_DESK if b.rooms[ri2]["type"] != "lab" else D.O_MED_CABINET, 2)
 			for k3 in range(rng.randi_range(3, 6)):
 				b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(y0 + 2, y1 - 2)))
+		"greenhouse":
+			# beds of soil under glass: what grows here keeps growing when it is cold outside
+			var gcrops: Array = [D.O_CROP_TOMATO, D.O_CROP_LETTUCE, D.O_CROP_PEPPER, D.O_CROP_SPINACH, D.O_CROP_HERBS, D.O_CROP_STRAWBERRY]
+			var gr: Rect2i = b.rooms[0]["r"]
+			for v4 in range(gr.position.y + 1, gr.end.y - 1, 2):
+				for u4 in range(gr.position.x + 1, gr.end.x - 1):
+					if b.occ[v4 * b.cw + u4] == 0 and rng.randf() < 0.6:
+						b.placements.append([int(gcrops[(u4 / 3) % gcrops.size()]) | 0x10000, u4, v4, 0])
+						b.occ[v4 * b.cw + u4] = 1
+		"barn":
+			for k6 in range(5): b.place_free(0, D.O_HAY, 1)
+			_many(b, 0, D.O_TROUGH, 2)
+			_many(b, 0, D.O_TOOL_SHELF, 1)
+			b.place_free(0, D.O_COOP, 1)
+			if rng.randf() < 0.5: _park_any(b, D.O_TRACTOR)
+		"mobile_home":
+			_many(b, 0, D.O_SOFA, 1)
+			_many(b, 0, D.O_FRIDGE, 1)
+			_many(b, 0, D.O_COUNTER, 2)
+			_many(b, 0, D.O_TABLE, 1)
+			for ri5 in range(1, b.rooms.size()):
+				if b.rooms[ri5]["type"] == "bunk": b.place_free(ri5, D.O_BED, 0, 0, 12)
 		"bunker":
 			# a concrete box with a hatch to the shelter below; supplies stacked by the door
 			b.place_free(0, D.O_MIL_CRATE, 0, 0, 12)
@@ -932,6 +983,59 @@ static func _quarantine(b: LotBuilder) -> void:
 		b.corpse_c.append([c, "corpse"])
 		b.blood_c.append(c)
 	for k2 in range(rng.randi_range(9, 14)):
+		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
+
+## a fenced yard of dead cars, with whatever can still be stripped from them
+static func _scrapyard(b: LotBuilder) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	b.btype = "scrapyard"
+	b.set_floor(Rect2i(1, 1, b.cw - 2, b.ch - 2), Defs.G_GRAVEL)
+	b.fence_rect(Rect2i(1, 1, b.cw - 2, b.ch - 2), LotBuilder.E_CHAIN, LotBuilder.E_PICKET_GATE, [Vector2i(b.cw / 2, b.ch - 1)])
+	for k in range(14):
+		b.put_yard(Defs.O_CAR_WRECK, rng.randi_range(2, b.cw - 4), rng.randi_range(2, b.ch - 6), [0, 2][rng.randi() % 2])
+	for k2 in range(4):
+		b.put_yard(_pick(rng, [Defs.O_BARREL, Defs.O_PALLET, Defs.O_METAL_SHELF, Defs.O_TOOL_SHELF]), rng.randi_range(2, b.cw - 3), rng.randi_range(2, b.ch - 3), 0)
+	b.put_yard(Defs.O_TOW_TRUCK if rng.randf() < 0.4 else Defs.O_CAR_WRECK, 3, b.ch - 8, 0)
+	for k3 in range(rng.randi_range(1, 3)):
+		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
+
+## an army supply dump: crates in rows, a truck, and the guards who stayed
+static func _supply_depot(b: LotBuilder) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	b.btype = "supply_depot"
+	b.set_floor(Rect2i(1, 1, b.cw - 2, b.ch - 2), Defs.G_GRAVEL)
+	b.fence_rect(Rect2i(1, 1, b.cw - 2, b.ch - 2), LotBuilder.E_CHAIN, LotBuilder.E_PICKET_GATE, [Vector2i(b.cw / 2, b.ch - 1)])
+	for row in range(2):
+		for col in range(5):
+			b.put_yard(Defs.O_MIL_CRATE, 4 + col * 3, 4 + row * 4, 0)
+	b.put_yard(Defs.O_TENT, b.cw - 6, 3, 0)
+	b.put_yard(Defs.O_TRUCK, 3, b.ch - 9, 0)
+	for u in range(3, b.cw - 3, 2):
+		b.put_yard(Defs.O_SANDBAG, u, b.ch - 3, 0)
+	for k in range(rng.randi_range(2, 4)):
+		b.corpse_c.append([Vector2i(rng.randi_range(4, b.cw - 5), rng.randi_range(10, b.ch - 5)), "corpse_armed"])
+	for k2 in range(rng.randi_range(4, 7)):
+		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
+
+## an emergency command post: tents, desks under canvas, a generator and a radio mast
+static func _command_post(b: LotBuilder) -> void:
+	var rng: RandomNumberGenerator = b.rng
+	b.btype = "command_post"
+	b.set_floor(Rect2i(1, 1, b.cw - 2, b.ch - 2), Defs.G_DIRT)
+	b.put_yard(Defs.O_TENT, 3, 3, 0)
+	b.put_yard(Defs.O_TENT, 8, 3, 0)
+	b.put_yard(Defs.O_DESK, 4, 7, 0)
+	b.put_yard(Defs.O_DESK, 6, 7, 0)
+	b.put_yard(Defs.O_FILING, 8, 7, 0)
+	b.put_yard(Defs.O_GENERATOR, b.cw - 4, 3, 0)
+	b.put_yard(Defs.O_STREET_LAMP, b.cw - 4, 6, 0)
+	b.put_yard(Defs.O_MIL_CRATE, b.cw - 5, b.ch - 4, 0)
+	b.put_yard(Defs.O_AMBULANCE if rng.randf() < 0.5 else Defs.O_POLICE_CAR, 2, b.ch - 7, 0)
+	for u in range(2, b.cw - 2, 3):
+		b.put_yard(Defs.O_SANDBAG, u, 1, 0)
+	for k in range(rng.randi_range(1, 3)):
+		b.corpse_c.append([Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(8, b.ch - 4)), "corpse_armed"])
+	for k2 in range(rng.randi_range(3, 6)):
 		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
 
 static func _camp(b: LotBuilder) -> void:

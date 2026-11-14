@@ -155,6 +155,9 @@ static func _static_init() -> void:
 	OVERRIDE["lab"] = {"desk": "lab", "locker": "lab", "medical": "medical", "office": "lab"}
 	OVERRIDE["prison"] = {"locker": "locker_police", "desk": "office", "bed": "prison", "nightstand": "prison"}
 	OVERRIDE["bunker"] = {"bed": "military", "crate": "military"}
+	OVERRIDE["barn"] = {"tools": "farm", "crate": "farm"}
+	OVERRIDE["scrapyard"] = {"tools": "auto_parts", "warehouse": "factory", "barrel": "barrel"}
+	OVERRIDE["command_post"] = {"desk": "town_hall", "office": "town_hall"}
 	OVERRIDE["gas"] = {"store_food": "store_gas"}
 	OVERRIDE["police"] = {"locker": "locker_police", "crate": "guns"}
 	OVERRIDE["firestation"] = {"locker": "locker_fire"}
