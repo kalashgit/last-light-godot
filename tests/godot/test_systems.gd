@@ -1262,6 +1262,48 @@ func _init() -> void:
 	ok(loot_bad.is_empty(), "every loot table names real items, and every override a real table %s" % str(loot_bad))
 	ok(Loot.T.size() >= 75, "%d loot profiles" % Loot.T.size())
 
+	print("== eighty construction pieces")
+	var nbuild_c := 0
+	for r in Recipes.LIST:
+		if r.has("build"): nbuild_c += 1
+	ok(nbuild_c >= 80, "%d construction pieces can be built" % nbuild_c)
+	var bs3 := Sim.new(8989)
+	bs3.new_game("unemployed", [], "house")
+	quiet(bs3)
+	var bp3: Player = bs3.player
+	var bt3 := Vector2i(floori(bp3.pos.x) + 20, floori(bp3.pos.y))
+	clear_area(bs3, bt3, 6)
+	for yy3 in range(bt3.y - 6, bt3.y + 7):
+		for xx3 in range(bt3.x - 6, bt3.x + 7):
+			bs3.world.chunk(xx3 >> 4, yy3 >> 4).bld[((yy3 & 15) << 4) | (xx3 & 15)] = 0
+	var built_bad_c: Array = []
+	for rid_c in ["build_dresser", "build_picnic_table", "build_sofa", "build_tent", "build_locker", "build_coop", "build_hospital_bed", "build_lamp", "build_grave", "build_dumpster"]:
+		var rr_c: Dictionary = Recipes.by_id(rid_c)
+		if rr_c.is_empty():
+			built_bad_c.append(rid_c + " missing")
+			continue
+		for inp_c in rr_c["in"]: Inv.add_new(bp3.inv, String(inp_c[0]), int(inp_c[1]) + 1)
+		for tl_c in rr_c["tools"]:
+			for itd_c in Items.DB.keys():
+				if Items.has_tag({"id": itd_c}, String(tl_c)) and not Inv.has_tag(bp3.inv, String(tl_c)):
+					Inv.add_new(bp3.inv, itd_c, 1)
+					break
+		if rr_c.has("skill"): bp3.skills[rr_c["skill"][0]] = 2000.0
+		for rr2_c in Recipes.LIST:
+			if rr2_c.has("learn"): bp3.known[String(rr2_c["learn"])] = true
+		bp3.pos = Vector2(bt3) + Vector2(0.5, 0.5)
+		bp3.facing = Vector2(1, 0)
+		var tgt_c: Dictionary = Actions.build_target(bs3, rr_c)
+		if not tgt_c["ok"]:
+			built_bad_c.append("%s: %s" % [rid_c, tgt_c.get("why", "")])
+			continue
+		var made_c: bool = Actions.craft(bs3, rr_c)
+		run(bs3, float(rr_c["time"]) + 2.0)
+		if not made_c or Defs.o_id(bs3.world.obj(int(tgt_c["x"]), int(tgt_c["y"]))) != int(rr_c["build"]["obj"]):
+			built_bad_c.append("%s not placed (%s)" % [rid_c, Recipes.missing(rr_c, bp3, true, true, bs3.stations(bp3.pos))])
+		bs3.world.remove_object(int(tgt_c["x"]), int(tgt_c["y"]))
+	ok(built_bad_c.is_empty(), "the new pieces can be built and stand where you put them %s" % str(built_bad_c))
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")
