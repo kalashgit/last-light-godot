@@ -9,23 +9,27 @@ var _next := 0
 var _ambient_t := 0.0
 var _rotor_t := 0.0
 var _bus := "Near"
+var _started: Array = []      # when each voice last started (msec), so the oldest is the one cut off
 var _room_wet := 0.0
 
 func _ready() -> void:
 	_make_buses()
-	for i in range(10):
+	for i in range(16):
 		var p := AudioStreamPlayer.new()
 		add_child(p)
 		_players.append(p)
+		_started.append(0)
 	_make("thunder", 1.6, func(t, n): return n * (0.7 * exp(-t * 2.2) + 0.3 * exp(-absf(t - 0.4) * 6.0)) * (0.6 + 0.4 * sin(t * 13.0)))
 	_make("fire", 0.3, func(t, n): return n * 0.35 * (0.3 + 0.7 * absf(sin(t * 61.0))) * exp(-t * 4.0))
 	_make("engine", 0.5, func(t, n): return (sin(t * 62.0 * TAU) * 0.4 + sin(t * 124.0 * TAU) * 0.2 + n * 0.12) * (0.7 + 0.3 * sin(t * 28.0 * TAU)) * sin(t / 0.5 * PI))
 	_make("call", 0.3, func(t, n): return (sin(t * (330.0 + t * 260.0) * TAU) * 0.4 + sin(t * 660.0 * TAU) * 0.12 + n * 0.05) * sin(t / 0.3 * PI))
-	_make("step", 0.06, func(t, n): return n * 0.25 * exp(-t * 60.0))
-	_make("step_wood", 0.08, func(t, n): return (sin(t * 140.0 * TAU) * 0.35 + n * 0.15) * exp(-t * 45.0))
-	_make("step_grass", 0.09, func(t, n): return n * 0.14 * exp(-t * 30.0) * (0.5 + 0.5 * sin(t * 400.0)))
-	_make("step_gravel", 0.1, func(t, n): return n * 0.32 * exp(-t * 28.0) * (0.4 + 0.6 * absf(sin(t * 900.0))))
-	_make("step_water", 0.16, func(t, n): return (n * 0.22 + sin(t * 260.0 * TAU) * 0.08) * sin(t / 0.16 * PI))
+	for v in range(3):
+		var sh: float = 1.0 + float(v) * 0.07
+		_make("step%d" % v, 0.09, func(t, n): return (sin(t * 85.0 * sh * TAU) * 0.3 * exp(-t * 55.0) + n * 0.22 * exp(-t * 45.0)), 2600.0)
+		_make("step_wood%d" % v, 0.11, func(t, n): return (sin(t * 120.0 * sh * TAU) * 0.38 + sin(t * 240.0 * sh * TAU) * 0.08 + n * 0.1) * exp(-t * 38.0), 3200.0)
+		_make("step_grass%d" % v, 0.13, func(t, n): return (n * 0.2 * exp(-t * 24.0) * (0.6 + 0.4 * sin(t * 160.0 * sh)) + sin(t * 70.0 * TAU) * 0.12 * exp(-t * 50.0)), 1800.0)
+		_make("step_gravel%d" % v, 0.12, func(t, n): return (n * 0.3 * exp(-t * 26.0) * (0.5 + 0.5 * absf(sin(t * 700.0 * sh))) + sin(t * 80.0 * TAU) * 0.15 * exp(-t * 50.0)), 5000.0)
+		_make("step_water%d" % v, 0.18, func(t, n): return (n * 0.2 + sin(t * (240.0 + 60.0 * v) * TAU) * 0.07) * sin(t / 0.18 * PI), 2200.0)
 	_make("dawn", 6.0, func(t, n):
 		var env: float = sin(minf(t / 6.0, 1.0) * PI)
 		return (sin(t * 110.0 * TAU) * 0.16 + sin(t * 164.8 * TAU) * 0.11 + sin(t * 220.0 * TAU) * 0.07 * (0.5 + 0.5 * sin(t * 0.9))) * env * 0.8)
@@ -61,15 +65,24 @@ func _ready() -> void:
 	_make("scream", 0.9, func(t, n): return (sin(t * (760.0 + sin(t * 31.0) * 90.0 - t * 240.0) * TAU) * 0.45 + n * 0.12) * sin(minf(t / 0.9, 1.0) * PI))
 	_make("bark", 0.22, func(t, n): return (sin(t * (300.0 - t * 500.0) * TAU) * 0.5 + n * 0.35) * exp(-t * 16.0))
 
-func _make(name: String, dur: float, f: Callable) -> void:
+func _make(name: String, dur: float, f: Callable, lowpass_hz: float = 0.0) -> void:
 	var n: int = int(dur * RATE)
 	var data := PackedByteArray()
 	data.resize(n * 2)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(name)
+	var a: float = 1.0 - exp(-TAU * lowpass_hz / RATE) if lowpass_hz > 0.0 else 1.0
+	var y := 0.0
+	var fade_in: int = int(0.003 * RATE)
+	var fade_out: int = mini(int(0.012 * RATE), n / 3)
 	for i in range(n):
 		var t: float = float(i) / RATE
-		var v: float = clampf(f.call(t, rng.randf_range(-1.0, 1.0)), -1.0, 1.0)
+		var x: float = f.call(t, rng.randf_range(-1.0, 1.0))
+		y += (x - y) * a
+		var g: float = 1.0
+		if i < fade_in: g = float(i) / float(fade_in)
+		if i > n - fade_out: g = minf(g, float(n - i) / float(fade_out))
+		var v: float = clampf(y * g, -1.0, 1.0)
 		data.encode_s16(i * 2, int(v * 32000.0))
 	var s := AudioStreamWAV.new()
 	s.format = AudioStreamWAV.FORMAT_16_BITS
@@ -114,8 +127,19 @@ static func bus_for(sim: Sim, src: Vector2) -> String:
 func play(name: String, volume_db: float = 0.0, pitch: float = 1.0) -> void:
 	if not _streams.has(name):
 		return
-	var p: AudioStreamPlayer = _players[_next]
-	_next = (_next + 1) % _players.size()
+	# a free voice if there is one; otherwise cut off the oldest sound, never the newest
+	var vi: int = -1
+	var oldest: int = 0
+	for i in range(_players.size()):
+		if not _players[i].playing:
+			vi = i
+			break
+		if int(_started[i]) < int(_started[oldest]):
+			oldest = i
+	if vi < 0:
+		vi = oldest
+	var p: AudioStreamPlayer = _players[vi]
+	_started[vi] = Time.get_ticks_msec()
 	p.bus = _bus
 	p.stream = _streams[name]
 	p.volume_db = volume_db
@@ -161,7 +185,7 @@ func consume(sim: Sim, view: WorldView) -> void:
 		match k:
 			"step":
 				steps += 1
-				if steps <= 1: play(_step_for(sim, e["p"]), vol - 8.0, randf_range(0.85, 1.15))
+				if steps <= 1: play(_step_for(sim, e["p"]) + str(randi() % 3), vol - 8.0 + randf_range(-1.5, 1.0), randf_range(0.92, 1.08))
 			"music_dawn": play("dawn", -10.0)
 			"music_night": play("night", -11.0)
 			"music_rain": play("rainsong", -12.0)

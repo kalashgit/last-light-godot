@@ -36,6 +36,19 @@ static func dir8(world_dir: Vector2) -> int:
 	# ang>0 means east; our index increases clockwise through west
 	return posmod(-idx, 8)
 
+## like dir8, but keeps the current direction until the input is well past the boundary,
+## so a stick held near a diagonal does not make the sprite flip back and forth
+static func dir8_sticky(world_dir: Vector2, cur: int) -> int:
+	var nd: int = dir8(world_dir)
+	if nd == cur or cur < 0:
+		return nd
+	var sx: float = world_dir.x - world_dir.y
+	var sy: float = (world_dir.x + world_dir.y) * 0.5
+	var ang: float = atan2(sx, sy)
+	var cur_ang: float = -float(cur) * PI / 4.0
+	var diff: float = absf(wrapf(ang - cur_ang, -PI, PI))
+	return nd if diff > PI / 8.0 + 0.12 else cur
+
 static func dir8_to_world(d: int) -> Vector2:
 	var ang: float = -float(d) * PI / 4.0
 	var s := Vector2(sin(ang), cos(ang))   # screen dir (x right, y down)

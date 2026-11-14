@@ -1567,6 +1567,71 @@ func _init() -> void:
 	for o in Actions._car_options(ms2, cd.x, cd.y): dl2.append(String(o["label"]))
 	ok(dl2.any(func(l): return l.begins_with("Fix the doors")), "worn doors can be straightened with scrap")
 
+	print("== smooth walking, footsteps on the beat, clean sound")
+	var gs_g := Sim.new(2020)
+	gs_g.new_game("unemployed", [], "house")
+	quiet(gs_g)
+	var gp_g: Player = gs_g.player
+	var gt_g := Vector2i(floori(gp_g.pos.x) + 30, floori(gp_g.pos.y))
+	gs_g.world.stream(Vector2(gt_g), 2, 999)
+	clear_area(gs_g, gt_g, 8)
+	for yy6 in range(gt_g.y - 8, gt_g.y + 9):
+		for xx6 in range(gt_g.x - 8, gt_g.x + 9):
+			gs_g.world.chunk(xx6 >> 4, yy6 >> 4).bld[((yy6 & 15) << 4) | (xx6 & 15)] = 0
+	gp_g.pos = Vector2(gt_g) + Vector2(0.5, 0.5)
+	gs_g.animals.list.clear()                  # (their steps are not yours)
+	var start_g: Vector2 = gp_g.pos
+	var steps_n_g := 0
+	var g0_g: float = gp_g._gait
+	var w0g_g: float = gp_g.walk_t
+	for k7 in range(60):
+		gs_g.fx.clear()
+		gs_g.tick(1.0 / 30.0, Vector2(1, 0), false)
+		for e7 in gs_g.fx:
+			if e7["k"] == "step" and (e7["p"] as Vector2).distance_to(gp_g.pos) < 0.5: steps_n_g += 1
+	var dist7_g: float = gp_g.pos.distance_to(start_g)
+	ok(gp_g.anim == "s_walk" and gp_g.walk_t > w0g_g, "walking plays the walk cycle")
+	ok(absf((gp_g.walk_t - w0g_g) - dist7_g / 1.2 * 6.0 / 11.0) < 0.05, "the walk cycle advances with the ground covered, so the feet do not slide (%.2f tiles)" % dist7_g)
+	ok(steps_n_g == floori(gp_g._gait * 2.0) - floori(g0_g * 2.0), "a footstep sounds each time a foot comes down: twice per walk cycle (%d steps, %.1f cycles over %.1f tiles)" % [steps_n_g, gp_g._gait - g0_g, dist7_g])
+	# boxed in on all sides: pushing gets you nowhere, and you are not walking on the spot
+	var bx_g := Vector2i(floori(gp_g.pos.x), floori(gp_g.pos.y))
+	gp_g.pos = Vector2(bx_g) + Vector2(0.5, 0.5)
+	var sw_g: int = Defs.wall(Defs.WM_PLASTER_CREAM, Defs.WS_SOLID)
+	gs_g.world.set_wall(bx_g.x, bx_g.y, 0, sw_g)
+	gs_g.world.set_wall(bx_g.x, bx_g.y + 1, 0, sw_g)
+	gs_g.world.set_wall(bx_g.x, bx_g.y, 1, sw_g)
+	gs_g.world.set_wall(bx_g.x + 1, bx_g.y, 1, sw_g)
+	for k8 in range(40): gs_g.tick(1.0 / 30.0, Vector2(1, -0.5).normalized(), false)
+	var wt8_g: float = gp_g.walk_t
+	for k9 in range(20): gs_g.tick(1.0 / 30.0, Vector2(1, -0.5).normalized(), false)
+	ok(gp_g.walk_t - wt8_g < 0.05 and gp_g.anim == "s_idle", "pressed against a wall you stand still instead of walking on the spot (%s)" % gp_g.anim)
+	var flips_g := 0
+	var last_d_g: int = gp_g.dir8
+	for k10 in range(60):
+		var wob_g: float = sin(float(k10) * 1.7) * 0.08
+		var sdir_g := Vector2(cos(PI / 8.0 + wob_g), sin(PI / 8.0 + wob_g))        # held right on a direction boundary
+		gs_g.tick(1.0 / 30.0, sdir_g, false)
+		if gp_g.dir8 != last_d_g:
+			flips_g += 1
+			last_d_g = gp_g.dir8
+	ok(flips_g <= 1, "a stick held on a diagonal boundary does not make the figure flip back and forth (%d turns)" % flips_g)
+	ok(Iso.dir8_sticky(Iso.dir8_to_world(2).rotated(0.05), 2) == 2 and Iso.dir8_sticky(Iso.dir8_to_world(3), 2) == 3, "a clear turn still turns")
+	Sfx._make_buses()
+	var sfx_n_g := Sfx.new()
+	sfx_n_g._ready()
+	var have_steps_g := true
+	for nm_g in ["step", "step_wood", "step_grass", "step_gravel", "step_water"]:
+		for vv_g in range(3):
+			if not sfx_n_g._streams.has(nm_g + str(vv_g)): have_steps_g = false
+	ok(have_steps_g, "every surface has three footstep takes, so steps do not repeat identically")
+	var clean_g := true
+	for nm2_g in sfx_n_g._streams.keys():
+		var dat_g: PackedByteArray = (sfx_n_g._streams[nm2_g] as AudioStreamWAV).data
+		if absi(dat_g.decode_s16(0)) > 400 or absi(dat_g.decode_s16(dat_g.size() - 2)) > 400: clean_g = false
+	ok(clean_g and sfx_n_g._streams.size() > 30, "every one of the %d sounds starts and ends at silence, so none of them clicks" % sfx_n_g._streams.size())
+	ok(sfx_n_g._players.size() == 16 and sfx_n_g._started.size() == 16, "sixteen voices, each remembering when it started (so the oldest is the one cut off)")
+	sfx_n_g.queue_free()
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

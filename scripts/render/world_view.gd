@@ -357,11 +357,12 @@ func sync(dt: float) -> void:
 		prog = 1.0 - p.swing_t / p.swing_dur
 	var sy: float = 0.86 if (p.sneaking and p.alive and not p.sleeping) else 1.0
 	_pview.scale = Vector2(1.0, sy)
-	_pview.set_frame(p.anim, p.anim_t, p.dir8, prog, wl, p.hit_flash)
+	var pt: float = p.walk_t if (p.anim == "s_walk" or p.anim == "s_carry") else p.anim_t
+	_pview.set_frame(p.anim, pt, p.dir8, prog, wl, p.hit_flash)
 	_ghost.position = ps
 	_ghost.scale = _pview.scale
 	_ghost.look = p.look
-	_ghost.set_frame(p.anim, p.anim_t, p.dir8, prog, wl, 0.0)
+	_ghost.set_frame(p.anim, pt, p.dir8, prog, wl, 0.0)
 	_pview.visible = sim.vehicle == null and not p.hidden
 	_ghost.visible = sim.vehicle == null and not p.hidden
 	_sync_carry(p)
@@ -405,7 +406,7 @@ func sync(dt: float) -> void:
 			zp = clampf(z.anim_t / 0.45, 0.0, 0.99)
 		var sc: float = 1.12 if z.kind == 3 else 1.0
 		v.scale = Vector2(sc, sc * (0.78 if z.feeding else 1.0))
-		v.set_frame(anim, z.anim_t + z.id * 0.37, z.d8, zp, 0, z.flash)
+		v.set_frame(anim, (z.walk_t if anim == "z_walk" else z.anim_t) + z.id * 0.37, z.d8, zp, 0, z.flash)
 	for id in _zviews.keys():
 		var v2: EntityView = _zviews[id]
 		if v2.stamp != _stamp:
@@ -519,7 +520,7 @@ func _sync_npcs() -> void:
 		if n.swing > 0.0:
 			np = clampf(1.0 - n.swing / 0.4, 0.0, 0.99)
 		v.modulate = Color(1.0, 0.8, 0.8) if n.state == NpcSim.HOSTILE else Color.WHITE
-		v.set_frame(n.anim, n.anim_t + n.id * 0.41, n.d8, np, 2 if n.state == NpcSim.HOSTILE else 1, n.flash)
+		v.set_frame(n.anim, (n.walk_t if n.anim == "s_walk" else n.anim_t) + n.id * 0.41, n.d8, np, 2 if n.state == NpcSim.HOSTILE else 1, n.flash)
 	for id in _nviews.keys():
 		var v2: EntityView = _nviews[id]
 		if v2.stamp != _stamp:

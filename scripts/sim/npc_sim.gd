@@ -47,6 +47,7 @@ class Npc:
 	var gift := false
 	var anim := "s_idle"
 	var anim_t := 0.0
+	var walk_t := 0.0
 	var atk_cd := 0.0
 	var swing := 0.0
 	var path := PackedVector2Array()
@@ -282,8 +283,10 @@ func _go(n: Npc, target: Vector2, speed: float, dt: float) -> void:
 	var to: Vector2 = goal - n.pos
 	if to.length() > 0.05:
 		n.dir = to.normalized()
-		n.d8 = Iso.dir8(n.dir)
-		n.pos = w.move(n.pos, n.dir * minf(speed * dt, to.length()), 0.2)
+		n.d8 = Iso.dir8_sticky(n.dir, n.d8)
+		var np_n: Vector2 = w.move(n.pos, n.dir * minf(speed * dt, to.length()), 0.2)
+		n.walk_t += np_n.distance_to(n.pos) / (1.7 if speed > 3.5 else 1.2) * 6.0 / 11.0
+		n.pos = np_n
 		n.anim = "s_walk"
 
 func update(dt: float, dh: float) -> void:

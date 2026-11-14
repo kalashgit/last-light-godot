@@ -1992,7 +1992,7 @@ func _init() -> void:
 	p.hidden = false
 	p.sneaking = false
 	var slipped := false
-	for i_w in range(300):
+	for i_w in range(600):
 		p._step_t = 0.0
 		p.update(1.0 / 30.0, Vector2(1, 0), true)
 		if p.slow_t > 0.5:

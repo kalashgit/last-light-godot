@@ -98,6 +98,9 @@ var kills := 0
 var action: Dictionary = {}
 var moving := false
 var running := false
+var walk_t := 0.0                # animation clock for the gait: advances with distance, not time
+var _gait := 0.0                 # gait cycles walked (two footfalls each)
+var _spd := 0.0                  # smoothed ground speed, tiles/s
 var sneaking := false
 var sleeping := false
 var light_on := false
@@ -409,7 +412,7 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		var wd: Vector2 = Iso.screen_dir_to_world(move_screen)
 		if swing_t <= 0.0:
 			facing = wd
-			dir8 = Iso.dir8(facing)
+			dir8 = Iso.dir8_sticky(facing, dir8)
 		running = want_run and not sneaking and endurance > 4.0 and mag > 0.5
 		var sp: float = WALK
 		if running: sp = RUN + float(skill_level("sprinting")) * 0.08
@@ -422,8 +425,15 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		if cell != 0 and Defs.obj(Defs.o_id(cell)).has("slow"):
 			sp *= 0.7
 		var np: Vector2 = w.move(pos, wd * sp * dt, R)
-		moving = np.distance_squared_to(pos) > 0.0000001
+		var moved_d: float = np.distance_to(pos)
+		moving = moved_d > 0.0003
 		pos = np
+		# the gait follows the ground covered: a longer stride when running, a short one sneaking
+		var gait_old: float = _gait
+		_gait += moved_d / (1.7 if running else (0.85 if sneaking else 1.2))
+		walk_t = _gait * 6.0 / 11.0
+		_spd = lerpf(_spd, moved_d / maxf(dt, 0.001), minf(1.0, dt * 14.0))
+		var footfall: bool = floori(_gait * 2.0) != floori(gait_old * 2.0)
 		# noise + endurance
 		_step_t -= dt
 		if running:
@@ -433,7 +443,7 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 				_run_xp = 0.0
 				add_xp("fitness", 2.0)
 				add_xp("sprinting", 3.0)
-		if _step_t <= 0.0 and moving and running and sim.icy(floori(pos.x), floori(pos.y)) and randf() < 0.08 * (1.0 - skill_level("nimble") * 0.08):
+		if footfall and running and sim.icy(floori(pos.x), floori(pos.y)) and randf() < 0.08 * (1.0 - skill_level("nimble") * 0.08):
 			# feet go out from under you
 			slow_t = 1.2
 			cancel_action()
@@ -444,7 +454,7 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 				if randf() < 0.15:
 					add_wound(randi() % 2 + 9, "fracture" if randf() < 0.2 else "scratch", "a fall on the ice")
 			sim.say("You slip on the ice.", Color(0.8, 0.9, 1.0))
-		if _step_t <= 0.0 and moving:
+		if footfall:
 			_step_t = 0.32 if running else (0.7 if sneaking else 0.46)
 			noise_r = (9.0 if running else (1.4 - float(skill_level("sneaking")) * 0.1 if sneaking else 4.5)) * tmod("noise") * (1.0 - skill_level("lightfooted") * 0.05) * surface_noise()
 			if not running and randf() < 0.06 and sim.zombies.count_threats(pos, 12.0) > 0:
@@ -459,6 +469,7 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 	else:
 		running = false
 		noise_r = 0.0
+		_spd = 0.0                       # let go of the stick and you stop at once
 	if not running:
 		var regen: float = 3.2 if moving else 5.0
 		regen *= 1.0 + float(skill_level("fitness")) * 0.05
@@ -484,10 +495,10 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 	elif act_label.begins_with("Climbing"):
 		anim = "s_vault"
 	elif not carrying.is_empty() or not dragging.is_empty():
-		anim = "s_carry" if moving else "s_hold"
-	elif act_label == "Reloading" and not moving:
+		anim = "s_carry" if _spd > 0.3 else "s_hold"
+	elif act_label == "Reloading" and _spd <= 0.3:
 		anim = "s_reload"
-	elif moving:
+	elif _spd > 0.3:
 		anim = "s_walk"
 	elif not action.is_empty():
 		anim = "s_squat" if String(action["label"]).begins_with("Exercis") else "s_work"

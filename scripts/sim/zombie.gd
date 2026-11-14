@@ -38,6 +38,7 @@ var climb_to := Vector2.ZERO
 var look := [0, 0, 0, 0]  # skin, shirt, pants, hair palette indices
 var anim := "z_idle"
 var anim_t := 0.0
+var walk_t := 0.0         # gait clock: advances with distance covered
 var flash := 0.0
 var seen := false         # currently visible to the player (line of sight)
 var alpha := 0.0          # render fade

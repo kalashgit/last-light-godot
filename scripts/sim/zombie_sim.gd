@@ -692,10 +692,11 @@ func _move(z: Zombie, dt: float, near: bool) -> void:
 		return
 	var dv: Vector2 = to / dist
 	z.dir = z.dir.lerp(dv, minf(1.0, dt * 8.0)).normalized()
-	z.d8 = Iso.dir8(z.dir)
+	z.d8 = Iso.dir8_sticky(z.dir, z.d8)
 	var step: float = minf(sp * dt, dist)
 	var np: Vector2 = w.move(z.pos, dv * step, R)
 	var moved: float = np.distance_to(z.pos)
+	z.walk_t += moved / 1.0 * 6.0 / 7.0          # one shambling cycle per tile
 	z.pos = np
 	if moved < step * 0.3:
 		z.stuck_t += dt
