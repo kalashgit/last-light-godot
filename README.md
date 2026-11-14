@@ -75,7 +75,7 @@ GODOT=/path/to/godot tools/godot/run_tests.sh            # headless
 GODOT=/path/to/godot tools/godot/run_tests.sh --shots out # + rendered screenshots (needs xvfb-run)
 ```
 
-Import/parse, world generation, a 71-check gameplay simulation, 68 checks of the character / event / crafting mechanics, 106 cross-system integration checks (vehicles, fire, survivors, upper floors, coop, respawn, save recovery), a 36-check synthetic multi-touch test against the real scene, a boot test and a bot soak. Status per system: [docs/COVERAGE_MATRIX.md](docs/COVERAGE_MATRIX.md) and [docs/RELEASE_READINESS.md](docs/RELEASE_READINESS.md). All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
+Import/parse, world generation, a 71-check gameplay simulation, 68 checks of the character / event / crafting mechanics, 465 cross-system integration checks (vehicles, fire, survivors and settlements, your shelter, wildlife, crops, weather, power and water, the infected, documents, special sites, bridges, saves), a 36-check synthetic multi-touch test against the real scene, a boot test and a bot soak. Status per system: [docs/BIBLE_COVERAGE.md](docs/BIBLE_COVERAGE.md) (against the Gameplay & Mechanics Bible), [docs/COVERAGE_MATRIX.md](docs/COVERAGE_MATRIX.md) and [docs/RELEASE_READINESS.md](docs/RELEASE_READINESS.md). All pass on Godot 4.3 and 4.5. **None of this replaces playing it on the phone** — see [docs/checkpoints/IPHONE_CHECKLIST.md](docs/checkpoints/IPHONE_CHECKLIST.md).
 
 ## Originality
 
