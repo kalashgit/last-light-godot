@@ -1511,7 +1511,7 @@ func read_item(it: Dictionary) -> void:
 	if sim.daylight() < 0.25 and not light_on and not sim.near_fire(pos) and bld == 0:
 		sim.say("Too dark to read", Color(0.8, 0.8, 0.9))
 		return
-	if it["id"] == "note" or it["id"] == "survivor_note" or it["id"] == "diary" or it["id"] == "bulletin" or it["id"] == "local_map" or it["id"] == "lab_report":
+	if it["id"] == "note" or it["id"] == "survivor_note" or it["id"] == "diary" or it["id"] == "bulletin" or it["id"] == "local_map" or it["id"] == "lab_report" or Sim.DOC_IDS.has(it["id"]):
 		var note: Dictionary = it
 		start_action("Reading", 2.5, func(): sim.read_note(note))
 		return

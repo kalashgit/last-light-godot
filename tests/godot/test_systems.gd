@@ -879,17 +879,19 @@ func _init() -> void:
 	# mushrooms only fruit out of the sun
 	var mk3 := ft2 + Vector2i(0, 1)
 	fs2.world.set_obj(mk3.x, mk3.y, Defs.ocell(int(Farming.CROP_OBJ["oyster_mushroom"]), 0, 0))
-	fs2.world.set_ent(mk3.x, mk3.y, {"k": "crop", "t": "oyster_mushroom", "s": 0, "g": 0.0, "w": 90.0})
+	fs2.world.set_ent(mk3.x, mk3.y, {"k": "crop", "t": "oyster_mushroom", "s": 0, "g": 0.0, "w": 60.0})
 	fs2.weather["temp"] = 15.0
 	fs2.weather["rain"] = 0.0
 	fs2.hour = floorf(fs2.hour / 24.0) * 24.0 + 12.0
+	fs2.weather["cloud"] = 0.0
+	fs2.weather["fog"] = 0.0
 	var mc: Chunk = fs2.world.chunk_at(mk3.x, mk3.y)
 	fs2._sim_ents(mc, 2.0, false)
 	var g_day: float = float(fs2.world.ent(mk3.x, mk3.y)["g"])
 	fs2.hour = floorf(fs2.hour / 24.0) * 24.0 + 23.5
-	fs2.world.ent(mk3.x, mk3.y)["w"] = 90.0
+	fs2.world.ent(mk3.x, mk3.y)["w"] = 60.0
 	fs2._sim_ents(mc, 2.0, false)
-	ok(g_day == 0.0 and float(fs2.world.ent(mk3.x, mk3.y)["g"]) > 0.0, "mushrooms do not grow in the noon sun, only in the dark")
+	ok(g_day == 0.0 and float(fs2.world.ent(mk3.x, mk3.y)["g"]) > 0.0, "mushrooms do not grow in the noon sun, only in the dark (noon daylight %.2f, day growth %.2f)" % [fs2.daylight(), g_day])
 
 	print("== twenty kinds of wildlife")
 	ok(AnimalSim.SPECIES.size() >= 20, "%d wild species" % AnimalSim.SPECIES.size())
@@ -1102,6 +1104,56 @@ func _init() -> void:
 	ns2.npcs._needs(rcr, 0.01)
 	ok(rcr.recruit, "a disciplined recruit stays even when trust runs low")
 	ns2.npcs.list.clear()
+
+	print("== more documents and more events")
+	var ds2 := Sim.new(6767)
+	ds2.new_game("unemployed", [], "house")
+	quiet(ds2)
+	var dp: Player = ds2.player
+	var read_ok := true
+	for did in Sim.DOC_IDS:
+		var dd: Dictionary = Items.make(did, 1)
+		ds2.read_note(dd)
+		if String(dd.get("txt", "")) == "": read_ok = false
+	ok(read_ok, "all %d new document types can be read" % Sim.DOC_IDS.size())
+	var un0: float = dp.unhappy
+	dp.unhappy = 50.0
+	var ph: Dictionary = Items.make("family_photo", 1)
+	ds2.read_note(ph)
+	var un1: float = dp.unhappy
+	ds2.read_note(ph)
+	ok(un1 < 50.0 and dp.unhappy == un1, "a family photograph lifts the mood, once")
+	var ck0: float = float(dp.skills.get("cooking", 0.0))
+	ds2.read_note(Items.make("recipe_note", 1))
+	ok(float(dp.skills.get("cooking", 0.0)) > ck0, "a recipe card teaches a little cooking")
+	dp.markers.clear()
+	var il: Dictionary = Items.make("inventory_list", 1)
+	ds2.read_note(il)
+	ok(dp.markers.size() == 1 and ds2.pending_sites.has(Vector2i(int(il["mx"]), int(il["my"]))), "an inventory list marks a real cache")
+	ok(str(Loot.T["mailbox"]).contains("evac_flyer") and str(Loot.T["medical"]).contains("hospital_note"), "the documents are in the loot")
+	ds2.objectives.clear()
+	ok(ds2.world_event("evac_rumor") and ds2.objectives[0]["kind"] == "evac", "a rumoured evacuation point becomes an objective")
+	var ev: Dictionary = ds2.objectives[0]
+	dp.pos = Vector2(float(ev["x"]) + 2.0, float(ev["y"]))
+	ds2._check_objectives()
+	ok(ev["state"] == "done", "reaching it closes the objective")
+	dp.pos = Vector2(ds2.safe_pos)
+	ds2.world.stream(dp.pos, 3, 99)
+	var cv_ok: bool = ds2.world_event("convoy")
+	var truck := false
+	for ch in ds2.world.chunks.values():
+		for i in range(256):
+			if (ch.obj[i] & 1023) == Defs.O_TRUCK and Defs.o_part(ch.obj[i]) == 0 and ch.containers.has(i) and not (ch.containers[i] as Array).is_empty(): truck = true
+	ok(cv_ok and truck, "a wrecked convoy truck turns up with its cargo still aboard")
+	var bl_ok := false
+	for t in range(6):
+		if ds2.world_event("blockade"):
+			bl_ok = true
+			break
+	ok(bl_ok, "a road can be found blocked with sandbags")
+	var wf2: bool = ds2.world_event("warehouse_fire")
+	ok(not wf2 or not ds2.burning.is_empty(), "a warehouse nearby can catch fire (%s)" % ("it did" if wf2 else "none near this start"))
+	ds2.burning.clear()
 
 	print("== settings and save files")
 	Opts.vibrate = false

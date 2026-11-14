@@ -637,6 +637,56 @@ func _fill_document(doc: Dictionary) -> void:
 	var py: int = floori(player.pos.y)
 	var hv: int = Rng.h2(px, py, seed_v + 1301 + int(hour))
 	match String(doc["id"]):
+		"letter":
+			doc["txt"] = "A letter. " + LETTERS[hv % LETTERS.size()]
+		"family_photo":
+			doc["txt"] = "A photograph: a family on a beach, squinting into the sun. On the back, in pencil: 'Last summer. All of us.' You keep it."
+			if not doc.has("felt"):
+				doc["felt"] = 1
+				player.unhappy = maxf(0.0, player.unhappy - 15.0)
+				player.stress = maxf(0.0, player.stress - 10.0)
+		"recipe_note":
+			doc["txt"] = "A recipe card in tidy capitals: how to stretch a stew with what is left, and to salt meat so it keeps. You pick up a trick or two."
+			player.add_xp("cooking", 40.0)
+		"maintenance_log":
+			doc["txt"] = "A maintenance log for a standby generator: oil every 50 hours, never run it indoors, check the plugs when it stutters. Useful."
+			player.add_xp("mechanics", 30.0)
+			player.add_xp("electrical", 30.0)
+		"hospital_note":
+			doc["txt"] = "A note from the hospital. " + HOSPITAL_NOTES[hv % HOSPITAL_NOTES.size()]
+			player.add_xp("first_aid", 25.0)
+		"radio_transcript":
+			# a settlement on the air: where they are, and that they exist
+			var best_k = null
+			var bd := 1e9
+			for sk in factions.sites.keys():
+				var st: Dictionary = factions.sites[sk]
+				if st["fallen"]: continue
+				var d: float = Vector2(float(st["x"]), float(st["y"])).distance_to(player.pos)
+				if d < bd:
+					bd = d
+					best_k = sk
+			if best_k == null:
+				doc["txt"] = "A radio transcript: static, a man counting, then nothing. Whoever was transmitting stopped."
+			else:
+				var st2: Dictionary = factions.sites[best_k]
+				doc["txt"] = "A radio transcript: '...this is %s, we are %s of the old town, we have room, approach slowly with your hands where we can see them...'" % [st2["name"], compass(player.pos, Vector2(float(st2["x"]), float(st2["y"])))]
+				doc["mx"] = int(st2["x"])
+				doc["my"] = int(st2["y"])
+				doc["lab"] = String(st2["name"]) + " (radio)"
+		"inventory_list", "evac_flyer":
+			var a2: float = float(hv % 360) * PI / 180.0
+			var site2 := Vector2i(px + int(cos(a2) * float(50 + (hv >> 8) % 80)), py + int(sin(a2) * float(50 + (hv >> 8) % 80)))
+			if doc["id"] == "inventory_list":
+				doc["txt"] = "An inventory list: tinned food, water, medical, 'stored at the drop %s of town'. Someone meant to come back for it." % compass(player.pos, Vector2(site2))
+				doc["lab"] = "Cache (inventory list)"
+				if not pending_sites.has(site2): pending_sites[site2] = "supply"
+			else:
+				doc["txt"] = "EVACUATION — buses leave from the point %s of here at 0600 daily. Bring one bag. Pets cannot be accommodated." % compass(player.pos, Vector2(site2))
+				doc["lab"] = "Evacuation point (flyer)"
+				if not pending_sites.has(site2): pending_sites[site2] = "supply" if (hv >> 12) % 100 < 35 else "overrun"
+			doc["mx"] = site2.x
+			doc["my"] = site2.y
 		"lab_report":
 			doc["txt"] = "LAB REPORT, stamped RESTRICTED. " + LAB_NOTES[hv % LAB_NOTES.size()]
 		"diary":
@@ -769,7 +819,21 @@ const LAB_NOTES := [
 	"Night shift did not report. The east door was found open from the inside. If you are reading this, do not open the cold room.",
 	"Cold slows them. Below freezing they are sluggish and stiff. It is the only thing we have found that does.",
 ]
-const EVENTS := ["distress", "fleeing", "patrol", "horde", "wildfire", "crash"]
+const EVENTS := ["distress", "fleeing", "patrol", "horde", "wildfire", "crash", "convoy", "warehouse_fire", "blockade", "evac_rumor"]
+const DOC_IDS := ["letter", "recipe_note", "maintenance_log", "hospital_note", "radio_transcript", "inventory_list", "evac_flyer", "family_photo"]
+const LETTERS := [
+	"Dear Mum — they've closed the bridge. We're staying put. Don't come looking, the roads aren't safe. I love you. — K",
+	"To whoever finds this house: the back door sticks, the well water is good if you boil it, and the man next door is not who he was.",
+	"Ruth, I went for insulin. If I'm not back by dark, take the car and go to your sister's. Don't wait. Don't wait for me.",
+	"We buried Dad under the apple tree. Mia picked the flowers. I don't know how to explain any of this to her.",
+	"Rent's paid till the end of the month, ha. Sorry about the mess. Take what you need. — Flat 3",
+	"If you're reading this, we made it to the river. Or we didn't. Either way, leave the dog food. The dog's still out there.",
+]
+const HOSPITAL_NOTES := [
+	"Admissions note: bite to the forearm, no other injuries. Fever by evening. Restrained by midnight. Cleared bed 12 at 04:10.",
+	"Staff reminder: a bite is not a wound to be treated. Document, isolate, sedate. Do not tell the family it can be cleaned out.",
+	"Scratches only — monitor. Most go home. Some don't. We cannot yet tell which until the fever comes.",
+]
 var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
 var flooded: Dictionary = {}       # Vector2i tile -> ground it had before the water came up
 var _wet_h := 0.0                  # hours of heavy rain in a row
@@ -1025,6 +1089,74 @@ func world_event(kind: String) -> bool:
 						say("Smoke rises to the %s. Something out there has caught fire." % compass(p, fs), Color(1.0, 0.65, 0.4))
 						return true
 			return false
+		"convoy":
+			# a supply truck run off the road, its cargo still aboard
+			for attempt in range(20):
+				var cv: Vector2 = _open_spot(p, 24.0, 36.0, true)
+				if cv == Vector2.INF: return false
+				var ax: int = floori(cv.x)
+				var ay: int = floori(cv.y)
+				var free := true
+				for j in range(5):
+					for i in range(2):
+						if world.obj(ax + i, ay + j) != 0 or world.tile_blocked(ax + i, ay + j) or world.bld(ax + i, ay + j) != 0 or not world.is_loaded(ax + i, ay + j): free = false
+				if not free: continue
+				for j2 in range(5):
+					for i2 in range(2):
+						world.set_obj(ax + i2, ay + j2, Defs.ocell(Defs.O_TRUCK, 0, j2 * 2 + i2))
+				world.chunk_at(ax, ay).containers[World.idx(ax, ay)] = Loot.roll("military", "", rng, hour, 1.5)
+				world.chunk_at(ax, ay).touched = true
+				for k in range(rng.randi_range(1, 2)):
+					world.chunk_at(ax, ay).corpses.append({"x": ax + 2.5, "y": ay + 1.5 + k, "d": rng.randi() % 8, "l": [0, 2, 1, 1], "h": hour, "perm": 1, "loot": Loot.roll("corpse_armed", "", rng, hour, 1.0)})
+				add_marker(ax, ay, "Abandoned convoy")
+				say("Heavy engines on the road to the %s, a horn, a crash, then nothing. A convoy has come to grief." % compass(p, cv), Color(1.0, 0.75, 0.5))
+				noise(cv, 40.0)
+				return true
+			return false
+		"warehouse_fire":
+			var cands: Array = []
+			for c in world.chunks.values():
+				if absi(c.cx - (floori(p.x) >> 4)) > 3 or absi(c.cy - (floori(p.y) >> 4)) > 3: continue
+				for i3 in range(0, 256, 7):
+					var bt: String = c.btype.get(c.bld[i3], "")
+					if c.bld[i3] != 0 and (bt == "warehouse" or bt == "hardware" or bt == "grocery"):
+						cands.append(Vector2i(c.cx * 16 + (i3 & 15), c.cy * 16 + (i3 >> 4)))
+			if cands.is_empty(): return false
+			var ft: Vector2i = cands[rng.randi() % cands.size()]
+			if Vector2(ft).distance_to(p) < 10.0: return false
+			ignite(ft.x, ft.y, 3.0)
+			burning[ft] = maxf(float(burning.get(ft, 0.0)), 60.0)
+			noise(Vector2(ft), 30.0)
+			say("Black smoke over the rooftops to the %s. A warehouse is burning." % compass(p, Vector2(ft)), Color(1.0, 0.6, 0.4))
+			return true
+		"blockade":
+			for attempt2 in range(30):
+				var bs: Vector2 = _open_spot(p, 18.0, 32.0, true)
+				if bs == Vector2.INF: return false
+				var bx: int = floori(bs.x)
+				var by: int = floori(bs.y)
+				if world.ground(bx, by) != Defs.G_ASPHALT: continue
+				var laid := 0
+				for i4 in range(-3, 4):
+					if world.obj(bx + i4, by) == 0 and not world.tile_blocked(bx + i4, by) and world.bld(bx + i4, by) == 0:
+						world.set_obj(bx + i4, by, Defs.ocell(Defs.O_SANDBAG, 0, 0))
+						laid += 1
+				if laid < 4: continue
+				world.chunk_at(bx, by).corpses.append({"x": bx + 0.5, "y": by + 1.5, "d": 2, "l": [1, 3, 2, 2], "h": hour, "perm": 1, "loot": Loot.roll("corpse_armed", "", rng, hour, 1.0)})
+				add_marker(bx, by, "Road block")
+				say("Someone has blocked the road to the %s. Sandbags, and whoever held them." % compass(p, bs), Color(0.9, 0.8, 0.6))
+				return true
+			return false
+		"evac_rumor":
+			var a3: float = rng.randf() * TAU
+			var es := Vector2i(int(p.x + cos(a3) * rng.randf_range(70.0, 120.0)), int(p.y + sin(a3) * rng.randf_range(70.0, 120.0)))
+			if not pending_sites.has(es):
+				pending_sites[es] = "supply" if rng.randf() < 0.35 else "overrun"
+			add_marker(es.x, es.y, "Evacuation point (rumour)")
+			objectives.append({"kind": "evac", "x": es.x, "y": es.y, "state": "open", "due": hour + 96.0, "text": "Reach the evacuation point %s of here" % compass(p, Vector2(es))})
+			say("On the radio, broken up: '...evacuation... still running... %s of the...' It may be true." % compass(p, Vector2(es)), Color(0.9, 0.85, 0.6))
+			journal_add("A rumour of an evacuation point %s of here. Marked." % compass(p, Vector2(es)))
+			return true
 		"crash":
 			var cs: Vector2 = _open_spot(p, 20.0, 34.0, true)
 			if cs == Vector2.INF: return false
@@ -1051,6 +1183,13 @@ func _check_objectives() -> void:
 		if ob["state"] != "open": continue
 		var at := Vector2(float(ob["x"]) + 0.5, float(ob["y"]) + 0.5)
 		match String(ob["kind"]):
+			"evac":
+				if at.distance_to(player.pos) < 8.0:
+					ob["state"] = "done"
+					say("Nobody is waiting. Whatever happened here happened days ago.", Color(0.85, 0.8, 0.7))
+					journal_add("Reached the evacuation point. Nobody left to evacuate.")
+				elif hour > float(ob["due"]):
+					ob["state"] = "failed"
 			"distress":
 				if not ob["spawned"]:
 					if hour > float(ob["due"]):
