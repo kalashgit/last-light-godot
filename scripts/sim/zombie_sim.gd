@@ -62,7 +62,9 @@ const ROLE_LOOT := {"police": [["ammo_9mm", 0.35, 4, 9], ["pistol", 0.06, 1, 1],
 	"medic": [["bandage", 0.45, 1, 2], ["painkillers", 0.25, 1, 1], ["disinfectant", 0.15, 1, 1], ["suture_kit", 0.06, 1, 1]],
 	"construction": [["hammer", 0.15, 1, 1], ["nails", 0.3, 5, 15], ["duct_tape", 0.15, 1, 1]],
 	"military": [["ammo_9mm", 0.4, 6, 14], ["shells", 0.2, 2, 6], ["bandage", 0.3, 1, 2], ["shotgun", 0.04, 1, 1]],
-	"civilian": [["money", 0.25, 1, 20], ["granola_bar", 0.06, 1, 1], ["lighter", 0.05, 1, 1]]}
+	"civilian": [["money", 0.25, 1, 20], ["granola_bar", 0.06, 1, 1], ["lighter", 0.05, 1, 1]],
+	"prisoner": [["cigarettes", 0.2, 1, 1], ["lighter", 0.1, 1, 1]],
+	"hazmat": [["gas_mask", 0.3, 1, 1], ["lab_report", 0.15, 1, 1], ["disinfectant", 0.15, 1, 1]]}
 
 ## who someone was depends on where they fell
 func _role_for(pos: Vector2) -> String:
@@ -74,6 +76,9 @@ func _role_for(pos: Vector2) -> String:
 		"clinic", "hospital": return "medic" if r < 0.6 else "civilian"
 		"warehouse", "hardware": return "construction" if r < 0.5 else "civilian"
 		"firestation": return "burned" if r < 0.3 else ("construction" if r < 0.5 else "civilian")
+		"prison": return "prisoner" if r < 0.7 else ("police" if r < 0.9 else "civilian")
+		"lab": return "hazmat" if r < 0.55 else ("medic" if r < 0.75 else "civilian")
+		"bunker": return "military" if r < 0.8 else "civilian"
 	for dy in range(-5, 6):
 		for dx in range(-5, 6):
 			var oid: int = Defs.o_id(w.obj(floori(pos.x) + dx, floori(pos.y) + dy))
@@ -113,6 +118,9 @@ func _apply_role(z: Zombie, role: String) -> void:
 			z.hp *= 0.9
 		"decayed":
 			z.hp *= 0.6
+			z.speed *= 0.85
+		"hazmat":
+			z.armor = 0.55                       # a sealed suit: teeth and blades slide off it
 			z.speed *= 0.85
 	# what they had on them when they turned
 	if z.loot.is_empty():
@@ -521,6 +529,13 @@ func _update_z(z: Zombie, dt: float, sr: float, near: bool) -> void:
 			if near:
 				sim.emit_fx("groan", z.pos)
 
+## below freezing, out in the open, they stiffen and slow (indoors, in the warm, they do not)
+func cold_factor(p: Vector2) -> float:
+	var t: float = float(sim.weather.get("temp", 10.0))
+	if t >= 0.0 or sim.world.bld(floori(p.x), floori(p.y)) != 0:
+		return 1.0
+	return clampf(1.0 + t * 0.025, 0.6, 1.0)
+
 func _sees_player(z: Zombie, sr: float) -> bool:
 	var p: Player = sim.player
 	if not p.alive:
@@ -652,7 +667,7 @@ func _move(z: Zombie, dt: float, near: bool) -> void:
 	if z.feeding and z.state <= Zombie.WANDER:
 		return
 	var w: World = sim.world
-	var sp: float = z.speed * (0.45 if z.state == Zombie.WANDER else (0.8 if z.state == Zombie.INVESTIGATE else 1.0))
+	var sp: float = z.speed * (0.45 if z.state == Zombie.WANDER else (0.8 if z.state == Zombie.INVESTIGATE else 1.0)) * cold_factor(z.pos)
 	var target: Vector2 = z.goal
 	while z.path_i < z.path.size() and z.pos.distance_to(z.path[z.path_i]) < 0.4:
 		z.path_i += 1

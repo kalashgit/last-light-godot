@@ -84,6 +84,13 @@ func _draw() -> void:
 				cols[0] = (cols[0] as Color).lerp(Color("8aa0a8"), 0.5)
 			"decayed":
 				cols[0] = (cols[0] as Color).lerp(Color("7a7058"), 0.5)
+			"prisoner":
+				cols[1] = Color("d8702a")
+				cols[2] = Color("c8662a")
+			"hazmat":
+				cols[1] = Color("d8c83a")
+				cols[2] = Color("d8c83a")
+				cols[3] = Color("2a2a2a")
 		cols[1] = (cols[1] as Color).lerp(Color(0.45, 0.45, 0.38), 0.45)
 		cols[2] = (cols[2] as Color).lerp(Color(0.35, 0.34, 0.3), 0.4)
 	for i in range(5):

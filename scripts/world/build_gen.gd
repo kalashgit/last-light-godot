@@ -338,6 +338,9 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 	if kind == "warehouse" or kind == "firestation":
 		b.ext_mat = D.WM_METAL if kind == "warehouse" else D.WM_BRICK_RED
 		apron = 3
+	if kind == "prison" or kind == "bunker" or kind == "lab":
+		b.ext_mat = D.WM_CONCRETE
+		apron = 3 if kind != "bunker" else 4
 	var x0 := 1
 	var x1: int = b.cw - 1
 	var y1: int = b.ch - apron
@@ -348,11 +351,15 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		x1 = mini(b.cw - 1, x0 + 10)
 	var y0: int = y1 - depth
 	var back_d: int = 0
-	if depth >= 9 and kind != "warehouse":
+	if kind == "bunker":
+		depth = mini(depth, 6)
+		y0 = y1 - depth
+	if depth >= 9 and kind != "warehouse" and kind != "bunker":
 		back_d = clampi(depth / 3, 3, 5)
 	var main_floor: int = D.G_LINO
 	match kind:
-		"hardware", "warehouse", "firestation", "gunstore": main_floor = D.G_CONCRETE
+		"hardware", "warehouse", "firestation", "gunstore", "prison", "bunker": main_floor = D.G_CONCRETE
+		"lab": main_floor = D.G_TILE
 		"bar", "bookstore", "diner": main_floor = D.G_WOOD_DARK
 		"clothing", "office": main_floor = D.G_CARPET_BLUE
 		"clinic", "pharmacy": main_floor = D.G_TILE
@@ -369,6 +376,8 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		"office": back_types = ["office", "office", "bathroom"]
 		"grocery", "hardware": back_types = ["storage", "office"]
 		"firestation": back_types = ["bunk", "storage"]
+		"prison": back_types = ["cell", "cell", "cell", "cell", "cell", "office"]
+		"lab": back_types = ["lab", "lab", "office"]
 	if back_d > 0:
 		var nb: int = mini(back_types.size(), maxi(1, (x1 - x0) / 4))
 		var bx: int = x0
@@ -386,6 +395,8 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 	var front_lock: float = 0.3
 	if kind == "police" or kind == "gunstore":
 		front_lock = 0.7
+	if kind == "prison" or kind == "lab" or kind == "bunker":
+		front_lock = 0.9
 	var door_out: Vector2i = b.exterior_door(0, 2, rng.randf() < front_lock)
 	if kind == "warehouse" or kind == "firestation" or kind == "grocery":
 		b.exterior_door(0, 2, rng.randf() < 0.5)
@@ -393,7 +404,8 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		b.exterior_door(b.rooms.size() - 1, 0, rng.randf() < 0.6)
 	else:
 		b.exterior_door(0, 0, rng.randf() < 0.6)
-	b.windows(2 if kind != "warehouse" and kind != "gunstore" and kind != "police" else 5, rng.randi() % 2)
+	if kind != "bunker":
+		b.windows(2 if kind != "warehouse" and kind != "gunstore" and kind != "police" and kind != "prison" and kind != "lab" else 5, rng.randi() % 2)
 	b.set_floor(Rect2i(0, y1, b.cw, apron), D.G_CONCRETE)
 	# ---- main room
 	match kind:
@@ -459,6 +471,43 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 			_many(b, 0, D.O_FILING, 4)
 			_many(b, 0, D.O_PLANT, 2)
 			_many(b, 0, D.O_VENDING, 1)
+		"prison":
+			# the mess hall in front, the cells behind: a cot, a toilet and whoever was locked in
+			_tables(b, 0, 4)
+			_many(b, 0, D.O_LOCKER, 3)
+			for ri in range(1, b.rooms.size()):
+				if b.rooms[ri]["type"] == "cell":
+					b.place_free(ri, D.O_BED, 0, 0, 12)
+					b.place_free(ri, D.O_TOILET, 0, 0, 12)
+					var rr: Rect2i = b.rooms[ri]["r"]
+					b.zspawn_c.append(rr.position + rr.size / 2)
+				elif b.rooms[ri]["type"] == "office":
+					_many(b, ri, D.O_DESK, 2)
+					_many(b, ri, D.O_LOCKER, 2)
+			for k in range(rng.randi_range(4, 7)):
+				b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(y0 + 2, y1 - 2)))
+		"lab":
+			# benches, cabinets and the people in suits who did not get out
+			_many(b, 0, D.O_DESK, 5)
+			_many(b, 0, D.O_MED_CABINET, 3)
+			_many(b, 0, D.O_LOCKER, 2)
+			for ri2 in range(1, b.rooms.size()):
+				_many(b, ri2, D.O_DESK if b.rooms[ri2]["type"] != "lab" else D.O_MED_CABINET, 2)
+			for k3 in range(rng.randi_range(3, 6)):
+				b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(y0 + 2, y1 - 2)))
+		"bunker":
+			# a concrete box with a hatch to the shelter below; supplies stacked by the door
+			b.place_free(0, D.O_MIL_CRATE, 0, 0, 12)
+			b.place_free(0, D.O_MIL_CRATE, 0, 0, 12)
+			b.place_free(0, D.O_BED, 0, 0, 12)
+			var hc: Vector2i = b.place_free(0, D.O_HATCH, 0, 0, 12)
+			if hc.x >= 0:
+				b.hatch_c = hc
+			for u2 in range(2, b.cw - 2):
+				if u2 < b.cw / 2 - 1 or u2 > b.cw / 2 + 1:
+					b.put_yard(D.O_SANDBAG, u2, b.ch - 2, 0)
+			for k4 in range(rng.randi_range(1, 3)):
+				b.corpse_c.append([Vector2i(rng.randi_range(2, b.cw - 3), b.ch - 3), "corpse_armed"])
 		"warehouse":
 			# a third of the industrial lots keep the district's substation out in the yard
 			if rng.randf() < 0.35:

@@ -95,6 +95,8 @@ static func _static_init() -> void:
 		["kitchen_knife", 0.6, 1, 1], ["ammo_9mm", 0.6, 2, 8], ["chocolate", 1.5, 1, 1], ["rag", 3, 1, 2], ["tote_bag", 0.6, 1, 1], ["jacket", 0.8, 1, 1], ["water_bottle", 1, 1, 1]]}
 	T["stash"] = {"rolls": [5, 8], "items": [["canned_beans", 8, 2, 5], ["canned_soup", 8, 2, 5], ["water_bottle", 8, 2, 4], ["bandage", 6, 2, 4], ["nails", 6, 20, 60], ["plank", 5, 2, 5],
 		["ammo_9mm", 4, 8, 24], ["shells", 3, 4, 12], ["battery", 4, 2, 4], ["painkillers", 4, 1, 2], ["antibiotics", 2, 1, 1], ["hammer", 3, 1, 1], ["rice", 4, 1, 2], ["candle", 4, 2, 4], ["jerky", 4, 1, 3], ["duct_tape", 3, 1, 2]]}
+	T["lab"] = {"rolls": [1, 3], "items": [["lab_report", 6, 1, 1], ["antibiotics", 4, 1, 2], ["disinfectant", 5, 1, 2], ["gas_mask", 3, 1, 1], ["dust_mask", 5, 1, 2], ["bandage", 4, 1, 3], ["battery", 3, 1, 2], ["notebook", 2, 1, 1]]}
+	T["prison"] = {"rolls": [0, 2], "items": [["cigarettes", 6, 1, 2], ["lighter", 3, 1, 1], ["novel", 3, 1, 1], ["kitchen_knife", 2, 1, 1], ["money", 3, 1, 10]]}
 	T["cellar"] = {"rolls": [1, 4], "items": [["preserves", 9, 1, 4], ["pickles", 8, 1, 4], ["whiskey", 4, 1, 1], ["beer", 4, 2, 6], ["canned_peaches", 5, 1, 3], ["potato", 4, 2, 6], ["candle", 5, 1, 3],
 		["plank", 4, 1, 4], ["nails", 5, 10, 40], ["charcoal", 3, 1, 1], ["glue", 3, 1, 1], ["rope", 3, 1, 1], ["tarp", 2, 1, 1], ["gas_can", 1.5, 1, 1], ["generator_item", 0.4, 1, 1], ["hunting_knife", 1, 1, 1], ["sleeping_pills", 1.5, 1, 1]]}
 	T["corpse_survivor"] = {"rolls": [2, 4], "must": [["backpack", 1, 1]], "items": [["diary", 3, 1, 1], ["bulletin", 3, 1, 1], ["water_bottle", 6, 1, 2], ["survivor_note", 5, 1, 1], ["pencil", 2, 1, 1], ["canned_beans", 6, 1, 3], ["granola_bar", 5, 1, 3], ["bandage", 5, 1, 3], ["flashlight", 4, 1, 1],
@@ -105,6 +107,9 @@ static func _static_init() -> void:
 	OVERRIDE["pharmacy"] = {"store_food": "store_pharmacy", "crate": "medical", "warehouse": "medical", "boxes": "store_pharmacy"}
 	OVERRIDE["hardware"] = {"store_food": "store_hardware", "crate": "tools", "warehouse": "tools"}
 	OVERRIDE["bookstore"] = {"bookshelf": "store_books"}
+	OVERRIDE["lab"] = {"desk": "lab", "locker": "lab", "medical": "medical", "office": "lab"}
+	OVERRIDE["prison"] = {"locker": "locker_police", "desk": "office", "bed": "prison", "nightstand": "prison"}
+	OVERRIDE["bunker"] = {"bed": "military", "crate": "military"}
 	OVERRIDE["gas"] = {"store_food": "store_gas"}
 	OVERRIDE["police"] = {"locker": "locker_police", "crate": "guns"}
 	OVERRIDE["firestation"] = {"locker": "locker_fire"}

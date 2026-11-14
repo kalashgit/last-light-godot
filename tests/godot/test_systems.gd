@@ -789,6 +789,58 @@ func _init() -> void:
 	ok(as_.factions.relocate(fk) == Vector2i(-99999, -99999) and not as_.factions.sites[fk]["fallen"], "with nowhere to go, they stay and starve")
 	as_.npcs.list.clear()
 
+	print("== prisons, bunkers, laboratories")
+	for kind in ["prison", "lab", "bunker"]:
+		var plan_k = BuildGen.gen(kind, {"prison": 34, "lab": 26, "bunker": 13}[kind], {"prison": 28, "lab": 22, "bunker": 13}[kind], 0, 4242, 1)
+		var cntk: Dictionary = {}
+		for cell in plan_k.obj:
+			var oid: int = Defs.o_id(cell)
+			if oid != 0 and Defs.o_part(cell) == 0: cntk[oid] = int(cntk.get(oid, 0)) + 1
+		var inside_n := 0
+		for v in plan_k.inside: inside_n += int(v != 0)
+		match kind:
+			"prison": ok(int(cntk.get(Defs.O_BED, 0)) >= 4 and int(cntk.get(Defs.O_TOILET, 0)) >= 4 and plan_k.btype == "prison", "a prison has cells, each with a cot and a toilet (%d, %d)" % [int(cntk.get(Defs.O_BED, 0)), int(cntk.get(Defs.O_TOILET, 0))])
+			"lab": ok(int(cntk.get(Defs.O_MED_CABINET, 0)) >= 3 and int(cntk.get(Defs.O_DESK, 0)) >= 3 and plan_k.btype == "lab", "a laboratory has benches and cabinets")
+			"bunker": ok(int(cntk.get(Defs.O_MIL_CRATE, 0)) >= 1 and int(cntk.get(Defs.O_HATCH, 0)) == 1 and int(cntk.get(Defs.O_SANDBAG, 0)) >= 4, "a bunker has military crates, sandbags and a hatch down")
+		ok(inside_n > 20, "%s is a real building (%d tiles indoors)" % [kind, inside_n])
+	ok(Loot.T.has("lab") and str(Loot.T["lab"]).contains("lab_report") and Loot.OVERRIDE.has("prison"), "each has its own loot")
+	var rs := Sim.new(1212)
+	rs.new_game("unemployed", [], "house")
+	quiet(rs)
+	var roles2: Dictionary = {}
+	var lc := rs.world.chunk_at(floori(rs.player.pos.x), floori(rs.player.pos.y))
+	var saved_bt: Dictionary = lc.btype.duplicate()
+	var uid0: int = rs.world.bld(floori(rs.player.pos.x), floori(rs.player.pos.y))
+	if uid0 != 0:
+		lc.btype[uid0] = "prison"
+		for i7 in range(60): roles2[rs.zombies._role_for(rs.player.pos)] = int(roles2.get(rs.zombies._role_for(rs.player.pos), 0)) + 1
+		ok(int(roles2.get("prisoner", 0)) > 20, "the infected in a prison were mostly prisoners (%s)" % str(roles2))
+		lc.btype[uid0] = "lab"
+		roles2 = {}
+		for i8 in range(60): roles2[rs.zombies._role_for(rs.player.pos)] = int(roles2.get(rs.zombies._role_for(rs.player.pos), 0)) + 1
+		ok(int(roles2.get("hazmat", 0)) > 15, "in a lab, staff in sealed suits (%s)" % str(roles2))
+		lc.btype = saved_bt
+	else:
+		ok(false, "start position is indoors for the role test")
+	var hzm: Zombie = rs.zombies.spawn(rs.player.pos + Vector2(3, 0), 0)
+	rs.zombies._apply_role(hzm, "hazmat")
+	var cv2: Zombie = rs.zombies.spawn(rs.player.pos + Vector2(4, 0), 0)
+	cv2.role = "civilian"
+	cv2.armor = 1.0
+	hzm.hp = 100.0
+	cv2.hp = 100.0
+	rs.zombies.damage(hzm, 40.0, rs.player.pos, 0.0, false, false)
+	rs.zombies.damage(cv2, 40.0, rs.player.pos, 0.0, false, false)
+	ok(hzm.hp > cv2.hp + 10.0, "a sealed suit turns much of a blow (%.0f vs %.0f)" % [hzm.hp, cv2.hp])
+	rs.zombies.list.clear()
+	var rep2: Dictionary = Items.make("lab_report", 1)
+	rs.read_note(rep2)
+	ok(String(rep2.get("txt", "")).begins_with("LAB REPORT"), "lab reports can be read")
+	rs.weather["temp"] = -15.0
+	var cold_out: float = rs.zombies.cold_factor(Vector2(-99999, -99999))
+	rs.weather["temp"] = 15.0
+	ok(cold_out < 0.8 and rs.zombies.cold_factor(Vector2(-99999, -99999)) == 1.0, "as the reports say, hard frost slows the infected outdoors (x%.2f)" % cold_out)
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

@@ -285,7 +285,7 @@ func _plan_pois(R: Dictionary, rng: RandomNumberGenerator) -> void:
 	for i in range(n * 3):
 		if placed.size() >= n:
 			break
-		var kinds: Array = ["farm", "farm", "cabin", "camp", "gas", "house", "house", "warehouse", "cabin", "diner", "checkpoint", "quarantine"]
+		var kinds: Array = ["farm", "farm", "cabin", "camp", "gas", "house", "house", "warehouse", "cabin", "diner", "checkpoint", "quarantine", "prison", "bunker", "lab"]
 		var k: String = kinds[rng.randi() % kinds.size()]
 		var w := 16
 		var h := 20
@@ -314,6 +314,15 @@ func _plan_pois(R: Dictionary, rng: RandomNumberGenerator) -> void:
 			"quarantine":
 				w = 28
 				h = 26
+			"prison":
+				w = 34
+				h = 28
+			"bunker":
+				w = 13
+				h = 13
+			"lab":
+				w = 26
+				h = 22
 		var along_x: bool = rng.randf() < 0.5
 		var side: int = 1 if rng.randf() < 0.5 else -1
 		var lr: Rect2i

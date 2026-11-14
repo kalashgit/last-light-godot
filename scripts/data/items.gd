@@ -176,6 +176,7 @@ static func _static_init() -> void:
 	_i("mre", "Ration Pack", "food", 0.5, ["bag", "6a7a4a", "3a4a2a"], {"hunger": 34, "kcal": 1200, "protein": 30})
 	_i("dust_mask", "Dust Mask", "clothing", 0.05, ["rag", "e8e8e0", "b0b0a8"], {"wear": {"slot": "face", "parts": [], "warm": 0, "def": 0.0, "smoke": 0.45, "stench": 0.6}})
 	_i("gas_mask", "Gas Mask", "clothing", 0.9, ["cap", "3a4030", "1a1a1a"], {"wear": {"slot": "face", "parts": [], "warm": 1, "def": 0.0, "smoke": 0.9, "stench": 1.0, "fumes": 0.85, "heavy": 1}})
+	_i("lab_report", "Lab Report", "misc", 0.1, ["book", "e8e8e0", "3a6a9a"], {"read": 1})
 	_i("car_keys", "Car Keys", "tool", 0.1, ["key", "c8c8c8", "3a3a3a"], {"car_keys": 1})
 	_i("canteen", "Canteen", "drink", 0.6, ["bottle", "5a6a3a", "c0c0a0"], {"thirst": 20, "uses": 10, "maxuses": 10, "water": 1})
 	_i("kevlar_vest", "Kevlar Vest", "clothing", 2.8, ["jacket", "3a4030", "20241a"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 3, "def": 0.85, "heavy": 2}})

@@ -637,6 +637,8 @@ func _fill_document(doc: Dictionary) -> void:
 	var py: int = floori(player.pos.y)
 	var hv: int = Rng.h2(px, py, seed_v + 1301 + int(hour))
 	match String(doc["id"]):
+		"lab_report":
+			doc["txt"] = "LAB REPORT, stamped RESTRICTED. " + LAB_NOTES[hv % LAB_NOTES.size()]
 		"diary":
 			doc["txt"] = "Someone's diary. " + DIARY[hv % DIARY.size()] + " " + DIARY[(hv >> 5) % DIARY.size()]
 			if (hv >> 9) % 100 < 50:
@@ -759,6 +761,14 @@ var objectives: Array = []        # {"text", "x", "y", "state", "due", "kind"}
 var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
 var _trader_h := 60.0
 var _event_h := 30.0               # game hours until the world throws something at you
+const LAB_NOTES := [
+	"Sample 14 shows full motor recovery forty minutes after cardiac arrest. Cognition: none. Aggression: total. Recommend we stop calling them patients.",
+	"Transmission is by fluid exchange only — saliva into blood. No airborne vector. Every bite we have recorded has been fatal. Every one.",
+	"The subjects track sound first, then movement, then light. In the dark, a dropped clipboard was enough to bring three to the glass.",
+	"Prophylactic antibiotics delay nothing. Fever at 6-18 hours, death within three days. We are documenting, not treating.",
+	"Night shift did not report. The east door was found open from the inside. If you are reading this, do not open the cold room.",
+	"Cold slows them. Below freezing they are sluggish and stiff. It is the only thing we have found that does.",
+]
 const EVENTS := ["distress", "fleeing", "patrol", "horde", "wildfire", "crash"]
 var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
 var flooded: Dictionary = {}       # Vector2i tile -> ground it had before the water came up
