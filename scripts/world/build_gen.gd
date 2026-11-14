@@ -3,7 +3,8 @@ extends RefCounted
 ## Procedural buildings: floor plans, doors, windows, furniture and yards for every lot type.
 
 const SHOP_KINDS := ["grocery", "pharmacy", "hardware", "clothing", "bookstore", "diner", "bar", "gas", "police",
-	"clinic", "gunstore", "office", "warehouse", "school", "firestation"]
+	"clinic", "gunstore", "office", "warehouse", "school", "firestation",
+	"bakery", "butcher", "electronics", "bank", "motel", "cafe", "restaurant", "library", "church", "post_office", "laundromat", "cinema", "auto_parts", "mechanic", "storage_units", "community_center", "bus_station", "sports_center", "sawmill", "hospital", "supermarket", "factory", "town_hall", "apartment", "school_dorm"]
 
 static func gen(kind: String, w: int, h: int, facing: int, seed_v: int, bld_id: int) -> LotBuilder.LotPlan:
 	var rng: RandomNumberGenerator = Rng.make(seed_v)
@@ -363,6 +364,31 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		"bar", "bookstore", "diner": main_floor = D.G_WOOD_DARK
 		"clothing", "office": main_floor = D.G_CARPET_BLUE
 		"clinic", "pharmacy": main_floor = D.G_TILE
+		"bakery": main_floor = D.G_TILE
+		"butcher": main_floor = D.G_TILE
+		"electronics": main_floor = D.G_LINO
+		"bank": main_floor = D.G_CARPET_BLUE
+		"motel": main_floor = D.G_CARPET_BEIGE
+		"cafe": main_floor = D.G_WOOD_DARK
+		"restaurant": main_floor = D.G_WOOD_DARK
+		"library": main_floor = D.G_CARPET_BLUE
+		"church": main_floor = D.G_WOOD_DARK
+		"post_office": main_floor = D.G_LINO
+		"laundromat": main_floor = D.G_TILE
+		"cinema": main_floor = D.G_CARPET_RED
+		"auto_parts": main_floor = D.G_CONCRETE
+		"mechanic": main_floor = D.G_CONCRETE
+		"storage_units": main_floor = D.G_CONCRETE
+		"community_center": main_floor = D.G_LINO
+		"bus_station": main_floor = D.G_LINO
+		"sports_center": main_floor = D.G_LINO
+		"sawmill": main_floor = D.G_CONCRETE
+		"hospital": main_floor = D.G_TILE
+		"supermarket": main_floor = D.G_LINO
+		"factory": main_floor = D.G_CONCRETE
+		"town_hall": main_floor = D.G_CARPET_BLUE
+		"apartment": main_floor = D.G_CARPET_BEIGE
+		"school_dorm": main_floor = D.G_CARPET_BLUE
 	var wm: int = _pick(rng, [D.WM_PLASTER_CREAM, D.WM_PLASTER_GREY, D.WM_PLASTER_TAN])
 	if kind == "warehouse":
 		wm = D.WM_METAL
@@ -376,6 +402,31 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 		"office": back_types = ["office", "office", "bathroom"]
 		"grocery", "hardware": back_types = ["storage", "office"]
 		"firestation": back_types = ["bunk", "storage"]
+		"bakery": back_types = ["kitchen", "storage"]
+		"butcher": back_types = ["storage"]
+		"electronics": back_types = ["storage", "office"]
+		"bank": back_types = ["office", "storage"]
+		"motel": back_types = ["bunk", "bunk", "bunk", "bathroom"]
+		"cafe": back_types = ["kitchen", "storage"]
+		"restaurant": back_types = ["kitchen", "kitchen", "storage"]
+		"library": back_types = ["office", "storage"]
+		"church": back_types = ["office", "storage"]
+		"post_office": back_types = ["storage", "office"]
+		"laundromat": back_types = ["storage"]
+		"cinema": back_types = ["storage", "office"]
+		"auto_parts": back_types = ["storage"]
+		"mechanic": back_types = ["office", "storage"]
+		"storage_units": back_types = ["storage", "storage", "storage", "storage"]
+		"community_center": back_types = ["office", "kitchen", "bathroom"]
+		"bus_station": back_types = ["office", "bathroom"]
+		"sports_center": back_types = ["storage", "bathroom"]
+		"sawmill": back_types = ["storage"]
+		"hospital": back_types = ["ward", "ward", "ward", "office"]
+		"supermarket": back_types = ["storage", "storage", "office"]
+		"factory": back_types = ["storage", "office"]
+		"town_hall": back_types = ["office", "office", "office"]
+		"apartment": back_types = ["bunk", "bunk", "kitchen", "bathroom"]
+		"school_dorm": back_types = ["bunk", "bunk", "bunk", "bathroom"]
 		"prison": back_types = ["cell", "cell", "cell", "cell", "cell", "office"]
 		"lab": back_types = ["lab", "lab", "office"]
 	if back_d > 0:
@@ -419,6 +470,117 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 			if rng.randf() < 0.3: _park_any(b, Defs.O_DELIVERY)
 	# ---- main room
 	match kind:
+		"bakery":
+			_many(b, 0, D.O_STORE_COUNTER, 2)
+			_many(b, 0, D.O_STORE_SHELF, 4)
+			_many(b, 0, D.O_STOVE, 2)
+			_many(b, 0, D.O_COUNTER, 3)
+		"butcher":
+			_many(b, 0, D.O_STORE_COUNTER, 2)
+			_many(b, 0, D.O_FREEZER, 4)
+			_many(b, 0, D.O_COUNTER, 3)
+		"electronics":
+			_many(b, 0, D.O_STORE_COUNTER, 2)
+			_many(b, 0, D.O_STORE_SHELF, 6)
+			_many(b, 0, D.O_TV, 3)
+			_rows(b, 0, D.O_STORE_SHELF)
+		"bank":
+			_many(b, 0, D.O_STORE_COUNTER, 3)
+			_many(b, 0, D.O_DESK, 3)
+			_many(b, 0, D.O_FILING, 4)
+			_many(b, 0, D.O_CHAIR, 4)
+		"motel":
+			_many(b, 0, D.O_STORE_COUNTER, 1)
+			_many(b, 0, D.O_VENDING, 2)
+			_many(b, 0, D.O_SOFA, 1)
+		"cafe":
+			_many(b, 0, D.O_BAR_COUNTER, 3)
+			_many(b, 0, D.O_STORE_SHELF, 2)
+			_tables(b, 0, 6)
+		"restaurant":
+			_many(b, 0, D.O_BAR_COUNTER, 2)
+			_many(b, 0, D.O_COUNTER, 3)
+			_many(b, 0, D.O_FREEZER, 2)
+			_tables(b, 0, 9)
+		"library":
+			_many(b, 0, D.O_BOOKSHELF, 10)
+			_many(b, 0, D.O_DESK, 3)
+			_many(b, 0, D.O_ARMCHAIR, 3)
+			_rows(b, 0, D.O_BOOKSHELF)
+		"church":
+			_many(b, 0, D.O_BENCH, 8)
+			_many(b, 0, D.O_TABLE, 1)
+			_many(b, 0, D.O_PLANT, 2)
+		"post_office":
+			_many(b, 0, D.O_STORE_COUNTER, 2)
+			_many(b, 0, D.O_BOXES, 6)
+			_many(b, 0, D.O_FILING, 2)
+		"laundromat":
+			_many(b, 0, D.O_WASHER, 8)
+			_many(b, 0, D.O_CHAIR, 4)
+			_many(b, 0, D.O_VENDING, 1)
+		"cinema":
+			_many(b, 0, D.O_STORE_COUNTER, 2)
+			_many(b, 0, D.O_VENDING, 2)
+			_many(b, 0, D.O_BENCH, 8)
+		"auto_parts":
+			_many(b, 0, D.O_STORE_COUNTER, 1)
+			_many(b, 0, D.O_TOOL_SHELF, 6)
+			_many(b, 0, D.O_METAL_SHELF, 2)
+			_rows(b, 0, D.O_TOOL_SHELF)
+		"mechanic":
+			_many(b, 0, D.O_WORKBENCH, 2)
+			_many(b, 0, D.O_TOOL_SHELF, 3)
+			_many(b, 0, D.O_BARREL, 2)
+		"storage_units":
+			_many(b, 0, D.O_BOXES, 6)
+			_many(b, 0, D.O_CRATE, 6)
+		"community_center":
+			_many(b, 0, D.O_TABLE, 4)
+			_many(b, 0, D.O_CHAIR, 8)
+			_many(b, 0, D.O_BOOKSHELF, 2)
+		"bus_station":
+			_many(b, 0, D.O_BENCH, 8)
+			_many(b, 0, D.O_VENDING, 2)
+			_many(b, 0, D.O_STORE_COUNTER, 1)
+		"sports_center":
+			_many(b, 0, D.O_LOCKER, 6)
+			_many(b, 0, D.O_BENCH, 4)
+			_many(b, 0, D.O_VENDING, 1)
+		"sawmill":
+			_many(b, 0, D.O_WORKBENCH, 2)
+			_many(b, 0, D.O_PALLET, 6)
+			_many(b, 0, D.O_TOOL_SHELF, 2)
+		"hospital":
+			_many(b, 0, D.O_HOSPITAL_BED, 8)
+			_many(b, 0, D.O_MED_CABINET, 6)
+			_many(b, 0, D.O_STORE_COUNTER, 1)
+			_many(b, 0, D.O_CHAIR, 4)
+		"supermarket":
+			_many(b, 0, D.O_FREEZER, 6)
+			_many(b, 0, D.O_STORE_COUNTER, 4)
+			_rows(b, 0, D.O_STORE_SHELF)
+		"factory":
+			_many(b, 0, D.O_WORKBENCH, 3)
+			_many(b, 0, D.O_METAL_SHELF, 6)
+			_many(b, 0, D.O_PALLET, 4)
+			_many(b, 0, D.O_BARREL, 3)
+			_rows(b, 0, D.O_METAL_SHELF)
+		"town_hall":
+			_many(b, 0, D.O_DESK, 6)
+			_many(b, 0, D.O_FILING, 6)
+			_many(b, 0, D.O_BOOKSHELF, 2)
+			_many(b, 0, D.O_CHAIR, 6)
+		"apartment":
+			_many(b, 0, D.O_SOFA, 2)
+			_many(b, 0, D.O_TV, 1)
+			_many(b, 0, D.O_TABLE, 2)
+			_many(b, 0, D.O_BOOKSHELF, 1)
+		"school_dorm":
+			_many(b, 0, D.O_DESK, 4)
+			_many(b, 0, D.O_CHAIR, 4)
+			_many(b, 0, D.O_BOOKSHELF, 2)
+			_many(b, 0, D.O_VENDING, 1)
 		"grocery":
 			_many(b, 0, D.O_FREEZER, 4)
 			_many(b, 0, D.O_STORE_COUNTER, 2)

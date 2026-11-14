@@ -1240,6 +1240,28 @@ func _init() -> void:
 	ok(rq.objectives[0]["state"] == "failed", "a request left too long expires")
 	rq.npcs.list.clear()
 
+	print("== more kinds of building")
+	ok(BuildGen.SHOP_KINDS.size() >= 40, "%d town building kinds" % BuildGen.SHOP_KINDS.size())
+	var bad_b: Array = []
+	for bk in BuildGen.SHOP_KINDS:
+		var plb = BuildGen.gen(bk, 24, 20, 0, 3131, 1)
+		var furn := 0
+		var ins := 0
+		for cell in plb.obj:
+			if cell != 0 and Defs.o_part(cell) == 0 and Defs.obj(Defs.o_id(cell)).has("c"): furn += 1
+		for v in plb.inside: ins += int(v != 0)
+		if plb.btype != bk or ins < 20 or furn < 2: bad_b.append("%s(%d,%d)" % [bk, ins, furn])
+	ok(bad_b.is_empty(), "each is a real building with things to search %s" % str(bad_b))
+	var loot_bad: Array = []
+	for tk in Loot.T.keys():
+		for row in Loot.T[tk]["items"]:
+			if not String(row[0]).begins_with("@") and not Items.DB.has(String(row[0])): loot_bad.append("%s:%s" % [tk, row[0]])
+	for ok_k in Loot.OVERRIDE.keys():
+		for cv in Loot.OVERRIDE[ok_k].values():
+			if not Loot.T.has(String(cv)): loot_bad.append("override %s->%s" % [ok_k, cv])
+	ok(loot_bad.is_empty(), "every loot table names real items, and every override a real table %s" % str(loot_bad))
+	ok(Loot.T.size() >= 75, "%d loot profiles" % Loot.T.size())
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

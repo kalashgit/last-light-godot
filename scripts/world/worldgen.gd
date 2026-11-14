@@ -267,7 +267,7 @@ func _block_lots(br: Rect2i, flags: int, rng: RandomNumberGenerator, commercial:
 					var f: float = rng.randf()
 					if f < 0.12: k = "parking"
 					elif f < 0.3: k = "house"
-					else: k = BuildGen.SHOP_KINDS[rng.randi() % BuildGen.SHOP_KINDS.size()]
+					else: k = BuildGen.SHOP_KINDS[rng.randi() % 15] if rng.randf() < 0.6 else BuildGen.SHOP_KINDS[15 + rng.randi() % (BuildGen.SHOP_KINDS.size() - 15)]
 			var lot := {"r": lr, "f": facing, "k": k}
 			if from_must:
 				lot["_m"] = 1
