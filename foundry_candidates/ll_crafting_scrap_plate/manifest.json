@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_scrap_plate",
+  "source_glb_sha256": "0eb430e6360033bcae2c17c8ade9e65b9375441f38c2dc5ff94e7697c66823c3",
+  "atlas_sha256": "e70db3f4515397ca9195b9844dec3e439d68b20bc76438bbf1d25e1c4d613a06",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2533838,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
