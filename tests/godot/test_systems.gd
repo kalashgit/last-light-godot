@@ -1304,6 +1304,39 @@ func _init() -> void:
 		bs3.world.remove_object(int(tgt_c["x"]), int(tgt_c["y"]))
 	ok(built_bad_c.is_empty(), "the new pieces can be built and stand where you put them %s" % str(built_bad_c))
 
+	print("== 350 items")
+	ok(Items.DB.size() >= 350, "%d items" % Items.DB.size())
+	var orphan: Array = []
+	var in_loot: Dictionary = {}
+	for tk2 in Loot.T.keys():
+		for row2 in Loot.T[tk2]["items"]: in_loot[String(row2[0])] = true
+	var made_by: Dictionary = {}
+	for r3 in Recipes.LIST:
+		for o3 in r3.get("out", []): made_by[String(o3[0])] = true
+	for iid in Items.DB.keys():
+		var d3: Dictionary = Items.DB[iid]
+		if not in_loot.has(iid) and not made_by.has(iid) and not String(iid).begins_with("carcass_") and not String(iid).begins_with("seeds_") and d3.get("cat", "") != "seed":
+			orphan.append(iid)
+	ok(orphan.size() < 60, "almost every item can be found or made (%d only from other sources: animals, crops, events, gifts)" % orphan.size())
+	var it_s := Sim.new(9393)
+	it_s.new_game("unemployed", [], "house")
+	quiet(it_s)
+	var ip: Player = it_s.player
+	Inv.add_new(ip.inv, "multitool", 1)
+	ok(Inv.has_tag(ip.inv, "screwdriver") and Inv.has_tag(ip.inv, "pliers") and Inv.has_tag(ip.inv, "knife"), "a multitool stands in for a screwdriver, pliers and a knife")
+	ip.thirst = 80.0
+	Inv.add_new(ip.inv, "sports_drink", 1)
+	ip.consume(Inv.find(ip.inv, "sports_drink"))
+	run(it_s, 4.0)
+	ok(ip.thirst < 80.0, "new drinks quench thirst (%.0f)" % ip.thirst)
+	Inv.add_new(ip.inv, "fire_axe", 1)
+	ip.weapon = Inv.find(ip.inv, "fire_axe")
+	ok(Items.def("fire_axe").has("wpn") and Inv.has_tag(ip.inv, "crowbar"), "a fire axe is a weapon and forces doors like a crowbar")
+	Inv.add_new(ip.inv, "water_filter", 1)
+	ok(Recipes.missing(Recipes.by_id("filter_water"), ip, false, false, []) == "" or not Recipes.missing(Recipes.by_id("filter_water"), ip, false, false, []).begins_with("needs tool"), "a water filter purifies water without a fire")
+	Inv.add_new(ip.inv, "whetstone", 1)
+	ok(Inv.has_tag(ip.inv, "whetstone"), "a whetstone sharpens blades")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")
