@@ -1177,12 +1177,56 @@ func world_event(kind: String) -> bool:
 			return true
 	return false
 
+## a survivor's request: is it done, or past saving?
+func _check_request(ob: Dictionary) -> void:
+	var n = null
+	for c in npcs.list:
+		if c.id == int(ob["npc"]): n = c
+	if hour > float(ob["due"]):
+		ob["state"] = "failed"
+		journal_add("Too late for what %s asked." % String(ob["who"]))
+		return
+	var at := Vector2(float(ob["x"]) + 0.5, float(ob["y"]) + 0.5)
+	match String(ob["sub"]):
+		"escort":
+			if n != null and n.pos.distance_to(at) < 5.0:
+				n.state = NpcSim.STAY
+				n.home = n.pos
+				npcs.complete_request(n, ob)
+		"missing":
+			if not ob["spawned"] and at.distance_to(player.pos) < 35.0 and world.is_loaded(int(ob["x"]), int(ob["y"])):
+				var m = npcs.spawn(outside_spot(at), false)
+				m.name = "%s's brother" % String(ob["who"])
+				m.hp = 40.0
+				ob["spawned"] = true
+				ob["found_id"] = m.id
+				for i in range(rng.randi_range(2, 4)):
+					var zq: Vector2 = _open_spot(at, 4.0, 8.0, true)
+					if zq != Vector2.INF: zombies.spawn(zq)
+			elif ob["spawned"]:
+				for m2 in npcs.list:
+					if m2.id == int(ob.get("found_id", -1)) and m2.pos.distance_to(player.pos) < 3.0:
+						m2.task = "travel"
+						m2.task_pos = Vector2(n.home) if n != null else m2.pos
+						m2.task_t = 1e6
+						say("%s: \"They sent you? I'll go back. Thank you.\"" % m2.name, Color(0.8, 0.9, 0.75))
+						if n != null: npcs.complete_request(n, ob)
+						else: ob["state"] = "done"
+		"restore_gen":
+			if float(world.ent(int(ob["x"]), int(ob["y"])).get("c", 0.0)) >= 0.8 and n != null:
+				npcs.complete_request(n, ob)
+		"repair_well":
+			if not world.ent(int(ob["x"]), int(ob["y"])).get("jam", false) and n != null:
+				npcs.complete_request(n, ob)
+
 ## the things you were asked to do, and whether you did them
 func _check_objectives() -> void:
 	for ob in objectives:
 		if ob["state"] != "open": continue
 		var at := Vector2(float(ob["x"]) + 0.5, float(ob["y"]) + 0.5)
 		match String(ob["kind"]):
+			"request":
+				_check_request(ob)
 			"evac":
 				if at.distance_to(player.pos) < 8.0:
 					ob["state"] = "done"

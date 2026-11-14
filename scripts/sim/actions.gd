@@ -546,6 +546,17 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 		"forge":
 			out.append(_opt("Work the forge", func(): sim.ui_events.append({"type": "craft", "cat": "Smithing"})))
 		"well":
+			if w.ent(x, y).get("jam", false):
+				out.append(_opt("Free the seized pump (wrench, 2 scrap metal)", func():
+					if not Inv.has_tag(p.inv, "wrench") or Inv.count(p.inv, "scrap_metal") < 2:
+						sim.say("You need a wrench and 2 scrap metal.", Color(0.9, 0.8, 0.6))
+						return
+					p.start_action("Freeing the pump", 12.0, func():
+						Inv.take(p.inv, "scrap_metal", 2)
+						w.ent(x, y).erase("jam")
+						p.add_xp("mechanics", 25.0)
+						sim.say("The handle gives, then water.", Color(0.75, 0.9, 1.0)))))
+				return out
 			out.append(_opt("Draw water and drink", func(): _drink_source(sim, false, 999)))
 			out.append(_opt("Fill water containers", func(): _fill(sim, false, 999)))
 			out.append(_opt("Wash yourself", func(): _wash(sim, func(n: int) -> int: return n)))

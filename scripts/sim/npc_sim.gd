@@ -489,6 +489,125 @@ func _habits(n: Npc, dt: float, dh: float) -> bool:
 			return true
 	return false
 
+# ------------------------------------------------------------------ what they ask of you
+const MEDS := ["antibiotics", "painkillers", "bandage"]
+const PARTS := ["car_battery", "wire", "duct_tape"]
+
+func open_request(n: Npc) -> Dictionary:
+	for ob in sim.objectives:
+		if ob["kind"] == "request" and int(ob["npc"]) == n.id and ob["state"] == "open":
+			return ob
+	return {}
+
+func request_options(n: Npc, tr: float) -> Array:
+	var p: Player = sim.player
+	var out: Array = []
+	if n.recruit or n.trader:
+		return out
+	var ob: Dictionary = open_request(n)
+	if ob.is_empty():
+		if tr >= 30.0 and not sim.flags.has("asked_%d_%d" % [n.id, sim.day()]):
+			out.append({"label": "\"Is there anything you need?\"", "fn": func(): make_request(n)})
+		return out
+	if ob["sub"] == "fetch":
+		var want: String = ob["item"]
+		if Inv.count(p.inv, want) > 0:
+			out.append({"label": "Give them the %s they asked for" % String(Items.def(want)["n"]).to_lower(), "fn": func():
+				Inv.take(p.inv, want, 1)
+				n.stock.append(want)
+				complete_request(n, ob)})
+	elif ob["sub"] == "escort" and n.state != FOLLOW:
+		out.append({"label": "\"Come on, I'll take you there.\"", "fn": func():
+			n.state = FOLLOW
+			sim.say("%s: \"Lead the way.\"" % n.name, Color(0.8, 0.9, 0.75))})
+	return out
+
+## they tell you what they need; it becomes a job in your journal
+func make_request(n: Npc) -> String:
+	var p: Player = sim.player
+	sim.flags["asked_%d_%d" % [n.id, sim.day()]] = true
+	var kinds: Array = ["fetch_med", "fetch_parts", "missing", "escort", "restore_gen"]
+	if _well_near(n.home) != Vector2i(-99999, 0): kinds.append("repair_well")
+	var k: String = kinds[randi() % kinds.size()]
+	var ob: Dictionary = {"kind": "request", "npc": n.id, "who": n.name, "state": "open", "due": sim.hour + 72.0, "x": floori(n.home.x), "y": floori(n.home.y)}
+	match k:
+		"fetch_med", "fetch_parts":
+			var item: String = (MEDS if k == "fetch_med" else PARTS)[randi() % 3]
+			ob["sub"] = "fetch"
+			ob["item"] = item
+			ob["text"] = "Bring %s some %s" % [n.name, String(Items.def(item)["n"]).to_lower()]
+			sim.say("%s: \"%s. I'd owe you.\"" % [n.name, "My hand's going bad — anything, %s, bandages" % String(Items.def(item)["n"]).to_lower() if k == "fetch_med" else "I could get the truck going with some %s" % String(Items.def(item)["n"]).to_lower()], Color(0.85, 0.85, 0.7))
+		"missing":
+			var a: float = randf() * TAU
+			var at := Vector2i(int(n.home.x + cos(a) * randf_range(40.0, 70.0)), int(n.home.y + sin(a) * randf_range(40.0, 70.0)))
+			ob["sub"] = "missing"
+			ob["x"] = at.x
+			ob["y"] = at.y
+			ob["spawned"] = false
+			ob["text"] = "Find %s's brother, last seen %s of their place" % [n.name, Sim.compass(n.home, Vector2(at))]
+			sim.add_marker(at.x, at.y, "Last seen (%s's brother)" % n.name)
+			sim.say("%s: \"My brother went %s three days ago and hasn't come back.\"" % [n.name, Sim.compass(n.home, Vector2(at))], Color(0.85, 0.85, 0.7))
+		"escort":
+			var a2: float = randf() * TAU
+			var to := Vector2i(int(n.home.x + cos(a2) * randf_range(35.0, 55.0)), int(n.home.y + sin(a2) * randf_range(35.0, 55.0)))
+			ob["sub"] = "escort"
+			ob["x"] = to.x
+			ob["y"] = to.y
+			ob["text"] = "Take %s safely to their sister's place, %s" % [n.name, Sim.compass(n.home, Vector2(to))]
+			sim.add_marker(to.x, to.y, "%s's sister" % n.name)
+			sim.say("%s: \"My sister's place is %s of here. I won't make it alone.\"" % [n.name, Sim.compass(n.home, Vector2(to))], Color(0.85, 0.85, 0.7))
+		"restore_gen":
+			var gp: Vector2i = _free_tile_near(n.home)
+			sim.world.set_obj(gp.x, gp.y, Defs.ocell(Defs.O_GENERATOR, 0, 0))
+			sim.world.set_ent(gp.x, gp.y, {"k": "gen", "fuel": 2.0, "on": false, "c": 0.15})
+			sim.world.chunk_at(gp.x, gp.y).touched = true
+			ob["sub"] = "restore_gen"
+			ob["x"] = gp.x
+			ob["y"] = gp.y
+			ob["text"] = "Repair %s's generator" % n.name
+			sim.say("%s: \"The generator out back died. If you know engines...\"" % n.name, Color(0.85, 0.85, 0.7))
+		"repair_well":
+			var wl: Vector2i = _well_near(n.home)
+			var we: Dictionary = sim.world.ent(wl.x, wl.y)
+			we["k"] = "well"
+			we["jam"] = true
+			sim.world.set_ent(wl.x, wl.y, we)
+			ob["sub"] = "repair_well"
+			ob["x"] = wl.x
+			ob["y"] = wl.y
+			ob["text"] = "Fix the pump on the well near %s" % n.name
+			sim.say("%s: \"The well pump's seized. No water without it.\"" % n.name, Color(0.85, 0.85, 0.7))
+	sim.objectives.append(ob)
+	sim.journal_add(String(ob["text"]) + ".")
+	return k
+
+func _free_tile_near(c: Vector2) -> Vector2i:
+	for r in range(1, 6):
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				var t := Vector2i(floori(c.x) + dx, floori(c.y) + dy)
+				if sim.world.obj(t.x, t.y) == 0 and not sim.world.tile_blocked(t.x, t.y) and not Defs.ground_is_water(sim.world.ground(t.x, t.y)):
+					return t
+	return Vector2i(floori(c.x), floori(c.y))
+
+func _well_near(c: Vector2) -> Vector2i:
+	for dy in range(-20, 21):
+		for dx in range(-20, 21):
+			if Defs.o_id(sim.world.obj(floori(c.x) + dx, floori(c.y) + dy)) == Defs.O_WELL:
+				return Vector2i(floori(c.x) + dx, floori(c.y) + dy)
+	return Vector2i(-99999, 0)
+
+func complete_request(n: Npc, ob: Dictionary) -> void:
+	ob["state"] = "done"
+	n.trust = minf(100.0, n.trust + 20.0)
+	n.met = true
+	if n.fac >= 0:
+		sim.factions.add_rep(n.fac, 5.0)
+	var gift: String = ["ammo_9mm", "canned_beans", "bandage", "battery", "seeds_potato", "painkillers"][randi() % 6]
+	Inv.add_new(sim.player.inv, gift, 1, sim.hour)
+	sim.say("%s: \"Thank you. Really.\" They give you %s." % [n.name, String(Items.def(gift)["n"]).to_lower()], Color(0.7, 0.95, 0.7))
+	sim.journal_add("Did what %s asked." % n.name)
+
 ## the harder conversations: asking a favour, making a demand at weapon-point, making amends
 func social_options(n: Npc, tr: float) -> Array:
 	var p: Player = sim.player
@@ -1100,4 +1219,5 @@ func options(n: Npc) -> Array:
 					sim.say("%s: \"Thank you.\"" % n.name, Color(0.85, 0.85, 0.7))})
 			break
 	out.append_array(social_options(n, tr))
+	out.append_array(request_options(n, tr))
 	return out

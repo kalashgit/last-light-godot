@@ -1155,6 +1155,91 @@ func _init() -> void:
 	ok(not wf2 or not ds2.burning.is_empty(), "a warehouse nearby can catch fire (%s)" % ("it did" if wf2 else "none near this start"))
 	ds2.burning.clear()
 
+	print("== what survivors ask of you")
+	var rq := Sim.new(7878)
+	rq.new_game("unemployed", [], "house")
+	quiet(rq)
+	var rp: Player = rq.player
+	var made_kinds: Dictionary = {}
+	for k in range(60):
+		var asker = rq.npcs.spawn(rp.pos + Vector2(2, 0), false)
+		asker.trust = 50.0
+		made_kinds[rq.npcs.make_request(asker)] = true
+		rq.npcs.list.erase(asker)
+	ok(made_kinds.has("fetch_med") and made_kinds.has("fetch_parts") and made_kinds.has("missing") and made_kinds.has("escort") and made_kinds.has("restore_gen"),
+		"survivors ask for medicine, parts, a missing brother, an escort or a generator fixed %s" % str(made_kinds.keys()))
+	rq.objectives.clear()
+	var a1 = rq.npcs.spawn(rp.pos + Vector2(2, 0), false)
+	a1.trust = 50.0
+	var labs3: Array = []
+	for o in rq.npcs.options(a1): labs3.append(String(o["label"]))
+	ok(labs3.any(func(l): return l.contains("anything you need")), "a survivor who half-trusts you can be asked what they need")
+	var tr_a: float = a1.trust
+	rq.objectives.append({"kind": "request", "sub": "fetch", "item": "bandage", "npc": a1.id, "who": a1.name, "state": "open", "due": rq.hour + 72.0, "x": 0, "y": 0, "text": "x"})
+	Inv.add_new(rp.inv, "bandage", 1)
+	var give_fn: Callable
+	for o in rq.npcs.options(a1):
+		if String(o["label"]).begins_with("Give them the"): give_fn = o["fn"]
+	ok(give_fn.is_valid(), "once you have what they asked for, you can hand it over")
+	var bn0: int = Inv.count(rp.inv, "bandage")
+	give_fn.call()
+	ok(rq.objectives[0]["state"] == "done" and a1.trust > tr_a and Inv.count(rp.inv, "bandage") == bn0 - 1 and a1.stock.has("bandage"), "it goes to them, and they trust you more")
+	# escort
+	rq.objectives.clear()
+	var dest := rp.pos + Vector2(6, 0)
+	rq.objectives.append({"kind": "request", "sub": "escort", "npc": a1.id, "who": a1.name, "state": "open", "due": rq.hour + 72.0, "x": floori(dest.x), "y": floori(dest.y), "text": "x"})
+	a1.state = NpcSim.FOLLOW
+	a1.pos = dest + Vector2(1.0, 0.0)
+	rq._check_objectives()
+	ok(rq.objectives[0]["state"] == "done" and a1.state == NpcSim.STAY and a1.home.distance_to(dest) < 3.0, "lead someone to where they wanted to go and they stay there")
+	# generator
+	rq.objectives.clear()
+	var gtile: Vector2i = rq.npcs._free_tile_near(rp.pos + Vector2(3, 3))
+	rq.world.set_obj(gtile.x, gtile.y, Defs.ocell(Defs.O_GENERATOR, 0, 0))
+	rq.world.set_ent(gtile.x, gtile.y, {"k": "gen", "fuel": 2.0, "on": false, "c": 0.15})
+	rq.objectives.append({"kind": "request", "sub": "restore_gen", "npc": a1.id, "who": a1.name, "state": "open", "due": rq.hour + 72.0, "x": gtile.x, "y": gtile.y, "text": "x"})
+	rq._check_objectives()
+	ok(rq.objectives[0]["state"] == "open", "a broken generator is still a job")
+	rq.world.ent(gtile.x, gtile.y)["c"] = 0.9
+	rq._check_objectives()
+	ok(rq.objectives[0]["state"] == "done", "repaired, the job is done")
+	# a seized well
+	var wl2 := Vector2i(floori(rp.pos.x) - 3, floori(rp.pos.y) + 3)
+	clear_area(rq, wl2, 1)
+	rq.world.set_obj(wl2.x, wl2.y, Defs.ocell(Defs.O_WELL, 0, 0))
+	rq.world.set_ent(wl2.x, wl2.y, {"k": "well", "jam": true})
+	var wlab: Array = []
+	for o in Actions._obj_options(rq, {"kind": "obj", "x": wl2.x, "y": wl2.y}): wlab.append(String(o["label"]))
+	ok(wlab.any(func(l): return l.begins_with("Free the seized pump")) and not wlab.has("Fill water containers"), "a seized well pump gives no water until freed")
+	Inv.add_new(rp.inv, "wrench", 1)
+	Inv.add_new(rp.inv, "scrap_metal", 2)
+	for o in Actions._obj_options(rq, {"kind": "obj", "x": wl2.x, "y": wl2.y}):
+		if String(o["label"]).begins_with("Free the seized pump"): o["fn"].call()
+	run(rq, 13.0)
+	ok(not rq.world.ent(wl2.x, wl2.y).get("jam", false), "with a wrench and scrap, it can be freed")
+	# a missing brother: found where they were last seen, and sent home
+	rq.npcs.list.clear()
+	rq.zombies.list.clear()
+	rq.npcs.list.append(a1)
+	a1.home = rp.pos
+	var lost_at := Vector2i(floori(rp.pos.x) + 12, floori(rp.pos.y))
+	rq.objectives = [{"kind": "request", "sub": "missing", "npc": a1.id, "who": a1.name, "state": "open", "due": rq.hour + 72.0, "x": lost_at.x, "y": lost_at.y, "spawned": false, "text": "x"}]
+	rq._check_objectives()
+	var bro = null
+	for m3 in rq.npcs.list:
+		if m3.name.ends_with("brother"): bro = m3
+	ok(bro != null and rq.zombies.list.size() >= 1, "go to where the brother was last seen and he is there, with infected about")
+	if bro != null:
+		rq.zombies.list.clear()
+		rp.pos = bro.pos + Vector2(1.0, 0.0)
+		rq._check_objectives()
+		ok(rq.objectives[0]["state"] == "done" and bro.task == "travel", "reach him and he heads home; the one who asked is grateful")
+	# overdue
+	rq.objectives = [{"kind": "request", "sub": "fetch", "item": "wire", "npc": a1.id, "who": a1.name, "state": "open", "due": rq.hour - 1.0, "x": 0, "y": 0, "text": "x"}]
+	rq._check_objectives()
+	ok(rq.objectives[0]["state"] == "failed", "a request left too long expires")
+	rq.npcs.list.clear()
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")
