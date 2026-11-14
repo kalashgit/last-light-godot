@@ -1991,6 +1991,7 @@ func _init() -> void:
 	p.grabbed_by = -1
 	p.hidden = false
 	p.sneaking = false
+	p.skills["nimble"] = 0.0         # earlier checks trained it; a nimble survivor rarely slips
 	var slipped := false
 	for i_w in range(600):
 		p._step_t = 0.0
@@ -1998,7 +1999,7 @@ func _init() -> void:
 		if p.slow_t > 0.5:
 			slipped = true
 			break
-		if i_w % 40 == 39: p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
+		if i_w % 12 == 11: p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)     # stay on the cleared, icy strip
 	sim.settings["god"] = true
 	ok(slipped, "running on ice, you go down sooner or later")
 	sim.weather["temp"] = 10.0
