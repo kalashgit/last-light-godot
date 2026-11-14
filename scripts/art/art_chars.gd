@@ -18,7 +18,7 @@ const L_FIXED := 5
 
 ## animation name -> frame count
 const ANIMS := {
-	"s_idle": 1, "s_walk": 6, "s_attack": 4, "s_shove": 3, "s_aim": 2, "s_hit": 1, "s_fall": 3, "s_lie": 1, "s_work": 2, "s_squat": 2,
+	"s_idle": 1, "s_walk": 6, "s_attack": 4, "s_shove": 3, "s_aim": 2, "s_hit": 1, "s_fall": 3, "s_lie": 1, "s_work": 2, "s_squat": 2, "s_carry": 6, "s_hold": 1, "s_reload": 3, "s_vault": 3,
 	"z_idle": 2, "z_walk": 6, "z_attack": 3, "z_hit": 1, "z_fall": 3, "z_lie": 1, "z_crawl": 2,
 }
 const WEAPON_KINDS := 5     # 1 long, 2 short blade, 3 axe, 4 pistol, 5 long gun
@@ -101,6 +101,40 @@ static func _pose(kind: String, fi: int, n: int) -> Dictionary:
 			P.abl = -0.1
 			P.abr = -0.1
 			P.lean = 0.22
+			P.weapon = false
+		"s_carry", "s_hold":
+			if kind == "s_carry":
+				P.ll = a * 0.4
+				P.lr = -a * 0.4
+				P.kl = maxf(0.0, -c) * 0.6
+				P.kr = maxf(0.0, c) * 0.6
+				P.bob = -absf(a) * 0.9
+			P.al = 1.25
+			P.ar = 1.25
+			P.el = 0.7
+			P.er = 0.7
+			P.lean = -0.06
+			P.weapon = false
+		"s_reload":
+			P.ar = 0.95 + fi * 0.12
+			P.al = 1.1 - fi * 0.1
+			P.er = 1.15 - fi * 0.25
+			P.el = 1.2
+			P.lean = 0.12
+			P.wd = Vector3(0.0, 0.55, 0.83)
+		"s_vault":
+			var lf: Array = [1.1, 1.45, 0.4]
+			var rf: Array = [0.2, 1.3, 1.2]
+			P.ll = lf[fi]
+			P.lr = rf[fi]
+			P.kl = [1.5, 1.8, 0.4][fi]
+			P.kr = [0.3, 1.8, 1.4][fi]
+			P.bob = [-4.0, -10.0, -5.0][fi]
+			P.al = 0.9
+			P.ar = 0.9
+			P.el = 0.3
+			P.er = 0.3
+			P.lean = [0.2, 0.35, 0.15][fi]
 			P.weapon = false
 		"s_squat":
 			P.al = 1.45

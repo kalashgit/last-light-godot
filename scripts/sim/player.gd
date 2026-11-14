@@ -476,10 +476,17 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		kcal -= dt * 0.11
 	endurance = maxf(endurance, 0.0)
 	# animation state
+	var act_label: String = String(action.get("label", "")) if not action.is_empty() else ""
 	if swing_t > 0.0:
 		anim = "s_shove" if swing_kind == "shove" else ("s_aim" if swing_kind == "aim" else "s_attack")
 	elif hit_flash > 0.12:
 		anim = "s_hit"
+	elif act_label.begins_with("Climbing"):
+		anim = "s_vault"
+	elif not carrying.is_empty() or not dragging.is_empty():
+		anim = "s_carry" if moving else "s_hold"
+	elif act_label == "Reloading" and not moving:
+		anim = "s_reload"
 	elif moving:
 		anim = "s_walk"
 	elif not action.is_empty():

@@ -37,6 +37,9 @@ static func pick(anim: String, t: float, d8: int, progress: float = -1.0) -> Arr
 			"z_crawl": idx = int(t * 3.0) % n
 			"s_work": idx = int(t * 4.0) % n
 			"s_squat": idx = int(t * 1.5) % n
+			"s_carry": idx = int(t * 8.0) % n
+			"s_reload": idx = int(t * 3.0) % n
+			"s_vault": idx = int(t * 2.4) % n
 			_: idx = clampi(int(t * 9.0), 0, n - 1)
 	return [frames[idx], dm.y == 1, idx]
 

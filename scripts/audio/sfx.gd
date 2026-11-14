@@ -8,8 +8,11 @@ var _players: Array[AudioStreamPlayer] = []
 var _next := 0
 var _ambient_t := 0.0
 var _rotor_t := 0.0
+var _bus := "Near"
+var _room_wet := 0.0
 
 func _ready() -> void:
+	_make_buses()
 	for i in range(10):
 		var p := AudioStreamPlayer.new()
 		add_child(p)
@@ -64,11 +67,45 @@ func _make(name: String, dur: float, f: Callable) -> void:
 	s.data = data
 	_streams[name] = s
 
+## "Near": your own space (a little room echo indoors); "Muffled": through walls, a floor or a shut door
+static func _make_buses() -> void:
+	if AudioServer.get_bus_index("Near") >= 0:
+		return
+	for nm in ["Near", "Muffled"]:
+		AudioServer.add_bus()
+		var bi: int = AudioServer.bus_count - 1
+		AudioServer.set_bus_name(bi, nm)
+		AudioServer.set_bus_send(bi, "Master")
+		if nm == "Near":
+			var rv := AudioEffectReverb.new()
+			rv.room_size = 0.32
+			rv.damping = 0.6
+			rv.wet = 0.0
+			rv.dry = 1.0
+			AudioServer.add_bus_effect(bi, rv)
+		else:
+			var lp := AudioEffectLowPassFilter.new()
+			lp.cutoff_hz = 900.0
+			AudioServer.add_bus_effect(bi, lp)
+			AudioServer.set_bus_volume_db(bi, -5.0)
+
+## which bus a sound from src belongs on for a listener at the player
+static func bus_for(sim: Sim, src: Vector2) -> String:
+	var lp: Vector2 = sim.player.pos
+	if src.distance_to(lp) < 1.5:
+		return "Near"
+	var bl: int = sim.world.bld(floori(lp.x), floori(lp.y))
+	var bs: int = sim.world.bld(floori(src.x), floori(src.y))
+	if World.level(src.y) != World.level(lp.y) or bl != bs:
+		return "Muffled"
+	return "Near"
+
 func play(name: String, volume_db: float = 0.0, pitch: float = 1.0) -> void:
 	if not _streams.has(name):
 		return
 	var p: AudioStreamPlayer = _players[_next]
 	_next = (_next + 1) % _players.size()
+	p.bus = _bus
 	p.stream = _streams[name]
 	p.volume_db = volume_db
 	p.pitch_scale = pitch
@@ -86,9 +123,16 @@ func _step_for(sim: Sim, p: Vector2) -> String:
 func consume(sim: Sim, view: WorldView) -> void:
 	var pp: Vector2 = sim.player.pos
 	var steps := 0
+	# indoors your own sounds come back off the walls
+	var inside: bool = sim.world.bld(floori(pp.x), floori(pp.y)) != 0 or sim.underground()
+	_room_wet = move_toward(_room_wet, 0.16 if inside else 0.0, 0.02)
+	var nb: int = AudioServer.get_bus_index("Near")
+	if nb >= 0:
+		(AudioServer.get_bus_effect(nb, 0) as AudioEffectReverb).wet = _room_wet
 	for e in sim.fx:
 		var k: String = e["k"]
 		var d: float = (e["p"] as Vector2).distance_to(pp)
+		_bus = bus_for(sim, e["p"])
 		if k.begins_with("meta_"):
 			# distant events are heard from far beyond the screen
 			var mv: float = -8.0 - d * 0.25
@@ -135,6 +179,7 @@ func consume(sim: Sim, view: WorldView) -> void:
 				if _rotor_t <= 0.0:
 					_rotor_t = 1.0
 					play("rotor", -3.0 - minf(d, 30.0) * 0.3)
+	_bus = "Near"
 	if sim.alarms.size() > 0:
 		_ambient_t -= get_process_delta_time()
 		if _ambient_t <= 0.0:

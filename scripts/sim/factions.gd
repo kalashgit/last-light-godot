@@ -141,6 +141,48 @@ func member_died(n, by_player: bool) -> void:
 	s["morale"] = maxf(0.0, float(s["morale"]) - 12.0)
 	_check_fallen(n.site)
 
+## a settlement abandons its place for the nearest one that will take them (their own faction first)
+func relocate(key: Vector2i) -> Vector2i:
+	var s: Dictionary = sites[key]
+	var none := Vector2i(-99999, -99999)
+	var best: Vector2i = none
+	var bd := 1e9
+	for k2 in sites.keys():
+		var t: Dictionary = sites[k2]
+		if k2 == key or t["fallen"]:
+			continue
+		var same: bool = int(t["f"]) == int(s["f"])
+		if not same and (kind(int(t["f"])) == RAIDER or kind(int(s["f"])) == RAIDER):
+			continue
+		var d: float = Vector2(k2 - key).length() - (5.0 if same else 0.0)
+		if d < bd and Vector2(k2 - key).length() < 4.5:
+			bd = d
+			best = k2
+	if best == none:
+		return none
+	var to: Dictionary = sites[best]
+	to["pop"] = int(to["pop"]) + int(s["pop"])
+	to["morale"] = maxf(10.0, float(to["morale"]) - 8.0)        # more mouths
+	s["pop"] = 0
+	s["fallen"] = true
+	s["moved_to"] = best
+	for t2 in tasks:
+		if t2["site"] == key and t2["state"] == "open":
+			t2["state"] = "failed"
+	var dest := Vector2(float(to["x"]) + 0.5, float(to["y"]) + 0.5)
+	for n in sim.npcs.list:
+		if n.site == key and n.fac == int(s["f"]):
+			n.site = best
+			n.fac = int(to["f"])
+			n.home = dest
+			n.task = "travel"
+			n.task_pos = dest
+			n.task_t = 1e6
+	if s["met"]:
+		sim.say("Word reaches you: the people of %s have given up their place and gone to %s." % [s["name"], to["name"]], Color(1.0, 0.8, 0.6))
+		sim.journal_add("%s is empty now. They went to %s." % [s["name"], to["name"]])
+	return best
+
 func _check_fallen(key: Vector2i) -> void:
 	var s: Dictionary = sites[key]
 	if int(s["pop"]) <= 0 and not s["fallen"]:
@@ -164,6 +206,10 @@ func tick(dh: float) -> void:
 			s["morale"] = maxf(0.0, float(s["morale"]) - dh * 1.2)
 		elif float(s["food"]) > pop * 3.0:
 			s["morale"] = minf(100.0, float(s["morale"]) + dh * 0.15)
+		# starving and hopeless with somewhere to go: they pack up and leave together
+		if float(s["food"]) <= 0.0 and float(s["morale"]) < 8.0 and int(s["pop"]) >= 2 and sim.rng.randf() < dh / 48.0:
+			if relocate(key) != Vector2i(-99999, -99999):
+				continue
 		if float(s["morale"]) <= 0.0 and sim.rng.randf() < dh / 36.0:
 			# someone walks out, or does not wake up
 			s["pop"] = int(s["pop"]) - 1

@@ -777,7 +777,9 @@ func routine(n: Npc, dt: float) -> void:
 			# a patrol or a traveller passing through: walk on, and leave the map once out of sight
 			n.task_t -= dt
 			_go(n, n.task_pos, 2.3, dt)
-			if (n.pos.distance_to(n.task_pos) < 1.5 or n.task_t <= 0.0) and n.pos.distance_to(sim.player.pos) > 18.0:
+			if n.task_t > 1e5 and n.pos.distance_to(n.task_pos) < 1.5:
+				n.task = ""                  # moved house: this is home now
+			elif (n.pos.distance_to(n.task_pos) < 1.5 or n.task_t <= 0.0) and n.pos.distance_to(sim.player.pos) > 18.0:
 				list.erase(n)
 			elif n.pos.distance_to(n.task_pos) < 1.5:
 				n.task_pos = n.pos + (n.pos - sim.player.pos).normalized() * 10.0

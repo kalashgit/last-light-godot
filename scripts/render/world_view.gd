@@ -29,6 +29,7 @@ var _roof_uv := PackedVector2Array()
 var _nviews: Dictionary = {}      # npc id -> EntityView
 var _aviews: Dictionary = {}      # animal id -> AnimalView
 var _vparts: Array = []           # CarPart nodes for the driven car
+var _carry_view: CarPart = null   # the furniture in your arms
 
 class AnimalView extends Node2D:
 	var a: AnimalSim.Animal
@@ -342,6 +343,7 @@ func sync(dt: float) -> void:
 	_ghost.set_frame(p.anim, p.anim_t, p.dir8, prog, wl, 0.0)
 	_pview.visible = sim.vehicle == null and not p.hidden
 	_ghost.visible = sim.vehicle == null and not p.hidden
+	_sync_carry(p)
 	_sync_vehicle()
 	_sync_npcs()
 	_sync_animals()
@@ -436,6 +438,23 @@ func _car_parts(oid: int, heading: int, a: Vector2, tk: Vector2i, k: int, part0:
 			cp.z_index = _z(floori(a.x + i + 0.5) + floori(a.y + j + 0.5), 1)
 			k += 1
 	return k
+
+func _sync_carry(p: Player) -> void:
+	if _carry_view == null:
+		_carry_view = CarPart.new()
+		_carry_view.scale = Vector2(0.5, 0.5)
+		_carry_view.position = Vector2(0, -30)
+		_pview.add_child(_carry_view)
+	var h: int = -1
+	if not p.carrying.is_empty():
+		h = int(Art.obj_spr.get(Defs.ocell(int(p.carrying["o"]), int(p.carrying.get("rot", 0)), 0), -1))
+	if h != _carry_view.h:
+		_carry_view.h = h
+		_carry_view.queue_redraw()
+	_carry_view.visible = h >= 0
+
+func carry_handle() -> int:
+	return _carry_view.h if _carry_view != null else -1
 
 func _sync_animals() -> void:
 	var p: Player = sim.player

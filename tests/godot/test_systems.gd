@@ -736,6 +736,59 @@ func _init() -> void:
 	mp.corpses_near = 0
 	ok(str(Loot.T["military"]).contains("gas_mask") and str(Loot.T["store_hardware"]).contains("dust_mask"), "masks are in the loot")
 
+	print("== animation, sound and moving house")
+	for an in ["s_carry", "s_hold", "s_reload", "s_vault"]:
+		ok(ArtChars.ANIMS.has(an), "character animation %s exists" % an)
+	var as_ := Sim.new(9191)
+	as_.new_game("unemployed", [], "house")
+	quiet(as_)
+	var anp: Player = as_.player
+	anp.carrying = {"o": Defs.O_CRATE, "rot": 0, "items": []}
+	anp.update(1.0 / 30.0, Vector2.ZERO, false)
+	ok(anp.anim == "s_hold", "standing with furniture in your arms uses the holding pose (%s)" % anp.anim)
+	run(as_, 0.3, Vector2(1, 0))
+	ok(anp.anim == "s_carry", "walking with it uses the carrying walk (%s)" % anp.anim)
+	anp.carrying = {}
+	anp.start_action("Climbing", 2.0, func(): pass, false)
+	anp.update(1.0 / 30.0, Vector2.ZERO, false)
+	ok(anp.anim == "s_vault", "climbing through a window or over a fence has its own animation (%s)" % anp.anim)
+	anp.cancel_action()
+	anp.start_action("Reloading", 2.0, func(): pass, false)
+	anp.update(1.0 / 30.0, Vector2.ZERO, false)
+	ok(anp.anim == "s_reload", "so does reloading (%s)" % anp.anim)
+	anp.cancel_action()
+	Sfx._make_buses()
+	ok(AudioServer.get_bus_index("Near") >= 0 and AudioServer.get_bus_index("Muffled") >= 0, "the sound mix has a near bus (room echo) and a muffled bus")
+	var atl := Vector2i(floori(anp.pos.x), floori(anp.pos.y))
+	clear_area(as_, atl, 6)
+	for yy in range(atl.y - 6, atl.y + 7):
+		for xx in range(atl.x - 6, atl.x + 7):
+			as_.world.chunk(xx >> 4, yy >> 4).bld[((yy & 15) << 4) | (xx & 15)] = 0
+	anp.pos = Vector2(atl) + Vector2(0.5, 0.5)
+	ok(Sfx.bus_for(as_, anp.pos + Vector2(4, 0)) == "Near", "outdoors, a sound in the open is heard plainly")
+	as_.world.chunk(atl.x >> 4, atl.y >> 4).bld[((atl.y & 15) << 4) | (atl.x & 15)] = 777
+	ok(Sfx.bus_for(as_, anp.pos + Vector2(4, 0)) == "Muffled", "from inside a building, the street is muffled")
+	ok(Sfx.bus_for(as_, anp.pos + Vector2(0, World.UNDER)) == "Muffled", "and so is a floor below")
+	# a settlement that cannot feed itself moves in with its neighbours
+	var fk := Vector2i(50, 50)
+	var fk2 := Vector2i(51, 50)
+	as_.factions.sites = {fk: {"f": 0, "fallen": false, "name": "Dry Camp", "pop": 5, "morale": 2.0, "food": 0.0, "met": true, "x": 50 * 384, "y": 50 * 384},
+		fk2: {"f": 0, "fallen": false, "name": "Mill Camp", "pop": 4, "morale": 60.0, "food": 80.0, "met": false, "x": 51 * 384, "y": 50 * 384}}
+	var mover = as_.npcs.spawn(anp.pos + Vector2(2, 0), false)
+	mover.fac = 0
+	mover.site = fk
+	ok(as_.factions.relocate(fk) == fk2, "a starving, hopeless settlement leaves for the nearest one that will have them")
+	ok(as_.factions.sites[fk]["fallen"] and int(as_.factions.sites[fk2]["pop"]) == 9, "the old place is empty; the new one has nine mouths")
+	ok(mover.site == fk2 and mover.task == "travel" and mover.task_pos.distance_to(Vector2(51 * 384, 50 * 384)) < 2.0, "its people walk to their new home")
+	for i5 in range(30): as_.npcs.update(1.0 / 30.0, 0.0)
+	ok(as_.npcs.list.has(mover), "and do not vanish on the way")
+	mover.task_pos = mover.pos + Vector2(0.5, 0.0)       # (the new home brought within the loaded area)
+	for i6 in range(10): as_.npcs.update(1.0 / 30.0, 0.0)
+	ok(as_.npcs.list.has(mover) and mover.task == "", "arriving, they settle")
+	as_.factions.sites = {fk: {"f": 0, "fallen": false, "name": "Lone Camp", "pop": 3, "morale": 0.0, "food": 0.0, "met": false, "x": 0, "y": 0}}
+	ok(as_.factions.relocate(fk) == Vector2i(-99999, -99999) and not as_.factions.sites[fk]["fallen"], "with nowhere to go, they stay and starve")
+	as_.npcs.list.clear()
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

@@ -155,6 +155,13 @@ func _process(_dt: float) -> bool:
 				if cb is Button and String(cb.text).begins_with("Vibration"): vib = true
 			ok(vib, "settings offer a vibration switch")
 			main.panels.close()
+			sim.player.carrying = {"o": Defs.O_CRATE, "rot": 0, "items": []}
+			main.view._sync_carry(sim.player)
+			ok(main.view.carry_handle() >= 0, "furniture you carry is drawn in your arms")
+			sim.player.carrying = {}
+			main.view._sync_carry(sim.player)
+			ok(main.view.carry_handle() < 0, "and gone once set down")
+			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 5 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload"), "carry, climb and reload frames are painted in all five directions")
 			touch(5, Vector2(size.x * 0.5, size.y * 0.3), true)      # pinch
 			touch(6, Vector2(size.x * 0.5 + 100, size.y * 0.3), true)
 			p0 = Vector2(main.view.zoom, 0)
