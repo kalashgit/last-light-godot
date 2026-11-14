@@ -1984,6 +1984,10 @@ func _init() -> void:
 	ok(sim.icy(floori(p.pos.x), floori(p.pos.y)), "and below freezing the ground is treacherous")
 	sim.settings["god"] = false
 	p.hp = 100.0
+	p.endurance = 100.0             # running needs breath; earlier tests may have used it up
+	p.grabbed_by = -1
+	p.hidden = false
+	p.sneaking = false
 	var slipped := false
 	for i_w in range(300):
 		p._step_t = 0.0

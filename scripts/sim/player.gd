@@ -951,7 +951,7 @@ func take_zombie_hit(z: Zombie) -> void:
 	if sim.vehicle != null and randf() < float(sim.vehicle.spec()["prot"]) * (0.45 + 0.55 * float(sim.vehicle.ent.get("win", 1.0))) * (0.55 + 0.45 * float(sim.vehicle.ent.get("door", 1.0))):
 		# they claw at the bodywork instead, and the doors give a little each time
 		sim.vehicle.ent["eng"] = maxf(0.0, float(sim.vehicle.ent.get("eng", 0.5)) - 0.006)
-		sim.vehicle.ent["door"] = maxf(0.0, float(sim.vehicle.ent.get("door", 1.0)) - 0.02)
+		sim.vehicle.ent["door"] = maxf(0.0, float(sim.vehicle.ent.get("door", 1.0)) - 0.004)
 		sim.emit_fx("thump", pos)
 		return
 	cancel_action()
