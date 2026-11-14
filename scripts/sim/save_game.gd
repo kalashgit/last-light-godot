@@ -171,6 +171,72 @@ static func delete(slot: String) -> void:
 		da.remove(f)
 	_cache.clear()
 
+## one file holding a whole save slot, to copy off the device or onto another
+const EXPORT_DIR := "user://exports"
+
+static func export_slot(slot: String, dest: String = "") -> String:
+	var dir: String = dir_for(slot)
+	var da: DirAccess = DirAccess.open(dir)
+	if da == null or not exists(slot):
+		return ""
+	if dest == "":
+		dest = EXPORT_DIR + "/lastlight_%s.zip" % Time.get_datetime_string_from_system().replace(":", "-").replace("T", "_")
+	DirAccess.make_dir_recursive_absolute(dest.get_base_dir())
+	var zp := ZIPPacker.new()
+	if zp.open(dest) != OK:
+		return ""
+	for f in da.get_files():
+		if f.ends_with(".tmp"):
+			continue
+		zp.start_file(f)
+		zp.write_file(FileAccess.get_file_as_bytes(dir + "/" + f))
+		zp.close_file()
+	zp.close()
+	return dest
+
+## replaces a slot with an exported file; the old slot is exported first, and put back if the file will not load
+static func import_slot(src: String, slot: String) -> bool:
+	var zr := ZIPReader.new()
+	if zr.open(src) != OK:
+		return false
+	var files: PackedStringArray = zr.get_files()
+	if not files.has("meta.sav") and not files.has("meta.sav.bak"):
+		zr.close()
+		return false
+	var backup: String = ""
+	if exists(slot):
+		backup = export_slot(slot, EXPORT_DIR + "/_before_import.zip")
+	delete(slot)
+	DirAccess.make_dir_recursive_absolute(dir_for(slot))
+	for f in files:
+		if f.contains("/") or f.contains(".."):
+			continue                      # only flat files, never a path out of the slot
+		var fa := FileAccess.open(dir_for(slot) + "/" + f, FileAccess.WRITE)
+		if fa == null:
+			continue
+		fa.store_buffer(zr.read_file(f))
+		fa.close()
+	zr.close()
+	_cache.clear()
+	if load_game(slot) == null:
+		delete(slot)
+		if backup != "" and src != backup:
+			import_slot(backup, slot)
+		return false
+	return true
+
+static func exports() -> Array:
+	var out: Array = []
+	var da: DirAccess = DirAccess.open(EXPORT_DIR)
+	if da == null:
+		return out
+	for f in da.get_files():
+		if f.ends_with(".zip") and not f.begins_with("_"):
+			out.append(EXPORT_DIR + "/" + f)
+	out.sort()
+	out.reverse()
+	return out
+
 static func summary(slot: String) -> String:
 	var v: Variant = _read(dir_for(slot) + "/meta.sav")
 	if not (v is Dictionary):

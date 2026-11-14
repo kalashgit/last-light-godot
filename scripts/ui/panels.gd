@@ -36,6 +36,7 @@ var _ng_sand := {"sprinters": 0, "zombies": 1, "zspeed": 1, "respawn": 0, "infec
 var _confirm_new := false
 var _relayout_frames := 0
 
+var _import_msg := ""
 func _ready() -> void:
 	layer = 10
 	root = Control.new()
@@ -121,11 +122,13 @@ func rebuild() -> void:
 		"char": _build_char()
 		"craft": _build_craft()
 		"map": _build_map()
+		"journal": _build_journal()
 		"pause": _build_pause()
 		"menu": _build_menu()
 		"death": _build_death()
 		"help": _build_help()
 		"settings": _build_settings()
+		"import": _build_import()
 	dim.color.a = 0.0 if current == "title" or current == "newgame" else 0.62
 	layout.call_deferred()
 	# wrapped labels only know their height once they have a width: settle again next frames
@@ -169,6 +172,7 @@ func _build_title() -> void:
 	if _confirm_new:
 		body.add_child(UiKit.label("Starting a new game replaces the current save. Tap New Game again to confirm.", 17, UiKit.BAD))
 	body.add_child(UiKit.button("How to Play", func(): open("help"), 58))
+	body.add_child(UiKit.button("Import a save file", func(): open("import"), 58))
 	body.add_child(UiKit.label("Every tile, wall, tree, face and icon is painted by code when the game starts. The world is generated from a seed and never ends.", 15, UiKit.DIM))
 
 func _build_help() -> void:
@@ -568,6 +572,14 @@ func _item_sheet(it: Dictionary, cont: Dictionary) -> void:
 		opts.append(["Turn off" if p.light_on else "Turn on", func():
 			main.hud.toggle_light()
 			rebuild()])
+	if d.has("compass"):
+		opts.append(["Take a bearing", func():
+			close()
+			sim.take_bearing()])
+	if d.has("atlas"):
+		opts.append(["Study the atlas (adds the region to your map)", func():
+			close()
+			sim.read_atlas(it)])
 	if d.has("radio"):
 		opts.append(["Listen to the emergency band", func():
 			close()
@@ -879,10 +891,13 @@ func _build_map() -> void:
 		var ky: int = int(mk[1]) - (pc.y - R) * 16
 		var qx: int = kx - ky + n - 1
 		var qy: int = (kx + ky) >> 1
+		var known: bool = mk.size() > 3 and mk[3]
 		for d2 in range(-3, 4):
 			for e2 in range(-3, 4):
 				if absi(d2) + absi(e2) <= 3 and qx + d2 >= 0 and qx + d2 < n * 2 and qy + e2 >= 0 and qy + e2 < n:
-					img.set_pixel(qx + d2, qy + e2, Color(1.0, 0.85, 0.2))
+					# known places solid yellow; rumoured ones hollow orange
+					if known: img.set_pixel(qx + d2, qy + e2, Color(1.0, 0.85, 0.2))
+					elif absi(d2) + absi(e2) == 3: img.set_pixel(qx + d2, qy + e2, Color(1.0, 0.5, 0.2))
 	var tr := TextureRect.new()
 	tr.texture = ImageTexture.create_from_image(img)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -907,6 +922,7 @@ func _build_map() -> void:
 	for tk in sim.factions.tasks:
 		if tk["state"] == "open":
 			body.add_child(UiKit.label("Work: %d %s for %s — %d h left" % [int(tk["n"]), Items.def(tk["want"])["n"], Factions.fname(int(tk["f"])), maxi(0, int(float(tk["due"]) - sim.hour))], 15, UiKit.ACCENT))
+	body.add_child(UiKit.button("Journal", func(): open("journal"), 52))
 	body.add_child(UiKit.button("Mark where I am standing", func():
 		sim.add_marker(floori(p.pos.x), floori(p.pos.y), "%s (marked day %d)" % [sim.place_name(p.pos).capitalize(), sim.day()])
 		rebuild(), 52))
@@ -919,6 +935,42 @@ func _build_map() -> void:
 			body.add_child(UiKit.button("%s — %d tiles %s   ✕" % [mk2[2], dist, Sim.compass(p.pos, Vector2(float(mk2[0]), float(mk2[1])))], func():
 				p.markers.remove_at(idx)
 				rebuild(), 44))
+
+# ------------------------------------------------------------------ journal: what this survivor knows
+func _build_journal() -> void:
+	var p: Player = sim.player
+	_header("Journal — %s" % (p.pname if p.pname != "" else "Survivor"))
+	var vb := VBoxContainer.new()
+	var known: Array = []
+	var rumoured: Array = []
+	for mk in p.markers:
+		var line: String = "%s — %d tiles %s" % [mk[2], int(Vector2(float(mk[0]) + 0.5, float(mk[1]) + 0.5).distance_to(p.pos)), Sim.compass(p.pos, Vector2(float(mk[0]), float(mk[1])))]
+		if mk.size() > 3 and mk[3]: known.append(line)
+		else: rumoured.append(line)
+	vb.add_child(UiKit.label("Places I know", 19, UiKit.ACCENT))
+	for l in known: vb.add_child(UiKit.label("• " + l, 15))
+	if known.is_empty(): vb.add_child(UiKit.label("(none yet)", 15, UiKit.DIM))
+	vb.add_child(UiKit.label("Heard of, never been", 19, Color(1.0, 0.6, 0.3)))
+	for l2 in rumoured: vb.add_child(UiKit.label("• " + l2, 15))
+	if rumoured.is_empty(): vb.add_child(UiKit.label("(none)", 15, UiKit.DIM))
+	vb.add_child(UiKit.label("Work promised", 19, UiKit.ACCENT))
+	var any_t := false
+	for tk in sim.factions.tasks:
+		if tk["state"] == "open":
+			any_t = true
+			vb.add_child(UiKit.label("• %d %s for %s — %d h left" % [int(tk["n"]), Items.def(tk["want"])["n"], Factions.fname(int(tk["f"])), maxi(0, int(float(tk["due"]) - sim.hour))], 15))
+	for ob in sim.objectives:
+		if ob["state"] == "open":
+			any_t = true
+			vb.add_child(UiKit.label("• " + String(ob["text"]), 15))
+	if not any_t: vb.add_child(UiKit.label("(nothing)", 15, UiKit.DIM))
+	vb.add_child(UiKit.label("What I have read", 19, UiKit.ACCENT))
+	for i in range(p.journal.size() - 1, maxi(-1, p.journal.size() - 15), -1):
+		var je: Array = p.journal[i]
+		var jl: Label = UiKit.label("Day %d — %s" % [int(float(je[0]) / 24.0) + 1, je[1]], 14, UiKit.DIM)
+		jl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vb.add_child(jl)
+	body.add_child(UiKit.scroll(vb))
 
 # ------------------------------------------------------------------ settings (device, not save)
 func _build_settings() -> void:
@@ -933,7 +985,29 @@ func _build_settings() -> void:
 	row.call("Stick dead zone", "%d%%" % int(round(Opts.dead * 100.0)), func(): Opts.dead = Opts.cycle(Opts.dead, [0.06, 0.14, 0.22, 0.3]))
 	row.call("Stick travel", ["short (sensitive)", "normal", "long (precise)"][0 if Opts.stick < 0.9 else (1 if Opts.stick < 1.1 else 2)], func(): Opts.stick = Opts.cycle(Opts.stick, [0.7, 1.0, 1.3]))
 	row.call("Sound volume", "%d%%" % int(round(Opts.volume * 100.0)), func(): Opts.volume = Opts.cycle(Opts.volume, [0.0, 0.25, 0.5, 0.75, 1.0]))
+	row.call("Vibration when hurt", "on" if Opts.vibrate else "off", func(): Opts.vibrate = not Opts.vibrate)
 	body.add_child(UiKit.button("Back", func(): open("pause" if sim != null else "title"), 58))
+
+## pick an exported save to load into the slot
+func _build_import() -> void:
+	_header("Import a save", false)
+	var files: Array = SaveGame.exports()
+	body.add_child(UiKit.label("Put a .zip exported from LAST LIGHT in: %s" % ProjectSettings.globalize_path(SaveGame.EXPORT_DIR), 15, UiKit.DIM))
+	if files.is_empty():
+		body.add_child(UiKit.label("No save files found there.", 17))
+	for f in files:
+		var fp: String = f
+		body.add_child(UiKit.button(fp.get_file(), func():
+			if SaveGame.import_slot(fp, main.SLOT):
+				open("title")
+			else:
+				_import_msg = "That file could not be loaded. Your save was left as it was."
+				rebuild(), 58))
+	if _import_msg != "":
+		body.add_child(UiKit.label(_import_msg, 16, UiKit.BAD))
+	body.add_child(UiKit.button("Back", func():
+		_import_msg = ""
+		open("title"), 58))
 
 # ------------------------------------------------------------------ pause / context / death
 func _build_pause() -> void:
@@ -947,6 +1021,12 @@ func _build_pause() -> void:
 		sim.unstick()
 		close()))
 	body.add_child(UiKit.button("Settings (buttons, text, stick, sound)", func(): open("settings")))
+	body.add_child(UiKit.button("Export this save to a file", func():
+		main.save_now()
+		var path: String = SaveGame.export_slot(main.SLOT)
+		sim.say(("Saved a copy: %s" % ProjectSettings.globalize_path(path)) if path != "" else "EXPORT FAILED", UiKit.GOOD if path != "" else UiKit.BAD)
+		close()))
+	body.add_child(UiKit.button("Journal", func(): open("journal")))
 	body.add_child(UiKit.button("How to Play", func(): open("help")))
 	body.add_child(UiKit.button("Performance overlay: %s" % ("on" if main.hud.debug else "off"), func():
 		main.hud.debug = not main.hud.debug

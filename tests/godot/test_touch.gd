@@ -145,6 +145,16 @@ func _process(_dt: float) -> bool:
 		170:
 			ok(absf(sim.hour - p0.x) < 0.000001, "simulation is paused while a panel is open")
 			main.panels.close()
+			main.panels.open("journal")
+			ok(main.panels.current == "journal" and main.panels.body.get_child_count() > 0, "the journal opens and lists what you know")
+			main.panels.open("import")
+			ok(main.panels.current == "import" and main.panels.body.get_child_count() > 2, "the save import screen opens")
+			main.panels.open("settings")
+			var vib := false
+			for cb in main.panels.body.get_children():
+				if cb is Button and String(cb.text).begins_with("Vibration"): vib = true
+			ok(vib, "settings offer a vibration switch")
+			main.panels.close()
 			touch(5, Vector2(size.x * 0.5, size.y * 0.3), true)      # pinch
 			touch(6, Vector2(size.x * 0.5 + 100, size.y * 0.3), true)
 			p0 = Vector2(main.view.zoom, 0)

@@ -360,6 +360,8 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 		anim = "s_squat"
 		moving = false
 		return
+	if grabbed_by >= 0 and _update_grab(dt):
+		return
 	if sleeping:
 		anim = "s_lie"
 		moving = false
@@ -506,6 +508,10 @@ func melee_stats() -> Dictionary:
 var carrying: Dictionary = {}    # furniture in your arms: {"o": id, "rot", "items", "ent"}
 var known: Dictionary = {}       # trades someone has shown you in person
 var pname := ""                 # what the survivor is called
+var grabbed_by := -1             # id of an infected that has hold of you
+var escape := 0.0               # how close you are to tearing free (0..1)
+var _grab_t := 0.0
+var journal: Array = []         # what this survivor has read and learned: [hour, text]
 var hidden := false             # inside a wardrobe or locker
 var hide_at := Vector2i.ZERO
 var trail: Array = []           # [pos, hour]: what the infected can follow by scent
@@ -551,7 +557,55 @@ func surface_noise() -> float:
 		k *= 0.9
 	return k
 
+## held: you cannot walk away; every shove or swing is a struggle to break free, and its teeth come closer
+func _grabber() -> Zombie:
+	for z in sim.zombies.list:
+		if z.id == grabbed_by:
+			return z
+	return null
+
+func _update_grab(dt: float) -> bool:
+	var z: Zombie = _grabber()
+	if z == null or z.state == Zombie.DOWN or z.state == Zombie.STAGGER or z.pos.distance_to(pos) > 1.4 or not alive:
+		grabbed_by = -1
+		escape = 0.0
+		return false
+	moving = false
+	anim = "s_idle"
+	facing = (z.pos - pos).normalized()
+	dir8 = Iso.dir8(facing)
+	_grab_t += dt
+	if _grab_t >= 1.3:
+		_grab_t = 0.0
+		var holder: int = grabbed_by
+		grabbed_by = -2                       # (so the bite below cannot grab again)
+		if randf() < 0.45:
+			take_zombie_hit(z)
+		grabbed_by = holder if alive else -1
+	return true
+
+func struggle() -> void:
+	var z: Zombie = _grabber()
+	if z == null:
+		grabbed_by = -1
+		return
+	escape += (0.22 + skill_level("strength") * 0.025 + skill_level("fitness") * 0.015) * (0.6 if endurance < 20.0 else 1.0)
+	endurance = maxf(0.0, endurance - 4.0)
+	sim.noise(pos, 5.0)
+	if escape >= 1.0:
+		grabbed_by = -1
+		escape = 0.0
+		z.state = Zombie.STAGGER
+		z.t = 0.9
+		z.pos = sim.world.move(z.pos, (z.pos - pos).normalized() * 0.8, 0.3)
+		sim.say("You tear free and shove it off!", Color(0.8, 0.95, 0.7))
+
 func try_shove() -> bool:
+	if grabbed_by >= 0 and _grabber() == null:
+		grabbed_by = -1                 # what held you is gone
+	if grabbed_by >= 0:
+		struggle()
+		return true
 	if not alive or sleeping or swing_t > 0.0 or attack_cd > 0.0:
 		return false
 	force_shove = true
@@ -569,6 +623,13 @@ func call_out(loud: bool) -> void:
 	sim.say("\"HEY! OVER HERE!\"" if loud else "\"psst…\"", Color(0.85, 0.85, 0.7))
 
 func try_attack() -> bool:
+	if grabbed_by >= 0 and _grabber() == null:
+		grabbed_by = -1
+	if grabbed_by >= 0:
+		if attack_cd <= 0.0:
+			attack_cd = 0.35
+			struggle()
+		return true
 	if not dragging.is_empty():
 		sim.say("Drop the body first (USE)", Color(0.9, 0.8, 0.6))
 		return false
@@ -923,6 +984,12 @@ func take_zombie_hit(z: Zombie) -> void:
 		inf_ch = 0.25
 	hp -= dmg
 	add_wound(part, type, "infected attack")
+	if grabbed_by == -1 and z.kind != 2 and randf() < 0.22 and sim.vehicle == null:
+		grabbed_by = z.id
+		escape = 0.0
+		_grab_t = 0.0
+		cancel_action()
+		sim.say("It has hold of you! Shove or swing to break free.", Color(1.0, 0.45, 0.35))
 	match type:
 		"scratch": sim.say("Scratched on the %s. Skin broken; a small risk of the fever." % PARTS[part].to_lower(), Color(1.0, 0.75, 0.5))
 		"laceration": sim.say("Deep laceration on the %s — bleeding. A real risk of the fever." % PARTS[part].to_lower(), Color(1.0, 0.6, 0.45))
@@ -1177,11 +1244,13 @@ func _tick_body(dh: float) -> void:
 
 ## clothing protection: chance that the worn garment stops an attack
 func clothing_def(part: int = 2) -> float:
-	var it: Dictionary = cover_item(part)
-	if it.is_empty():
-		return 0.0
-	var wdf: Dictionary = Items.def(it["id"]).get("wear", {})
-	return float(wdf.get("def", 0.0)) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + float(it.get("pt", 0)) * 0.04
+	# the toughest layer over that part is what the teeth meet (a vest under a jacket still counts)
+	var best := 0.0
+	for it in worn_items():
+		var wdf: Dictionary = Items.def(it["id"]).get("wear", {})
+		if (wdf.get("parts", [2, 3, 5, 6, 7, 8]) as Array).has(part):
+			best = maxf(best, float(wdf.get("def", 0.0)) * clampf(float(it.get("c", 1.0)) + 0.25, 0.3, 1.0) + float(it.get("pt", 0)) * 0.04)
+	return best
 
 ## real-time part of having a cold (called from update)
 func _sneeze(dt: float) -> void:
@@ -1463,7 +1532,7 @@ func save() -> Dictionary:
 		"occ": occupation, "look": look, "kills": kills, "sneak": sneaking, "light": light_on,
 		"traits": traits, "weight": weight, "kcal": kcal, "bored": bored, "unhappy": unhappy, "stress": stress, "drunk": drunk,
 		"cold_h": cold_h, "strain": strain, "smoke_h": smoke_h, "ex_log": ex_log, "meal": last_meal_h,
-		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "pname": pname, "known": known, "grime": grime, "cloth_dirt": cloth_dirt, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
+		"gear": _gear_idx(), "arm": arm_strain, "calm_h": calm_h, "antidep_h": antidep_h, "protein": protein, "corpse": corpse_exp, "markers": markers, "journal": journal, "pname": pname, "known": known, "grime": grime, "cloth_dirt": cloth_dirt, "hidden": hidden, "hide_at": hide_at, "carry": carrying,
 		"boost": xp_boost, "parts": PARTS.size()}
 
 func _gear_idx() -> Dictionary:
@@ -1543,6 +1612,7 @@ func load(d: Dictionary) -> void:
 	protein = d.get("protein", 50.0)
 	corpse_exp = d.get("corpse", 0.0)
 	markers = d.get("markers", [])
+	journal = d.get("journal", [])
 	pname = d.get("pname", "")
 	known = d.get("known", {})
 	grime = d.get("grime", 0.0)

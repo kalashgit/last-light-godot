@@ -72,6 +72,16 @@ static func targets(sim: Sim) -> Array:
 				var d2: float = cpos.distance_to(p.pos)
 				if d2 < 1.3:
 					out.append({"kind": "corpse", "corpse": cp, "x": floori(cpos.x), "y": floori(cpos.y), "score": 0.6 - d2 * 0.3 + f.dot((cpos - p.pos).normalized()) * 0.3})
+	# a fire within reach
+	var best_fire := Vector2i(-99999, 0)
+	var bfd := 1.8
+	for bk in sim.burning.keys():
+		var fdd: float = Vector2(bk.x + 0.5, bk.y + 0.5).distance_to(p.pos)
+		if fdd < bfd:
+			bfd = fdd
+			best_fire = bk
+	if best_fire.x != -99999:
+		out.append({"kind": "fire_tile", "x": best_fire.x, "y": best_fire.y, "score": 2.0})
 	var nn = sim.npcs.nearest(p.pos, 1.7)
 	if nn != null and nn.state != NpcSim.HOSTILE:
 		out.append({"kind": "npc", "npc": nn, "x": floori(nn.pos.x), "y": floori(nn.pos.y), "score": 0.75 + f.dot((nn.pos - p.pos).normalized()) * 0.5})
@@ -95,6 +105,7 @@ static func target_name(sim: Sim, t: Dictionary) -> String:
 		"sand": return "Sand"
 		"corpse": return "Corpse"
 		"npc": return String(t["npc"].name)
+		"fire_tile": return "Fire"
 	return ""
 
 # ------------------------------------------------------------------ options
@@ -111,6 +122,7 @@ static func options(sim: Sim, t: Dictionary) -> Array:
 		"soil": return _soil_options(sim, t)
 		"sand": return [_opt("Dig sand", func(): _dig(sim, "sand"))]
 		"npc": return sim.npcs.options(t["npc"])
+		"fire_tile": return _fire_fight_options(sim, t["x"], t["y"])
 	return []
 
 ## press of the INTERACT button. full_menu = long press.
@@ -797,6 +809,40 @@ static func _laundry(sim: Sim, draw: Callable) -> void:
 		p.wet = minf(100.0, p.wet + 45.0)
 		sim.say("Clean clothes. Damp ones, for now.", Color(0.75, 0.9, 1.0)))
 
+## put a fire out: an extinguisher clears an area, water douses a tile, a sheet smothers a small one
+static func _fire_fight_options(sim: Sim, x: int, y: int) -> Array:
+	var p: Player = sim.player
+	var out: Array = []
+	var ext: Dictionary = Inv.find(p.inv, "fire_extinguisher")
+	if not ext.is_empty() and int(ext.get("u", 0)) > 0:
+		var q: Dictionary = _opt("Spray the extinguisher", func():
+			Inv.use_charge(p.inv, ext)
+			for dy in range(-1, 2):
+				for dx in range(-1, 2):
+					sim.burning.erase(Vector2i(x + dx, y + dy))
+					sim.fires.erase(Vector2i(x + dx, y + dy))
+			sim.noise(p.pos, 8.0)
+			sim.emit_fx("glass", Vector2(x + 0.5, y + 0.5))
+			sim.say("A white cloud, and the flames are gone.", Color(0.85, 0.9, 1.0)))
+		q["quick"] = true
+		out.append(q)
+	if p.water_units() >= 2:
+		out.append(_opt("Douse it with water (2)", func():
+			p.consume_water(2)
+			sim.burning.erase(Vector2i(x, y))
+			sim.fires.erase(Vector2i(x, y))
+			sim.emit_fx("thump", Vector2(x + 0.5, y + 0.5))
+			sim.say("It hisses out.", Color(0.85, 0.9, 1.0))))
+	if Inv.count(p.inv, "sheet") > 0 and float(sim.burning.get(Vector2i(x, y), 99.0)) < 30.0:
+		out.append(_opt("Smother it with a sheet", func():
+			Inv.take(p.inv, "sheet", 1)
+			sim.burning.erase(Vector2i(x, y))
+			sim.fires.erase(Vector2i(x, y))
+			sim.say("Beaten out. The sheet is ruined.", Color(0.85, 0.9, 1.0))))
+	if out.is_empty():
+		out.append(_opt("Nothing to put it out with", func(): sim.say("Water, a sheet or an extinguisher. Or get away from it.", Color(1.0, 0.75, 0.5))))
+	return out
+
 ## sit down for a while: stamina and sore arms recover much faster than standing. any attack interrupts it.
 static func _rest(sim: Sim) -> void:
 	var p: Player = sim.player
@@ -846,6 +892,12 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 			else:
 				sim.say("The engine catches. Steer with the stick; USE to get out.", Color(0.75, 0.9, 0.7))))
 	else:
+		var keys: Array = []
+		for kit in p.inv:
+			if kit["id"] == "car_keys" and not (kit.get("no", []) as Array).has("%d,%d" % [ax, ay]) and (not kit.has("car") or kit["car"] == "%d,%d" % [ax, ay]):
+				keys.append(kit)
+		if not keys.is_empty():
+			out.append(_opt("Try the car keys you found", func(): try_keys(sim, e, ax, ay)))
 		out.append(_opt("Hotwire (no key)", func(): _hotwire(sim, e)))
 	if int(e.get("bat", 0)) == 0 and Inv.count(p.inv, "car_battery") > 0:
 		out.append(_opt("Install car battery", func():
@@ -989,14 +1041,33 @@ static func _unload_companions(sim: Sim, v: Vehicle) -> void:
 		k += 1
 	v.passengers.clear()
 
+## keys you picked up somewhere: one of them may fit this car; a key that fits is remembered as this car's
+static func try_keys(sim: Sim, e: Dictionary, ax: int, ay: int) -> bool:
+	var p: Player = sim.player
+	var here: String = "%d,%d" % [ax, ay]
+	for kit in p.inv:
+		if kit["id"] != "car_keys": continue
+		if kit.get("car", "") == here or (not kit.has("car") and not (kit.get("no", []) as Array).has(here) and sim.rng.randf() < 0.3):
+			kit["car"] = here
+			e["key"] = 1
+			sim.say("The key slides in and turns. This one is yours now.", Color(0.75, 0.9, 0.7))
+			return true
+		if not kit.has("car"):
+			var no: Array = kit.get("no", [])
+			no.append(here)
+			kit["no"] = no
+	sim.say("None of your keys fit this one.", Color(0.9, 0.8, 0.6))
+	return false
+
 static func _hotwire(sim: Sim, e: Dictionary) -> void:
 	var p: Player = sim.player
 	var skilled: bool = p.occupation == "burglar" or (p.skill_level("mechanics") >= 2 and p.skill_level("electrical") >= 1)
-	if not skilled and not Inv.has_tag(p.inv, "screwdriver"):
+	var pliers: bool = Inv.has_tag(p.inv, "pliers")
+	if not skilled and not Inv.has_tag(p.inv, "screwdriver") and not pliers:
 		sim.say("Without Mechanics 2 and Electrical 1 you would need at least a screwdriver to try.", Color(0.9, 0.8, 0.6))
 		return
 	p.start_action("Hotwiring", 6.0 if skilled else 12.0, func():
-		var chance: float = 0.7 + 0.05 * p.skill_level("electrical") if skilled else 0.18
+		var chance: float = (0.7 + 0.05 * p.skill_level("electrical") if skilled else 0.18) + (0.12 if pliers else 0.0)
 		sim.noise(p.pos, 7.0)
 		p.add_xp("electrical", 12.0)
 		if randf() < chance:
@@ -1742,6 +1813,14 @@ static func build_target(sim: Sim, r: Dictionary) -> Dictionary:
 	var fs: Vector2i = Defs.obj_size(id, int(b.get("rot", 0)))
 	for j in range(fs.y):
 		for i in range(fs.x):
+			var cellr := Rect2(Vector2(ft.x + i, ft.y + j), Vector2.ONE)
+			for z in sim.zombies.list:
+				if cellr.has_point(z.pos): return {"ok": false, "why": "Something is standing there", "x": ft.x, "y": ft.y, "side": -1}
+			for n in sim.npcs.list:
+				if not p.carrying.is_empty() and n.state == NpcSim.FOLLOW: continue     # the one holding the other end steps aside
+				if cellr.has_point(n.pos): return {"ok": false, "why": "%s is standing there" % n.name, "x": ft.x, "y": ft.y, "side": -1}
+			if Defs.o_id(w.obj(ft.x + i, ft.y + j)) == Defs.O_STAIRS:
+				return {"ok": false, "why": "Not across the stairs", "x": ft.x, "y": ft.y, "side": -1}
 			if w.tile_blocked(ft.x + i, ft.y + j) or w.obj(ft.x + i, ft.y + j) != 0 or Defs.ground_is_water(w.ground(ft.x + i, ft.y + j)):
 				return {"ok": false, "why": "Not enough clear space in front of you", "x": ft.x, "y": ft.y, "side": -1}
 	return {"ok": true, "x": ft.x, "y": ft.y, "side": -1}

@@ -16,7 +16,7 @@ var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
 var time_scale := 1.0
 var settings := {"zombies": 1.0, "loot": 1.0, "day_min": 60.0, "infection": true, "god": false, "respawn": false, "zspeed": 1.0,
-	"xp": 1.0, "util": 1, "season": 0, "flyover": 1, "kit": false, "growth": 1.0, "dark": 1.0, "guide": true, "meta": true}
+	"xp": 1.0, "util": 1, "season": 0, "flyover": 1, "kit": false, "growth": 1.0, "dark": 1.0, "guide": true, "meta": true, "events": 1.0}
 var weather := {"cloud": 0.3, "rain": 0.0, "fog": 0.0, "temp": 21.0, "wind": 0.2}
 var power_off_h := 0.0
 var water_off_h := 0.0
@@ -457,6 +457,7 @@ func new_survivor(occupation: String, trait_list: Array = [], start_kind: String
 			world.notify(floori(old.pos.x), floori(old.pos.y))
 	lives += 1
 	world.explored = {}        # what the dead knew of the map dies with them
+	objectives = []
 	player = Player.new(self)
 	dead = false
 	var st: Dictionary = world.gen.find_start(start_kind, lives)
@@ -484,11 +485,25 @@ const NOTE_LORE := ["\"They said the east road was open. It was not.\"", "\"If t
 	"\"We boarded the windows the first night. By the fourth we wished we had left a way out.\"", "\"Do not trust the quiet houses. Quiet means the door held.\"",
 	"\"M. — gone to find your mother. Wait three days, then go north without me.\""]
 
-func add_marker(x: int, y: int, label: String) -> void:
+func add_marker(x: int, y: int, label: String, seen: bool = false) -> void:
 	for m in player.markers:
 		if int(m[0]) == x and int(m[1]) == y:
 			return
-	player.markers.append([x, y, label])
+	if Vector2(x, y).distance_to(player.pos) < 10.0:
+		seen = true
+	player.markers.append([x, y, label, seen])
+
+## rumoured places become known once you have been there
+func _update_markers() -> void:
+	for m in player.markers:
+		if (m.size() < 4 or not m[3]) and Vector2(float(m[0]), float(m[1])).distance_to(player.pos) < 10.0:
+			if m.size() < 4: m.append(true)
+			else: m[3] = true
+
+func journal_add(text: String) -> void:
+	player.journal.append([hour, text])
+	if player.journal.size() > 80:
+		player.journal.pop_front()
 
 ## what kind of place is this, in words (for notes and markers)
 func place_name(pos: Vector2) -> String:
@@ -594,6 +609,46 @@ func _fill_document(doc: Dictionary) -> void:
 						known += 1
 			doc["txt"] = "A road map of the surrounding streets, folded soft. (%d blocks added to your map.)" % known
 
+## a compass: where home and the places you have marked are, from here
+func take_bearing() -> void:
+	var lines: Array = []
+	if not home.is_empty():
+		lines.append("home %s, %d paces" % [compass(player.pos, home_pos()), int(home_pos().distance_to(player.pos))])
+	for ob in objectives:
+		if ob["state"] == "open":
+			var at := Vector2(float(ob["x"]), float(ob["y"]))
+			lines.append("%s %s, %d paces" % [String(ob["kind"]).replace("distress", "the distress call"), compass(player.pos, at), int(at.distance_to(player.pos))])
+	var near: Array = []
+	for mk in player.markers:
+		near.append([Vector2(float(mk[0]), float(mk[1])).distance_to(player.pos), mk])
+	near.sort_custom(func(a, b): return a[0] < b[0])
+	for i in range(mini(3, near.size())):
+		var mk2: Array = near[i][1]
+		lines.append("%s %s, %d paces" % [mk2[2], compass(player.pos, Vector2(float(mk2[0]), float(mk2[1]))), int(near[i][0])])
+	if lines.is_empty():
+		say("The needle points north. You have nowhere marked to go.", Color(0.85, 0.85, 0.75))
+	else:
+		say("Bearing: " + "; ".join(lines) + ".", Color(0.85, 0.85, 0.75))
+	player.add_xp("tracking", 2.0)
+
+## a road atlas: the whole district, roughly, without walking it
+func read_atlas(it: Dictionary) -> int:
+	var cx: int = floori(player.pos.x) >> 4
+	var cy: int = floori(player.pos.y) >> 4
+	var known := 0
+	for dy in range(-12, 13):
+		for dx in range(-12, 13):
+			var k := Vector2i(cx + dx, cy + dy)
+			if not world.explored.has(k) and (dx * dx + dy * dy) <= 144:
+				var ch: Chunk = world.chunk(k.x, k.y)
+				if ch == null: ch = world.gen.gen_chunk(k.x, k.y)
+				world.explored[k] = ch.map_px if ch.map_px.size() == Iso.CS2 else WorldGen._minimap(ch)
+				known += 1
+	it["read"] = 1
+	say("You trace the roads with a finger. (%d blocks added to your map.)" % known, Color(0.86, 0.84, 0.72))
+	journal_add("Studied a road atlas of the district.")
+	return known
+
 ## a bulletin's promise comes true or does not, the first time anyone gets there
 func _resolve_sites(c: Chunk) -> void:
 	if pending_sites.is_empty():
@@ -628,6 +683,7 @@ func read_note(note: Dictionary) -> void:
 	if not note.has("txt"):
 		_fill_found_note(note)
 	say(String(note["txt"]), Color(0.86, 0.84, 0.72))
+	journal_add(String(note["txt"]))
 	if note.has("mx"):
 		add_marker(int(note["mx"]), int(note["my"]), String(note.get("lab", "Marked on a note")))
 		say("Marked on your map.", Color(0.75, 0.9, 0.7))
@@ -637,8 +693,11 @@ func read_note(note: Dictionary) -> void:
 # ------------------------------------------------------------------ fish stocks
 var unjammed: Dictionary = {}     # doors forced or found free: "x,y,side" -> true
 var pending_sites: Dictionary = {}  # Vector2i -> "supply" | "overrun": what a bulletin promised, decided when it was printed
+var objectives: Array = []        # {"text", "x", "y", "state", "due", "kind"}
 var home: Dictionary = {}         # your shelter: {"x", "y", "b"}
 var _trader_h := 60.0
+var _event_h := 30.0               # game hours until the world throws something at you
+const EVENTS := ["distress", "fleeing", "patrol", "horde", "wildfire", "crash"]
 var snow_cover := 0.0            # 0 bare .. 1 deep: settles while it snows, melts above freezing
 var flooded: Dictionary = {}       # Vector2i tile -> ground it had before the water came up
 var _wet_h := 0.0                  # hours of heavy rain in a row
@@ -716,6 +775,8 @@ func _tick_smoke(dt: float) -> void:
 		var d: float = Vector2(k.x + 0.5, k.y + 0.5).distance_to(player.pos)
 		if (b != 0 and world.bld(k.x, k.y) == b and d < 9.0) or d < 2.5:
 			thick += 1
+	if thick > 0 and b != 0 and _room_vented(b):
+		thick = int(ceil(float(thick) * 0.4))          # an open window or door lets the worst of it out
 	if thick > 0:
 		if not settings.get("god", false):
 			player.hurt(minf(4.0, 0.6 * float(thick)), "Choked on smoke")
@@ -723,6 +784,218 @@ func _tick_smoke(dt: float) -> void:
 		noise(player.pos, 5.0)                 # coughing
 		if rng.randf() < 0.3:
 			say("Smoke fills your lungs. Get out!", Color(1.0, 0.7, 0.5))
+
+## is there an open (or broken) door or window in this building near you?
+func _room_vented(b: int) -> bool:
+	var px: int = floori(player.pos.x)
+	var py: int = floori(player.pos.y)
+	for y in range(py - 6, py + 7):
+		for x in range(px - 6, px + 7):
+			for side in range(2):
+				var wid: int = world.wall(x, y, side)
+				if wid == 0 or (wid & 3) == Defs.WS_SOLID:
+					continue
+				if world.bld(x, y) != b and world.bld(x - (1 if side == 1 else 0), y - (1 if side == 0 else 0)) != b:
+					continue
+				if (world.edge_state(x, y, side) & (Defs.ES_OPEN | Defs.ES_BROKEN)) != 0 or (wid & 3) == Defs.WS_ARCH:
+					return true
+	return false
+
+# ------------------------------------------------------------------ the event director
+## every so often the world does something near you that you did not cause
+func _director(dh: float) -> void:
+	if not settings.get("meta", true) or float(settings.get("events", 1.0)) <= 0.0 or underground() or not player.alive:
+		return
+	_event_h -= dh * float(settings.get("events", 1.0))
+	if _event_h > 0.0:
+		return
+	_event_h = rng.randf_range(10.0, 26.0)
+	var order: Array = EVENTS.duplicate()
+	for i in range(order.size()):
+		var j: int = rng.randi() % order.size()
+		var tmp = order[i]
+		order[i] = order[j]
+		order[j] = tmp
+	for k in order:
+		if world_event(String(k)):
+			return
+
+## an open outdoor tile at a distance from here, in a loaded chunk if asked
+func _open_spot(center: Vector2, rmin: float, rmax: float, loaded: bool) -> Vector2:
+	for attempt in range(40):
+		var a: float = rng.randf() * TAU
+		var q: Vector2 = center + Vector2(cos(a), sin(a)) * rng.randf_range(rmin, rmax)
+		var qx: int = floori(q.x)
+		var qy: int = floori(q.y)
+		if loaded and not world.is_loaded(qx, qy):
+			continue
+		if World.level(q.y) != World.level(center.y):
+			continue
+		if loaded and (world.tile_blocked(qx, qy) or world.bld(qx, qy) != 0 or Defs.ground_is_water(world.ground(qx, qy))):
+			continue
+		return Vector2(qx + 0.5, qy + 0.5)
+	return Vector2.INF
+
+## run one event now; false if it could not happen here
+func world_event(kind: String) -> bool:
+	var p: Vector2 = player.pos
+	match kind:
+		"distress":
+			for o in objectives:
+				if o["kind"] == "distress" and o["state"] == "open": return false
+			var spot: Vector2 = _open_spot(p, 55.0, 95.0, false)
+			if spot == Vector2.INF: return false
+			var ob: Dictionary = {"kind": "distress", "x": floori(spot.x), "y": floori(spot.y), "state": "open", "due": hour + 30.0, "spawned": false, "npc": -1,
+				"text": "Answer the distress call %s of here" % compass(p, spot)}
+			objectives.append(ob)
+			add_marker(ob["x"], ob["y"], "Distress call")
+			if not Inv.find_tag(player.inv, "radio").is_empty() or Inv.count(player.inv, "radio") > 0:
+				say("The radio crackles: \"…anyone… we're pinned down, %s of the… please…\"" % compass(p, spot), Color(1.0, 0.85, 0.5))
+			else:
+				say("A red flare climbs into the sky to the %s. Someone wants to be found." % compass(p, spot), Color(1.0, 0.6, 0.45))
+			journal_add("A call for help, %s of where I stood. Marked on the map." % compass(p, spot))
+			return true
+		"fleeing":
+			var s: Vector2 = _open_spot(p, 16.0, 22.0, true)
+			if s == Vector2.INF: return false
+			var n = npcs.spawn(s, false)
+			n.task = "flee"
+			n.task_t = 14.0
+			n.task_pos = p
+			n.trust = 45.0
+			var back: Vector2 = (s - p).normalized()
+			for i in range(rng.randi_range(3, 5)):
+				var zq: Vector2 = s + back * rng.randf_range(4.0, 7.0) + Vector2(rng.randf_range(-2, 2), rng.randf_range(-2, 2))
+				if world.is_loaded(floori(zq.x), floori(zq.y)) and not world.tile_blocked(floori(zq.x), floori(zq.y)):
+					var z: Zombie = zombies.spawn(zq)
+					z.state = Zombie.INVESTIGATE
+					z.goal = p
+					z.has_goal = true
+					z.give_up = 40.0
+			noise(s, 26.0)
+			say("Running footsteps and a voice: \"Help! They're right behind me!\" — to the %s." % compass(p, s), Color(1.0, 0.75, 0.5))
+			return true
+		"patrol":
+			var cands: Array = []
+			for key in factions.sites.keys():
+				var st: Dictionary = factions.sites[key]
+				if not st["fallen"] and Vector2(key).distance_to(Vector2(p) / float(WorldGen.REGION)) < 3.0:
+					cands.append([int(st["f"]), key])
+			if cands.is_empty(): return false
+			var pick: Array = cands[rng.randi() % cands.size()]
+			var f: int = int(pick[0])
+			var from: Vector2 = _open_spot(p, 20.0, 26.0, true)
+			if from == Vector2.INF: return false
+			var to: Vector2 = p + (p - from).normalized() * 24.0
+			var hostile: bool = Factions.kind(f) == Factions.RAIDER or factions.rep_of(f) < -50.0
+			for i in range(rng.randi_range(2, 3)):
+				var m = npcs.spawn(from + Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)), false)
+				m.fac = f
+				m.site = pick[1]
+				m.task = "travel"
+				m.task_pos = to + Vector2(rng.randf_range(-1.5, 1.5), rng.randf_range(-1.5, 1.5))
+				m.task_t = 240.0
+				m.wpn = "baseball_bat" if rng.randf() < 0.5 else ""
+				m.home = m.task_pos
+				if hostile: m.state = NpcSim.HOSTILE
+			say("Voices and boots, %s of you: a %s patrol." % [compass(p, from), Factions.fname(f)], Color(0.9, 0.85, 0.65))
+			return true
+		"horde":
+			var c: Vector2 = _open_spot(p, 30.0, 38.0, true)
+			if c == Vector2.INF: return false
+			var dest: Vector2 = p + (p - c).normalized() * 40.0
+			var n2: int = int(rng.randi_range(12, 22) * float(settings.get("zombies", 1.0)))
+			var made := 0
+			for i in range(n2 * 2):
+				if made >= n2 or zombies.list.size() >= ZombieSim.MAX_ACTIVE: break
+				var q: Vector2 = c + Vector2(rng.randf_range(-4, 4), rng.randf_range(-4, 4))
+				if not world.is_loaded(floori(q.x), floori(q.y)) or world.tile_blocked(floori(q.x), floori(q.y)): continue
+				var z2: Zombie = zombies.spawn(q)
+				z2.state = Zombie.INVESTIGATE
+				z2.goal = dest + Vector2(rng.randf_range(-5, 5), rng.randf_range(-5, 5))
+				z2.has_goal = true
+				z2.give_up = 400.0
+				made += 1
+			if made < 6: return false
+			say("A long, low moan rolls in from the %s. Many of them, moving together." % compass(p, c), Color(1.0, 0.55, 0.45))
+			return true
+		"wildfire":
+			if float(weather["rain"]) > 0.1 or float(weather["temp"]) < 12.0 or snow_cover > 0.2: return false
+			for attempt in range(30):
+				var fs: Vector2 = _open_spot(p, 24.0, 40.0, true)
+				if fs == Vector2.INF: return false
+				if flammability(floori(fs.x), floori(fs.y)) > 0.25 or Defs.o_id(world.obj(floori(fs.x), floori(fs.y))) != 0:
+					ignite(floori(fs.x), floori(fs.y), 3.0)
+					if burning.has(Vector2i(floori(fs.x), floori(fs.y))):
+						say("Smoke rises to the %s. Something out there has caught fire." % compass(p, fs), Color(1.0, 0.65, 0.4))
+						return true
+			return false
+		"crash":
+			var cs: Vector2 = _open_spot(p, 20.0, 34.0, true)
+			if cs == Vector2.INF: return false
+			var cx: int = floori(cs.x)
+			var cy: int = floori(cs.y)
+			var cc: Chunk = world.chunk_at(cx, cy)
+			var gear: Array = []
+			for gid in ["water_bottle", "bandage", "canned_beans", "car_keys" if Items.DB.has("car_keys") else "battery"]:
+				if rng.randf() < 0.7: gear.append(Items.make(gid, 1, hour))
+			cc.corpses.append({"x": cs.x, "y": cs.y, "d": rng.randi() % 8, "l": [rng.randi() % 4, rng.randi() % 10, rng.randi() % 6, rng.randi() % 6], "h": hour, "perm": 1, "loot": gear})
+			cc.touched = true
+			world.notify(cx, cy)
+			if flammability(cx + 1, cy) > 0.1: ignite(cx + 1, cy, 2.0)
+			noise(cs, 50.0)
+			emit_fx("meta_crash", cs)
+			add_marker(cx, cy, "Crash")
+			say("Tyres scream, then a crash of metal to the %s. Every one of them heard that." % compass(p, cs), Color(1.0, 0.7, 0.45))
+			return true
+	return false
+
+## the things you were asked to do, and whether you did them
+func _check_objectives() -> void:
+	for ob in objectives:
+		if ob["state"] != "open": continue
+		var at := Vector2(float(ob["x"]) + 0.5, float(ob["y"]) + 0.5)
+		match String(ob["kind"]):
+			"distress":
+				if not ob["spawned"]:
+					if hour > float(ob["due"]):
+						ob["state"] = "failed"
+						say("The calls for help have stopped.", Color(0.8, 0.75, 0.7))
+						journal_add("No more calls from the %s. Too late." % compass(player.pos, at))
+					elif at.distance_to(player.pos) < 40.0 and world.is_loaded(ob["x"], ob["y"]):
+						var spot: Vector2 = _open_spot(at, 0.0, 4.0, true)
+						if spot == Vector2.INF: spot = outside_spot(at)
+						var n = npcs.spawn(spot, false)
+						n.trust = 40.0
+						n.temper = "brave"
+						ob["npc"] = n.id
+						ob["spawned"] = true
+						for i in range(rng.randi_range(4, 7)):
+							var zq: Vector2 = _open_spot(spot, 3.0, 6.0, true)
+							if zq == Vector2.INF: continue
+							var z: Zombie = zombies.spawn(zq)
+							z.state = Zombie.INVESTIGATE
+							z.goal = spot
+							z.has_goal = true
+							z.give_up = 120.0
+						noise(spot, 18.0)
+					continue
+				var nn = null
+				for n2 in npcs.list:
+					if n2.id == int(ob["npc"]): nn = n2
+				if nn == null:
+					if at.distance_to(player.pos) < 30.0:
+						ob["state"] = "failed"
+						say("You were too late for whoever called.", Color(0.85, 0.7, 0.65))
+					continue
+				if nn.pos.distance_to(player.pos) < 6.0 and zombies.in_radius(nn.pos, 9.0).is_empty():
+					ob["state"] = "done"
+					nn.trust = minf(100.0, nn.trust + 35.0)
+					nn.met = true
+					var gift: String = ["ammo_9mm", "painkillers", "canned_beans", "bandage", "battery"][rng.randi() % 5]
+					Inv.add_new(player.inv, gift, 2, hour)
+					say("%s: \"You came. I didn't think anyone would.\" They press %s into your hands." % [nn.name, Items.def(gift)["n"]], Color(0.7, 0.95, 0.7))
+					journal_add("Answered a call for help. %s owes me." % nn.name)
 
 ## spike traps tear up whatever walks over them, and wear out doing it
 func _tick_spikes(dt: float) -> void:
@@ -1115,6 +1388,9 @@ func icy(x: int, y: int) -> bool:
 # ------------------------------------------------------------------ slow world tick (1 Hz)
 func _slow_tick(dh: float) -> void:
 	factions.tick(dh)
+	_update_markers()
+	_director(dh)
+	_check_objectives()
 	_trader_h -= dh
 	if _trader_h <= 0.0:
 		_trader_h = rng.randf_range(50.0, 90.0)
@@ -1413,7 +1689,7 @@ func save_meta() -> Dictionary:
 		"power_off": power_off_h, "water_off": water_off_h, "explored": world.explored, "dead": dead,
 		"psaid": _power_said, "wsaid": _water_said, "rng": rng.state, "flags": flags, "guide": guide_i,
 		"fly_next": fly_next_h, "fly_end": fly_end_h, "fly_on": fly_active, "lives": lives,
-		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "unjammed": unjammed, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
+		"vehicle": vehicle.save() if vehicle != null else {}, "burning": burning, "factions": factions.save(), "pipes": pipes, "fish": fish, "snowc": snow_cover, "home": home, "psites": pending_sites, "objectives": objectives, "event_h": _event_h, "unjammed": unjammed, "trader_h": _trader_h, "flooded": flooded, "weth": _wet_h}
 
 func load_meta(d: Dictionary) -> void:
 	factions.load(d.get("factions", {}))
@@ -1421,6 +1697,8 @@ func load_meta(d: Dictionary) -> void:
 	fish = d.get("fish", {})
 	snow_cover = d.get("snowc", 0.0)
 	home = d.get("home", {})
+	objectives = d.get("objectives", [])
+	_event_h = d.get("event_h", 30.0)
 	pending_sites = d.get("psites", {})
 	unjammed = d.get("unjammed", {})
 	_trader_h = d.get("trader_h", 60.0)

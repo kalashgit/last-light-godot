@@ -507,6 +507,12 @@ func _draw() -> void:
 		var hint := Vector2(safe.position.x + 120, safe.end.y - 130)
 		draw_arc(hint, STICK_R, 0, TAU, 48, Color(0.85, 0.85, 0.75, 0.16), 2.0, true)
 		draw_circle(hint, 26, Color(0.82, 0.74, 0.52, 0.14))
+	if p.grabbed_by >= 0:
+		var gw: float = 300.0
+		var gx: float = size.x * 0.5 - gw * 0.5
+		var gy: float = safe.end.y - (380.0 if portrait else 90.0)
+		_txt("GRABBED — tap SHOVE or ATTACK to break free", Vector2(0, gy - 8), 18, Color(1.0, 0.45, 0.35), HORIZONTAL_ALIGNMENT_CENTER, size.x)
+		_bar(Vector2(gx, gy), gw, 16, p.escape, Color(0.9, 0.8, 0.4))
 	# timed action
 	if not p.action.is_empty():
 		var w: float = 300.0

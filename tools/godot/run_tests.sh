@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # LAST LIGHT — repeatable engine checks.
 #   GODOT=/path/to/godot tools/godot/run_tests.sh [--shots <dir>]
-# 1. import (parse every script)  2. worldgen  3. gameplay sim  4. multi-touch controls
+# 1. import (parse every script)  2. worldgen  3. gameplay sim, mechanics, systems, integration  4. multi-touch controls
 # 5. boot the main scene          6. bot soak of the full game
 # 7. optional rendered screenshots (needs xvfb-run + OpenGL)
 set -u
@@ -24,6 +24,7 @@ run "import"        timeout 300 "$GODOT" --headless --path . --import
 run "worldgen"      timeout 300 "$GODOT" --headless --path . -s tests/godot/test_worldgen.gd
 run "simulation"    timeout 600 "$GODOT" --headless --path . -s tests/godot/test_sim.gd
 run "mechanics"     timeout 600 "$GODOT" --headless --path . -s tests/godot/test_mechanics.gd
+run "systems"       timeout 600 "$GODOT" --headless --path . -s tests/godot/test_systems.gd
 run "integration"   timeout 1500 "$GODOT" --headless --path . -s tests/godot/test_integration.gd
 run "touch"         timeout 300 "$GODOT" --headless --fixed-fps 30 --path . -s tests/godot/test_touch.gd
 run "boot main"     timeout 300 "$GODOT" --headless --path . --quit-after 400

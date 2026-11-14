@@ -145,6 +145,8 @@ func _play(dt: float) -> void:
 		if e["k"] == "shot":
 			light.flash = 0.08
 			light.flash_pos = e["p"]
+		elif e["k"] == "hurt" and Vector2(e["p"]).distance_to(sim.player.pos) < 0.6:
+			Opts.buzz(60)
 	sim.fx.clear()
 	light.update(sim, view, dt)
 	weather.intensity = 0.0 if World.level(sim.player.pos.y) != 0 else float(sim.weather["rain"])

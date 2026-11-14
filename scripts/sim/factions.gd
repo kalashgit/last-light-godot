@@ -18,6 +18,7 @@ var rep: Dictionary = {}          # faction index -> -100 .. 100
 var sites: Dictionary = {}        # Vector2i region -> settlement record
 var tasks: Array = []             # {"site", "f", "want", "n", "due", "state": open|done|expired|failed, "kind"}
 var _raid_h := 0.0
+var rumors: Array = []            # [faction, change, hour it reaches them]
 
 func _init(s: Sim) -> void:
 	sim = s
@@ -114,10 +115,26 @@ func site_of(n) -> Dictionary:
 		return {}
 	return sites[n.site]
 
+## did another member see the player do it?
+func witnessed(n) -> bool:
+	for o in sim.npcs.list:
+		if o != n and o.fac == n.fac and o.fac >= 0 and o.pos.distance_to(sim.player.pos) < 14.0 and sim.world.los(o.pos.x, o.pos.y, sim.player.pos.x, sim.player.pos.y):
+			return true
+	return false
+
+## the faction learns of it now if anyone saw, or later and maybe never if no one did
+func hear_of(n, change: float, victim_lived: bool) -> void:
+	if n.fac < 0:
+		return
+	if victim_lived or witnessed(n):
+		add_rep(n.fac, change)
+	elif sim.rng.randf() < 0.6:
+		rumors.append([n.fac, change * 0.8, sim.hour + sim.rng.randf_range(12.0, 48.0)])
+
 func member_died(n, by_player: bool) -> void:
 	var s: Dictionary = site_of(n)
 	if by_player:
-		add_rep(n.fac, -40.0)
+		hear_of(n, -40.0, false)
 	if s.is_empty():
 		return
 	s["pop"] = maxi(0, int(s["pop"]) - 1)
@@ -153,6 +170,10 @@ func tick(dh: float) -> void:
 			s["morale"] = 15.0
 			_remove_one_member(key)
 			_check_fallen(key)
+	for rm in rumors.duplicate():
+		if sim.hour >= float(rm[2]):
+			add_rep(int(rm[0]), float(rm[1]))
+			rumors.erase(rm)
 	for t in tasks:
 		if t["state"] == "open" and sim.hour > float(t["due"]):
 			t["state"] = "expired"
@@ -305,10 +326,11 @@ func options(n, tr: float) -> Array:
 	return out
 
 func save() -> Dictionary:
-	return {"rep": rep, "sites": sites, "tasks": tasks, "raid": _raid_h}
+	return {"rep": rep, "sites": sites, "tasks": tasks, "raid": _raid_h, "rumors": rumors}
 
 func load(d: Dictionary) -> void:
 	rep = d.get("rep", {})
 	sites = d.get("sites", {})
 	tasks = d.get("tasks", [])
 	_raid_h = d.get("raid", 50.0)
+	rumors = d.get("rumors", [])

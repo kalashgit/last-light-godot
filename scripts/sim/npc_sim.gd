@@ -196,7 +196,7 @@ func damage(n: Npc, dmg: float, by_player: bool) -> void:
 		n.state = HOSTILE
 		sim.say("%s turns on you." % n.name, Color(1.0, 0.6, 0.5))
 	if by_player and n.fac >= 0 and Factions.kind(n.fac) != Factions.RAIDER:
-		sim.factions.add_rep(n.fac, -25.0)
+		sim.factions.hear_of(n, -25.0, n.hp > 0.0)        # a survivor who lives tells them; a dead one cannot
 	if n.hp <= 0.0:
 		list.erase(n)
 		if n.fac >= 0:
@@ -340,6 +340,8 @@ func update(dt: float, dh: float) -> void:
 							p.add_wound(Rng.pick_weighted(sim.rng, Player.HIT_WEIGHTS), "laceration" if randf() < 0.4 else "scratch", "a blade")
 						p.cancel_action()
 						sim.emit_fx("hurt", p.pos)
+			elif n.task == "travel":
+				routine(n, dt)              # a hostile patrol that has not seen you keeps marching
 			continue
 		# theft: taking from the house they live in, in front of them
 		if n.state == STAY and n.met:
@@ -687,6 +689,15 @@ func routine(n: Npc, dt: float) -> void:
 	var hod: float = sim.hour_of_day()
 	var night: bool = hod >= 22.0 or hod < 6.0
 	match n.task:
+		"travel":
+			# a patrol or a traveller passing through: walk on, and leave the map once out of sight
+			n.task_t -= dt
+			_go(n, n.task_pos, 2.3, dt)
+			if (n.pos.distance_to(n.task_pos) < 1.5 or n.task_t <= 0.0) and n.pos.distance_to(sim.player.pos) > 18.0:
+				list.erase(n)
+			elif n.pos.distance_to(n.task_pos) < 1.5:
+				n.task_pos = n.pos + (n.pos - sim.player.pos).normalized() * 10.0
+			return
 		"sleep":
 			n.anim = "s_idle"
 			if (not night and n.fatigue < 30.0) or n.fatigue <= 0.0:

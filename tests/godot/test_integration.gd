@@ -1160,7 +1160,10 @@ func _init() -> void:
 		n0 = AS.list.size()
 		AS.on_chunk_loaded(ch4, true)
 		town += AS.list.size() - n0
-	ok(wild >= 15 and town == 0, "animals live in the wild, not in town (%d in 40 wild chunks, %d in town)" % [wild, town])
+	var town_only := true
+	for an in AS.list:
+		if (floori(an.pos.x) >> 4) >= 2000 and not AnimalSim.TOWN_KINDS.has(an.kind): town_only = false
+	ok(wild >= 15 and town > 0 and town_only, "deer and boar live in the wild; towns have only rats, crows, squirrels and dog packs (%d in 40 wild chunks, %d in town)" % [wild, town])
 	AS.list.clear()
 	p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)
 	p.sneaking = false
@@ -1667,6 +1670,8 @@ func _init() -> void:
 	var cop: Zombie = sim.zombies.spawn(Vector2(fx0 + 5.5, fy0 + 30.5), 0)
 	sim.zombies._apply_role(cop, "police")
 	var civ: Zombie = sim.zombies.spawn(Vector2(fx0 + 6.5, fy0 + 30.5), 0)
+	civ.role = "civilian"
+	civ.armor = 1.0
 	cop.hp = 100.0
 	civ.hp = 100.0
 	sim.zombies.damage(cop, 40.0, Vector2(fx0, fy0), 0.0, false, false)

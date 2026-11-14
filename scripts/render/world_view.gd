@@ -49,10 +49,32 @@ class AnimalView extends Node2D:
 		draw_circle(Vector2(0, 2), L * 0.5, Color(0, 0, 0, 0.28))
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 		var dark := col.darkened(0.35)
-		if a.kind == "pheasant":
-			draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.9 * fx, -up * 0.5), Vector2(-L * 0.2 * fx, -up * 0.9), Vector2(-L * 0.2 * fx, -up * 0.4)]), dark)
+		if a.kind == "snake":
+			var pts := PackedVector2Array()
+			for k in range(9):
+				var u: float = float(k) / 8.0
+				pts.append(Vector2((u - 0.5) * L * 1.6 * fx, sin(u * 9.0 + a.anim_t * 3.0) * 2.2 - 1.5))
+			draw_polyline(pts, col, 2.6)
+			draw_circle(pts[8], 2.0, col.darkened(0.2))
+			return
+		if a.kind == "pheasant" or sp.has("bird"):
+			var tail: Color = dark
+			var head: Color = Color(0.2, 0.4, 0.3)
+			match a.kind:
+				"duck": head = Color(0.15, 0.45, 0.25)
+				"turkey":
+					head = Color(0.75, 0.25, 0.25)
+					draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.2 * fx, -up * 0.6), Vector2(-L * 0.75 * fx, -up * 1.5), Vector2(-L * 0.95 * fx, -up * 0.8), Vector2(-L * 0.4 * fx, -up * 0.3)]), tail.darkened(0.2))
+				"crow":
+					head = col
+					if a.state == AnimalSim.FLEE:
+						up += 10.0        # up and away
+						draw_line(Vector2(-L * 0.9, -up * 0.8 + sin(a.anim_t * 20.0) * 4.0), Vector2(L * 0.9, -up * 0.8 - sin(a.anim_t * 20.0) * 4.0), col, 2.0)
+			draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.9 * fx, -up * 0.5), Vector2(-L * 0.2 * fx, -up * 0.9), Vector2(-L * 0.2 * fx, -up * 0.4)]), tail)
 			draw_circle(Vector2(0, -up * 0.6), L * 0.34, col)
-			draw_circle(Vector2(L * 0.38 * fx, -up * 1.05), L * 0.17, Color(0.2, 0.4, 0.3))
+			draw_circle(Vector2(L * 0.38 * fx, -up * 1.05), L * 0.17, head)
+			if a.kind == "duck":
+				draw_line(Vector2(L * 0.5 * fx, -up * 1.05), Vector2(L * 0.75 * fx, -up * 1.0), Color(0.9, 0.7, 0.2), 2.0)
 			return
 		# legs
 		for lx in [-0.3, 0.3]:
@@ -74,6 +96,15 @@ class AnimalView extends Node2D:
 				draw_line(Vector2(hx, hy - 2), Vector2(hx - 2 * fx, hy - 8), dark, 1.5)
 			"boar":
 				draw_line(Vector2(hx + 3 * fx, hy + 2), Vector2(hx + 6 * fx, hy), Color(0.9, 0.9, 0.82), 1.5)
+			"squirrel":
+				draw_arc(Vector2(-L * 0.6 * fx, -up * 1.1), L * 0.45, 0.0, PI * 1.5, 8, col.lightened(0.1), 2.5)
+			"rat":
+				draw_line(Vector2(-L * 0.5 * fx, -up * 0.5), Vector2(-L * 1.3 * fx, -up * 0.2), Color(0.75, 0.6, 0.6), 1.0)
+			"dog":
+				draw_line(Vector2(hx, hy), Vector2(hx - 1.5 * fx, hy - L * 0.3), dark, 2.0)
+				draw_line(Vector2(-L * 0.5 * fx, -up * 0.8), Vector2(-L * 0.85 * fx, -up * 1.1), col, 2.0)
+				if a.state == AnimalSim.CHARGE:
+					draw_line(Vector2(hx + 2 * fx, hy + 2), Vector2(hx + 5 * fx, hy + 2), Color(0.95, 0.95, 0.9), 1.2)
 			"fox":
 				draw_colored_polygon(PackedVector2Array([Vector2(-L * 0.5 * fx, -up * 0.8), Vector2(-L * 1.05 * fx, -up * 0.95), Vector2(-L * 0.55 * fx, -up * 0.5)]), col)
 				draw_circle(Vector2(-L * 1.0 * fx, -up * 0.92), 1.8, Color(0.95, 0.95, 0.9))
