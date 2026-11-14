@@ -1985,6 +1985,9 @@ func _init() -> void:
 	sim.settings["god"] = false
 	p.hp = 100.0
 	p.endurance = 100.0             # running needs breath; earlier tests may have used it up
+	for xx_w in range(fx0, fx0 + 16):          # the whole strip you run along is open ground
+		for yy_w in range(fy0 + 29, fy0 + 33):
+			w.chunk_at(xx_w, yy_w).bld[World.idx(xx_w, yy_w)] = 0
 	p.grabbed_by = -1
 	p.hidden = false
 	p.sneaking = false
