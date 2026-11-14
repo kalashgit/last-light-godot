@@ -1010,6 +1010,99 @@ func _init() -> void:
 			if Defs.o_id(cell3) == Defs.O_OFFROADER: found["offroader"] = true
 	ok(not found.values().has(false), "tankers and tow trucks at fuel stations, tractors on farms, off-roaders by cabins %s" % str(found))
 
+	print("== 24 trades, 16 temperaments")
+	ok(NpcSim.JOBS.size() == 24 and NpcSim.TEMPERS.size() == 16, "%d occupations, %d temperaments" % [NpcSim.JOBS.size(), NpcSim.TEMPERS.size()])
+	var kinds_ok := true
+	for jb in NpcSim.JOBS:
+		if not ["medic", "mechanic", "farmer", "hunter", "cook", "guard"].has(NpcSim.job_kind(jb)) or not NpcSim.JOB_TEACH.has(jb): kinds_ok = false
+	ok(kinds_ok, "every trade maps to work they can do, and to something they can teach")
+	var ns2 := Sim.new(5656)
+	ns2.new_game("unemployed", [], "house")
+	quiet(ns2)
+	var np2: Player = ns2.player
+	var armed_ok := true
+	for k in range(120):
+		var sp2 = ns2.npcs.spawn(np2.pos + Vector2(40, 40), false)
+		if (sp2.job == "police officer" or sp2.job == "soldier" or sp2.job == "firefighter") and sp2.wpn == "": armed_ok = false
+		if sp2.temper == "injured" and sp2.hp > 50.0: armed_ok = false
+	ok(armed_ok, "police, soldiers and firefighters carry something to fight with; the injured start hurt")
+	ns2.npcs.list.clear()
+	var tz: Zombie = ns2.zombies.spawn(np2.pos + Vector2(3, 0), 0)
+	tz.state = Zombie.IDLE
+	var pan = ns2.npcs.spawn(tz.pos + Vector2(2.0, 0), false)
+	pan.temper = "panicked"
+	var brv = ns2.npcs.spawn(tz.pos + Vector2(0, 2.0), false)
+	brv.temper = "brave"
+	brv.wpn = "baseball_bat"
+	ns2.npcs.update(1.0 / 30.0, 0.0)
+	ok(pan.task == "flee" and brv.task != "flee", "a panicked survivor runs from a single infected; a brave one does not")
+	ns2.zombies.list.clear()
+	ns2.npcs.list.clear()
+	var sf = ns2.npcs.spawn(np2.pos + Vector2(1, 0), false)
+	sf.temper = "selfish"
+	sf.trust = 60.0
+	ok(not ns2.npcs.ask_help(sf), "a selfish one will not help for nothing")
+	var fl = ns2.npcs.spawn(np2.pos + Vector2(1, 1), false)
+	fl.temper = "follower"
+	fl.trust = 25.0
+	for o in ns2.npcs.options(fl):
+		if String(o["label"]).contains("Come with me"): o["fn"].call()
+	ok(fl.state == NpcSim.FOLLOW, "a follower comes along on little trust")
+	var ld = ns2.npcs.spawn(np2.pos + Vector2(5, 0), false)
+	ld.temper = "leader"
+	ld.fac = 2
+	ld.trust = 90.0
+	var mem = ns2.npcs.spawn(np2.pos + Vector2(6, 0), false)
+	mem.fac = 2
+	mem.trust = 20.0
+	for k2 in range(10): ns2.npcs.update(0.1, 1.0)
+	ok(mem.trust > 30.0, "a leader who likes you brings their people round (%.0f)" % mem.trust)
+	ns2.npcs.list.clear()
+	# territorial: walk into their home and get told, then attacked
+	var hb: int = ns2.world.bld(floori(np2.pos.x), floori(np2.pos.y))
+	var tr2 = ns2.npcs.spawn(np2.pos + Vector2(1, 0), false)
+	tr2.temper = "territorial"
+	tr2.trust = 10.0
+	tr2.home = np2.pos
+	if hb != 0:
+		for k3 in range(30 * 8): ns2.npcs.update(1.0 / 30.0, 0.0)
+		ok(tr2.state == NpcSim.HOSTILE, "a territorial survivor warns you out of their home, then attacks")
+	else:
+		ok(false, "test start is indoors")
+	ns2.npcs.list.clear()
+	# a recruited firefighter puts out a fire at the shelter
+	ns2.set_home(np2.pos)
+	var ff = ns2.npcs.spawn(np2.pos + Vector2(2, 0), false)
+	ff.job = "firefighter"
+	ff.recruit = true
+	ff.home = np2.pos
+	var fire_t2 := Vector2i(floori(np2.pos.x) + 4, floori(np2.pos.y))
+	ns2.burning[fire_t2] = 999.0
+	for k4 in range(30 * 6): ns2.npcs.update(1.0 / 30.0, 0.0)
+	ok(not ns2.burning.has(fire_t2), "a firefighter at your shelter puts out a fire there (%.1f tiles off, %s)" % [ff.pos.distance_to(Vector2(fire_t2) + Vector2(0.5, 0.5)), ns2.npcs.list.has(ff)])
+	ns2.burning.clear()
+	ff.job = "electrician"
+	var gpos2 := Vector2i(floori(np2.pos.x) + 3, floori(np2.pos.y) + 3)
+	ns2.world.set_ent(gpos2.x, gpos2.y, {"k": "gen", "fuel": 0.0, "on": false, "c": 0.4})
+	ns2.npcs._fix_vehicles(ff, 2.0)
+	ok(float(ns2.world.ent(gpos2.x, gpos2.y)["c"]) > 0.4, "an electrician keeps the shelter's generator in repair")
+	ns2.npcs.list.clear()
+	var tch = ns2.npcs.spawn(np2.pos + Vector2(1, 0), false)
+	tch.job = "teacher"
+	tch.trust = 70.0
+	np2.skills["tailoring"] = 0.0
+	for sk2 in ["first_aid", "cooking", "farming", "carpentry", "mechanics", "electrical", "maintenance"]: np2.skills[sk2] = 100.0
+	var tl2: Array = []
+	for o in ns2.npcs.options(tch): tl2.append(String(o["label"]))
+	ok(tl2.any(func(l): return l.contains("tailoring")), "a teacher offers to teach what you are worst at")
+	var rcr = ns2.npcs.spawn(np2.pos + Vector2(1, 0), false)
+	rcr.recruit = true
+	rcr.temper = "disciplined"
+	rcr.trust = 10.0
+	ns2.npcs._needs(rcr, 0.01)
+	ok(rcr.recruit, "a disciplined recruit stays even when trust runs low")
+	ns2.npcs.list.clear()
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

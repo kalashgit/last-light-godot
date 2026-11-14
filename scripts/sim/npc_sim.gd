@@ -7,8 +7,27 @@ const STAY := 0
 const FOLLOW := 1
 const HOSTILE := 2
 const NAMES := ["Mara", "Ilya", "Tomas", "Renee", "Odile", "Jonah", "Priya", "Kasper", "Lena", "Amos", "Wren", "Dario"]
-const TEMPERS := ["brave", "cautious", "generous", "wary"]
-const JOBS := ["medic", "mechanic", "farmer", "hunter", "cook", "guard"]
+const TEMPERS := ["brave", "cautious", "generous", "wary", "panicked", "selfish", "protective", "opportunistic", "disciplined", "wandering",
+	"territorial", "exhausted", "injured", "leader", "follower", "altruistic"]
+## each temperament behaves like one of the four basic ones, plus its own habit
+const TEMPER_BASE := {"panicked": "cautious", "selfish": "wary", "protective": "brave", "opportunistic": "wary", "disciplined": "brave",
+	"wandering": "cautious", "territorial": "wary", "exhausted": "cautious", "injured": "cautious", "leader": "brave", "follower": "generous", "altruistic": "generous"}
+const JOBS := ["medic", "mechanic", "farmer", "hunter", "cook", "guard", "nurse", "doctor", "electrician", "teacher", "police officer", "firefighter",
+	"soldier", "driver", "clerk", "construction worker", "carpenter", "scavenger", "student", "librarian", "technician", "shopkeeper", "caretaker", "trader"]
+## what each trade amounts to out here: the kind of work they can do, and what they can teach
+const JOB_KIND := {"nurse": "medic", "doctor": "medic", "electrician": "mechanic", "technician": "mechanic", "driver": "mechanic", "construction worker": "mechanic",
+	"carpenter": "mechanic", "police officer": "guard", "soldier": "guard", "firefighter": "guard", "scavenger": "hunter", "clerk": "cook", "shopkeeper": "cook",
+	"caretaker": "cook", "trader": "hunter", "teacher": "cook", "librarian": "cook", "student": "farmer"}
+const JOB_TEACH := {"medic": "first_aid", "nurse": "first_aid", "doctor": "first_aid", "mechanic": "mechanics", "driver": "mechanics", "electrician": "electrical",
+	"technician": "electrical", "farmer": "farming", "student": "farming", "hunter": "aiming", "scavenger": "lightfooted", "cook": "cooking", "caretaker": "cooking",
+	"guard": "short_blunt", "police officer": "aiming", "soldier": "aiming", "firefighter": "axe", "construction worker": "carpentry", "carpenter": "carpentry",
+	"clerk": "maintenance", "shopkeeper": "maintenance", "trader": "maintenance", "teacher": "", "librarian": ""}
+
+static func job_kind(job: String) -> String:
+	return JOB_KIND.get(job, job)
+
+static func tb(n) -> String:
+	return TEMPER_BASE.get(n.temper, n.temper)
 const EDIBLE := ["canned_beans", "granola_bar", "canned_corn", "cooked_egg", "berries", "cooked_chicken"]
 const LINES := ["I counted eleven days since I heard a voice that wasn't mine.", "The pharmacy downtown still had shelves when I ran past. Too many of them, though.",
 	"Don't light anything after dark. They see it from the next street.", "My brother went for the farm road. If you see a blue pack, that's his.",
@@ -55,6 +74,7 @@ class Npc:
 	var away_until := 0.0          # scavengers: out on a trip until this hour
 	var uh := 0.0                  # hour they were last simulated (for time spent unloaded)
 	var _work_t := 0.0
+	var warn_t := 0.0
 	var help_until := 0.0          # agreed to help you for a while, then goes home
 	var forgiven_h := -99.0        # when they last accepted an apology
 
@@ -78,7 +98,12 @@ func spawn(pos: Vector2, hostile: bool) -> Npc:
 		n.stock.append(goods[randi() % goods.size()])
 	n.temper = TEMPERS[randi() % TEMPERS.size()]
 	n.job = JOBS[randi() % JOBS.size()]
-	n.trust = randf_range(22.0, 40.0) + (8.0 if n.temper == "generous" else (-8.0 if n.temper == "wary" else 0.0))
+	n.trust = randf_range(22.0, 40.0) + (8.0 if tb(n) == "generous" else (-8.0 if tb(n) == "wary" else 0.0))
+	if n.temper == "exhausted": n.fatigue = 75.0
+	if n.temper == "injured": n.hp = 45.0
+	if n.job == "police officer": n.wpn = "baseball_bat"
+	elif n.job == "soldier": n.wpn = "machete"
+	elif n.job == "firefighter": n.wpn = "fire_axe" if Items.DB.has("fire_axe") else "axe"
 	n.home = pos
 	list.append(n)
 	return n
@@ -288,6 +313,8 @@ func update(dt: float, dh: float) -> void:
 		if p.kills > n.seen_kills and n.state != HOSTILE and n.pos.distance_squared_to(p.pos) < 100.0:
 			n.trust = minf(100.0, n.trust + 2.0 * (p.kills - n.seen_kills))
 		n.seen_kills = p.kills
+		if _habits(n, dt, dh):
+			continue                       # busy with something of their own (putting out a fire)
 		if n.help_until > 0.0 and sim.hour > n.help_until:
 			n.help_until = 0.0
 			if n.state == FOLLOW:
@@ -370,7 +397,9 @@ func update(dt: float, dh: float) -> void:
 			if dz < 4.5 and z2.state != Zombie.DOWN:
 				threats += 1
 				away += (n.pos - z2.pos).normalized()
-		var limit: int = 4 if n.temper == "brave" else (1 if n.temper == "cautious" else 2)
+		var limit: int = 4 if tb(n) == "brave" else (1 if tb(n) == "cautious" else 2)
+		if n.temper == "panicked": limit = 0                      # runs at the first sight of one
+		if n.temper == "protective" and n.state == FOLLOW: limit += 4   # will not leave you to them
 		if threats > 0 and (threats > limit or n.hp < 35.0) and n.wpn == "" or (threats > limit + 2):
 			n.task = "flee"
 			n.task_t = 2.5
@@ -388,7 +417,7 @@ func update(dt: float, dh: float) -> void:
 			n.atk_cd = 1.0
 			n.swing = 0.4
 			n.anim_t = 0.0
-			damage(foe, randf_range(10.0, 18.0) * (1.4 if n.wpn != "" or n.job == "guard" else 1.0), false)
+			damage(foe, randf_range(10.0, 18.0) * (1.4 if n.wpn != "" or job_kind(n.job) == "guard" else 1.0), false)
 			continue
 		# friends fight what is next to them
 		if target != null and td < 1.3 and n.atk_cd <= 0.0:
@@ -401,7 +430,7 @@ func update(dt: float, dh: float) -> void:
 			if n.wpn != "":
 				var wdr: Array = Items.def(n.wpn)["wpn"]["dmg"]
 				wdmg = (float(wdr[0]) + float(wdr[1])) / 48.0 + 0.5
-			if n.job == "guard" or n.job == "hunter": wdmg *= 1.25
+			if job_kind(n.job) == "guard" or job_kind(n.job) == "hunter": wdmg *= 1.25
 			sim.zombies.damage(target, randf_range(18.0, 30.0) * wdmg, n.pos, 0.3, randf() < 0.2, false)
 			if not sim.zombies.list.has(target):
 				sim.player.kills -= 1       # their kill, not yours
@@ -418,6 +447,48 @@ func update(dt: float, dh: float) -> void:
 				n.state = STAY
 				sim.say("%s: \"I can't keep going on nothing. I'm staying here.\"" % n.name, Color(0.85, 0.85, 0.7))
 
+## what a temperament or a trade does on its own, every moment
+func _habits(n: Npc, dt: float, dh: float) -> bool:
+	var p: Player = sim.player
+	# a leader's opinion of you rubs off on the people around them
+	if n.temper == "leader" and dh > 0.0:
+		for o in list:
+			if o != n and o.fac == n.fac and o.pos.distance_to(n.pos) < 10.0:
+				o.trust = move_toward(o.trust, n.trust, dh * 2.0)
+	# a wanderer does not stay put for long
+	if n.temper == "wandering" and not n.recruit and n.state == STAY and randf() < dh / 48.0:
+		n.home = n.pos + Vector2(randf_range(-30, 30), randf_range(-30, 30))
+	# this is theirs: walk into their home without their trust and they will make you leave
+	if n.temper == "territorial" and not n.recruit and n.state == STAY and n.trust < 30.0 and n.home.distance_to(p.pos) < 6.0 \
+			and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) != 0 and sim.world.bld(floori(p.pos.x), floori(p.pos.y)) == sim.world.bld(floori(n.home.x), floori(n.home.y)):
+		n.warn_t += dt
+		if n.warn_t - dt <= 0.0:
+			sim.say("%s: \"This is my place. Get out.\"" % n.name, Color(1.0, 0.7, 0.55))
+		if n.warn_t > 6.0:
+			n.state = HOSTILE
+			sim.say("%s: \"I warned you.\"" % n.name, Color(1.0, 0.55, 0.45))
+	elif n.temper == "territorial":
+		n.warn_t = 0.0
+	# a firefighter living with you puts out what burns near the shelter
+	if n.job == "firefighter" and n.recruit and not sim.burning.is_empty() and not sim.home.is_empty():
+		var best := Vector2i(-99999, 0)
+		var bd := 14.0
+		for bk in sim.burning.keys():
+			var d: float = Vector2(bk.x + 0.5, bk.y + 0.5).distance_to(n.pos)
+			if d < bd and Vector2(bk).distance_to(sim.home_pos()) < 16.0:
+				bd = d
+				best = bk
+		if best.x != -99999:
+			if bd < 2.3:                       # close enough to reach it with a tool or a blanket
+				for dy in range(-1, 2):
+					for dx in range(-1, 2):
+						sim.burning.erase(best + Vector2i(dx, dy))
+				sim.say("%s beats the flames out." % n.name, Color(0.8, 0.9, 1.0))
+			else:
+				_go(n, Vector2(best.x + 0.5, best.y + 0.5), 4.0, dt)
+			return true
+	return false
+
 ## the harder conversations: asking a favour, making a demand at weapon-point, making amends
 func social_options(n: Npc, tr: float) -> Array:
 	var p: Player = sim.player
@@ -432,7 +503,10 @@ func social_options(n: Npc, tr: float) -> Array:
 
 func ask_help(n: Npc) -> bool:
 	var tr: float = n.trust + (sim.factions.rep_of(n.fac) * 0.4 if n.fac >= 0 else 0.0)
-	var keen: bool = n.temper == "brave" or n.temper == "generous" or tr >= 60.0
+	var keen: bool = tb(n) == "brave" or tb(n) == "generous" or tr >= 60.0
+	if n.temper == "selfish" and tr < 80.0:
+		sim.say("%s: \"And what's in it for me?\"" % n.name, Color(0.85, 0.85, 0.7))
+		return false
 	if n.hunger > 80.0 or n.hp < 40.0 or (not keen and randf() < 0.5):
 		sim.say("%s: \"Not today. I can barely look after myself.\"" % n.name, Color(0.85, 0.85, 0.7))
 		return false
@@ -446,7 +520,7 @@ func ask_help(n: Npc) -> bool:
 func threaten(n: Npc) -> String:
 	var p: Player = sim.player
 	var gun: bool = Items.def(p.weapon["id"]).has("gun")
-	var give: float = 0.35 + (0.3 if gun else 0.0) + (0.2 if n.temper == "cautious" else 0.0) - (0.35 if n.temper == "brave" else 0.0) \
+	var give: float = 0.35 + (0.3 if gun else 0.0) + (0.2 if tb(n) == "cautious" else 0.0) - (0.35 if tb(n) == "brave" else 0.0) + (0.2 if n.temper == "opportunistic" else 0.0) \
 		- (0.25 if n.wpn != "" else 0.0) + (0.15 if n.hp < 50.0 else 0.0)
 	n.trust = maxf(0.0, n.trust - 40.0)
 	n.met = true
@@ -461,7 +535,7 @@ func threaten(n: Npc) -> String:
 			took.append(Items.def(sid)["n"])
 		sim.say("%s raises their hands and gives you %s. They will remember your face." % [n.name, " and ".join(took)], Color(1.0, 0.75, 0.55))
 		return "gave"
-	if n.temper == "brave" or n.wpn != "" or r > 0.85:
+	if tb(n) == "brave" or n.wpn != "" or r > 0.85:
 		n.state = HOSTILE
 		sim.say("%s: \"Over my dead body.\"" % n.name, Color(1.0, 0.55, 0.45))
 		return "fight"
@@ -485,7 +559,7 @@ func apologize(n: Npc) -> bool:
 	var one: Dictionary = Inv.split(p.inv, food, 1)
 	n.stock.append(one["id"])
 	n.forgiven_h = sim.hour
-	n.trust = minf(100.0, n.trust + (18.0 if n.temper == "generous" else (8.0 if n.temper == "wary" else 12.0)))
+	n.trust = minf(100.0, n.trust + (18.0 if tb(n) == "generous" else (4.0 if n.temper == "selfish" else (8.0 if tb(n) == "wary" else 12.0))))
 	if n.fac >= 0:
 		sim.factions.add_rep(n.fac, 4.0)
 	sim.say("%s takes the %s. \"...All right.\"" % [n.name, String(Items.def(one["id"])["n"]).to_lower()], Color(0.8, 0.9, 0.75))
@@ -500,7 +574,7 @@ func _needs(n: Npc, dh: float) -> void:
 	if n.recruit:
 		# a fed, rested person settles in; a hungry one starts to doubt you
 		n.trust = clampf(n.trust + dh * (0.4 if n.hunger < 60.0 else -1.2), 0.0, 100.0)
-		if n.trust < 15.0 or n.hunger >= 100.0 and n.hp < 50.0:
+		if n.trust < (5.0 if n.temper == "disciplined" else 15.0) or n.hunger >= 100.0 and n.hp < 50.0:
 			n.recruit = false
 			n.work = ""
 			n.home = n.pos + Vector2(randf_range(-30, 30), randf_range(-30, 30))
@@ -569,7 +643,7 @@ func recruit_to_home(n: Npc) -> void:
 	n.state = STAY
 	n.home = sim.home_pos() + Vector2(randf_range(-2.0, 2.0), randf_range(-2.0, 2.0))
 	n.task = "home"
-	n.work = {"farmer": "farm", "guard": "guard", "hunter": "scavenge", "cook": "cook", "medic": "nurse", "mechanic": "fix"}.get(n.job, "guard")
+	n.work = {"farmer": "farm", "guard": "guard", "hunter": "scavenge", "cook": "cook", "medic": "nurse", "mechanic": "fix"}.get(job_kind(n.job), "guard")
 
 ## the hours you were away from the shelter, done in one go
 func _catch_up_recruit(n: Npc, hours: float) -> void:
@@ -617,6 +691,13 @@ func _fix_vehicles(n: Npc, hours: float) -> bool:
 	var w: World = sim.world
 	var hx: int = int(sim.home["x"])
 	var hy: int = int(sim.home["y"])
+	if n.job == "electrician" or n.job == "technician":
+		for y2 in range(hy - 12, hy + 13):
+			for x2 in range(hx - 12, hx + 13):
+				var ge: Dictionary = w.ent(x2, y2)
+				if ge.get("k", "") == "gen" and float(ge.get("c", 1.0)) < 0.95:
+					ge["c"] = minf(1.0, float(ge.get("c", 0.5)) + 0.1 * minf(hours, 4.0))
+					return true
 	for y in range(hy - 12, hy + 13):
 		for x in range(hx - 12, hx + 13):
 			var cell: int = w.obj(x, y)
@@ -635,7 +716,8 @@ func _fix_vehicles(n: Npc, hours: float) -> bool:
 ## one scavenging trip: they may come back with something, or not come back
 func _trip_outcome(n: Npc) -> bool:
 	var risk: float = 0.03 if n.wpn != "" else 0.08
-	if n.temper == "cautious": risk *= 0.7
+	if tb(n) == "cautious": risk *= 0.7
+	if n.job == "scavenger": risk *= 0.6                  # knows the ground
 	if randf() < risk:
 		list.erase(n)
 		sim.say("%s went out scavenging and did not come back." % n.name, Color(1.0, 0.6, 0.5))
@@ -853,6 +935,16 @@ func options(n: Npc) -> Array:
 	if n.state == HOSTILE:
 		return out
 	var tr: float = n.trust + (sim.factions.rep_of(n.fac) * 0.4 if n.fac >= 0 else 0.0)
+	if n.temper == "altruistic" and p.hunger > 65.0 and sim.hour - n.forgiven_h > 24.0:
+		var share := ""
+		for sid in n.stock:
+			if EDIBLE.has(sid): share = sid
+		if share != "":
+			out.append({"label": "(%s sees you are starving)" % n.name, "fn": func():
+				n.stock.erase(share)
+				Inv.add_new(p.inv, share, 1, sim.hour)
+				n.forgiven_h = sim.hour
+				sim.say("%s presses %s into your hands. \"You need it more than me.\"" % [n.name, String(Items.def(share)["n"]).to_lower()], Color(0.7, 0.95, 0.7))})
 	out.append({"label": "Talk to %s" % n.name, "fn": func():
 		if not n.met:
 			n.met = true
@@ -870,7 +962,7 @@ func options(n: Npc) -> Array:
 			n.trust = maxf(0.0, n.trust - 2.0)})
 	if n.state == STAY:
 		out.append({"label": "\"Come with me.\"", "fn": func():
-			if tr < 35.0:
+			if tr < (20.0 if n.temper == "follower" else 35.0):
 				sim.say("%s: \"I don't know you well enough for that.\"" % n.name, Color(0.85, 0.85, 0.7))
 			elif n.hunger > 85.0:
 				sim.say("%s: \"Not until I've eaten something.\"" % n.name, Color(0.85, 0.85, 0.7))
@@ -884,7 +976,7 @@ func options(n: Npc) -> Array:
 			n.task = ""
 			sim.say("%s: \"I'll hold this spot.\"" % n.name, Color(0.85, 0.85, 0.7))})
 	# what trust buys
-	if tr >= 50.0 and n.job == "medic":
+	if tr >= 50.0 and job_kind(n.job) == "medic":
 		var worst: Dictionary = {}
 		for wd in p.wounds:
 			if not wd.get("band", false) and float(wd.get("bleed_h", 0.0)) > 0.0: worst = wd
@@ -894,13 +986,22 @@ func options(n: Npc) -> Array:
 				worst["dirty"] = 0.0
 				worst["heal"] = float(worst.get("heal", 0.0)) * 0.8
 				sim.say("%s cleans and dresses it properly." % n.name, Color(0.75, 0.9, 0.7))})
-	var teach_skill: String = {"medic": "first_aid", "mechanic": "mechanics", "farmer": "farming", "hunter": "aiming", "cook": "cooking", "guard": "short_blunt"}.get(n.job, "")
+	var teach_skill: String = JOB_TEACH.get(n.job, "")
+	if n.job == "teacher" or n.job == "librarian":
+		# a teacher picks what you are worst at
+		var worst_s := ""
+		var worst_v := 1e9
+		for sk in ["first_aid", "cooking", "farming", "carpentry", "mechanics", "electrical", "tailoring", "maintenance"]:
+			if float(p.skills.get(sk, 0.0)) < worst_v:
+				worst_v = float(p.skills.get(sk, 0.0))
+				worst_s = sk
+		teach_skill = worst_s
 	if tr >= 50.0 and teach_skill != "" and not sim.flags.has("taught_%s_%s" % [n.name, teach_skill]):
 		out.append({"label": "\"Teach me what you know about %s.\"" % teach_skill.replace("_", " "), "fn": func():
 			p.start_action("Learning from %s" % n.name, 20.0, func():
 				sim.flags["taught_%s_%s" % [n.name, teach_skill]] = true
 				p.add_xp(teach_skill, 160.0)
-				p.known[n.job] = true          # and a few things you can only learn by watching
+				p.known[job_kind(n.job)] = true          # and a few things you can only learn by watching
 				n.trust = minf(100.0, n.trust + 4.0)
 				p.bored = maxf(0.0, p.bored - 30.0)
 				sim.say("%s shows you how it is done. (%s)" % [n.name, teach_skill.replace("_", " ").capitalize()], Color(0.6, 0.9, 0.6)))})
