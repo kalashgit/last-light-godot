@@ -48,9 +48,11 @@
     "ll_crafting_sandpaper",
     "ll_crafting_scrap_plate",
     "ll_crafting_screw_box",
-    "ll_crafting_sheet_steel"
+    "ll_crafting_sheet_steel",
+    "ll_crafting_solder_spool",
+    "ll_crafting_steel_pipe"
   ],
-  "last_run_id": "43657934832",
+  "last_run_id": "43689077408",
   "golden_approved": false,
-  "remaining": 314
+  "remaining": 312
 }

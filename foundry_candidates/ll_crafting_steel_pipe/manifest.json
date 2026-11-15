@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_steel_pipe",
+  "source_glb_sha256": "fea4d6f2407af28fea89e765ade85036aa620ad968a4693e9fb7d59d8eda13da",
+  "atlas_sha256": "4da0a2d8ab8fd54f1f32870f4c8ac2e77e453685938e5982a655fc0dff4a0401",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2537903,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

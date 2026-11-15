@@ -1,0 +1,42 @@
+{
+  "run_id": "43689077408",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 48,
+  "remaining": 312,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_solder_spool",
+      "source_glb_sha256": "9ecf04eed1ac62ef1dcba1dc99e19c040a3d10d64b40a90ffcb74cb3dea63db0",
+      "atlas_sha256": "f72f68cbe219b7411eb53013caedd334a8056b55170e6a7e2437f81a32efd384",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2570902,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_steel_pipe",
+      "source_glb_sha256": "fea4d6f2407af28fea89e765ade85036aa620ad968a4693e9fb7d59d8eda13da",
+      "atlas_sha256": "4da0a2d8ab8fd54f1f32870f4c8ac2e77e453685938e5982a655fc0dff4a0401",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2537903,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
