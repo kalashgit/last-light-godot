@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_screw_box",
+  "source_glb_sha256": "ce13512f94c5f52b5cead6f64c2c83d0a774a325a4d7b086833a7623d517bcf9",
+  "atlas_sha256": "dbe7813e870dcc0671d51263472b349f422d8ac58242ba2d08c678a1855dc7fe",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662898,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

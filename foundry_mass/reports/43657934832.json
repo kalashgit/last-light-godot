@@ -1,0 +1,42 @@
+{
+  "run_id": "43657934832",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 46,
+  "remaining": 314,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_screw_box",
+      "source_glb_sha256": "ce13512f94c5f52b5cead6f64c2c83d0a774a325a4d7b086833a7623d517bcf9",
+      "atlas_sha256": "dbe7813e870dcc0671d51263472b349f422d8ac58242ba2d08c678a1855dc7fe",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662898,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_sheet_steel",
+      "source_glb_sha256": "552aa5886a641a8357df6f55746127e08e1f01fa2dcf47a9f1f6c5e6db846319",
+      "atlas_sha256": "7d527db3a89e8797e47e72ade6f1bc08ab1a280268f6895daced9bfc0c69da62",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2573678,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

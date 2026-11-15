@@ -46,9 +46,11 @@
     "ll_crafting_rubber_sheet",
     "ll_crafting_sand_sack",
     "ll_crafting_sandpaper",
-    "ll_crafting_scrap_plate"
+    "ll_crafting_scrap_plate",
+    "ll_crafting_screw_box",
+    "ll_crafting_sheet_steel"
   ],
-  "last_run_id": "43639122711",
+  "last_run_id": "43657934832",
   "golden_approved": false,
-  "remaining": 316
+  "remaining": 314
 }
