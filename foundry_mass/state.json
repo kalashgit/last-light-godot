@@ -50,9 +50,11 @@
     "ll_crafting_screw_box",
     "ll_crafting_sheet_steel",
     "ll_crafting_solder_spool",
-    "ll_crafting_steel_pipe"
+    "ll_crafting_steel_pipe",
+    "ll_crafting_steel_wool",
+    "ll_crafting_timber_batten"
   ],
-  "last_run_id": "43689077408",
+  "last_run_id": "43726488448",
   "golden_approved": false,
-  "remaining": 312
+  "remaining": 310
 }

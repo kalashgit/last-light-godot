@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_steel_wool",
+  "source_glb_sha256": "fb158a9e31ea2715142f8abe7b10df56365b09deb3f94ba215c71fb196db1e45",
+  "atlas_sha256": "ab025b7d2d2bf05f75887a8b4398ccaa93b7413f6bb8d0a899cb35b471a6071e",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2636940,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

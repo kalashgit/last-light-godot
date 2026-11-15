@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_timber_batten",
+  "source_glb_sha256": "abfd466485df1137d0757dd93351c57807e511cc8104c33d0dbed2e88bc4bf58",
+  "atlas_sha256": "5a809f83c7a56a4238a7306a3c96e2835e9b0c1559d6b0f9185f4494fbd37a51",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2625443,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -1,0 +1,42 @@
+{
+  "run_id": "43726488448",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 50,
+  "remaining": 310,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_steel_wool",
+      "source_glb_sha256": "fb158a9e31ea2715142f8abe7b10df56365b09deb3f94ba215c71fb196db1e45",
+      "atlas_sha256": "ab025b7d2d2bf05f75887a8b4398ccaa93b7413f6bb8d0a899cb35b471a6071e",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2636940,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_timber_batten",
+      "source_glb_sha256": "abfd466485df1137d0757dd93351c57807e511cc8104c33d0dbed2e88bc4bf58",
+      "atlas_sha256": "5a809f83c7a56a4238a7306a3c96e2835e9b0c1559d6b0f9185f4494fbd37a51",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2625443,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
