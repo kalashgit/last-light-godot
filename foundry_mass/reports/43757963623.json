@@ -1,0 +1,42 @@
+{
+  "run_id": "43757963623",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 52,
+  "remaining": 308,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_twine_roll",
+      "source_glb_sha256": "ab79b8b8a291987f1d8735a38a646710b5cd8066a3fd7ba8f672237a414243da",
+      "atlas_sha256": "89e4ff26a3c41fe4ffcf4410eaa6f0ba23e5c60ea3c9dce1fb54416ff00b13f2",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662462,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_crafting_washer_box",
+      "source_glb_sha256": "a5bb3eff51041f7d360d7a697a74489156369f1dc56d1e115706f20096f5b4b5",
+      "atlas_sha256": "f7d1e1697961e510fa92691f07cb407b38b76c2cd288abbe8a8b9f32581940e6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662898,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

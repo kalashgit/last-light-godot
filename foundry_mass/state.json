@@ -52,9 +52,11 @@
     "ll_crafting_solder_spool",
     "ll_crafting_steel_pipe",
     "ll_crafting_steel_wool",
-    "ll_crafting_timber_batten"
+    "ll_crafting_timber_batten",
+    "ll_crafting_twine_roll",
+    "ll_crafting_washer_box"
   ],
-  "last_run_id": "43726488448",
+  "last_run_id": "43757963623",
   "golden_approved": false,
-  "remaining": 310
+  "remaining": 308
 }

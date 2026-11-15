@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_twine_roll",
+  "source_glb_sha256": "ab79b8b8a291987f1d8735a38a646710b5cd8066a3fd7ba8f672237a414243da",
+  "atlas_sha256": "89e4ff26a3c41fe4ffcf4410eaa6f0ba23e5c60ea3c9dce1fb54416ff00b13f2",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662462,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
