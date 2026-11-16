@@ -56,9 +56,11 @@
     "ll_crafting_twine_roll",
     "ll_crafting_washer_box",
     "ll_crafting_wire_coil",
-    "ll_crafting_wood_dowels"
+    "ll_crafting_wood_dowels",
+    "ll_crafting_wood_glue",
+    "ll_food_baking_soda"
   ],
-  "last_run_id": "43780151303",
+  "last_run_id": "43823069920",
   "golden_approved": false,
-  "remaining": 306
+  "remaining": 304
 }

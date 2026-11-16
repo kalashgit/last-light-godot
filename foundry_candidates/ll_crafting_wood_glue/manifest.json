@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_wood_glue",
+  "source_glb_sha256": "4f0dac2fd66e6f6db2b68ee4e767c7d1477e6dffbd89732b340d4cc114d51cb4",
+  "atlas_sha256": "d2d49ab4dbc3c436bd8f45b6d1fb7b7215f84537c626e6cbad118f7645539da6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2745978,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

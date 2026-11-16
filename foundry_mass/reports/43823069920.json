@@ -1,0 +1,42 @@
+{
+  "run_id": "43823069920",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 56,
+  "remaining": 304,
+  "generated": [
+    {
+      "asset_id": "ll_crafting_wood_glue",
+      "source_glb_sha256": "4f0dac2fd66e6f6db2b68ee4e767c7d1477e6dffbd89732b340d4cc114d51cb4",
+      "atlas_sha256": "d2d49ab4dbc3c436bd8f45b6d1fb7b7215f84537c626e6cbad118f7645539da6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2745978,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_baking_soda",
+      "source_glb_sha256": "3c0d8985fea8b2603f17b85c5110739a637262d0f77543e30e69fd139a41a6e8",
+      "atlas_sha256": "c0447a457f79c40576282422ea98be87dbee9963c9d6d09a8f2cec0de261bb96",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2660763,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

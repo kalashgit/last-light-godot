@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_baking_soda",
+  "source_glb_sha256": "3c0d8985fea8b2603f17b85c5110739a637262d0f77543e30e69fd139a41a6e8",
+  "atlas_sha256": "c0447a457f79c40576282422ea98be87dbee9963c9d6d09a8f2cec0de261bb96",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2660763,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
