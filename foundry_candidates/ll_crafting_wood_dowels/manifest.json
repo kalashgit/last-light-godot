@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_wood_dowels",
+  "source_glb_sha256": "0451bb18a57f8d3f89f6ecce88d6257a8d03e136fc5f32a4758cd5bafc992bf5",
+  "atlas_sha256": "a904e72517b75c78865b49f2e73a8aa1bcdd4961db27512894219dda12780136",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2583218,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

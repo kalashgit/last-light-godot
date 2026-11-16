@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_crafting_wire_coil",
+  "source_glb_sha256": "322740b128f62a1680de1e9e8cf084f1427b969bfc900d84ce910fa5af55355e",
+  "atlas_sha256": "cc9641c237aefe4a7648b7b0b11d8fd3e791826375f78761000d8d6d83a2d649",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2655922,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -54,9 +54,11 @@
     "ll_crafting_steel_wool",
     "ll_crafting_timber_batten",
     "ll_crafting_twine_roll",
-    "ll_crafting_washer_box"
+    "ll_crafting_washer_box",
+    "ll_crafting_wire_coil",
+    "ll_crafting_wood_dowels"
   ],
-  "last_run_id": "43757963623",
+  "last_run_id": "43780151303",
   "golden_approved": false,
-  "remaining": 308
+  "remaining": 306
 }
