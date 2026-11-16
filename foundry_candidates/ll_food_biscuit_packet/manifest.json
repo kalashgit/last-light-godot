@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_biscuit_packet",
+  "source_glb_sha256": "48d31281af191decb13a21abf0af6035de3ff07a9f07cbfd1604d3c1c5837879",
+  "atlas_sha256": "45530456c834a7d1e47f7d8d7eef55269d47decd05fb0a0b7df37e54fbccff1b",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2728804,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

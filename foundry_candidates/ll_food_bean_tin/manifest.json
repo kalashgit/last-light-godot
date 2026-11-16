@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_bean_tin",
+  "source_glb_sha256": "62b8634212930389ba3824273dff41b9efcd502d92bf6f431aac1cb53badbe6a",
+  "atlas_sha256": "14535bfc7ff9983ad0fe7fcfd32a4e70aba5b0183284e6fd2ba2bb5200a080d8",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2668034,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

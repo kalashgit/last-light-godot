@@ -58,9 +58,11 @@
     "ll_crafting_wire_coil",
     "ll_crafting_wood_dowels",
     "ll_crafting_wood_glue",
-    "ll_food_baking_soda"
+    "ll_food_baking_soda",
+    "ll_food_bean_tin",
+    "ll_food_biscuit_packet"
   ],
-  "last_run_id": "43823069920",
+  "last_run_id": "43918912557",
   "golden_approved": false,
-  "remaining": 304
+  "remaining": 302
 }
