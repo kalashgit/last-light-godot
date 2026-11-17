@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_bread_loaf",
+  "source_glb_sha256": "c78f5773deefb6a13f532af49a76070bf4ce7308f1703c781abf9f834e4e4ba5",
+  "atlas_sha256": "dae9eea21c336ddbc743293847e492cf829abf4a947a56315cc211e4266fc773",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2728786,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

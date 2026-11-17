@@ -60,9 +60,11 @@
     "ll_crafting_wood_glue",
     "ll_food_baking_soda",
     "ll_food_bean_tin",
-    "ll_food_biscuit_packet"
+    "ll_food_biscuit_packet",
+    "ll_food_bread_loaf",
+    "ll_food_butter_packet"
   ],
-  "last_run_id": "43918912557",
+  "last_run_id": "43992913388",
   "golden_approved": false,
-  "remaining": 302
+  "remaining": 300
 }
