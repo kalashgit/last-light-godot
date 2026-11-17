@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_cereal_box",
+  "source_glb_sha256": "7806b79e68de1d2f84d1cb454589db8f95db09f3b75ecdf9b1d8ba86b71eca94",
+  "atlas_sha256": "c2dc8f9a8d0515c7ebf077e180608bc752e3388e8c3bb8b8c157bf3b751cca14",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2700603,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

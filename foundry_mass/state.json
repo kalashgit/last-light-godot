@@ -62,9 +62,11 @@
     "ll_food_bean_tin",
     "ll_food_biscuit_packet",
     "ll_food_bread_loaf",
-    "ll_food_butter_packet"
+    "ll_food_butter_packet",
+    "ll_food_cereal_box",
+    "ll_food_cheese_packet"
   ],
-  "last_run_id": "43992913388",
+  "last_run_id": "44053828246",
   "golden_approved": false,
-  "remaining": 300
+  "remaining": 298
 }

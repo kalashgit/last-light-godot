@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_cheese_packet",
+  "source_glb_sha256": "512665ea7a73303b436af15d93c6b549aa963b7e5af6271c161acb94fabaa68f",
+  "atlas_sha256": "70fc4580f941abfbd6f41aa32f8c46af17e64c8b5c74ef39e71570f589898b9d",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2716870,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
