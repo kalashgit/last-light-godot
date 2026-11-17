@@ -64,9 +64,11 @@
     "ll_food_bread_loaf",
     "ll_food_butter_packet",
     "ll_food_cereal_box",
-    "ll_food_cheese_packet"
+    "ll_food_cheese_packet",
+    "ll_food_chocolate_bar",
+    "ll_food_cocoa_tin"
   ],
-  "last_run_id": "44053828246",
+  "last_run_id": "44150127166",
   "golden_approved": false,
-  "remaining": 298
+  "remaining": 296
 }

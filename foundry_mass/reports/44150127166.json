@@ -1,0 +1,42 @@
+{
+  "run_id": "44150127166",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 64,
+  "remaining": 296,
+  "generated": [
+    {
+      "asset_id": "ll_food_chocolate_bar",
+      "source_glb_sha256": "e4a9748402e849a29ee902afe008f51da24e9ad3d34eaf352a18136811ee4959",
+      "atlas_sha256": "dc9c73cbaa08bcd4bdc437c6b6b0001a0020246f32cda57a9ec0ff80c5a859f6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2716897,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_cocoa_tin",
+      "source_glb_sha256": "b4f79bf70aa3290d1420eb4453110938f3fe20c6713df2c7447f620b7263e05a",
+      "atlas_sha256": "988a911c2f8e288aeec1cc2800c7b5ffd813c60155eecca856ca306ccf04f4fd",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2794718,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_chocolate_bar",
+  "source_glb_sha256": "e4a9748402e849a29ee902afe008f51da24e9ad3d34eaf352a18136811ee4959",
+  "atlas_sha256": "dc9c73cbaa08bcd4bdc437c6b6b0001a0020246f32cda57a9ec0ff80c5a859f6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2716897,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

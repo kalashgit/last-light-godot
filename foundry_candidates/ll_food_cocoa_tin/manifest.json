@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_cocoa_tin",
+  "source_glb_sha256": "b4f79bf70aa3290d1420eb4453110938f3fe20c6713df2c7447f620b7263e05a",
+  "atlas_sha256": "988a911c2f8e288aeec1cc2800c7b5ffd813c60155eecca856ca306ccf04f4fd",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2794718,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
