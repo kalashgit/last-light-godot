@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_coffee_jar",
+  "source_glb_sha256": "cf61b0853d206f5e18daecb20e18f652b4fbc9352c5be64215d6dd9b27df8ff4",
+  "atlas_sha256": "e8404505bbb2ceeb20b49dccb1a00743ff2a6dec5b3bceb0608243b5c8af11d9",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2755548,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

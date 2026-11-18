@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_cooking_oil",
+  "source_glb_sha256": "e4ba6ae76f03151f4ecae91e38b17e5d8f98186432532e7202121f2ecc56d0a2",
+  "atlas_sha256": "1504e4a72a99c476f27bb199c7cbc7f20ff1629b9139c65055bdb08011031159",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2793000,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
