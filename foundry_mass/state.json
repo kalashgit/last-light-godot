@@ -68,9 +68,11 @@
     "ll_food_chocolate_bar",
     "ll_food_cocoa_tin",
     "ll_food_coffee_jar",
-    "ll_food_cooking_oil"
+    "ll_food_cooking_oil",
+    "ll_food_corn_tin",
+    "ll_food_cracker_box"
   ],
-  "last_run_id": "44215003824",
+  "last_run_id": "44273714306",
   "golden_approved": false,
-  "remaining": 294
+  "remaining": 292
 }

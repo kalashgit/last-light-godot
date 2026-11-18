@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_cracker_box",
+  "source_glb_sha256": "97fd7c4096ad9d13e0fbe3430cc4b5606dc4e8eefe4bfcd04e6a72c42a74ae0c",
+  "atlas_sha256": "9b91e9de408c15949af70e416d3e20121f36873f70f8bb20eefbdf20b174a5a5",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2700612,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

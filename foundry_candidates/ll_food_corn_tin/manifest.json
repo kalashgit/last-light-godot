@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_corn_tin",
+  "source_glb_sha256": "d4ec8119356e7af67deee23cb8bf80ecf890b3c3e8043da6a891b4be102a6451",
+  "atlas_sha256": "236df50f3b1dc30387e13fba876e5b59a12df2e50ed7bf57d730a45076dcb9c4",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2787554,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
