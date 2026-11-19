@@ -414,7 +414,7 @@ func _item_row(it: Dictionary, prefix: String, cb: Callable, cold: bool = false)
 	var b: Button = UiKit.button(txt, cb, 54)
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 17)
-	var ih: int = Art.item_icon.get(it["id"], -1)
+	var ih: int = Art.icon_of(it, sim.hour)
 	if ih >= 0:
 		b.icon = Art.icons.atlas_tex(ih)
 		b.expand_icon = true

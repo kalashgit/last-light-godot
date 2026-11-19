@@ -517,7 +517,7 @@ static func _obj_options(sim: Sim, t: Dictionary) -> Array:
 			if Defs.o_part(cell) == 0:
 				out.append(_opt("Pick berries", func():
 					p.start_action("Picking berries", 3.0, func():
-						Inv.add(p.inv, Items.make("berries", 2 + randi() % 3 + p.skill_level("foraging") / 3, sim.hour))
+						Inv.add(p.inv, Items.make(bush_berry(x, y), 2 + randi() % 3 + p.skill_level("foraging") / 3, sim.hour))
 						w.set_obj(x, y, Defs.ocell(Defs.O_BERRY_BUSH, 0, 1))
 						w.set_ent(x, y, {"k": "berry", "h": sim.hour})
 						p.add_xp("foraging", 8.0))))
@@ -1011,8 +1011,64 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 				sim.noise(p.pos, 8.0)
 				sim.emit_fx("build", p.pos)
 				sim.say("Engine condition: %d%%" % int(float(e["eng"]) * 100.0), Color(0.75, 0.9, 0.7)))))
+	# parts found in garages and stripped from wrecks: each puts one thing right
+	var offered := {}
+	for pit in p.inv:
+		var pid: String = pit["id"]
+		var pd: Dictionary = Items.def(pid)
+		if not pd.has("car_fix") or offered.has(pid) or not part_needed(e, tid, pd["car_fix"]):
+			continue
+		offered[pid] = true
+		var label: String = String(pd.get("verb", "Fit the %s" % String(pd["n"]).to_lower()))
+		if part_tool(pd) != "" and not Inv.has_tag(p.inv, part_tool(pd)):
+			label += " (needs a %s)" % part_tool(pd)
+		out.append(_opt(label, func(): fit_part(sim, e, pid)))
 	out.append(_opt("Look it over", func(): sim.say(condition_text(e, tid), Color(0.85, 0.88, 0.8))))
 	return out
+
+## whether a part would put anything right on this vehicle
+static func part_needed(e: Dictionary, tid: int, fx: Dictionary) -> bool:
+	for k in fx.keys():
+		match String(k):
+			"eng": return float(e.get("eng", 1.0)) < 0.95
+			"win": return tid != Defs.O_MOTORBIKE and tid != Defs.O_BICYCLE and float(e.get("win", 1.0)) < 0.99
+			"door": return tid != Defs.O_MOTORBIKE and tid != Defs.O_BICYCLE and float(e.get("door", 1.0)) < 0.99
+			"tire": return float(e.get("tire", 1.0)) < 0.99
+			"lit": return int(e.get("lit", 1)) == 0
+			"muf": return tid != Defs.O_BICYCLE and int(e.get("muf", 1)) == 0
+	return false
+
+## the tool a part needs to go in (a bulb goes in by hand)
+static func part_tool(pd: Dictionary) -> String:
+	return "" if (pd.get("car_fix", {}) as Dictionary).has("lit") else "wrench"
+
+static func fit_part(sim: Sim, e: Dictionary, pid: String) -> void:
+	var p: Player = sim.player
+	var pd: Dictionary = Items.def(pid)
+	var tool: String = part_tool(pd)
+	if tool != "" and not Inv.has_tag(p.inv, tool):
+		sim.say("You need a %s to fit the %s." % [tool, String(pd["n"]).to_lower()], Color(0.9, 0.8, 0.6))
+		return
+	var secs: float = clampf(3.0 + float(pd.get("w", 0.5)) * 0.8, 3.0, 12.0) - p.skill_level("mechanics") * 0.3
+	p.start_action("Fitting the %s" % String(pd["n"]).to_lower(), maxf(2.0, secs), func():
+		if not Inv.take(p.inv, pid, 1): return
+		var fx: Dictionary = pd["car_fix"]
+		for k in fx.keys():
+			match String(k):
+				"eng": e["eng"] = minf(1.0, float(e.get("eng", 0.0)) + float(fx[k]) + 0.03 * p.skill_level("mechanics"))
+				"win", "door", "tire": e[k] = minf(1.0, float(e.get(k, 0.0)) + float(fx[k]))
+				"lit", "muf": e[k] = 1
+		p.add_xp("mechanics", 8.0 + float(pd.get("w", 0.5)) * 2.0)
+		sim.emit_fx("build", p.pos)
+		var what: String = String(fx.keys()[0])
+		var now: String = {"eng": "Engine %d%%" % int(float(e.get("eng", 0.0)) * 100.0), "win": "Windows %d%%" % int(float(e.get("win", 1.0)) * 100.0),
+			"door": "Doors %d%%" % int(float(e.get("door", 1.0)) * 100.0), "tire": "Tyres %d%%" % int(float(e.get("tire", 1.0)) * 100.0),
+			"lit": "The headlights work.", "muf": "The exhaust is quiet again."}[what]
+		sim.say("%s fitted. %s" % [String(pd["n"]), now], Color(0.75, 0.9, 0.7)))
+
+## what a berry bush grows: about one bush in three is a bramble, always the same ones
+static func bush_berry(x: int, y: int) -> String:
+	return "blackberries" if posmod(x * 7 + y * 13, 3) == 0 else "berries"
 
 static func condition_text(e: Dictionary, tid: int) -> String:
 	var t: String = "Fuel %d/%d · engine %d%% · tyres %d%%" % [int(float(e.get("fuel", 0.0))), int(Vehicle.tank_of(tid)), int(float(e.get("eng", 0.0)) * 100.0), int(float(e.get("tire", 1.0)) * 100.0)]
@@ -1476,7 +1532,7 @@ static func _forage(sim: Sim, x: int, y: int, branches: bool) -> void:
 		if branches:
 			found = "branch"
 			n = 1 + randi() % 2
-		elif r < 0.18: found = "berries"
+		elif r < 0.18: found = "berries" if randf() < 0.6 else "blackberries"
 		elif r < 0.3: found = "mushroom"
 		elif r < 0.45: found = "branch"
 		elif r < 0.56: found = "stone"

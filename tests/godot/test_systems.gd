@@ -1716,6 +1716,87 @@ func _init() -> void:
 	Art.clear_cache()
 	ok(not Art.load_cache(), "and with no cache at all, the art is painted")
 
+	print("== content from the reference sheets")
+	var gmap: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/icon_map_grid.json"))
+	var sheet_items: Array = []
+	var bad_map: Array = []
+	for key in (gmap["icons"] as Dictionary).keys():
+		var base: String = String(key).split("__")[0]
+		if not Items.DB.has(base) or not ResourceLoader.exists("res://assets/art/icons/%s.png" % key):
+			bad_map.append(key)
+		elif not String(key).contains("__"):
+			sheet_items.append(base)
+	ok(bad_map.is_empty() and sheet_items.size() >= 150, "%d items take their icon from the grid sheets; every entry is a real item with its icon cut (bad: %s)" % [sheet_items.size(), str(bad_map)])
+	var NEW_C := ["banana", "avocado", "cherries", "blackberries", "broccoli", "brussels_sprouts", "bagel", "baguette", "sandwich", "burger", "hot_dog", "bologna",
+		"raw_bacon", "cake", "cookies", "gummy_candy", "caramels", "chewing_gum", "canned_mushrooms", "canned_pineapple", "fruit_cocktail", "canned_peas", "mixed_veg",
+		"black_beans", "cat_food", "orange_soda", "lemon_soda", "champagne", "brandy", "water_jug", "empty_water_jug", "beret", "bucket_hat", "police_cap", "chef_hat",
+		"bike_helmet", "combat_helmet", "goggles", "chef_jacket", "bathrobe", "jersey", "coveralls", "hivis_coveralls", "gym_shorts", "apron", "leather_apron",
+		"leather_vest", "chest_protector", "riot_shin_guards", "chest_rig", "bone", "pipe_wrench", "hacksaw", "folding_shovel", "bolt_cutters", "glowstick",
+		"playing_cards", "hand_bell", "motor_oil", "spark_plug", "fan_belt", "air_filter", "oil_filter", "fuel_pump", "alternator", "starter_motor", "radiator",
+		"windscreen", "car_door", "spare_wheel", "headlight_bulb", "muffler"]
+	var CRAFTED := ["cooked_bacon", "arm_wraps", "leather_bracers", "studded_bracers", "scrap_shin_guards", "scrap_shoulder_pads", "bone_bracers", "bone_shin_guards",
+		"bone_chest", "bone_mask", "bone_shiv", "bone_club", "bone"]
+	var lootable := {}
+	for tn in Loot.T.keys():
+		for e_l in Loot.T[tn]["items"]:
+			lootable[String(e_l[0])] = true
+	var craftable := {}
+	for r_c in Recipes.LIST:
+		for o_c in r_c.get("out", []):
+			craftable[String(o_c[0])] = true
+	var unplaced: Array = []
+	for id_c in NEW_C:
+		if not lootable.has(id_c) or not Items.DB.has(id_c): unplaced.append(id_c)
+	for id_c2 in CRAFTED:
+		if not craftable.has(id_c2) or not Items.DB.has(id_c2): unplaced.append(id_c2)
+	if unplaced.has("blackberries") and (Actions.bush_berry(0, 0) == "blackberries" or Actions.bush_berry(1, 0) == "blackberries" or Actions.bush_berry(2, 0) == "blackberries"):
+		unplaced.erase("blackberries")      # brambles grow wild rather than sitting in a cupboard
+	ok(unplaced.is_empty(), "all %d new things are found somewhere in the world, and the %d you make have a recipe (missing: %s)" % [NEW_C.size(), CRAFTED.size(), str(unplaced)])
+	var app: Dictionary = Items.make("apple", 1, 0.0)
+	ok(Art.icon_of(app, 1.0) == int(Art.item_icon["apple"]) and Art.icon_of(app, 1000.0) == int(Art.item_icon_rot.get("apple", -1)) and Art.item_icon_rot.size() >= 12,
+		"a rotten apple shows the rotten apple from the sheet; a fresh one the fresh apple (%d foods have a rotten look)" % Art.item_icon_rot.size())
+	ok(Art.icon_of({"id": "hammer", "n": 1}, 5000.0) == int(Art.item_icon["hammer"]), "things that do not rot keep their one icon")
+	var cs := Sim.new(4141)
+	cs.new_game("builder", [], "house")
+	cs.settings["meta"] = false
+	var cp: Player = cs.player
+	cp.inv.clear()
+	var run_action := func():
+		for k_a in range(400):
+			if cp.action.is_empty(): break
+			cp.update(0.1, Vector2.ZERO, false)
+	var car_e := {"eng": 0.3, "win": 0.2, "door": 0.4, "tire": 0.3, "lit": 0, "muf": 0}
+	Inv.add_new(cp.inv, "spark_plug", 1, cs.hour)
+	Actions.fit_part(cs, car_e, "spark_plug")
+	run_action.call()
+	ok(float(car_e["eng"]) == 0.3 and Inv.count(cp.inv, "spark_plug") == 1, "without a wrench a spark plug cannot go in")
+	Inv.add_new(cp.inv, "wrench", 1, cs.hour)
+	Actions.fit_part(cs, car_e, "spark_plug")
+	run_action.call()
+	ok(float(car_e["eng"]) > 0.4 and Inv.count(cp.inv, "spark_plug") == 0, "with a wrench it does, and the engine runs better (%d%%)" % int(float(car_e["eng"]) * 100.0))
+	for part_id in ["windscreen", "car_door", "spare_wheel", "headlight_bulb", "muffler"]:
+		Inv.add_new(cp.inv, part_id, 1, cs.hour)
+		Actions.fit_part(cs, car_e, part_id)
+		run_action.call()
+	ok(float(car_e["win"]) == 1.0 and float(car_e["door"]) == 1.0 and float(car_e["tire"]) == 1.0 and int(car_e["lit"]) == 1 and int(car_e["muf"]) == 1,
+		"a windscreen, a door, a spare wheel, a bulb and a muffler each put their part right")
+	ok(not Actions.part_needed({"eng": 1.0}, Defs.O_CAR, {"eng": 0.1}) and Actions.part_needed({"eng": 0.5}, Defs.O_CAR, {"eng": 0.1}) and not Actions.part_needed({"win": 0.2}, Defs.O_MOTORBIKE, {"win": 1.0}),
+		"a part is only offered where it is needed (no windscreen for a motorbike)")
+	var deer_out: Array = []
+	for r_b in Recipes.LIST:
+		if r_b["id"] == "butcher_deer": deer_out = r_b["out"]
+	ok(str(deer_out).contains("bone"), "butchering a deer leaves bones")
+	Inv.add_new(cp.inv, "jeans", 1, cs.hour)
+	Inv.add_new(cp.inv, "bone_shin_guards", 1, cs.hour)
+	cp.equip(Inv.find(cp.inv, "jeans"))
+	cp.equip(Inv.find(cp.inv, "bone_shin_guards"))
+	ok(cp.clothing_def(13) >= 0.3 and cp.cover_item(13)["id"] == "bone_shin_guards" and cp.cover_item(11)["id"] == "jeans",
+		"bone shin guards strap over jeans: they take a bite at the shin, the jeans still cover the thigh")
+	var jug: Dictionary = Items.make("water_jug", 1, 0.0)
+	var jw: float = Items.weight(jug)
+	jug["u"] = 3
+	ok(int(Items.make("water_jug")["u"]) == 12 and Items.weight(jug) < jw * 0.5 and Items.def("empty_water_jug")["fill"] == "water_jug", "a water jug holds twelve drinks, gets lighter as you drink, and can be filled again")
+
 	print("== difficulty")
 	var dsim := Sim.new(8080)
 	dsim.new_game("builder", [], "house")

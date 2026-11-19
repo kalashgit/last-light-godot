@@ -22,6 +22,8 @@ static var obj_spr: Dictionary = {}
 static var ov: Dictionary = {}
 ## item icon handles by item id
 static var item_icon: Dictionary = {}
+## the icon a perishable shows once it has rotted, by item id (only where the sheets draw one)
+static var item_icon_rot: Dictionary = {}
 static var misc: Dictionary = {}
 ## character frames: see ArtChars
 static var char_frames: Dictionary = {}
@@ -51,6 +53,7 @@ static func begin() -> void:
 	obj_spr.clear()
 	ov.clear()
 	item_icon.clear()
+	item_icon_rot.clear()
 	misc.clear()
 	char_frames.clear()
 	ArtIcons.sheet_icons.clear()
@@ -114,7 +117,7 @@ static func _atlases() -> Dictionary:
 static func save_cache() -> bool:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
 	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "ov": ov,
-		"item_icon": item_icon, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
+		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
 	var at: Dictionary = _atlases()
 	for nm in at.keys():
 		var a: Atlas = at[nm]
@@ -165,10 +168,18 @@ static func load_cache() -> bool:
 	obj_spr = meta["obj_spr"]
 	ov = meta["ov"]
 	item_icon = meta["item_icon"]
+	item_icon_rot = meta.get("item_icon_rot", {})
 	misc = meta["misc"]
 	char_frames = meta["char_frames"]
 	ArtIcons.sheet_icons = meta["sheet_icons"]
 	return true
+
+## the icon to draw for this item now: the rotten sprite once a perishable has turned
+static func icon_of(it: Dictionary, hour: float) -> int:
+	var id: String = String(it.get("id", ""))
+	if item_icon_rot.has(id) and Items.fresh_state(it, hour) == 2:
+		return int(item_icon_rot[id])
+	return int(item_icon.get(id, -1))
 
 static func clear_cache() -> void:
 	for fn in ["index.bin", "index.tmp", "world.png", "chars.png", "icons.png"]:

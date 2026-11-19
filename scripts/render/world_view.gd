@@ -642,7 +642,7 @@ func _draw_row(s: Strip) -> void:
 			var arr: Array = c.items[i]
 			var n: int = mini(arr.size(), 3)
 			for k in range(n):
-				var ih: int = Art.item_icon.get(arr[k]["id"], -1)
+				var ih: int = Art.icon_of(arr[k], sim.hour)
 				if ih >= 0:
 					var r: Rect2 = Art.icons.rects[ih]
 					var ip: Vector2 = pos + Vector2(-8 + k * 7 - (n - 1) * 3.5, 9 + (k % 2) * 4)

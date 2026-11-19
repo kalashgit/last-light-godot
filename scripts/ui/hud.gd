@@ -464,7 +464,7 @@ func _draw() -> void:
 		var hid: String = "hot%d" % hi
 		var hit: Dictionary = _hot[hi]
 		_round_btn(hid, "", Color(0.22, 0.24, 0.24), is_same(p.weapon, hit), 12)
-		var hh: int = Art.item_icon.get(hit["id"], -1)
+		var hh: int = Art.icon_of(hit, sim.hour)
 		if hh >= 0:
 			var hc: Vector2 = _btn[hid][0]
 			draw_texture_rect_region(tex, Rect2(hc - Vector2(18, 18), Vector2(36, 36)), Art.icons.rects[hh])

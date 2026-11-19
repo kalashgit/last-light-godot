@@ -12,7 +12,8 @@ Inside each grid cell the largest shape is the sprite; other shapes are kept onl
 least 6% of its size (the second boot of a pair, a strap) and are not a short shape lying wholly
 above or below it (a printed number), so labels and stray specks drop out.
 An entry is [sheet, row, col], or [sheet, "at", x, y] for a sheet whose columns drift: the cell is
-then a grid-sized box centred on that pixel. The result is fitted into 48x48 (resampled with premultiplied alpha, so no backdrop
+then a grid-sized box centred on that pixel. Items listed in "fill_holes" (rings: a belt, a wheel)
+also lose backdrop-coloured pixels enclosed by the sprite. The result is fitted into 48x48 (resampled with premultiplied alpha, so no backdrop
 colour bleeds into the edge) and written to assets/art/icons/<item>.png.
 The sheets live in art_src/ (ignored by Godot), so only the small icons ship with the game.
 """
@@ -40,6 +41,18 @@ def edge_flood(pred):
         if (grown == reach).all():
             return reach
         reach = grown
+
+
+def backdrop(im, bg):
+    """pixels that look like the sheet's backdrop, wherever they are"""
+    a = np.asarray(im).astype(np.int16)
+    rgb = a[:, :, :3]
+    mx = rgb.max(axis=2); mn = rgb.min(axis=2); mean = rgb.mean(axis=2)
+    if bg == "alpha":
+        return a[:, :, 3] <= 100
+    if bg == "light":
+        return (mx - mn < 20) & (mn > 196)
+    return (mx - mn < 16) & (mean > 30) & (mean < 80)
 
 
 def foreground(path, bg):
@@ -99,13 +112,13 @@ def row_bands(fg, rows, label_px):
     return bands
 
 
-def cut(im, fg, cols, rows, cell, bands):
+def cut(im, fg, cols, rows, cell, bands, holes=None):
     W, H = im.size
     cw, ch = W / cols, H / rows
     if cell[0] == "at":
         bx0, by0 = cell[1] - cw / 2, cell[2] - ch / 2
         by1 = by0 + ch
-        y0 = max(0, int(by0 - ch * 0.15)); y1 = min(H, int(by1 + ch * 0.15))
+        y0 = max(0, int(by0 - ch * 0.5)); y1 = min(H, int(by1 + ch * 0.5))
     elif bands:
         bx0 = cell[1] * cw
         by0, by1 = bands[cell[0]]
@@ -113,10 +126,11 @@ def cut(im, fg, cols, rows, cell, bands):
     else:
         bx0, by0 = cell[1] * cw, cell[0] * ch
         by1 = by0 + ch
-        y0 = max(0, int(by0 - ch * 0.15)); y1 = min(H, int(by1 + ch * 0.15))
+        y0 = max(0, int(by0 - ch * 0.5)); y1 = min(H, int(by1 + ch * 0.5))
     bx1 = bx0 + cw
     # look a little beyond the cell, but keep only shapes centred inside it
-    x0 = max(0, int(bx0 - cw * 0.25)); x1 = min(W, int(bx1 + cw * 0.25))
+    # (wide enough that a neighbour is never cut in half and mistaken for a piece of this sprite)
+    x0 = max(0, int(bx0 - cw * 0.8)); x1 = min(W, int(bx1 + cw * 0.8))
     win = fg[y0:y1, x0:x1]
     inside = []
     for pts in components(win):
@@ -142,6 +156,8 @@ def cut(im, fg, cols, rows, cell, bands):
         ys, xs = zip(*pts)
         m[list(ys), list(xs)] = True
     src = np.asarray(im)[y0:y1, x0:x1].copy()
+    if holes is not None:
+        m &= ~holes[y0:y1, x0:x1]
     src[:, :, 3] = np.where(m, src[:, :, 3], 0).astype(np.uint8)
     spr = Image.fromarray(src, "RGBA")
     bb = spr.getbbox()
@@ -163,7 +179,8 @@ for item, entry in cfg["icons"].items():
         im0, fg0 = foreground(os.path.join(root, "art_src/sheets", sh["file"]), sh["bg"])
         loaded[tag] = (im0, fg0, row_bands(fg0, sh["rows"], int(sh.get("label_px", 0))))
     im, fg, bands = loaded[tag]
-    icon = cut(im, fg, sh["cols"], sh["rows"], cell, bands)
+    holes = backdrop(im, sh["bg"]) if item in cfg.get("fill_holes", []) else None
+    icon = cut(im, fg, sh["cols"], sh["rows"], cell, bands, holes)
     if icon is None:
         print("nothing found for", item, entry)
         continue

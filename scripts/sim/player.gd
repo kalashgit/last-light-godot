@@ -282,13 +282,17 @@ func worn_items() -> Array:
 			out.append(gear[k])
 	return out
 
-## the garment protecting a body part ({} if bare)
+## the garment protecting a body part ({} if bare): the toughest layer over it, which is what
+## takes the bite (armour strapped over a shirt wears, not the shirt)
 func cover_item(part: int) -> Dictionary:
+	var best: Dictionary = {}
+	var best_def := -1.0
 	for it in worn_items():
 		var wd: Dictionary = Items.def(it["id"]).get("wear", {})
-		if (wd.get("parts", [2, 3, 5, 6, 7, 8]) as Array).has(part):
-			return it
-	return {}
+		if (wd.get("parts", [2, 3, 5, 6, 7, 8]) as Array).has(part) and float(wd.get("def", 0.0)) > best_def:
+			best = it
+			best_def = float(wd.get("def", 0.0))
+	return best
 
 ## how much of smoke / stench / fumes a worn mask keeps out (0 none .. 1 all)
 func mask(kind: String) -> float:

@@ -22,6 +22,12 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 					im.convert(Image.FORMAT_RGBA8)
 					Art.item_icon[id] = Art.icons.add(im, 0, 0, "", false)
 					sheet_icons[id] = true
+					# perishables can have a second sheet sprite for when they have turned
+					var rpath: String = "res://assets/art/icons/%s__rotten.png" % id
+					if ResourceLoader.exists(rpath):
+						var rim: Image = (load(rpath) as Texture2D).get_image()
+						rim.convert(Image.FORMAT_RGBA8)
+						Art.item_icon_rot[id] = Art.icons.add(rim, 0, 0, "", false)
 				else:
 					var p: Painter = _icon(ic[0], Color(ic[1]), Color(ic[2]))
 					Art.item_icon[id] = Art.icons.add(Painter.stylize(Painter.fit(p.img, 48), true, true, 0.04, hash(id), true, 0.35), 0, 0, "", false))
