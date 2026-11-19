@@ -24,8 +24,14 @@ The code is split so that the **simulation never touches the scene tree**. `Sim`
 | `models.gd` | ~55 furniture / prop models as lists of boxes. |
 | `art_world.gd` | Ground tiles, 12 wall/fence texture sets × 2 orientations × 7 shapes, door/window/barricade overlays, trees, bushes, crops, roofs, blood. |
 | `art_chars.gd` | A 3D stick skeleton posed per animation frame, projected, and rasterised into tintable layers (skin/shirt/pants/hair + fixed) for 15 animations × 5 directions (3 more are mirrored), plus 5 weapon overlays. |
-| `art_icons.gd` | 130+ item icons from 66 shape archetypes, status icons. |
+| `art_icons.gd` | Item icons: 272 are cut from the founder's reference sprite sheets (`assets/art/sheets`, sliced by `tools/art/extract_icons.py` into `assets/art/icons`, mapped in `data/icon_map.json`); the rest are painted from shape archetypes in the same style. Status icons. |
 | `atlas.gd` | Trims and shelf-packs everything into three textures (world 2048×1024, characters 2048×512, icons 512×256). |
+
+Every painted sprite goes through `Painter.stylize` (the house style taken from the reference sheets: dark ink outline, light from the upper left, inner shading lines, fine grain and a warm grade).
+
+**Art cache.** Painting everything takes several seconds (about 10 s on a desktop, more on a phone), so the first launch keeps the result in `user://art_cache/` (three atlas PNGs and an index of every sprite lookup) and later launches load it in a fraction of a second. The cache is keyed by an MD5 over every script, data file and art file in the project plus `Art.VERSION` and the engine version, so any change to the game paints afresh. The index is written last, so a half-written cache is never used. Tests: systems "art cache" (painted and loaded art are identical pixel for pixel, a stale key is refused).
+
+**Sound.** The short effects are synthesised when the scene is built; the longer voices and background loops are synthesised on the main thread a few milliseconds per frame afterwards (`Sfx._process`, 3 ms budget). An earlier version used a worker thread and corrupted memory under Godot 4.3 when it ran alongside the art painting; nothing in the game runs GDScript off the main thread now.
 
 Multi-tile objects (cars, beds, sofas) are rendered **once per footprint tile**, clipped to that tile's column, so each piece depth-sorts on its own diagonal. Building walls are painted white and tinted at draw time, so 24 wall materials share 12 sprite sets.
 

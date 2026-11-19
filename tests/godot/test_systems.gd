@@ -1685,6 +1685,37 @@ func _init() -> void:
 	DirAccess.remove_absolute("user://exports/test_bad.zip")
 	SaveGame.delete("sys_exp")
 
+	print("== art cache")
+	Art.use_cache = false
+	Art.build_all()
+	ok(not Art.from_cache and Art.ready, "with the cache off, the art is painted from scratch")
+	var snap_a := {}
+	for an in ["world", "chars", "icons"]:
+		var at_a: Atlas = Art._atlases()[an]
+		snap_a[an] = [hash(at_a.image.get_data()), at_a.image.get_size(), str(at_a.rects), str(at_a.offs), str(at_a.names)]
+	var reg_a: String = str([Art.ground, Art.wall_spr, Art.obj_spr, Art.ov, Art.item_icon, Art.misc, Art.char_frames, ArtIcons.sheet_icons.size()])
+	Art.clear_cache()
+	ok(Art.save_cache(), "the painted art is kept on disk")
+	Art.use_cache = true
+	Art.build_all()
+	ok(Art.from_cache and Art.ready, "the next launch loads it instead of painting")
+	var same_a := true
+	for an2 in ["world", "chars", "icons"]:
+		var at_b: Atlas = Art._atlases()[an2]
+		if [hash(at_b.image.get_data()), at_b.image.get_size(), str(at_b.rects), str(at_b.offs), str(at_b.names)] != snap_a[an2]: same_a = false
+		if at_b.texture == null: same_a = false
+	ok(same_a, "every pixel and sprite rectangle loaded is the one that was painted")
+	ok(str([Art.ground, Art.wall_spr, Art.obj_spr, Art.ov, Art.item_icon, Art.misc, Art.char_frames, ArtIcons.sheet_icons.size()]) == reg_a, "and so is every sprite lookup (ground, walls, objects, overlays, icons, characters)")
+	var idx_f := FileAccess.open(Art.CACHE_DIR + "index.bin", FileAccess.READ_WRITE)
+	var meta_c: Dictionary = idx_f.get_var()
+	meta_c["key"] = "made by an older version"
+	idx_f.seek(0)
+	idx_f.store_var(meta_c)
+	idx_f.close()
+	ok(not Art.load_cache(), "art kept by a different version of the game is not used")
+	Art.clear_cache()
+	ok(not Art.load_cache(), "and with no cache at all, the art is painted")
+
 	print("== difficulty")
 	var dsim := Sim.new(8080)
 	dsim.new_game("builder", [], "house")

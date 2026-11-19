@@ -1,6 +1,8 @@
 class_name Sfx
 extends Node
-## Procedural sound effects: every sample is synthesised into PCM at boot.
+## Procedural sound effects: every sample is synthesised into PCM in the game itself. The short
+## effects are made at boot; the longer voices and background loops are made a few milliseconds
+## per frame afterwards, on the main thread, so the game starts at once and nothing races.
 
 const RATE := 22050
 var _streams: Dictionary = {}
@@ -13,7 +15,10 @@ var _pos: Variant = null          # where in the world the sound being played co
 var _players2d: Array = []        # positional voices: pan with where the sound is on screen
 var _started2d: Array = []
 static var build_now := false     # tests: build everything immediately
-var _extra: Dictionary = {}       # streams built off the main thread, waiting to be handed over
+var _pending: Array = []          # synthesis jobs still to run, a slice per frame
+var _job: Dictionary = {}         # the job being synthesised now
+var _queueing := false            # while true, _make queues its job instead of running it at once
+const BUDGET_USEC := 3000         # how much of each frame the background synthesis may take
 var _beds: Dictionary = {}        # loop name -> AudioStreamPlayer (wind, rain, crickets, birds, tension)
 var _started: Array = []      # when each voice last started (msec), so the oldest is the one cut off
 var _room_wet := 0.0
@@ -34,13 +39,12 @@ func _ready() -> void:
 		_started2d.append(0)
 	# the voices and the background loops take a second or two to synthesise: do it off the main
 	# thread so the game starts at once, and hand them over when they are ready
+	_queueing = not build_now
+	_make_voices()
+	_make_beds_streams()
+	_queueing = false
 	if build_now:
-		_build_extra()
-		_extra_ready()
-	else:
-		WorkerThreadPool.add_task(func():
-			_build_extra()
-			call_deferred("_extra_ready"))
+		_start_beds()
 	_make("thunder", 1.6, func(t, n): return n * (0.7 * exp(-t * 2.2) + 0.3 * exp(-absf(t - 0.4) * 6.0)) * (0.6 + 0.4 * sin(t * 13.0)))
 	_make("fire", 0.3, func(t, n): return n * 0.35 * (0.3 + 0.7 * absf(sin(t * 61.0))) * exp(-t * 4.0))
 	_make("engine", 0.5, func(t, n): return (sin(t * 62.0 * TAU) * 0.4 + sin(t * 124.0 * TAU) * 0.2 + n * 0.12) * (0.7 + 0.3 * sin(t * 28.0 * TAU)) * sin(t / 0.5 * PI))
@@ -87,30 +91,52 @@ func _ready() -> void:
 	_make("scream", 0.9, func(t, n): return (sin(t * (760.0 + sin(t * 31.0) * 90.0 - t * 240.0) * TAU) * 0.45 + n * 0.12) * sin(minf(t / 0.9, 1.0) * PI))
 	_make("bark", 0.22, func(t, n): return (sin(t * (300.0 - t * 500.0) * TAU) * 0.5 + n * 0.35) * exp(-t * 16.0))
 
-func _build_extra() -> void:
-	_into = _extra
-	_make_voices()
-	_make_beds_streams()
-	_into = null
+## the background synthesis: a slice of the current job each frame until the queue is empty,
+## then the background loops start
+func _process(_dt: float) -> void:
+	if _pending.is_empty() and _job.is_empty():
+		return
+	var deadline: int = Time.get_ticks_usec() + BUDGET_USEC
+	while Time.get_ticks_usec() < deadline:
+		if _job.is_empty():
+			if _pending.is_empty():
+				break
+			_job = _pending.pop_front()
+		if _run_job(_job, deadline):
+			_job = {}
+	if _pending.is_empty() and _job.is_empty():
+		_start_beds()
 
-func _extra_ready() -> void:
-	for k in _extra.keys():
-		_streams[k] = _extra[k]
-	_extra.clear()
-	_start_beds()
+func ready_all() -> bool:
+	return _pending.is_empty() and _job.is_empty()
 
-var _into = null                  # where _make puts what it builds (the worker's own dictionary while it runs)
-func _make(name: String, dur: float, f: Callable, lowpass_hz: float = 0.0, fades: bool = true) -> void:
+func _make(name: String, dur: float, f: Callable, lowpass_hz: float = 0.0, fades: bool = true, loop: bool = false) -> void:
 	var n: int = int(dur * RATE)
 	var data := PackedByteArray()
 	data.resize(n * 2)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(name)
-	var a: float = 1.0 - exp(-TAU * lowpass_hz / RATE) if lowpass_hz > 0.0 else 1.0
-	var y := 0.0
+	var job := {"name": name, "n": n, "f": f, "rng": rng, "data": data, "i": 0, "y": 0.0, "fades": fades, "loop": loop,
+		"a": 1.0 - exp(-TAU * lowpass_hz / RATE) if lowpass_hz > 0.0 else 1.0}
+	if _queueing:
+		_pending.append(job)
+	else:
+		_run_job(job, -1)
+
+## synthesise a job until it is done (true) or the deadline passes (false, resumable)
+func _run_job(j: Dictionary, deadline: int) -> bool:
+	var n: int = j["n"]
+	var f: Callable = j["f"]
+	var rng: RandomNumberGenerator = j["rng"]
+	var data: PackedByteArray = j["data"]
+	j["data"] = PackedByteArray()          # hold the only reference, so writing never copies the buffer
+	var a: float = j["a"]
+	var y: float = j["y"]
+	var fades: bool = j["fades"]
 	var fade_in: int = int(0.003 * RATE)
 	var fade_out: int = mini(int(0.012 * RATE), n / 3)
-	for i in range(n):
+	var i: int = j["i"]
+	while i < n:
 		var t: float = float(i) / RATE
 		var x: float = f.call(t, rng.randf_range(-1.0, 1.0))
 		y += (x - y) * a
@@ -119,15 +145,24 @@ func _make(name: String, dur: float, f: Callable, lowpass_hz: float = 0.0, fades
 		if fades and i > n - fade_out: g = minf(g, float(n - i) / float(fade_out))
 		var v: float = clampf(y * g, -1.0, 1.0)
 		data.encode_s16(i * 2, int(v * 32000.0))
+		i += 1
+		if deadline >= 0 and (i & 255) == 0 and Time.get_ticks_usec() >= deadline:
+			j["i"] = i
+			j["y"] = y
+			j["data"] = data
+			return false
 	var s := AudioStreamWAV.new()
 	s.format = AudioStreamWAV.FORMAT_16_BITS
 	s.mix_rate = RATE
 	s.stereo = false
 	s.data = data
-	if _into != null:
-		_into[name] = s
-	else:
-		_streams[name] = s
+	if j["loop"]:
+		# no fades at the ends: the shape repeats exactly, so the join is seamless
+		s.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		s.loop_begin = 0
+		s.loop_end = n
+	_streams[j["name"]] = s
+	return true
 
 ## "Near": your own space (a little room echo indoors); "Muffled": through walls, a floor or a shut door
 static func _make_buses() -> void:
@@ -211,12 +246,7 @@ func _make_voices() -> void:
 ## seamless loops under everything: wind, rain, crickets at night, birds by day, and a low tension
 ## drone that rises when the infected are close. Each fades toward a level the world sets.
 func _make_loop(name: String, dur: float, f: Callable, lowpass_hz: float) -> void:
-	_make(name, dur, f, lowpass_hz, false)
-	var s: AudioStreamWAV = _into[name] if _into != null else _streams[name]
-	# no fades at the ends: the shape repeats exactly, so the join is seamless
-	s.loop_mode = AudioStreamWAV.LOOP_FORWARD
-	s.loop_begin = 0
-	s.loop_end = int(dur * RATE)
+	_make(name, dur, f, lowpass_hz, false, true)
 
 func _make_beds_streams() -> void:
 	_make_loop("bed_wind", 6.0, func(t, n): return n * 0.5 * (0.6 + 0.4 * sin(t / 6.0 * TAU)) * (0.8 + 0.2 * sin(t / 2.0 * TAU)), 500.0)
@@ -330,7 +360,9 @@ func consume(sim: Sim, view: WorldView) -> void:
 			"glass": play("glass", vol + 2.0)
 			"door", "locked": play("door", vol - 3.0, randf_range(0.9, 1.1))
 			"break": play("break", vol)
-			"groan": play("groan%d" % (randi() % 4), vol - 3.0, randf_range(0.85, 1.12))
+			"groan":
+				var gv: String = "groan%d" % (randi() % 4)
+				play(gv if _streams.has(gv) else "groan", vol - 3.0, randf_range(0.85, 1.12))
 			"hurt", "death": play("hurt", 0.0)
 			"pickup", "equip", "reload": play("pickup", -6.0)
 			"eat": play("eat", -4.0)
