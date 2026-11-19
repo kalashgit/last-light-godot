@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_dried_fruit",
+  "source_glb_sha256": "8376649068e6232f9b5c58db370f66733e6838377293b7bdee9badb10c6dce41",
+  "atlas_sha256": "3bcb7d085f867d8dc78c2551706d5f45fabb976f52749481d81c5afcc8ed0dde",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2721631,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

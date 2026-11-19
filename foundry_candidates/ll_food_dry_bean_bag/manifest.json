@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_dry_bean_bag",
+  "source_glb_sha256": "217dd6beae7e03441b476963730b709c3264b89486499e0a9c9138a8533429a1",
+  "atlas_sha256": "258a43b15fb9bbe9d95c6360b6aff9a37f1319b2d236092d46c623e67bad3d8f",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2728768,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -1,0 +1,42 @@
+{
+  "run_id": "44428902580",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 70,
+  "remaining": 290,
+  "generated": [
+    {
+      "asset_id": "ll_food_dried_fruit",
+      "source_glb_sha256": "8376649068e6232f9b5c58db370f66733e6838377293b7bdee9badb10c6dce41",
+      "atlas_sha256": "3bcb7d085f867d8dc78c2551706d5f45fabb976f52749481d81c5afcc8ed0dde",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2721631,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_dry_bean_bag",
+      "source_glb_sha256": "217dd6beae7e03441b476963730b709c3264b89486499e0a9c9138a8533429a1",
+      "atlas_sha256": "258a43b15fb9bbe9d95c6360b6aff9a37f1319b2d236092d46c623e67bad3d8f",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2728768,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

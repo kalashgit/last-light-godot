@@ -70,9 +70,11 @@
     "ll_food_coffee_jar",
     "ll_food_cooking_oil",
     "ll_food_corn_tin",
-    "ll_food_cracker_box"
+    "ll_food_cracker_box",
+    "ll_food_dried_fruit",
+    "ll_food_dry_bean_bag"
   ],
-  "last_run_id": "44273714306",
+  "last_run_id": "44428902580",
   "golden_approved": false,
-  "remaining": 292
+  "remaining": 290
 }
