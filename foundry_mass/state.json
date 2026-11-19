@@ -76,9 +76,11 @@
     "ll_food_energy_bar",
     "ll_food_evaporated_milk",
     "ll_food_flour_bag",
-    "ll_food_honey_jar"
+    "ll_food_honey_jar",
+    "ll_food_instant_noodles",
+    "ll_food_jam_jar"
   ],
-  "last_run_id": "44576769024",
+  "last_run_id": "44641312232",
   "golden_approved": false,
-  "remaining": 286
+  "remaining": 284
 }

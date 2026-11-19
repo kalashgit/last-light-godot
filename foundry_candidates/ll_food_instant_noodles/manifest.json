@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_instant_noodles",
+  "source_glb_sha256": "9bfbbb9c22ec2937cd35dc89d9da4d4c144bf650a20f18c849f9bc150f8b7fd8",
+  "atlas_sha256": "c320b5375022dff8a2909b9efd42ae3cd3dc6c573687d66532b48ee7b79445a0",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2716879,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

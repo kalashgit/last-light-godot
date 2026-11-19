@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_jam_jar",
+  "source_glb_sha256": "eb5aca333acb6e7bd227369b6b2aa562cf155d9329b3bb93c7666d8ff452bc25",
+  "atlas_sha256": "9659b49abef264bdb18f00c94985c6d187327863bba9e6f78bdc04af9a3f89a0",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2668686,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

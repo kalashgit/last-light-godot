@@ -1,0 +1,42 @@
+{
+  "run_id": "44641312232",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 76,
+  "remaining": 284,
+  "generated": [
+    {
+      "asset_id": "ll_food_instant_noodles",
+      "source_glb_sha256": "9bfbbb9c22ec2937cd35dc89d9da4d4c144bf650a20f18c849f9bc150f8b7fd8",
+      "atlas_sha256": "c320b5375022dff8a2909b9efd42ae3cd3dc6c573687d66532b48ee7b79445a0",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2716879,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_jam_jar",
+      "source_glb_sha256": "eb5aca333acb6e7bd227369b6b2aa562cf155d9329b3bb93c7666d8ff452bc25",
+      "atlas_sha256": "9659b49abef264bdb18f00c94985c6d187327863bba9e6f78bdc04af9a3f89a0",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2668686,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
