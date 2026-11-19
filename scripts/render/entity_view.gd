@@ -93,6 +93,16 @@ func _draw() -> void:
 				cols[3] = Color("2a2a2a")
 		cols[1] = (cols[1] as Color).lerp(Color(0.45, 0.45, 0.38), 0.45)
 		cols[2] = (cols[2] as Color).lerp(Color(0.35, 0.34, 0.3), 0.4)
+	# the house outline: a dark rim around the whole figure, like the sprite sheets
+	if not ghost:
+		var ink := Color(0.09, 0.06, 0.045, 0.95)
+		for off in [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]:
+			for li in range(4):
+				if frame[li] < 0: continue
+				if flip:
+					A.draw_flipped(self, frame[li], off, ink)
+				else:
+					A.draw(self, frame[li], off, ink)
 	for i in range(5):
 		var c: Color = cols[i]
 		if flash > 0.0:

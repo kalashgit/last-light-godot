@@ -39,6 +39,7 @@ var _hot: Array = []              # quick-slot weapons shown in the hotbar
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR    # the 48 px icons scale down cleanly into hotbar slots
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func reset_input() -> void:

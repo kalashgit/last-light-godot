@@ -111,6 +111,91 @@ func outline(c: Color) -> void:
 			if hit:
 				img.set_pixel(xx, yy, c)
 
+# ---------------------------------------------------------------- house style
+## The look of the reference sheets: a dark warm outline, light from the top left (a bright rim on
+## upper-left edges, shade on lower-right ones), ink lines where two colours meet, a fine grain, and a
+## warm, slightly richer grade. Works on raw bytes so it stays fast at startup on a phone.
+const INK := Color(0.09, 0.06, 0.045)
+static func stylize(src: Image, outline_on: bool = true, inner_lines: bool = true, grain: float = 0.035, salt: int = 0, rim: bool = true, volume: float = 0.0) -> Image:
+	var im: Image = src.duplicate()
+	if im.get_format() != Image.FORMAT_RGBA8:
+		im.convert(Image.FORMAT_RGBA8)
+	var w: int = im.get_width()
+	var h: int = im.get_height()
+	var d: PackedByteArray = im.get_data()
+	var o: PackedByteArray = d.duplicate()
+	var lum := PackedFloat32Array()
+	lum.resize(w * h)
+	for i in range(w * h):
+		lum[i] = (0.3 * d[i * 4] + 0.59 * d[i * 4 + 1] + 0.11 * d[i * 4 + 2]) / 255.0
+	for y in range(h):
+		for x in range(w):
+			var i: int = y * w + x
+			var a: int = d[i * 4 + 3]
+			if a < 128:
+				if outline_on:
+					# a transparent pixel touching the sprite becomes outline
+					var touch := false
+					if x > 0 and d[(i - 1) * 4 + 3] >= 128: touch = true
+					elif x < w - 1 and d[(i + 1) * 4 + 3] >= 128: touch = true
+					elif y > 0 and d[(i - w) * 4 + 3] >= 128: touch = true
+					elif y < h - 1 and d[(i + w) * 4 + 3] >= 128: touch = true
+					if touch:
+						o[i * 4] = int(INK.r * 255.0)
+						o[i * 4 + 1] = int(INK.g * 255.0)
+						o[i * 4 + 2] = int(INK.b * 255.0)
+						o[i * 4 + 3] = 255
+				continue
+			var r: float = d[i * 4] / 255.0
+			var g: float = d[i * 4 + 1] / 255.0
+			var bl: float = d[i * 4 + 2] / 255.0
+			var k := 1.0
+			# rim light and shade from the silhouette
+			var up_open: bool = y == 0 or d[(i - w) * 4 + 3] < 128
+			var left_open: bool = x == 0 or d[(i - 1) * 4 + 3] < 128
+			var down_open: bool = y == h - 1 or d[(i + w) * 4 + 3] < 128
+			var right_open: bool = x == w - 1 or d[(i + 1) * 4 + 3] < 128
+			if volume > 0.0:
+				k += (0.5 - (float(x) / float(w) + float(y) / float(h)) * 0.5) * volume      # rounder: light falls off toward the lower right
+			if rim and (up_open or left_open): k += 0.22
+			if rim and (down_open or right_open): k -= 0.26
+			# ink where this colour meets a clearly lighter one
+			if inner_lines:
+				var lm: float = lum[i]
+				if (x < w - 1 and d[(i + 1) * 4 + 3] >= 128 and lum[i + 1] - lm > 0.2) or (y < h - 1 and d[(i + w) * 4 + 3] >= 128 and lum[i + w] - lm > 0.2):
+					k -= 0.3
+			# grain
+			if grain > 0.0:
+				k += (float(((x * 73856093) ^ (y * 19349663) ^ (salt * 83492791)) & 0xFFFF) / 65535.0 - 0.5) * 2.0 * grain
+			# warm, slightly richer grade
+			var avg: float = (r + g + bl) / 3.0
+			r = (avg + (r - avg) * 1.15) * 1.03 * k
+			g = (avg + (g - avg) * 1.15) * 1.0 * k
+			bl = (avg + (bl - avg) * 1.15) * 0.93 * k
+			o[i * 4] = clampi(int(r * 255.0), 0, 255)
+			o[i * 4 + 1] = clampi(int(g * 255.0), 0, 255)
+			o[i * 4 + 2] = clampi(int(bl * 255.0), 0, 255)
+	return Image.create_from_data(w, h, false, Image.FORMAT_RGBA8, o)
+
+## crop to what was drawn and blow it up by a whole number so it fills a size x size frame
+static func fit(src: Image, size: int, margin: int = 3) -> Image:
+	var used: Rect2i = src.get_used_rect()
+	var out := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	if used.size.x <= 0:
+		return out
+	var part: Image = src.get_region(used)
+	part.convert(Image.FORMAT_RGBA8)
+	var k: int = maxi(1, int(floor(float(size - margin * 2) / float(maxi(used.size.x, used.size.y)))))
+	part.resize(used.size.x * k, used.size.y * k, Image.INTERPOLATE_NEAREST)
+	out.blit_rect(part, Rect2i(Vector2i.ZERO, part.get_size()), Vector2i((size - part.get_width()) / 2, (size - part.get_height()) / 2))
+	return out
+
+## twice the pixels, same picture: lets the style pass work at a finer grain than the drawing
+static func upscale2(src: Image) -> Image:
+	var im: Image = src.duplicate()
+	im.resize(src.get_width() * 2, src.get_height() * 2, Image.INTERPOLATE_NEAREST)
+	return im
+
 # ---------------------------------------------------------------- materials
 static func shade(m: int, c: Color, u: int, v: int, f: float) -> Color:
 	var n: float = Rng.f2(u, v, 17)

@@ -316,7 +316,7 @@ static func _trunk(p: Painter, cx: float, base_y: float, hgt: float, wd: float, 
 			p.put(xx, yy, col)
 
 static func _reg(id: int, p: Painter, ax: float, ay: float, part: int = 0) -> void:
-	var hnd: int = Art.world.add(p.img, ax, ay)
+	var hnd: int = Art.world.add(Painter.stylize(p.img, true, false, 0.02, id), ax, ay)
 	for r in range(4):
 		Art.obj_spr[Defs.ocell(id, r, part)] = hnd
 
@@ -628,7 +628,7 @@ static func _gen_crops() -> void:
 							p.put(int(sx) + 1, int(sy - size * 0.7), Color(0.85, 0.15, 0.12))
 					_:
 						_paint_crop(p, NEW_CROPS[ci - 12], sx, sy, size, stage, green, si)
-			var hnd: int = Art.world.add(p.img, ax, ay)
+			var hnd: int = Art.world.add(Painter.stylize(p.img, true, false, 0.02, ids[ci] * 7 + stage), ax, ay)
 			for r in range(4):
 				Art.obj_spr[Defs.ocell(ids[ci], r, stage)] = hnd
 
@@ -647,7 +647,7 @@ static func _gen_object(id: int, boxes: Array) -> void:
 		for j in range(fs.y):
 			for i in range(fs.x):
 				var p: Painter = Painter.render_tile_part(sorted, i, j, maxz, 2)
-				var hnd: int = Art.world.add(p.img, 2 + 32, 2 + maxz)
+				var hnd: int = Art.world.add(Painter.stylize(p.img, fs == Vector2i(1, 1), true, 0.025, id, fs == Vector2i(1, 1)), 2 + 32, 2 + maxz)
 				var part: int = j * fs.x + i
 				if rots == 1:
 					for rr in range(4):

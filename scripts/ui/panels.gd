@@ -396,7 +396,7 @@ func _item_row(it: Dictionary, prefix: String, cb: Callable, cold: bool = false)
 	if ih >= 0:
 		b.icon = Art.icons.atlas_tex(ih)
 		b.expand_icon = true
-		b.add_theme_constant_override("icon_max_width", 36)
+		b.add_theme_constant_override("icon_max_width", 44)
 	var fs: int = Items.fresh_state(it, sim.hour)
 	if fs == 2: b.add_theme_color_override("font_color", UiKit.BAD)
 	elif fs == 1: b.add_theme_color_override("font_color", Color(0.85, 0.8, 0.5))

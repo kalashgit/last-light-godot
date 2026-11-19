@@ -3,6 +3,7 @@ extends RefCounted
 ## Item icons, status (moodle) icons and HUD glyphs — all painted procedurally.
 
 const S := 24
+static var sheet_icons: Dictionary = {}     # items drawn from the reference sprite sheets
 
 static func queue_jobs(jobs: Array[Callable]) -> void:
 	var ids: Array = Items.DB.keys()
@@ -13,9 +14,17 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 			for id in chunk:
 				var d: Dictionary = Items.DB[id]
 				var ic: Array = d["icon"]
-				var p: Painter = _icon(ic[0], Color(ic[1]), Color(ic[2]))
-				p.outline(Color(0.05, 0.05, 0.05, 0.85))
-				Art.item_icon[id] = Art.icons.add(p.img, 0, 0, "", false))
+				# hand-painted art from the reference sheets where there is a match; styled procedural art otherwise
+				var path: String = "res://assets/art/icons/%s.png" % id
+				if ResourceLoader.exists(path):
+					var tex: Texture2D = load(path)
+					var im: Image = tex.get_image()
+					im.convert(Image.FORMAT_RGBA8)
+					Art.item_icon[id] = Art.icons.add(im, 0, 0, "", false)
+					sheet_icons[id] = true
+				else:
+					var p: Painter = _icon(ic[0], Color(ic[1]), Color(ic[2]))
+					Art.item_icon[id] = Art.icons.add(Painter.stylize(Painter.fit(p.img, 48), true, true, 0.04, hash(id), true, 0.35), 0, 0, "", false))
 		i += 16
 	jobs.append(_gen_moodles)
 
