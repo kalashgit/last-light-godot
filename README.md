@@ -45,7 +45,7 @@ Each finger is tracked independently, so you can move, attack and interact at th
 - **Crafting and building** — 181 recipes in 8 groups: cooking, carpentry, weapons, tailoring, repair, workbench metal and electrical work; place walls, doors, fences, floors, crates, shelves, beds, rain collectors, compost bins; barricade; dismantle; fell trees.
 - **Farming, foraging, fishing, trapping** — till, plant, water, fertilise, harvest, compost; set baited snares in open country.
 - **Places and events** — cellars under houses, randomized scenes left by other survivors, an aircraft flyover that stirs up the dead, distant gunshots and alarms, alarms you can cut, streets that overgrow over the weeks.
-- **Custom sandbox** — 15 world rules on the new-game screen, and guided first objectives.
+- **Custom sandbox** — one-tap difficulty presets (Story, Survivor, Hardened, Last Light), 17 world rules on the new-game screen, and guided first objectives.
 - **The long game** — day/night, weather and seasons, the power grid and the water mains both fail some days in, generators, building alarms, 13 skills with XP and skill books, 9 starting occupations, permadeath.
 - **Persistence** — autosave (every 2.5 min, on pause, and whenever the app is backgrounded); only chunks that differ from the generator are stored.
 

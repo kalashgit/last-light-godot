@@ -1685,6 +1685,41 @@ func _init() -> void:
 	DirAccess.remove_absolute("user://exports/test_bad.zip")
 	SaveGame.delete("sys_exp")
 
+	print("== difficulty")
+	var dsim := Sim.new(8080)
+	dsim.new_game("builder", [], "house")
+	dsim.settings["meta"] = false
+	var dz := Zombie.new()
+	dz.pos = dsim.player.pos + Vector2(0.8, 0.0)
+	var dloss := {}
+	for zd in [0.6, 1.0, 1.5]:
+		dsim.settings["zdmg"] = zd
+		var lost := 0.0
+		for k_d in range(300):
+			seed(9000 + k_d)
+			dsim.rng.seed = 9000 + k_d
+			var dpl: Player = dsim.player
+			dpl.inv.clear()
+			dpl.wounds.clear()
+			dpl.hp = 100.0
+			dpl.alive = true
+			dpl.take_zombie_hit(dz)
+			lost += 100.0 - dpl.hp
+		dloss[zd] = lost
+	ok(dloss[0.6] < dloss[1.0] * 0.7 and dloss[1.5] > dloss[1.0] * 1.3, "a hit from the infected hurts less on Lightly and more on Brutal (%.0f / %.0f / %.0f hp over 300 hits)" % [dloss[0.6], dloss[1.0], dloss[1.5]])
+	ok(float(Sim.new(1).settings.get("zdmg", 0.0)) == 1.0, "a new world's infected hit at normal strength unless the sandbox says otherwise")
+	var pcs: Dictionary = (load("res://scripts/ui/panels.gd") as Script).get_script_constant_map()["PRESETS"]
+	var defaults_d: Dictionary = (load("res://scripts/ui/panels.gd") as Script).new()._ng_sand
+	var preset_ok := pcs.size() == 4
+	for pn_d in pcs.keys():
+		for pk_d in pcs[pn_d].keys():
+			if not defaults_d.has(pk_d): preset_ok = false
+	var surv_match := true
+	for pk_s in pcs["Survivor"].keys():
+		if int(defaults_d[pk_s]) != int(pcs["Survivor"][pk_s]): surv_match = false
+	ok(preset_ok and surv_match, "four difficulty presets set real sandbox rules, and the default world is Survivor")
+	ok(int(pcs["Story"]["zombies"]) < int(pcs["Last Light"]["zombies"]) and int(pcs["Story"]["zdmg"]) < int(pcs["Last Light"]["zdmg"]) and int(pcs["Story"]["loot"]) > int(pcs["Last Light"]["loot"]), "Story is gentler than Last Light in numbers, hits and loot")
+
 	print("")
 	print("RESULT: %d checks, %d failed" % [checks, fails])
 	quit(1 if fails > 0 else 0)

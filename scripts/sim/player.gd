@@ -1021,6 +1021,7 @@ func take_zombie_hit(z: Zombie) -> void:
 		type = "laceration"
 		dmg = randf_range(6.0, 11.0)
 		inf_ch = 0.25
+	dmg *= float(sim.settings.get("zdmg", 1.0))
 	hp -= dmg
 	add_wound(part, type, "infected attack")
 	if grabbed_by == -1 and z.kind != 2 and randf() < 0.22 and sim.vehicle == null:

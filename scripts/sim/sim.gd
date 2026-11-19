@@ -16,7 +16,7 @@ var seed_v := 0
 var hour := START_HOUR           # absolute game hours since midnight of day 1
 var time_scale := 1.0
 var settings := {"zombies": 1.0, "loot": 1.0, "day_min": 60.0, "infection": true, "god": false, "respawn": false, "zspeed": 1.0,
-	"xp": 1.0, "util": 1, "season": 0, "flyover": 1, "kit": false, "growth": 1.0, "dark": 1.0, "guide": true, "meta": true, "events": 1.0}
+	"xp": 1.0, "util": 1, "season": 0, "flyover": 1, "kit": false, "growth": 1.0, "dark": 1.0, "guide": true, "meta": true, "events": 1.0, "zdmg": 1.0}
 var weather := {"cloud": 0.3, "rain": 0.0, "fog": 0.0, "temp": 21.0, "wind": 0.2}
 var power_off_h := 0.0
 var water_off_h := 0.0

@@ -32,7 +32,13 @@ var _ng_traits: Array = []
 var _ng_start := 0
 var _ng_look: Array = [0, 2, 1, 0]
 var _ng_sand := {"sprinters": 0, "zombies": 1, "zspeed": 1, "respawn": 0, "infection": 0, "loot": 1, "day": 1, "util": 1, "season": 0,
-	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1}
+	"flyover": 1, "meta": 1, "growth": 1, "dark": 1, "xp": 1, "kit": 0, "guide": 1, "zdmg": 1}
+## one-tap difficulty: each sets the rules that matter most together
+const PRESETS := {
+	"Story": {"zombies": 0, "zspeed": 0, "sprinters": 0, "loot": 2, "util": 2, "dark": 0, "kit": 1, "zdmg": 0, "infection": 0},
+	"Survivor": {"zombies": 1, "zspeed": 1, "sprinters": 0, "loot": 1, "util": 1, "dark": 1, "kit": 0, "zdmg": 1, "infection": 0},
+	"Hardened": {"zombies": 2, "zspeed": 1, "sprinters": 1, "loot": 0, "util": 0, "dark": 1, "kit": 0, "zdmg": 2, "infection": 0},
+	"Last Light": {"zombies": 3, "zspeed": 2, "sprinters": 2, "loot": 0, "util": 0, "dark": 2, "kit": 0, "zdmg": 3, "infection": 0}}
 var _confirm_new := false
 var _relayout_frames := 0
 
@@ -331,7 +337,23 @@ func _build_newgame() -> void:
 					ob.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
 				hb0.add_child(ob)
 			vb.add_child(hb0)
+		vb.add_child(UiKit.label("Difficulty", 16, UiKit.DIM))
+		var pr_row := HBoxContainer.new()
+		for pn in PRESETS.keys():
+			var pname: String = pn
+			var pb: Button = UiKit.button(pname, func():
+				for pk in PRESETS[pname].keys(): _ng_sand[pk] = PRESETS[pname][pk]
+				rebuild(), 46)
+			pb.add_theme_font_size_override("font_size", 15)
+			var match_all := true
+			for pk2 in PRESETS[pname].keys():
+				if int(S[pk2]) != int(PRESETS[pname][pk2]): match_all = false
+			if match_all:
+				pb.add_theme_stylebox_override("normal", UiKit._box(UiKit.BTN_HI, 8, UiKit.ACCENT))
+			pr_row.add_child(pb)
+		vb.add_child(pr_row)
 		add.call("Infected population", "zombies", ["Sparse", "Normal", "Dense", "Overrun"])
+		add.call("How hard the infected hit", "zdmg", ["Lightly", "Normal", "Hard", "Brutal"])
 		add.call("Infected speed", "zspeed", ["Slow", "Normal", "Fast"])
 		add.call("Sprinters among them", "sprinters", ["None", "A few", "Many"])
 		add.call("Infected return to cleared areas", "respawn", ["Never", "Slowly"])
@@ -379,7 +401,7 @@ func _build_newgame() -> void:
 			"infection": int(S2["infection"]) == 0, "loot": [0.6, 1.0, 1.6][int(S2["loot"])], "day_min": [30.0, 60.0, 120.0][int(S2["day"])],
 			"util": int(S2["util"]), "season": int(S2["season"]), "flyover": int(S2["flyover"]), "meta": int(S2["meta"]) == 1,
 			"growth": [0.0, 1.0, 3.0][int(S2["growth"])], "dark": [0.6, 1.0, 1.35][int(S2["dark"])], "xp": [0.5, 1.0, 2.0][int(S2["xp"])],
-			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "pname": _ng_name.strip_edges(), "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])],
+			"kit": int(S2["kit"]) == 1, "guide": int(S2["guide"]) == 1, "pname": _ng_name.strip_edges(), "sprinters": [0.0, 0.04, 0.2][int(S2["sprinters"])], "zdmg": [0.6, 1.0, 1.25, 1.5][int(S2.get("zdmg", 1))],
 		}, _ng_traits.duplicate(), ["house", "downtown", "farm", "cabin"][_ng_start], _ng_look.duplicate()), 64)
 	go.size_flags_stretch_ratio = 2.0
 	hb2.add_child(go)
