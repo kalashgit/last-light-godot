@@ -1,0 +1,42 @@
+{
+  "run_id": "44576769024",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 74,
+  "remaining": 286,
+  "generated": [
+    {
+      "asset_id": "ll_food_flour_bag",
+      "source_glb_sha256": "0bea39a666d397e703b683d6c7fc450f84f09cd5a98673aa9f6db5a4e8bf539a",
+      "atlas_sha256": "08844a7dd2d7ab0a99d92166d008d84a0124519f0d0c679da1a37588e4113931",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2728786,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_honey_jar",
+      "source_glb_sha256": "94ab9ff55baec041045975f1142b053eec45a3b84ce601c19f998d56504e85e4",
+      "atlas_sha256": "e4b6d262105b1170051edbeead0086f589e26d663c1a2853a58831660fb55121",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2755539,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_honey_jar",
+  "source_glb_sha256": "94ab9ff55baec041045975f1142b053eec45a3b84ce601c19f998d56504e85e4",
+  "atlas_sha256": "e4b6d262105b1170051edbeead0086f589e26d663c1a2853a58831660fb55121",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2755539,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

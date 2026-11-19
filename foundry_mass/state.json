@@ -74,9 +74,11 @@
     "ll_food_dried_fruit",
     "ll_food_dry_bean_bag",
     "ll_food_energy_bar",
-    "ll_food_evaporated_milk"
+    "ll_food_evaporated_milk",
+    "ll_food_flour_bag",
+    "ll_food_honey_jar"
   ],
-  "last_run_id": "44483706298",
+  "last_run_id": "44576769024",
   "golden_approved": false,
-  "remaining": 288
+  "remaining": 286
 }
