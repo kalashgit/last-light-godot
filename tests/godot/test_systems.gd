@@ -1617,6 +1617,7 @@ func _init() -> void:
 	ok(flips_g <= 1, "a stick held on a diagonal boundary does not make the figure flip back and forth (%d turns)" % flips_g)
 	ok(Iso.dir8_sticky(Iso.dir8_to_world(2).rotated(0.05), 2) == 2 and Iso.dir8_sticky(Iso.dir8_to_world(3), 2) == 3, "a clear turn still turns")
 	Sfx._make_buses()
+	Sfx.build_now = true
 	var sfx_n_g := Sfx.new()
 	sfx_n_g._ready()
 	var have_steps_g := true
@@ -1626,10 +1627,36 @@ func _init() -> void:
 	ok(have_steps_g, "every surface has three footstep takes, so steps do not repeat identically")
 	var clean_g := true
 	for nm2_g in sfx_n_g._streams.keys():
+		if String(nm2_g).begins_with("bed_"): continue          # (the ambient loops are meant to run on without a break)
 		var dat_g: PackedByteArray = (sfx_n_g._streams[nm2_g] as AudioStreamWAV).data
 		if absi(dat_g.decode_s16(0)) > 400 or absi(dat_g.decode_s16(dat_g.size() - 2)) > 400: clean_g = false
 	ok(clean_g and sfx_n_g._streams.size() > 30, "every one of the %d sounds starts and ends at silence, so none of them clicks" % sfx_n_g._streams.size())
 	ok(sfx_n_g._players.size() == 16 and sfx_n_g._started.size() == 16, "sixteen voices, each remembering when it started (so the oldest is the one cut off)")
+	ok(sfx_n_g._streams.has("groan0") and sfx_n_g._streams.has("groan3") and sfx_n_g._players2d.size() == 16, "four voices for the infected, and sixteen positional voices that pan with where a sound is")
+	ok(sfx_n_g._beds.size() == 5 and (sfx_n_g._streams["bed_rain"] as AudioStreamWAV).loop_mode == AudioStreamWAV.LOOP_FORWARD, "wind, rain, crickets, birds and a tension drone run as seamless loops")
+	var bs_g := Sim.new(2121)
+	bs_g.new_game("unemployed", [], "house")
+	quiet(bs_g)
+	var bp_g: Player = bs_g.player
+	bp_g.pos = Vector2(floori(bp_g.pos.x) + 40, floori(bp_g.pos.y)) + Vector2(0.5, 0.5)
+	bs_g.world.stream(bp_g.pos, 2, 999)
+	bs_g.world.chunk_at(floori(bp_g.pos.x), floori(bp_g.pos.y)).bld[World.idx(floori(bp_g.pos.x), floori(bp_g.pos.y))] = 0
+	bs_g.weather["rain"] = 0.0
+	bs_g.weather["temp"] = 18.0
+	bs_g.hour = floorf(bs_g.hour / 24.0) * 24.0 + 12.0
+	var t_day: Dictionary = Sfx.bed_targets(bs_g)
+	bs_g.weather["rain"] = 0.9
+	var t_rain: Dictionary = Sfx.bed_targets(bs_g)
+	bs_g.weather["rain"] = 0.0
+	bs_g.hour = floorf(bs_g.hour / 24.0) * 24.0 + 23.5
+	var t_night: Dictionary = Sfx.bed_targets(bs_g)
+	ok(float(t_rain["bed_rain"]) > float(t_day["bed_rain"]) + 20.0 and float(t_day["bed_birds"]) > -40.0 and float(t_night["bed_crickets"]) > -40.0 and float(t_night["bed_birds"]) < -60.0,
+		"rain is heard when it rains, birds by day, crickets on a warm night")
+	ok(float(t_night["bed_tension"]) < -60.0, "no tension drone when nothing is near")
+	for k12 in range(3):
+		var zt_g: Zombie = bs_g.zombies.spawn(bp_g.pos + Vector2(3.0 + k12, 0.0), 0)
+		zt_g.seen = true
+	ok(float(Sfx.bed_targets(bs_g)["bed_tension"]) > -25.0, "the drone rises when the infected are close")
 	sfx_n_g.queue_free()
 
 	print("== settings and save files")
