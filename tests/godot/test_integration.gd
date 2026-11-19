@@ -1992,6 +1992,17 @@ func _init() -> void:
 	p.hidden = false
 	p.sneaking = false
 	p.skills["nimble"] = 0.0         # earlier checks trained it; a nimble survivor rarely slips
+	# earlier checks leave you loaded down and hurt (x0.13 speed): run light and whole
+	var inv_ice: Array = p.inv.duplicate()
+	p.inv.clear()
+	var wounds_ice: Array = p.wounds.duplicate()
+	p.wounds.clear()
+	p.pain = 0.0
+	p.fatigue = 0.0
+	p.drunk = 0.0
+	p.slow_t = 0.0
+	p.carrying = {}
+	p.dragging = {}
 	var slipped := false
 	for i_w in range(600):
 		p._step_t = 0.0
@@ -2001,7 +2012,10 @@ func _init() -> void:
 			break
 		if i_w % 12 == 11: p.pos = Vector2(fx0 + 2.5, fy0 + 30.5)     # stay on the cleared, icy strip
 	sim.settings["god"] = true
-	ok(slipped, "running on ice, you go down sooner or later" + ("" if slipped else " (running %s, speed x%.2f, end %.0f, icy %s, at %s, gait %.1f, action %s, alive %s)" % [str(p.running), p.speed_factor(), p.endurance, str(sim.icy(floori(p.pos.x), floori(p.pos.y))), str(p.pos - Vector2(fx0, fy0)), p._gait, str(p.action.get("label", p.action.keys())), str(p.alive)]))
+	var sf_ice: float = p.speed_factor()
+	p.inv.assign(inv_ice)
+	p.wounds.assign(wounds_ice)
+	ok(slipped, "running on ice, you go down sooner or later" + ("" if slipped else " (running %s, speed x%.2f, end %.0f, icy %s, at %s, gait %.1f, action %s, alive %s)" % [str(p.running), sf_ice, p.endurance, str(sim.icy(floori(p.pos.x), floori(p.pos.y))), str(p.pos - Vector2(fx0, fy0)), p._gait, str(p.action.get("label", p.action.keys())), str(p.alive)]))
 	sim.weather["temp"] = 10.0
 	sim.weather["snow"] = 0.0
 	sim.weather["rain"] = 0.0
