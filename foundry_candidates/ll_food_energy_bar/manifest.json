@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_energy_bar",
+  "source_glb_sha256": "a96932ae4eb23a7861b1c3e6e245ca671f04cfe8c18d6708337d4b61e8c547d4",
+  "atlas_sha256": "d63ed68bc37ffeac613d05cfcb07c546405306c9fe674ae879794bb900868464",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2716870,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -72,9 +72,11 @@
     "ll_food_corn_tin",
     "ll_food_cracker_box",
     "ll_food_dried_fruit",
-    "ll_food_dry_bean_bag"
+    "ll_food_dry_bean_bag",
+    "ll_food_energy_bar",
+    "ll_food_evaporated_milk"
   ],
-  "last_run_id": "44428902580",
+  "last_run_id": "44483706298",
   "golden_approved": false,
-  "remaining": 290
+  "remaining": 288
 }

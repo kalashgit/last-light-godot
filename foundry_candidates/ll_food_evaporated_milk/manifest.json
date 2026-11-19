@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_evaporated_milk",
+  "source_glb_sha256": "7e33b427117d883e725f7fc855ea0cc1b01066e90fc27500e60fb730fc9ffe27",
+  "atlas_sha256": "55a8ab275e4a1e555739dfa0ddda5ce9e388e1dcd7da043544a1c004fb986438",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2794754,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

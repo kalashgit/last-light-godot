@@ -1,0 +1,42 @@
+{
+  "run_id": "44483706298",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 72,
+  "remaining": 288,
+  "generated": [
+    {
+      "asset_id": "ll_food_energy_bar",
+      "source_glb_sha256": "a96932ae4eb23a7861b1c3e6e245ca671f04cfe8c18d6708337d4b61e8c547d4",
+      "atlas_sha256": "d63ed68bc37ffeac613d05cfcb07c546405306c9fe674ae879794bb900868464",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2716870,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_evaporated_milk",
+      "source_glb_sha256": "7e33b427117d883e725f7fc855ea0cc1b01066e90fc27500e60fb730fc9ffe27",
+      "atlas_sha256": "55a8ab275e4a1e555739dfa0ddda5ce9e388e1dcd7da043544a1c004fb986438",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2794754,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
