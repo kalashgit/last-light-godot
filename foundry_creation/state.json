@@ -78,9 +78,11 @@
     "ll_generated_industrial_locker_009",
     "ll_generated_tool_chest_009",
     "ll_generated_warehouse_shelf_009",
-    "ll_generated_utility_cabinet_009"
+    "ll_generated_utility_cabinet_009",
+    "ll_generated_portable_generator_009",
+    "ll_generated_vending_machine_009"
   ],
-  "remaining": 436,
-  "last_approved_source_bundle_tag": "foundry-created-44664879022",
+  "remaining": 434,
+  "last_approved_source_bundle_tag": "foundry-created-44727213350",
   "golden_approved": false
 }
