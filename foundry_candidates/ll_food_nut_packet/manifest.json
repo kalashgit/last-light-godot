@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_nut_packet",
+  "source_glb_sha256": "65c8dac73c41f6d3702ed7e06a54c33cb417d7c965414c33216672aa387398e3",
+  "atlas_sha256": "c449c0b3198134f3db672730df804c08a4c0f9b1bc09c226b88b703392eee089",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2721613,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

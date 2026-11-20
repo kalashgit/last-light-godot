@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_oat_bag",
+  "source_glb_sha256": "63b2edc387b9ea6b3bde3636aa9e923ab692698fb44a6400ca6548f6611cd275",
+  "atlas_sha256": "1323940f00001171cf9104feb5ff01344c2803d26853dd4bc62fce3c37e0496f",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2721613,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

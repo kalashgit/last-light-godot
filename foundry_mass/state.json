@@ -82,9 +82,11 @@
     "ll_food_juice_carton",
     "ll_food_lentil_bag",
     "ll_food_milk_carton",
-    "ll_food_mustard_jar"
+    "ll_food_mustard_jar",
+    "ll_food_nut_packet",
+    "ll_food_oat_bag"
   ],
-  "last_run_id": "44772967204",
+  "last_run_id": "44832180401",
   "golden_approved": false,
-  "remaining": 280
+  "remaining": 278
 }
