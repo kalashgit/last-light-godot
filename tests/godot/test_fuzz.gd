@@ -4,6 +4,8 @@ extends SceneTree
 ## and the runner then fails the build if the engine logged any SCRIPT ERROR while doing so.
 ## Each step prints "@@ <what>" first so an error can be traced to the call that caused it.
 ## godot --headless --fixed-fps 30 --path . -s tests/godot/test_fuzz.gd
+## FUZZ_ITEMS=id,id,... limits the run to the item sweep over those items (the whole sweep runs in
+## one frame, so a full run can fill Godot's message queue before it reaches the end of the items).
 var main: Node
 var frame := 0
 var done := false
@@ -131,6 +133,9 @@ func sweep_items(sim: Sim) -> void:
 	var p: Player = sim.player
 	var panels = main.panels
 	var ids: Array = Items.DB.keys()
+	var only: String = OS.get_environment("FUZZ_ITEMS")
+	if only != "":
+		ids = Array(only.split(","))
 	for id in ids:
 		_reset_player(sim)
 		Inv.add_new(p.inv, String(id), 2, sim.hour)
@@ -171,6 +176,13 @@ func _process(_dt: float) -> bool:
 		sim.settings["meta"] = false
 		sim.zombies.wander_t = 1e9
 		kit(sim)
+		if OS.get_environment("FUZZ_ITEMS") != "":
+			mark("items (chosen)")
+			sweep_items(sim)
+			print("FUZZ DONE: %d calls" % calls)
+			done = true
+			quit(0)
+			return false
 		mark("panels")
 		sweep_panels(sim)
 		mark("npcs")
