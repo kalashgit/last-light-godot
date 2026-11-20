@@ -540,6 +540,7 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 			_many(b, 0, D.O_BENCH, 8)
 			_many(b, 0, D.O_TABLE, 1)
 			_many(b, 0, D.O_PLANT, 2)
+			if rng.randf() < 0.6: _many(b, 0, D.O_COFFIN, 1)
 		"post_office":
 			_many(b, 0, D.O_STORE_COUNTER, 2)
 			_many(b, 0, D.O_BOXES, 6)
@@ -561,6 +562,7 @@ static func _shop(b: LotBuilder, kind: String) -> void:
 			_many(b, 0, D.O_WORKBENCH, 2)
 			_many(b, 0, D.O_TOOL_SHELF, 3)
 			_many(b, 0, D.O_BARREL, 2)
+			_many(b, 0, D.O_TYRES, 2)
 		"storage_units":
 			_many(b, 0, D.O_BOXES, 6)
 			_many(b, 0, D.O_CRATE, 6)
@@ -953,6 +955,9 @@ static func _checkpoint(b: LotBuilder) -> void:
 		b.put_yard(Defs.O_SANDBAG, b.cw - 3, v, 0)
 	b.put_yard(Defs.O_TENT, 4, 2, 0)
 	b.put_yard(Defs.O_MIL_CRATE, 7, 3, 0)
+	# cones funnel traffic into the gap in the sandbags
+	for cu in [b.cw / 2 - 3, b.cw / 2 - 2, b.cw / 2 + 2, b.cw / 2 + 3]:
+		b.put_yard(Defs.O_CONE, cu, b.ch - 1, 0)
 	b.put_yard(Defs.O_MIL_CRATE, 8, 3, 1)
 	b.put_yard(Defs.O_MIL_CRATE, b.cw - 6, 3, 0)
 	b.put_yard(Defs.O_STREET_LAMP, b.cw / 2, 2, 0)
@@ -995,6 +1000,8 @@ static func _scrapyard(b: LotBuilder) -> void:
 		b.put_yard(Defs.O_CAR_WRECK, rng.randi_range(2, b.cw - 4), rng.randi_range(2, b.ch - 6), [0, 2][rng.randi() % 2])
 	for k2 in range(4):
 		b.put_yard(_pick(rng, [Defs.O_BARREL, Defs.O_PALLET, Defs.O_METAL_SHELF, Defs.O_TOOL_SHELF]), rng.randi_range(2, b.cw - 3), rng.randi_range(2, b.ch - 3), 0)
+	for k4 in range(3):
+		b.put_yard(Defs.O_TYRES, rng.randi_range(2, b.cw - 3), rng.randi_range(2, b.ch - 3), 0)
 	b.put_yard(Defs.O_TOW_TRUCK if rng.randf() < 0.4 else Defs.O_CAR_WRECK, 3, b.ch - 8, 0)
 	for k3 in range(rng.randi_range(1, 3)):
 		b.zspawn_c.append(Vector2i(rng.randi_range(3, b.cw - 4), rng.randi_range(3, b.ch - 4)))
@@ -1049,6 +1056,7 @@ static func _camp(b: LotBuilder) -> void:
 	b.put_yard(Defs.O_BEDROLL, cx + 2, cy - 1, 0)
 	b.put_yard(Defs.O_CRATE, cx, cy - 2, 0)
 	b.put_yard(Defs.O_BOXES, cx + 1, cy + 2, 0)
+	b.put_yard(Defs.O_COOLER, cx + 2, cy + 1, 0)
 	b.put_yard(Defs.O_STUMP, cx - 1, cy + 2, 0)
 	if rng.randf() < 0.5:
 		b.corpse_c.append([Vector2i(cx - 2, cy + 1), "corpse_survivor"])

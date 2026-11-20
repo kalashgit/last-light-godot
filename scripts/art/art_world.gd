@@ -24,6 +24,8 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 		var oid: int = id
 		var boxes: Array = models[id]
 		jobs.append(func(): _gen_object(oid, boxes))
+	# after the painted props, so a sheet-built model replaces the painted one
+	jobs.append(_gen_sheet_props)
 
 # ------------------------------------------------------------------ ground
 static func _ground_color(g: int, u: int, v: int, s: int) -> Color:
@@ -295,6 +297,47 @@ static func _gen_overlays() -> void:
 	Art.misc["shadow"] = Art.world.add(sh.img, 16, 8, "", false)
 
 # ------------------------------------------------------------------ nature
+## world props built from the founder's reference sheets: [object, prop image, width (px),
+## extra copies stacked or leaned beside the first as [dx, dy, scale]]
+const SHEET_PROPS := [
+	[Defs.O_BARREL, "barrel", 25, []],
+	[Defs.O_BOXES, "cardboard_box", 30, [[5, -17, 0.78]]],
+	[Defs.O_MIL_CRATE, "ammo_crate", 40, []],
+	[Defs.O_TYRES, "tyre", 20, [[-9, 3, 1.0], [8, -1, 1.0]]],
+	[Defs.O_CONE, "traffic_cone", 18, []],
+	[Defs.O_COOLER, "cooler", 30, []],
+	[Defs.O_COFFIN, "coffin", 46, []],
+]
+
+static func _gen_sheet_props() -> void:
+	for sp in SHEET_PROPS:
+		var path: String = "res://assets/art/props/%s.png" % sp[1]
+		if not ResourceLoader.exists(path):
+			continue
+		var src: Image = (load(path) as Texture2D).get_image()
+		src.convert(Image.FORMAT_RGBA8)
+		src = src.get_region(src.get_used_rect())
+		var tw: int = int(sp[2])
+		var th: int = maxi(1, int(round(float(src.get_height()) * float(tw) / float(src.get_width()))))
+		var cw: int = tw * 2 + 24
+		var ch: int = th * 2 + 24
+		var p := Painter.new(cw, ch)
+		var gx: float = cw * 0.5
+		var gy: float = ch - 6.0                   # where it meets the ground
+		_shadow(p, gx, gy - 1.0, tw * 0.55, maxf(3.0, tw * 0.2), 0.3)
+		# back copies first, so the front one overlaps them
+		var copies: Array = [[0, 0, 1.0]] + (sp[3] as Array)
+		copies.sort_custom(func(a, b): return float(a[1]) < float(b[1]))
+		for cp in copies:
+			var w2: int = maxi(1, int(round(tw * float(cp[2]))))
+			var h2: int = maxi(1, int(round(th * float(cp[2]))))
+			var im: Image = src.duplicate()
+			im.resize(w2, h2, Image.INTERPOLATE_LANCZOS)
+			p.img.blend_rect(im, Rect2i(0, 0, w2, h2), Vector2i(int(gx - w2 * 0.5 + float(cp[0])), int(gy - h2 + float(cp[1]))))
+		var hnd: int = Art.world.add(p.img, gx, gy - 18.0)
+		for r in range(4):
+			Art.obj_spr[Defs.ocell(int(sp[0]), r, 0)] = hnd
+
 static func _shadow(p: Painter, cx: float, cy: float, rx: float, ry: float, a: float = 0.22) -> void:
 	for yy in range(int(cy - ry), int(cy + ry) + 1):
 		for xx in range(int(cx - rx), int(cx + rx) + 1):

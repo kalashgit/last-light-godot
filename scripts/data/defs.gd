@@ -303,7 +303,11 @@ const O_DELIVERY := 157
 const O_TANKER := 158
 const O_TOW_TRUCK := 159
 const O_TRACTOR := 160
-const O_COUNT := 161
+const O_TYRES := 161
+const O_CONE := 162
+const O_COOLER := 163
+const O_COFFIN := 164
+const O_COUNT := 165
 
 ## object cell encoding helpers:  id | rot << 10 | part << 12
 static func ocell(id: int, rot: int = 0, part: int = 0) -> int:
@@ -467,6 +471,11 @@ static func _static_init() -> void:
 	_o(O_PUMP, {"n": "Electric well pump", "h": 22, "hp": 300, "solid": 1.0, "use": "pump", "scrap": [["scrap_metal", 2], ["wire", 2]]})
 	_o(O_SUBSTATION, {"n": "Electrical substation", "h": 40, "hp": 900, "solid": 1.0, "use": "substation"})
 	_o(O_GRAVE, {"n": "Grave", "solid": 0.0, "sym": 1, "h": 26, "hp": 999})
+	# props built from the founder's reference sheets
+	_o(O_TYRES, {"n": "Pile of tyres", "solid": 0.4, "sym": 1, "h": 24, "c": "tyres", "cap": 10, "hp": 300})
+	_o(O_CONE, {"n": "Traffic cone", "solid": 0.15, "sym": 1, "h": 16, "hp": 40})
+	_o(O_COOLER, {"n": "Cooler", "solid": 0.3, "sym": 1, "h": 18, "c": "cooler", "cap": 12, "hp": 60})
+	_o(O_COFFIN, {"n": "Coffin", "solid": 0.45, "sym": 1, "h": 18, "c": "coffin", "cap": 12, "hp": 200, "scrap": [["plank", 3], ["nails", 4]]})
 	_o(O_TROUGH, {"n": "Feeding trough", "solid": 0.3, "h": 16, "use": "trough", "c": "", "cap": 20})
 
 static func obj(id: int) -> Dictionary:

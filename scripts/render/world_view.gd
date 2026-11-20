@@ -282,6 +282,10 @@ func _dirty_tile(x: int, y: int) -> void:
 	if roofs[dl] != null:
 		(roofs[dl] as Strip).queue_redraw()
 
+## how big an item lying on the ground is drawn (px): a bandage is small, a car door is not
+static func ground_size(it: Dictionary) -> float:
+	return clampf(15.0 + sqrt(float(Items.def(String(it.get("id", ""))).get("w", 0.3))) * 7.0, 15.0, 34.0)
+
 func _redraw_building(b: int) -> void:
 	if b == 0:
 		return
@@ -358,7 +362,7 @@ func sync(dt: float) -> void:
 	var sy: float = 0.86 if (p.sneaking and p.alive and not p.sleeping) else 1.0
 	_pview.scale = Vector2(1.0, sy)
 	var pt: float = p.walk_t if (p.anim == "s_walk" or p.anim == "s_carry") else p.anim_t
-	_pview.set_frame(p.anim, pt, p.dir8, prog, wl, p.hit_flash)
+	_pview.set_frame(p.anim, pt, p.dir8, prog, wl, p.hit_flash, String(p.weapon.get("id", "")) if wd.has("wpn") else "")
 	_ghost.position = ps
 	_ghost.scale = _pview.scale
 	_ghost.look = p.look
@@ -520,7 +524,7 @@ func _sync_npcs() -> void:
 		if n.swing > 0.0:
 			np = clampf(1.0 - n.swing / 0.4, 0.0, 0.99)
 		v.modulate = Color(1.0, 0.8, 0.8) if n.state == NpcSim.HOSTILE else Color.WHITE
-		v.set_frame(n.anim, (n.walk_t if n.anim == "s_walk" else n.anim_t) + n.id * 0.41, n.d8, np, 2 if n.state == NpcSim.HOSTILE else 1, n.flash)
+		v.set_frame(n.anim, (n.walk_t if n.anim == "s_walk" else n.anim_t) + n.id * 0.41, n.d8, np, 2 if n.state == NpcSim.HOSTILE else 1, n.flash, String(n.wpn) if String(n.wpn) != "" and Items.def(String(n.wpn)).has("wpn") else "")
 	for id in _nviews.keys():
 		var v2: EntityView = _nviews[id]
 		if v2.stamp != _stamp:
@@ -645,8 +649,14 @@ func _draw_row(s: Strip) -> void:
 				var ih: int = Art.icon_of(arr[k], sim.hour)
 				if ih >= 0:
 					var r: Rect2 = Art.icons.rects[ih]
-					var ip: Vector2 = pos + Vector2(-8 + k * 7 - (n - 1) * 3.5, 9 + (k % 2) * 4)
-					s.draw_texture_rect_region(Art.icons.texture, Rect2(ip, Vector2(16, 16)), r)
+					# lying on the ground at world size, heavier things bigger, each with its own
+					# flattened shadow and scattered a little so a pile does not look stamped
+					var sz: float = ground_size(arr[k])
+					var jx: float = (Rng.f2(x * 3 + k, y, 91) - 0.5) * 12.0 + (float(k) - float(n - 1) * 0.5) * 9.0
+					var jy: float = (Rng.f2(x, y * 3 + k, 92) - 0.5) * 6.0
+					var ip: Vector2 = pos + Vector2(jx - sz * 0.5, 17.0 + jy - sz * 0.8)
+					s.draw_texture_rect_region(Art.icons.texture, Rect2(ip + Vector2(sz * 0.14, sz * 0.6), Vector2(sz, sz * 0.36)), r, Color(0, 0, 0, 0.3))
+					s.draw_texture_rect_region(Art.icons.texture, Rect2(ip, Vector2(sz, sz)), r)
 		var o: int = c.obj[i]
 		if o != 0:
 			var h: int = Art.obj_spr.get(o, -1)

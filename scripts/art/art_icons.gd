@@ -22,6 +22,8 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 					im.convert(Image.FORMAT_RGBA8)
 					Art.item_icon[id] = Art.icons.add(im, 0, 0, "", false)
 					sheet_icons[id] = true
+					if d.has("wpn") and String(d.get("cat", "")) != "material":
+						Art.held[id] = held_geometry(im, HELD_FLIP.has(id))
 					# perishables can have a second sheet sprite for when they have turned
 					var rpath: String = "res://assets/art/icons/%s__rotten.png" % id
 					if ResourceLoader.exists(rpath):
@@ -33,6 +35,62 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 					Art.item_icon[id] = Art.icons.add(Painter.stylize(Painter.fit(p.img, 48), true, true, 0.04, hash(id), true, 0.35), 0, 0, "", false))
 		i += 16
 	jobs.append(_gen_moodles)
+
+## how to hold a sprite: [grip x, grip y, angle from grip to head (radians), length in px].
+## The long axis of the shape is found from its pixels; the thinner end is the handle.
+## sprites whose thin end is the point, not the handle (a shiv; knives whose handle the sheet cut off)
+const HELD_FLIP := ["bone_shiv", "kitchen_knife", "hunting_knife"]
+
+static func held_geometry(im: Image, flip_end: bool = false) -> Array:
+	var w: int = im.get_width()
+	var h: int = im.get_height()
+	var pts: Array = []
+	var mx := 0.0
+	var my := 0.0
+	for y in range(h):
+		for x in range(w):
+			if im.get_pixel(x, y).a > 0.4:
+				pts.append(Vector2(x, y))
+				mx += x
+				my += y
+	if pts.size() < 8:
+		return [w * 0.25, h * 0.75, -PI / 4.0, w * 1.2]
+	mx /= pts.size()
+	my /= pts.size()
+	var sxx := 0.0
+	var syy := 0.0
+	var sxy := 0.0
+	for p in pts:
+		var dx: float = p.x - mx
+		var dy: float = p.y - my
+		sxx += dx * dx
+		syy += dy * dy
+		sxy += dx * dy
+	var ang: float = 0.5 * atan2(2.0 * sxy, sxx - syy)
+	var ax := Vector2.from_angle(ang)
+	var nrm := Vector2(-ax.y, ax.x)
+	var tmin := 1e9
+	var tmax := -1e9
+	for p in pts:
+		var t: float = (p - Vector2(mx, my)).dot(ax)
+		tmin = minf(tmin, t)
+		tmax = maxf(tmax, t)
+	# how wide each end is: the head of a bat, an axe or a wrench is the wider end
+	var span: float = maxf(tmax - tmin, 1.0)
+	var lo := {}
+	var hi := {}
+	for p in pts:
+		var t2: float = (p - Vector2(mx, my)).dot(ax)
+		var cross: int = int(round((p - Vector2(mx, my)).dot(nrm)))
+		if t2 < tmin + span * 0.3: lo[cross] = true
+		elif t2 > tmax - span * 0.3: hi[cross] = true
+	if (lo.size() > hi.size()) != flip_end:
+		ax = -ax
+		var tt: float = tmin
+		tmin = -tmax
+		tmax = -tt
+	var grip: Vector2 = Vector2(mx, my) + ax * (tmin + span * 0.1)
+	return [grip.x, grip.y, ax.angle(), span]
 
 static func _icon(shape: String, a: Color, b: Color) -> Painter:
 	var p := Painter.new(S, S)

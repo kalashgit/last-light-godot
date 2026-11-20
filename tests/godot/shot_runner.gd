@@ -375,12 +375,43 @@ func _process(_dt: float) -> bool:
 				sim.zombies.list.clear()
 			main.view.zoom = 1.2
 		904: shot("31_broken_bridge")
-		908:
+		905:
+			# items as models: things lying on the ground at world size, and the real weapon in hand
+			var mp: Player = sim.player
+			sim.zombies.list.clear()
+			sim.weather["rain"] = 0.0
+			sim.hour = floorf(sim.hour / 24.0) * 24.0 + 12.0     # midday light
+			var base_t := Vector2i(floori(mp.pos.x), floori(mp.pos.y))
+			var drops := [["water_jug", 1, 0], ["spare_wheel", 2, 0], ["canned_peas", 0, 1], ["banana", 1, 1], ["bone_chest", 2, 1], ["toolbox_none", 0, 2],
+				["cake", 1, 2], ["pipe_wrench", 2, 2], ["chess_set", 0, -1], ["combat_helmet", 1, -1], ["glowstick", 2, -1]]
+			for dd in drops:
+				if Items.DB.has(String(dd[0])):
+					sim.world.drop_item(base_t.x + int(dd[1]) + 1, base_t.y + int(dd[2]), Items.make(String(dd[0]), 1, sim.hour))
+			Inv.add_new(mp.inv, "nail_bat", 1, sim.hour)
+			mp.weapon = Inv.find(mp.inv, "nail_bat")
+			mp.facing = Vector2(1, 0.3)
+			main.view.zoom = 2.4
+		912: shot("32_items_as_models")
+		914:
+			sim.player.facing = Vector2(-1, 0.4)
+			sim.player.try_attack()
+		918: shot("33_swing_with_the_real_weapon")
+		919:
+			# props built from the sheets, set out in a row beside you
+			var pp2: Vector2 = sim.player.pos
+			var row := [Defs.O_CONE, Defs.O_TYRES, Defs.O_BARREL, Defs.O_BOXES, Defs.O_MIL_CRATE, Defs.O_COOLER, Defs.O_COFFIN, Defs.O_CONE]
+			for kp in range(row.size()):
+				var tx9: int = floori(pp2.x) - 3 + kp
+				var ty9: int = floori(pp2.y) - 2
+				sim.world.set_obj(tx9, ty9, Defs.ocell(int(row[kp]), 0, 0))
+			main.view.zoom = 2.2
+		924: shot("34_props_from_the_sheets")
+		926:
 			sim.player.sneaking = false
 			sim.settings["god"] = false
 			sim.player.die("Test death")
-		922: shot("20_death")
-		924:
+		936: shot("20_death")
+		940:
 			SaveGame.delete(main.SLOT)
 			quit(0)
 	return false

@@ -16,6 +16,7 @@ var frame := PackedInt32Array()
 var flip := false
 var look: Array = [0, 0, 0, 0]
 var weapon_layer := 0
+var held_id := ""             # the item in hand, drawn from its sheet sprite when there is one
 var flash := 0.0
 var _key := -1
 
@@ -43,16 +44,34 @@ static func pick(anim: String, t: float, d8: int, progress: float = -1.0) -> Arr
 			_: idx = clampi(int(t * 9.0), 0, n - 1)
 	return [frames[idx], dm.y == 1, idx]
 
-func set_frame(anim: String, t: float, d8: int, progress: float, wl: int, fl: float) -> void:
+func set_frame(anim: String, t: float, d8: int, progress: float, wl: int, fl: float, held: String = "") -> void:
 	var r: Array = pick(anim, t, d8, progress)
-	var key: int = hash(anim) * 31 + int(r[2]) * 97 + d8 * 7 + wl + (1000 if fl > 0.0 else 0)
+	var key: int = hash(anim) * 31 + int(r[2]) * 97 + d8 * 7 + wl + (1000 if fl > 0.0 else 0) + hash(held) * 13
 	if key != _key:
 		_key = key
 		frame = r[0]
 		flip = r[1]
 		weapon_layer = wl
 		flash = fl
+		held_id = held
 		queue_redraw()
+
+## where the held sprite goes in this frame: [hand position, angle], or [] when the pose puts it away
+func held_pose() -> Array:
+	var base: int = 5 + ArtChars.WEAPON_KINDS
+	if frame.size() < base + 3 or frame[base] == -99999:
+		return []
+	var hand := Vector2(frame[base] / 16.0 - ArtChars.CX, frame[base + 1] / 16.0 - ArtChars.CY)
+	var ang: float = frame[base + 2] / 1000.0
+	if flip:
+		hand.x = -hand.x
+		ang = PI - ang
+	return [hand, ang]
+
+## the length a held thing is drawn at, from how far it reaches
+static func held_length(id: String) -> float:
+	var reach: float = float(Items.def(id).get("wpn", {}).get("range", 1.0))
+	return clampf(reach * 16.0 - 6.0, 9.0, 22.0)
 
 func _draw() -> void:
 	if frame.is_empty():
@@ -111,7 +130,15 @@ func _draw() -> void:
 			A.draw_flipped(self, frame[i], Vector2.ZERO, c)
 		else:
 			A.draw(self, frame[i], Vector2.ZERO, c)
-	if weapon_layer > 0 and frame[4 + weapon_layer] >= 0:
+	var hp: Array = held_pose() if held_id != "" and Art.held.has(held_id) and Art.item_icon.has(held_id) else []
+	if not hp.is_empty():
+		var g: Array = Art.held[held_id]
+		var sc: float = held_length(held_id) / maxf(float(g[3]), 1.0)
+		draw_set_transform(hp[0], float(hp[1]) - float(g[2]), Vector2(sc, sc))
+		var rr: Rect2 = Art.icons.rects[int(Art.item_icon[held_id])]
+		draw_texture_rect_region(Art.icons.texture, Rect2(-Vector2(float(g[0]), float(g[1])), rr.size), rr, Color(1.6, 1.2, 1.1) if flash > 0.0 else Color.WHITE)
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	elif weapon_layer > 0 and frame[4 + weapon_layer] >= 0:
 		if flip:
 			A.draw_flipped(self, frame[4 + weapon_layer], Vector2.ZERO)
 		else:

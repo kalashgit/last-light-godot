@@ -142,7 +142,7 @@ def band_runs(fg, band):
     return runs
 
 
-def cut(im, fg, cols, rows, cell, bands, holes=None):
+def cut(im, fg, cols, rows, cell, bands, holes=None, size=48):
     W, H = im.size
     cw, ch = W / cols, H / rows
     if cell[0] == "band":
@@ -199,11 +199,11 @@ def cut(im, fg, cols, rows, cell, bands, holes=None):
     spr = Image.fromarray(src, "RGBA")
     bb = spr.getbbox()
     spr = spr.crop(bb)
-    k = 46.0 / max(spr.size)
-    size = (max(1, round(spr.width * k)), max(1, round(spr.height * k)))
-    spr = spr.convert("RGBa").resize(size, Image.LANCZOS).convert("RGBA")
-    out = Image.new("RGBA", (48, 48), (0, 0, 0, 0))
-    out.paste(spr, ((48 - spr.width) // 2, (48 - spr.height) // 2), spr)
+    k = (size - 2.0) / max(spr.size)
+    dims = (max(1, round(spr.width * k)), max(1, round(spr.height * k)))
+    spr = spr.convert("RGBa").resize(dims, Image.LANCZOS).convert("RGBA")
+    out = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    out.paste(spr, ((size - spr.width) // 2, (size - spr.height) // 2), spr)
     return out
 
 
@@ -224,6 +224,23 @@ for item, entry in cfg["icons"].items():
     icon.save(os.path.join(out_dir, item + ".png"))
     made[item] = icon
 print("icons written:", len(made))
+# world props: the same cutting, kept larger (128 px) for the models drawn in the world
+prop_dir = os.path.join(root, "assets/art/props")
+os.makedirs(prop_dir, exist_ok=True)
+n_props = 0
+for name, entry in cfg.get("props", {}).items():
+    tag, cell = entry[0], entry[1:]
+    sh = cfg["sheets"][tag]
+    if tag not in loaded:
+        im0, fg0 = foreground(os.path.join(root, "art_src/sheets", sh["file"]), sh["bg"])
+        loaded[tag] = (im0, fg0, row_bands(fg0, sh["rows"], int(sh.get("label_px", 0))))
+    im, fg, bands = loaded[tag]
+    holes = backdrop(im, sh["bg"]) if name in cfg.get("fill_holes", []) else None
+    pr = cut(im, fg, sh["cols"], sh["rows"], cell, bands, holes, 128)
+    if pr is not None:
+        pr.save(os.path.join(prop_dir, name + ".png"))
+        n_props += 1
+print("props written:", n_props)
 if len(sys.argv) > 2:
     names = sorted(made)
     cols = 10

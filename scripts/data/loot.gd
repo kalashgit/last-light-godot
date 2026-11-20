@@ -124,6 +124,9 @@ static func _static_init() -> void:
 		["hunting_knife", 3, 1, 1], ["matches", 4, 1, 1], ["painkillers", 3, 1, 1], ["battery", 3, 1, 2], ["novel", 2, 1, 1], ["crowbar", 1.5, 1, 1]]}
 	T["corpse_armed"] = {"rolls": [1, 3], "must": [["pistol", 1, 1], ["ammo_9mm", 6, 18]], "items": [["shells", 3, 2, 8], ["bandage", 4, 1, 2], ["whiskey", 2, 1, 1], ["cigarettes", 3, 1, 1], ["lighter", 3, 1, 1], ["shotgun", 1, 1, 1]]}
 	T["corpse_burglar"] = {"rolls": [1, 3], "must": [["crowbar", 1, 1], ["duffel_bag", 1, 1]], "items": [["money", 8, 40, 300], ["flashlight", 4, 1, 1], ["screwdriver", 4, 1, 1], ["cigarettes", 3, 1, 1], ["kitchen_knife", 2, 1, 1]]}
+	T["tyres"] = {"rolls": [0, 1], "items": [["spare_wheel", 3, 1, 1], ["tyre_kit", 1.5, 1, 1], ["scrap_metal", 1, 1, 1], ["tire_iron", 0.6, 1, 1]]}
+	T["cooler"] = {"rolls": [0, 3], "items": [["water_bottle", 4, 1, 2], ["canned_water", 3, 1, 3], ["soda", 4, 1, 3], ["beer", 4, 1, 4], ["sandwich", 2, 1, 1], ["cider", 2, 1, 2], ["ice_cream", 0.5, 1, 1], ["raw_bacon", 1, 1, 1]]}
+	T["coffin"] = {"rolls": [0, 2], "items": [["family_photo", 4, 1, 1], ["letter", 3, 1, 1], ["money", 2, 5, 40], ["candle", 3, 1, 2], ["sheet", 2, 1, 1]]}
 	# building-type overrides: btype -> {table: replacement}
 	OVERRIDE["pharmacy"] = {"store_food": "store_pharmacy", "crate": "medical", "warehouse": "medical", "boxes": "store_pharmacy"}
 	OVERRIDE["hardware"] = {"store_food": "store_hardware", "crate": "tools", "warehouse": "tools"}

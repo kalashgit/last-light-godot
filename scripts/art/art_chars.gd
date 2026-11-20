@@ -362,7 +362,16 @@ static func _gen_frame(kind: String, fi: int, n: int, dir5: int) -> PackedInt32A
 				var s5: float = col[by * W + bx]
 				imgs[4].set_pixel(bx, by, Color(0.36 * s5, 0.07, 0.06, 0.85))
 	var out := PackedInt32Array()
-	out.resize(5 + WEAPON_KINDS)
+	out.resize(5 + WEAPON_KINDS + 3)
+	# where the right hand is and which way a held thing points (1/16 px and milliradians);
+	# -99999 when this pose puts the weapon away
+	out[5 + WEAPON_KINDS] = -99999
+	if P.weapon and not zombie:
+		var hgrip: Vector2 = S["haR"]
+		var htip: Vector2 = S["wtip"]
+		out[5 + WEAPON_KINDS] = int(round(hgrip.x * 16.0))
+		out[6 + WEAPON_KINDS] = int(round(hgrip.y * 16.0))
+		out[7 + WEAPON_KINDS] = int(round((htip - hgrip).angle() * 1000.0))
 	for i in range(5):
 		out[i] = Art.chars.add(imgs[i], CX, CY)
 	# ---- weapon layers

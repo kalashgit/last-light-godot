@@ -1798,6 +1798,34 @@ func _init() -> void:
 	jug["u"] = 3
 	ok(int(Items.make("water_jug")["u"]) == 12 and Items.weight(jug) < jw * 0.5 and Items.def("empty_water_jug")["fill"] == "water_jug", "a water jug holds twelve drinks, gets lighter as you drink, and can be filled again")
 
+	print("== models from the sheets")
+	var atk: PackedInt32Array = Art.char_frames["s_attack"][0][1]
+	var hbase: int = 5 + ArtChars.WEAPON_KINDS
+	ok(atk.size() == hbase + 3 and atk[hbase] != -99999, "every swing frame records where the hand is and which way the weapon points")
+	var bat_g: Array = Art.held.get("baseball_bat", [])
+	ok(not bat_g.is_empty() and float(bat_g[1]) > 24.0 and float(bat_g[0]) < 24.0 and float(bat_g[2]) < 0.0 and float(bat_g[2]) > -PI * 0.75,
+		"a bat's sheet sprite is gripped at the thin end and points to its barrel, up and to the right (%s)" % str(bat_g))
+	var n_held := 0
+	for idh in Art.held.keys():
+		if Items.DB.has(idh) and Items.DB[idh].has("wpn"): n_held += 1
+	ok(n_held >= 25 and EntityView.held_length("kitchen_knife") < EntityView.held_length("baseball_bat"), "%d melee weapons and tools are drawn in the hand from their own sprite; a knife is shorter than a bat" % n_held)
+	var shiv_g: Array = Art.held.get("bone_shiv", [])
+	ok(not shiv_g.is_empty() and float(shiv_g[1]) < 24.0, "a bone shiv is held by its knob, not its point")
+	var evh := EntityView.new()
+	evh.frame = atk
+	evh.flip = false
+	var pose_r: Array = evh.held_pose()
+	evh.flip = true
+	var pose_l: Array = evh.held_pose()
+	ok(not pose_r.is_empty() and absf((pose_r[0] as Vector2).x + (pose_l[0] as Vector2).x) < 0.01, "facing the other way mirrors the hand")
+	evh.free()
+	var prop_ok := true
+	for po in [Defs.O_TYRES, Defs.O_CONE, Defs.O_COOLER, Defs.O_COFFIN, Defs.O_BARREL, Defs.O_BOXES, Defs.O_MIL_CRATE]:
+		if int(Art.obj_spr.get(Defs.ocell(po, 0, 0), -1)) < 0: prop_ok = false
+	ok(prop_ok and Loot.T.has("tyres") and Loot.T.has("cooler") and Loot.T.has("coffin") and String(Defs.OBJ[Defs.O_COOLER].get("c", "")) == "cooler",
+		"tyre piles, traffic cones, coolers and coffins stand in the world, and barrels, boxes and military crates are drawn from the sheets; the containers hold their own loot")
+	ok(WorldView.ground_size({"id": "bandage"}) < WorldView.ground_size({"id": "car_door"}), "on the ground a car door is drawn bigger than a bandage")
+
 	print("== difficulty")
 	var dsim := Sim.new(8080)
 	dsim.new_game("builder", [], "house")

@@ -24,6 +24,8 @@ static var ov: Dictionary = {}
 static var item_icon: Dictionary = {}
 ## the icon a perishable shows once it has rotted, by item id (only where the sheets draw one)
 static var item_icon_rot: Dictionary = {}
+## how each melee item's sheet sprite is held (see ArtIcons.held_geometry), by item id
+static var held: Dictionary = {}
 static var misc: Dictionary = {}
 ## character frames: see ArtChars
 static var char_frames: Dictionary = {}
@@ -54,6 +56,7 @@ static func begin() -> void:
 	ov.clear()
 	item_icon.clear()
 	item_icon_rot.clear()
+	held.clear()
 	misc.clear()
 	char_frames.clear()
 	ArtIcons.sheet_icons.clear()
@@ -117,7 +120,7 @@ static func _atlases() -> Dictionary:
 static func save_cache() -> bool:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
 	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "ov": ov,
-		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
+		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
 	var at: Dictionary = _atlases()
 	for nm in at.keys():
 		var a: Atlas = at[nm]
@@ -169,6 +172,7 @@ static func load_cache() -> bool:
 	ov = meta["ov"]
 	item_icon = meta["item_icon"]
 	item_icon_rot = meta.get("item_icon_rot", {})
+	held = meta.get("held", {})
 	misc = meta["misc"]
 	char_frames = meta["char_frames"]
 	ArtIcons.sheet_icons = meta["sheet_icons"]

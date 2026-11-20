@@ -19,6 +19,15 @@
     "d01": {"file": "sheet_d01.png", "cols": 20, "rows": 10, "bg": "light"},
     "d02": {"file": "sheet_d02.png", "cols": 20, "rows": 10, "bg": "light"}
   },
+  "props": {
+    "barrel": ["c04", 2, 3],
+    "cardboard_box": ["c11", 1, 8],
+    "ammo_crate": ["c02", 1, 9],
+    "tyre": ["c11", 1, 2],
+    "traffic_cone": ["d01", "band", 5, 16],
+    "cooler": ["d01", "band", 6, 17],
+    "coffin": ["d01", "band", 4, 11]
+  },
   "fill_holes": ["fan_belt", "spare_wheel", "tyre_kit"],
   "icons": {
     "needle_thread": ["c01", 0, 4], "stone_knife": ["c01", 3, 2], "stone_axe": ["c01", 3, 6], "wooden_handle": ["c01", 3, 7],
