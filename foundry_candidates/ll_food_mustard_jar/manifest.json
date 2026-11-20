@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_mustard_jar",
+  "source_glb_sha256": "1de6bc00daf1109413c5c085900743b66b237d3fb4016933b6537cdee6000097",
+  "atlas_sha256": "2463eeb6295e214a62db3e646f80ea4b7ba82f8d4b3aef1ac03bf44b3acd94aa",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2748402,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

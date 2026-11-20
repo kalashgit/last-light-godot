@@ -1,0 +1,42 @@
+{
+  "run_id": "44772967204",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 80,
+  "remaining": 280,
+  "generated": [
+    {
+      "asset_id": "ll_food_milk_carton",
+      "source_glb_sha256": "05c7c98c333579aa69a6556ad6ab879fa8c80e14d8db5b3a3cd26155ffe87a33",
+      "atlas_sha256": "d774bb9fa5ecbe1d43f690a51a8c5c9173e1796712c9d20324ea3676fe5602c0",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2717370,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_mustard_jar",
+      "source_glb_sha256": "1de6bc00daf1109413c5c085900743b66b237d3fb4016933b6537cdee6000097",
+      "atlas_sha256": "2463eeb6295e214a62db3e646f80ea4b7ba82f8d4b3aef1ac03bf44b3acd94aa",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2748402,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_milk_carton",
+  "source_glb_sha256": "05c7c98c333579aa69a6556ad6ab879fa8c80e14d8db5b3a3cd26155ffe87a33",
+  "atlas_sha256": "d774bb9fa5ecbe1d43f690a51a8c5c9173e1796712c9d20324ea3676fe5602c0",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2717370,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

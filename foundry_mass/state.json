@@ -80,9 +80,11 @@
     "ll_food_instant_noodles",
     "ll_food_jam_jar",
     "ll_food_juice_carton",
-    "ll_food_lentil_bag"
+    "ll_food_lentil_bag",
+    "ll_food_milk_carton",
+    "ll_food_mustard_jar"
   ],
-  "last_run_id": "44694297650",
+  "last_run_id": "44772967204",
   "golden_approved": false,
-  "remaining": 282
+  "remaining": 280
 }
