@@ -1823,8 +1823,41 @@ func _init() -> void:
 	for po in [Defs.O_TYRES, Defs.O_CONE, Defs.O_COOLER, Defs.O_COFFIN, Defs.O_BARREL, Defs.O_BOXES, Defs.O_MIL_CRATE]:
 		if int(Art.obj_spr.get(Defs.ocell(po, 0, 0), -1)) < 0: prop_ok = false
 	ok(prop_ok and Loot.T.has("tyres") and Loot.T.has("cooler") and Loot.T.has("coffin") and String(Defs.OBJ[Defs.O_COOLER].get("c", "")) == "cooler",
-		"tyre piles, traffic cones, coolers and coffins stand in the world, and barrels, boxes and military crates are drawn from the sheets; the containers hold their own loot")
+		"tyre piles, traffic cones, coolers and coffins stand in the world, and barrels, boxes and military crates are models from the recipes; the containers hold their own loot")
 	ok(WorldView.ground_size({"id": "bandage"}) < WorldView.ground_size({"id": "car_door"}), "on the ground a car door is drawn bigger than a bandage")
+
+	print("== true-size models from the mesh recipes")
+	var no_model: Array = []
+	var no_held: Array = []
+	for idm in Items.DB.keys():
+		var mm: Dictionary = Art.models.get(idm, {})
+		if not mm.has("g"): no_model.append(idm)
+		var dm: Dictionary = Items.DB[idm]
+		if (dm.has("gun") or (dm.has("wpn") and String(dm.get("cat", "")) != "material")) and not mm.has("h"): no_held.append(idm)
+	ok(no_model.is_empty(), "every one of the %d items has a 2.5D model to lie on the ground (missing: %s)" % [Items.DB.size(), str(no_model.slice(0, 8))])
+	ok(no_held.is_empty(), "every weapon and gun has a model to be held (missing: %s)" % str(no_held))
+	var bat_h: Rect2 = Art.world.rects[int(Art.models["baseball_bat"]["h"])]
+	var pad_px := 10.0          # each sprite carries 3 px of padding and a 2 px outline on each side (at the stored scale)
+	var bat_px: float = (bat_h.size.x - pad_px) / ArtModels.ITEM_K
+	ok(absf(bat_px - 0.84 * ArtModels.PX_PER_M) < 0.84 * ArtModels.PX_PER_M * 0.15, "a bat is drawn %.0f px long in the hand: 0.84 m at the world's %.1f px per metre" % [bat_px, ArtModels.PX_PER_M])
+	var apple_g: Rect2 = Art.world.rects[int(Art.models["apple"]["g"])]
+	var wheel_g: Rect2 = Art.world.rects[int(Art.models["spare_wheel"]["g"])]
+	ok(wheel_g.size.x - pad_px > (apple_g.size.x - pad_px) * 4.0, "on the ground a spare wheel is several times the size of an apple (%d px against %d px)" % [int(wheel_g.size.x - pad_px), int(apple_g.size.x - pad_px)])
+	ok(absf(ArtModels.ground_scale(int(Art.models["spare_wheel"]["g"])) - 0.5) < 0.001 and ArtModels.ground_scale(int(Art.models["apple"]["g"])) >= 0.5, "items are drawn at true size; only the very smallest are kept readable")
+	var mods: Dictionary = Models.all()
+	var bus_top := 0.0
+	for bxs in mods[Defs.O_BUS]: bus_top = maxf(bus_top, float(bxs[5]))
+	var car_top := 0.0
+	for bxc in mods[Defs.O_CAR]: car_top = maxf(car_top, float(bxc[5]))
+	var person_px: float = 1.75 * ArtModels.VERT_PX_PER_M
+	ok(absf(bus_top / ArtModels.VERT_PX_PER_M - 3.1) < 0.1 and absf(car_top / ArtModels.VERT_PX_PER_M - 1.45) < 0.1 and Iso.WALL_H > person_px,
+		"vehicles stand at their real heights next to a 1.75 m person (bus %.1f m, car %.2f m) and a storey is taller than a person" % [bus_top / ArtModels.VERT_PX_PER_M, car_top / ArtModels.VERT_PX_PER_M])
+	var barrel_h: Rect2 = Art.world.rects[int(Art.obj_spr[Defs.ocell(Defs.O_BARREL, 0, 0)])]
+	ok(barrel_h.size.y > 0.88 * ArtModels.VERT_PX_PER_M and barrel_h.size.y < 0.88 * ArtModels.VERT_PX_PER_M + 26.0, "a barrel in the world is the 0.88 m drum of its recipe (%d px tall)" % int(barrel_h.size.y))
+	var gun_icons := true
+	for gi in ["pistol", "revolver", "rifle", "shotgun", "golf_club", "hockey_stick", "nails", "log"]:
+		if not ResourceLoader.exists("res://assets/art/icons/%s.png" % gi): gun_icons = false
+	ok(gun_icons, "items the sheets never drew (guns, a golf club, nails, a log) have inventory icons rendered from their models")
 
 	print("== difficulty")
 	var dsim := Sim.new(8080)

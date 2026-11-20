@@ -224,23 +224,7 @@ for item, entry in cfg["icons"].items():
     icon.save(os.path.join(out_dir, item + ".png"))
     made[item] = icon
 print("icons written:", len(made))
-# world props: the same cutting, kept larger (128 px) for the models drawn in the world
-prop_dir = os.path.join(root, "assets/art/props")
-os.makedirs(prop_dir, exist_ok=True)
-n_props = 0
-for name, entry in cfg.get("props", {}).items():
-    tag, cell = entry[0], entry[1:]
-    sh = cfg["sheets"][tag]
-    if tag not in loaded:
-        im0, fg0 = foreground(os.path.join(root, "art_src/sheets", sh["file"]), sh["bg"])
-        loaded[tag] = (im0, fg0, row_bands(fg0, sh["rows"], int(sh.get("label_px", 0))))
-    im, fg, bands = loaded[tag]
-    holes = backdrop(im, sh["bg"]) if name in cfg.get("fill_holes", []) else None
-    pr = cut(im, fg, sh["cols"], sh["rows"], cell, bands, holes, 128)
-    if pr is not None:
-        pr.save(os.path.join(prop_dir, name + ".png"))
-        n_props += 1
-print("props written:", n_props)
+
 if len(sys.argv) > 2:
     names = sorted(made)
     cols = 10

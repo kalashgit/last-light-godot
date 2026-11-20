@@ -646,6 +646,19 @@ func _draw_row(s: Strip) -> void:
 			var arr: Array = c.items[i]
 			var n: int = mini(arr.size(), 3)
 			for k in range(n):
+				var gm: int = int((Art.models.get(String(arr[k].get("id", "")), {}) as Dictionary).get("g", -1))
+				if gm >= 0:
+					# its 2.5D model, at true size, with its own soft shadow, scattered a little
+					var gr: Rect2 = Art.world.rects[gm]
+					var gk: float = ArtModels.ground_scale(gm)
+					var gjx: float = (Rng.f2(x * 3 + k, y, 91) - 0.5) * 14.0 + (float(k) - float(n - 1) * 0.5) * 10.0
+					var gjy: float = (Rng.f2(x, y * 3 + k, 92) - 0.5) * 7.0
+					var gp: Vector2 = pos + Vector2(gjx, 16.0 + gjy)
+					var sw: float = maxf(4.0, gr.size.x * gk * 0.9)
+					var shr: Rect2 = Art.world.rects[Art.misc["shadow"]]
+					s.draw_texture_rect_region(Art.world.texture, Rect2(gp - Vector2(sw * 0.5, sw * 0.18), Vector2(sw, sw * 0.36)), shr, Color(1, 1, 1, 0.75))
+					s.draw_texture_rect_region(Art.world.texture, Rect2(gp + Art.world.offs[gm] * gk, gr.size * gk), gr)
+					continue
 				var ih: int = Art.icon_of(arr[k], sim.hour)
 				if ih >= 0:
 					var r: Rect2 = Art.icons.rects[ih]

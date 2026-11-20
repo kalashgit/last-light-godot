@@ -35,6 +35,37 @@ static func car(body: String, glass: String, wreck: bool) -> Array:
 		])
 	return out
 
+## real heights (metres) the box models are brought to, at the world's 26.3 px per metre of height
+## (ArtModels.VERT_PX_PER_M): a person is 1.75 m, a storey 2.7 m. Footprints stay on the tile grid
+## (a tile is about 1.49 m), so only heights are corrected; anything within 12% is left as drawn.
+const REAL_HEIGHT := {
+	Defs.O_CAR: 1.45, Defs.O_HATCHBACK: 1.45, Defs.O_WAGON: 1.5, Defs.O_POLICE_CAR: 1.55, Defs.O_CAR_WRECK: 1.3, Defs.O_SUV: 1.75,
+	Defs.O_OFFROADER: 1.85, Defs.O_PICKUP: 1.8, Defs.O_VAN: 2.0, Defs.O_DELIVERY: 2.6, Defs.O_AMBULANCE: 2.6, Defs.O_UTILITY: 2.8,
+	Defs.O_TOW_TRUCK: 2.8, Defs.O_TRUCK: 3.0, Defs.O_BUS: 3.1, Defs.O_TANKER: 3.2, Defs.O_TRACTOR: 2.6, Defs.O_BICYCLE: 1.05, Defs.O_MOTORBIKE: 1.15,
+	Defs.O_BAR_COUNTER: 1.1, Defs.O_STORE_COUNTER: 1.1, Defs.O_BATHTUB: 0.6, Defs.O_WASHER: 0.85, Defs.O_VENDING: 1.85, Defs.O_PICNIC_TABLE: 0.75,
+	Defs.O_FRIDGE: 1.8, Defs.O_LOCKER: 1.85, Defs.O_MED_CABINET: 1.9, Defs.O_WARDROBE: 2.0, Defs.O_SHELF: 1.9, Defs.O_TOOL_SHELF: 1.9,
+	Defs.O_BOOKSHELF: 2.0, Defs.O_STREET_LAMP: 4.5, Defs.O_DRESSER: 0.85, Defs.O_GENERATOR: 0.75,
+}
+
+## bring each model listed in REAL_HEIGHT to its real height by scaling its boxes' heights
+static func true_size(m: Dictionary) -> Dictionary:
+	for id in REAL_HEIGHT.keys():
+		if not m.has(id):
+			continue
+		var top := 0.0
+		for bx in m[id]:
+			top = maxf(top, float(bx[5]))
+		if top <= 0.0:
+			continue
+		var want: float = float(REAL_HEIGHT[id]) * ArtModels.VERT_PX_PER_M
+		var k: float = want / top
+		if absf(k - 1.0) <= 0.12:
+			continue
+		for bx2 in m[id]:
+			bx2[2] = float(bx2[2]) * k
+			bx2[5] = float(bx2[5]) * k
+	return m
+
 static func all() -> Dictionary:
 	var P := Painter
 	var m: Dictionary = {}
@@ -211,4 +242,4 @@ static func all() -> Dictionary:
 		b(.43, 1.9, 14, .57, 1.95, 18, "f2e6a8"), b(.6, .2, 4, .7, .9, 8, "8a8d90", P.M_METAL)]
 	m[Defs.O_BICYCLE] = [b(.47, .05, 0, .53, .62, 14, "222222"), b(.47, 1.38, 0, .53, 1.95, 14, "222222"), b(.47, .45, 9, .53, 1.55, 12, bdy, P.M_METAL),
 		b(.47, .6, 12, .53, .7, 15, bdy), b(.4, .5, 15, .6, .78, 17, "2a2a2a"), b(.18, 1.48, 16, .82, 1.53, 18, "777a7c"), b(.47, 1.45, 9, .53, 1.52, 17, bdy)]
-	return m
+	return true_size(m)

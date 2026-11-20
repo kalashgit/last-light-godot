@@ -26,6 +26,8 @@ static var item_icon: Dictionary = {}
 static var item_icon_rot: Dictionary = {}
 ## how each melee item's sheet sprite is held (see ArtIcons.held_geometry), by item id
 static var held: Dictionary = {}
+## the 2.5D models rendered from the mesh recipes, by item id: {"g": ground sprite, "h": held sprite, "dims": metres}
+static var models: Dictionary = {}
 static var misc: Dictionary = {}
 ## character frames: see ArtChars
 static var char_frames: Dictionary = {}
@@ -57,6 +59,7 @@ static func begin() -> void:
 	item_icon.clear()
 	item_icon_rot.clear()
 	held.clear()
+	models.clear()
 	misc.clear()
 	char_frames.clear()
 	ArtIcons.sheet_icons.clear()
@@ -70,6 +73,7 @@ static func begin() -> void:
 	ArtWorld.queue_jobs(_jobs)
 	ArtChars.queue_jobs(_jobs)
 	ArtIcons.queue_jobs(_jobs)
+	ArtModels.queue_jobs(_jobs)
 	_jobs.append(func():
 		world.pack()
 		chars.pack()
@@ -120,7 +124,7 @@ static func _atlases() -> Dictionary:
 static func save_cache() -> bool:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
 	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "ov": ov,
-		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
+		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "models": models, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
 	var at: Dictionary = _atlases()
 	for nm in at.keys():
 		var a: Atlas = at[nm]
@@ -173,6 +177,7 @@ static func load_cache() -> bool:
 	item_icon = meta["item_icon"]
 	item_icon_rot = meta.get("item_icon_rot", {})
 	held = meta.get("held", {})
+	models = meta.get("models", {})
 	misc = meta["misc"]
 	char_frames = meta["char_frames"]
 	ArtIcons.sheet_icons = meta["sheet_icons"]

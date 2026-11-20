@@ -130,8 +130,23 @@ func _draw() -> void:
 			A.draw_flipped(self, frame[i], Vector2.ZERO, c)
 		else:
 			A.draw(self, frame[i], Vector2.ZERO, c)
-	var hp: Array = held_pose() if held_id != "" and Art.held.has(held_id) and Art.item_icon.has(held_id) else []
-	if not hp.is_empty():
+	var hm: int = int((Art.models.get(held_id, {}) as Dictionary).get("h", -1)) if held_id != "" else -1
+	var hpose: Array = held_pose() if hm >= 0 else []
+	var hp: Array = held_pose() if hm < 0 and held_id != "" and Art.held.has(held_id) and Art.item_icon.has(held_id) else []
+	if not hpose.is_empty():
+		# the rendered side view, at true length, gripped at the hand and turned with the arm;
+		# facing the other way it is mirrored rather than turned upside down
+		var base: int = 5 + ArtChars.WEAPON_KINDS
+		var raw: float = frame[base + 2] / 1000.0
+		var hk: float = 1.0 / ArtModels.ITEM_K
+		if flip:
+			draw_set_transform(hpose[0], -raw, Vector2(-hk, hk))
+		else:
+			draw_set_transform(hpose[0], raw, Vector2(hk, hk))
+		var hr: Rect2 = Art.world.rects[hm]
+		draw_texture_rect_region(Art.world.texture, Rect2(Art.world.offs[hm], hr.size), hr, Color(1.6, 1.2, 1.1) if flash > 0.0 else Color.WHITE)
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	elif not hp.is_empty():
 		var g: Array = Art.held[held_id]
 		var sc: float = held_length(held_id) / maxf(float(g[3]), 1.0)
 		draw_set_transform(hp[0], float(hp[1]) - float(g[2]), Vector2(sc, sc))
