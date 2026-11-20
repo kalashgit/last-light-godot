@@ -12,7 +12,9 @@ Inside each grid cell the largest shape is the sprite; other shapes are kept onl
 least 6% of its size (the second boot of a pair, a strap) and are not a short shape lying wholly
 above or below it (a printed number), so labels and stray specks drop out.
 An entry is [sheet, row, col], or [sheet, "at", x, y] for a sheet whose columns drift: the cell is
-then a grid-sized box centred on that pixel. Items listed in "fill_holes" (rings: a belt, a wheel)
+then a grid-sized box centred on that pixel, or [sheet, "band", row, k] for a dense sheet whose
+columns do not line up at all: the k-th sprite from the left in that row, sprites being separated
+by clear vertical gaps. Items listed in "fill_holes" (rings: a belt, a wheel)
 also lose backdrop-coloured pixels enclosed by the sprite. The result is fitted into 48x48 (resampled with premultiplied alpha, so no backdrop
 colour bleeds into the edge) and written to assets/art/icons/<item>.png.
 The sheets live in art_src/ (ignored by Godot), so only the small icons ship with the game.
@@ -112,10 +114,45 @@ def row_bands(fg, rows, label_px):
     return bands
 
 
+_band_cache = {}
+
+
+def band_runs(fg, band):
+    """the sprites of one row, left to right, as [x0, x1) spans: each shape of a reasonable size in
+    the row, with small pieces folded into the shape they sit over"""
+    key = (id(fg), band[0], band[1])
+    if key in _band_cache:
+        return _band_cache[key]
+    comps = components(fg[band[0]:band[1], :])
+    spans = []
+    for pts in comps:
+        xs = [p[1] for p in pts]
+        spans.append([min(xs), max(xs) + 1, len(pts)])
+    big = max([sp[2] for sp in spans] + [1])
+    main = sorted([sp for sp in spans if sp[2] >= big * 0.08], key=lambda sp: sp[0])
+    for sp in spans:
+        if sp[2] < big * 0.08:
+            cx = (sp[0] + sp[1]) / 2
+            for m in main:
+                if m[0] <= cx < m[1]:
+                    m[0] = min(m[0], sp[0]); m[1] = max(m[1], sp[1])
+                    break
+    runs = [[m[0], m[1]] for m in main]
+    _band_cache[key] = runs
+    return runs
+
+
 def cut(im, fg, cols, rows, cell, bands, holes=None):
     W, H = im.size
     cw, ch = W / cols, H / rows
-    if cell[0] == "at":
+    if cell[0] == "band":
+        if not bands:
+            bands = [[int(r * ch), int((r + 1) * ch)] for r in range(rows)]
+        run = band_runs(fg, bands[cell[1]])[cell[2]]
+        bx0, cw = run[0], run[1] - run[0]
+        by0, by1 = bands[cell[1]]
+        y0, y1 = by0, by1
+    elif cell[0] == "at":
         bx0, by0 = cell[1] - cw / 2, cell[2] - ch / 2
         by1 = by0 + ch
         y0 = max(0, int(by0 - ch * 0.5)); y1 = min(H, int(by1 + ch * 0.5))

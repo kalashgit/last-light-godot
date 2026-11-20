@@ -1733,9 +1733,10 @@ func _init() -> void:
 		"bike_helmet", "combat_helmet", "goggles", "chef_jacket", "bathrobe", "jersey", "coveralls", "hivis_coveralls", "gym_shorts", "apron", "leather_apron",
 		"leather_vest", "chest_protector", "riot_shin_guards", "chest_rig", "bone", "pipe_wrench", "hacksaw", "folding_shovel", "bolt_cutters", "glowstick",
 		"playing_cards", "hand_bell", "motor_oil", "spark_plug", "fan_belt", "air_filter", "oil_filter", "fuel_pump", "alternator", "starter_motor", "radiator",
-		"windscreen", "car_door", "spare_wheel", "headlight_bulb", "muffler"]
+		"windscreen", "car_door", "spare_wheel", "headlight_bulb", "muffler", "cinnamon_roll", "cornbread", "corn_dog", "ice_cream", "cauliflower", "condensed_milk",
+		"canned_water", "cranberry_juice", "cider", "coffee_liqueur", "cigar", "cowboy_hat", "cowboy_boots", "cardigan", "chess_set"]
 	var CRAFTED := ["cooked_bacon", "arm_wraps", "leather_bracers", "studded_bracers", "scrap_shin_guards", "scrap_shoulder_pads", "bone_bracers", "bone_shin_guards",
-		"bone_chest", "bone_mask", "bone_shiv", "bone_club", "bone"]
+		"bone_chest", "bone_mask", "bone_shiv", "bone_club", "bone", "chainmail_glove", "chainmail_sleeve"]
 	var lootable := {}
 	for tn in Loot.T.keys():
 		for e_l in Loot.T[tn]["items"]:
@@ -1753,7 +1754,7 @@ func _init() -> void:
 		unplaced.erase("blackberries")      # brambles grow wild rather than sitting in a cupboard
 	ok(unplaced.is_empty(), "all %d new things are found somewhere in the world, and the %d you make have a recipe (missing: %s)" % [NEW_C.size(), CRAFTED.size(), str(unplaced)])
 	var app: Dictionary = Items.make("apple", 1, 0.0)
-	ok(Art.icon_of(app, 1.0) == int(Art.item_icon["apple"]) and Art.icon_of(app, 1000.0) == int(Art.item_icon_rot.get("apple", -1)) and Art.item_icon_rot.size() >= 12,
+	ok(Art.icon_of(app, 1.0) == int(Art.item_icon["apple"]) and Art.icon_of(app, 1000.0) == int(Art.item_icon_rot.get("apple", -1)) and Art.item_icon_rot.size() >= 17,
 		"a rotten apple shows the rotten apple from the sheet; a fresh one the fresh apple (%d foods have a rotten look)" % Art.item_icon_rot.size())
 	ok(Art.icon_of({"id": "hammer", "n": 1}, 5000.0) == int(Art.item_icon["hammer"]), "things that do not rot keep their one icon")
 	var cs := Sim.new(4141)

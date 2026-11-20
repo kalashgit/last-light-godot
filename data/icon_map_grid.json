@@ -15,7 +15,9 @@
     "c13": {"file": "sheet_c13.png", "cols": 10, "rows": 5, "bg": "dark", "label_px": 24},
     "c14": {"file": "sheet_c14.png", "cols": 10, "rows": 5, "bg": "light"},
     "c15": {"file": "sheet_c15.png", "cols": 10, "rows": 5, "bg": "light"},
-    "c16": {"file": "sheet_c16.png", "cols": 10, "rows": 5, "bg": "light"}
+    "c16": {"file": "sheet_c16.png", "cols": 10, "rows": 5, "bg": "light"},
+    "d01": {"file": "sheet_d01.png", "cols": 20, "rows": 10, "bg": "light"},
+    "d02": {"file": "sheet_d02.png", "cols": 20, "rows": 10, "bg": "light"}
   },
   "fill_holes": ["fan_belt", "spare_wheel", "tyre_kit"],
   "icons": {
@@ -60,6 +62,12 @@
     "motor_oil": ["c15", 1, 9], "spark_plug": ["c12", 2, 2], "fan_belt": ["c12", 2, 3], "air_filter": ["c12", 2, 0],
     "oil_filter": ["c12", 2, 1], "fuel_pump": ["c12", 4, 2], "alternator": ["c12", 4, 3], "starter_motor": ["c12", 4, 4],
     "radiator": ["c12", 2, 4], "windscreen": ["c12", 3, 4], "car_door": ["c12", 2, 7], "spare_wheel": ["c12", 1, 8],
-    "headlight_bulb": ["c15", 2, 4], "muffler": ["c12", 4, 6]
+    "headlight_bulb": ["c15", 2, 4], "muffler": ["c12", 4, 6],
+    "compass": ["d01", "band", 5, 11], "high_vis_vest": ["d01", "band", 5, 19], "clay": ["d01", "band", 2, 9], "unfired_pot": ["d01", "band", 2, 17],
+    "cigar": ["d01", "band", 1, 15], "cider": ["d01", "band", 1, 14], "coffee_liqueur": ["d01", "band", 4, 8], "cinnamon_roll": ["d01", "band", 2, 4],
+    "ice_cream": ["d01", "band", 5, 18], "corn_dog": ["d01", "band", 7, 12], "cornbread": ["d01", "band", 7, 10], "cowboy_hat": ["d01", "band", 9, 2],
+    "cowboy_boots": ["d01", "band", 8, 18], "cranberry_juice": ["d01", "band", 9, 18], "canned_water": ["d02", "at", 1410, 160], "condensed_milk": ["d02", "at", 495, 55],
+    "cauliflower": ["d02", "at", 1235, 480], "cauliflower__rotten": ["d02", "at", 1310, 480], "chainmail_glove": ["d02", "at", 253, 788], "chainmail_sleeve": ["d02", "at", 316, 788],
+    "chess_set": ["d02", "at", 927, 788], "cardigan": ["d02", "at", 700, 375], "raw_chicken__rotten": ["d02", "at", 1309, 967]
   }
 }
