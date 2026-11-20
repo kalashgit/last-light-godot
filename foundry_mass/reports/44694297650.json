@@ -1,0 +1,42 @@
+{
+  "run_id": "44694297650",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 78,
+  "remaining": 282,
+  "generated": [
+    {
+      "asset_id": "ll_food_juice_carton",
+      "source_glb_sha256": "c378864ab0e044326094b89424b118362a57f3e1abb56066f5f74009dcf228f8",
+      "atlas_sha256": "1acfb3839721f0c45b51c3f86aeba42fa6ac30051ad33f158c55474bdf3cc696",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2710224,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_lentil_bag",
+      "source_glb_sha256": "33ab9443c87ea86a7960f8d18d54002b0fbb56cd6d4a0ebf8f5aa0fb42e7abed",
+      "atlas_sha256": "edeb8980482be38d010d3b24e1d65d04ff54484bced2c74b15da623b93ad7645",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2721640,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

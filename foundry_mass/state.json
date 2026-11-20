@@ -78,9 +78,11 @@
     "ll_food_flour_bag",
     "ll_food_honey_jar",
     "ll_food_instant_noodles",
-    "ll_food_jam_jar"
+    "ll_food_jam_jar",
+    "ll_food_juice_carton",
+    "ll_food_lentil_bag"
   ],
-  "last_run_id": "44641312232",
+  "last_run_id": "44694297650",
   "golden_approved": false,
-  "remaining": 284
+  "remaining": 282
 }

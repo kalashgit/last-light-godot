@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_juice_carton",
+  "source_glb_sha256": "c378864ab0e044326094b89424b118362a57f3e1abb56066f5f74009dcf228f8",
+  "atlas_sha256": "1acfb3839721f0c45b51c3f86aeba42fa6ac30051ad33f158c55474bdf3cc696",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2710224,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
