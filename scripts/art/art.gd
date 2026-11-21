@@ -5,7 +5,7 @@ extends RefCounted
 ## paints it all and keeps the result in user://art_cache; later launches load that in a moment,
 ## and paint afresh whenever the game's code or art files change.
 
-const VERSION := 9
+const VERSION := 10
 
 static var ready := false
 static var world: Atlas          # ground, walls, objects
@@ -31,6 +31,9 @@ static var models: Dictionary = {}
 static var misc: Dictionary = {}
 ## ground decals by set name (cracks, stains, leaves, litter...) -> Array of handles; see ArtGround
 static var decals: Dictionary = {}
+## the untinted layer of an object drawn in two (a vehicle: glass, tyres, lights and trim over its
+## paint, which is tinted with its colour), by the same cell key as obj_spr
+static var obj_fix: Dictionary = {}
 ## character frames: see ArtChars
 static var char_frames: Dictionary = {}
 
@@ -57,6 +60,7 @@ static func begin() -> void:
 	ground.clear()
 	wall_spr.clear()
 	obj_spr.clear()
+	obj_fix.clear()
 	ov.clear()
 	item_icon.clear()
 	item_icon_rot.clear()
@@ -127,7 +131,7 @@ static func _atlases() -> Dictionary:
 ## keep the painted art. The index is written last, so a half-written cache is never used.
 static func save_cache() -> bool:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
-	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "ov": ov,
+	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "obj_fix": obj_fix, "ov": ov,
 		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "models": models, "misc": misc, "decals": decals, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
 	var at: Dictionary = _atlases()
 	for nm in at.keys():
@@ -177,6 +181,7 @@ static func load_cache() -> bool:
 	ground = meta["ground"]
 	wall_spr = meta["wall_spr"]
 	obj_spr = meta["obj_spr"]
+	obj_fix = meta.get("obj_fix", {})
 	ov = meta["ov"]
 	item_icon = meta["item_icon"]
 	item_icon_rot = meta.get("item_icon_rot", {})

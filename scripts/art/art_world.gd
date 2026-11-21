@@ -17,7 +17,10 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 	jobs.append(_gen_nature)
 	jobs.append(_gen_crops)
 	var models: Dictionary = Models.all()
+	var rendered: Dictionary = ArtModels.rendered_vehicles()
 	for id in models.keys():
+		if rendered.has(id):
+			continue                       # drawn from its 3D render instead (ArtModels)
 		var oid: int = id
 		var boxes: Array = models[id]
 		jobs.append(func(): _gen_object(oid, boxes))

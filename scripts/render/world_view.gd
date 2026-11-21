@@ -136,10 +136,13 @@ class AnimalView extends Node2D:
 
 class CarPart extends Node2D:
 	var h := -1
+	var hf := -1                   # the untinted layer over the paint (glass, tyres, lights, trim)
 	var tint := Color.WHITE
 	func _draw() -> void:
 		if h >= 0:
 			Art.world.draw(self, h, Vector2.ZERO, tint)
+		if hf >= 0:
+			Art.world.draw(self, hf, Vector2.ZERO)
 
 func _ready() -> void:
 	_shade_root = Node2D.new()          # every chunk's shadow layer, faded together with the daylight
@@ -481,8 +484,10 @@ func _car_parts(oid: int, heading: int, a: Vector2, tk: Vector2i, k: int, part0:
 		for i in range(int(s.x)):
 			var cp: CarPart = _vparts[k]
 			var h: int = Art.obj_spr.get(Defs.ocell(oid, heading, k - part0), -1)
-			if cp.h != h or cp.tint != tint:
+			var hf: int = Art.obj_fix.get(Defs.ocell(oid, heading, k - part0), -1)
+			if cp.h != h or cp.hf != hf or cp.tint != tint:
 				cp.h = h
+				cp.hf = hf
 				cp.tint = tint
 				cp.queue_redraw()
 			cp.visible = true
@@ -799,6 +804,9 @@ func _draw_row(s: Strip) -> void:
 						var k2: float = 0.82 + Rng.f2(x, y, 73) * 0.18
 						tint = Color(k2, k2 * (0.94 + Rng.f2(x, y, 74) * 0.06), k2 * 0.92)
 				A.draw(s, h, pos, tint)
+				var hfx: int = Art.obj_fix.get(o, -1)
+				if hfx >= 0:
+					A.draw(s, hfx, pos)
 	for cp in c.corpses:
 		var cx: int = floori(cp["x"])
 		var cy: int = floori(cp["y"])

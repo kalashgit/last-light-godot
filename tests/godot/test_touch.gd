@@ -170,6 +170,14 @@ func _process(_dt: float) -> bool:
 			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 8 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload") and Art.char_frames.has("s_run"),
 				"the 3D-rendered characters walk, run, carry, climb and reload in all eight directions")
 			ok(main.view.shade_tris > 0, "the buildings around cast shadows on the ground (%d shaded triangles)" % main.view.shade_tris)
+			var veh_ok := true
+			for vo in [Defs.O_CAR, Defs.O_BUS, Defs.O_TANKER, Defs.O_MOTORBIKE, Defs.O_BICYCLE, Defs.O_TRACTOR, Defs.O_AMBULANCE]:
+				for vr in range(4):
+					var vfs: Vector2i = Defs.obj_size(vo, vr)
+					for vp in range(vfs.x * vfs.y):
+						if not Art.obj_spr.has(Defs.ocell(vo, vr, vp)): veh_ok = false
+			ok(veh_ok and ArtModels.rendered_vehicles().size() == 19 and Art.obj_fix.size() > 300,
+				"all 19 vehicles are 3D renders in every heading, a piece per footprint tile, the paint and the glass, tyres and lights in two layers")
 			var mt_ok := true
 			for gm in [Defs.G_GRASS, Defs.G_ASPHALT, Defs.G_DIRT, Defs.G_WOOD]:
 				for mk in range(20):
