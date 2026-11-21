@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_pet_food_tin",
+  "source_glb_sha256": "fa3aa49e41e7209b655019a89ad8ec1524998a749d5615103cfccfca94778b50",
+  "atlas_sha256": "922d0cf439798a065f1726b4a33923e705a8b5338ee87ede492ad851522c88a0",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2794700,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

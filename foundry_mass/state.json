@@ -88,9 +88,11 @@
     "ll_food_pasta_box",
     "ll_food_pea_tin",
     "ll_food_peach_tin",
-    "ll_food_peanut_butter"
+    "ll_food_peanut_butter",
+    "ll_food_pet_food_tin",
+    "ll_food_pickle_jar"
   ],
-  "last_run_id": "44905179228",
+  "last_run_id": "44942938677",
   "golden_approved": false,
-  "remaining": 274
+  "remaining": 272
 }

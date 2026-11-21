@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_pickle_jar",
+  "source_glb_sha256": "c2e847f766801d33a885e8fe614d056e512ba391280320052a4de72d4b9f1c42",
+  "atlas_sha256": "22f1ee5e0fd011af6ada9f8148867cda10a6dd8c21eb12b7b627e536ce297adb",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2748393,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
