@@ -21,24 +21,27 @@ var flash := 0.0
 var _key := -1
 
 static func pick(anim: String, t: float, d8: int, progress: float = -1.0) -> Array:
-	var dm: Vector2i = ArtChars.dir_map(d8)
 	var dirs: Array = Art.char_frames.get(anim, [])
+	if dirs.is_empty() and anim == "s_run":
+		dirs = Art.char_frames.get("s_walk", [])
 	if dirs.is_empty():
 		dirs = Art.char_frames["s_idle"]
+	var dm: Vector2i = ArtChars.dir_map(d8, dirs.size())
 	var frames: Array = dirs[dm.x]
 	var n: int = frames.size()
 	var idx := 0
 	if progress >= 0.0:
 		idx = clampi(int(progress * n), 0, n - 1)
 	else:
+		# walking cycles: the gait clocks advance one stride per (6/11 or 6/7) of t, whatever the frame count
 		match anim:
-			"s_walk": idx = int(t * 11.0) % n
-			"z_walk": idx = int(t * 7.0) % n
+			"s_walk", "s_run", "s_carry": idx = int(t * 11.0 / 6.0 * float(n)) % n
+			"z_walk": idx = int(t * 7.0 / 6.0 * float(n)) % n
+			"s_idle": idx = int(t * 1.6) % n
 			"z_idle": idx = int(t * 1.2) % n
 			"z_crawl": idx = int(t * 3.0) % n
 			"s_work": idx = int(t * 4.0) % n
 			"s_squat": idx = int(t * 1.5) % n
-			"s_carry": idx = int(t * 8.0) % n
 			"s_reload": idx = int(t * 3.0) % n
 			"s_vault": idx = int(t * 2.4) % n
 			_: idx = clampi(int(t * 9.0), 0, n - 1)
@@ -55,6 +58,32 @@ func set_frame(anim: String, t: float, d8: int, progress: float, wl: int, fl: fl
 		flash = fl
 		held_id = held
 		queue_redraw()
+
+## how much a frame is drawn at: the rendered characters are stored at twice the world scale
+static func frame_scale(fr: PackedInt32Array) -> float:
+	if fr.size() > ArtChars.SCALE_SLOT and fr[ArtChars.SCALE_SLOT] > 0:
+		return 1.0 / float(fr[ArtChars.SCALE_SLOT])
+	return 1.0
+
+## draw a character frame's five layers, tinted, with the house's dark rim (shared by corpses)
+static func draw_layers(ci: CanvasItem, fr: PackedInt32Array, flipped: bool, at: Vector2, cols: Array, flashing: bool, rim: bool) -> void:
+	var A: Atlas = Art.chars
+	var k: float = frame_scale(fr)
+	if rim:
+		var ink := Color(0.09, 0.06, 0.045, 0.95)
+		for off in [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]:
+			ci.draw_set_transform(at + off, 0.0, Vector2(-k if flipped else k, k))
+			for li in range(4):
+				if fr[li] < 0: continue
+				A.draw(ci, fr[li], Vector2.ZERO, ink)
+	ci.draw_set_transform(at, 0.0, Vector2(-k if flipped else k, k))
+	for i in range(5):
+		if fr[i] < 0: continue
+		var c: Color = cols[i]
+		if flashing:
+			c = c.lerp(Color(1.6, 1.2, 1.1), 0.6)
+		A.draw(ci, fr[i], Vector2.ZERO, c)
+	ci.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 ## where the held sprite goes in this frame: [hand position, angle], or [] when the pose puts it away
 func held_pose() -> Array:
@@ -112,24 +141,7 @@ func _draw() -> void:
 				cols[3] = Color("2a2a2a")
 		cols[1] = (cols[1] as Color).lerp(Color(0.45, 0.45, 0.38), 0.45)
 		cols[2] = (cols[2] as Color).lerp(Color(0.35, 0.34, 0.3), 0.4)
-	# the house outline: a dark rim around the whole figure, like the sprite sheets
-	if not ghost:
-		var ink := Color(0.09, 0.06, 0.045, 0.95)
-		for off in [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]:
-			for li in range(4):
-				if frame[li] < 0: continue
-				if flip:
-					A.draw_flipped(self, frame[li], off, ink)
-				else:
-					A.draw(self, frame[li], off, ink)
-	for i in range(5):
-		var c: Color = cols[i]
-		if flash > 0.0:
-			c = c.lerp(Color(1.6, 1.2, 1.1), 0.6)
-		if flip:
-			A.draw_flipped(self, frame[i], Vector2.ZERO, c)
-		else:
-			A.draw(self, frame[i], Vector2.ZERO, c)
+	draw_layers(self, frame, flip, Vector2.ZERO, cols, flash > 0.0, not ghost)
 	var hm: int = int((Art.models.get(held_id, {}) as Dictionary).get("h", -1)) if held_id != "" else -1
 	var hpose: Array = held_pose() if hm >= 0 else []
 	var hp: Array = held_pose() if hm < 0 and held_id != "" and Art.held.has(held_id) and Art.item_icon.has(held_id) else []

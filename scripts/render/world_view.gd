@@ -361,7 +361,7 @@ func sync(dt: float) -> void:
 		prog = 1.0 - p.swing_t / p.swing_dur
 	var sy: float = 0.86 if (p.sneaking and p.alive and not p.sleeping) else 1.0
 	_pview.scale = Vector2(1.0, sy)
-	var pt: float = p.walk_t if (p.anim == "s_walk" or p.anim == "s_carry") else p.anim_t
+	var pt: float = p.walk_t if (p.anim == "s_walk" or p.anim == "s_run" or p.anim == "s_carry") else p.anim_t
 	_pview.set_frame(p.anim, pt, p.dir8, prog, wl, p.hit_flash, String(p.weapon.get("id", "")) if wd.has("wpn") else "")
 	_ghost.position = ps
 	_ghost.scale = _pview.scale
@@ -695,11 +695,7 @@ func _draw_row(s: Strip) -> void:
 		var look: Array = cp["l"]
 		var cols: Array = [EntityView.ZSKIN[int(look[0]) % 4], EntityView.SHIRT[int(look[1]) % 10].lerp(Color(0.4, 0.38, 0.33), 0.5),
 			EntityView.PANTS[int(look[2]) % 6].lerp(Color(0.3, 0.3, 0.27), 0.4), EntityView.HAIR[int(look[3]) % 6], Color.WHITE]
-		for li in range(5):
-			if fr[1]:
-				Art.chars.draw_flipped(s, frame[li], rel, cols[li])
-			else:
-				Art.chars.draw(s, frame[li], rel, cols[li])
+		EntityView.draw_layers(s, frame, fr[1], rel, cols, false, false)
 
 func _draw_wall(s: Strip, pos: Vector2, wid: int, st: int, orient: int, x: int, y: int, b1: int, b2: int) -> void:
 	var A: Atlas = Art.world

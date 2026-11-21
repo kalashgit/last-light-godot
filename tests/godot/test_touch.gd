@@ -167,7 +167,8 @@ func _process(_dt: float) -> bool:
 					if not Art.obj_spr.has(Defs.ocell(int(Farming.CROP_OBJ[crn]), 0, stg)): crop_art = false
 			ok(crop_art, "all %d crops are painted at every growth stage" % Farming.CROP_OBJ.size())
 			ok(ArtIcons.sheet_icons.size() >= 420 and Art.item_icon.size() >= Items.DB.size(), "%d item icons come from the reference sprite sheets; every item has an icon" % ArtIcons.sheet_icons.size())
-			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 5 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload"), "carry, climb and reload frames are painted in all five directions")
+			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 8 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload") and Art.char_frames.has("s_run"),
+				"the 3D-rendered characters walk, run, carry, climb and reload in all eight directions")
 			touch(5, Vector2(size.x * 0.5, size.y * 0.3), true)      # pinch
 			touch(6, Vector2(size.x * 0.5 + 100, size.y * 0.3), true)
 			p0 = Vector2(main.view.zoom, 0)

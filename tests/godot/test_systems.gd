@@ -1801,7 +1801,18 @@ func _init() -> void:
 	print("== models from the sheets")
 	var atk: PackedInt32Array = Art.char_frames["s_attack"][0][1]
 	var hbase: int = 5 + ArtChars.WEAPON_KINDS
-	ok(atk.size() == hbase + 3 and atk[hbase] != -99999, "every swing frame records where the hand is and which way the weapon points")
+	ok(atk.size() >= hbase + 3 and atk[hbase] != -99999, "every swing frame records where the hand is and which way the weapon points")
+	var walk_s: Array = Art.char_frames["s_walk"]
+	var z_s: Array = Art.char_frames["z_walk"]
+	ok(walk_s.size() == 8 and (walk_s[0] as Array).size() == 8 and z_s.size() == 8 and EntityView.frame_scale(walk_s[0][0]) == 0.5 and Art.char_frames.has("s_run"),
+		"survivors and the infected are 3D-rendered in all eight directions, eight frames to a stride, stored at twice the world's scale")
+	var seen_idx := {}
+	for k_w in range(16):
+		var pw: Array = EntityView.pick("s_walk", float(k_w) / 16.0 * 6.0 / 11.0, 0)
+		seen_idx[int(pw[2])] = true
+	ok(seen_idx.size() == 8, "one stride of the gait clock steps through all eight walking frames (%d)" % seen_idx.size())
+	var e_d: Array = EntityView.pick("s_walk", 0.0, 6)
+	ok(not bool(e_d[1]), "facing right is drawn from its own render, not a mirror (the weapon stays in the right hand)")
 	var bat_g: Array = Art.held.get("baseball_bat", [])
 	ok(not bat_g.is_empty() and float(bat_g[1]) > 24.0 and float(bat_g[0]) < 24.0 and float(bat_g[2]) < 0.0 and float(bat_g[2]) > -PI * 0.75,
 		"a bat's sheet sprite is gripped at the thin end and points to its barrel, up and to the right (%s)" % str(bat_g))

@@ -503,7 +503,7 @@ func update(dt: float, move_screen: Vector2, want_run: bool) -> void:
 	elif act_label == "Reloading" and _spd <= 0.3:
 		anim = "s_reload"
 	elif _spd > 0.3:
-		anim = "s_walk"
+		anim = "s_run" if running else "s_walk"
 	elif not action.is_empty():
 		anim = "s_squat" if String(action["label"]).begins_with("Exercis") else "s_work"
 	else:

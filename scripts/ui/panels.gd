@@ -279,7 +279,7 @@ func _build_newgame() -> void:
 		pv.look = _ng_look
 		pv.position = Vector2(48, 108)
 		pv.scale = Vector2(2.2, 2.2)
-		pv.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		pv.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		pv.set_frame("s_idle", 0.0, 0, -1.0, 0, 0.0)
 		holder.add_child(pv)
 		ap.add_child(holder)

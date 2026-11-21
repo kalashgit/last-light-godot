@@ -23,13 +23,63 @@ const ANIMS := {
 }
 const WEAPON_KINDS := 5     # 1 long, 2 short blade, 3 axe, 4 pistol, 5 long gun
 
+## the 3D-rendered characters (tools/godot/render_chars.gd): eight directions, more frames, at twice
+## the world scale; used when present, the procedural stick figures below otherwise
+const RENDERED := "res://assets/art/chars/"
+## frame layout: [skin, shirt, trousers, hair, fixed, (5 unused weapon overlays), hand x, hand y, angle, stored scale]
+const SCALE_SLOT := 13
+
 static func queue_jobs(jobs: Array[Callable]) -> void:
+	if FileAccess.file_exists(RENDERED + "manifest.json"):
+		var man: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(RENDERED + "manifest.json"))
+		for anim in (man["anims"] as Dictionary).keys():
+			var an: String = anim
+			Art.char_frames[an] = []
+			jobs.append(func(): _load_rendered(an, man))
+		return
 	for kind in ANIMS.keys():
 		var k: String = kind
 		Art.char_frames[k] = []
 		for d in range(5):
 			var dd: int = d
 			jobs.append(func(): _gen_anim_dir(k, dd))
+
+static func _load_rendered(anim: String, man: Dictionary) -> void:
+	var path: String = RENDERED + anim + ".png"
+	if not ResourceLoader.exists(path):
+		return
+	var sheet: Image = (load(path) as Texture2D).get_image()
+	sheet.convert(Image.FORMAT_RGBA8)
+	var cell: Array = man["cell"]
+	var anchor: Array = man["anchor"]
+	var cw: int = int(cell[0])
+	var ch: int = int(cell[1])
+	var info: Dictionary = man["anims"][anim]
+	var n: int = int(info["frames"])
+	var dirs: int = int(man.get("dirs", 8))
+	var hands: Array = info["hands"]
+	var arr: Array = []
+	for d in range(dirs):
+		var frames: Array = []
+		for fi in range(n):
+			var out := PackedInt32Array()
+			out.resize(SCALE_SLOT + 1)
+			for li in range(5):
+				var region: Image = sheet.get_region(Rect2i(fi * cw, (d * 5 + li) * ch, cw, ch))
+				if region.get_used_rect().size.x <= 0:
+					out[li] = -1
+				else:
+					out[li] = Art.chars.add(region, float(anchor[0]), float(anchor[1]))
+			for wk in range(WEAPON_KINDS):
+				out[5 + wk] = -1
+			var hp: Array = hands[d][fi] if hands[d][fi] != null else [-99999, 0, 0]
+			out[5 + WEAPON_KINDS] = int(hp[0])
+			out[6 + WEAPON_KINDS] = int(hp[1])
+			out[7 + WEAPON_KINDS] = int(hp[2])
+			out[SCALE_SLOT] = int(man.get("scale", 2))
+			frames.append(out)
+		arr.append(frames)
+	Art.char_frames[anim] = arr
 
 static func _gen_anim_dir(kind: String, dir5: int) -> void:
 	var n: int = ANIMS[kind]
@@ -437,8 +487,10 @@ static func _capsule(lay: PackedByteArray, col: PackedFloat32Array, a: Vector2, 
 				lay[i] = layer
 				col[i] = base * (1.0 - 0.2 * d2 / r2) * (1.0 - ex / r * 0.12 - ey / r * 0.05)
 
-## dir8 -> [dir5, flip]
-static func dir_map(d8: int) -> Vector2i:
+## dir8 -> [rendered direction, flip]: the rendered characters have all eight; the stick figures five
+static func dir_map(d8: int, dirs: int = 5) -> Vector2i:
+	if dirs >= 8:
+		return Vector2i(posmod(d8, 8), 0)
 	match d8:
 		5: return Vector2i(3, 1)
 		6: return Vector2i(2, 1)
