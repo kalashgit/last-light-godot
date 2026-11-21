@@ -82,9 +82,11 @@
     "ll_generated_portable_generator_009",
     "ll_generated_vending_machine_009",
     "ll_generated_street_dumpster_009",
-    "ll_generated_raised_planter_009"
+    "ll_generated_raised_planter_009",
+    "ll_generated_industrial_locker_010",
+    "ll_generated_tool_chest_010"
   ],
-  "remaining": 432,
-  "last_approved_source_bundle_tag": "foundry-created-44807271955",
+  "remaining": 430,
+  "last_approved_source_bundle_tag": "foundry-created-44850005151",
   "golden_approved": false
 }
