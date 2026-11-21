@@ -1,0 +1,42 @@
+{
+  "run_id": "44905179228",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 86,
+  "remaining": 274,
+  "generated": [
+    {
+      "asset_id": "ll_food_peach_tin",
+      "source_glb_sha256": "f0d9c49bda09ceda16d4be1393a57ae1032f3268b253bea45bc9f00ce861524e",
+      "atlas_sha256": "8e4d6cbc8fa7aa13564b44db4a2e3e049f480af47dc9feda00777447a504b40a",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2707883,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_peanut_butter",
+      "source_glb_sha256": "c78ed6df0bff56a069a1eb72698e1b14475d4d43618bcda500ef071003f1f002",
+      "atlas_sha256": "4ca5e13ee31015ff15cb67f646707175ffc86da02ee4f0ee289ae993c99b69e3",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2668713,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

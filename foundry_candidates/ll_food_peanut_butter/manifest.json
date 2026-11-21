@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_peanut_butter",
+  "source_glb_sha256": "c78ed6df0bff56a069a1eb72698e1b14475d4d43618bcda500ef071003f1f002",
+  "atlas_sha256": "4ca5e13ee31015ff15cb67f646707175ffc86da02ee4f0ee289ae993c99b69e3",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2668713,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

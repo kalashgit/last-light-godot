@@ -86,9 +86,11 @@
     "ll_food_nut_packet",
     "ll_food_oat_bag",
     "ll_food_pasta_box",
-    "ll_food_pea_tin"
+    "ll_food_pea_tin",
+    "ll_food_peach_tin",
+    "ll_food_peanut_butter"
   ],
-  "last_run_id": "44863843655",
+  "last_run_id": "44905179228",
   "golden_approved": false,
-  "remaining": 276
+  "remaining": 274
 }

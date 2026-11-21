@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_peach_tin",
+  "source_glb_sha256": "f0d9c49bda09ceda16d4be1393a57ae1032f3268b253bea45bc9f00ce861524e",
+  "atlas_sha256": "8e4d6cbc8fa7aa13564b44db4a2e3e049f480af47dc9feda00777447a504b40a",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2707883,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
