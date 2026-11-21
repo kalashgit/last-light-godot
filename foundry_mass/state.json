@@ -84,9 +84,11 @@
     "ll_food_milk_carton",
     "ll_food_mustard_jar",
     "ll_food_nut_packet",
-    "ll_food_oat_bag"
+    "ll_food_oat_bag",
+    "ll_food_pasta_box",
+    "ll_food_pea_tin"
   ],
-  "last_run_id": "44832180401",
+  "last_run_id": "44863843655",
   "golden_approved": false,
-  "remaining": 278
+  "remaining": 276
 }

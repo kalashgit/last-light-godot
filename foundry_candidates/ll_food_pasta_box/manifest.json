@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_pasta_box",
+  "source_glb_sha256": "33d5d4f95b99bf077d62e4e3ad7d63a306df4d76466183d891f2168e5513740a",
+  "atlas_sha256": "914ad5a8807741238a34042589adc48092fbfae00576f25527c97d2c918e4db5",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2707749,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
