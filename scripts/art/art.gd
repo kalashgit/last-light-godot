@@ -5,7 +5,7 @@ extends RefCounted
 ## paints it all and keeps the result in user://art_cache; later launches load that in a moment,
 ## and paint afresh whenever the game's code or art files change.
 
-const VERSION := 8
+const VERSION := 9
 
 static var ready := false
 static var world: Atlas          # ground, walls, objects
@@ -29,6 +29,8 @@ static var held: Dictionary = {}
 ## the 2.5D models rendered from the mesh recipes, by item id: {"g": ground sprite, "h": held sprite, "dims": metres}
 static var models: Dictionary = {}
 static var misc: Dictionary = {}
+## ground decals by set name (cracks, stains, leaves, litter...) -> Array of handles; see ArtGround
+static var decals: Dictionary = {}
 ## character frames: see ArtChars
 static var char_frames: Dictionary = {}
 
@@ -61,6 +63,7 @@ static func begin() -> void:
 	held.clear()
 	models.clear()
 	misc.clear()
+	decals.clear()
 	char_frames.clear()
 	ArtIcons.sheet_icons.clear()
 	_jobs.clear()
@@ -75,6 +78,7 @@ static func begin() -> void:
 	ArtIcons.queue_jobs(_jobs)
 	ArtModels.queue_jobs(_jobs)
 	_jobs.append(func():
+		ArtGround.release()
 		world.pack()
 		chars.pack()
 		icons.pack()
@@ -124,7 +128,7 @@ static func _atlases() -> Dictionary:
 static func save_cache() -> bool:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
 	var meta := {"key": cache_key(), "atlas": {}, "ground": ground, "wall_spr": wall_spr, "obj_spr": obj_spr, "ov": ov,
-		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "models": models, "misc": misc, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
+		"item_icon": item_icon, "item_icon_rot": item_icon_rot, "held": held, "models": models, "misc": misc, "decals": decals, "char_frames": char_frames, "sheet_icons": ArtIcons.sheet_icons}
 	var at: Dictionary = _atlases()
 	for nm in at.keys():
 		var a: Atlas = at[nm]
@@ -179,6 +183,7 @@ static func load_cache() -> bool:
 	held = meta.get("held", {})
 	models = meta.get("models", {})
 	misc = meta["misc"]
+	decals = meta.get("decals", {})
 	char_frames = meta["char_frames"]
 	ArtIcons.sheet_icons = meta["sheet_icons"]
 	return true

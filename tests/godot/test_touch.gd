@@ -169,6 +169,13 @@ func _process(_dt: float) -> bool:
 			ok(ArtIcons.sheet_icons.size() >= 420 and Art.item_icon.size() >= Items.DB.size(), "%d item icons come from the reference sprite sheets; every item has an icon" % ArtIcons.sheet_icons.size())
 			ok(Art.char_frames.has("s_carry") and (Art.char_frames["s_carry"] as Array).size() == 8 and Art.char_frames.has("s_vault") and Art.char_frames.has("s_reload") and Art.char_frames.has("s_run"),
 				"the 3D-rendered characters walk, run, carry, climb and reload in all eight directions")
+			ok(main.view.shade_tris > 0, "the buildings around cast shadows on the ground (%d shaded triangles)" % main.view.shade_tris)
+			var mt_ok := true
+			for gm in [Defs.G_GRASS, Defs.G_ASPHALT, Defs.G_DIRT, Defs.G_WOOD]:
+				for mk in range(20):
+					var mc: Color = main.view.macro_tint(gm, mk * 3.7, mk * 1.9)
+					if mc.r > 1.0001 or mc.g > 1.0001 or mc.b > 1.0001 or mc.r < 0.8: mt_ok = false
+			ok(mt_ok, "the broad tint over the land only darkens, and gently")
 			touch(5, Vector2(size.x * 0.5, size.y * 0.3), true)      # pinch
 			touch(6, Vector2(size.x * 0.5 + 100, size.y * 0.3), true)
 			p0 = Vector2(main.view.zoom, 0)

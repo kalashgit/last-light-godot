@@ -5,7 +5,7 @@ extends Node2D
 ##   z = (diagonal - anchor) * 3 + layer      layer 0 walls/objects, 1 characters, 2 roofs
 
 const CAR_COLORS := [Color("9a3a32"), Color("3a5a86"), Color("d8d8d2"), Color("3a3d40"), Color("6a7a5a"), Color("c2a85a"), Color("7a8a94"), Color("5a3a4a")]
-const ROOF_COLORS := [Color("5a5552"), Color("6a4a3c"), Color("4a5560"), Color("7a4038"), Color("4c5a48"), Color("6a6460")]
+const ROOF_COLORS := [Color("655f5c"), Color("775343"), Color("535f6b"), Color("89483f"), Color("556551"), Color("77706b")]
 const VIEW_RADIUS := 24.0
 
 var sim: Sim
@@ -25,7 +25,10 @@ var _ghost: EntityView
 var _stamp := 0
 var _wall_tints: Array = []
 var _cam_pos := Vector2.ZERO
-var _roof_uv := PackedVector2Array()
+var _roof_uvs: Array = []           # UVs of the roof textures: flat, sloping along x, sloping along y
+var _white_uv := Vector2.ZERO
+var _shade_root: Node2D
+var shade_tris := 0               # how many shadow triangles the chunks drew (for tests)
 var _nviews: Dictionary = {}      # npc id -> EntityView
 var _aviews: Dictionary = {}      # animal id -> AnimalView
 var _vparts: Array = []           # CarPart nodes for the driven car
@@ -139,6 +142,8 @@ class CarPart extends Node2D:
 			Art.world.draw(self, h, Vector2.ZERO, tint)
 
 func _ready() -> void:
+	_shade_root = Node2D.new()          # every chunk's shadow layer, faded together with the daylight
+	add_child(_shade_root)
 	for m in Defs.WALL_MATS:
 		_wall_tints.append(Color(String(m[1])))
 	cam = Camera2D.new()
@@ -161,10 +166,15 @@ func _ready() -> void:
 	_ghost.z_index = 3990
 	_ghost.modulate = Color(1, 1, 1, 0.3)
 	_ents.add_child(_ghost)
-	var r: Rect2 = Art.world.rects[Art.misc["roof"]]
 	var ts: Vector2 = Vector2(Art.world.width, Art.world.height)
-	for p in [Vector2(32, 0.5), Vector2(63.5, 16), Vector2(32, 31.5), Vector2(0.5, 16)]:
-		_roof_uv.append((r.position + p) / ts)
+	for kind in ["roof_flat", "roof_x", "roof_y"]:
+		var r: Rect2 = Art.world.rects[Art.misc[kind]]
+		var uv := PackedVector2Array()
+		for p in [Vector2(32, 0.5), Vector2(63.5, 16), Vector2(32, 31.5), Vector2(0.5, 16)]:
+			uv.append((r.position + p) / ts)
+		_roof_uvs.append(uv)
+	var wr: Rect2 = Art.world.rects[Art.misc["white"]]
+	_white_uv = (wr.position + wr.size * 0.5) / ts
 
 func attach(s: Sim) -> void:
 	clear()
@@ -217,7 +227,11 @@ func _make_strip(c: Chunk, kind: int, dl: int) -> Strip:
 		Strip.K_NATURAL: s.z_index = -4095
 		Strip.K_ROW: s.z_index = _z(d, 0)
 		Strip.K_ROOF: s.z_index = _z(d, 2)
-	add_child(s)
+		Strip.K_SHADE: s.z_index = -4094
+	if kind == Strip.K_SHADE:
+		_shade_root.add_child(s)
+	else:
+		add_child(s)
 	return s
 
 func _add_chunk(c: Chunk) -> void:
@@ -251,7 +265,12 @@ func _add_chunk(c: Chunk) -> void:
 			rows[dl] = _make_strip(c, Strip.K_ROW, dl)
 		if has_roof[dl] == 1:
 			roofs[dl] = _make_strip(c, Strip.K_ROOF, dl)
-	_chunks[k] = {"c": c, "base": _make_strip(c, Strip.K_GROUND, 0), "nat": _make_strip(c, Strip.K_NATURAL, 0), "rows": rows, "roofs": roofs}
+	_chunks[k] = {"c": c, "base": _make_strip(c, Strip.K_GROUND, 0), "nat": _make_strip(c, Strip.K_NATURAL, 0), "shade": _make_strip(c, Strip.K_SHADE, 0), "rows": rows, "roofs": roofs}
+	# the chunks east and south may now have a building's shadow falling across them
+	for nk in [Vector2i(c.cx + 1, c.cy), Vector2i(c.cx, c.cy + 1)]:
+		var nv: Dictionary = _chunks.get(nk, {})
+		if not nv.is_empty():
+			(nv["shade"] as Strip).queue_redraw()
 
 func _free_chunk(k: Vector2i) -> void:
 	var cv: Dictionary = _chunks.get(k, {})
@@ -259,6 +278,7 @@ func _free_chunk(k: Vector2i) -> void:
 		return
 	(cv["base"] as Node).queue_free()
 	(cv["nat"] as Node).queue_free()
+	(cv["shade"] as Node).queue_free()
 	for s in cv["rows"]:
 		if s != null: (s as Node).queue_free()
 	for s in cv["roofs"]:
@@ -279,6 +299,10 @@ func _dirty_tile(x: int, y: int) -> void:
 	var roofs: Array = cv["roofs"]
 	if roofs[dl] == null and (cv["c"] as Chunk).bld[((y & 15) << 4) | (x & 15)] != 0:
 		roofs[dl] = _make_strip(cv["c"], Strip.K_ROOF, dl)       # a roof was built where there was none
+		(cv["shade"] as Strip).queue_redraw()                     # and it casts a shadow
+		for nk in [Vector2i(k.x + 1, k.y), Vector2i(k.x, k.y + 1)]:
+			if _chunks.has(nk):
+				(_chunks[nk]["shade"] as Strip).queue_redraw()
 	if roofs[dl] != null:
 		(roofs[dl] as Strip).queue_redraw()
 
@@ -326,6 +350,8 @@ func sync(dt: float) -> void:
 				(cv["base"] as Strip).queue_redraw()
 				(cv["nat"] as Strip).queue_redraw()
 		w.ev_ground.clear()
+	# the sun's shadows: strong on a clear day, gone at night and faint under heavy cloud
+	_shade_root.modulate.a = clampf((sim.daylight() - 0.25) * 1.8, 0.0, 1.0) * (1.0 - clampf(float(sim.weather.get("rain", 0.0)) * 0.8, 0.0, 0.7))
 	# z anchor
 	var ptx: int = floori(p.pos.x)
 	var pty: int = floori(p.pos.y)
@@ -583,12 +609,78 @@ func draw_strip(s: Strip) -> void:
 		Strip.K_NATURAL: _draw_ground(s, true)
 		Strip.K_ROW: _draw_row(s)
 		Strip.K_ROOF: _draw_roof(s)
+		Strip.K_SHADE: _draw_shade(s)
+
+## textured quads with a colour at each corner, sent as one triangle array (one draw call)
+class GroundBatch extends RefCounted:
+	var view: WorldView
+	var pts := PackedVector2Array()
+	var cols := PackedColorArray()
+	var uvs := PackedVector2Array()
+	var idx := PackedInt32Array()
+
+	func quad(hnd: int, pos: Vector2, g: int, ox: int, oy: int) -> void:
+		var A: Atlas = Art.world
+		var r: Rect2 = A.rects[hnd]
+		var o: Vector2 = pos + A.offs[hnd]
+		var ts := Vector2(A.width, A.height)
+		var n: int = pts.size()
+		for q in range(4):
+			var corner := Vector2(r.size.x if (q == 1 or q == 2) else 0.0, r.size.y if q >= 2 else 0.0)
+			var sp: Vector2 = o + corner
+			pts.append(sp)
+			uvs.append((r.position + corner) / ts)
+			# the world point under this corner of the sprite
+			cols.append(view.macro_tint(g, ox + (sp.x / 32.0 + sp.y / 16.0) * 0.5, oy + (sp.y / 16.0 - sp.x / 32.0) * 0.5))
+		idx.append_array(PackedInt32Array([n, n + 1, n + 2, n, n + 2, n + 3]))
+
+	func flush(ci: CanvasItem) -> void:
+		if pts.size() > 0:
+			RenderingServer.canvas_item_add_triangle_array(ci.get_canvas_item(), idx, pts, cols, uvs, PackedInt32Array(), PackedFloat32Array(), Art.world.texture.get_rid())
+
+var _macro_a: FastNoiseLite          # (not static: a static holding resources is freed too late at exit)
+var _macro_b: FastNoiseLite
+
+## the broad lay of the land, over many tiles: lusher grass in the hollows and yellowing on the
+## rises, worn and newer stretches of road, darker and lighter earth. Sampled at the corners of each
+## tile's sprite, so it blends smoothly from one tile to the next (at most 1.0: it only darkens)
+func macro_tint(g: int, x: float, y: float) -> Color:
+	if _macro_a == null:
+		_macro_a = FastNoiseLite.new()
+		_macro_a.seed = 4242
+		_macro_a.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		_macro_a.frequency = 0.07
+		_macro_a.fractal_octaves = 2
+		_macro_b = FastNoiseLite.new()
+		_macro_b.seed = 977
+		_macro_b.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		_macro_b.frequency = 0.045
+		_macro_b.fractal_octaves = 2
+	var n: float = _macro_a.get_noise_2d(x, y)
+	match g:
+		Defs.G_GRASS, Defs.G_GRASS_DARK, Defs.G_FOREST:
+			var dry: float = clampf(_macro_b.get_noise_2d(x, y) * 1.7, -1.0, 1.0)
+			var k: float = 0.93 + 0.05 * n
+			return Color(k + 0.05 * maxf(dry, 0.0), k + 0.01 * dry, k - 0.09 * maxf(dry, 0.0) + 0.02 * minf(dry, 0.0))
+		Defs.G_DIRT, Defs.G_SAND, Defs.G_GRAVEL, Defs.G_SOIL:
+			var kd: float = 0.94 + 0.06 * n
+			return Color(kd, kd * 0.995, kd * 0.99)
+		Defs.G_ASPHALT, Defs.G_ASPHALT_LX, Defs.G_ASPHALT_LY, Defs.G_PARKING, Defs.G_SIDEWALK, Defs.G_CONCRETE:
+			var ka: float = 0.95 + 0.05 * n
+			return Color(ka, ka, ka)
+		Defs.G_WATER, Defs.G_DEEP_WATER:
+			var kw: float = 0.96 + 0.04 * n
+			return Color(kw * 0.98, kw, kw)
+	var ki: float = 0.98 + 0.02 * n
+	return Color(ki, ki, ki)
 
 func _draw_ground(s: Strip, natural: bool) -> void:
 	var c: Chunk = s.c
 	var A: Atlas = Art.world
 	var bx: int = c.cx * 16
 	var by: int = c.cy * 16
+	var gb := GroundBatch.new()
+	gb.view = self
 	if not natural:
 		for i in range(Iso.CS2):
 			var g: int = c.ground[i]
@@ -597,7 +689,8 @@ func _draw_ground(s: Strip, natural: bool) -> void:
 			var lx: int = i & 15
 			var ly: int = i >> 4
 			var vars: Array = Art.ground[g]
-			A.draw(s, vars[Rng.h2(bx + lx, by + ly, 3) % vars.size()], Vector2((lx - ly) * 32.0, (lx + ly) * 16.0))
+			gb.quad(vars[Rng.h2(bx + lx, by + ly, 3) % vars.size()], Vector2((lx - ly) * 32.0, (lx + ly) * 16.0), g, bx, by)
+		gb.flush(s)
 		return
 	for pr in range(1, 7):
 		for i in range(Iso.CS2):
@@ -607,7 +700,29 @@ func _draw_ground(s: Strip, natural: bool) -> void:
 			var lx2: int = i & 15
 			var ly2: int = i >> 4
 			var vars2: Array = Art.ground[g2]
-			A.draw(s, vars2[Rng.h2(bx + lx2, by + ly2, 3) % vars2.size()], Vector2((lx2 - ly2) * 32.0, (lx2 + ly2) * 16.0))
+			gb.quad(vars2[Rng.h2(bx + lx2, by + ly2, 3) % vars2.size()], Vector2((lx2 - ly2) * 32.0, (lx2 + ly2) * 16.0), g2, bx, by)
+	gb.flush(s)
+	# decals: cracks, stains, tar patches, manholes, litter, leaves, weeds, stones, tufts, flowers
+	if not Art.decals.is_empty():
+		for i in range(Iso.CS2):
+			var g3: int = c.ground[i]
+			if g3 == 0:
+				continue
+			var lx3: int = i & 15
+			var ly3: int = i >> 4
+			var hs: int = Rng.h2(bx + lx3, by + ly3, 77)
+			var nm: String = ArtGround.decal_for(g3, hs, c.bld[i] != 0)
+			if nm == "":
+				continue
+			var set_a: Array = Art.decals.get(nm, [])
+			if set_a.is_empty():
+				continue
+			var hd: int = set_a[(hs / 1000) % set_a.size()]
+			var pos3 := Vector2((lx3 - ly3) * 32.0 + float((hs >> 12) % 13) - 6.0, (lx3 + ly3) * 16.0 + float((hs >> 16) % 7) - 3.0)
+			if ((hs >> 20) & 1) == 1:
+				A.draw_flipped(s, hd, pos3)
+			else:
+				A.draw(s, hd, pos3)
 	var splats: Array = Art.misc["blood"]
 	for b in c.blood:
 		var rel: Vector2 = Iso.to_screen(float(b[0]) - bx, float(b[1]) - by)
@@ -747,14 +862,21 @@ func _draw_wall(s: Strip, pos: Vector2, wid: int, st: int, orient: int, x: int, 
 		if planks > 0:
 			A.draw(s, Art.ov["planks%d" % planks][orient], pos)
 
+const ROOF_LIFT := 4.0          # roofs sit this far above the wall tops: the eave's edge shows below them
+const ROOF_LIGHT := Vector3(-0.55, -0.2, 0.81)    # the sun: from the upper left of the screen, high up
+
 func _draw_roof(s: Strip) -> void:
 	# all roof tiles of a strip go out as ONE triangle array (one draw call per strip)
 	var c: Chunk = s.c
-	var H: float = Iso.WALL_H
+	var w: World = sim.world
+	var H: float = Iso.WALL_H + ROOF_LIFT
 	var pts := PackedVector2Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
 	var idx := PackedInt32Array()
+	var props: Array = []
+	var bx: int = c.cx * 16
+	var by: int = c.cy * 16
 	for lx in range(maxi(0, s.dl - 15), mini(15, s.dl) + 1):
 		var ly: int = s.dl - lx
 		var i: int = ly * 16 + lx
@@ -767,18 +889,133 @@ func _draw_roof(s: Strip) -> void:
 		var h1: float = H + ((r >> 2) & 3) * 11.0
 		var h2: float = H + ((r >> 4) & 3) * 11.0
 		var h3: float = H + ((r >> 6) & 3) * 11.0
-		var k: float = clampf(0.92 + (h3 - h1) * 0.018 + (h0 - h2) * 0.012, 0.62, 1.2)
+		# shade each face by how it turns to the sun (heights in px: 26.3 px a metre, 1.49 m a tile)
+		var gx: float = ((h1 + h2) - (h0 + h3)) * 0.5
+		var gy: float = ((h3 + h2) - (h0 + h1)) * 0.5
+		var nrm := Vector3(-gx / 39.2, -gy / 39.2, 1.0).normalized()
+		var k: float = clampf(0.25 + 0.85 * nrm.dot(ROOF_LIGHT.normalized()), 0.5, 1.1)
 		var base: Color = ROOF_COLORS[(b >> 3) % ROOF_COLORS.size()]
-		var col := Color(base.r * k, base.g * k, base.b * k)
+		var col := Color(minf(base.r * k, 1.0), minf(base.g * k, 1.0), minf(base.b * k, 1.0))
+		# a flat roof (every corner at the eaves) is gravel and membrane; the level top of a big hip
+		# roof keeps its shingles
+		var flat: bool = r == 0
+		var tex: int = 0 if flat else (1 if absf(gx) >= absf(gy) else 2)
 		var n: int = pts.size()
 		# 0.5 px overlap hides hairlines between neighbouring roof tiles
 		pts.append(pos + Vector2(0, -h0 - 0.5))
 		pts.append(pos + Vector2(32.5, 16 - h1))
 		pts.append(pos + Vector2(0, 32.5 - h2))
 		pts.append(pos + Vector2(-32.5, 16 - h3))
+		var uvset: PackedVector2Array = _roof_uvs[tex]
 		for q in range(4):
 			cols.append(col)
-			uvs.append(_roof_uv[q])
+			uvs.append(uvset[q])
 		idx.append_array(PackedInt32Array([n, n + 1, n + 2, n, n + 2, n + 3]))
+		# the eaves facing us: the edge of the roof, and the fascia board under it, down to the wall top
+		var ex: int = c.bld[i + 1] if lx < 15 else w.bld(bx + lx + 1, by + ly)
+		var ey: int = c.bld[i + 16] if ly < 15 else w.bld(bx + lx, by + ly + 1)
+		var edge_col := Color(base.r * 0.45, base.g * 0.45, base.b * 0.45)
+		if ex != b:
+			_eave(pts, cols, uvs, idx, pos + Vector2(32.5, 16 - h1), pos + Vector2(0, 32.5 - h2), h1 - Iso.WALL_H, h2 - Iso.WALL_H, edge_col, Color(0.62, 0.61, 0.58))
+		if ey != b:
+			_eave(pts, cols, uvs, idx, pos + Vector2(0, 32.5 - h2), pos + Vector2(-32.5, 16 - h3), h2 - Iso.WALL_H, h3 - Iso.WALL_H, edge_col, Color(0.8, 0.79, 0.75))
+		if flat:
+			# a coping line round the parapet, and now and then something standing on the roof
+			var en: int = c.bld[i - 16] if ly > 0 else w.bld(bx + lx, by + ly - 1)
+			var ew: int = c.bld[i - 1] if lx > 0 else w.bld(bx + lx - 1, by + ly)
+			var cope := Color(minf(col.r * 1.35, 1.0), minf(col.g * 1.35, 1.0), minf(col.b * 1.3, 1.0))
+			if en != b: _line(pts, cols, uvs, idx, pos + Vector2(0, -h0), pos + Vector2(32, 16 - h1), cope)
+			if ew != b: _line(pts, cols, uvs, idx, pos + Vector2(-32, 16 - h3), pos + Vector2(0, -h0), cope)
+			if ex != b: _line(pts, cols, uvs, idx, pos + Vector2(32, 16 - h1), pos + Vector2(0, 32 - h2), cope)
+			if ey != b: _line(pts, cols, uvs, idx, pos + Vector2(0, 32 - h2), pos + Vector2(-32, 16 - h3), cope)
+			if en == b and ew == b and ex == b and ey == b:
+				var rr: float = Rng.f2(bx + lx, by + ly, 4111)
+				var what := ""
+				if rr < 0.035: what = "roof_ac"
+				elif rr < 0.06: what = "roof_vent"
+				elif rr < 0.07: what = "roof_hatch"
+				elif rr < 0.08: what = "roof_skylight"
+				if what != "" and Art.misc.has(what):
+					props.append([Art.misc[what], pos + Vector2(0, -h0)])
 	if pts.size() > 0:
 		RenderingServer.canvas_item_add_triangle_array(s.get_canvas_item(), idx, pts, cols, uvs, PackedInt32Array(), PackedFloat32Array(), Art.world.texture.get_rid())
+	for pr in props:
+		Art.world.draw(s, int(pr[0]), pr[1])
+
+## the edge of the roof from a to b: a dark band where the shingles end, then the fascia board
+## down to the top of the wall (each end drops by its own height above the wall)
+func _eave(pts: PackedVector2Array, cols: PackedColorArray, uvs: PackedVector2Array, idx: PackedInt32Array, a: Vector2, b: Vector2, ha: float, hb: float, edge: Color, trim: Color) -> void:
+	var da: float = minf(ha, 2.0)
+	var db: float = minf(hb, 2.0)
+	_quad4(pts, cols, uvs, idx, a, b, b + Vector2(0, db), a + Vector2(0, da), edge)
+	_quad4(pts, cols, uvs, idx, a + Vector2(0, da), b + Vector2(0, db), b + Vector2(0, hb), a + Vector2(0, ha), trim)
+
+func _line(pts: PackedVector2Array, cols: PackedColorArray, uvs: PackedVector2Array, idx: PackedInt32Array, a: Vector2, b: Vector2, col: Color) -> void:
+	_quad4(pts, cols, uvs, idx, a, b, b + Vector2(0, 1.5), a + Vector2(0, 1.5), col)
+
+func _quad4(pts: PackedVector2Array, cols: PackedColorArray, uvs: PackedVector2Array, idx: PackedInt32Array, a: Vector2, b: Vector2, c2: Vector2, d: Vector2, col: Color) -> void:
+	var n: int = pts.size()
+	pts.append_array(PackedVector2Array([a, b, c2, d]))
+	for q in range(4):
+		cols.append(col)
+		uvs.append(_white_uv)
+	idx.append_array(PackedInt32Array([n, n + 1, n + 2, n, n + 2, n + 3]))
+
+## the shadows buildings cast: the sun stands to the upper left of the screen (from the -x side), so
+## a shadow falls toward +x, two or three tiles long and fading toward its tip. Worked out at every
+## tile corner from the buildings to the west, and spread over the ground in one mesh (shared corners,
+## so it shades smoothly with soft edges and never doubles up). Not inside buildings.
+func _draw_shade(s: Strip) -> void:
+	var c: Chunk = s.c
+	var w: World = sim.world
+	var bx: int = c.cx * 16
+	var by: int = c.cy * 16
+	# which tiles are buildings: this chunk, three columns to the west and a row to the north
+	var m := PackedByteArray()
+	m.resize(19 * 18)
+	var any := false
+	for ry in range(-1, 17):
+		for rx in range(-3, 16):
+			var tx: int = bx + rx
+			var ty: int = by + ry
+			var b: int = c.bld[ry * 16 + rx] if (rx >= 0 and ry >= 0 and ry < 16) else w.bld(tx, ty)
+			if b != 0:
+				m[(ry + 1) * 19 + rx + 3] = 1
+				any = true
+	if not any:
+		return
+	var al := PackedFloat32Array()
+	al.resize(17 * 17)
+	var lit := false
+	for gy in range(17):
+		for gx in range(17):
+			var a := 0.0
+			for ry2 in [gy - 1, gy]:
+				var row: int = (ry2 + 1) * 19 + 3
+				if m[row + gx - 1] == 1: a += 0.5
+				elif m[row + gx - 2] == 1: a += 0.4
+				elif m[row + gx - 3] == 1: a += 0.18
+			al[gy * 17 + gx] = a
+			if a > 0.0: lit = true
+	if not lit:
+		return
+	var pts := PackedVector2Array()
+	var cols := PackedColorArray()
+	pts.resize(17 * 17)
+	cols.resize(17 * 17)
+	for gy in range(17):
+		for gx in range(17):
+			pts[gy * 17 + gx] = Vector2((gx - gy) * 32.0, (gx + gy) * 16.0)
+			cols[gy * 17 + gx] = Color(0.03, 0.04, 0.08, al[gy * 17 + gx] * 0.46)
+	var idx := PackedInt32Array()
+	for ly in range(16):
+		for lx in range(16):
+			if c.bld[ly * 16 + lx] != 0:
+				continue
+			var i0: int = ly * 17 + lx
+			if al[i0] + al[i0 + 1] + al[i0 + 18] + al[i0 + 17] <= 0.0:
+				continue
+			idx.append_array(PackedInt32Array([i0, i0 + 1, i0 + 18, i0, i0 + 18, i0 + 17]))
+	if idx.size() > 0:
+		shade_tris += idx.size() / 3
+		RenderingServer.canvas_item_add_triangle_array(s.get_canvas_item(), idx, pts, cols)

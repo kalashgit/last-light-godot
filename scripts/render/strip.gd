@@ -7,6 +7,7 @@ const K_ROW := 0
 const K_ROOF := 1
 const K_GROUND := 2
 const K_NATURAL := 3
+const K_SHADE := 4      # the shadows buildings cast on the ground
 
 var view: WorldView
 var c: Chunk

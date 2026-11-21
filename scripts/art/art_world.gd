@@ -8,10 +8,7 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 	Art.ground.resize(Defs.G_COUNT)
 	for g in range(Defs.G_COUNT):
 		Art.ground[g] = []
-		if g == Defs.G_VOID:
-			continue
-		var gg: int = g
-		jobs.append(func(): _gen_ground(gg))
+	ArtGround.queue_jobs(jobs)
 	Art.wall_spr.resize(Defs.WT_COUNT)
 	for t in range(Defs.WT_COUNT):
 		var tt: int = t
@@ -24,129 +21,6 @@ static func queue_jobs(jobs: Array[Callable]) -> void:
 		var oid: int = id
 		var boxes: Array = models[id]
 		jobs.append(func(): _gen_object(oid, boxes))
-
-# ------------------------------------------------------------------ ground
-static func _ground_color(g: int, u: int, v: int, s: int) -> Color:
-	var n: float = Rng.f2(u, v, s)
-	var n2: float = Rng.f2(u / 3, v / 3, s + 5)
-	match g:
-		Defs.G_GRASS:
-			var c := Color(0.30, 0.42, 0.23)
-			var k: float = 0.86 + n * 0.22 + n2 * 0.1
-			if n > 0.93: k *= 1.25
-			elif n < 0.06: k *= 0.75
-			return Color(c.r * k, c.g * k, c.b * k)
-		Defs.G_GRASS_DARK:
-			var c2 := Color(0.25, 0.36, 0.20)
-			var k2: float = 0.84 + n * 0.22 + n2 * 0.12
-			if n > 0.94: k2 *= 1.2
-			return Color(c2.r * k2, c2.g * k2, c2.b * k2)
-		Defs.G_FOREST:
-			var c3 := Color(0.24, 0.30, 0.17)
-			var k3: float = 0.82 + n * 0.24 + n2 * 0.12
-			if n > 0.9:
-				return Color(0.42 * k3, 0.33 * k3, 0.18 * k3)
-			return Color(c3.r * k3, c3.g * k3, c3.b * k3)
-		Defs.G_DIRT:
-			var k4: float = 0.86 + n * 0.2 + n2 * 0.1
-			if n > 0.96: k4 *= 0.7
-			return Color(0.43 * k4, 0.35 * k4, 0.25 * k4)
-		Defs.G_SAND:
-			var k5: float = 0.9 + n * 0.14
-			return Color(0.72 * k5, 0.66 * k5, 0.48 * k5)
-		Defs.G_WATER, Defs.G_DEEP_WATER:
-			var deep: float = 0.78 if g == Defs.G_DEEP_WATER else 1.0
-			var k6: float = (0.9 + n2 * 0.12) * deep
-			var wave: int = posmod(u - v + int(Rng.f2(v / 4, 0, s) * 9.0), 13)
-			if wave == 0 and posmod(u + v, 7) < 4:
-				k6 *= 1.3
-			return Color(0.2 * k6, 0.37 * k6, 0.5 * k6)
-		Defs.G_ASPHALT, Defs.G_ASPHALT_LX, Defs.G_ASPHALT_LY, Defs.G_PARKING:
-			var k7: float = 0.88 + n * 0.2
-			if n > 0.975: k7 *= 1.3
-			var col := Color(0.235 * k7, 0.24 * k7, 0.25 * k7)
-			if g == Defs.G_ASPHALT_LX and v >= 15 and v <= 16 and posmod(u, 32) >= 6 and posmod(u, 32) < 26:
-				return Color(0.78 * k7, 0.66 * k7, 0.25 * k7)
-			if g == Defs.G_ASPHALT_LY and u >= 15 and u <= 16 and posmod(v, 32) >= 6 and posmod(v, 32) < 26:
-				return Color(0.78 * k7, 0.66 * k7, 0.25 * k7)
-			if g == Defs.G_PARKING and u <= 1:
-				return Color(0.75 * k7, 0.75 * k7, 0.72 * k7)
-			return col
-		Defs.G_SIDEWALK:
-			var k8: float = 0.92 + n * 0.1
-			if u == 0 or v == 0: k8 *= 0.8
-			return Color(0.56 * k8, 0.56 * k8, 0.53 * k8)
-		Defs.G_GRAVEL:
-			var k9: float = 0.75 + n * 0.45
-			return Color(0.47 * k9, 0.45 * k9, 0.41 * k9)
-		Defs.G_CONCRETE:
-			var k10: float = 0.93 + n * 0.08
-			if u == 0 or v == 0 or u == 16 or v == 16: k10 *= 0.88
-			return Color(0.5 * k10, 0.5 * k10, 0.49 * k10)
-		Defs.G_WOOD, Defs.G_WOOD_DARK, Defs.G_PLANK:
-			var base := Color(0.56, 0.42, 0.27)
-			if g == Defs.G_WOOD_DARK: base = Color(0.40, 0.29, 0.19)
-			elif g == Defs.G_PLANK: base = Color(0.62, 0.50, 0.32)
-			var row: int = v / 8
-			var k11: float = 0.9 + Rng.f2(row, u / 16 + row * 3, s) * 0.14 + n * 0.06
-			if posmod(v, 8) == 0 or posmod(u + row * 11, 32) == 0: k11 *= 0.72
-			return Color(base.r * k11, base.g * k11, base.b * k11)
-		Defs.G_TILE, Defs.G_TILE_BLUE:
-			var chk: bool = ((u / 8) + (v / 8)) % 2 == 0
-			var k12: float = 0.96 + n * 0.04
-			if posmod(u, 8) == 0 or posmod(v, 8) == 0: k12 *= 0.84
-			if g == Defs.G_TILE:
-				var b1: float = 0.76 if chk else 0.66
-				return Color(b1 * k12, b1 * k12, b1 * 0.97 * k12)
-			var bl := Color(0.52, 0.62, 0.68) if chk else Color(0.62, 0.68, 0.72)
-			return Color(bl.r * k12, bl.g * k12, bl.b * k12)
-		Defs.G_CARPET_RED, Defs.G_CARPET_BLUE, Defs.G_CARPET_BEIGE:
-			var cb := Color(0.5, 0.24, 0.22)
-			if g == Defs.G_CARPET_BLUE: cb = Color(0.24, 0.31, 0.42)
-			elif g == Defs.G_CARPET_BEIGE: cb = Color(0.58, 0.52, 0.40)
-			var k13: float = 0.88 + n * 0.18
-			if (u + v) % 2 == 0: k13 *= 0.95
-			return Color(cb.r * k13, cb.g * k13, cb.b * k13)
-		Defs.G_LINO:
-			var k14: float = 0.95 + n * 0.06
-			if posmod(u, 16) == 0 or posmod(v, 16) == 0: k14 *= 0.86
-			return Color(0.6 * k14, 0.63 * k14, 0.56 * k14)
-		Defs.G_SOIL:
-			var k15: float = 0.72 + n * 0.2 + sin(float(v) / 32.0 * TAU * 4.0) * 0.14
-			return Color(0.34 * k15, 0.26 * k15, 0.18 * k15)
-	return Color(1, 0, 1)
-
-static func _gen_ground(g: int) -> void:
-	var natural: bool = Defs.GROUND_PRIORITY[g] > 0
-	var variants: int = 4 if (g == Defs.G_GRASS or g == Defs.G_GRASS_DARK or g == Defs.G_FOREST) else (2 if natural or g == Defs.G_WATER or g == Defs.G_ASPHALT else 1)
-	for vi in range(variants):
-		var s: int = g * 31 + vi * 7
-		if natural:
-			var p := Painter.new(76, 44)
-			var ox := 38.0
-			var oy := 6.0
-			for yy in range(44):
-				for xx in range(76):
-					var a: float = (xx + 0.5 - ox) / 32.0
-					var b: float = (yy + 0.5 - oy) / 16.0
-					var wx: float = (a + b) * 0.5
-					var wy: float = (b - a) * 0.5
-					var m: float = 0.02 + Rng.f2(xx / 2, yy / 2, s + 3) * 0.13
-					if wx >= -m and wx < 1.0 + m and wy >= -m and wy < 1.0 + m:
-						p.img.set_pixel(xx, yy, _ground_color(g, int(floor(wx * 32.0)) + 64, int(floor(wy * 32.0)) + 64, s))
-			Art.ground[g].append(Art.world.add(p.img, ox, oy))
-		else:
-			# slightly inflated diamond: neighbours overlap by ~1px so no seams show at fractional zoom
-			var p2 := Painter.new(68, 36)
-			for yy in range(36):
-				for xx in range(68):
-					var a2: float = (xx + 0.5 - 34.0) / 32.0
-					var b2: float = (yy + 0.5 - 2.0) / 16.0
-					var wx2: float = (a2 + b2) * 0.5
-					var wy2: float = (b2 - a2) * 0.5
-					if wx2 >= -0.036 and wx2 < 1.036 and wy2 >= -0.036 and wy2 < 1.036:
-						p2.img.set_pixel(xx, yy, _ground_color(g, int(floor(clampf(wx2, 0.0, 0.999) * 32.0)), int(floor(clampf(wy2, 0.0, 0.999) * 32.0)), s))
-			Art.ground[g].append(Art.world.add(p2.img, 34, 2))
 
 # ------------------------------------------------------------------ walls
 static func _tex_mat(t: int) -> int:
@@ -248,17 +122,7 @@ static func _gen_overlays() -> void:
 	_pair("gate_open", [[0.07, 0.05, 0, 0.11, 0.9, 21, gate, Painter.M_PICKET]])
 	_pair("gate_chain", [[0.06, 0, 0, 0.94, 0.03, 44, Color(0.6, 0.64, 0.66), Painter.M_MESH], [0.06, 0, 43, 0.94, 0.04, 45, Color(0.5, 0.5, 0.5), F], [0.06, 0, 0, 0.94, 0.04, 2, Color(0.5, 0.5, 0.5), F]])
 	_pair("gate_chain_open", [[0.06, 0.04, 0, 0.09, 0.9, 44, Color(0.6, 0.64, 0.66), Painter.M_MESH]])
-	# roof tile texture (flat diamond, tinted + skewed at draw time)
-	var p := Painter.new(64, 32)
-	for yy in range(32):
-		for xx in range(64):
-			var a: float = (xx + 0.5 - 32.0) / 32.0
-			var b: float = (yy + 0.5) / 16.0
-			var wx: float = (a + b) * 0.5
-			var wy: float = (b - a) * 0.5
-			if wx >= 0.0 and wx < 1.0 and wy >= 0.0 and wy < 1.0:
-				p.img.set_pixel(xx, yy, Painter.shade(Painter.M_SHINGLE, Color.WHITE, int(wx * 32.0), int(wy * 32.0), 1.0))
-	Art.misc["roof"] = Art.world.add(p.img, 32, 0, "", false)
+	_gen_roofs()
 	# white pixel block for solid colour polygons
 	var wp := Image.create(8, 8, false, Image.FORMAT_RGBA8)
 	wp.fill(Color.WHITE)
@@ -293,6 +157,71 @@ static func _gen_overlays() -> void:
 			if d2 < 1.0:
 				sh.img.set_pixel(xx, yy, Color(0, 0, 0, 0.38 * (1.0 - d2)))
 	Art.misc["shadow"] = Art.world.add(sh.img, 16, 8, "", false)
+
+# ------------------------------------------------------------------ roofs
+## roof tile textures (flat diamonds, tinted and skewed at draw time): asphalt shingles in rows
+## across the slope, one texture for faces that slope along x and one for faces that slope along y
+## (so the rows always run along the eaves), and a gravel-and-membrane flat roof. Then a few things
+## that stand on flat roofs.
+static func _gen_roofs() -> void:
+	var n1: Image = ArtGround.noise(9101, 0.05, 3)
+	var n2: Image = ArtGround.noise(9102, 0.16, 2)
+	for kind in ["roof_flat", "roof_x", "roof_y"]:
+		var p := Painter.new(64, 32)
+		for yy in range(32):
+			for xx in range(64):
+				var a: float = (xx + 0.5 - 32.0) / 32.0
+				var b: float = (yy + 0.5) / 16.0
+				var wx: float = (a + b) * 0.5
+				var wy: float = (b - a) * 0.5
+				if wx < 0.0 or wx >= 1.0 or wy < 0.0 or wy >= 1.0:
+					continue
+				var ix: int = floori(wx * 64.0)
+				var iy: int = floori(wy * 64.0)
+				var lo: float = n1.get_pixel(ix, iy).r
+				var hi: float = n2.get_pixel(ix, iy).r
+				var h: float = Rng.f2(ix, iy, 9103)
+				var k := 1.0
+				if kind == "roof_flat":
+					# rolled roofing in strips, gravel over it, stains where water stood
+					k = 0.86 + (h - 0.5) * 0.16 + (lo - 0.5) * 0.1
+					if h > 0.97: k += 0.12
+					elif h < 0.025: k -= 0.16
+					if fposmod(wy * 2.0, 1.0) < 0.03: k -= 0.07
+					if lo > 0.72: k -= (lo - 0.72) * 0.5
+				else:
+					var across: float = wx if kind == "roof_x" else wy      # down the slope
+					var along: float = wy if kind == "roof_x" else wx       # along the eaves
+					var ra: float = across * 8.0
+					var ri: int = floori(ra)
+					var fa: float = ra - ri
+					var tb: float = along * 4.0 + (0.5 if ri % 2 == 1 else 0.0)
+					var ti: int = floori(tb)
+					k = 0.9 + Rng.f2(ri, posmod(ti, 4), 9104) * 0.14         # each tab a shade of its own
+					k *= 0.92 + lo * 0.12                                    # weathering
+					if fa < 0.13:
+						k *= 0.62                                            # the shadow under the row above
+					elif fa < 0.24:
+						k *= 1.08                                            # the tab's lit lower edge
+					if fposmod(tb, 1.0) < 0.035:
+						k *= 0.7                                             # the slot between tabs
+					k *= 0.95 + h * 0.1                                      # granules
+					if hi > 0.82:
+						k *= 0.9                                             # a streak
+				k = clampf(k, 0.0, 1.0)
+				var col := Color(k, k, k)
+				if kind != "roof_flat" and lo < 0.12:
+					col = Color(k * 0.85, k * 0.95, k * 0.7)                # a little moss
+				p.img.set_pixel(xx, yy, col)
+		Art.misc[kind] = Art.world.add(p.img, 32, 0, "", false)
+	var metal := Color(0.66, 0.68, 0.68)
+	var dark := Color(0.3, 0.31, 0.32)
+	var M: int = Painter.M_FLAT
+	Art.misc["roof_ac"] = _add_edge_sprite([[0.18, 0.22, 0, 0.82, 0.78, 20, metal, Painter.M_CORRUGATED], [0.28, 0.32, 20, 0.72, 0.68, 21, dark, M],
+		[0.12, 0.5, 0, 0.18, 0.56, 6, dark, M]], 0, 30)
+	Art.misc["roof_vent"] = _add_edge_sprite([[0.44, 0.44, 0, 0.56, 0.56, 13, Color(0.5, 0.5, 0.5), M], [0.4, 0.4, 13, 0.6, 0.6, 15, Color(0.4, 0.4, 0.4), M]], 0, 20)
+	Art.misc["roof_hatch"] = _add_edge_sprite([[0.3, 0.3, 0, 0.7, 0.7, 5, Color(0.55, 0.55, 0.52), M], [0.33, 0.33, 5, 0.67, 0.67, 6, Color(0.62, 0.62, 0.6), M]], 0, 12)
+	Art.misc["roof_skylight"] = _add_edge_sprite([[0.22, 0.2, 0, 0.78, 0.8, 4, Color(0.6, 0.6, 0.58), M], [0.26, 0.24, 4, 0.74, 0.76, 6, Color(0.55, 0.7, 0.8, 0.85), Painter.M_GLASS]], 0, 12)
 
 # ------------------------------------------------------------------ nature
 static func _shadow(p: Painter, cx: float, cy: float, rx: float, ry: float, a: float = 0.22) -> void:

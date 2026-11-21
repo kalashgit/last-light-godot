@@ -12,9 +12,13 @@ uniform int count = 0;
 uniform vec3 lights[16];
 uniform vec3 colors[16];
 uniform vec2 screen_size = vec2(720.0, 1152.0);
+uniform float vignette = 0.14;
 void fragment() {
 	vec2 p = UV * screen_size;
 	vec3 l = ambient;
+	// a soft vignette: the eye settles on the middle of the screen
+	vec2 q = (UV - 0.5) * vec2(screen_size.x / max(screen_size.y, 1.0), 1.0) * 1.6;
+	float vig = 1.0 - vignette * smoothstep(0.35, 1.05, length(q));
 	for (int i = 0; i < 16; i++) {
 		if (i >= count) { break; }
 		vec2 d = p - lights[i].xy;
@@ -22,7 +26,7 @@ void fragment() {
 		float a = clamp(1.0 - length(d) / lights[i].z, 0.0, 1.0);
 		l += colors[i] * a * a;
 	}
-	COLOR = vec4(min(l, vec3(1.0)), 1.0);
+	COLOR = vec4(min(l, vec3(1.0)) * vig, 1.0);
 }
 """
 
@@ -56,10 +60,16 @@ static func ambient_for(sim: Sim) -> Color:
 	var dawn := Color(0.95, 0.72, 0.6)
 	var dusk := Color(0.98, 0.66, 0.48)
 	var c: Color = night
-	if h >= 7.5 and h <= 17.5: c = day
+	# the day itself has a colour: cool and clean in the morning, neutral at noon, warm and low by late afternoon
+	var morning := Color(0.97, 0.98, 1.0)
+	var afternoon := Color(1.0, 0.95, 0.86)
+	if h >= 7.5 and h <= 17.5:
+		if h < 11.0: c = morning.lerp(day, (h - 7.5) / 3.5)
+		elif h < 14.5: c = day
+		else: c = day.lerp(afternoon, (h - 14.5) / 3.0)
 	elif h >= 5.0 and h < 6.3: c = night.lerp(dawn, (h - 5.0) / 1.3)
-	elif h >= 6.3 and h < 7.5: c = dawn.lerp(day, (h - 6.3) / 1.2)
-	elif h > 17.5 and h <= 19.2: c = day.lerp(dusk, (h - 17.5) / 1.7)
+	elif h >= 6.3 and h < 7.5: c = dawn.lerp(morning, (h - 6.3) / 1.2)
+	elif h > 17.5 and h <= 19.2: c = afternoon.lerp(dusk, (h - 17.5) / 1.7)
 	elif h > 19.2 and h <= 21.0: c = dusk.lerp(night, (h - 19.2) / 1.8)
 	var cloud: float = sim.weather["cloud"]
 	var rain: float = sim.weather["rain"]

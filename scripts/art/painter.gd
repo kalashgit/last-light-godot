@@ -384,7 +384,7 @@ func box(b: Array, ox: float, oy: float, skip_right: bool = false, skip_left: bo
 				var yy2: int = base - 1 - i
 				if yy2 < 0 or yy2 >= h:
 					continue
-				var f: float = SH_LEFT * (1.1 if i == zh - 1 else 1.0)
+				var f: float = SH_LEFT * (1.1 if i == zh - 1 else 1.0) * ground_ao(z0 + i)
 				var col2: Color = shade(m, c, u, int(z0) + i, f)
 				if blend_mode:
 					put(xx, yy2, col2)
@@ -402,12 +402,17 @@ func box(b: Array, ox: float, oy: float, skip_right: bool = false, skip_left: bo
 				var yy3: int = base2 - 1 - i
 				if yy3 < 0 or yy3 >= h:
 					continue
-				var f2: float = SH_RIGHT * (1.1 if i == zh - 1 else 1.0)
+				var f2: float = SH_RIGHT * (1.1 if i == zh - 1 else 1.0) * ground_ao(z0 + i)
 				var col3: Color = shade(m, c, u2, int(z0) + i, f2)
 				if blend_mode:
 					put(xx, yy3, col3)
 				else:
 					img.set_pixel(xx, yy3, col3)
+
+## a face darkens a little where it meets the ground (light cannot get in under it): the last few
+## pixels above the floor
+static func ground_ao(z: float) -> float:
+	return 1.0 - 0.2 * clampf(1.0 - z / 8.0, 0.0, 1.0)
 
 static func _behind(a: Array, b: Array) -> bool:
 	return a[3] <= b[0] + 0.0001 or a[4] <= b[1] + 0.0001 or a[5] <= b[2] + 0.0001

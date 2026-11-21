@@ -1747,6 +1747,39 @@ func _init() -> void:
 	Art.use_cache = false
 	Art.build_all()
 	ok(not Art.from_cache and Art.ready, "with the cache off, the art is painted from scratch")
+	var dec_ok := true
+	for dn in ArtGround.DECALS.keys():
+		if (Art.decals.get(dn, []) as Array).size() != int(ArtGround.DECALS[dn]): dec_ok = false
+	ok(dec_ok and Art.decals.size() == 10, "ground decals are painted: cracks, stains, tar patches, manholes, litter, leaves, weeds, stones, tufts, flowers")
+	var on_road := 0
+	var on_water := 0
+	for hk in range(2000):
+		var hh_d: int = Rng.h2(hk, 7, 77)
+		if ArtGround.decal_for(Defs.G_ASPHALT, hh_d, false) != "": on_road += 1
+		if ArtGround.decal_for(Defs.G_WATER, hh_d, false) != "": on_water += 1
+	ok(on_road > 150 and on_road < 500 and on_water == 0, "about one road tile in seven carries a crack, a stain, a patch, a manhole or litter (%d of 2000); water none" % on_road)
+	ok(Art.misc.has("roof_flat") and Art.misc.has("roof_x") and Art.misc.has("roof_y") and Art.misc.has("roof_ac") and Art.misc.has("roof_vent") and Art.misc.has("roof_skylight"),
+		"roofs: shingles that run along the eaves either way, a gravel flat roof, and units, vents and skylights to stand on it")
+	var n1_g: Image = ArtGround.noise(5, 0.035, 3)
+	var n2_g: Image = ArtGround.noise(6, 0.11, 2)
+	var n3_g: Image = ArtGround.noise(7, 0.03, 2)
+	var seam_g := 0.0
+	var lum_g := {}
+	for gq in [Defs.G_GRASS, Defs.G_ASPHALT, Defs.G_SIDEWALK, Defs.G_WOOD, Defs.G_TILE, Defs.G_GRAVEL]:
+		var sum_g := 0.0
+		for tq in range(64):
+			var tv_g: float = (tq + 0.5) / 64.0
+			# a tile's texture meets the next one's: the colour just inside one edge matches just inside the opposite edge
+			var a_c: Color = ArtGround.texel(gq, 0.001, tv_g, 11, n1_g, n2_g, n3_g)
+			var b_c: Color = ArtGround.texel(gq, 1.001, tv_g, 11, n1_g, n2_g, n3_g)
+			seam_g = maxf(seam_g, absf(a_c.r - b_c.r) + absf(a_c.g - b_c.g) + absf(a_c.b - b_c.b))
+			var cq: Color = ArtGround.texel(gq, tv_g, fposmod(tv_g * 3.0, 1.0), 11, n1_g, n2_g, n3_g)
+			sum_g += (cq.r + cq.g + cq.b) / 3.0
+		lum_g[gq] = sum_g / 64.0
+	ArtGround.release()
+	ok(seam_g < 0.001, "every ground texture repeats exactly at the tile's edge, so tiles meet without a seam")
+	ok(float(lum_g[Defs.G_ASPHALT]) < float(lum_g[Defs.G_SIDEWALK]) and float(lum_g[Defs.G_ASPHALT]) < float(lum_g[Defs.G_GRASS]) + 0.05 and float(lum_g[Defs.G_TILE]) > float(lum_g[Defs.G_ASPHALT]),
+		"asphalt is darker than the sidewalk beside it, tiled floors lighter")
 	var snap_a := {}
 	for an in ["world", "chars", "icons"]:
 		var at_a: Atlas = Art._atlases()[an]
