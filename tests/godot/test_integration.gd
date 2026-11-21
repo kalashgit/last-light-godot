@@ -161,8 +161,10 @@ func _init() -> void:
 	ok(float(v.ent["eng"]) < eng0, "a crash damages the engine (%.2f -> %.2f)" % [eng0, float(v.ent["eng"])])
 	sim.settings["god"] = true
 	p.hp = 100.0
-	# an attacker mostly hits the bodywork
+	# an attacker mostly hits the bodywork (of an intact car: the crash above may have broken its glass)
 	var prot := 0
+	v.ent["win"] = 1.0
+	v.ent["door"] = 1.0
 	sim.settings["god"] = false
 	var zt: Zombie = sim.zombies.spawn(p.pos + Vector2(9, 9), 0)
 	for i in range(200):

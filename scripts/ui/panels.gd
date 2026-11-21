@@ -1028,6 +1028,7 @@ func _build_settings() -> void:
 	row.call("Stick dead zone", "%d%%" % int(round(Opts.dead * 100.0)), func(): Opts.dead = Opts.cycle(Opts.dead, [0.06, 0.14, 0.22, 0.3]))
 	row.call("Stick travel", ["short (sensitive)", "normal", "long (precise)"][0 if Opts.stick < 0.9 else (1 if Opts.stick < 1.1 else 2)], func(): Opts.stick = Opts.cycle(Opts.stick, [0.7, 1.0, 1.3]))
 	row.call("Sound volume", "%d%%" % int(round(Opts.volume * 100.0)), func(): Opts.volume = Opts.cycle(Opts.volume, [0.0, 0.25, 0.5, 0.75, 1.0]))
+	row.call("Music volume", "%d%%" % int(round(Opts.music * 100.0)), func(): Opts.music = Opts.cycle(Opts.music, [0.0, 0.35, 0.7, 1.0]))
 	row.call("Vibration when hurt", "on" if Opts.vibrate else "off", func(): Opts.vibrate = not Opts.vibrate)
 	body.add_child(UiKit.button("Back", func(): open("pause" if sim != null else "title"), 58))
 

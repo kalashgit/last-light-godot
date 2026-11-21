@@ -184,9 +184,13 @@ func to_title() -> void:
 	hud.queue_redraw()
 	panels.sim = null
 	panels.open("title")
+	if sfx != null:
+		sfx.music("title")
 
 func _start(s: Sim) -> void:
 	sim = s
+	if sfx != null:
+		sfx.music("")
 	hud.sim = sim
 	hud.placing = {}
 	hud.run_on = false

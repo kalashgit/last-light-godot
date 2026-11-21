@@ -708,7 +708,7 @@ func _melee_start() -> bool:
 	swing_kind = "shove" if typ == "shove" else "attack"
 	anim_t = 0.0
 	endurance -= 2.0 + float(d.get("w", 0.3)) * 1.6
-	sim.emit_fx("swing", pos, {"dir": facing, "wt": String(st.get("type", "blunt")), "dur": swing_dur})
+	sim.emit_fx("swing", pos, {"dir": facing, "wt": String(st.get("type", "blunt")), "dur": swing_dur, "kg": float(d.get("w", 0.3))})
 	return true
 
 func _resolve_melee() -> void:
@@ -754,7 +754,7 @@ func _resolve_melee() -> void:
 			kb = 0.7
 			if zz.state == Zombie.CLIMB:
 				kd_ch = 1.0        # caught half way over a fence or sill
-		sim.zombies.damage(zz, dmg, pos, kb, randf() < kd_ch, crit)
+		sim.zombies.damage(zz, dmg, pos, kb, randf() < kd_ch, crit, "blade" if (typ == "blade" or typ == "axe" or typ == "spear") else ("shove" if typ == "shove" else "blunt"))
 		if typ != "shove":
 			add_xp(skill, 5.0 + (6.0 if zz.hp <= 0.0 else 0.0))
 			add_xp("strength", 1.5)
@@ -885,7 +885,7 @@ func _fire_gun(g: Dictionary) -> void:
 	swing_done = true
 	anim_t = 0.0
 	sim.noise(pos, float(g["noise"]))
-	sim.emit_fx("shot", pos, {"dir": facing})
+	sim.emit_fx("shot", pos, {"dir": facing, "gun": String(weapon.get("id", ""))})
 	var pellets: int = int(g.get("pellets", 1))
 	var spread: float = float(g["spread"]) * (1.4 - aim_lvl * 0.08) * (1.0 + panic / 250.0) * (1.0 + drunk / 120.0)
 	var hit_any := false
@@ -914,7 +914,7 @@ func _fire_gun(g: Dictionary) -> void:
 		var dmg: float = randf_range(float(dr[0]), float(dr[1])) / float(maxi(pellets / 2, 1))
 		var crit: bool = randf() < 0.18 + aim_lvl * 0.04
 		if crit: dmg *= 3.0
-		sim.zombies.damage(z, dmg, pos, 0.4, randf() < 0.5, crit)
+		sim.zombies.damage(z, dmg, pos, 0.4, randf() < 0.5, crit, "bullet")
 		hit_any = true
 	if hit_any:
 		add_xp("aiming", 8.0)

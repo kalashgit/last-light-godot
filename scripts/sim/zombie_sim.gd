@@ -307,12 +307,13 @@ func ray_hit(p: Vector2, dir: Vector2, rng: float) -> Zombie:
 	return best
 
 # ------------------------------------------------------------------ damage
-func damage(z: Zombie, dmg: float, from: Vector2, kb: float, knockdown: bool, crit: bool) -> void:
+## `w` is what struck: "blunt", "blade", "bullet" or "shove" (the sound of the hit follows it)
+func damage(z: Zombie, dmg: float, from: Vector2, kb: float, knockdown: bool, crit: bool, w: String = "blunt") -> void:
 	z.hp -= dmg * (z.armor if not crit else minf(1.0, z.armor + 0.2))
 	z.feeding = false
 	z.flash = 0.18
 	z.alert = 10.0
-	sim.emit_fx("hit", z.pos, {"crit": crit})
+	sim.emit_fx("hit", z.pos, {"crit": crit, "w": w})
 	if randf() < (0.8 if crit else 0.4):
 		sim.world.add_blood(z.pos.x + randf_range(-0.3, 0.3), z.pos.y + randf_range(-0.3, 0.3))
 	if z.hp <= 0.0:
@@ -568,6 +569,8 @@ func _think(z: Zombie, sr: float) -> void:
 		z.has_goal = true
 		if z.state != Zombie.CHASE:
 			z.state = Zombie.CHASE
+			if randf() < 0.6:
+				sim.emit_fx("snarl", z.pos)          # it has seen you, and it says so
 			z.repath_t = 0.0
 			z.path = PackedVector2Array()
 			z.moan_t = randf_range(0.2, 1.5)

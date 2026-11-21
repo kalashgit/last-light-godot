@@ -387,12 +387,13 @@ static func _edge_options(sim: Sim, t: Dictionary) -> Array:
 static func _toggle_door(sim: Sim, x: int, y: int, side: int) -> void:
 	var w: World = sim.world
 	var st: int = w.edge_state(x, y, side)
-	if (st & Defs.ES_OPEN) != 0:
+	var opening: bool = (st & Defs.ES_OPEN) == 0
+	if not opening:
 		# don't close on top of something standing in the doorway? (edges are thin: always fine)
 		w.set_edge_state(x, y, side, st & ~Defs.ES_OPEN)
 	else:
 		w.set_edge_state(x, y, side, (st | Defs.ES_OPEN) & ~Defs.ES_LOCKED)
-	sim.emit_fx("door", sim.player.pos)
+	sim.emit_fx("door", sim.player.pos, {"open": opening})
 	sim.flags["door"] = true
 	sim.noise(sim.player.pos, 2.0 if sim.player.sneaking else 4.0)
 
@@ -930,7 +931,10 @@ static func _car_options(sim: Sim, ax: int, ay: int) -> Array:
 			sim.brake = false
 			_board_companions(sim)
 			sim.noise(p.pos, 14.0)
-			sim.emit_fx("engine", p.pos)
+			if sim.vehicle.size().x + sim.vehicle.size().y > 3.0:
+				sim.emit_fx("door", p.pos, {"car": true})          # (a bike has no door to shut)
+			if sim.vehicle.motor() and float(e.get("fuel", 0.0)) > 0.0:
+				sim.emit_fx("ignition", p.pos)
 			if float(e.get("fuel", 0.0)) <= 0.0:
 				sim.say("You get in. The tank is empty.", Color(0.9, 0.8, 0.6))
 			else:
@@ -1246,7 +1250,8 @@ static func exit_vehicle(sim: Sim) -> bool:
 			t = Vector2(floorf(t.x) + 0.5, floorf(t.y) + 0.5)
 			if not sim.world.blocked(t.x, t.y, Player.R):
 				p.pos = t
-				sim.emit_fx("door", p.pos)
+				if v.size().x + v.size().y > 3.0:
+					sim.emit_fx("door", p.pos, {"car": true})
 				sim.say("You get out.", Color(0.8, 0.85, 0.9))
 				return true
 	# boxed in on both sides: climb out over the bonnet

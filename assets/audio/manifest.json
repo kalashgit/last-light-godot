@@ -1,0 +1,312 @@
+{
+ "sounds": {
+  "step_concrete": [
+   "sfx/step_concrete_0.wav",
+   "sfx/step_concrete_1.wav",
+   "sfx/step_concrete_2.wav",
+   "sfx/step_concrete_3.wav",
+   "sfx/step_concrete_4.wav",
+   "sfx/step_concrete_5.wav"
+  ],
+  "step_tile": [
+   "sfx/step_tile_0.wav",
+   "sfx/step_tile_1.wav",
+   "sfx/step_tile_2.wav",
+   "sfx/step_tile_3.wav",
+   "sfx/step_tile_4.wav",
+   "sfx/step_tile_5.wav"
+  ],
+  "step_wood": [
+   "sfx/step_wood_0.wav",
+   "sfx/step_wood_1.wav",
+   "sfx/step_wood_2.wav",
+   "sfx/step_wood_3.wav",
+   "sfx/step_wood_4.wav",
+   "sfx/step_wood_5.wav"
+  ],
+  "step_carpet": [
+   "sfx/step_carpet_0.wav",
+   "sfx/step_carpet_1.wav",
+   "sfx/step_carpet_2.wav",
+   "sfx/step_carpet_3.wav",
+   "sfx/step_carpet_4.wav",
+   "sfx/step_carpet_5.wav"
+  ],
+  "step_grass": [
+   "sfx/step_grass_0.wav",
+   "sfx/step_grass_1.wav",
+   "sfx/step_grass_2.wav",
+   "sfx/step_grass_3.wav",
+   "sfx/step_grass_4.wav",
+   "sfx/step_grass_5.wav"
+  ],
+  "step_dirt": [
+   "sfx/step_dirt_0.wav",
+   "sfx/step_dirt_1.wav",
+   "sfx/step_dirt_2.wav",
+   "sfx/step_dirt_3.wav",
+   "sfx/step_dirt_4.wav",
+   "sfx/step_dirt_5.wav"
+  ],
+  "step_gravel": [
+   "sfx/step_gravel_0.wav",
+   "sfx/step_gravel_1.wav",
+   "sfx/step_gravel_2.wav",
+   "sfx/step_gravel_3.wav",
+   "sfx/step_gravel_4.wav",
+   "sfx/step_gravel_5.wav"
+  ],
+  "step_water": [
+   "sfx/step_water_0.wav",
+   "sfx/step_water_1.wav",
+   "sfx/step_water_2.wav",
+   "sfx/step_water_3.wav",
+   "sfx/step_water_4.wav",
+   "sfx/step_water_5.wav"
+  ],
+  "step_snow": [
+   "sfx/step_snow_0.wav",
+   "sfx/step_snow_1.wav",
+   "sfx/step_snow_2.wav",
+   "sfx/step_snow_3.wav",
+   "sfx/step_snow_4.wav",
+   "sfx/step_snow_5.wav"
+  ],
+  "swing_blunt": [
+   "sfx/swing_blunt_0.wav",
+   "sfx/swing_blunt_1.wav",
+   "sfx/swing_blunt_2.wav",
+   "sfx/swing_blunt_3.wav"
+  ],
+  "swing_blade": [
+   "sfx/swing_blade_0.wav",
+   "sfx/swing_blade_1.wav",
+   "sfx/swing_blade_2.wav",
+   "sfx/swing_blade_3.wav"
+  ],
+  "swing_heavy": [
+   "sfx/swing_heavy_0.wav",
+   "sfx/swing_heavy_1.wav",
+   "sfx/swing_heavy_2.wav"
+  ],
+  "swing_shove": [
+   "sfx/swing_shove_0.wav",
+   "sfx/swing_shove_1.wav",
+   "sfx/swing_shove_2.wav"
+  ],
+  "hit_blunt": [
+   "sfx/hit_blunt_0.wav",
+   "sfx/hit_blunt_1.wav",
+   "sfx/hit_blunt_2.wav",
+   "sfx/hit_blunt_3.wav",
+   "sfx/hit_blunt_4.wav"
+  ],
+  "hit_blade": [
+   "sfx/hit_blade_0.wav",
+   "sfx/hit_blade_1.wav",
+   "sfx/hit_blade_2.wav",
+   "sfx/hit_blade_3.wav"
+  ],
+  "hit_crit": [
+   "sfx/hit_crit_0.wav",
+   "sfx/hit_crit_1.wav",
+   "sfx/hit_crit_2.wav",
+   "sfx/hit_crit_3.wav"
+  ],
+  "hit_bullet": [
+   "sfx/hit_bullet_0.wav",
+   "sfx/hit_bullet_1.wav",
+   "sfx/hit_bullet_2.wav"
+  ],
+  "groan": [
+   "sfx/groan_0.ogg",
+   "sfx/groan_1.ogg",
+   "sfx/groan_2.ogg",
+   "sfx/groan_3.ogg",
+   "sfx/groan_4.ogg",
+   "sfx/groan_5.ogg",
+   "sfx/groan_6.ogg",
+   "sfx/groan_7.ogg",
+   "sfx/groan_8.ogg",
+   "sfx/groan_9.ogg"
+  ],
+  "snarl": [
+   "sfx/snarl_0.ogg",
+   "sfx/snarl_1.ogg",
+   "sfx/snarl_2.ogg",
+   "sfx/snarl_3.ogg"
+  ],
+  "zdie": [
+   "sfx/zdie_0.ogg",
+   "sfx/zdie_1.ogg",
+   "sfx/zdie_2.ogg",
+   "sfx/zdie_3.ogg"
+  ],
+  "hurt": [
+   "sfx/hurt_0.wav",
+   "sfx/hurt_1.wav",
+   "sfx/hurt_2.wav",
+   "sfx/hurt_3.wav",
+   "sfx/hurt_4.wav"
+  ],
+  "death": [
+   "sfx/death_0.ogg"
+  ],
+  "shot_pistol": [
+   "sfx/shot_pistol_0.ogg",
+   "sfx/shot_pistol_1.ogg",
+   "sfx/shot_pistol_2.ogg"
+  ],
+  "shot_revolver": [
+   "sfx/shot_revolver_0.ogg",
+   "sfx/shot_revolver_1.ogg"
+  ],
+  "shot_shotgun": [
+   "sfx/shot_shotgun_0.ogg",
+   "sfx/shot_shotgun_1.ogg"
+  ],
+  "shot_rifle": [
+   "sfx/shot_rifle_0.ogg",
+   "sfx/shot_rifle_1.ogg"
+  ],
+  "shot_far": [
+   "sfx/shot_far_0.ogg",
+   "sfx/shot_far_1.ogg"
+  ],
+  "thump": [
+   "sfx/thump_0.wav",
+   "sfx/thump_1.wav",
+   "sfx/thump_2.wav",
+   "sfx/thump_3.wav",
+   "sfx/thump_4.wav"
+  ],
+  "door_open": [
+   "sfx/door_open_0.ogg",
+   "sfx/door_open_1.ogg",
+   "sfx/door_open_2.ogg"
+  ],
+  "door_close": [
+   "sfx/door_close_0.ogg",
+   "sfx/door_close_1.ogg",
+   "sfx/door_close_2.ogg"
+  ],
+  "car_door": [
+   "sfx/car_door_0.wav",
+   "sfx/car_door_1.wav",
+   "sfx/car_door_2.wav"
+  ],
+  "ignition": [
+   "sfx/ignition_0.ogg",
+   "sfx/ignition_1.ogg"
+  ],
+  "locked": [
+   "sfx/locked_0.wav",
+   "sfx/locked_1.wav",
+   "sfx/locked_2.wav"
+  ],
+  "break": [
+   "sfx/break_0.ogg",
+   "sfx/break_1.ogg",
+   "sfx/break_2.ogg",
+   "sfx/break_3.ogg"
+  ],
+  "glass": [
+   "sfx/glass_0.ogg",
+   "sfx/glass_1.ogg",
+   "sfx/glass_2.ogg",
+   "sfx/glass_3.ogg"
+  ],
+  "build": [
+   "sfx/build_0.wav",
+   "sfx/build_1.wav",
+   "sfx/build_2.wav",
+   "sfx/build_3.wav"
+  ],
+  "pickup": [
+   "sfx/pickup_0.wav",
+   "sfx/pickup_1.wav",
+   "sfx/pickup_2.wav",
+   "sfx/pickup_3.wav",
+   "sfx/pickup_4.wav"
+  ],
+  "equip": [
+   "sfx/equip_0.wav",
+   "sfx/equip_1.wav"
+  ],
+  "reload": [
+   "sfx/reload_0.wav",
+   "sfx/reload_1.wav"
+  ],
+  "click": [
+   "sfx/click_0.wav"
+  ],
+  "eat": [
+   "sfx/eat_0.wav",
+   "sfx/eat_1.wav",
+   "sfx/eat_2.wav"
+  ],
+  "thunder": [
+   "sfx/thunder_0.ogg",
+   "sfx/thunder_1.ogg",
+   "sfx/thunder_2.ogg"
+  ],
+  "call": [
+   "sfx/call_0.wav"
+  ],
+  "levelup": [
+   "sfx/levelup_0.ogg"
+  ],
+  "sneeze": [
+   "sfx/sneeze_0.ogg"
+  ],
+  "bark": [
+   "sfx/bark_0.ogg",
+   "sfx/bark_1.ogg",
+   "sfx/bark_2.ogg"
+  ],
+  "scream": [
+   "sfx/scream_0.ogg",
+   "sfx/scream_1.ogg"
+  ],
+  "crash_far": [
+   "sfx/crash_far_0.ogg",
+   "sfx/crash_far_1.ogg"
+  ],
+  "shuffle": [
+   "sfx/shuffle_0.wav",
+   "sfx/shuffle_1.wav",
+   "sfx/shuffle_2.wav",
+   "sfx/shuffle_3.wav",
+   "sfx/shuffle_4.ogg",
+   "sfx/shuffle_5.wav"
+  ],
+  "horn": [
+   "sfx/horn_0.ogg",
+   "sfx/horn_1.ogg"
+  ],
+  "siren": [
+   "sfx/siren_0.ogg"
+  ]
+ },
+ "loops": {
+  "bed_wind": "loops/bed_wind.ogg",
+  "bed_rain": "loops/bed_rain.ogg",
+  "bed_rain_in": "loops/bed_rain_in.ogg",
+  "bed_crickets": "loops/bed_crickets.ogg",
+  "bed_birds": "loops/bed_birds.ogg",
+  "bed_tension": "loops/bed_tension.ogg",
+  "loop_engine": "loops/loop_engine.ogg",
+  "loop_fire": "loops/loop_fire.ogg",
+  "loop_alarm": "loops/loop_alarm.ogg",
+  "loop_caralarm": "loops/loop_caralarm.ogg",
+  "loop_rotor": "loops/loop_rotor.ogg"
+ },
+ "music": {
+  "title": "music/title.ogg",
+  "dawn": "music/dawn.ogg",
+  "night": "music/night.ogg",
+  "rain": "music/rain.ogg",
+  "home": "music/home.ogg",
+  "death": "music/death.ogg"
+ }
+}

@@ -1620,20 +1620,70 @@ func _init() -> void:
 	Sfx.build_now = true
 	var sfx_n_g := Sfx.new()
 	sfx_n_g._ready()
-	var have_steps_g := true
-	for nm_g in ["step", "step_wood", "step_grass", "step_gravel", "step_water"]:
-		for vv_g in range(3):
-			if not sfx_n_g._streams.has(nm_g + str(vv_g)): have_steps_g = false
-	ok(have_steps_g, "every surface has three footstep takes, so steps do not repeat identically")
-	var clean_g := true
-	for nm2_g in sfx_n_g._streams.keys():
-		if String(nm2_g).begins_with("bed_"): continue          # (the ambient loops are meant to run on without a break)
-		var dat_g: PackedByteArray = (sfx_n_g._streams[nm2_g] as AudioStreamWAV).data
-		if absi(dat_g.decode_s16(0)) > 400 or absi(dat_g.decode_s16(dat_g.size() - 2)) > 400: clean_g = false
-	ok(clean_g and sfx_n_g._streams.size() > 30, "every one of the %d sounds starts and ends at silence, so none of them clicks" % sfx_n_g._streams.size())
-	ok(sfx_n_g._players.size() == 16 and sfx_n_g._started.size() == 16, "sixteen voices, each remembering when it started (so the oldest is the one cut off)")
-	ok(sfx_n_g._streams.has("groan0") and sfx_n_g._streams.has("groan3") and sfx_n_g._players2d.size() == 16, "four voices for the infected, and sixteen positional voices that pan with where a sound is")
-	ok(sfx_n_g._beds.size() == 5 and (sfx_n_g._streams["bed_rain"] as AudioStreamWAV).loop_mode == AudioStreamWAV.LOOP_FORWARD, "wind, rain, crickets, birds and a tension drone run as seamless loops")
+	ok(sfx_n_g.ready_all() and sfx_n_g._lib.size() >= 48 and sfx_n_g._loops.size() == 11 and sfx_n_g._music.size() == 6,
+		"the sound library loads: %d effects, %d loops, %d music cues" % [sfx_n_g._lib.size(), sfx_n_g._loops.size(), sfx_n_g._music.size()])
+	var steps_ok_g := true
+	for surf_g in ["concrete", "tile", "wood", "carpet", "grass", "dirt", "gravel", "water", "snow"]:
+		if (sfx_n_g._lib.get("step_" + surf_g, []) as Array).size() < 6: steps_ok_g = false
+	ok(steps_ok_g, "nine surfaces underfoot, six takes of each footstep")
+	var takes_ok_g := true
+	for nm_g in ["groan", "hit_blunt", "hit_blade", "hit_crit", "swing_blunt", "swing_blade", "shot_pistol", "shot_shotgun", "door_open", "door_close", "glass", "shuffle"]:
+		if (sfx_n_g._lib.get(nm_g, []) as Array).size() < 2: takes_ok_g = false
+	ok(takes_ok_g and (sfx_n_g._lib["groan"] as Array).size() >= 8, "the infected have %d voices; hits, swings, shots and doors have several takes each" % (sfx_n_g._lib["groan"] as Array).size())
+	var len_ok_g := true
+	for nm3_g in sfx_n_g._lib.keys():
+		for st_g in sfx_n_g._lib[nm3_g]:
+			var ln_g: float = (st_g as AudioStream).get_length()
+			if ln_g <= 0.01 or ln_g > 6.0: len_ok_g = false
+	ok(len_ok_g, "every take is a real sound between a moment and a few seconds long")
+	var rep_g := 0
+	var prev_g: AudioStream = null
+	for k_g in range(60):
+		var pk_g: AudioStream = sfx_n_g.pick("groan")
+		if pk_g == prev_g: rep_g += 1
+		prev_g = pk_g
+	ok(rep_g == 0, "a take is never heard twice running")
+	var loops_ok_g := true
+	for lp_g in sfx_n_g._loops.values():
+		if lp_g is AudioStreamOggVorbis and not (lp_g as AudioStreamOggVorbis).loop: loops_ok_g = false
+	ok(loops_ok_g and sfx_n_g._beds.size() == 11, "wind, rain outside and on the roof, crickets, birds, the drone, an engine, a fire, alarms and rotors all run as loops")
+	ok((sfx_n_g._music["title"] as AudioStreamOggVorbis).loop and not (sfx_n_g._music["dawn"] as AudioStreamOggVorbis).loop and (sfx_n_g._music["title"] as AudioStream).get_length() > 40.0,
+		"the title theme loops; the cues play once")
+	ok(Sfx.swing_for({"wt": "blade"}) == "swing_blade" and Sfx.swing_for({"wt": "axe"}) == "swing_heavy" and Sfx.swing_for({"wt": "blunt", "kg": 4.0}) == "swing_heavy"
+		and Sfx.swing_for({"wt": "blunt", "kg": 1.0}) == "swing_blunt" and Sfx.swing_for({"wt": "shove"}) == "swing_shove", "a knife whips, a bat whooshes, an axe or a sledge heaves")
+	ok(Sfx.hit_for({"w": "blade"}) == "hit_blade" and Sfx.hit_for({"w": "bullet"}) == "hit_bullet" and Sfx.hit_for({"w": "blunt", "crit": true}) == "hit_crit" and Sfx.hit_for({}) == "hit_blunt",
+		"hits sound like what struck: a cut, a bullet, a crack, a skull giving way")
+	ok(Sfx.shot_for({"gun": "shotgun"}) == "shot_shotgun" and Sfx.shot_for({"gun": "rifle"}) == "shot_rifle" and Sfx.shot_for({"gun": "revolver"}) == "shot_revolver" and Sfx.shot_for({}) == "shot_pistol",
+		"every gun has its own report")
+	ok(sfx_n_g._players.size() == 16 and sfx_n_g._started.size() == 16 and sfx_n_g._players2d.size() == 16, "sixteen voices and sixteen positional voices, each remembering when it started (so the oldest is cut off)")
+	sfx_n_g.music("title")
+	ok(sfx_n_g._music_cue == "title" and sfx_n_g._music_p.stream == sfx_n_g._music["title"], "the title theme is put on")
+	sfx_n_g.music("dawn")
+	ok(sfx_n_g._music_cue == "dawn" and sfx_n_g._music_p.stream == sfx_n_g._music["dawn"], "a cue takes over from the one before")
+	sfx_n_g.music("")
+	ok(sfx_n_g._music_cue == "", "and the music can fade away to nothing")
+	Opts.music = 0.0
+	Opts.apply()
+	ok(AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")), "music has its own volume, down to silence")
+	Opts.music = 0.7
+	Opts.apply()
+	# the events carry what the sound needs
+	var ev_s := Sim.new(77)
+	ev_s.new_game("unemployed", [], "house")
+	quiet(ev_s)
+	var evp_g: Player = ev_s.player
+	var zev_g: Zombie = ev_s.zombies.spawn(evp_g.pos + Vector2(1.0, 0.0), 0)
+	ev_s.fx.clear()
+	ev_s.zombies.damage(zev_g, 1.0, evp_g.pos, 0.0, false, false, "blade")
+	ok(ev_s.fx.size() > 0 and String(ev_s.fx[0].get("w", "")) == "blade", "a hit says what struck")
+	ev_s.fx.clear()
+	evp_g.inv.append({"id": "shotgun", "n": 1, "u": 6, "c": 1.0})
+	evp_g.weapon = evp_g.inv[evp_g.inv.size() - 1]
+	evp_g._fire_gun(Items.def("shotgun")["gun"])
+	var shot_ev_g := {}
+	for fe_g in ev_s.fx:
+		if fe_g["k"] == "shot": shot_ev_g = fe_g
+	ok(String(shot_ev_g.get("gun", "")) == "shotgun", "a shot says which gun fired")
 	var bs_g := Sim.new(2121)
 	bs_g.new_game("unemployed", [], "house")
 	quiet(bs_g)
@@ -1652,6 +1702,14 @@ func _init() -> void:
 	var t_night: Dictionary = Sfx.bed_targets(bs_g)
 	ok(float(t_rain["bed_rain"]) > float(t_day["bed_rain"]) + 20.0 and float(t_day["bed_birds"]) > -40.0 and float(t_night["bed_crickets"]) > -40.0 and float(t_night["bed_birds"]) < -60.0,
 		"rain is heard when it rains, birds by day, crickets on a warm night")
+	ok(float(t_rain["bed_rain_in"]) < -60.0 and float(t_day["loop_engine"]) < -60.0 and float(t_day["loop_fire"]) < -60.0 and float(t_day["loop_alarm"]) < -60.0,
+		"out in the open no roof drums, and no engine, fire or alarm is heard when there is none")
+	bs_g.alarms.append([bp_g.pos + Vector2(6.0, 0.0), 10.0])
+	bs_g.burning[Vector2i(floori(bp_g.pos.x) + 2, floori(bp_g.pos.y))] = 30.0
+	var t_loud: Dictionary = Sfx.bed_targets(bs_g)
+	ok(float(t_loud["loop_alarm"]) > -20.0 and float(t_loud["loop_fire"]) > -20.0 and float(t_loud["loop_caralarm"]) < -60.0, "an alarm wails and a fire roars when they are close")
+	bs_g.alarms.clear()
+	bs_g.burning.clear()
 	ok(float(t_night["bed_tension"]) < -60.0, "no tension drone when nothing is near")
 	for k12 in range(3):
 		var zt_g: Zombie = bs_g.zombies.spawn(bp_g.pos + Vector2(3.0 + k12, 0.0), 0)

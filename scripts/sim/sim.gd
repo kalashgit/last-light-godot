@@ -28,7 +28,7 @@ var safe_pos := Vector2.ZERO
 var safe_radius := 16.0
 var safe_bld := 0
 var sleep_quality := 1.0
-var alarms: Array = []           # [pos, seconds left]
+var alarms: Array = []           # [pos, seconds left] (a third entry "car" for a car alarm)
 var alarms_done: Dictionary = {}
 var generators: Array = []       # Vector2i of running generators (loaded chunks)
 var banks: Array = []            # Vector2i of charged battery banks (loaded chunks)
@@ -1481,7 +1481,7 @@ func _tick_events(dt: float) -> void:
 			var k: Array = kinds[rng.randi() % kinds.size()]
 			noise(mp, k[1])
 			if k[0] == "caralarm":
-				alarms.append([mp, 14.0])
+				alarms.append([mp, 14.0, "car"])
 			emit_fx("meta_" + String(k[0]), mp)
 			if not player.sleeping:
 				say(String(k[2]) % compass(player.pos, mp), Color(0.8, 0.8, 0.7))

@@ -225,7 +225,7 @@ func update(dt: float, move_screen: Vector2, braking: bool) -> void:
 ## the horn, or a police car's siren: heard a long way off
 func horn() -> void:
 	sim.noise(pos, 70.0 if oid == Defs.O_POLICE_CAR else 45.0)
-	sim.emit_fx("alarm", pos)
+	sim.emit_fx("horn", pos, {"siren": oid == Defs.O_POLICE_CAR})
 	sim.say("The siren wails across the town." if oid == Defs.O_POLICE_CAR else "The horn carries a long way.", Color(1.0, 0.85, 0.6))
 
 ## a hard stop: hurt the driver and whatever parts take it
