@@ -1,17 +1,35 @@
 config_version=5
 
 [application]
+
 config/name="LAST LIGHT — Isometric Survival"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
+[debug]
+
+gdscript/warnings/integer_division=0
+gdscript/warnings/narrowing_conversion=0
+gdscript/warnings/unused_parameter=0
+gdscript/warnings/unused_variable=0
+gdscript/warnings/shadowed_variable=0
+gdscript/warnings/shadowed_global_identifier=0
+
 [display]
+
 window/size/viewport_width=720
 window/size/viewport_height=1152
 window/stretch/mode="canvas_items"
-window/handheld/orientation=1
+window/stretch/aspect="expand"
+window/handheld/orientation=6
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
+
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-textures/default_filters/use_nearest_mipmap_filter=false
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.04, 0.05, 0.05, 1)

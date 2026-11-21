@@ -1,0 +1,654 @@
+class_name Items
+extends RefCounted
+## Item database. Item instances are small Dictionaries:
+##   {"id": String, "n": count, ["u": uses left], ["c": condition 0..1], ["t": game hour created], ["d": 1 = tainted water]}
+
+static var DB: Dictionary = {}
+
+static func _i(id: String, n: String, cat: String, w: float, icon: Array, extra: Dictionary = {}) -> void:
+	var d: Dictionary = extra.duplicate()
+	d["n"] = n
+	d["cat"] = cat
+	d["w"] = w
+	d["icon"] = icon
+	DB[id] = d
+
+static func _static_init() -> void:
+	# ---------------- food (hunger/thirst are amounts restored; fresh/rot in game hours)
+	_i("canned_beans", "Canned Beans", "food", 0.5, ["can", "8a4a30", "d9d2c0"], {"hunger": 28, "need": "can_opener"})
+	_i("canned_soup", "Canned Soup", "food", 0.5, ["can", "b03a30", "e8e0c8"], {"hunger": 24, "thirst": 8, "need": "can_opener"})
+	_i("canned_tuna", "Canned Tuna", "food", 0.3, ["can", "3c6a9a", "d0d8e0"], {"hunger": 18, "need": "can_opener"})
+	_i("canned_corn", "Canned Corn", "food", 0.5, ["can", "d0b040", "4a7a3a"], {"hunger": 20, "need": "can_opener"})
+	_i("canned_peaches", "Canned Peaches", "food", 0.5, ["can", "e09a50", "f0e0b0"], {"hunger": 18, "thirst": 10, "need": "can_opener"})
+	_i("dog_food", "Dog Food", "food", 0.6, ["can", "6a5a4a", "c0a070"], {"hunger": 22, "need": "can_opener", "sick": 4, "sad": 8})
+	_i("chips", "Potato Chips", "food", 0.2, ["bag", "d0a030", "b03a30"], {"hunger": 10, "thirst": -6, "kcal": 480})
+	_i("crackers", "Crackers", "food", 0.2, ["box", "c8a868", "8a4a30"], {"hunger": 9, "thirst": -3})
+	_i("cereal", "Cereal", "food", 0.4, ["box", "d07030", "f0d060"], {"hunger": 20, "thirst": -4})
+	_i("chocolate", "Chocolate Bar", "food", 0.1, ["bar", "5a3a28", "c0392b"], {"hunger": 8, "calm": 8, "kcal": 260})
+	_i("granola_bar", "Granola Bar", "food", 0.1, ["bar", "b08a50", "4a7a3a"], {"hunger": 9})
+	_i("peanut_butter", "Peanut Butter", "food", 0.4, ["jar", "a87838", "b03a30"], {"hunger": 26, "thirst": -6, "kcal": 900})
+	_i("jerky", "Beef Jerky", "food", 0.2, ["bag", "6a3a2a", "202020"], {"hunger": 14, "thirst": -5})
+	_i("rice", "Bag of Rice", "food", 1.0, ["bag", "e0dccc", "3c6a9a"], {"cook_only": 1})
+	_i("pasta", "Dry Pasta", "food", 0.5, ["box", "3c5a9a", "e0c860"], {"cook_only": 1})
+	_i("bread", "Bread", "food", 0.3, ["bread", "c89858", "a87838"], {"hunger": 16, "fresh": 72, "rot": 144})
+	_i("apple", "Apple", "food", 0.2, ["fruit", "b83a30", "4a7a3a"], {"hunger": 8, "thirst": 5, "fresh": 120, "rot": 216})
+	_i("orange", "Orange", "food", 0.2, ["fruit", "e08a30", "4a7a3a"], {"hunger": 8, "thirst": 8, "fresh": 144, "rot": 240})
+	_i("cabbage", "Cabbage", "food", 0.6, ["veg", "7aa860", "a8c888"], {"hunger": 14, "thirst": 5, "fresh": 96, "rot": 192, "kcal": 110})
+	_i("potato", "Potato", "food", 0.25, ["veg", "a88858", "8a6a40"], {"hunger": 9, "fresh": 336, "rot": 600})
+	_i("carrot", "Carrot", "food", 0.15, ["carrot", "e07a28", "4a7a3a"], {"hunger": 7, "thirst": 2, "fresh": 192, "rot": 360})
+	_i("tomato", "Tomato", "food", 0.2, ["fruit", "c83a28", "4a7a3a"], {"hunger": 7, "thirst": 6, "fresh": 96, "rot": 168})
+	_i("corn", "Corn", "food", 0.3, ["veg", "e8c840", "6a9a3a"], {"hunger": 12, "fresh": 120, "rot": 240, "raw": 1, "cook": "cooked_corn", "kcal": 180})
+	_i("wheat", "Wheat", "material", 0.2, ["veg", "d8b860", "a88a40"], {"fresh": 2000, "rot": 4000})
+	_i("lettuce", "Lettuce", "food", 0.15, ["veg", "8ac860", "b8e098"], {"hunger": 5, "thirst": 6, "fresh": 72, "rot": 144, "kcal": 25})
+	_i("pumpkin", "Pumpkin", "food", 3.0, ["veg", "e07a28", "6a8a3a"], {"hunger": 30, "fresh": 600, "rot": 1200, "kcal": 400})
+	_i("pepper", "Bell pepper", "food", 0.15, ["fruit", "c83a28", "4a7a3a"], {"hunger": 6, "thirst": 3, "fresh": 168, "rot": 300, "kcal": 40})
+	_i("onion", "Onion", "food", 0.15, ["veg", "d8c8a0", "8a7a50"], {"hunger": 5, "fresh": 600, "rot": 1100, "kcal": 60})
+	_i("strawberry", "Strawberry", "food", 0.15, ["fruit", "d83040", "4a8a3a"], {"hunger": 4, "thirst": 4, "calm": 4, "fresh": 48, "rot": 96, "kcal": 50})
+	_i("beans", "Green Beans", "food", 0.15, ["veg", "5a9a3a", "3a7a2a"], {"hunger": 8, "fresh": 120, "rot": 240, "kcal": 90})
+	_i("cooked_corn", "Roasted Corn", "food", 0.3, ["veg", "d8a830", "6a9a3a"], {"hunger": 18, "fresh": 48, "rot": 120, "kcal": 220})
+	_i("flour", "Flour", "material", 0.5, ["bag", "f0ece0", "c8b890"], {"fresh": 4000, "rot": 8000})
+	_i("bread", "Bread", "food", 0.5, ["bag", "c89050", "8a5a30"], {"hunger": 30, "fresh": 72, "rot": 168, "kcal": 600})
+	_i("pumpkin_soup", "Pumpkin Soup", "food", 0.6, ["pot", "e07a28", "a85020"], {"hunger": 34, "thirst": 10, "fresh": 48, "rot": 120, "kcal": 380, "calm": 8})
+	_i("berries", "Wild Berries", "food", 0.1, ["berries", "8a2a4a", "4a7a3a"], {"hunger": 5, "thirst": 3, "fresh": 48, "rot": 96})
+	_i("mushroom", "Mushrooms", "food", 0.1, ["mushroom", "c8b898", "8a5a3a"], {"hunger": 6, "fresh": 48, "rot": 96, "sick_chance": 0.12})
+	_i("egg", "Egg", "food", 0.1, ["egg", "e8dcc0", "c8b898"], {"hunger": 6, "raw": 1, "fresh": 168, "rot": 300, "cook": "cooked_egg"})
+	_i("cooked_egg", "Fried Egg", "food", 0.1, ["egg", "f0e8d0", "e0b030"], {"hunger": 10, "fresh": 24, "rot": 60})
+	_i("raw_steak", "Raw Steak", "food", 0.5, ["meat", "b04a48", "e8c8c0"], {"hunger": 18, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_steak"})
+	_i("cooked_steak", "Cooked Steak", "food", 0.5, ["meat", "7a4a30", "5a3420"], {"hunger": 36, "fresh": 48, "rot": 96, "calm": 6})
+	_i("raw_chicken", "Raw Chicken", "food", 0.5, ["meat", "e0b8a8", "f0d8d0"], {"hunger": 16, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_chicken"})
+	_i("cooked_chicken", "Roast Chicken", "food", 0.5, ["meat", "c08a48", "8a5a30"], {"hunger": 32, "fresh": 48, "rot": 96})
+	_i("raw_fish", "Raw Fish", "food", 0.4, ["fish", "8aa0b0", "5a7080"], {"hunger": 12, "raw": 1, "fresh": 36, "rot": 72, "cook": "cooked_fish"})
+	_i("cooked_fish", "Grilled Fish", "food", 0.4, ["fish", "b08a58", "7a5a38"], {"hunger": 28, "fresh": 36, "rot": 72})
+	_i("cheese", "Cheese", "food", 0.3, ["bar", "e0b840", "c89830"], {"hunger": 14, "fresh": 168, "rot": 336})
+	_i("stew", "Pot of Stew", "food", 1.6, ["pot", "55585a", "8a5a30"], {"hunger": 70, "thirst": 20, "fresh": 48, "rot": 96, "gives": "cooking_pot", "calm": 10})
+	_i("rice_bowl", "Cooked Rice", "food", 1.2, ["pot", "55585a", "e8e4d8"], {"hunger": 55, "fresh": 48, "rot": 96, "gives": "cooking_pot"})
+	_i("pasta_bowl", "Cooked Pasta", "food", 1.2, ["pot", "55585a", "e0c860"], {"hunger": 55, "fresh": 48, "rot": 96, "gives": "cooking_pot"})
+	_i("roast_veg", "Roasted Vegetables", "food", 0.5, ["veg", "a87838", "c85a28"], {"hunger": 26, "fresh": 48, "rot": 96})
+	_i("carcass_rabbit", "Rabbit Carcass", "misc", 1.5, ["meat", "8a7458", "c8b8a0"], {"nostack": 1})
+	_i("carcass_bird", "Pheasant Carcass", "misc", 0.9, ["meat", "7a5a3a", "c8a860"], {"nostack": 1})
+	_i("carcass_fox", "Fox Carcass", "misc", 5.0, ["meat", "b8642c", "f0e0d0"], {"nostack": 1})
+	_i("carcass_deer", "Deer Carcass", "misc", 22.0, ["meat", "a07a50", "e8d8c0"], {"nostack": 1})
+	_i("carcass_boar", "Boar Carcass", "misc", 26.0, ["meat", "4a3c34", "8a7a70"], {"nostack": 1})
+	_i("raw_venison", "Raw Venison", "food", 0.6, ["meat", "8a3038", "d8b0a8"], {"hunger": 20, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_venison", "kcal": 300})
+	_i("cooked_venison", "Venison Steak", "food", 0.6, ["meat", "7a4a30", "5a3420"], {"hunger": 36, "fresh": 48, "rot": 96, "kcal": 420})
+	_i("raw_pork", "Raw Boar Meat", "food", 0.6, ["meat", "c07070", "f0d0c8"], {"hunger": 20, "raw": 1, "fresh": 40, "rot": 84, "cook": "cooked_pork", "kcal": 380})
+	_i("cooked_pork", "Roast Boar", "food", 0.6, ["meat", "a86a40", "7a4a28"], {"hunger": 36, "fresh": 48, "rot": 96, "kcal": 520})
+	_i("smoked_meat", "Smoked Meat", "food", 0.4, ["meat", "5a3020", "3a2018"], {"hunger": 26, "thirst": -6, "fresh": 480, "rot": 960, "kcal": 380})
+	_i("smoked_fish", "Smoked Fish", "food", 0.3, ["fish", "8a6a40", "5a4428"], {"hunger": 18, "thirst": -5, "fresh": 400, "rot": 800, "kcal": 220})
+	_i("salt", "Salt", "material", 0.3, ["box", "e8e8e8", "5a7aa0"], {"uses": 6})
+	_i("raw_rabbit", "Raw Rabbit", "food", 0.6, ["meat", "b8706a", "e8c8c0"], {"hunger": 16, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_rabbit"})
+	_i("cooked_rabbit", "Roast Rabbit", "food", 0.6, ["meat", "8a5a38", "5a3420"], {"hunger": 38, "fresh": 48, "rot": 96, "calm": 8, "kcal": 620})
+	_i("raw_bird", "Raw Game Bird", "food", 0.4, ["meat", "d8b0a0", "f0d8d0"], {"hunger": 12, "raw": 1, "fresh": 48, "rot": 96, "cook": "cooked_bird"})
+	_i("cooked_bird", "Roast Game Bird", "food", 0.4, ["meat", "b88848", "8a5a30"], {"hunger": 26, "fresh": 48, "rot": 96, "kcal": 380})
+	_i("preserves", "Jar of Preserves", "food", 0.6, ["jar", "a83a4a", "e0c860"], {"hunger": 22, "thirst": 4, "calm": 10, "kcal": 520})
+	_i("pickles", "Pickled Vegetables", "food", 0.6, ["jar", "7a9a4a", "e8e8d0"], {"hunger": 18, "thirst": -4, "kcal": 160})
+	# ---------------- drinks
+	_i("water_bottle", "Water Bottle", "drink", 0.8, ["bottle", "7ab0d0", "d0e8f0"], {"thirst": 22, "uses": 5, "empty": "empty_bottle", "water": 1})
+	_i("empty_bottle", "Empty Bottle", "drink", 0.1, ["bottle", "c8d8e0", "e8f0f0"], {"fill": "water_bottle"})
+	_i("soda", "Soda Can", "drink", 0.35, ["can", "c0392b", "f0f0f0"], {"thirst": 26, "hunger": 3, "fatigue": -3, "kcal": 150})
+	_i("juice", "Juice Box", "drink", 0.3, ["box", "e08a30", "f0e060"], {"thirst": 24, "hunger": 4})
+	_i("milk", "Milk", "drink", 1.0, ["box", "f0f0ec", "3c6a9a"], {"thirst": 22, "hunger": 10, "fresh": 72, "rot": 120})
+	_i("beer", "Beer", "drink", 0.4, ["bottle", "7a5a28", "c8a850"], {"thirst": 12, "calm": 12, "fatigue": 4, "pain": -8, "kcal": 150, "alcohol": 14})
+	_i("whiskey", "Whiskey", "drink", 0.7, ["bottle", "a8682a", "e0c080"], {"thirst": -4, "calm": 22, "fatigue": 6, "pain": -18, "uses": 4, "disinfect": 0.7, "kcal": 110, "alcohol": 32})
+	_i("coffee", "Instant Coffee", "drink", 0.2, ["jar", "5a3a28", "c0392b"], {"thirst": 4, "fatigue": -22, "uses": 4})
+	# ---------------- medical
+	_i("bandage", "Bandage", "med", 0.1, ["bandage", "f0ece0", "c8c4b8"], {"med": "bandage", "clean": 1})
+	_i("rag", "Ripped Sheet", "med", 0.1, ["rag", "c8c0b0", "a8a090"], {"med": "bandage", "fuel": 0.2})
+	_i("disinfectant", "Disinfectant", "med", 0.3, ["bottle", "5aa0a0", "f0f0f0"], {"med": "disinfect", "uses": 4})
+	_i("antibiotics", "Antibiotics", "med", 0.1, ["pills", "f0f0f0", "c0392b"], {"med": "antibiotics", "uses": 3})
+	_i("painkillers", "Painkillers", "med", 0.1, ["pills", "f0f0f0", "3c6a9a"], {"med": "painkillers", "uses": 6})
+	_i("vitamins", "Vitamins", "med", 0.1, ["pills", "e0b030", "f0f0f0"], {"med": "vitamins", "uses": 6})
+	_i("first_aid_kit", "First Aid Kit", "med", 0.8, ["kit", "c0392b", "f0f0f0"], {"opens": [["bandage", 3], ["disinfectant", 1], ["painkillers", 1], ["suture_kit", 1]]})
+	_i("suture_kit", "Suture Kit", "med", 0.1, ["needle", "c8c8c8", "3c3c3c"], {"med": "stitch"})
+	_i("splint", "Splint", "med", 0.4, ["plank", "a88858", "f0ece0"], {"med": "splint"})
+	# ---------------- melee weapons
+	_i("kitchen_knife", "Kitchen Knife", "weapon", 0.3, ["knife", "c8ccd0", "3a3a3a"], {"wpn": {"sk": "short_blade", "dmg": [14, 24], "range": 1.05, "swing": 0.5, "dur": 28, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.18, "spr": 2}, "tags": ["knife"]})
+	_i("hunting_knife", "Hunting Knife", "weapon", 0.4, ["knife", "b0b8c0", "5a3a28"], {"wpn": {"sk": "short_blade", "dmg": [18, 30], "range": 1.1, "swing": 0.5, "dur": 90, "kb": 0.2, "type": "blade", "noise": 3, "crit": 0.25, "spr": 2}, "tags": ["knife"]})
+	_i("machete", "Machete", "weapon", 1.0, ["machete", "b0b8c0", "3a3a3a"], {"wpn": {"sk": "long_blade", "dmg": [26, 40], "range": 1.35, "swing": 0.65, "dur": 120, "kb": 0.5, "type": "blade", "noise": 4, "crit": 0.2, "spr": 2}, "tags": ["knife"]})
+	_i("baseball_bat", "Baseball Bat", "weapon", 1.2, ["bat", "b08a58", "8a6a40"], {"wpn": {"sk": "long_blunt", "dmg": [20, 32], "range": 1.5, "swing": 0.75, "dur": 110, "kb": 1.1, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1, "two": 1}})
+	_i("nail_bat", "Nailed Bat", "weapon", 1.4, ["bat", "b08a58", "9aa0a4"], {"wpn": {"sk": "long_blunt", "dmg": [26, 42], "range": 1.5, "swing": 0.8, "dur": 90, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.16, "spr": 1, "two": 1}})
+	_i("crowbar", "Crowbar", "weapon", 1.6, ["crowbar", "a03c30", "55585a"], {"wpn": {"sk": "long_blunt", "dmg": [18, 30], "range": 1.45, "swing": 0.8, "dur": 400, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}, "tags": ["crowbar"]})
+	_i("pipe", "Lead Pipe", "weapon", 1.5, ["pipe", "8a9094", "6a7074"], {"wpn": {"sk": "long_blunt", "dmg": [18, 28], "range": 1.4, "swing": 0.8, "dur": 180, "kb": 1.0, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 1}})
+	_i("golf_club", "Golf Club", "weapon", 0.9, ["pipe", "c8ccd0", "3a3a3a"], {"wpn": {"sk": "long_blunt", "dmg": [14, 24], "range": 1.6, "swing": 0.7, "dur": 40, "kb": 0.8, "type": "blunt", "noise": 5, "crit": 0.1, "spr": 1}})
+	_i("frying_pan", "Frying Pan", "weapon", 1.0, ["pan", "3a3d40", "55585a"], {"wpn": {"sk": "short_blunt", "dmg": [12, 20], "range": 1.15, "swing": 0.65, "dur": 80, "kb": 0.7, "type": "blunt", "noise": 8, "crit": 0.08, "spr": 1}, "tags": ["pan"]})
+	_i("hammer", "Hammer", "weapon", 0.9, ["hammer", "8a6a40", "6a7074"], {"wpn": {"sk": "short_blunt", "dmg": [12, 22], "range": 1.1, "swing": 0.6, "dur": 220, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.12, "spr": 3}, "tags": ["hammer"]})
+	_i("axe", "Wood Axe", "weapon", 2.2, ["axe", "8a6a40", "9aa0a4"], {"wpn": {"sk": "axe", "dmg": [36, 60], "range": 1.45, "swing": 1.0, "dur": 130, "kb": 0.9, "type": "axe", "noise": 7, "crit": 0.2, "spr": 3, "two": 1}, "tags": ["axe"]})
+	_i("hatchet", "Hatchet", "weapon", 1.1, ["axe", "a03c30", "9aa0a4"], {"wpn": {"sk": "axe", "dmg": [22, 36], "range": 1.15, "swing": 0.7, "dur": 110, "kb": 0.6, "type": "axe", "noise": 6, "crit": 0.18, "spr": 3}, "tags": ["axe"]})
+	_i("shovel", "Shovel", "weapon", 1.8, ["shovel", "8a6a40", "6a7074"], {"wpn": {"sk": "long_blunt", "dmg": [18, 30], "range": 1.6, "swing": 0.95, "dur": 120, "kb": 1.2, "type": "blunt", "noise": 6, "crit": 0.08, "spr": 1, "two": 1}, "tags": ["shovel", "dig"]})
+	_i("spear", "Crafted Spear", "weapon", 0.9, ["spear", "8a6a40", "c8ccd0"], {"wpn": {"sk": "spear", "dmg": [24, 40], "range": 1.9, "swing": 0.7, "dur": 22, "kb": 0.5, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
+	_i("plank", "Plank", "material", 1.2, ["plank", "b08a58", "8a6a40"], {"wpn": {"sk": "long_blunt", "dmg": [8, 16], "range": 1.4, "swing": 0.9, "dur": 14, "kb": 0.8, "type": "blunt", "noise": 6, "crit": 0.05, "spr": 1}, "fuel": 1.2})
+	_i("screwdriver", "Screwdriver", "tool", 0.2, ["screwdriver", "c0392b", "9aa0a4"], {"wpn": {"sk": "short_blade", "dmg": [8, 16], "range": 0.95, "swing": 0.5, "dur": 60, "kb": 0.1, "type": "blade", "noise": 2, "crit": 0.2, "spr": 2}, "tags": ["screwdriver"]})
+	_i("wrench", "Wrench", "tool", 0.8, ["wrench", "8a9094", "6a7074"], {"wpn": {"sk": "short_blunt", "dmg": [12, 20], "range": 1.05, "swing": 0.65, "dur": 250, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["wrench"]})
+	_i("metal_spear", "Pipe Spear", "weapon", 1.6, ["spear", "8a9094", "c8ccd0"], {"wpn": {"sk": "spear", "dmg": [28, 46], "range": 1.9, "swing": 0.75, "dur": 90, "kb": 0.6, "type": "spear", "noise": 3, "crit": 0.3, "spr": 1, "two": 1}})
+	# ---------------- firearms
+	_i("pistol", "9mm Pistol", "weapon", 0.9, ["pistol", "3a3d40", "55585a"], {"gun": {"dmg": [60, 110], "range": 11.0, "ammo": "ammo_9mm", "mag": 12, "noise": 55, "cool": 0.45, "spr": 4, "spread": 0.07}})
+	_i("revolver", "Revolver", "weapon", 1.0, ["pistol", "6a7074", "5a3a28"], {"gun": {"dmg": [80, 140], "range": 12.0, "ammo": "ammo_9mm", "mag": 6, "noise": 60, "cool": 0.7, "spr": 4, "spread": 0.06}})
+	_i("shotgun", "Shotgun", "weapon", 2.8, ["shotgun", "3a3d40", "6a4a30"], {"gun": {"dmg": [90, 170], "range": 8.0, "ammo": "shells", "mag": 6, "noise": 85, "cool": 1.0, "spr": 5, "spread": 0.3, "pellets": 5, "two": 1}})
+	_i("rifle", "Hunting Rifle", "weapon", 3.0, ["rifle", "5a3a28", "3a3d40"], {"gun": {"dmg": [120, 200], "range": 18.0, "ammo": "rifle_rounds", "mag": 5, "noise": 80, "cool": 1.3, "spr": 5, "spread": 0.03, "two": 1}})
+	_i("ammo_9mm", "9mm Rounds", "ammo", 0.02, ["ammo", "c8a850", "8a6a30"], {"stackmax": 200})
+	_i("shells", "Shotgun Shells", "ammo", 0.04, ["ammo", "c0392b", "c8a850"], {"stackmax": 100})
+	_i("rifle_rounds", "Rifle Rounds", "ammo", 0.03, ["ammo", "d8c070", "8a6a30"], {"stackmax": 100})
+	# ---------------- tools
+	_i("saw", "Hand Saw", "tool", 0.6, ["saw", "c8ccd0", "8a6a40"], {"tags": ["saw"]})
+	_i("can_opener", "Can Opener", "tool", 0.2, ["opener", "c0392b", "c8ccd0"], {"tags": ["can_opener"]})
+	_i("lighter", "Lighter", "tool", 0.05, ["lighter", "3c6a9a", "c8ccd0"], {"uses": 40, "tags": ["fire"]})
+	_i("matches", "Matches", "tool", 0.05, ["box", "c0392b", "f0e060"], {"uses": 10, "tags": ["fire"]})
+	_i("flashlight", "Flashlight", "tool", 0.5, ["flashlight", "e0b030", "3a3d40"], {"uses": 100, "light": 1})
+	_i("battery", "Battery", "tool", 0.1, ["battery", "3a3d40", "c8a850"], {})
+	_i("candle", "Candle", "tool", 0.2, ["candle", "f0ece0", "e0a030"], {"uses": 60, "light": 2})
+	_i("trowel", "Trowel", "tool", 0.3, ["trowel", "4a7a3a", "9aa0a4"], {"tags": ["dig"]})
+	_i("watering_can", "Watering Can", "tool", 1.0, ["wcan", "4a7a3a", "3a5a2a"], {"uses": 0, "maxuses": 8, "tags": ["watering"], "water": 1})
+	_i("fishing_rod", "Fishing Rod", "tool", 0.6, ["rod", "8a6a40", "c8ccd0"], {"tags": ["fishing"], "dur": 40})
+	_i("cooking_pot", "Cooking Pot", "tool", 1.0, ["pot", "55585a", "8a9094"], {"tags": ["pot"]})
+	_i("gas_can", "Gas Can", "tool", 1.5, ["gascan", "c0392b", "f0e060"], {"uses": 0, "maxuses": 8, "tags": ["fuel_can"]})
+	_i("needle_thread", "Needle & Thread", "tool", 0.05, ["needle", "c8ccd0", "c0392b"], {"tags": ["sewing"]})
+	_i("scissors", "Scissors", "tool", 0.2, ["scissors", "c8ccd0", "c0392b"], {"tags": ["scissors"]})
+	_i("radio", "Portable Radio", "tool", 0.7, ["radio", "55585a", "c8a850"], {"radio": 1})
+	_i("generator_item", "Generator", "tool", 28.0, ["generator", "c2a030", "3a3d40"], {"place": 97})
+	_i("bedroll_item", "Bedroll", "tool", 1.5, ["sheet", "4a6a4a", "c0b89c"], {"place": 98})
+	_i("snare", "Snare Trap", "tool", 0.3, ["wire", "8a6a40", "c8a870"], {"place": 102})
+	_i("car_battery", "Car Battery", "tool", 5.0, ["battery", "2a2c2e", "c0392b"], {})
+	_i("glue", "Wood Glue", "material", 0.2, ["bottle", "e0c860", "f0f0f0"], {"uses": 4})
+	_i("sleeping_pills", "Sleeping Tablets", "med", 0.1, ["pills", "8a9ad0", "f0f0f0"], {"med": "sleep", "uses": 4})
+	_i("beta_blockers", "Beta Blockers", "med", 0.1, ["pills", "7ab07a", "f0f0f0"], {"med": "calm", "uses": 6})
+	_i("antidepressants", "Antidepressants", "med", 0.1, ["pills", "d0a0d0", "f0f0f0"], {"med": "antidep", "uses": 6})
+	_i("alcohol_wipes", "Alcohol Wipes", "med", 0.1, ["box", "e8f0f0", "5aa0a0"], {"med": "disinfect", "uses": 5})
+	_i("tweezers", "Tweezers", "med", 0.05, ["needle", "c8ccd0", "9aa0a4"], {"tags": ["tweezers"], "med": "tweezers"})
+	# ---------------- materials
+	_i("nails", "Nails", "material", 0.01, ["nails", "9aa0a4", "6a7074"], {"stackmax": 500})
+	_i("log", "Log", "material", 4.0, ["log", "7a5a38", "c8a870"], {"fuel": 4.0})
+	_i("branch", "Sturdy Branch", "material", 0.5, ["stick", "7a5a38", "5a4028"], {"fuel": 0.5, "wpn": {"sk": "long_blunt", "dmg": [6, 12], "range": 1.3, "swing": 0.7, "dur": 10, "kb": 0.5, "type": "blunt", "noise": 4, "crit": 0.05, "spr": 1}})
+	_i("stone", "Stone", "material", 0.6, ["stone", "8a8a86", "6a6a66"], {"tags": ["whetstone"]})
+	_i("scrap_metal", "Scrap Metal", "material", 0.8, ["metal", "8a9094", "6a5a4a"], {})
+	_i("wire", "Wire", "material", 0.2, ["wire", "b87840", "8a5a30"], {})
+	_i("duct_tape", "Duct Tape", "material", 0.2, ["tape", "9aa0a4", "6a7074"], {"uses": 4})
+	_i("rope", "Rope", "material", 0.5, ["rope", "c8a870", "a88850"], {})
+	_i("sheet", "Sheet", "material", 0.4, ["sheet", "e8e4d8", "c8c4b8"], {"fuel": 0.3})
+	_i("tarp", "Tarp", "material", 1.0, ["sheet", "3c6a9a", "2c4a6a"], {})
+	_i("garbage_bag", "Garbage Bag", "material", 0.1, ["bag", "2a2c2e", "3a3d40"], {})
+	_i("binoculars", "Binoculars", "tool", 0.6, ["box", "2a2c2e", "5a7aa0"], {"look": 1})
+	_i("diary", "Diary", "misc", 0.3, ["book", "6a3a2a", "e0d0b0"], {"read": 1, "fuel": 0.3, "nostack": 1})
+	_i("bulletin", "Emergency Bulletin", "misc", 0.05, ["paper", "f0e8c0", "c0392b"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("local_map", "Local Map", "misc", 0.1, ["paper", "d8e0c0", "3a6a8a"], {"read": 1, "fuel": 0.1, "nostack": 1})
+	_i("tyre_kit", "Tyre Repair Kit", "tool", 0.4, ["kit", "2a2c2e", "c8a850"], {"tyre": 1})
+	_i("stew", "Hunter's Stew", "food", 0.6, ["pot", "8a5030", "5a3420"], {"hunger": 40, "thirst": 8, "fresh": 48, "rot": 120, "kcal": 600, "calm": 10})
+	_i("gun_oil", "Gun Oil", "tool", 0.2, ["bottle", "3a3d40", "c8a850"], {"uses": 5})
+	_i("mre", "Ration Pack", "food", 0.5, ["bag", "6a7a4a", "3a4a2a"], {"hunger": 34, "kcal": 1200, "protein": 30})
+	_i("dust_mask", "Dust Mask", "clothing", 0.05, ["rag", "e8e8e0", "b0b0a8"], {"wear": {"slot": "face", "parts": [], "warm": 0, "def": 0.0, "smoke": 0.45, "stench": 0.6}})
+	_i("gas_mask", "Gas Mask", "clothing", 0.9, ["cap", "3a4030", "1a1a1a"], {"wear": {"slot": "face", "parts": [], "warm": 1, "def": 0.0, "smoke": 0.9, "stench": 1.0, "fumes": 0.85, "heavy": 1}})
+	_i("lab_report", "Lab Report", "misc", 0.1, ["book", "e8e8e0", "3a6a9a"], {"read": 1})
+	_i("canned_pears", "Canned Pears", "food", 0.5, ["can", "c8c060", "e8e0c0"], {"hunger": 14, "thirst": 6, "need": "can_opener", "kcal": 200})
+	_i("canned_ham", "Canned Ham", "food", 0.6, ["can", "c06070", "e8d8c8"], {"hunger": 30, "need": "can_opener", "kcal": 700})
+	_i("canned_chili", "Canned Chili", "food", 0.5, ["can", "a83020", "e0c080"], {"hunger": 28, "need": "can_opener", "kcal": 520})
+	_i("canned_spaghetti", "Canned Spaghetti", "food", 0.5, ["can", "d86040", "f0e0c0"], {"hunger": 22, "need": "can_opener", "kcal": 380})
+	_i("canned_carrots", "Canned Carrots", "food", 0.5, ["can", "e08030", "e8e0c8"], {"hunger": 10, "need": "can_opener", "kcal": 120})
+	_i("sardines", "Sardines", "food", 0.2, ["can", "6a8aa0", "d0d8e0"], {"hunger": 14, "kcal": 250})
+	_i("instant_noodles", "Instant Noodles", "food", 0.1, ["bag", "e8c030", "c0392b"], {"hunger": 18, "kcal": 380, "raw": 1, "cook": "noodle_soup"})
+	_i("noodle_soup", "Noodle Soup", "food", 0.3, ["bowl", "e8c060", "c08030"], {"hunger": 28, "thirst": 10, "fresh": 24, "rot": 48, "kcal": 380})
+	_i("powdered_milk", "Powdered Milk", "food", 0.4, ["box", "f0f0f0", "3a6ac8"], {"hunger": 8, "kcal": 300, "uses": 4})
+	_i("honey", "Honey", "food", 0.4, ["jar", "e0a020", "f0d080"], {"hunger": 10, "kcal": 640, "uses": 4, "calm": 4})
+	_i("jam", "Jam", "food", 0.4, ["jar", "a02040", "f0d0d0"], {"hunger": 8, "kcal": 500, "uses": 4})
+	_i("sugar", "Sugar", "food", 0.5, ["box", "f0f0f0", "c0c0c0"], {"hunger": 4, "kcal": 800, "uses": 6, "dry": 1})
+	_i("dried_fruit", "Dried Fruit", "food", 0.2, ["bag", "a05030", "e0a060"], {"hunger": 10, "kcal": 300})
+	_i("mixed_nuts", "Mixed Nuts", "food", 0.2, ["bag", "a07040", "e0c080"], {"hunger": 12, "thirst": -4, "kcal": 600})
+	_i("trail_mix", "Trail Mix", "food", 0.2, ["bag", "6a8a4a", "e0c080"], {"hunger": 12, "kcal": 520})
+	_i("protein_bar", "Protein Bar", "food", 0.1, ["bar", "3a3a8a", "e0e0e0"], {"hunger": 12, "kcal": 250})
+	_i("crispbread", "Crispbread", "food", 0.2, ["box", "d8b070", "8a6a3a"], {"hunger": 10, "kcal": 340, "dry": 1})
+	_i("energy_drink", "Energy Drink", "drink", 0.3, ["can", "3ac040", "1a1a1a"], {"thirst": 16, "fatigue": -16, "kcal": 110})
+	_i("sports_drink", "Sports Drink", "drink", 0.5, ["bottle", "3a8ae0", "f0f0f0"], {"thirst": 28, "kcal": 120})
+	_i("tea", "Tea Bags", "drink", 0.1, ["box", "4a7a3a", "e0d0a0"], {"thirst": 6, "calm": 8, "fatigue": -6, "uses": 10})
+	_i("cocoa", "Hot Cocoa Mix", "drink", 0.2, ["box", "6a3a20", "e0c0a0"], {"thirst": 4, "calm": 10, "kcal": 160, "uses": 6, "sad": -8})
+	_i("wine", "Wine", "drink", 1.0, ["bottle", "6a1a2a", "c0a060"], {"thirst": -2, "calm": 18, "fatigue": 4, "pain": -10, "uses": 4, "kcal": 160, "alcohol": 24})
+	_i("sterile_dressing", "Sterile Dressing", "med", 0.1, ["bandage", "f8f8f8", "3a8ac8"], {"med": "bandage", "clean": 1})
+	_i("antiseptic_wipes", "Antiseptic Wipes", "med", 0.1, ["box", "e0f0f0", "3a8a8a"], {"med": "disinfect", "uses": 6})
+	_i("iodine", "Iodine", "med", 0.1, ["bottle", "8a3a1a", "e0d0c0"], {"med": "disinfect", "uses": 8, "disinfect": 0.9})
+	_i("aspirin", "Aspirin", "med", 0.1, ["pills", "f0f0f0", "c0392b"], {"med": "painkillers", "uses": 8})
+	_i("cold_medicine", "Cold & Flu Tablets", "med", 0.1, ["pills", "c06a2a", "f0f0f0"], {"med": "painkillers", "uses": 4})
+	_i("calming_tea", "Chamomile", "med", 0.1, ["box", "c8c860", "f0f0e0"], {"med": "calm", "uses": 6})
+	_i("field_splint", "Field Splint", "med", 0.4, ["plank", "c8a878", "e0e0e0"], {"med": "splint"})
+	_i("first_aid_pouch", "First Aid Pouch", "med", 0.3, ["bandage", "c0392b", "f0f0f0"], {"med": "bandage", "clean": 1, "uses": 3})
+	_i("hoodie", "Hoodie", "clothing", 0.6, ["jacket", "6a6a72", "4a4a52"], {"wear": {"warm": 9, "def": 0.1}})
+	_i("fleece", "Fleece", "clothing", 0.5, ["jacket", "3a6a5a", "2a4a3a"], {"wear": {"warm": 14, "def": 0.06}})
+	_i("high_vis_vest", "High-Vis Vest", "clothing", 0.2, ["jacket", "d8e020", "c08020"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 1, "def": 0.05}})
+	_i("cargo_pants", "Cargo Trousers", "clothing", 0.7, ["trousers", "6a6a4a", "4a4a34"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 7, "def": 0.18}})
+	_i("shorts", "Shorts", "clothing", 0.3, ["trousers", "3a5a8a", "2a4266"], {"wear": {"slot": "legs", "parts": [4, 11, 12], "warm": 1, "def": 0.04}})
+	_i("thermal_leggings", "Thermal Leggings", "clothing", 0.3, ["trousers", "2a2a2a", "1a1a1a"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 12, "def": 0.04}})
+	_i("hiking_boots", "Hiking Boots", "clothing", 1.1, ["boot", "6a4a2a", "3a2a18"], {"wear": {"slot": "feet", "parts": [13, 14, 15, 16], "warm": 7, "def": 0.45}})
+	_i("rubber_boots", "Rubber Boots", "clothing", 1.0, ["boot", "2a4a2a", "1a2a1a"], {"wear": {"slot": "feet", "parts": [13, 14, 15, 16], "warm": 3, "def": 0.3, "dry": 1}})
+	_i("rain_poncho", "Rain Poncho", "clothing", 0.3, ["jacket", "3a8a5a", "2a6a4a"], {"wear": {"warm": 2, "def": 0.02, "dry": 1}})
+	_i("beanie", "Beanie", "clothing", 0.1, ["cap", "3a3a5a", "2a2a3a"], {"wear": {"slot": "head", "parts": [0], "warm": 7, "def": 0.03}})
+	_i("baseball_cap", "Baseball Cap", "clothing", 0.1, ["cap", "c0392b", "8a2a1a"], {"wear": {"slot": "head", "parts": [0], "warm": 2, "def": 0.03}})
+	_i("balaclava", "Balaclava", "clothing", 0.1, ["cap", "1a1a1a", "0a0a0a"], {"wear": {"slot": "head", "parts": [0, 1], "warm": 9, "def": 0.06}})
+	_i("bandana", "Bandana", "clothing", 0.05, ["rag", "c0392b", "8a2a1a"], {"wear": {"slot": "face", "parts": [], "warm": 0, "def": 0.0, "smoke": 0.2, "stench": 0.3}})
+	_i("motorcycle_jacket", "Biker Jacket", "clothing", 2.0, ["jacket", "1a1a1a", "3a3a3a"], {"wear": {"warm": 12, "def": 0.5, "heavy": 1}})
+	_i("firefighter_coat", "Turnout Coat", "clothing", 2.6, ["jacket", "c8a030", "3a3a3a"], {"wear": {"warm": 16, "def": 0.55, "heavy": 2, "smoke": 0.1}})
+	_i("satchel", "Satchel", "bag", 0.4, ["pack", "8a6a40", "6a4a20"], {"bag": 7})
+	_i("fanny_pack", "Bum Bag", "bag", 0.2, ["pack", "3a3a5a", "c0392b"], {"bag": 3})
+	_i("military_pack", "Military Rucksack", "bag", 1.2, ["pack", "4a5a38", "3a4a28"], {"bag": 20})
+	_i("hiking_pack", "Frame Pack", "bag", 1.4, ["pack", "c0602a", "3a3a3a"], {"bag": 18})
+	_i("multitool", "Multitool", "tool", 0.2, ["wrench", "c8ccd0", "3a3a3a"], {"tags": ["screwdriver", "pliers", "knife", "can_opener"]})
+	_i("pocket_knife", "Pocket Knife", "tool", 0.1, ["knife", "c0392b", "c8ccd0"], {"tags": ["knife", "can_opener"]})
+	_i("wire_cutters", "Wire Cutters", "tool", 0.4, ["wrench", "c0392b", "6a7074"], {"tags": ["pliers", "wire_cutters"]})
+	_i("hand_saw", "Hacksaw", "tool", 0.5, ["saw", "c8ccd0", "3a6ac8"], {"tags": ["saw"]})
+	_i("sewing_kit", "Sewing Kit", "tool", 0.1, ["needle", "e0d0a0", "c0392b"], {"tags": ["sewing", "scissors"]})
+	_i("lantern", "Camping Lantern", "tool", 0.8, ["flashlight", "4a7a4a", "f0e060"], {"uses": 200, "light": 1})
+	_i("headlamp", "Headlamp", "tool", 0.2, ["flashlight", "3a3a3a", "f0e060"], {"uses": 80, "light": 1})
+	_i("crank_radio", "Wind-up Radio", "tool", 0.6, ["radio", "c0602a", "3a3a3a"], {"radio": 1})
+	_i("whetstone", "Whetstone", "tool", 0.3, ["stone", "6a6a6a", "8a8a8a"], {"tags": ["whetstone"]})
+	_i("water_filter", "Water Filter", "tool", 0.3, ["bottle", "3a8ac8", "f0f0f0"], {"tags": ["purify"]})
+	_i("sledgehammer", "Sledgehammer", "weapon", 5.0, ["hammer", "6a6a6a", "8a6a40"], {"wpn": {"sk": "long_blunt", "dmg": [34, 52], "range": 1.5, "swing": 1.3, "dur": 500, "kb": 1.6, "type": "blunt", "noise": 9, "crit": 0.12, "spr": 1}, "tags": ["hammer"]})
+	_i("fire_axe", "Fire Axe", "weapon", 2.4, ["axe", "c0392b", "8a8a8a"], {"wpn": {"sk": "axe", "dmg": [30, 46], "range": 1.45, "swing": 0.95, "dur": 300, "kb": 0.9, "type": "axe", "noise": 7, "crit": 0.18, "spr": 3}, "tags": ["axe", "crowbar"]})
+	_i("tire_iron", "Tyre Iron", "weapon", 1.2, ["crowbar", "3a3a3a", "6a6a6a"], {"wpn": {"sk": "short_blunt", "dmg": [14, 24], "range": 1.2, "swing": 0.65, "dur": 300, "kb": 0.7, "type": "blunt", "noise": 5, "crit": 0.1, "spr": 1}, "tags": ["wrench"]})
+	_i("cleaver", "Meat Cleaver", "weapon", 0.8, ["knife", "c8ccd0", "3a3a3a"], {"wpn": {"sk": "short_blade", "dmg": [18, 30], "range": 1.05, "swing": 0.6, "dur": 120, "kb": 0.4, "type": "blade", "noise": 4, "crit": 0.2, "spr": 2}, "tags": ["knife"]})
+	_i("hockey_stick", "Hockey Stick", "weapon", 0.9, ["pipe", "c8a060", "1a1a1a"], {"wpn": {"sk": "long_blunt", "dmg": [12, 20], "range": 1.6, "swing": 0.7, "dur": 60, "kb": 0.8, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 1}})
+	_i("baton", "Police Baton", "weapon", 0.6, ["pipe", "1a1a1a", "3a3a3a"], {"wpn": {"sk": "short_blunt", "dmg": [12, 20], "range": 1.15, "swing": 0.5, "dur": 400, "kb": 0.6, "type": "blunt", "noise": 4, "crit": 0.1, "spr": 1}})
+	_i("screws", "Screws", "material", 0.1, ["box", "8a8a8a", "c8c8c8"], {})
+	_i("plastic_sheet", "Plastic Sheeting", "material", 0.5, ["rag", "d8e8f0", "a8c8d8"], {})
+	_i("twine", "Twine", "material", 0.1, ["rope", "c8b070", "a08050"], {})
+	_i("sheet_metal", "Sheet Metal", "material", 2.0, ["box", "8a9094", "6a7074"], {})
+	_i("car_keys", "Car Keys", "tool", 0.1, ["key", "c8c8c8", "3a3a3a"], {"car_keys": 1})
+	_i("canteen", "Canteen", "drink", 0.6, ["bottle", "5a6a3a", "c0c0a0"], {"thirst": 20, "uses": 10, "maxuses": 10, "water": 1})
+	_i("kevlar_vest", "Kevlar Vest", "clothing", 2.8, ["jacket", "3a4030", "20241a"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 3, "def": 0.85, "heavy": 2}})
+	_i("moto_helmet", "Motorcycle Helmet", "clothing", 1.2, ["cap", "202024", "c0392b"], {"wear": {"slot": "head", "parts": [0, 1], "warm": 5, "def": 0.7, "heavy": 1}})
+	_i("compass", "Compass", "tool", 0.1, ["radio", "b08a30", "f0ece0"], {"compass": 1})
+	_i("road_atlas", "Road Atlas", "misc", 0.6, ["book", "3a6a9a", "e8e0c8"], {"atlas": 1})
+	_i("pliers", "Pliers", "tool", 0.3, ["wrench", "c0392b", "8a8a8a"], {"tags": ["pliers"]})
+	_i("oats", "Rolled Oats", "food", 0.5, ["box", "c8a870", "8a6a3a"], {"hunger": 26, "kcal": 600, "uses": 3, "dry": 1})
+	_i("carcass_squirrel", "Squirrel Carcass", "misc", 0.6, ["meat", "8a6a4a", "c8b8a0"], {"nostack": 1})
+	_i("carcass_duck", "Duck Carcass", "misc", 1.3, ["meat", "5a6a3a", "c8a860"], {"nostack": 1})
+	_i("carcass_turkey", "Turkey Carcass", "misc", 5.0, ["meat", "4a3a2a", "c8a860"], {"nostack": 1})
+	_i("carcass_crow", "Crow Carcass", "misc", 0.4, ["meat", "1a1a1e", "8a8a8a"], {"nostack": 1})
+	_i("carcass_rat", "Rat Carcass", "misc", 0.3, ["meat", "5a5048", "a09080"], {"nostack": 1})
+	_i("carcass_dog", "Dog Carcass", "misc", 14.0, ["meat", "6a5040", "c8b8a0"], {"nostack": 1})
+	_i("carcass_snake", "Snake Carcass", "misc", 0.8, ["meat", "6a7a3a", "c8c890"], {"nostack": 1})
+	_i("carcass_hare", "Hare Carcass", "misc", 2.2, ["meat", "9a8462", "c8b8a0"], {"nostack": 1})
+	_i("carcass_mouse", "Dead Mouse", "misc", 0.05, ["meat", "7a7068", "a09080"], {"nostack": 1})
+	_i("carcass_pigeon", "Pigeon Carcass", "misc", 0.4, ["meat", "8a8a98", "c8a860"], {"nostack": 1})
+	_i("carcass_goose", "Goose Carcass", "misc", 4.0, ["meat", "c8c8c0", "c8a860"], {"nostack": 1})
+	_i("carcass_chicken", "Chicken Carcass", "misc", 1.8, ["meat", "d8c8a8", "c8a860"], {"nostack": 1})
+	_i("carcass_frog", "Frog", "misc", 0.1, ["meat", "4a7a3a", "a0c080"], {"nostack": 1})
+	_i("raw_small_game", "Raw Small Game", "food", 0.2, ["meat", "b06a58", "e8c8c0"], {"hunger": 7, "raw": 1, "fresh": 36, "rot": 72, "cook": "cooked_small_game"})
+	_i("cooked_small_game", "Cooked Small Game", "food", 0.2, ["meat", "8a5a38", "c89870"], {"hunger": 14, "fresh": 48, "rot": 120, "kcal": 160})
+	_i("fire_extinguisher", "Fire Extinguisher", "tool", 4.0, ["bottle", "c0392b", "2a2a2a"], {"uses": 6})
+	_i("pencil", "Pencil", "tool", 0.05, ["knife", "d8b040", "3a3a3a"], {})
+	_i("notebook", "Notebook", "tool", 0.2, ["book", "3a5a86", "f0ece0"], {"uses": 10, "fuel": 0.2})
+	_i("letter", "Letter", "misc", 0.03, ["paper", "f0ece0", "3a5a8a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("recipe_note", "Recipe Card", "misc", 0.03, ["paper", "f0e8d0", "8a5a3a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("maintenance_log", "Maintenance Log", "misc", 0.03, ["book", "5a5a56", "e0b030"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("hospital_note", "Hospital Note", "misc", 0.03, ["paper", "e8f0f0", "3a8a8a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("radio_transcript", "Radio Transcript", "misc", 0.03, ["paper", "e8e8e0", "2a2a2a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("inventory_list", "Inventory List", "misc", 0.03, ["paper", "f0f0e0", "6a6a3a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("evac_flyer", "Evacuation Flyer", "misc", 0.03, ["paper", "f0e060", "c0392b"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("family_photo", "Family Photograph", "misc", 0.03, ["paper", "d8c8a8", "6a5a4a"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("note", "Handwritten Note", "misc", 0.02, ["paper", "f0ece0", "5a5a56"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("survivor_note", "Folded Note", "misc", 0.02, ["paper", "e0d8c0", "7a5a46"], {"read": 1, "fuel": 0.05, "nostack": 1})
+	_i("newspaper", "Newspaper", "misc", 0.1, ["paper", "d8d4c8", "8a8a86"], {"fuel": 0.15, "read": 1})
+	_i("charcoal", "Charcoal", "material", 1.0, ["bag", "3a3d40", "c0392b"], {"fuel": 6.0})
+	_i("gunpowder", "Gunpowder", "material", 0.2, ["jar", "3a3d40", "8a8a86"], {})
+	_i("fertilizer", "Fertilizer", "material", 1.0, ["bag", "8a6a40", "4a7a3a"], {"uses": 4})
+	_i("clay", "Lump of Clay", "material", 0.8, ["stone", "9a6a4a", "7a4a30"], {})
+	_i("sand", "Bag of Sand", "material", 1.0, ["bag", "d8c898", "b0a070"], {})
+	_i("metal_bar", "Iron Bar", "material", 1.2, ["metal", "6a7074", "9aa0a4"], {})
+	_i("wooden_handle", "Carved Handle", "material", 0.3, ["stick", "b08a58", "8a6a40"], {"fuel": 0.3})
+	_i("brick", "Fired Brick", "material", 0.9, ["box", "a8553c", "8a4030"], {})
+	_i("unfired_pot", "Unfired Clay Pot", "material", 1.2, ["pot", "9a6a4a", "7a4a30"], {})
+	_i("clay_pot", "Clay Pot", "tool", 1.2, ["pot", "b8704a", "8a4a30"], {"tags": ["pot"]})
+	_i("glass_pane", "Pane of Glass", "material", 1.0, ["sheet", "b8d8e8", "8fb0c4"], {})
+	_i("glass_jar", "Glass Jar", "material", 0.2, ["jar", "c8e0e8", "9aa0a4"], {})
+	_i("stone_knife", "Flint Knife", "weapon", 0.3, ["knife", "8a8a86", "7a5a38"], {"wpn": {"sk": "short_blade", "dmg": [10, 18], "range": 1.0, "swing": 0.5, "dur": 20, "kb": 0.1, "type": "blade", "noise": 3, "crit": 0.15, "spr": 2}, "tags": ["knife"]})
+	_i("stone_axe", "Stone Axe", "weapon", 1.6, ["axe", "7a5a38", "8a8a86"], {"wpn": {"sk": "axe", "dmg": [22, 36], "range": 1.3, "swing": 0.95, "dur": 45, "kb": 0.7, "type": "axe", "noise": 7, "crit": 0.12, "spr": 3}, "tags": ["axe"]})
+	_i("stone_hammer", "Stone Hammer", "weapon", 1.2, ["hammer", "7a5a38", "8a8a86"], {"wpn": {"sk": "short_blunt", "dmg": [10, 18], "range": 1.05, "swing": 0.7, "dur": 50, "kb": 0.5, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 3}, "tags": ["hammer"]})
+	_i("herbs", "Medicinal Herbs", "med", 0.1, ["veg", "5a8a4a", "8ab06a"], {"med": "disinfect", "disinfect": 0.6, "fresh": 96, "rot": 200})
+	_i("plant_cure", "Mildew Spray", "tool", 0.5, ["bottle", "e8e8d8", "5a8a4a"], {"uses": 4, "tags": ["plant_cure"]})
+	_i("bleach", "Bleach", "tool", 1.0, ["bottle", "f0f0f0", "3c6a9a"], {"uses": 6, "tags": ["bleach"]})
+	_i("bucket", "Bucket", "drink", 0.8, ["pot", "7a8088", "5a8aa8"], {"thirst": 22, "uses": 0, "maxuses": 20, "water": 1})
+	_i("burnt_food", "Burnt Food", "food", 0.3, ["meat", "2a2420", "1a1614"], {"hunger": 6, "sad": 10, "kcal": 60})
+	# ---------------- bags & clothing
+	_i("tote_bag", "Tote Bag", "bag", 0.2, ["pack", "c8b898", "a89878"], {"bag": 5})
+	_i("school_bag", "School Bag", "bag", 0.5, ["pack", "3c6a9a", "2c4a6a"], {"bag": 9})
+	_i("backpack", "Hiking Backpack", "bag", 0.8, ["pack", "5a7a4a", "3a5a2a"], {"bag": 15})
+	_i("duffel_bag", "Duffel Bag", "bag", 1.0, ["pack", "55585a", "3a3d40"], {"bag": 20})
+	_i("jacket", "Jacket", "clothing", 1.0, ["jacket", "5a6a7a", "3a4a5a"], {"wear": {"warm": 12, "def": 0.15}})
+	_i("leather_jacket", "Leather Jacket", "clothing", 1.6, ["jacket", "4a3a2a", "2a2018"], {"wear": {"warm": 10, "def": 0.35}})
+	_i("winter_coat", "Winter Coat", "clothing", 1.8, ["jacket", "8a3a30", "5a2a20"], {"wear": {"warm": 24, "def": 0.2}})
+	_i("raincoat", "Raincoat", "clothing", 0.6, ["jacket", "d8c040", "a89030"], {"wear": {"warm": 4, "def": 0.05, "dry": 1}})
+	_i("padded_jacket", "Padded Jacket", "clothing", 1.8, ["jacket", "6a6a58", "4a4a3c"], {"wear": {"warm": 16, "def": 0.3, "heavy": 1}})
+	_i("wool_hat", "Wool Hat", "clothing", 0.1, ["cap", "8a4a40", "6a3a30"], {"wear": {"slot": "head", "parts": [0], "warm": 8, "def": 0.05}})
+	_i("hard_hat", "Hard Hat", "clothing", 0.5, ["cap", "e0b030", "b08a20"], {"wear": {"slot": "head", "parts": [0], "warm": 2, "def": 0.5, "heavy": 1}})
+	_i("riot_helmet", "Riot Helmet", "clothing", 1.4, ["cap", "3a3d40", "8fb0c4"], {"wear": {"slot": "head", "parts": [0, 1], "warm": 6, "def": 0.8, "heavy": 2}})
+	_i("scarf", "Scarf", "clothing", 0.2, ["rag", "a83a3a", "7a2a2a"], {"wear": {"slot": "neck", "parts": [1], "warm": 7, "def": 0.12}})
+	_i("leather_gloves", "Leather Gloves", "clothing", 0.2, ["glove", "5a3a28", "3a2618"], {"wear": {"slot": "hands", "parts": [9, 10], "warm": 5, "def": 0.45}})
+	_i("work_gloves", "Work Gloves", "clothing", 0.2, ["glove", "c8a850", "8a6a30"], {"wear": {"slot": "hands", "parts": [9, 10], "warm": 3, "def": 0.3}})
+	_i("jeans", "Jeans", "clothing", 0.6, ["trousers", "3c5a8a", "2c4266"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 6, "def": 0.14}})
+	_i("padded_trousers", "Padded Trousers", "clothing", 1.4, ["trousers", "6a6a58", "4a4a3c"], {"wear": {"slot": "legs", "parts": [4, 11, 12, 13, 14], "warm": 10, "def": 0.32, "heavy": 1}})
+	_i("boots", "Work Boots", "clothing", 1.2, ["boot", "4a3626", "2a2018"], {"wear": {"slot": "feet", "parts": [13, 14, 15, 16], "warm": 6, "def": 0.5}})
+	_i("sneakers", "Running Shoes", "clothing", 0.5, ["boot", "e0e0e0", "c0392b"], {"wear": {"slot": "feet", "parts": [15, 16], "warm": 2, "def": 0.15}})
+	_i("leather", "Leather Hide", "material", 0.8, ["sheet", "8a5a38", "6a4428"], {})
+	# ---------------- seeds & farming
+	_i("seeds_potato", "Potato Seeds", "seed", 0.05, ["seeds", "a88858", "f0ece0"], {"seed": "potato"})
+	_i("seeds_cabbage", "Cabbage Seeds", "seed", 0.05, ["seeds", "7aa860", "f0ece0"], {"seed": "cabbage"})
+	_i("seeds_carrot", "Carrot Seeds", "seed", 0.05, ["seeds", "e07a28", "f0ece0"], {"seed": "carrot"})
+	_i("seeds_tomato", "Tomato Seeds", "seed", 0.05, ["seeds", "c83a28", "f0ece0"], {"seed": "tomato"})
+	_i("seeds_corn", "Corn Seeds", "seed", 0.05, ["seeds", "e8c840", "f0ece0"], {"seed": "corn"})
+	_i("seeds_wheat", "Wheat Seeds", "seed", 0.05, ["seeds", "d8b860", "f0ece0"], {"seed": "wheat"})
+	_i("seeds_lettuce", "Lettuce Seeds", "seed", 0.05, ["seeds", "8ac860", "f0ece0"], {"seed": "lettuce"})
+	_i("seeds_pumpkin", "Pumpkin Seeds", "seed", 0.05, ["seeds", "e07a28", "f0ece0"], {"seed": "pumpkin"})
+	_i("seeds_pepper", "Bell pepper Seeds", "seed", 0.05, ["seeds", "c83a28", "f0ece0"], {"seed": "pepper"})
+	_i("seeds_onion", "Onion Seeds", "seed", 0.05, ["seeds", "d8c8a0", "f0ece0"], {"seed": "onion"})
+	_i("seeds_strawberry", "Strawberry Seeds", "seed", 0.05, ["seeds", "d83040", "f0ece0"], {"seed": "strawberry"})
+	_i("seeds_beans", "Green beans Seeds", "seed", 0.05, ["seeds", "5a9a3a", "f0ece0"], {"seed": "beans"})
+	_i("pea", "Peas", "food", 0.15, ["veg", "8ac85a", "4a8a3a"], {"hunger": 7, "fresh": 96, "rot": 200, "kcal": 80})
+	_i("seeds_pea", "Peas Seeds", "seed", 0.05, ["seeds", "8ac85a", "f0ece0"], {"seed": "pea"})
+	_i("garlic", "Garlic", "food", 0.15, ["veg", "e8e0d0", "5a8a4a"], {"hunger": 3, "fresh": 600, "rot": 1200, "kcal": 40, "disinfect": 0.2})
+	_i("seeds_garlic", "Garlic Seeds", "seed", 0.05, ["seeds", "e8e0d0", "f0ece0"], {"seed": "garlic"})
+	_i("squash", "Squash", "food", 0.15, ["veg", "d8a030", "3a6a2a"], {"hunger": 16, "fresh": 400, "rot": 800, "kcal": 160})
+	_i("seeds_squash", "Squash Seeds", "seed", 0.05, ["seeds", "d8a030", "f0ece0"], {"seed": "squash"})
+	_i("cucumber", "Cucumber", "food", 0.15, ["veg", "3a6a2a", "3a7a3a"], {"hunger": 5, "thirst": 10, "fresh": 96, "rot": 168, "kcal": 30})
+	_i("seeds_cucumber", "Cucumber Seeds", "seed", 0.05, ["seeds", "3a6a2a", "f0ece0"], {"seed": "cucumber"})
+	_i("radish", "Radish", "food", 0.15, ["veg", "c83a4a", "5a9a3a"], {"hunger": 4, "fresh": 96, "rot": 200, "kcal": 25})
+	_i("seeds_radish", "Radish Seeds", "seed", 0.05, ["seeds", "c83a4a", "f0ece0"], {"seed": "radish"})
+	_i("beet", "Beetroot", "food", 0.15, ["veg", "7a1a3a", "5a7a3a"], {"hunger": 9, "fresh": 300, "rot": 600, "kcal": 90})
+	_i("seeds_beet", "Beetroot Seeds", "seed", 0.05, ["seeds", "7a1a3a", "f0ece0"], {"seed": "beet"})
+	_i("spinach", "Spinach", "food", 0.15, ["veg", "2a6a2a", "2a6a2a"], {"hunger": 5, "fresh": 60, "rot": 120, "kcal": 40})
+	_i("seeds_spinach", "Spinach Seeds", "seed", 0.05, ["seeds", "2a6a2a", "f0ece0"], {"seed": "spinach"})
+	_i("sunflower", "Sunflower Seeds", "food", 0.15, ["veg", "e8c020", "4a7a2a"], {"hunger": 14, "fresh": 900, "rot": 2000, "kcal": 400})
+	_i("seeds_sunflower", "Sunflower Seeds (for sowing)", "seed", 0.05, ["seeds", "e8c020", "f0ece0"], {"seed": "sunflower"})
+	_i("seeds_herbs", "Herb Seeds", "seed", 0.05, ["seeds", "8ab06a", "f0ece0"], {"seed": "herbs"})
+	_i("oyster_mushroom", "Oyster Mushrooms", "food", 0.15, ["veg", "d8c8a8", "8a7a5a"], {"hunger": 6, "fresh": 48, "rot": 96, "kcal": 40})
+	_i("seeds_oyster_mushroom", "Mushroom Spawn", "seed", 0.05, ["seeds", "d8c8a8", "f0ece0"], {"seed": "oyster_mushroom"})
+	_i("seeds_apple", "Apple Sapling", "seed", 0.05, ["seeds", "b83a30", "f0ece0"], {"seed": "apple"})
+	_i("blueberries", "Blueberries", "food", 0.15, ["veg", "3a4ab0", "3a5a3a"], {"hunger": 6, "thirst": 4, "fresh": 96, "rot": 168, "kcal": 60})
+	_i("seeds_blueberries", "Blueberries Seeds", "seed", 0.05, ["seeds", "3a4ab0", "f0ece0"], {"seed": "blueberries"})
+	# ---------------- literature
+	_i("book_carpentry", "Carpentry Manual", "book", 0.5, ["book", "8a6a40", "f0ece0"], {"book": "carpentry"})
+	_i("book_cooking", "Cookbook", "book", 0.5, ["book", "c0392b", "f0ece0"], {"book": "cooking"})
+	_i("book_farming", "Farming Almanac", "book", 0.5, ["book", "4a7a3a", "f0ece0"], {"book": "farming"})
+	_i("book_firstaid", "First Aid Handbook", "book", 0.5, ["book", "e8e8e8", "c0392b"], {"book": "first_aid"})
+	_i("book_foraging", "Wild Plants Guide", "book", 0.5, ["book", "6a8a3a", "e0c860"], {"book": "foraging"})
+	_i("book_aiming", "Marksman Journal", "book", 0.5, ["book", "3a3d40", "c8a850"], {"book": "aiming"})
+	_i("novel", "Paperback Novel", "book", 0.3, ["book", "5a4a7a", "d8d4c8"], {"read": 1, "fuel": 0.3})
+	_i("comic", "Comic Book", "book", 0.1, ["paper", "e0b030", "c0392b"], {"read": 1, "fuel": 0.1})
+	# ---------------- misc
+	_i("cigarettes", "Cigarettes", "misc", 0.05, ["box", "e8e8e8", "c0392b"], {"uses": 10, "smoke": 1})
+	_i("money", "Cash", "misc", 0.0, ["paper", "7a9a6a", "4a6a3a"], {"stackmax": 9999, "fuel": 0.02})
+	_i("toy", "Stuffed Toy", "misc", 0.3, ["toy", "a87848", "f0ece0"], {"calm_carry": 1})
+	_i("pillow", "Pillow", "misc", 0.4, ["sheet", "f0ece0", "d8d4c8"], {})
+	_i("alarm_clock", "Alarm Clock", "misc", 0.3, ["radio", "c0392b", "f0ece0"], {"noise_maker": 30})
+	_i("empty_can", "Tin Can", "misc", 0.1, ["can", "9aa0a4", "8a9094"], {})
+	# ---------------- from the founder's reference sheets (each has its own sheet icon)
+	# food: fresh produce, bakery, deli, sweets, tins
+	_i("banana", "Banana", "food", 0.15, ["fruit", "e8c840", "8a7a30"], {"hunger": 8, "thirst": 2, "fresh": 96, "rot": 192, "kcal": 105})
+	_i("avocado", "Avocado", "food", 0.2, ["fruit", "4a6a2a", "2a3a1a"], {"hunger": 10, "fresh": 120, "rot": 216, "kcal": 240})
+	_i("cherries", "Cherries", "food", 0.1, ["berries", "a01a2a", "4a7a3a"], {"hunger": 4, "thirst": 3, "calm": 3, "fresh": 48, "rot": 96, "kcal": 60})
+	_i("blackberries", "Blackberries", "food", 0.1, ["berries", "2a1a3a", "4a7a3a"], {"hunger": 5, "thirst": 3, "fresh": 48, "rot": 96, "kcal": 45})
+	_i("broccoli", "Broccoli", "food", 0.3, ["veg", "3a7a2a", "5a9a3a"], {"hunger": 7, "fresh": 120, "rot": 216, "kcal": 50})
+	_i("brussels_sprouts", "Brussels Sprouts", "food", 0.2, ["veg", "6a9a3a", "4a7a2a"], {"hunger": 6, "fresh": 168, "rot": 300, "kcal": 45})
+	_i("bagel", "Bagel", "food", 0.1, ["bread", "c89050", "8a5a30"], {"hunger": 10, "fresh": 72, "rot": 168, "kcal": 280})
+	_i("baguette", "Baguette", "food", 0.25, ["bread", "d8a060", "a87038"], {"hunger": 18, "fresh": 48, "rot": 120, "kcal": 650})
+	_i("sandwich", "Ham Sandwich", "food", 0.3, ["bread", "d8a060", "c06050"], {"hunger": 20, "calm": 4, "fresh": 24, "rot": 72, "kcal": 450})
+	_i("burger", "Burger", "food", 0.3, ["bread", "c89050", "7a4a30"], {"hunger": 22, "calm": 4, "fresh": 24, "rot": 72, "kcal": 550})
+	_i("hot_dog", "Hot Dog", "food", 0.2, ["bread", "d8a060", "b05040"], {"hunger": 14, "fresh": 24, "rot": 72, "kcal": 300})
+	_i("bologna", "Bologna Sausage", "food", 0.6, ["meat", "d08070", "f0c0b0"], {"hunger": 34, "fresh": 240, "rot": 480, "kcal": 1100})
+	_i("raw_bacon", "Raw Bacon", "food", 0.2, ["meat", "d06050", "f0d0c8"], {"hunger": 8, "raw": 1, "fresh": 72, "rot": 144, "cook": "cooked_bacon", "kcal": 300})
+	_i("cooked_bacon", "Fried Bacon", "food", 0.15, ["meat", "a04a30", "6a3020"], {"hunger": 16, "calm": 6, "fresh": 48, "rot": 120, "kcal": 400})
+	_i("cake", "Cake", "food", 1.0, ["bread", "f0e0d0", "c0392b"], {"hunger": 40, "calm": 18, "fresh": 72, "rot": 192, "kcal": 2400})
+	_i("cookies", "Cookies", "food", 0.2, ["box", "c89050", "6a3a20"], {"hunger": 10, "calm": 6, "kcal": 480})
+	_i("gummy_candy", "Gummy Candy", "food", 0.1, ["bag", "e05040", "f0c040"], {"hunger": 4, "calm": 8, "kcal": 300})
+	_i("caramels", "Caramels", "food", 0.1, ["bar", "c08030", "8a5020"], {"hunger": 4, "calm": 6, "kcal": 250})
+	_i("chewing_gum", "Chewing Gum", "food", 0.02, ["bar", "3ac040", "f0f0f0"], {"hunger": 1, "calm": 4, "kcal": 10})
+	_i("canned_mushrooms", "Canned Mushrooms", "food", 0.4, ["can", "8a6a40", "e0d0b0"], {"hunger": 10, "need": "can_opener", "kcal": 90})
+	_i("canned_pineapple", "Canned Pineapple", "food", 0.5, ["can", "e0c040", "4a7a3a"], {"hunger": 12, "thirst": 8, "need": "can_opener", "kcal": 200})
+	_i("fruit_cocktail", "Fruit Cocktail", "food", 0.5, ["can", "e08a30", "c0392b"], {"hunger": 14, "thirst": 8, "need": "can_opener", "kcal": 250})
+	_i("canned_peas", "Canned Peas", "food", 0.5, ["can", "4a8a3a", "2a4a2a"], {"hunger": 14, "need": "can_opener", "kcal": 200})
+	_i("mixed_veg", "Canned Mixed Vegetables", "food", 0.5, ["can", "4a8a3a", "e08a30"], {"hunger": 14, "need": "can_opener", "kcal": 180})
+	_i("black_beans", "Canned Black Beans", "food", 0.5, ["can", "2a2a2a", "c0392b"], {"hunger": 26, "need": "can_opener", "kcal": 350})
+	_i("cat_food", "Cat Food", "food", 0.3, ["can", "8a4a7a", "e0d0b0"], {"hunger": 16, "need": "can_opener", "sick": 3, "sad": 8, "kcal": 180})
+	# drink
+	_i("orange_soda", "Orange Soda", "drink", 0.35, ["can", "e08a30", "f0f0f0"], {"thirst": 26, "hunger": 3, "fatigue": -3, "kcal": 160})
+	_i("lemon_soda", "Lemon-Lime Soda", "drink", 0.35, ["can", "8ac040", "f0f0f0"], {"thirst": 26, "hunger": 3, "fatigue": -3, "kcal": 150})
+	_i("champagne", "Champagne", "drink", 1.0, ["bottle", "2a4a2a", "e0c060"], {"thirst": -2, "calm": 20, "fatigue": 4, "pain": -8, "uses": 4, "kcal": 170, "alcohol": 22})
+	_i("brandy", "Brandy", "drink", 0.7, ["bottle", "8a4a1a", "e0c080"], {"thirst": -4, "calm": 22, "fatigue": 6, "pain": -18, "uses": 4, "disinfect": 0.7, "kcal": 110, "alcohol": 32})
+	_i("water_jug", "Water Jug", "drink", 5.0, ["bottle", "3c6a9a", "d0e8f0"], {"thirst": 22, "uses": 12, "empty": "empty_water_jug", "water": 1})
+	_i("empty_water_jug", "Empty Water Jug", "drink", 0.6, ["bottle", "3c6a9a", "8aa0b0"], {"fill": "water_jug"})
+	# clothing
+	_i("beret", "Military Beret", "clothing", 0.1, ["cap", "4a5a2a", "2a3a1a"], {"wear": {"slot": "head", "parts": [0], "warm": 3, "def": 0.02}})
+	_i("bucket_hat", "Bucket Hat", "clothing", 0.1, ["cap", "6a7a3a", "4a5a2a"], {"wear": {"slot": "head", "parts": [0], "warm": 2, "def": 0.02}})
+	_i("police_cap", "Police Cap", "clothing", 0.1, ["cap", "1a2a4a", "e0c040"], {"wear": {"slot": "head", "parts": [0], "warm": 2, "def": 0.03}})
+	_i("chef_hat", "Chef's Hat", "clothing", 0.05, ["cap", "f0f0f0", "d0d0d0"], {"wear": {"slot": "head", "parts": [0], "warm": 1, "def": 0.0}})
+	_i("bike_helmet", "Bicycle Helmet", "clothing", 0.3, ["cap", "c0392b", "3a3a3a"], {"wear": {"slot": "head", "parts": [0], "warm": 1, "def": 0.25}})
+	_i("combat_helmet", "Combat Helmet", "clothing", 1.3, ["cap", "8a7a50", "5a4a30"], {"wear": {"slot": "head", "parts": [0], "warm": 3, "def": 0.6, "heavy": 1}})
+	_i("goggles", "Safety Goggles", "clothing", 0.1, ["cap", "c8e0e8", "3a3a3a"], {"wear": {"slot": "eyes", "parts": [], "warm": 0, "def": 0.0, "smoke": 0.2}})
+	_i("chef_jacket", "Chef's Jacket", "clothing", 0.5, ["jacket", "f0f0f0", "c8c8c8"], {"wear": {"warm": 5, "def": 0.06}})
+	_i("bathrobe", "Bathrobe", "clothing", 0.8, ["jacket", "f0ece0", "c8c0b0"], {"wear": {"warm": 8, "def": 0.02}})
+	_i("jersey", "Basketball Jersey", "clothing", 0.2, ["jacket", "2a4a8a", "f0f0f0"], {"wear": {"parts": [2, 3], "warm": 1, "def": 0.02}})
+	_i("coveralls", "Work Coveralls", "clothing", 1.0, ["jacket", "6a6a6a", "4a4a4a"], {"wear": {"parts": [2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], "warm": 8, "def": 0.12}})
+	_i("hivis_coveralls", "Hi-Vis Coveralls", "clothing", 1.0, ["jacket", "e07a28", "d8e020"], {"wear": {"parts": [2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], "warm": 8, "def": 0.12}})
+	_i("gym_shorts", "Basketball Shorts", "clothing", 0.2, ["trousers", "2a4a8a", "f0f0f0"], {"wear": {"slot": "legs", "parts": [4, 11, 12], "warm": 1, "def": 0.03}})
+	_i("apron", "Apron", "clothing", 0.2, ["jacket", "f0ece0", "c8c0b0"], {"wear": {"slot": "vest", "parts": [2, 3, 4], "warm": 1, "def": 0.03}})
+	_i("leather_apron", "Leather Apron", "clothing", 1.0, ["jacket", "8a5a38", "6a4428"], {"wear": {"slot": "vest", "parts": [2, 3, 4], "warm": 2, "def": 0.16}})
+	_i("leather_vest", "Leather Vest", "clothing", 0.9, ["jacket", "3a2a20", "1a1a1a"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 3, "def": 0.16}})
+	_i("chest_protector", "Catcher's Chest Protector", "clothing", 1.2, ["jacket", "2a4a8a", "1a2a4a"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 2, "def": 0.3, "heavy": 1}})
+	_i("riot_shin_guards", "Riot Shin Guards", "clothing", 1.0, ["trousers", "2a2a2a", "4a4a4a"], {"wear": {"slot": "shins", "parts": [13, 14], "warm": 1, "def": 0.55, "heavy": 1}})
+	_i("chest_rig", "Chest Rig", "bag", 0.6, ["pack", "4a5a38", "3a4a28"], {"bag": 5})
+	# armour you make: worn over clothes in their own slots (forearms, shins, shoulders)
+	_i("arm_wraps", "Cloth Arm Wraps", "clothing", 0.2, ["rag", "c8b890", "a89870"], {"wear": {"slot": "forearms", "parts": [7, 8], "warm": 1, "def": 0.12}})
+	_i("leather_bracers", "Leather Bracers", "clothing", 0.4, ["rag", "8a5a38", "6a4428"], {"wear": {"slot": "forearms", "parts": [7, 8], "warm": 1, "def": 0.3}})
+	_i("studded_bracers", "Studded Bracers", "clothing", 0.7, ["rag", "6a4428", "9aa0a4"], {"wear": {"slot": "forearms", "parts": [7, 8], "warm": 1, "def": 0.45}})
+	_i("scrap_shin_guards", "Scrap Shin Guards", "clothing", 1.6, ["trousers", "8a9094", "6a7074"], {"wear": {"slot": "shins", "parts": [13, 14], "warm": 0, "def": 0.5, "heavy": 1}})
+	_i("scrap_shoulder_pads", "Scrap Shoulder Pads", "clothing", 1.8, ["jacket", "8a9094", "6a7074"], {"wear": {"slot": "shoulders", "parts": [5, 6], "warm": 0, "def": 0.5, "heavy": 1}})
+	_i("bone", "Animal Bone", "material", 0.3, ["stick", "e8dcc0", "c8b898"], {})
+	_i("bone_bracers", "Bone Bracers", "clothing", 0.6, ["rag", "e8dcc0", "8a5a38"], {"wear": {"slot": "forearms", "parts": [7, 8], "warm": 0, "def": 0.35}})
+	_i("bone_shin_guards", "Bone Shin Guards", "clothing", 0.8, ["trousers", "e8dcc0", "8a5a38"], {"wear": {"slot": "shins", "parts": [13, 14], "warm": 0, "def": 0.35}})
+	_i("bone_chest", "Bone Chestplate", "clothing", 2.2, ["jacket", "e8dcc0", "8a5a38"], {"wear": {"slot": "vest", "parts": [2, 3], "warm": 1, "def": 0.4, "heavy": 1}})
+	_i("bone_mask", "Bone Mask", "clothing", 0.4, ["cap", "e8dcc0", "8a5a38"], {"wear": {"slot": "face", "parts": [0], "warm": 0, "def": 0.25}})
+	_i("bone_shiv", "Bone Shiv", "weapon", 0.2, ["knife", "e8dcc0", "8a5a38"], {"wpn": {"sk": "short_blade", "dmg": [10, 18], "range": 0.95, "swing": 0.5, "dur": 30, "kb": 0.15, "type": "blade", "noise": 2, "crit": 0.22, "spr": 2}, "tags": ["knife"]})
+	_i("bone_club", "Bone Club", "weapon", 0.9, ["bat", "e8dcc0", "5a4028"], {"wpn": {"sk": "short_blunt", "dmg": [12, 22], "range": 1.1, "swing": 0.6, "dur": 60, "kb": 0.6, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 1}})
+	# tools and odds and ends
+	_i("pipe_wrench", "Pipe Wrench", "tool", 1.6, ["wrench", "c0392b", "6a7074"], {"wpn": {"sk": "short_blunt", "dmg": [18, 28], "range": 1.1, "swing": 0.75, "dur": 300, "kb": 0.8, "type": "blunt", "noise": 6, "crit": 0.1, "spr": 3}, "tags": ["wrench"]})
+	_i("hacksaw", "Hacksaw", "tool", 0.5, ["saw", "e0b030", "c8ccd0"], {"tags": ["saw"]})
+	_i("folding_shovel", "Folding Shovel", "weapon", 1.1, ["shovel", "5a6a3a", "6a7074"], {"wpn": {"sk": "long_blunt", "dmg": [14, 24], "range": 1.3, "swing": 0.75, "dur": 90, "kb": 0.8, "type": "blunt", "noise": 5, "crit": 0.08, "spr": 1}, "tags": ["shovel", "dig"]})
+	_i("bolt_cutters", "Bolt Cutters", "tool", 1.6, ["wrench", "c0392b", "3a3a3a"], {"tags": ["pliers", "wire_cutters"]})
+	_i("glowstick", "Glowstick", "tool", 0.05, ["candle", "8ae040", "3a3a3a"], {"uses": 90, "light": 2})
+	_i("playing_cards", "Deck of Cards", "misc", 0.1, ["paper", "c0392b", "f0f0f0"], {"read": 1})
+	_i("hand_bell", "Hand Bell", "misc", 0.4, ["radio", "c8a040", "5a3a20"], {"noise_maker": 22})
+	# vehicle parts: each puts one thing right on a car ("car_fix": what it restores)
+	_i("motor_oil", "Motor Oil", "material", 1.0, ["bottle", "2a2a2a", "e0c040"], {"car_fix": {"eng": 0.08}, "verb": "Top up the engine oil"})
+	_i("spark_plug", "Spark Plug", "material", 0.1, ["wrench", "c8ccd0", "c0392b"], {"car_fix": {"eng": 0.12}})
+	_i("fan_belt", "Fan Belt", "material", 0.2, ["rope", "2a2a2a", "4a4a4a"], {"car_fix": {"eng": 0.15}})
+	_i("air_filter", "Air Filter", "material", 0.4, ["box", "e07a28", "f0ece0"], {"car_fix": {"eng": 0.1}})
+	_i("oil_filter", "Oil Filter", "material", 0.3, ["can", "2a2a2a", "9aa0a4"], {"car_fix": {"eng": 0.1}})
+	_i("fuel_pump", "Fuel Pump", "material", 1.5, ["can", "c8b070", "6a7074"], {"car_fix": {"eng": 0.25}})
+	_i("alternator", "Alternator", "material", 5.0, ["can", "9aa0a4", "6a7074"], {"car_fix": {"eng": 0.3}})
+	_i("starter_motor", "Starter Motor", "material", 4.0, ["can", "6a7074", "9aa0a4"], {"car_fix": {"eng": 0.3}})
+	_i("radiator", "Radiator", "material", 6.0, ["box", "9aa0a4", "6a7074"], {"car_fix": {"eng": 0.3}})
+	_i("windscreen", "Windscreen", "material", 8.0, ["box", "c8e0e8", "9aa0a4"], {"car_fix": {"win": 1.0}})
+	_i("car_door", "Car Door", "material", 9.0, ["box", "c8c0b0", "9aa0a4"], {"car_fix": {"door": 1.0}})
+	_i("spare_wheel", "Spare Wheel", "material", 9.0, ["can", "2a2a2a", "9aa0a4"], {"car_fix": {"tire": 1.0}})
+	_i("headlight_bulb", "Headlight Bulb", "material", 0.05, ["candle", "f0f0e0", "9aa0a4"], {"car_fix": {"lit": 1}})
+	_i("muffler", "Muffler", "material", 6.0, ["can", "8a7a6a", "6a7074"], {"car_fix": {"muf": 1}})
+	# from the last two reference sheets
+	_i("cinnamon_roll", "Cinnamon Roll", "food", 0.15, ["bread", "c89050", "f0e0c0"], {"hunger": 12, "calm": 6, "fresh": 72, "rot": 168, "kcal": 400})
+	_i("cornbread", "Cornbread", "food", 0.3, ["bread", "e0b040", "c08020"], {"hunger": 16, "fresh": 72, "rot": 168, "kcal": 500})
+	_i("corn_dog", "Corn Dog", "food", 0.2, ["bread", "d8a040", "a05030"], {"hunger": 14, "fresh": 24, "rot": 72, "kcal": 350})
+	_i("ice_cream", "Ice Cream", "food", 0.3, ["bar", "f0e8d0", "c89050"], {"hunger": 8, "thirst": 4, "calm": 14, "fresh": 3, "rot": 8, "kcal": 270})
+	_i("cauliflower", "Cauliflower", "food", 0.5, ["veg", "f0ece0", "5a9a3a"], {"hunger": 8, "fresh": 120, "rot": 240, "kcal": 60})
+	_i("condensed_milk", "Condensed Milk", "food", 0.4, ["can", "3c6a9a", "f0f0f0"], {"hunger": 18, "calm": 6, "need": "can_opener", "kcal": 1000})
+	_i("canned_water", "Canned Water", "drink", 0.4, ["can", "3c6a9a", "d0e8f0"], {"thirst": 24})
+	_i("cranberry_juice", "Cranberry Juice", "drink", 0.4, ["box", "c0392b", "f0f0f0"], {"thirst": 24, "hunger": 4, "kcal": 120})
+	_i("cider", "Cider", "drink", 0.5, ["bottle", "4a7a3a", "e0c060"], {"thirst": 14, "calm": 10, "fatigue": 3, "pain": -6, "kcal": 180, "alcohol": 12})
+	_i("coffee_liqueur", "Coffee Liqueur", "drink", 0.7, ["bottle", "3a2418", "e0c080"], {"thirst": -2, "calm": 16, "fatigue": 2, "pain": -10, "uses": 4, "kcal": 160, "alcohol": 20})
+	_i("cigar", "Cigar", "misc", 0.03, ["stick", "6a4028", "c8a060"], {"uses": 3, "smoke": 1})
+	_i("cowboy_hat", "Cowboy Hat", "clothing", 0.2, ["cap", "8a5a38", "f0ece0"], {"wear": {"slot": "head", "parts": [0], "warm": 3, "def": 0.04}})
+	_i("cowboy_boots", "Cowboy Boots", "clothing", 1.0, ["boot", "8a5a38", "5a3a20"], {"wear": {"slot": "feet", "parts": [13, 14, 15, 16], "warm": 5, "def": 0.4}})
+	_i("cardigan", "Cardigan", "clothing", 0.5, ["jacket", "d8c8a0", "a89870"], {"wear": {"warm": 9, "def": 0.06}})
+	_i("chainmail_glove", "Chainmail Glove", "clothing", 0.6, ["glove", "9aa0a4", "6a7074"], {"wear": {"slot": "hands", "parts": [9, 10], "warm": 1, "def": 0.6}})
+	_i("chainmail_sleeve", "Chainmail Sleeve", "clothing", 1.0, ["rag", "9aa0a4", "6a7074"], {"wear": {"slot": "forearms", "parts": [7, 8], "warm": 1, "def": 0.6, "heavy": 1}})
+	_i("chess_set", "Chess Set", "misc", 0.8, ["box", "8a5a38", "f0ece0"], {"read": 1})
+	_make_manuals()
+
+## skills that have a study manual (generated below)
+const MANUAL_SKILLS := ["sprinting", "lightfooted", "nimble", "sneaking", "axe", "long_blunt", "short_blunt", "long_blade", "short_blade", "spear", "maintenance", "reloading",
+	"fishing", "trapping", "tracking", "tailoring", "electrical", "metalworking", "mechanics", "masonry", "blacksmithing", "carving", "knapping", "pottery", "glassmaking", "animal_care", "butchering"]
+static var MANUALS: Array = ["book_carpentry", "book_cooking", "book_farming", "book_firstaid", "book_foraging", "book_aiming"]
+
+static func _make_manuals() -> void:
+	for sk in MANUAL_SKILLS:
+		var id: String = "book_" + sk
+		var hue: float = float(hash(sk) % 360) / 360.0
+		var c: Color = Color.from_hsv(hue, 0.45, 0.6)
+		_i(id, "%s Manual" % sk.capitalize().replace("_", " "), "book", 0.5, ["book", c.to_html(false), "f0ece0"], {"book": sk})
+		MANUALS.append(id)
+
+static func def(id: String) -> Dictionary:
+	return DB.get(id, {})
+
+static func name_of(it: Dictionary) -> String:
+	var d: Dictionary = DB.get(it.get("id", ""), {})
+	return d.get("n", "?")
+
+static func make(id: String, n: int = 1, hour: float = 0.0) -> Dictionary:
+	var d: Dictionary = DB.get(id, {})
+	var it := {"id": id, "n": n}
+	if d.has("uses"):
+		it["u"] = d["uses"]
+	if (d.has("wpn") and d["cat"] != "material") or d.has("wear"):
+		it["c"] = 1.0
+	if d.has("wpn") and d["cat"] != "material":
+		var wt: String = d["wpn"]["type"]
+		if wt == "blade" or wt == "axe" or wt == "spear":
+			it["sh"] = 1.0
+	if d.has("gun"):
+		it["c"] = 1.0
+		it["u"] = 0
+	if d.has("fresh"):
+		it["t"] = hour
+	return it
+
+## items that carry per-instance state and therefore never stack
+static func is_unique(d: Dictionary) -> bool:
+	return d.has("uses") or d.has("gun") or d.has("wear") or (d.has("wpn") and d.get("cat", "") != "material")
+
+## protein contribution of a food (0..40), from an explicit value or a guess by what it is
+static func protein(d: Dictionary) -> float:
+	if d.has("prot"):
+		return float(d["prot"])
+	var icon: String = d.get("icon", [""])[0]
+	var h: float = float(d.get("hunger", 0))
+	if icon == "meat" or icon == "fish" or icon == "egg":
+		return h * 0.9
+	if icon == "can" or icon == "jar" or icon == "pot":
+		return h * 0.5
+	return h * 0.15
+
+## food energy in kcal (explicit, or estimated from how filling it is)
+static func kcal(d: Dictionary) -> float:
+	if d.has("kcal"):
+		return float(d["kcal"])
+	return float(d.get("hunger", 0)) * 17.0
+
+static func weight(it: Dictionary) -> float:
+	var d: Dictionary = DB.get(it.get("id", ""), {})
+	var w: float = d.get("w", 0.1)
+	if d.has("water") and d.has("uses") and int(d["uses"]) > 0:
+		w = 0.1 + (w - 0.1) * float(it.get("u", 0)) / float(d["uses"])
+	return w * float(it.get("n", 1))
+
+## bulk, separate from weight: a plank is light but awkward, a box of nails is heavy and small
+const BULKY := {"plank": 2.0, "log": 5.0, "branch": 1.5, "sheet": 1.0, "rag": 0.3, "baseball_bat": 2.5, "axe": 2.5, "shovel": 3.0, "shotgun": 3.0,
+	"hunting_rifle": 3.0, "sledgehammer": 3.5, "carcass_deer": 30.0, "carcass_boar": 30.0, "carcass_fox": 6.0, "pumpkin": 4.0, "generator_item": 20.0,
+	"car_battery": 4.0, "bedroll_item": 4.0, "gas_can": 3.0, "pipe": 1.8, "fishing_rod": 2.0, "water_bottle": 0.9, "leather_jacket": 2.0, "jacket": 1.6,
+	"windscreen": 8.0, "car_door": 10.0, "spare_wheel": 5.0, "radiator": 3.0, "alternator": 1.5, "starter_motor": 1.2, "muffler": 3.0, "water_jug": 4.0, "cake": 1.5,
+	"pipe_wrench": 1.5, "folding_shovel": 1.5, "bolt_cutters": 1.5, "scrap_shoulder_pads": 2.0, "bone_chest": 2.5, "coveralls": 1.5, "hivis_coveralls": 1.5}
+const WET_PRONE := ["note", "survivor_note", "diary", "bulletin", "local_map", "newspaper", "novel", "comic", "matches", "flour", "bread", "cigarettes", "notebook"]
+
+static func vol(it: Dictionary) -> float:
+	var id: String = it.get("id", "")
+	var d: Dictionary = DB.get(id, {})
+	var each: float
+	if BULKY.has(id): each = float(BULKY[id])
+	elif d.get("cat", "") == "ammo" or id == "nails": each = 0.01
+	elif d.get("cat", "") == "book" or id.begins_with("book_"): each = 0.5
+	elif d.has("bag"): each = 1.0
+	else: each = maxf(0.1, float(d.get("w", 0.1)) * 0.9)
+	return each * float(it.get("n", 1))
+
+static func wet_prone(it: Dictionary) -> bool:
+	var id: String = it.get("id", "")
+	return WET_PRONE.has(id) or DB.get(id, {}).get("cat", "") == "book" or id.begins_with("book_")
+
+## everything worth knowing about one item, in a sentence
+static func inspect_text(it: Dictionary, hour: float) -> String:
+	var d: Dictionary = def(it["id"])
+	var parts: Array = ["%s ×%d, %.1f kg" % [d.get("n", it["id"]), int(it.get("n", 1)), weight(it)]]
+	if it.has("c"): parts.append("condition %d%%" % int(float(it["c"]) * 100.0))
+	if it.has("sh"): parts.append("edge %d%%" % int(float(it["sh"]) * 100.0))
+	if it.has("u") and d.has("uses"): parts.append("%d of %d uses left" % [int(it["u"]), int(d.get("maxuses", d["uses"]))])
+	if d.has("fresh"):
+		parts.append(["fresh", "going stale", "rotten"][fresh_state(it, hour)])
+	if it.has("d"): parts.append("the water is not safe")
+	if d.has("hunger"): parts.append("food value %d" % int(d["hunger"]))
+	if d.has("wpn"):
+		var wp: Dictionary = d["wpn"]
+		parts.append("%s weapon, %d–%d damage, reach %.1f" % [String(wp.get("sk", "")).replace("_", " "), int(wp["dmg"][0]), int(wp["dmg"][1]), float(wp["range"])])
+	if d.has("gun"):
+		parts.append("takes %s, %d rounds" % [def(d["gun"]["ammo"]).get("n", ""), int(d["gun"]["mag"])])
+	if d.has("wear"):
+		parts.append("protects %d%%, warmth %d" % [int(float(d["wear"].get("def", 0.0)) * 100.0), int(d["wear"].get("warm", 0))])
+	if int(it.get("jam", 0)) == 1: parts.append("JAMMED")
+	parts.append("bulk %.1f" % vol(it))
+	if float(it.get("wet", 0.0)) > 0.0: parts.append("SOAKED")
+	return ", ".join(parts) + "."
+
+static func can_stack(a: Dictionary, b: Dictionary) -> bool:
+	if a["id"] != b["id"] or DB.get(a["id"], {}).has("nostack"):
+		return false
+	if a.has("u") or b.has("u") or a.has("c") or b.has("c") or a.has("d") or b.has("d"):
+		return false
+	if a.has("t") and b.has("t"):
+		return absf(float(a["t"]) - float(b["t"])) < 12.0
+	return not a.has("t") and not b.has("t")
+
+## freshness state: 0 fresh, 1 stale, 2 rotten
+static func fresh_state(it: Dictionary, hour: float, cold: bool = false) -> int:
+	var d: Dictionary = DB.get(it.get("id", ""), {})
+	if not d.has("fresh") or not it.has("t"):
+		return 0
+	var age: float = hour - float(it["t"])
+	if age >= float(d["rot"]):
+		return 2
+	if age >= float(d["fresh"]):
+		return 1
+	return 0
+
+static func has_tag(it: Dictionary, tag: String) -> bool:
+	var d: Dictionary = DB.get(it.get("id", ""), {})
+	var tags: Array = d.get("tags", [])
+	return tags.has(tag)
+
+static func describe(it: Dictionary, hour: float) -> String:
+	var d: Dictionary = DB.get(it.get("id", ""), {})
+	var s: String = d.get("n", "?")
+	var bits: Array[String] = []
+	if d.has("fresh"):
+		var st: int = fresh_state(it, hour)
+		bits.append(["fresh", "stale", "rotten"][st])
+	if d.has("raw"):
+		bits.append("raw")
+	if it.has("d"):
+		bits.append("tainted")
+	if it.has("u") and (d.has("uses") or d.has("maxuses") or d.has("gun")):
+		var mx: int = int(d.get("maxuses", d.get("uses", 0)))
+		if d.has("gun"):
+			mx = int(d["gun"]["mag"])
+		bits.append("%d/%d" % [int(it["u"]), mx])
+	if it.has("c") and float(it["c"]) < 0.999:
+		bits.append("%d%%" % int(float(it["c"]) * 100.0))
+	if it.has("sh") and float(it["sh"]) < 0.6:
+		bits.append("dull" if float(it["sh"]) > 0.25 else "blunt")
+	if int(it.get("pt", 0)) > 0:
+		bits.append("patched")
+	if bits.size() > 0:
+		s += " (" + ", ".join(bits) + ")"
+	if int(it.get("n", 1)) > 1:
+		s += " x%d" % int(it["n"])
+	return s
