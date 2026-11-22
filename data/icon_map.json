@@ -1,0 +1,1090 @@
+{
+"alarm_clock": [
+"a",
+259
+],
+"ammo_9mm": [
+"a",
+83
+],
+"antibiotics": [
+"b",
+533
+],
+"antidepressants": [
+"b",
+533
+],
+"apple": [
+"a",
+341
+],
+"aspirin": [
+"b",
+534
+],
+"axe": [
+"b",
+99
+],
+"backpack": [
+"a",
+2
+],
+"balaclava": [
+"a",
+23
+],
+"bandana": [
+"b",
+28
+],
+"baseball_cap": [
+"a",
+18
+],
+"battery": [
+"a",
+82
+],
+"beanie": [
+"a",
+20
+],
+"beans": [
+"a",
+465
+],
+"bedroll_item": [
+"a",
+65
+],
+"beer": [
+"a",
+329
+],
+"beet": [
+"b",
+334
+],
+"berries": [
+"a",
+409
+],
+"beta_blockers": [
+"b",
+536
+],
+"binoculars": [
+"a",
+75
+],
+"blueberries": [
+"a",
+464
+],
+"book_aiming": [
+"a",
+418
+],
+"book_carpentry": [
+"a",
+418
+],
+"book_cooking": [
+"a",
+418
+],
+"book_farming": [
+"a",
+418
+],
+"book_firstaid": [
+"a",
+418
+],
+"book_foraging": [
+"a",
+418
+],
+"boots": [
+"a",
+29
+],
+"branch": [
+"a",
+436
+],
+"bread": [
+"a",
+353
+],
+"brick": [
+"a",
+473
+],
+"bucket": [
+"b",
+446
+],
+"bulletin": [
+"b",
+541
+],
+"cabbage": [
+"b",
+365
+],
+"calming_tea": [
+"a",
+334
+],
+"canned_beans": [
+"b",
+391
+],
+"canned_carrots": [
+"b",
+394
+],
+"canned_chili": [
+"b",
+392
+],
+"canned_corn": [
+"b",
+394
+],
+"canned_ham": [
+"b",
+391
+],
+"canned_peaches": [
+"a",
+318
+],
+"canned_pears": [
+"a",
+481
+],
+"canned_soup": [
+"b",
+392
+],
+"canned_spaghetti": [
+"b",
+393
+],
+"canned_tuna": [
+"b",
+402
+],
+"car_battery": [
+"a",
+113
+],
+"carcass_bird": [
+"a",
+416
+],
+"carcass_boar": [
+"a",
+428
+],
+"carcass_chicken": [
+"a",
+415
+],
+"carcass_crow": [
+"a",
+415
+],
+"carcass_deer": [
+"a",
+427
+],
+"carcass_dog": [
+"a",
+417
+],
+"carcass_duck": [
+"a",
+415
+],
+"carcass_fox": [
+"a",
+417
+],
+"carcass_frog": [
+"a",
+415
+],
+"carcass_goose": [
+"a",
+416
+],
+"carcass_hare": [
+"a",
+415
+],
+"carcass_mouse": [
+"a",
+416
+],
+"carcass_pigeon": [
+"a",
+417
+],
+"carcass_rabbit": [
+"a",
+415
+],
+"carcass_rat": [
+"a",
+417
+],
+"carcass_snake": [
+"a",
+416
+],
+"carcass_squirrel": [
+"a",
+416
+],
+"carcass_turkey": [
+"a",
+417
+],
+"cargo_pants": [
+"a",
+49
+],
+"carrot": [
+"b",
+333
+],
+"cereal": [
+"a",
+513
+],
+"charcoal": [
+"a",
+545
+],
+"cheese": [
+"a",
+376
+],
+"chips": [
+"a",
+478
+],
+"chocolate": [
+"a",
+479
+],
+"clay_pot": [
+"a",
+537
+],
+"cleaver": [
+"a",
+166
+],
+"cocoa": [
+"a",
+480
+],
+"coffee": [
+"a",
+480
+],
+"cold_medicine": [
+"b",
+535
+],
+"comic": [
+"a",
+483
+],
+"cooked_bird": [
+"b",
+426
+],
+"cooked_chicken": [
+"a",
+395
+],
+"cooked_corn": [
+"b",
+434
+],
+"cooked_egg": [
+"a",
+379
+],
+"cooked_fish": [
+"a",
+400
+],
+"cooked_pork": [
+"a",
+386
+],
+"cooked_rabbit": [
+"a",
+395
+],
+"cooked_small_game": [
+"a",
+378
+],
+"cooked_steak": [
+"b",
+430
+],
+"cooked_venison": [
+"b",
+429
+],
+"cooking_pot": [
+"a",
+539
+],
+"corn": [
+"b",
+432
+],
+"crackers": [
+"a",
+335
+],
+"crank_radio": [
+"b",
+92
+],
+"crowbar": [
+"a",
+132
+],
+"cucumber": [
+"b",
+361
+],
+"diary": [
+"a",
+483
+],
+"disinfectant": [
+"b",
+497
+],
+"dog_food": [
+"a",
+516
+],
+"dried_fruit": [
+"a",
+479
+],
+"duffel_bag": [
+"a",
+5
+],
+"dust_mask": [
+"b",
+475
+],
+"egg": [
+"b",
+390
+],
+"empty_can": [
+"b",
+402
+],
+"energy_drink": [
+"a",
+489
+],
+"evac_flyer": [
+"b",
+542
+],
+"fertilizer": [
+"a",
+567
+],
+"fire_axe": [
+"a",
+122
+],
+"fire_extinguisher": [
+"a",
+107
+],
+"firefighter_coat": [
+"a",
+45
+],
+"first_aid_kit": [
+"b",
+78
+],
+"first_aid_pouch": [
+"b",
+78
+],
+"fishing_rod": [
+"a",
+189
+],
+"flashlight": [
+"a",
+76
+],
+"fleece": [
+"a",
+37
+],
+"flour": [
+"a",
+323
+],
+"frying_pan": [
+"a",
+100
+],
+"gas_can": [
+"a",
+93
+],
+"gas_mask": [
+"a",
+13
+],
+"generator_item": [
+"a",
+172
+],
+"glass_jar": [
+"b",
+401
+],
+"glass_pane": [
+"b",
+183
+],
+"hammer": [
+"b",
+100
+],
+"hand_saw": [
+"b",
+127
+],
+"hard_hat": [
+"a",
+21
+],
+"hatchet": [
+"a",
+121
+],
+"headlamp": [
+"a",
+15
+],
+"herbs": [
+"a",
+462
+],
+"hiking_boots": [
+"a",
+30
+],
+"hiking_pack": [
+"b",
+7
+],
+"honey": [
+"a",
+482
+],
+"hoodie": [
+"b",
+42
+],
+"hospital_note": [
+"b",
+544
+],
+"hunting_knife": [
+"b",
+119
+],
+"instant_noodles": [
+"a",
+478
+],
+"inventory_list": [
+"b",
+542
+],
+"iodine": [
+"b",
+500
+],
+"jacket": [
+"a",
+41
+],
+"jam": [
+"a",
+510
+],
+"jeans": [
+"a",
+52
+],
+"jerky": [
+"a",
+371
+],
+"juice": [
+"a",
+496
+],
+"kevlar_vest": [
+"a",
+9
+],
+"kitchen_knife": [
+"b",
+117
+],
+"lab_report": [
+"b",
+544
+],
+"lantern": [
+"a",
+72
+],
+"leather": [
+"a",
+427
+],
+"leather_gloves": [
+"a",
+25
+],
+"leather_jacket": [
+"a",
+42
+],
+"letter": [
+"b",
+541
+],
+"lettuce": [
+"b",
+364
+],
+"lighter": [
+"a",
+77
+],
+"local_map": [
+"b",
+543
+],
+"machete": [
+"b",
+125
+],
+"maintenance_log": [
+"b",
+543
+],
+"metal_bar": [
+"a",
+472
+],
+"military_pack": [
+"b",
+11
+],
+"milk": [
+"a",
+512
+],
+"moto_helmet": [
+"b",
+18
+],
+"motorcycle_jacket": [
+"a",
+44
+],
+"mushroom": [
+"a",
+351
+],
+"newspaper": [
+"a",
+422
+],
+"noodle_soup": [
+"a",
+524
+],
+"note": [
+"b",
+541
+],
+"notebook": [
+"a",
+483
+],
+"novel": [
+"a",
+483
+],
+"oats": [
+"a",
+513
+],
+"onion": [
+"a",
+461
+],
+"orange": [
+"a",
+339
+],
+"oyster_mushroom": [
+"a",
+380
+],
+"padded_jacket": [
+"b",
+49
+],
+"padded_trousers": [
+"a",
+48
+],
+"painkillers": [
+"a",
+514
+],
+"pasta": [
+"a",
+324
+],
+"pasta_bowl": [
+"a",
+524
+],
+"pea": [
+"a",
+465
+],
+"peanut_butter": [
+"a",
+481
+],
+"pepper": [
+"a",
+452
+],
+"pickles": [
+"a",
+321
+],
+"plank": [
+"a",
+196
+],
+"plastic_sheet": [
+"a",
+70
+],
+"pliers": [
+"a",
+137
+],
+"pocket_knife": [
+"b",
+118
+],
+"potato": [
+"b",
+369
+],
+"powdered_milk": [
+"a",
+512
+],
+"preserves": [
+"a",
+318
+],
+"pumpkin": [
+"b",
+440
+],
+"pumpkin_soup": [
+"a",
+384
+],
+"radio": [
+"a",
+89
+],
+"radio_transcript": [
+"b",
+541
+],
+"raincoat": [
+"a",
+46
+],
+"raw_bird": [
+"a",
+372
+],
+"raw_chicken": [
+"a",
+520
+],
+"raw_fish": [
+"a",
+367
+],
+"raw_pork": [
+"a",
+358
+],
+"raw_rabbit": [
+"a",
+359
+],
+"raw_small_game": [
+"a",
+372
+],
+"raw_steak": [
+"a",
+362
+],
+"raw_venison": [
+"a",
+521
+],
+"recipe_note": [
+"b",
+542
+],
+"rice": [
+"a",
+325
+],
+"rice_bowl": [
+"b",
+386
+],
+"riot_helmet": [
+"a",
+16
+],
+"road_atlas": [
+"a",
+418
+],
+"roast_veg": [
+"b",
+396
+],
+"rope": [
+"a",
+109
+],
+"rubber_boots": [
+"a",
+33
+],
+"salt": [
+"a",
+323
+],
+"sand": [
+"a",
+568
+],
+"sardines": [
+"b",
+393
+],
+"satchel": [
+"a",
+6
+],
+"saw": [
+"a",
+148
+],
+"scarf": [
+"a",
+27
+],
+"school_bag": [
+"a",
+4
+],
+"scissors": [
+"a",
+391
+],
+"scrap_metal": [
+"b",
+177
+],
+"screwdriver": [
+"a",
+157
+],
+"seeds_apple": [
+"b",
+348
+],
+"seeds_beans": [
+"b",
+349
+],
+"seeds_beet": [
+"b",
+347
+],
+"seeds_blueberries": [
+"b",
+349
+],
+"seeds_cabbage": [
+"b",
+347
+],
+"seeds_carrot": [
+"b",
+348
+],
+"seeds_corn": [
+"b",
+346
+],
+"seeds_cucumber": [
+"b",
+349
+],
+"seeds_garlic": [
+"b",
+347
+],
+"seeds_herbs": [
+"b",
+346
+],
+"seeds_lettuce": [
+"b",
+348
+],
+"seeds_onion": [
+"b",
+347
+],
+"seeds_oyster_mushroom": [
+"b",
+347
+],
+"seeds_pea": [
+"b",
+346
+],
+"seeds_pepper": [
+"b",
+346
+],
+"seeds_potato": [
+"b",
+346
+],
+"seeds_pumpkin": [
+"b",
+349
+],
+"seeds_radish": [
+"b",
+346
+],
+"seeds_spinach": [
+"b",
+348
+],
+"seeds_squash": [
+"b",
+348
+],
+"seeds_strawberry": [
+"b",
+348
+],
+"seeds_sunflower": [
+"b",
+349
+],
+"seeds_tomato": [
+"b",
+349
+],
+"seeds_wheat": [
+"b",
+347
+],
+"sheet_metal": [
+"a",
+204
+],
+"shells": [
+"b",
+90
+],
+"shorts": [
+"b",
+52
+],
+"shovel": [
+"b",
+108
+],
+"sledgehammer": [
+"a",
+167
+],
+"sleeping_pills": [
+"b",
+535
+],
+"smoked_fish": [
+"a",
+554
+],
+"smoked_meat": [
+"b",
+431
+],
+"snare": [
+"a",
+547
+],
+"soda": [
+"a",
+489
+],
+"spinach": [
+"b",
+363
+],
+"squash": [
+"b",
+442
+],
+"stew": [
+"a",
+523
+],
+"stone": [
+"a",
+404
+],
+"strawberry": [
+"b",
+367
+],
+"sugar": [
+"a",
+325
+],
+"sunflower": [
+"b",
+337
+],
+"survivor_note": [
+"b",
+541
+],
+"tarp": [
+"a",
+69
+],
+"tea": [
+"a",
+334
+],
+"tire_iron": [
+"a",
+133
+],
+"tomato": [
+"b",
+328
+],
+"trowel": [
+"b",
+112
+],
+"twine": [
+"a",
+110
+],
+"vitamins": [
+"b",
+534
+],
+"watering_can": [
+"a",
+177
+],
+"wheat": [
+"a",
+317
+],
+"whiskey": [
+"a",
+551
+],
+"wine": [
+"a",
+330
+],
+"winter_coat": [
+"a",
+35
+],
+"wire": [
+"b",
+193
+],
+"wire_cutters": [
+"a",
+140
+],
+"wool_hat": [
+"a",
+19
+],
+"work_gloves": [
+"a",
+24
+]
+}
