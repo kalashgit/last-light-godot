@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_sauce_bottle",
+  "source_glb_sha256": "a43ba9e4c51a472f703e1742bb34028a52c469e6e49c31d435a72f2169248e4f",
+  "atlas_sha256": "cbbd9e60e09652ee4a9d53ebe4f7091b81a3ae1abb2d9120d4b698091797cf1f",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2792982,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
