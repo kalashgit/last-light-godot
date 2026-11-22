@@ -1,0 +1,42 @@
+{
+  "run_id": "44998470329",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 92,
+  "remaining": 268,
+  "generated": [
+    {
+      "asset_id": "ll_food_salt_box",
+      "source_glb_sha256": "30eedd1548199144735cab7735624fef61e6b27b2250300d8ff60c793cf1dc0f",
+      "atlas_sha256": "b4e935e83628f7c85f52adfd969b5eb5364f0df2c2835039f63936fc3db4b860",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2700585,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_sardine_tin",
+      "source_glb_sha256": "5ad3c0339a42e6d6d8e4eb4422899939ffd8fef44ce0b5c18f354ddf053b4797",
+      "atlas_sha256": "e6b308771b6e4db2153329f9a8e46b8063dfa78bab9f2e9bb63ed9d177e33b25",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2707901,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

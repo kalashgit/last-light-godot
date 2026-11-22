@@ -92,9 +92,11 @@
     "ll_food_pet_food_tin",
     "ll_food_pickle_jar",
     "ll_food_powdered_milk",
-    "ll_food_rice_bag"
+    "ll_food_rice_bag",
+    "ll_food_salt_box",
+    "ll_food_sardine_tin"
   ],
-  "last_run_id": "44966236833",
+  "last_run_id": "44998470329",
   "golden_approved": false,
-  "remaining": 270
+  "remaining": 268
 }

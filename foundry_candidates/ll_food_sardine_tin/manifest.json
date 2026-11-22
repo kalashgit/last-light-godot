@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_sardine_tin",
+  "source_glb_sha256": "5ad3c0339a42e6d6d8e4eb4422899939ffd8fef44ce0b5c18f354ddf053b4797",
+  "atlas_sha256": "e6b308771b6e4db2153329f9a8e46b8063dfa78bab9f2e9bb63ed9d177e33b25",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2707901,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
