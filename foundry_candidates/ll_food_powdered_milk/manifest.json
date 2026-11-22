@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_powdered_milk",
+  "source_glb_sha256": "8a91e4b5eaea843c1074a484ac0e790e93b41680f57794f7cc0e1c38877ec2b8",
+  "atlas_sha256": "cdeefacba277f3b4134fe47b405bc04f6a3b1d4a1ca2349ffa3bd966f577fa11",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2707910,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

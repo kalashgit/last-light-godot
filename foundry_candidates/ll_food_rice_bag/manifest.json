@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_rice_bag",
+  "source_glb_sha256": "03a20d839b99809c0e54af0b2ebb1069b11c513ee4a0810d253f930e0cd199cd",
+  "atlas_sha256": "f89945d0e116d7c81c28f70066f427998528c2c03467c0b28f392ca5d31efca2",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2721622,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

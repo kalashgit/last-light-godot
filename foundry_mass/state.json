@@ -90,9 +90,11 @@
     "ll_food_peach_tin",
     "ll_food_peanut_butter",
     "ll_food_pet_food_tin",
-    "ll_food_pickle_jar"
+    "ll_food_pickle_jar",
+    "ll_food_powdered_milk",
+    "ll_food_rice_bag"
   ],
-  "last_run_id": "44942938677",
+  "last_run_id": "44966236833",
   "golden_approved": false,
-  "remaining": 272
+  "remaining": 270
 }
