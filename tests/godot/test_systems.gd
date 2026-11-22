@@ -1717,6 +1717,48 @@ func _init() -> void:
 	ok(float(Sfx.bed_targets(bs_g)["bed_tension"]) > -25.0, "the drone rises when the infected are close")
 	sfx_n_g.queue_free()
 
+	print("== health comes back when you are fed, watered and well")
+	var rgs := Sim.new(4242)
+	rgs.new_game("unemployed", [], "house")
+	quiet(rgs)
+	rgs.settings["god"] = false
+	var rgp: Player = rgs.player
+	rgp.hunger = 8.0
+	rgp.thirst = 8.0
+	rgp.hp = 50.0
+	run(rgs, 300.0)
+	ok(rgp.hp > 70.0, "a fed, watered survivor resting for five minutes mends from 50 to %d health" % int(rgp.hp))
+	ok(rgp.moodles().any(func(m): return m[0] == "healing") and rgp.moodles().any(func(m): return m[0] == "wellfed"), "and the HUD shows Well fed and Recovering")
+	rgp.hunger = 8.0
+	rgp.thirst = 8.0
+	var r_fed_h: float = rgp.regen_rate()
+	rgp.hunger = 30.0
+	var r_ok_h: float = rgp.regen_rate()
+	rgp.hunger = 60.0
+	var r_hungry_h: float = rgp.regen_rate()
+	rgp.hunger = 85.0
+	var r_starving_h: float = rgp.regen_rate()
+	ok(r_fed_h > r_ok_h and r_ok_h > r_hungry_h and r_hungry_h > 0.0 and r_starving_h == 0.0,
+		"well fed mends fastest (%.1f an hour), satisfied less (%.1f), hungry slowly (%.1f), starving not at all" % [r_fed_h, r_ok_h, r_hungry_h])
+	rgp.hunger = 8.0
+	rgp.thirst = 80.0
+	ok(rgp.regen_rate() == 0.0, "nor parched")
+	rgp.thirst = 8.0
+	ok(rgp.regen_rate(1.0) == 0.0, "nor while bleeding")
+	rgp.infection = 0.1
+	ok(rgp.regen_rate() == 0.0, "nor with the fever")
+	rgp.infection = -1.0
+	rgp.sick = 40.0
+	ok(rgp.regen_rate() == 0.0, "nor sick from bad food")
+	rgp.sick = 0.0
+	rgp.sleeping = true
+	ok(rgp.regen_rate() > r_fed_h * 1.5, "and sleep mends fastest of all (%.1f an hour)" % rgp.regen_rate())
+	rgp.sleeping = false
+	rgp.hunger = 70.0
+	var n_hungry_h: float = rgp.nourish()
+	rgp.hunger = 8.0
+	ok(rgp.nourish() > n_hungry_h * 1.5, "wounds close faster on a full stomach too")
+
 	print("== settings and save files")
 	Opts.vibrate = false
 	ok(not Opts.buzz(50), "with vibration off, nothing buzzes")

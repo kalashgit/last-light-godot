@@ -383,10 +383,15 @@ static func _icon(shape: String, a: Color, b: Color) -> Painter:
 ## moodle pictograms (white glyph, tinted by severity colour in HUD)
 static func _gen_moodles() -> void:
 	var w := Color.WHITE
-	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored", "sad", "stress", "drunk", "strain", "windchill", "discomfort"]
+	var names := ["hungry", "thirsty", "tired", "panic", "pain", "bleeding", "sick", "cold", "hot", "wet", "heavy", "injured", "infected", "exhausted", "stuffed", "bored", "sad", "stress", "drunk", "strain", "windchill", "discomfort", "wellfed", "healing"]
 	for nm in names:
 		var p := Painter.new(S, S)
 		match nm:
+			"wellfed":
+				p.ellipse(12, 15, 8, 4.5, w); p.rect(4, 11, 17, 4, w)
+				p.line(9, 4, 8, 8, w); p.line(13, 3, 12, 8, w); p.line(16, 4, 15, 8, w)
+			"healing":
+				p.rect(10, 4, 5, 16, w); p.rect(4, 10, 17, 5, w)
 			"hungry":
 				p.rect(6, 4, 1, 8, w); p.rect(8, 4, 1, 8, w); p.rect(10, 4, 1, 8, w); p.rect(7, 11, 3, 2, w); p.rect(8, 12, 1, 9, w)
 				p.ellipse(16, 8, 2.5, 4.5, w); p.rect(16, 11, 1, 10, w)

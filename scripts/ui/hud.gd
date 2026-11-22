@@ -444,7 +444,7 @@ func _draw() -> void:
 	var tex: Texture2D = Art.icons.texture
 	for m in p.moodles():
 		var lvl: int = clampi(int(m[1]), 1, 4)
-		var col: Color = MOODLE_COLORS[lvl - 1]
+		var col: Color = MOODLE_COLORS[lvl - 1] if int(m[1]) > 0 else Color(0.42, 0.78, 0.4)
 		draw_rect(Rect2(x0, my, 42, 42), Color(0.05, 0.06, 0.06, 0.7))
 		draw_rect(Rect2(x0 + 2, my + 2, 38, 38), Color(col.r, col.g, col.b, 0.85))
 		var h: int = Art.misc.get("m_" + String(m[0]), -1)

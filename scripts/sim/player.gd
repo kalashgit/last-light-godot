@@ -63,6 +63,7 @@ var pos := Vector2.ZERO
 var facing := Vector2(0.7071, 0.7071)
 var dir8 := 0
 var hp := 100.0
+var regen := 0.0                 # how fast health is coming back now (hp per game hour), for the moodles and tests
 var alive := true
 var death_cause := ""
 var hunger := 8.0
@@ -1104,7 +1105,7 @@ func tick_needs(dh: float) -> void:
 			wd["bleed_h"] = float(wd["bleed_h"]) - dh
 		if wd["band"]:
 			wd["dirty"] = float(wd["dirty"]) + dh * (1.0 + grime / 60.0)
-		var heal_rate: float = (1.5 if wd["band"] else 1.0) * (1.8 if wd["stitch"] or wd["splint"] else 1.0) * (1.0 + fa * 0.03) * tmod("heal") * (1.15 if hunger < 15.0 else 1.0) * (0.85 if protein < 20.0 else 1.0) * (0.0 if wd.get("glass", false) else 1.0)
+		var heal_rate: float = (1.5 if wd["band"] else 1.0) * (1.8 if wd["stitch"] or wd["splint"] else 1.0) * (1.0 + fa * 0.03) * tmod("heal") * nourish() * (1.5 if sleeping else 1.0) * (0.0 if wd.get("glass", false) else 1.0)
 		if wd["inf"]:
 			heal_rate = 0.0
 			hp -= dh * 0.6
@@ -1147,11 +1148,14 @@ func tick_needs(dh: float) -> void:
 		if infection >= 1.0 and not sim.settings.get("god", false):
 			die("Succumbed to the Grey Fever")
 			return
+	regen = 0.0
 	if drain > 0.0:
 		if not sim.settings.get("god", false):
 			hp -= drain * dh
-	elif bleeding <= 0.0 and hunger < 60.0 and thirst < 60.0 and hp < 100.0:
-		hp = minf(100.0, hp + dh * (2.2 + (1.5 if sleeping else 0.0) + (1.0 if hunger < 20.0 else 0.0)))
+	else:
+		regen = regen_rate(bleeding)
+		if hp < 100.0 and regen > 0.0:
+			hp = minf(100.0, hp + dh * regen)
 	# temperature & wetness
 	var px: int = floori(pos.x)
 	var py: int = floori(pos.y)
@@ -1209,6 +1213,9 @@ func moodles() -> Array:
 		if float(wd["bleed_h"]) > 0.0 and not wd["band"] and not wd["stitch"]:
 			bleeding = true
 	if bleeding: m.append(["bleeding", 3, "Bleeding"])
+	# the good ones, in green (level 0): well fed, and mending
+	if hunger < 15.0 and thirst < 40.0: m.append(["wellfed", 0, "Well fed"])
+	if hp < 99.5 and regen > 0.0: m.append(["healing", 0, "Recovering (+%d health an hour)" % int(round(regen))])
 	if hp < 75.0: m.append(["injured", 1 + int(hp < 55.0) + int(hp < 35.0) + int(hp < 18.0), "Injured"])
 	if sick > 20.0 or infection > 0.25: m.append(["sick", 1 + int(sick > 45.0 or infection > 0.5) + int(sick > 70.0 or infection > 0.7) + int(infection > 0.85), "Sick"])
 	if grime > 60.0: m.append(["dirty", 1 + int(grime > 80.0) + int(grime > 95.0), "Filthy"])
@@ -1306,6 +1313,51 @@ func _sneeze(dt: float) -> void:
 		sim.noise(pos, 9.0)
 		sim.emit_fx("sneeze", pos)
 		sim.say("You sneeze", Color(0.8, 0.8, 1.0))
+
+## how well fed and watered the body is, for healing: up to 1.5 well fed and watered, down to 0.4
+## hungry or thirsty (wounds still close, slowly), low protein and a starved frame slow it further
+func nourish() -> float:
+	var k := 1.0
+	if hunger < 15.0: k *= 1.3
+	elif hunger < 35.0: k *= 1.1
+	elif hunger > 75.0: k *= 0.5
+	elif hunger > 55.0: k *= 0.75
+	if thirst < 25.0: k *= 1.1
+	elif thirst > 75.0: k *= 0.6
+	elif thirst > 55.0: k *= 0.8
+	if protein < 20.0: k *= 0.85
+	if weight < 60.0: k *= 0.75
+	return clampf(k, 0.4, 1.5)
+
+## health regained per game hour, as the body is now (as in the survival games this follows: a fed,
+## watered, rested survivor mends quickly; a hungry, thirsty, sick or bleeding one does not).
+## A game hour is 2.5 real minutes on the default 60-minute day.
+func regen_rate(bleeding: float = 0.0) -> float:
+	if not alive or bleeding > 0.0:
+		return 0.0                                   # blood loss outruns any mending
+	if infection >= 0.0 or sick > 30.0 or cold_h > 0.0 and sick > 10.0:
+		return 0.0                                   # the fever, food poisoning or a bad cold
+	if hunger >= 75.0 or thirst >= 70.0:
+		return 0.0                                   # nothing to rebuild with
+	var r := 6.0
+	if hunger < 15.0: r *= 1.6                       # well fed
+	elif hunger < 35.0: r *= 1.25                    # satisfied
+	elif hunger >= 55.0: r *= 0.5                    # hungry
+	if thirst < 30.0: r *= 1.1
+	elif thirst >= 50.0: r *= 0.5
+	if sleeping: r *= 2.2
+	elif anim == "s_idle" and swing_t <= 0.0: r *= 1.25      # resting
+	if fatigue > 70.0: r *= 0.7
+	if endurance < 25.0: r *= 0.7
+	if pain > 50.0: r *= 0.75
+	if sick > 10.0: r *= 0.5
+	for wd in wounds:
+		if wd["inf"]:
+			r *= 0.3                                 # an infected wound saps the body
+			break
+	if protein < 20.0: r *= 0.85
+	if weight < 60.0: r *= 0.7
+	return r * tmod("heal")
 
 func weight_note() -> String:
 	if weight < 60.0: return "emaciated"
