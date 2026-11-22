@@ -96,9 +96,11 @@
     "ll_food_salt_box",
     "ll_food_sardine_tin",
     "ll_food_sauce_bottle",
-    "ll_food_soda_bottle"
+    "ll_food_soda_bottle",
+    "ll_food_soup_sachet",
+    "ll_food_stew_tin"
   ],
-  "last_run_id": "45039782582",
+  "last_run_id": "45071324518",
   "golden_approved": false,
-  "remaining": 266
+  "remaining": 264
 }

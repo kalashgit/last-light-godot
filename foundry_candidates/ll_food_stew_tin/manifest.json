@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_stew_tin",
+  "source_glb_sha256": "e8be8c63bd481410dedc1343a1bbe1e9543d4016ff137bca5191b03d42d69801",
+  "atlas_sha256": "6e1e4fe3ff9a92da8f894ab30ee1c9e7dde54dd9fbf60476e9ba304347d50523",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2787554,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
