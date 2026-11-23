@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_tuna_tin",
+  "source_glb_sha256": "e4df13d7016aed8219bd127d48b4a2bb0d3280a5cde9718d785d93f90c20e2aa",
+  "atlas_sha256": "98a59b302f3d58e44620a0c912e252173878ec9164e1f28c174c2d8f4c750b92",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2794709,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

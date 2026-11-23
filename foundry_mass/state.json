@@ -102,9 +102,11 @@
     "ll_food_sugar_bag",
     "ll_food_syrup_bottle",
     "ll_food_tea_box",
-    "ll_food_tea_tin"
+    "ll_food_tea_tin",
+    "ll_food_tomato_soup",
+    "ll_food_tuna_tin"
   ],
-  "last_run_id": "45159675425",
+  "last_run_id": "45281965905",
   "golden_approved": false,
-  "remaining": 260
+  "remaining": 258
 }

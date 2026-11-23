@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_tomato_soup",
+  "source_glb_sha256": "bb4baee1e9cced4b02209cb4a920b6570ea07b44846881e45cbeafaf6c8f45cf",
+  "atlas_sha256": "01118c13c50fdf99b5524119cf1707562799cda5da73dd9f8abf7830b1df3321",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2787572,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
