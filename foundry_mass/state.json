@@ -98,9 +98,11 @@
     "ll_food_sauce_bottle",
     "ll_food_soda_bottle",
     "ll_food_soup_sachet",
-    "ll_food_stew_tin"
+    "ll_food_stew_tin",
+    "ll_food_sugar_bag",
+    "ll_food_syrup_bottle"
   ],
-  "last_run_id": "45071324518",
+  "last_run_id": "45097593927",
   "golden_approved": false,
-  "remaining": 264
+  "remaining": 262
 }

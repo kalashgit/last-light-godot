@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_sugar_bag",
+  "source_glb_sha256": "64549926825f629d336e0b268f24ff89b245c3fe73b2304f800feb01a9053131",
+  "atlas_sha256": "a2b2481cc0a2846bcea2527578d4d499c5eb8b0ace317fab629dc4b816f7cd0d",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2721631,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

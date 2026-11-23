@@ -1,0 +1,42 @@
+{
+  "run_id": "45097593927",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 98,
+  "remaining": 262,
+  "generated": [
+    {
+      "asset_id": "ll_food_sugar_bag",
+      "source_glb_sha256": "64549926825f629d336e0b268f24ff89b245c3fe73b2304f800feb01a9053131",
+      "atlas_sha256": "a2b2481cc0a2846bcea2527578d4d499c5eb8b0ace317fab629dc4b816f7cd0d",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2721631,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_food_syrup_bottle",
+      "source_glb_sha256": "44261c7259a0f5f5911bb63db82c1e72c78d9d15070aee26d5d6fe10e67c7fc5",
+      "atlas_sha256": "4bb40d222552515629fc3a9e3795e5af1a2be236aa3e9b8f0842166009492a1a",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2706147,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
