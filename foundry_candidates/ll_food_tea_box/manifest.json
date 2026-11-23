@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_tea_box",
+  "source_glb_sha256": "86c10277331303ba055cf3bbf30c7698ef463cb07a1ee8e25b886ea0b18b12b4",
+  "atlas_sha256": "fabe497d23f2c9ecf284f922ba1d698b6cbc71ec2e5aea9c19b1c8b1bd8c92a0",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2700576,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

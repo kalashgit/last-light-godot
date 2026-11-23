@@ -100,9 +100,11 @@
     "ll_food_soup_sachet",
     "ll_food_stew_tin",
     "ll_food_sugar_bag",
-    "ll_food_syrup_bottle"
+    "ll_food_syrup_bottle",
+    "ll_food_tea_box",
+    "ll_food_tea_tin"
   ],
-  "last_run_id": "45097593927",
+  "last_run_id": "45159675425",
   "golden_approved": false,
-  "remaining": 262
+  "remaining": 260
 }

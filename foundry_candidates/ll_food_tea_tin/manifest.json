@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_tea_tin",
+  "source_glb_sha256": "86016678b2b948104527d75ad2ede5f887e3b983ad1d8ecc554e62ca454ff623",
+  "atlas_sha256": "cdc06d6a0c735533a697b82de1e23bea029b70248dd729a4f5857ba387731047",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2787545,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
