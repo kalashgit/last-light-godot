@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_vinegar_bottle",
+  "source_glb_sha256": "ef6bfaaacbe37608ca564b32b169998f7083814c939217be1f2f4d3e295618ad",
+  "atlas_sha256": "812d7d15ef20618333aa832fee427d948603918c4a2f9b629cb03ca0e55a84be",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2706165,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

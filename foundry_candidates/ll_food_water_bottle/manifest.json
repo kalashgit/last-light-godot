@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_water_bottle",
+  "source_glb_sha256": "d7664a0e970f438c9dbb458c5d3847f8b8faa76b4978faace6191991a3d5fc6a",
+  "atlas_sha256": "5c47a5b3e4342c4e6d5b1ca48fe4f62650a69b18bf5b6f64fc75fedec5e287e7",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2785827,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

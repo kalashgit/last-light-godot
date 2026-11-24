@@ -104,9 +104,11 @@
     "ll_food_tea_box",
     "ll_food_tea_tin",
     "ll_food_tomato_soup",
-    "ll_food_tuna_tin"
+    "ll_food_tuna_tin",
+    "ll_food_vinegar_bottle",
+    "ll_food_water_bottle"
   ],
-  "last_run_id": "45281965905",
+  "last_run_id": "45340565500",
   "golden_approved": false,
-  "remaining": 258
+  "remaining": 256
 }
