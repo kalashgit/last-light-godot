@@ -1,0 +1,42 @@
+{
+  "run_id": "45458722422",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 106,
+  "remaining": 254,
+  "generated": [
+    {
+      "asset_id": "ll_food_yeast_sachet",
+      "source_glb_sha256": "3e905f1d03abe099995aa6daa1b1624d7ee26918c3ac141da010be812dc61e39",
+      "atlas_sha256": "9332944cc968ebfef0ededae163de4eb0b65cfab65cb825fe4829f8b025c87b6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2724016,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_armchair",
+      "source_glb_sha256": "370e852418c5b3a0dc3684b6ae834ebf86f80a9b66f5dc4b2102519eab8b4aee",
+      "atlas_sha256": "3c7bfbfc4d76871bf6adcfcd19b7f1b031edb438328f61d9043fee5fa5134087",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2740470,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

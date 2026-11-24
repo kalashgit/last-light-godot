@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_food_yeast_sachet",
+  "source_glb_sha256": "3e905f1d03abe099995aa6daa1b1624d7ee26918c3ac141da010be812dc61e39",
+  "atlas_sha256": "9332944cc968ebfef0ededae163de4eb0b65cfab65cb825fe4829f8b025c87b6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2724016,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

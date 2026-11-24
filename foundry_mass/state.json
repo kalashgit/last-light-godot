@@ -106,9 +106,11 @@
     "ll_food_tomato_soup",
     "ll_food_tuna_tin",
     "ll_food_vinegar_bottle",
-    "ll_food_water_bottle"
+    "ll_food_water_bottle",
+    "ll_food_yeast_sachet",
+    "ll_furniture_armchair"
   ],
-  "last_run_id": "45340565500",
+  "last_run_id": "45458722422",
   "golden_approved": false,
-  "remaining": 256
+  "remaining": 254
 }

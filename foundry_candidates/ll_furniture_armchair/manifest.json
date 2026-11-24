@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_armchair",
+  "source_glb_sha256": "370e852418c5b3a0dc3684b6ae834ebf86f80a9b66f5dc4b2102519eab8b4aee",
+  "atlas_sha256": "3c7bfbfc4d76871bf6adcfcd19b7f1b031edb438328f61d9043fee5fa5134087",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2740470,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
