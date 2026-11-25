@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_bathtub",
+  "source_glb_sha256": "bae51c15fd6fb347a6e86ac6c51a7875b60f9b073c3c08cd46f5dfa384a3ef4f",
+  "atlas_sha256": "13f9275c0145f1dbeb0e7c2d887a64628c4218b860b04d358b99633dd80d1be1",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662898,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

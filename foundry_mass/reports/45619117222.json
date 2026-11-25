@@ -1,0 +1,42 @@
+{
+  "run_id": "45619117222",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 110,
+  "remaining": 250,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_bathtub",
+      "source_glb_sha256": "bae51c15fd6fb347a6e86ac6c51a7875b60f9b073c3c08cd46f5dfa384a3ef4f",
+      "atlas_sha256": "13f9275c0145f1dbeb0e7c2d887a64628c4218b860b04d358b99633dd80d1be1",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662898,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_bench",
+      "source_glb_sha256": "6d18fa1821e61e0bcb02165a67bb2f64854d2e606ae660057760e9f78ee2af94",
+      "atlas_sha256": "a2538c52e72d7708ea450f37f99869559701cd34bd99963ec771684a4839c20c",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662898,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

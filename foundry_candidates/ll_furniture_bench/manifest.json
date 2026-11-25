@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_bench",
+  "source_glb_sha256": "6d18fa1821e61e0bcb02165a67bb2f64854d2e606ae660057760e9f78ee2af94",
+  "atlas_sha256": "a2538c52e72d7708ea450f37f99869559701cd34bd99963ec771684a4839c20c",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662898,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
