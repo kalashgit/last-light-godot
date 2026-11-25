@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_bar_stool",
+  "source_glb_sha256": "633fbd550779b653cde4dbe434175dfb79b573263e1a4c757ff5168ff4737b95",
+  "atlas_sha256": "71e1c4578377a85633971854b94884f40a5905245b47951f3a0d8f6db972a3b7",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2709893,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

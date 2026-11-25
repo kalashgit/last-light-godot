@@ -108,9 +108,11 @@
     "ll_food_vinegar_bottle",
     "ll_food_water_bottle",
     "ll_food_yeast_sachet",
-    "ll_furniture_armchair"
+    "ll_furniture_armchair",
+    "ll_furniture_bar_stool",
+    "ll_furniture_bathroom_vanity"
   ],
-  "last_run_id": "45458722422",
+  "last_run_id": "45535598660",
   "golden_approved": false,
-  "remaining": 254
+  "remaining": 252
 }

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_bathroom_vanity",
+  "source_glb_sha256": "790fa897fe193b0de4334c61254e11a3ca6727f09ba05b3d6cb79ddd7b408690",
+  "atlas_sha256": "b5683949b1a5467c30d406b298a88633503c6ae4da047cbbd80417def00dfa6a",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2682068,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
