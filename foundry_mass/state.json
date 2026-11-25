@@ -112,9 +112,11 @@
     "ll_furniture_bar_stool",
     "ll_furniture_bathroom_vanity",
     "ll_furniture_bathtub",
-    "ll_furniture_bench"
+    "ll_furniture_bench",
+    "ll_furniture_bookcase",
+    "ll_furniture_camp_bed"
   ],
-  "last_run_id": "45619117222",
+  "last_run_id": "45714450966",
   "golden_approved": false,
-  "remaining": 250
+  "remaining": 248
 }

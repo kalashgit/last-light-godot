@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_bookcase",
+  "source_glb_sha256": "b2c747d0a5dae474dce90fe78b0b20fe2b0752637dfc3a07c7e9c03cef6fe256",
+  "atlas_sha256": "ed365dd470a273b73c5064a5336ad5848c6ddef047a5846cd8672a22a54bacd6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2670053,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

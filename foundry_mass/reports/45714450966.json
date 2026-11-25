@@ -1,0 +1,42 @@
+{
+  "run_id": "45714450966",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 112,
+  "remaining": 248,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_bookcase",
+      "source_glb_sha256": "b2c747d0a5dae474dce90fe78b0b20fe2b0752637dfc3a07c7e9c03cef6fe256",
+      "atlas_sha256": "ed365dd470a273b73c5064a5336ad5848c6ddef047a5846cd8672a22a54bacd6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2670053,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_camp_bed",
+      "source_glb_sha256": "0834f131b662c231f3b76731ef49efa48bc8da35d5e5e5b1da55adebb3df815f",
+      "atlas_sha256": "0a930f468059837c82540144d64bbd1209a83799bc1e6f3efc9d6b62af7a90d6",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2770770,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

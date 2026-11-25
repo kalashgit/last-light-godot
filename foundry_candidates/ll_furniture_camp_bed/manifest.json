@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_camp_bed",
+  "source_glb_sha256": "0834f131b662c231f3b76731ef49efa48bc8da35d5e5e5b1da55adebb3df815f",
+  "atlas_sha256": "0a930f468059837c82540144d64bbd1209a83799bc1e6f3efc9d6b62af7a90d6",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2770770,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
