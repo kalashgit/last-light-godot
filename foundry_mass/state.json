@@ -118,9 +118,11 @@
     "ll_furniture_coat_rack",
     "ll_furniture_coffee_table",
     "ll_furniture_cooking_stove",
-    "ll_furniture_dining_chair"
+    "ll_furniture_dining_chair",
+    "ll_furniture_dining_table",
+    "ll_furniture_double_bed"
   ],
-  "last_run_id": "45839669169",
+  "last_run_id": "45910437940",
   "golden_approved": false,
-  "remaining": 244
+  "remaining": 242
 }

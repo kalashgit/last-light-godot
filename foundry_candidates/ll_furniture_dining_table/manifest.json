@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_dining_table",
+  "source_glb_sha256": "a8b11cf4ab547a9f41e7dd1b5803788e9686642a5467c39be2df6fc9dbdf54a6",
+  "atlas_sha256": "010cdb945e4cbd6e5f50bfbba9f89632d6f6432c87c79423520c6ef51d1b24b3",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662898,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
