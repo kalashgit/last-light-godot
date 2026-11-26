@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_coat_rack",
+  "source_glb_sha256": "e30aad557647c90c054085c635e0c9b4c083393207514371421b9f4556a975cd",
+  "atlas_sha256": "f176bf3fc7d9666afdc335bac1bf375bb8c0ee20b4cbbf5b209fbf5b98a87350",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2670053,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

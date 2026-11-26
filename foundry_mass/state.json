@@ -114,9 +114,11 @@
     "ll_furniture_bathtub",
     "ll_furniture_bench",
     "ll_furniture_bookcase",
-    "ll_furniture_camp_bed"
+    "ll_furniture_camp_bed",
+    "ll_furniture_coat_rack",
+    "ll_furniture_coffee_table"
   ],
-  "last_run_id": "45714450966",
+  "last_run_id": "45755234799",
   "golden_approved": false,
-  "remaining": 248
+  "remaining": 246
 }

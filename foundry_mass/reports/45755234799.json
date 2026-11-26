@@ -1,0 +1,42 @@
+{
+  "run_id": "45755234799",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 114,
+  "remaining": 246,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_coat_rack",
+      "source_glb_sha256": "e30aad557647c90c054085c635e0c9b4c083393207514371421b9f4556a975cd",
+      "atlas_sha256": "f176bf3fc7d9666afdc335bac1bf375bb8c0ee20b4cbbf5b209fbf5b98a87350",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2670053,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_coffee_table",
+      "source_glb_sha256": "fdfc67fac7c361243c1361ef4643d1d481d1159f842383fdc2a20d206b401b5a",
+      "atlas_sha256": "01c6753a40611f474136894a09c6c5eb8607bfeac95b45a82b1bdcf492d70f14",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2662898,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

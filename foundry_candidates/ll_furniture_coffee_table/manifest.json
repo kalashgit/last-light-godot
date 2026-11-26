@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_coffee_table",
+  "source_glb_sha256": "fdfc67fac7c361243c1361ef4643d1d481d1159f842383fdc2a20d206b401b5a",
+  "atlas_sha256": "01c6753a40611f474136894a09c6c5eb8607bfeac95b45a82b1bdcf492d70f14",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2662898,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
