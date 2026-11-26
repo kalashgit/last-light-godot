@@ -116,9 +116,11 @@
     "ll_furniture_bookcase",
     "ll_furniture_camp_bed",
     "ll_furniture_coat_rack",
-    "ll_furniture_coffee_table"
+    "ll_furniture_coffee_table",
+    "ll_furniture_cooking_stove",
+    "ll_furniture_dining_chair"
   ],
-  "last_run_id": "45755234799",
+  "last_run_id": "45839669169",
   "golden_approved": false,
-  "remaining": 246
+  "remaining": 244
 }

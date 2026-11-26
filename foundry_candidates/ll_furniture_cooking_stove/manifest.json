@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_cooking_stove",
+  "source_glb_sha256": "2d29e798f19ffe702444546feeb9c8a75bb6be3ca0774e3f87adaee203a5237b",
+  "atlas_sha256": "e99113fbbad715e06c1f3c630f82f0cd08285ef46528c15cf982bfa9504e07ab",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2709232,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

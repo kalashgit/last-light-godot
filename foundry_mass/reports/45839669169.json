@@ -1,0 +1,42 @@
+{
+  "run_id": "45839669169",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 116,
+  "remaining": 244,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_cooking_stove",
+      "source_glb_sha256": "2d29e798f19ffe702444546feeb9c8a75bb6be3ca0774e3f87adaee203a5237b",
+      "atlas_sha256": "e99113fbbad715e06c1f3c630f82f0cd08285ef46528c15cf982bfa9504e07ab",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2709232,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_dining_chair",
+      "source_glb_sha256": "3703680f1968343fa516efe907b8235ea186971fc60e890f371c22a289c9dd96",
+      "atlas_sha256": "0e6496667201cc8206e13fd7354ea4bd53972fe5d23f60b1c2be874afd8c9159",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2674823,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

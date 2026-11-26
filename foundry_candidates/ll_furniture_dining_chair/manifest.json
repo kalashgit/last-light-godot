@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_dining_chair",
+  "source_glb_sha256": "3703680f1968343fa516efe907b8235ea186971fc60e890f371c22a289c9dd96",
+  "atlas_sha256": "0e6496667201cc8206e13fd7354ea4bd53972fe5d23f60b1c2be874afd8c9159",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2674823,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
