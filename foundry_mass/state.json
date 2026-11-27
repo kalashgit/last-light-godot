@@ -122,9 +122,11 @@
     "ll_furniture_dining_table",
     "ll_furniture_double_bed",
     "ll_furniture_double_wardrobe",
-    "ll_furniture_dresser"
+    "ll_furniture_dresser",
+    "ll_furniture_filing_cabinet",
+    "ll_furniture_folding_chair"
   ],
-  "last_run_id": "45945587052",
+  "last_run_id": "46026619910",
   "golden_approved": false,
-  "remaining": 240
+  "remaining": 238
 }

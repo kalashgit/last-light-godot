@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_filing_cabinet",
+  "source_glb_sha256": "1de2998d075f097c9d86eb8ccf14d928f5a38b4a780d131d43b8e4aaa1db65e5",
+  "atlas_sha256": "5569a137e45f582c0809852ee25db34aafc5e3a5462317626110493a8fd466e5",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2667668,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

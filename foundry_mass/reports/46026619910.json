@@ -1,0 +1,42 @@
+{
+  "run_id": "46026619910",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 122,
+  "remaining": 238,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_filing_cabinet",
+      "source_glb_sha256": "1de2998d075f097c9d86eb8ccf14d928f5a38b4a780d131d43b8e4aaa1db65e5",
+      "atlas_sha256": "5569a137e45f582c0809852ee25db34aafc5e3a5462317626110493a8fd466e5",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2667668,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_folding_chair",
+      "source_glb_sha256": "cbac7ef313dac55cf83f6cf2e9d1f7e98eb41d520f0b0267652b097636671d95",
+      "atlas_sha256": "5b83f38f2c1e3fa9a0264ca8706da04c36a0d4789011f2e70917e18a071c1052",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2674823,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

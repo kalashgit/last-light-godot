@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_folding_chair",
+  "source_glb_sha256": "cbac7ef313dac55cf83f6cf2e9d1f7e98eb41d520f0b0267652b097636671d95",
+  "atlas_sha256": "5b83f38f2c1e3fa9a0264ca8706da04c36a0d4789011f2e70917e18a071c1052",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2674823,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
