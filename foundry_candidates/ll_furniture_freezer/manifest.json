@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_freezer",
+  "source_glb_sha256": "c314e540ddfb11b668385e2e620a5c1c065fcf4ca738c2e3887448be52531a58",
+  "atlas_sha256": "ea2e6191b2693f067990fb56dda3cf30ea11ae56710c81cb2ac73c7b1fe497e2",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2719433,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_garden_chair",
+  "source_glb_sha256": "99b7ac081bc4accf4b88f00de6a2dcbf3cc7fcc178730a41b5a84f4b91e39a66",
+  "atlas_sha256": "147f105342d680d3e0cee40aa1bb2a80fc592689c6aafd7733005a3178014219",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2674823,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

@@ -124,9 +124,11 @@
     "ll_furniture_double_wardrobe",
     "ll_furniture_dresser",
     "ll_furniture_filing_cabinet",
-    "ll_furniture_folding_chair"
+    "ll_furniture_folding_chair",
+    "ll_furniture_freezer",
+    "ll_furniture_garden_chair"
   ],
-  "last_run_id": "46026619910",
+  "last_run_id": "46084188028",
   "golden_approved": false,
-  "remaining": 238
+  "remaining": 236
 }

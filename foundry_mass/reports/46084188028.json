@@ -1,0 +1,42 @@
+{
+  "run_id": "46084188028",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 124,
+  "remaining": 236,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_freezer",
+      "source_glb_sha256": "c314e540ddfb11b668385e2e620a5c1c065fcf4ca738c2e3887448be52531a58",
+      "atlas_sha256": "ea2e6191b2693f067990fb56dda3cf30ea11ae56710c81cb2ac73c7b1fe497e2",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2719433,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_garden_chair",
+      "source_glb_sha256": "99b7ac081bc4accf4b88f00de6a2dcbf3cc7fcc178730a41b5a84f4b91e39a66",
+      "atlas_sha256": "147f105342d680d3e0cee40aa1bb2a80fc592689c6aafd7733005a3178014219",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2674823,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}
