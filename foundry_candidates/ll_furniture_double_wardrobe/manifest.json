@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_double_wardrobe",
+  "source_glb_sha256": "90c928ddc6a758fda537df111e60d4837346edebe619012e9c11e3651ec9e5da",
+  "atlas_sha256": "2852f1e23c63c5c92af323de819bf9e31c9a129a6abb6f0db679a8107277c98d",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2719433,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

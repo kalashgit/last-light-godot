@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_dresser",
+  "source_glb_sha256": "e86cc233ed64c5033f2b6d83ab306bca43abf66986a7d92e65ef245d13c02315",
+  "atlas_sha256": "f8aaae505fd01a9407bd270d992f351629f82ca8665245bd31f3df962031c1d2",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2714663,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

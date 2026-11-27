@@ -1,0 +1,42 @@
+{
+  "run_id": "45945587052",
+  "source_count": 360,
+  "source_plan_sha256": "e127756b16cba758441cdda848641ceddc0cc76962eeb38ac9b95e167a1d2463",
+  "batch_count": 2,
+  "completed_total": 120,
+  "remaining": 240,
+  "generated": [
+    {
+      "asset_id": "ll_furniture_double_wardrobe",
+      "source_glb_sha256": "90c928ddc6a758fda537df111e60d4837346edebe619012e9c11e3651ec9e5da",
+      "atlas_sha256": "2852f1e23c63c5c92af323de819bf9e31c9a129a6abb6f0db679a8107277c98d",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2719433,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    },
+    {
+      "asset_id": "ll_furniture_dresser",
+      "source_glb_sha256": "e86cc233ed64c5033f2b6d83ab306bca43abf66986a7d92e65ef245d13c02315",
+      "atlas_sha256": "f8aaae505fd01a9407bd270d992f351629f82ca8665245bd31f3df962031c1d2",
+      "views": 16,
+      "distinct_heading_images": 16,
+      "renderer": "Blender Cycles CPU",
+      "source_editable_blend_preserved_in_archive": true,
+      "source_blend_size_bytes": 2714663,
+      "status": "TECHNICAL_SPRITE_CANDIDATE",
+      "f11_material_approved": false,
+      "f12_world_scale_approved": false,
+      "golden_approved": false,
+      "gameplay_integrated": false
+    }
+  ],
+  "golden_approved": false,
+  "technical_candidate_only": true
+}

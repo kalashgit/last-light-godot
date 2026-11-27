@@ -120,9 +120,11 @@
     "ll_furniture_cooking_stove",
     "ll_furniture_dining_chair",
     "ll_furniture_dining_table",
-    "ll_furniture_double_bed"
+    "ll_furniture_double_bed",
+    "ll_furniture_double_wardrobe",
+    "ll_furniture_dresser"
   ],
-  "last_run_id": "45910437940",
+  "last_run_id": "45945587052",
   "golden_approved": false,
-  "remaining": 242
+  "remaining": 240
 }
