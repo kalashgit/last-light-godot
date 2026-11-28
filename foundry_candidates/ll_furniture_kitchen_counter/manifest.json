@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_kitchen_counter",
+  "source_glb_sha256": "1e15d8ccc7404e468948af0d59f03a39d76dcbfdd86aeb1bbecd82aaf90b19b0",
+  "atlas_sha256": "b5dee25e0dc62a0820d969ace683821557b68a3450a445ea07b425ef39a52ee9",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2672438,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}
