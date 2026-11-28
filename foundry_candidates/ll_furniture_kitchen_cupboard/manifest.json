@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_kitchen_cupboard",
+  "source_glb_sha256": "fa292b1ffade74fa9a18696f61c1e6ec4b5092ebb6ecf9eea4f5c87f7b3e613e",
+  "atlas_sha256": "c3e9b47bb57b48b16669a3bff114fdcc91b9c4bb0ef81a6587d5c9d00c37a058",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2667668,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

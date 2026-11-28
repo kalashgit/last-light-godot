@@ -1,0 +1,15 @@
+{
+  "asset_id": "ll_furniture_kitchen_table",
+  "source_glb_sha256": "55a5175cde6aa3b6d8c567b975e4693da45f0ff05d67985cecb859179098827d",
+  "atlas_sha256": "faafdbc1bfe495ba9bc340b7524a912239eea792137448f977619d75f5880b40",
+  "views": 16,
+  "distinct_heading_images": 16,
+  "renderer": "Blender Cycles CPU",
+  "source_editable_blend_preserved_in_archive": true,
+  "source_blend_size_bytes": 2709893,
+  "status": "TECHNICAL_SPRITE_CANDIDATE",
+  "f11_material_approved": false,
+  "f12_world_scale_approved": false,
+  "golden_approved": false,
+  "gameplay_integrated": false
+}

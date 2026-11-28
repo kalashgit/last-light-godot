@@ -128,9 +128,11 @@
     "ll_furniture_freezer",
     "ll_furniture_garden_chair",
     "ll_furniture_kitchen_chair",
-    "ll_furniture_kitchen_counter"
+    "ll_furniture_kitchen_counter",
+    "ll_furniture_kitchen_cupboard",
+    "ll_furniture_kitchen_table"
   ],
-  "last_run_id": "46110067630",
+  "last_run_id": "46153627988",
   "golden_approved": false,
-  "remaining": 234
+  "remaining": 232
 }
