@@ -124,9 +124,11 @@
     "ll_generated_street_dumpster_014",
     "ll_generated_raised_planter_014",
     "ll_generated_industrial_locker_015",
-    "ll_generated_tool_chest_015"
+    "ll_generated_tool_chest_015",
+    "ll_generated_warehouse_shelf_015",
+    "ll_generated_utility_cabinet_015"
   ],
-  "remaining": 390,
-  "last_approved_source_bundle_tag": "foundry-created-46134144800",
+  "remaining": 388,
+  "last_approved_source_bundle_tag": "foundry-created-46178058877",
   "golden_approved": false
 }
